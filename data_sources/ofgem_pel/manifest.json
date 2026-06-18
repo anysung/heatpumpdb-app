@@ -1,0 +1,102 @@
+{
+  "source_name": "Ofgem BUS Product Eligibility List (PEL)",
+  "source_url": "https://www.ofgem.gov.uk/publications/boiler-upgrade-scheme-product-eligibility",
+  "scheme": "Boiler Upgrade Scheme (BUS)",
+  "publisher": "Ofgem (Office of Gas and Electricity Markets), UK",
+  "retrieval_date": "2026-06-18",
+  "task_status": "full_download_and_parse_complete",
+  "confirmed_file_url": "https://www.ofgem.gov.uk/sites/default/files/2026-05/BUS-external-PEL.xlsx",
+  "confirmed_file_url_note": "Confirmed 2026-06-18 via HEAD probe: HTTP 200, content-type=application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, last-modified=Thu 21 May 2026 09:00:46 GMT, size=256.1 KB",
+  "snapshot": "2026-06",
+  "source_period": "2026-05",
+  "source_period_note": "source_period is the YYYY-MM in the file URL path — the month Ofgem published this file version. snapshot is the local collection month (when we downloaded it). They differ when a new snapshot is not yet available.",
+  "full_download_completed": true,
+  "full_download_date": "2026-06-18",
+  "full_download_output": "data_sources/ofgem_pel/raw/2026-06/BUS-external-PEL.xlsx (gitignored)",
+  "full_download_meta": {
+    "snapshot": "2026-06",
+    "source_period": "2026-05",
+    "fileSizeKb": 256.1,
+    "httpLastModified": "Thu, 21 May 2026 09:00:46 GMT",
+    "complete": true
+  },
+  "parse_completed": true,
+  "parse_date": "2026-06-18",
+  "parse_output": "data_sources/ofgem_pel/parsed/2026-06/ (gitignored)",
+  "parse_results": {
+    "sheetsFound": ["Instructions", "PEL"],
+    "pelSheet": "PEL",
+    "headerRowIndex": 1,
+    "columns": ["mcs_certification_number", "technology_type", "product_name", "model", "manufacturer", "certified_from", "certified_until"],
+    "totalRecords": 4596,
+    "malformedRowsSkipped": 0,
+    "duplicateMcsNumbers": 5,
+    "duplicateMcsNumberDetail": ["20.09.018×3", "24.01.009×4", "24.01.010×9", "24.01.011×3", "HTSMCS2301/01×2"],
+    "certificationStatusDistribution": {
+      "listed_no_expiry_date": 2294,
+      "active_with_expiry": 2145,
+      "expiry_imminent": 157,
+      "expired_confirmed": 0,
+      "date_parse_failed": 0
+    },
+    "technologyDistribution": {
+      "ASHP": 3651,
+      "WSHP": 761,
+      "EAHP": 10,
+      "Biomass": 174
+    },
+    "heatPumpRecordsExclBiomass": 4422,
+    "topBrands": {
+      "Daikin Europe N. V.": 487,
+      "Ecoforest Geotermia, S.L.": 410,
+      "Johnson Controls-Hitachi Air Conditioning Spain, S.A.U.": 229,
+      "Viessmann Ltd": 225,
+      "GD MIDEA Heating & Ventilating Equipment Co., Ltd": 191,
+      "Samsung Electronics Air Conditioner Europe B.V": 173,
+      "LG Electronics Inc.": 117,
+      "Clivet S.p.A.": 113,
+      "Panasonic Marketing Europe GmbH t/a Panasonic Appliances Air-Conditioning Europe": 110,
+      "GD TCL Intelligent Heating & Ventilating Equipment Co., Ltd.": 98
+    },
+    "certificationStatusNote": "listed_no_expiry_date = on PEL but cert body (MCS/BSI/BBA) does not record expiry. active_with_expiry = future certified_until > 90 days. expiry_imminent = future certified_until within 90 days. expired_confirmed = past certified_until (none in 2026-05 snapshot). date_parse_failed = string present but unparseable.",
+    "mcsNumberFormat": "Format: '<base> <model_suffix>' e.g. '24.01.020 AW162HVGHA/HU162WAHYB'. mcs_number_base = part before first space. mcs_model_suffix = part after first space (null when base only).",
+    "normalizedRecordFields": [
+      "source_id", "mcs_number", "mcs_number_base", "mcs_model_suffix",
+      "product_name", "model", "brand", "technology_type", "technology_type_raw",
+      "certification_status", "mcs_cert_date", "expiry_date",
+      "rated_heat_output_kw", "scop", "cop",
+      "country", "primary_source", "eligibility_source", "eligibility_interpretation",
+      "eligibility_caveat", "source_snapshot", "source_period",
+      "source_last_modified", "source_url"
+    ],
+    "validation": {
+      "recordCount": "PASS",
+      "statusDistribution": "PASS",
+      "techCoverage": "PASS",
+      "keyLeak": "PASS",
+      "malformed": "PASS",
+      "noBlankMarkedActive": "PASS — blank certified_until is listed_no_expiry_date, not active"
+    },
+    "keyLeakInOutput": false
+  },
+  "certified_until_investigation": {
+    "finding": "Blank certified_until indicates the certification body (MCS, BSI, BBA) does not record expiry dates for their certs — NOT that the product is unknown or suspect.",
+    "evidence": {
+      "MCS_BSI_BBA_prefix_records": "100% blank certified_until",
+      "ICIM_CN_prefix_records": "100% dated (future)",
+      "KIWA_prefix_records": "mixed — 74 blank / 17 dated",
+      "past_date_records": 0,
+      "blank_cert_date_range": "2003–2026 (not just old products)"
+    },
+    "interpretation": "All records in the 2026-05 PEL snapshot have either no expiry date recorded or a future expiry date. Zero records had a past expiry date. Blank certified_until is a data provenance distinction — the certification body does not record expiry dates for these products. PEL listing does not guarantee full BUS eligibility; verify all requirements independently.",
+    "policy": "Use listed_no_expiry_date for blank. Do not call blank records active_confirmed. Do not claim full BUS eligibility from PEL listing alone."
+  },
+  "legal_notes": [
+    "PEL data is published by Ofgem as a public administrative tool under the Boiler Upgrade Scheme (BUS).",
+    "It is extracted from the MCS certified product directory. Products on the PEL meet MCS standards required by BUS.",
+    "Ofgem disclaimer: the PEL does not ensure compliance with all BUS eligibility criteria — installers must verify independently.",
+    "No authentication required for public file download.",
+    "Monthly refresh obligation: PEL is updated by Ofgem when new products are certified or existing products expire."
+  ],
+  "next_recommended_step": "PEL workflow complete. Commit scripts, manifest, and fetch-log. Next: design PEL↔BAFA/EPREL matching using brand normalization + model string matching. Join key: mcs_number (from PEL) ↔ mcs_number field to be added to HeatPump type for UK products."
+}

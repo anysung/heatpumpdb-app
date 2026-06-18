@@ -31,3 +31,14 @@ scraper/pricing/output/
 
 # Generated app dataset (rebuilt from pipeline before deploy)
 public/data/
+.env.local
+
+# EPREL raw bulk download pages (potentially hundreds of MB; rebuilt by script)
+# Keep: README.md, manifest.json, fetch-log.md, terms/, raw/test/
+data_sources/eprel_raw/raw/20*/
+data_sources/eprel_raw/raw/test/official-api/
+
+# Ofgem PEL raw XLSX snapshots and parsed output (rebuilt by script; monthly refresh)
+# Keep: manifest.json, fetch-log.md
+data_sources/ofgem_pel/raw/20*/
+data_sources/ofgem_pel/parsed/20*/
