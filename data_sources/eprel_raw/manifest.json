@@ -1,0 +1,236 @@
+{
+  "source_name": "EPREL — European Product Registry for Energy Labelling",
+  "source_url": "https://eprel.ec.europa.eu/",
+  "retrieval_date": "2026-06-12",
+  "api_key_received_date": "2026-06-17",
+  "test_run_date": "2026-06-18",
+  "task_status": "full_download_complete_validated",
+  "categories_checked": [
+    {
+      "group": "spaceheaters",
+      "name": "Space heaters/Combination heaters",
+      "regulation": "Regulation (EU) 811/2013",
+      "total_records": 56475,
+      "heat_pump_records": 45480,
+      "heat_pump_records_note": "45,480 confirmed by official API on 2026-06-18 (was 45,295 from public-site inspection on 2026-06-12; difference reflects new registrations)",
+      "heat_pump_space_heater": 18328,
+      "heat_pump_combination_heater": 26967,
+      "heat_pump_subtype_note": "SPACE_HEATER and COMBINATION_HEATER subtotals are from 2026-06-12 public-site inspection; may have also grown slightly",
+      "relevance": "PRIMARY TARGET — covers both 'Space heater / Heat pump' and 'Combination heater / Heat pump' in one group; server-side filter type=HEAT_PUMP confirmed working via official API on 2026-06-18",
+      "test_run_sample": {
+        "pages_downloaded": 2,
+        "records_per_page": 100,
+        "total_sample_records": 200,
+        "field_count_observed": 130,
+        "category_breakdown_in_sample": { "COMBINATION_HEATER": 200, "SPACE_HEATER": 0 },
+        "category_note": "First 200 records happen to all be COMBINATION_HEATER; both subtypes are present in full dataset — no filter issue",
+        "type_breakdown_in_sample": { "HEAT_PUMP": 200 },
+        "energy_class_breakdown": { "APPP": 132, "APP": 25, "AP": 5, "A": 1, "B": 21, "C": 16 },
+        "outdoor_noise_zero_count": 27,
+        "outdoor_noise_zero_note": "outdoorNoise=0 indicates ground-source units with no outdoor component (not null/missing data)",
+        "visible_to_uk_msa_true": 8,
+        "missing_eprel_id": 0,
+        "missing_supplier": 0,
+        "missing_model_id": 0,
+        "key_leak_in_json": false
+      }
+    },
+    {
+      "group": "spaceheaterpackages",
+      "name": "Packages of space heaters/combination heaters",
+      "regulation": "Regulation (EU) 811/2013",
+      "total_records": 111497,
+      "relevance": "RELATED — package-level records (heater + control + solar combinations); no working server-side heat-pump filter found on public-site endpoint (type/preferentialHeaterType params ignored); has heatPumpContribution / heatPumpSeasonalHeatingEnergyEfficiency fields; deferred until official API docs confirm a filter"
+    },
+    {
+      "group": "spaceheatertemperaturecontrol",
+      "name": "Temperature controls for space heaters",
+      "regulation": "Regulation (EU) 811/2013",
+      "total_records": 840,
+      "relevance": "RELATED — small reference dataset, planned as separate raw reference download",
+      "test_run_sample": {
+        "pages_downloaded": 2,
+        "records_per_page": 100,
+        "total_sample_records": 200,
+        "field_count_observed": "subset of 130-field schema; category and type fields null in this group"
+      }
+    },
+    {
+      "group": "spaceheatersolardevice",
+      "name": "Solar devices for space heaters",
+      "regulation": "Regulation (EU) 811/2013",
+      "total_records": 207,
+      "relevance": "RELATED — small reference dataset, planned as separate raw reference download",
+      "test_run_sample": {
+        "pages_downloaded": 2,
+        "records_per_page": 100,
+        "total_sample_records": 207,
+        "note": "Dataset smaller than 2 pages × 100; page 2 returned remaining 7 records"
+      }
+    },
+    {
+      "group": "waterheaters",
+      "name": "Water heaters",
+      "regulation": "Regulation (EU) 812/2013",
+      "total_records": 11887,
+      "relevance": "OUT OF SCOPE for this task (contains heat-pump water heaters; possible future interest)"
+    }
+  ],
+  "endpoints_used": {
+    "public_site_inspection_only": [
+      "GET https://eprel.ec.europa.eu/api/product-groups",
+      "GET https://eprel.ec.europa.eu/api/products/{group}?_page={n}&_limit={n}[&type=HEAT_PUMP][&category=...]",
+      "GET https://eprel.ec.europa.eu/api/products/spaceheaters/{registrationNumber}"
+    ],
+    "official_bulk_channel_base": "https://eprel.ec.europa.eu/api",
+    "official_bulk_channel_base_confirmed": "2026-06-18 — confirmed via dry-run probe with official API key; X-API-KEY header accepted; HTTP 200 returned for list endpoint",
+    "official_bulk_channel_rejected": "https://eprel.ec.europa.eu/api/public — returns HTTP 403 {'message':'Missing Authentication Token'} even with valid key; this is NOT the correct base",
+    "list_endpoint_pattern": "GET https://eprel.ec.europa.eu/api/products/{group}?type=HEAT_PUMP&_page={n}&_limit=100",
+    "auth_header": "X-API-KEY: <key from .env.local — NOT stored here>"
+  },
+  "full_download_date": "2026-06-18",
+  "full_download_snapshot": "2026-06",
+  "full_download_completed": true,
+  "full_download_output": "data_sources/eprel_raw/raw/2026-06/ (gitignored)",
+  "full_download_categories": [
+    {
+      "group": "spaceheaters",
+      "folder": "spaceheaters-heatpump",
+      "filter": "type=HEAT_PUMP",
+      "totalReported": 45480,
+      "recordsSaved": 45480,
+      "pagesSaved": 455,
+      "startedAt": "2026-06-18T01:15:18.188Z",
+      "completedAt": "2026-06-18T01:32:49.901Z",
+      "complete": true
+    },
+    {
+      "group": "spaceheatertemperaturecontrol",
+      "folder": "temperature-controls",
+      "filter": "(none)",
+      "totalReported": 840,
+      "recordsSaved": 840,
+      "pagesSaved": 9,
+      "startedAt": "2026-06-18T01:32:50.910Z",
+      "completedAt": "2026-06-18T01:33:07.012Z",
+      "complete": true
+    },
+    {
+      "group": "spaceheatersolardevice",
+      "folder": "solar-devices",
+      "filter": "(none)",
+      "totalReported": 207,
+      "recordsSaved": 207,
+      "pagesSaved": 3,
+      "startedAt": "2026-06-18T01:33:08.017Z",
+      "completedAt": "2026-06-18T01:33:11.239Z",
+      "complete": true
+    }
+  ],
+  "full_download_validation": {
+    "spaceheaters": {
+      "record_count": 45480,
+      "file_count": 455,
+      "all_required_fields_present": true,
+      "key_leak_in_json": false,
+      "fields_per_record": 119,
+      "energy_class_distribution": {
+        "APPP": 34487,
+        "APP": 8234,
+        "AP": 2133,
+        "A": 355,
+        "B": 179,
+        "C": 85,
+        "D": 7
+      },
+      "visible_to_uk_msa_true": 2569,
+      "outdoor_noise_zero": 3333,
+      "outdoor_noise_zero_note": "ground-source units (no outdoor component), not missing data"
+    }
+  },
+  "total_records_downloaded": 46527,
+  "download_note": "108 inspection samples (2026-06-12 public-site probes, gitignored under raw/test/) + 600 official API test records (2026-06-18 --test run, gitignored under raw/test/official-api/) + 46,527 full snapshot records (2026-06-18 --full run, gitignored under raw/2026-06/). Total = 47,235.",
+  "file_count": 467,
+  "legal_or_terms_notes": [
+    "Official Public API requires an API key requested via https://eprel.ec.europa.eu/screen/requestpublicapikey (form requires acceptance of T&C).",
+    "Official T&C (in force since 2024-06-03) archived at terms/EPREL_Public_API_Terms_and_Conditions_EN.pdf.",
+    "T&C Art. 4 §1 PERMITS: reproduction/share/distribution for commercial and non-commercial purposes as value-added services, derivative works, research, internal market analysis, and use in 'mobile applications and other comparison tools' — matches Heatpump Data Base use case.",
+    "T&C Art. 4 §2 PROHIBITS: selling the raw data as-is; restricting others' reuse; disrupting EPREL; misleading modifications; failing to keep locally stored data up to date (§2.f — relevant: monthly refresh obligation); exploiting vulnerabilities or working around technical limitations.",
+    "T&C Art. 4 §3 requires attribution to the European Commission / EPREL when publishing data.",
+    "Data accuracy is supplier-provided and not guaranteed (Art. 7) — display disclaimers accordingly.",
+    "No robots.txt is served (SPA HTML returned for /robots.txt).",
+    "Per project decision 2026-06-12: NO anonymous bulk scraping of the public-site endpoints, even though technically reachable; bulk retrieval waits for an official API key."
+  ],
+  "field_schema_observed": {
+    "field_count": 130,
+    "all_fields": [
+      "additionalDetails", "allowEprelLabelGeneration", "annualAuxiliaryElectricityConsumption",
+      "availabilityInEUEEACountries", "blocked", "category", "contactDetails", "contactId",
+      "ecoLabel", "ecoLabelRegistrationNumber", "electricalEfficiency",
+      "energyAnnualAverageGj35", "energyAnnualAverageGj55", "energyAnnualAverageKwh35", "energyAnnualAverageKwh55",
+      "energyAnnualColdGj", "energyAnnualColdGj35", "energyAnnualColdGj55",
+      "energyAnnualColdKwh", "energyAnnualColdKwh35", "energyAnnualColdKwh55",
+      "energyAnnualGj", "energyAnnualKwh",
+      "energyAnnualWarmGj", "energyAnnualWarmGj55", "energyAnnualWarmGj55",
+      "energyAnnualWarmKwh", "energyAnnualWarmKwh35", "energyAnnualWarmKwh55",
+      "energyClass", "energyClass35", "energyClass55",
+      "energyClassImage", "energyClassImageWithScale", "energyClassRange", "energyLabelId",
+      "eprelRegistrationNumber", "exportDateTS",
+      "firstPublicationDate", "firstPublicationDateTS", "formType",
+      "generatedLabels", "implementingAct", "importedOn", "isEnergySmartAppliance",
+      "lastVersion", "loadProfile", "loadProfiles", "lowTemperatureApplication",
+      "mediumTempEnergyAnnualAverageGj", "mediumTempEnergyAnnualAverageKwh",
+      "mediumTempEnergyAnnualColdGj", "mediumTempEnergyAnnualColdKwh",
+      "mediumTempEnergyAnnualWarmGj", "mediumTempEnergyAnnualWarmKwh",
+      "mediumTempEnergyClass",
+      "mediumTempRatedHeatOutputAverage", "mediumTempRatedHeatOutputCold", "mediumTempRatedHeatOutputWarm",
+      "mediumTempSeasonalSpaceHeatingEnergyEfficiencyAverage",
+      "mediumTempSeasonalSpaceHeatingEnergyEfficiencyCold",
+      "mediumTempSeasonalSpaceHeatingEnergyEfficiencyWarm",
+      "modelAvailabilityInCountries", "modelAvailabilityInEUEEACountries", "modelAvailabilityInOtherCountries",
+      "modelIdentifier", "noise",
+      "onMarketEndDate", "onMarketEndDateTS", "onMarketFirstStartDate", "onMarketFirstStartDateTS",
+      "onMarketStartDate", "onMarketStartDateTS", "onlyForOffPeakPeriod",
+      "orgVerificationStatus", "organisation", "outdoorNoise",
+      "productGroup", "productModelCoreId", "publishedOnDate", "publishedOnDateTS",
+      "pumpPowerConsumption",
+      "ratedHeatOutput", "ratedHeatOutputAverage35", "ratedHeatOutputAverage55",
+      "ratedHeatOutputCold", "ratedHeatOutputCold35", "ratedHeatOutputCold55",
+      "ratedHeatOutputWarm", "ratedHeatOutputWarm35", "ratedHeatOutputWarm55",
+      "registrantNature",
+      "seasonalSpaceHeatingEnergyEfficiency",
+      "seasonalSpaceHeatingEnergyEfficiencyAverage35", "seasonalSpaceHeatingEnergyEfficiencyAverage55",
+      "seasonalSpaceHeatingEnergyEfficiencyCold", "seasonalSpaceHeatingEnergyEfficiencyCold35", "seasonalSpaceHeatingEnergyEfficiencyCold55",
+      "seasonalSpaceHeatingEnergyEfficiencyWarm", "seasonalSpaceHeatingEnergyEfficiencyWarm35", "seasonalSpaceHeatingEnergyEfficiencyWarm55",
+      "solarCollectorApertureArea", "solarCollectorEfficiency",
+      "solarTankEnergyClass", "solarTankStorageVolumeL", "solarTankStorageVolumeM3",
+      "specificPrecautions", "standbyPowerConsumption", "status",
+      "supplierOrTrademark", "temperatureControlClass",
+      "trademarkId", "trademarkOwner", "trademarkVerificationStatus",
+      "type", "uploadedLabels",
+      "versionId", "versionNumber", "visibleToUkMsa",
+      "waterHeatingElectricityAnnualColdGj", "waterHeatingElectricityAnnualColdKwh",
+      "waterHeatingElectricityAnnualGj", "waterHeatingElectricityAnnualKwh",
+      "waterHeatingElectricityAnnualWarmGj", "waterHeatingElectricityAnnualWarmKwh",
+      "waterHeatingEnergyClass", "waterHeatingEnergyEfficiency",
+      "waterHeatingEnergyEfficiencyCold", "waterHeatingEnergyEfficiencyWarm",
+      "waterStorageStandingLoss"
+    ],
+    "note": "130 fields observed from official API test run 2026-06-18 (was 119 from public-site inspection; difference may reflect additional combination-heater water-heating fields)"
+  },
+  "limitations": [
+    "spaceheaterpackages heat-pump subset could not be isolated server-side during inspection; still unresolved — needs official API docs to confirm a filter parameter.",
+    "Field semantics (units, scale, enumerations for energyClass codes) not yet formally documented; encoding observed: APPP=A+++, APP=A++, AP=A+, A=A, B=B, C=C.",
+    "Energy label / product-information-sheet file download endpoints not yet exercised.",
+    "onMarketFirstStartDate has corrupted timestamps (year 213 in sample data) — do not use for chronological sorting.",
+    "outdoorNoise=0 is valid data (ground-source units, no outdoor component) — must not be treated as null or missing.",
+    "mediumTemp* fields are present for units with medium-temperature performance data (55°C flow); absence does not mean incomplete record."
+  ],
+  "script_preparation_log": [
+    "2026-06-17: Fixed X-API-KEY header (was x-api-key). Added page-skip/resume logic. Added --full confirmation gate. Updated .gitignore to exclude raw/20*/ and raw/test/official-api/.",
+    "2026-06-18: Dry-run confirmed API base https://eprel.ec.europa.eu/api (HTTP 200 with X-API-KEY). Candidate base https://eprel.ec.europa.eu/api/public rejected (HTTP 403 Missing Authentication Token). --test run completed: 600 records across 3 categories, 6 files. All required fields present. No key leak in stored JSON.",
+    "2026-06-18: Prepared script for production-safe full snapshot. Changes: (1) CANDIDATE_BASES reordered — confirmed base first, 403-failing /api/public last; (2) --full output path changed from flat raw/<folder>/ to versioned raw/YYYY-MM/<folder>/; (3) --snapshot YYYY-MM optional CLI arg added for explicit snapshot label; (4) _meta.json written per category folder after full download completes; (5) --full confirmation gate updated to show snapshot label and versioned output path; (6) estimated records updated 45295→45480 (confirmed from test run). Gitignore pattern raw/20*/ already covers new versioned paths — no .gitignore changes needed.",
+    "2026-06-18: Full download completed. 3 categories: spaceheaters 45,480/45,480 records (455 pages), temperature-controls 840/840 (9 pages), solar-devices 207/207 (3 pages). All _meta.json complete=true. Validation: all required fields present, no key leak in stored JSON, energyClass distribution APPP×34487 APP×8234 AP×2133 A×355 B×179 C×85 D×7, visibleToUkMsa=true: 2569, outdoorNoise=0: 3333. Total raw snapshot: 46,527 records, 467 page files."
+  ],
+  "next_recommended_step": "Full snapshot validated. Next: (1) parse and canonicalize BAFA JSON (scripts/bafa/parse-bafa.mjs); (2) build canonical brand map (pipeline/canonical_brands.json); (3) design and run 50-pair BAFA↔EPREL matching test using supplierOrTrademark+modelIdentifier join fields; (4) store eprelRegistrationNumber in HeatPump.eprel_registration_number for matched records."
+}
