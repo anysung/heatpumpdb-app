@@ -68,6 +68,19 @@ export const DataSheetTemplate: React.FC<DataSheetTemplateProps> = ({ item, segm
           <div className="text-right text-xs text-gray-400 mt-1">
             <div>{isDE ? 'Erstellt am' : 'Generated'}: {generatedDate}</div>
             <div>BAFA ID: {item.bafa_id}</div>
+            <div className="mt-0.5 text-[9px] text-gray-400">
+              {isDE ? 'Quelle' : 'Source'}: {isDE ? 'BAFA-Quellauszug' : 'BAFA source snapshot'}
+              {item.bafa_snapshot_fetched_at
+                ? ` (${item.bafa_snapshot_fetched_at.slice(0, 10)})`
+                : ''}
+            </div>
+            {item.bafa_listing_status && (
+              <div className="text-[9px] text-amber-600 font-medium mt-0.5">
+                {isDE
+                  ? 'Gelistet zum Zeitpunkt der Datenerhebung — keine Gewähr für aktuelle Förderfähigkeit'
+                  : 'Listed in source snapshot — verify current BAFA eligibility directly'}
+              </div>
+            )}
           </div>
         </div>
 

@@ -1,4 +1,15 @@
 
+/**
+ * BAFA listing status values — Phase 1 only emits 'listed_in_snapshot'.
+ * Other values are reserved for Phase 2 delisting/diff tracking.
+ */
+export type BafaListingStatus =
+  | 'listed_in_snapshot'
+  | 'not_in_latest_snapshot'
+  | 'funding_period_ended'
+  | 'relisted'
+  | 'unknown';
+
 export interface HeatPump {
   bafa_id: string;
 
@@ -21,6 +32,19 @@ export interface HeatPump {
   primary_source?: string;
   mcs_number?: string;
   eprel_registration_number?: string;
+
+  // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
+  // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source
+  //   snapshot used to generate this dataset — NOT a claim of current eligibility.
+  // bafa_foerderung_von/bis: BAFA funding period dates, preserved from the API
+  //   for reference only. Does not confirm current subsidy application status.
+  // bafa_snapshot_fetched_at: ISO timestamp of when BAFA API was queried.
+  // source_snapshot_generated_at: ISO timestamp of when this pipeline ran.
+  bafa_listing_status?: BafaListingStatus;
+  bafa_foerderung_von?: string | null;
+  bafa_foerderung_bis?: string | null;
+  bafa_snapshot_fetched_at?: string | null;
+  source_snapshot_generated_at?: string | null;
 
   manufacturer: string;
   manufacturer_short?: string;

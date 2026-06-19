@@ -26,6 +26,7 @@ const path = require('path');
 // --- Paths ---
 const ENRICHED_FULL = path.join(__dirname, 'output', 'dataset-enriched-full.json');
 const SHORT_NAMES   = path.join(__dirname, 'manufacturer-short-names.json');
+const BAFA_RAW      = path.join(__dirname, '..', 'bafa-luft-wasser.json');
 const OUTPUT_DIR    = path.join(__dirname, 'output');
 const PUBLIC_DIR    = path.join(__dirname, '..', '..', 'public', 'data');
 
@@ -33,6 +34,25 @@ const PUBLIC_DIR    = path.join(__dirname, '..', '..', 'public', 'data');
 console.log('Loading dataset-enriched-full.json...');
 const enrichedFull = JSON.parse(fs.readFileSync(ENRICHED_FULL, 'utf-8'));
 const shortNames   = JSON.parse(fs.readFileSync(SHORT_NAMES, 'utf-8')).mapping;
+
+// --- BAFA snapshot provenance metadata ---
+// Read extracted_at from the raw BAFA scraper output so each product record
+// carries the timestamp of when BAFA API was actually queried.
+let bafaMetaExtractedAt = null;
+if (fs.existsSync(BAFA_RAW)) {
+  try {
+    const bafaRaw = JSON.parse(fs.readFileSync(BAFA_RAW, 'utf-8'));
+    bafaMetaExtractedAt = bafaRaw._meta?.extracted_at ?? null;
+    console.log(`  BAFA snapshot fetched_at: ${bafaMetaExtractedAt}`);
+  } catch (_) {
+    console.log('  BAFA snapshot fetched_at: could not read (bafa-luft-wasser.json parse error)');
+  }
+} else {
+  console.log('  BAFA snapshot fetched_at: not available (bafa-luft-wasser.json missing)');
+}
+
+// --- Consolidation run timestamp (set once, propagated to every output record) ---
+const now = new Date().toISOString();
 
 console.log(`  Total items: ${enrichedFull.items.length}`);
 
@@ -81,6 +101,25 @@ const STANDARD_FIELDS = [
   'physical_specs_match_type', 'physical_specs_family',
   'physical_specs_quarantined', 'physical_specs_quarantine_reason',  // <-- reason was missing in v1
   'physical_specs_last_checked_at',                                   // <-- was missing in v1
+
+  // ── Source Provenance (Phase 1) ──
+  // These fields make each product record self-describing about its origin.
+  // source_id / country / primary_source: multi-country identity fields.
+  // bafa_listing_status: 'listed_in_snapshot' for all current BAFA records;
+  //   future values ('not_in_latest_snapshot', 'funding_period_ended', 'relisted')
+  //   are reserved for Phase 2 delisting/diff tracking.
+  // bafa_foerderung_von / bafa_foerderung_bis: BAFA funding period dates,
+  //   preserved for reference only — NOT a claim of current subsidy eligibility.
+  // bafa_snapshot_fetched_at: when the BAFA API was queried (from scraper _meta).
+  // source_snapshot_generated_at: when this pipeline consolidation run completed.
+  'source_id',
+  'country',
+  'primary_source',
+  'bafa_listing_status',
+  'bafa_foerderung_von',
+  'bafa_foerderung_bis',
+  'bafa_snapshot_fetched_at',
+  'source_snapshot_generated_at',
 ];
 
 /**
@@ -140,6 +179,24 @@ function flattenItem(src) {
     out.equipment_price_display_high_eur = null;
   }
 
+  // ── Source provenance injection (Phase 1) ──
+  // The loop above sets these to null when absent from enrichedFull items
+  // (which were generated before Phase 1). Override with correct values.
+  // When future scraper runs populate source_id/country/primary_source/
+  // bafa_listing_status on individual items, those values will be picked up
+  // by the loop above and these fallbacks will not override them (null ?? x = x,
+  // but a real value ?? x = real value because ?? only replaces null/undefined).
+  out.source_id            = out.source_id           ?? src.bafa_id ?? null;
+  out.country              = out.country              ?? 'DE';
+  out.primary_source       = out.primary_source       ?? 'BAFA';
+  out.bafa_listing_status  = out.bafa_listing_status  ?? 'listed_in_snapshot';
+  // bafa_foerderung_von/bis: null for records generated before Phase 1 scraper
+  // update; will be populated from BAFA API in future scraper runs.
+  out.bafa_foerderung_von  = out.bafa_foerderung_von  ?? null;
+  out.bafa_foerderung_bis  = out.bafa_foerderung_bis  ?? null;
+  out.bafa_snapshot_fetched_at     = bafaMetaExtractedAt ?? null;
+  out.source_snapshot_generated_at = now;
+
   return out;
 }
 
@@ -179,18 +236,17 @@ for (const item of residential) {
 console.log(`  Residential display-suppressed (quarantined): ${suppressed}`);
 
 // --- Build output files ---
-const now = new Date().toISOString();
-
 const residentialOutput = {
   _meta: {
     generated: now,
-    generator: 'consolidate-datasets.cjs v2.0',
+    generator: 'consolidate-datasets.cjs v2.1',
     dataset: 'residential',
-    description: 'Final consolidated residential product dataset. All BAFA, pricing, and physical spec fields flattened to top-level. Quarantined physical specs have display values (width/height/depth/weight) nulled but metadata preserved.',
+    description: 'Final consolidated residential product dataset. All BAFA, pricing, and physical spec fields flattened to top-level. Quarantined physical specs have display values (width/height/depth/weight) nulled but metadata preserved. Phase 1: source provenance fields added.',
     total_items: residential.length,
     source: 'dataset-enriched-full.json',
     field_standard: 'See product-model-standard.json',
     segments_included: ['residential_core'],
+    bafa_snapshot_fetched_at: bafaMetaExtractedAt,
     physical_specs_coverage: {
       with_dimensions: residential.filter(i => i.width_mm !== null).length,
       with_weight: residential.filter(i => i.weight_kg !== null).length,
@@ -203,13 +259,14 @@ const residentialOutput = {
 const commercialOutput = {
   _meta: {
     generated: now,
-    generator: 'consolidate-datasets.cjs v2.0',
+    generator: 'consolidate-datasets.cjs v2.1',
     dataset: 'commercial',
-    description: 'Final consolidated commercial product dataset. Includes light_commercial and commercial_project segments. Internal market_segment values preserved. Commercial N/A items have null prices.',
+    description: 'Final consolidated commercial product dataset. Includes light_commercial and commercial_project segments. Internal market_segment values preserved. Commercial N/A items have null prices. Phase 1: source provenance fields added.',
     total_items: commercial.length,
     source: 'dataset-enriched-full.json',
     field_standard: 'See product-model-standard.json',
     segments_included: ['light_commercial', 'commercial_project'],
+    bafa_snapshot_fetched_at: bafaMetaExtractedAt,
     segment_breakdown: {
       light_commercial: lightCommercial.length,
       commercial_project: commercialProject.length,
@@ -229,9 +286,14 @@ console.log(`\nSaved: ${path.relative(process.cwd(), resPath)} (${residential.le
 fs.writeFileSync(comPath, JSON.stringify(commercialOutput, null, 2) + '\n', 'utf-8');
 console.log(`Saved: ${path.relative(process.cwd(), comPath)} (${commercial.length} items)`);
 
-// Also write the app-facing copy (identical to product-residential.json)
+// Write app-facing residential copy
 fs.writeFileSync(appPath, JSON.stringify(residentialOutput, null, 2) + '\n', 'utf-8');
 console.log(`Saved: ${path.relative(process.cwd(), appPath)} (app copy, ${residential.length} items)`);
+
+// Write app-facing commercial copy
+const appComPath = path.join(PUBLIC_DIR, 'products-commercial.json');
+fs.writeFileSync(appComPath, JSON.stringify(commercialOutput, null, 2) + '\n', 'utf-8');
+console.log(`Saved: ${path.relative(process.cwd(), appComPath)} (app copy, ${commercial.length} items)`);
 
 // ========================================================
 // VALIDATION

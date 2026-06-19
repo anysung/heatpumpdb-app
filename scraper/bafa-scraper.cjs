@@ -122,6 +122,21 @@ function cleanItem(raw) {
     // --- Metadata ---
     website: raw.webseite || null,
 
+    // --- Source provenance (set at scrape time) ---
+    // source_id mirrors bafa_id so the pipeline can use a source-neutral key.
+    // country/primary_source identify this as a German BAFA record.
+    // bafa_listing_status is set to 'listed_in_snapshot' because the scraper
+    // filter (foerderungAb <= today AND foerderungBis >= today) means all
+    // returned records were listed at the time of extraction — not necessarily now.
+    // foerderung dates are preserved from the BAFA API for reference; they do not
+    // imply current subsidy application availability.
+    source_id:            raw.anlagennummer || null,
+    country:              'DE',
+    primary_source:       'BAFA',
+    bafa_listing_status:  'listed_in_snapshot',
+    bafa_foerderung_von:  raw.foerderungAb != null ? String(raw.foerderungAb) : null,
+    bafa_foerderung_bis:  raw.foerderungBis != null ? String(raw.foerderungBis) : null,
+
     // --- Enrichment placeholders (filled later, not from BAFA) ---
     _enrichment: {
       price_eur: null,
