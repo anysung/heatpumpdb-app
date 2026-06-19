@@ -16,13 +16,15 @@
  *
  * Terminology note:
  *   The BAFA API only returns currently-active products (date filter is mandatory).
- *   "Absent from latest snapshot" does NOT definitively mean delisted — the product
- *   may have had its funding dates changed or re-applied. Use safe wording:
- *     missing_from_latest_snapshot  — present in FROM, absent from TO
- *     newly_listed                  — absent from FROM, present in TO
- *     still_listed                  — present in both
+ *   "Absent from latest snapshot" = BAFA List: No. No cause is inferred or stored.
+ *   Internal diff categories (technical tracking only):
+ *     missing_from_latest_snapshot  — present in FROM, absent from TO  → bafa_list_status: "no"
+ *     newly_listed                  — absent from FROM, present in TO  → bafa_list_status: "yes"
+ *     still_listed                  — present in both                 → bafa_list_status: "yes"
  *     relisted_candidate            — returned after being missing (requires 3+ snapshots)
  *     changed_specs                 — same source_id, different source_record_hash
+ *   Master-facing: bafa_list_status = "yes" | "no". No cause field. No inference.
+ *   Reference baseline: 2026-03 (initial BAFA master-data seed; seen_in_reference_baseline).
  */
 
 import fs from 'fs';
@@ -35,6 +37,11 @@ const OUT_ROOT = path.join(REPO_ROOT, 'data_sources', 'bafa');
 const MANIFEST_FILE = path.join(OUT_ROOT, 'manifest.json');
 const LOG_FILE = path.join(OUT_ROOT, 'fetch-log.md');
 const HISTORY_FILE = path.join(OUT_ROOT, 'listing_history.json');
+
+// Reference baseline: the initial BAFA snapshot used as the project's master-data seed.
+// Products first seen at or before this snapshot are "reference baseline" products.
+// BAFA List: Yes = present in latest active snapshot; No = absent. No cause is inferred.
+const REFERENCE_BASELINE_SNAPSHOT = '2026-03';
 
 // ── CLI args ───────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -208,7 +215,7 @@ async function main() {
         from_hash: fromRec.source_record_hash,
         last_seen_snapshot: FROM,
         status: 'missing_from_latest_snapshot',
-        status_note: 'Present in FROM snapshot; absent from TO snapshot. Cannot confirm delisting — BAFA date filters may have changed. Re-check in next snapshot.',
+        status_note: 'Present in FROM snapshot; absent from TO snapshot. BAFA List: No for this period. No cause is inferred or stored.',
       });
     } else {
       const hashChanged = fromRec.source_record_hash !== toRec.source_record_hash;
@@ -302,7 +309,7 @@ async function main() {
         from_duplicates: fromDuplicates,
         to_duplicates: toDuplicates,
       },
-      terminology_note: 'missing_from_latest_snapshot = present in FROM but absent from TO. This does NOT confirm delisting — BAFA active-snapshot fetch only returns products with active funding dates at the time of extraction. Re-check in the next monthly snapshot before treating as delisted.',
+      terminology_note: 'missing_from_latest_snapshot = present in FROM but absent from TO. BAFA List: No for that period. No delisting cause is inferred or stored. Reference baseline: 2026-03 (initial master-data seed). Master-facing: bafa_list_status = "yes" | "no".',
     },
     newly_listed,
     missing_from_latest_snapshot: missing_from_latest,
@@ -345,12 +352,15 @@ async function main() {
       if (!history[k].seen_snapshots.includes(TO)) history[k].seen_snapshots.push(TO);
     }
     if (r.changed_fields) history[k].latest_changed_fields = r.changed_fields;
+    history[k].seen_in_reference_baseline = history[k].first_seen_snapshot <= REFERENCE_BASELINE_SNAPSHOT;
+    history[k].bafa_list_current = true;
+    history[k].bafa_list_status = 'yes';
+    history[k].bafa_list_current_as_of = TO;
   }
 
   // Process newly listed
   for (const r of newly_listed) {
     const k = r.source_id;
-    const wasEverSeen = !!history[k];
     if (!history[k]) {
       history[k] = {
         source_id: k,
@@ -376,6 +386,10 @@ async function main() {
       if (!history[k].seen_snapshots) history[k].seen_snapshots = [];
       if (!history[k].seen_snapshots.includes(TO)) history[k].seen_snapshots.push(TO);
     }
+    history[k].seen_in_reference_baseline = history[k].first_seen_snapshot <= REFERENCE_BASELINE_SNAPSHOT;
+    history[k].bafa_list_current = true;
+    history[k].bafa_list_status = 'yes';
+    history[k].bafa_list_current_as_of = TO;
   }
 
   // Process missing from latest
@@ -400,6 +414,10 @@ async function main() {
       history[k].latest_status = 'missing_from_latest_snapshot';
       if (!history[k].missing_since_snapshot) history[k].missing_since_snapshot = TO;
     }
+    history[k].seen_in_reference_baseline = history[k].first_seen_snapshot <= REFERENCE_BASELINE_SNAPSHOT;
+    history[k].bafa_list_current = false;
+    history[k].bafa_list_status = 'no';
+    history[k].bafa_list_current_as_of = TO;
   }
 
   saveHistory(history);

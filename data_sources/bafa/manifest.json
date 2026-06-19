@@ -6,9 +6,15 @@
   "country": "DE",
   "primary_source": "BAFA",
   "fetch_mode": "active_snapshot",
-  "fetch_mode_note": "BAFA API requires active-funding date filters (foerderungAb/foerderungBis). Unfiltered fetches return HTTP 400. Each snapshot represents products listed as actively funded at the time of extraction. Absence from a later snapshot is a 'delisted_candidate' — not a confirmed delisting.",
+  "fetch_mode_note": "BAFA API requires active-funding date filters (foerderungAb/foerderungBis). Unfiltered fetches return HTTP 400. Each snapshot represents products listed as actively funded at the time of extraction. Absence from a later snapshot = BAFA List: No for that period. No delisting cause is inferred.",
   "fetch_filter": "foerderungAb=le=\"<today>\";foerderungBis=ge=\"<today>\";einzelabnahme==false;pumpentyp==LUFT_WASSER",
   "filter_note": "foerderungAb and foerderungBis are filter-only parameters — they do NOT appear in API response items.",
+  "product_status_policy": {
+    "bafa_list_yes": "Product is present in the latest active BAFA snapshot.",
+    "bafa_list_no": "Product is absent from the latest active BAFA snapshot. No cause is inferred or stored.",
+    "reference_baseline_snapshot": "2026-03",
+    "reference_baseline_note": "March 2026 snapshot is the project's initial BAFA reference list and master-data seed. Products absent from later snapshots remain master/reference candidates with BAFA List: No."
+  },
   "fetch_script": "scripts/bafa/fetch-bafa-raw.mjs",
   "parse_script": "scripts/bafa/parse-bafa-raw.mjs",
   "diff_script": "scripts/bafa/diff-snapshots.mjs",
@@ -32,7 +38,7 @@
       "fetch_script": "scripts/bafa/fetch-bafa-raw.mjs v2.0",
       "parse_complete": true,
       "diff_available": true,
-      "parsed_at": "2026-06-19T05:33:03.940Z",
+      "parsed_at": "2026-06-19T06:03:06.532Z",
       "parsed_record_count": 6887,
       "parse_validation": {
         "record_count": "PASS",
@@ -44,6 +50,9 @@
     },
     {
       "snapshot_id": "2026-03",
+      "snapshot_role": "reference_baseline",
+      "master_seed_role": "initial_bafa_reference_list",
+      "business_meaning": "Initial BAFA reference list used as the project's German heat pump master-data seed. Products absent from later BAFA active snapshots remain reference/master products with BAFA List: No.",
       "fetched_at": "2026-03-19T12:07:14.787Z",
       "record_count": 6514,
       "format": "pre-phase2-cleaned",
@@ -52,7 +61,7 @@
       "fetch_script_version": "bafa-scraper.cjs (pre-Phase-2)",
       "parse_complete": true,
       "diff_available": false,
-      "parsed_at": "2026-06-19T05:33:03.656Z",
+      "parsed_at": "2026-06-19T06:03:06.261Z",
       "parsed_record_count": 6514,
       "parse_validation": {
         "record_count": "PASS",
@@ -77,7 +86,7 @@
       "diff_key": "2026-03-to-2026-06",
       "from_snapshot": "2026-03",
       "to_snapshot": "2026-06",
-      "generated_at": "2026-06-19T05:33:06.408Z",
+      "generated_at": "2026-06-19T06:03:13.356Z",
       "output_file": "diffs/2026-06/diff-from-2026-03-to-2026-06.json",
       "newly_listed": 649,
       "missing_from_latest": 276,

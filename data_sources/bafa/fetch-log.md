@@ -13,8 +13,8 @@ Filterkriterien ist nicht möglich". foerderungAb/foerderungBis are filter-only 
 and are NOT returned in API response items.
 
 Implication: snapshots represent "active listing at time of fetch" only. Absence from a
-later snapshot is a candidate for delisting but cannot be confirmed as such with certainty.
-Use safe wording: "missing_from_latest_snapshot" / "delisted_candidate".
+later snapshot = BAFA List: No for that period. No cause is inferred or stored.
+Use: missing_from_latest_snapshot (internal diff label). Master-facing status: BAFA List: Yes (present) / BAFA List: No (absent).
 
 ## 2026-03-19 — Bootstrap snapshot (migrated from scraper/bafa-luft-wasser.json)
 
@@ -56,3 +56,15 @@ Note: foerderungAb/foerderungBis null in this snapshot (API does not return thes
 - 2026-06-19T05:33:03.939Z parse complete: snapshot=2026-06 records=6887 malformed=0 duplicates=0 missing_hash=0 manufacturers=227
 - 2026-06-19T05:33:06.278Z diff start: from=2026-03 (6514) to=2026-06 (6887)
 - 2026-06-19T05:33:06.334Z diff complete: from=2026-03 to=2026-06 still_listed=6238 changed_specs=786 newly_listed=649 missing_from_latest=276
+- 2026-06-19T05:56:11.419Z parse start: snapshot=2026-03 format=pre-phase2-cleaned raw_items=6514
+- 2026-06-19T05:56:11.541Z parse complete: snapshot=2026-03 records=6514 malformed=0 duplicates=0 missing_hash=0 manufacturers=199
+- 2026-06-19T05:56:11.659Z parse start: snapshot=2026-06 format=raw_api raw_items=6887
+- 2026-06-19T05:56:11.781Z parse complete: snapshot=2026-06 records=6887 malformed=0 duplicates=0 missing_hash=0 manufacturers=227
+- 2026-06-19T05:56:15.141Z diff start: from=2026-03 (6514) to=2026-06 (6887)
+- 2026-06-19T05:56:15.157Z diff complete: from=2026-03 to=2026-06 still_listed=6238 changed_specs=786 newly_listed=649 missing_from_latest=276
+- 2026-06-19T06:03:06.137Z parse start: snapshot=2026-03 format=pre-phase2-cleaned raw_items=6514
+- 2026-06-19T06:03:06.260Z parse complete: snapshot=2026-03 records=6514 malformed=0 duplicates=0 missing_hash=0 manufacturers=199
+- 2026-06-19T06:03:06.401Z parse start: snapshot=2026-06 format=raw_api raw_items=6887
+- 2026-06-19T06:03:06.532Z parse complete: snapshot=2026-06 records=6887 malformed=0 duplicates=0 missing_hash=0 manufacturers=227
+- 2026-06-19T06:03:13.254Z diff start: from=2026-03 (6514) to=2026-06 (6887)
+- 2026-06-19T06:03:13.278Z diff complete: from=2026-03 to=2026-06 still_listed=6238 changed_specs=786 newly_listed=649 missing_from_latest=276
