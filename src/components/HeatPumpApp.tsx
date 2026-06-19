@@ -553,6 +553,22 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
                 </div>
               )}
 
+              {/* BAFA source snapshot notice */}
+              {data.length > 0 && data[0].bafa_snapshot_fetched_at && (
+                <div className="mb-1.5 flex items-center gap-1.5 text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1.5">
+                  <span className="shrink-0">⚠</span>
+                  <span>
+                    <span className="font-semibold">{t.bafaSnapshotNoticePrefix}</span>
+                    {' '}
+                    {language === 'de'
+                      ? new Date(data[0].bafa_snapshot_fetched_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                      : data[0].bafa_snapshot_fetched_at.slice(0, 10)}
+                    {'. '}
+                    {t.bafaSnapshotNoticeSuffix}
+                  </span>
+                </div>
+              )}
+
               {/* Results Table (with Selection if in Comparison Tab) */}
               <ResultsTable
                 data={data}

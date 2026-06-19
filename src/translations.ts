@@ -97,6 +97,8 @@ export const translations = {
     colPowerControl: "Drive",
     loading: "Loading...",
     noResults: "No results found.",
+    bafaSnapshotNoticePrefix: "BAFA source snapshot:",
+    bafaSnapshotNoticeSuffix: "Listed products reflect the BAFA source data used by this app. Verify current BAFA eligibility directly with BAFA before use.",
 
     // Product Search sub-tabs
     tabResidential: "Residential",
@@ -232,6 +234,8 @@ export const translations = {
     colPowerControl: "Antrieb",
     loading: "Laden...",
     noResults: "Keine Ergebnisse.",
+    bafaSnapshotNoticePrefix: "BAFA-Quellstand:",
+    bafaSnapshotNoticeSuffix: "Gelistete Produkte spiegeln die in dieser App verwendeten BAFA-Quelldaten wider. Bitte aktuelle Förderfähigkeit direkt bei der BAFA prüfen.",
 
     // Product Search sub-tabs
     tabResidential: "Wohngebäude",
