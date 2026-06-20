@@ -181,12 +181,51 @@ async function main() {
       manufacturer_normalized: normalizeManufacturer(primary.manufacturer),
       model:                   primary.model                   ?? null,
       type:                    primary.type                    ?? null,
+
+      // ── Refrigerant ──────────────────────────────────────────────────────
       refrigerant:             primary.refrigerant             ?? null,
+      refrigerant_2:           primary.refrigerant_2           ?? null,
+      refrigerant_amount_kg:   primary.refrigerant_amount_kg   ?? null,
+      refrigerant_2_amount_kg: primary.refrigerant_2_amount_kg ?? null,
+
+      // ── Heating performance ──────────────────────────────────────────────
       power_35C_kw:            primary.power_35C_kw            ?? null,
       power_55C_kw:            primary.power_55C_kw            ?? null,
+      efficiency_35C_percent:  primary.efficiency_35C_percent  ?? null,
+      efficiency_55C_percent:  primary.efficiency_55C_percent  ?? null,
+      power_design_35C_kw:     primary.power_design_35C_kw     ?? null,
+      power_design_55C_kw:     primary.power_design_55C_kw     ?? null,
+
+      // ── COP / SCOP / SEER ────────────────────────────────────────────────
       cop_A7W35:               primary.cop_A7W35               ?? null,
+      cop_A2W35:               primary.cop_A2W35               ?? null,
+      cop_AMinus7W35:          primary.cop_AMinus7W35          ?? null,
+      cop_A10W35:              primary.cop_A10W35              ?? null,
       scop:                    primary.scop                    ?? null,
+      seer:                    primary.seer                    ?? null,
+
+      // ── Cooling ──────────────────────────────────────────────────────────
+      cooling_capacity_kw:     primary.cooling_capacity_kw     ?? null,
+      cooling_efficiency:      primary.cooling_efficiency      ?? null,
+
+      // ── Noise & electrical ───────────────────────────────────────────────
       noise_outdoor_dB:        primary.noise_outdoor_dB        ?? null,
+      noise_indoor_dB:         primary.noise_indoor_dB         ?? null,
+      max_electric_power_kw:   primary.max_electric_power_kw   ?? null,
+
+      // ── System ───────────────────────────────────────────────────────────
+      drive_type:              primary.drive_type              ?? null,
+      power_control:           primary.power_control           ?? null,
+      num_compressors:         primary.num_compressors         ?? null,
+      grid_ready:              primary.grid_ready              ?? null,
+      grid_ready_type:         primary.grid_ready_type         ?? null,
+      ee_display:              primary.ee_display              ?? null,
+      ee_display_type:         primary.ee_display_type         ?? null,
+      heat_meter:              primary.heat_meter              ?? null,
+      defrost_tested:          primary.defrost_tested          ?? null,
+      defrost_type:            primary.defrost_type            ?? null,
+      temp_diff:               primary.temp_diff               ?? null,
+      website:                 primary.website                 ?? null,
 
       // ── Snapshot tracking ────────────────────────────────────────────────
       seen_in_reference_baseline,
@@ -195,7 +234,6 @@ async function main() {
       last_seen_snapshot,
 
       // ── BAFA List status (simple, factual — no cause inferred) ───────────
-      present_in_latest_bafa_snapshot,
       bafa_list_current: present_in_latest_bafa_snapshot,
       bafa_list_status:  present_in_latest_bafa_snapshot ? 'yes' : 'no',
       bafa_list_current_as_of: LATEST,
@@ -257,7 +295,7 @@ async function main() {
 
   const seedOutput = {
     _meta: {
-      schema: 'bafa_master_seed_v1',
+      schema: 'bafa_master_seed_v2',
       reference_baseline_snapshot: BASELINE,
       latest_snapshot: LATEST,
       out_label: OUT,
