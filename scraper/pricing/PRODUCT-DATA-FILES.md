@@ -1,6 +1,7 @@
 # Product Data File Reference
 
-> Canonical reference for all product-model data files in this repository.
+> **OBSOLETE** — This document describes the legacy pipeline (`run-pricing.cjs`, `build-dataset.cjs`, `pricing-engine.cjs`) which was permanently removed in commit 068e3ae (2026-06). The current pipeline is `scripts/bafa/build-app-products-from-master-seed.mjs`. Retained for historical reference only.
+
 > Updated: 2026-03-20 | Standard: product-model-standard.json v2.0
 
 ---

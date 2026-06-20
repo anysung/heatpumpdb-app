@@ -1,5 +1,7 @@
 # Germany Market Specification
 
+> **OBSOLETE** — The pricing engine this document describes was permanently removed in commit 068e3ae (2026-06). Retained for historical reference only.
+
 > **Applies to:** Engine v3.1 | **Last updated:** 2026-03-20 | **Market:** Germany (DE)
 > **Data source:** BAFA Wärmepumpen Database (Luft/Wasser category, 6,514 items, extracted 2026-03-19)
 

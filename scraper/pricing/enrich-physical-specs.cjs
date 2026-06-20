@@ -12,7 +12,7 @@
  *   4. Direct match → high confidence; family match → medium; no match → null
  *
  * Prerequisites:
- *   - scraper/pricing/output/dataset-full.json (from build-dataset.cjs)
+ *   - scraper/pricing/output/dataset-full.json (base BAFA dataset)
  *   - scraper/pricing/physical-specs-reference.json (curated reference)
  *
  * Usage:
@@ -204,7 +204,7 @@ function run() {
   // Load inputs
   if (!fs.existsSync(DATASET_FILE)) {
     console.error(`ERROR: Dataset not found: ${DATASET_FILE}`);
-    console.error('Run build-dataset.cjs first.');
+    console.error('Ensure dataset-full.json exists in scraper/pricing/output/.');
     process.exit(1);
   }
   if (!fs.existsSync(REFERENCE_FILE)) {

@@ -1,5 +1,7 @@
 # Multi-Market Portability Guide
 
+> **OBSOLETE** — The pricing engine this guide describes was permanently removed in commit 068e3ae (2026-06). Retained for historical reference only.
+
 > **Applies to:** Engine v3.1 | **Last updated:** 2026-03-20 | **Reference market:** Germany (DE)
 > **Templates:** `docs/templates/config-template.json`, `docs/templates/brand-tiers-template.json`
 

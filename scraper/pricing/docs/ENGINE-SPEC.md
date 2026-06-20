@@ -1,5 +1,7 @@
 # Pricing Engine Specification
 
+> **OBSOLETE** — The pricing engine and all scripts it references (`pricing-engine.cjs`, `run-pricing.cjs`, `build-dataset.cjs`, `market-sampler.cjs`) were permanently removed in commit 068e3ae (2026-06). This document is retained for historical reference only.
+
 > **Version:** 3.1 | **Last updated:** 2026-03-20 | **Reference market:** Germany (BAFA Luft/Wasser)
 
 ---

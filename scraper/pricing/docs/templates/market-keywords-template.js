@@ -1,11 +1,14 @@
 /**
  * Market-Specific Keyword Template
  *
+ * OBSOLETE — market-sampler.cjs was permanently removed in commit 068e3ae (2026-06).
+ * This template is retained for historical reference only.
+ *
  * Copy this file and replace keywords with the target market's language.
- * These keyword arrays are used by classifyPackageScope() and classifyBafaPackageScope()
+ * These keyword arrays were used by classifyPackageScope() and classifyBafaPackageScope()
  * in market-sampler.cjs to detect whether a listing is unit-only, bundled, etc.
  *
- * Reference: market-sampler.cjs lines 32-71 (Germany keywords)
+ * Reference: market-sampler.cjs lines 32-71 (Germany keywords) — file deleted
  * See PORTABILITY-GUIDE.md Step 5 for examples in English, French, Swedish.
  */
 
