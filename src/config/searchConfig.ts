@@ -85,7 +85,19 @@ export const residentialConfig: SearchConfig = {
   showInstallType: true,
   inlineFilter: null,
   extraFilters: [],
-  parseCapacity: parseRangeLabel,
+  // Explicit bounds cover half-open intervals so decimal values like 7.5 kW
+  // (which label "4–7 kW" would miss if max were 7.0 inclusive) are captured.
+  // Each range covers from min up to (but not including) the next range's min,
+  // except the last range which uses the policy ceiling 20.99 inclusive.
+  parseCapacity: (label: string) => {
+    const BOUNDS: Record<string, { min: number; max: number }> = {
+      '4 kW ~ 7 kW':      { min: 4,  max: 7.999 },
+      '8 kW ~ 11 kW':     { min: 8,  max: 11.999 },
+      '12 kW ~ 14 kW':    { min: 12, max: 14.999 },
+      '15 kW ~ 20.99 kW': { min: 15, max: 20.99 },
+    };
+    return BOUNDS[label] ?? parseRangeLabel(label);
+  },
 };
 
 // ─── Commercial ──────────────────────────────────────────────────────────────
@@ -144,5 +156,16 @@ export const commercialConfig: SearchConfig = {
   showInstallType: false,
   inlineFilter: marketSegmentFilter,
   extraFilters: [],
-  parseCapacity: parseRangeLabel,
+  // Explicit bounds close decimal gaps (e.g. 45.47 kW, 80.27 kW) that the
+  // parsed labels would miss with strictly inclusive integer maxima.
+  // 150+ uses min 150.001 to avoid overlap with the 81–150 range at 150.0.
+  parseCapacity: (label: string) => {
+    const BOUNDS: Record<string, { min: number; max: number }> = {
+      '21 – 45 kW':  { min: 21,      max: 45.999 },
+      '46 – 80 kW':  { min: 46,      max: 80.999 },
+      '81 – 150 kW': { min: 81,      max: 150 },
+      '150+ kW':     { min: 150.001, max: Infinity },
+    };
+    return BOUNDS[label] ?? parseRangeLabel(label);
+  },
 };
