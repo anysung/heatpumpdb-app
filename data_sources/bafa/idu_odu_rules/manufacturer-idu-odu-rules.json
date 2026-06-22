@@ -1,0 +1,1686 @@
+{
+  "version": "2.1.0",
+  "generated_at": "2026-06-23",
+  "source_snapshot": "2026-06",
+  "description": "Manufacturer-specific rules for identifying Indoor Unit (IDU) and Outdoor Unit (ODU) components in BAFA heat pump product registrations. Rules are evaluated in priority order within each manufacturer; first matching rule wins. Confidence scores reflect external manufacturer validation performed 2026-06-21; v2.1.0 fixes applied 2026-06-23: VAI-002 role reversal, SAM-001/SAM-002 split, WLF-001 disabled, source_type corrections.",
+  "schema_notes": [
+    "classification values: confirmed_set | confirmed_not_set | standalone_odu | variant_label | requires_research | unclassified",
+    "confidence_score: 0.00–1.00. Internal threshold: 0.90 (high confidence). Display threshold: 0.95.",
+    "extraction_method: key into the script extract() function map; 'none' = extraction not possible.",
+    "manufacturer_contains: substring match against the BAFA manufacturer field.",
+    "model_match.type: 'contains_all' = all patterns must appear; 'contains_any' = at least one; 'regex' = single regex test.",
+    "model_exclude: if set, products matching this are skipped by the rule.",
+    "bafa_count_approx: approximate count in the 2026-06 BAFA master seed snapshot.",
+    "evidence[].source_type: manufacturer_official | third_party | bafa_pattern_analysis | self_describing"
+  ],
+  "confidence_cap_policy": {
+    "manufacturer_official_explicit_mapping": "no hard cap; typical range 0.93–0.97",
+    "manufacturer_official_family_confirmed_no_specific_code": "cap 0.89",
+    "third_party_sources_only": "cap 0.79",
+    "bafa_pattern_analysis_only_confirmed_set": "cap 0.85",
+    "bafa_pattern_analysis_only_other_classifications": "cap 0.88 if pattern is self-evident; else 0.85",
+    "self_describing_bafa_name_literal": "cap 0.98 (MONOBLOCK / Set / IDU+ODU literal present in BAFA name)"
+  },
+  "manufacturers": [
+    {
+      "manufacturer_id": "VIE",
+      "manufacturer_name": "Viessmann",
+      "bafa_manufacturer_contains": "Viessmann",
+      "validated_at": "2026-06-21",
+      "validation_status": "self_describing",
+      "rules": [
+        {
+          "rule_id": "VIE-001",
+          "label": "Viessmann — explicit IDU/ODU labels",
+          "manufacturer_contains": "Viessmann",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "IDU",
+              "ODU"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "viessmann_idu_odu",
+          "idu_label": "IDU-A indoor unit",
+          "odu_label": "ODU outdoor unit",
+          "bafa_count_approx": 180,
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA registration name contains literal 'IDU-A' and 'ODU' prefixes",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Viessmann Vitocal 250/300 AWOT registrations embed 'IDU-A [model]' and 'ODU [model]' directly in the BAFA product name. The classification is self-certifying from the registration text."
+            }
+          ],
+          "example_model": "IDU-A 2C AWMIW.A1.06-V055 / ODU 200-A AWMOF-201.A1.04-230-V001",
+          "false_positive_notes": null,
+          "validated": true
+        },
+        {
+          "rule_id": "VIE-002",
+          "label": "Viessmann — slash variant codes (not ODU/IDU)",
+          "manufacturer_contains": "Viessmann",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "model_exclude": {
+            "type": "contains_all",
+            "patterns": [
+              "IDU",
+              "ODU"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 39,
+          "confidence_cap_applied": "BAFA-only pattern: capped at 0.85",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Viessmann slash = antifreeze variant",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Viessmann registers antifreeze-option variants as 'AWO-E-AC/AWO-E-AC-AF'. Both segments share the same base code with an -AF suffix — not an ODU/IDU separator. No external source confirmed."
+            }
+          ],
+          "example_model": "AWO-E-AC/AWO-E-AC-AF",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "PAN",
+      "manufacturer_name": "Panasonic",
+      "bafa_manufacturer_contains": "Panasonic",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "PAN-001",
+          "label": "Panasonic — bracket-plus split set [ODU + IDU]",
+          "manufacturer_contains": "Panasonic",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[[^\\[\\]]+\\+[^\\[\\]]+\\]"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "bracket_plus",
+          "idu_label": "WH-ADC indoor hydrobox",
+          "odu_label": "WH-UD outdoor split unit",
+          "bafa_count_approx": 55,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Panasonic Aquarea Installation Manual — WH-UD outdoor / WH-ADC indoor",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official Panasonic EU/UK installation manual explicitly labels WH-UD as 'OUTDOOR UNIT' and WH-ADC as 'indoor unit of the bi-bloc system'. Bracket-plus BAFA notation '[WH-UD... + WH-ADC...]' confirmed as ODU + IDU."
+            }
+          ],
+          "example_model": "Panasonic Aquarea H Gen [WH-UD09HE8 + WH-ADC0916K9E8]",
+          "false_positive_notes": null,
+          "validated": true
+        },
+        {
+          "rule_id": "PAN-002",
+          "label": "Panasonic — single-bracket monoblock [WH-MDC...]",
+          "manufacturer_contains": "Panasonic",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[WH-M[^\\[\\]+]+\\]$"
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.97,
+          "extraction_method": "none",
+          "bafa_count_approx": 66,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Panasonic Aquarea Monoblock Installation Manual — WH-MDC",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official Panasonic documentation confirms WH-MDC series is a monoblock (all-in-one outdoor unit) with no separate indoor unit. Bracket-only BAFA notation '[WH-MDC...]' with no '+' separator confirms single-unit registration."
+            }
+          ],
+          "example_model": "Panasonic Aquarea H Gen [WH-MDC05J3E5]",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "LGE",
+      "manufacturer_name": "LG Electronics",
+      "bafa_manufacturer_contains": "LG Electronics",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "LGE-001",
+          "label": "LG — THERMA V bracket-plus split set [HU + HN]",
+          "manufacturer_contains": "LG Electronics",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[[^\\[\\]]+\\+[^\\[\\]]+\\]"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.92,
+          "extraction_method": "bracket_plus",
+          "idu_label": "HN indoor hydrobox",
+          "odu_label": "HU outdoor split unit",
+          "bafa_count_approx": 39,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "LG Therma V UK official documentation — THERMA SPLIT OUTDOOR/INDOOR labeling",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "LG official UK documentation and product shipping labels explicitly label HU units as 'THERMA SPLIT OUTDOOR' and HN units as 'THERMA SPLIT INDOOR'. Confidence 0.92 (primary evidence from LG UK + distributor shipping labels, not a standalone LG-authored installation PDF)."
+            }
+          ],
+          "example_model": "LG THERMA V [ HU161MR.U34 + HN1610M.NK5 ]",
+          "validated": true
+        },
+        {
+          "rule_id": "LGE-002",
+          "label": "LG — THERMA V single-bracket monoblock [HM...]",
+          "manufacturer_contains": "LG Electronics",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[HM[^\\[\\]+]+\\]$"
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.93,
+          "extraction_method": "none",
+          "bafa_count_approx": 7,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "LG THERMA V Monobloc — HM (HeatMonoblock) product family",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "LG official UK documentation confirms HM prefix = HeatMonoblock, a single integrated outdoor unit with no separate indoor component. '[HM...]' in BAFA name with no '+' separator confirms single-unit registration."
+            }
+          ],
+          "example_model": "LG THERMA V [ HM091MR.U44 ]",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "AIT",
+      "manufacturer_name": "ait-deutschland",
+      "bafa_manufacturer_contains": "ait-deutschland",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official_partial",
+      "rules": [
+        {
+          "rule_id": "AIT-001",
+          "label": "ait-deutschland — bracket-plus split set [ODU + IDU]",
+          "manufacturer_contains": "ait-deutschland",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[[^\\[\\]]+\\+[^\\[\\]]+\\]"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.88,
+          "extraction_method": "bracket_plus",
+          "idu_label": "indoor hydrobox unit (LWUV series)",
+          "odu_label": "outdoor split unit (LWAV series)",
+          "bafa_count_approx": 17,
+          "confidence_cap_applied": "Partial external validation: LWAV as outdoor unit confirmed officially; LWUV as matched indoor module inferred from L-Split architecture, no dedicated official page found for LWUV prefix.",
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Alpha Innotec LWAV Series product page",
+              "url": "https://www.alpha-innotec.com/en/products/air-source-heat-pumps/lwav-series",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Alpha innotec official page states: 'Through the separation of outdoor and indoor units, valuable space can be saved inside the building' and 'The ready-to-plug-in connection concept of the outdoor unit makes it quick and easy to install.' LWAV is explicitly the outdoor unit of a split system requiring a separate indoor unit."
+            },
+            {
+              "source_type": "third_party",
+              "title": "ManualsLib: Alpha Innotec L8 SPLIT / L12 SPLIT Installation Manual",
+              "url": "https://www.manualslib.com/manual/1252373/Alpha-Innotec-L8-Split.html",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Manual covers L8 SPLIT/L12 SPLIT outdoor units + HM 8-12 SPLIT indoor hydraulic module as a two-component split system. Confirms ait-deutschland L-Split brand uses distinct outdoor + indoor module architecture."
+            }
+          ],
+          "example_model": "ait-deutschland alterra air LW 80H-2[K] [LWAV082H.D2+LWUV082H.D2]",
+          "false_positive_notes": "LWUV indoor module prefix not found on a dedicated official ait-deutschland page; inferred from L-Split system architecture. Bracket-plus notation consistent with Panasonic/LG OEM convention used by multiple manufacturers.",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "FUJ",
+      "manufacturer_name": "FUJITSU GENERAL",
+      "bafa_manufacturer_contains": "FUJITSU GENERAL",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official_family_only",
+      "rules": [
+        {
+          "rule_id": "FUJ-001",
+          "label": "FUJITSU GENERAL — bracket-plus split set [ODU + IDU] (Waterstage)",
+          "manufacturer_contains": "FUJITSU GENERAL",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[[^\\[\\]]+\\+[^\\[\\]]+\\]"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.85,
+          "extraction_method": "bracket_plus",
+          "idu_label": "indoor hydrobox (WOTAHAN series)",
+          "odu_label": "outdoor unit (WOTAF series)",
+          "bafa_count_approx": 28,
+          "confidence_cap_applied": "Product-family rule confirmed (WO prefix = outdoor on current Fujitsu General EU product line). However, the specific BAFA model codes WOTAF140DD, WOTAHAN140DD, WGTAH14D6B were not found in any official Fujitsu General EU/DE documentation — likely discontinued pre-2015 Waterstage models. Cap at 0.85 (family pattern confirmed, specific codes unverifiable).",
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Fujitsu General EU product family — WO prefix = outdoor unit (current product line)",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Current Fujitsu General EU documentation confirms WO prefix = outdoor unit across the Waterstage product family (e.g., WOYG, WOYK series). General naming convention is validated. However, the specific BAFA codes WOTAF and WOTAHAN do not appear in any available official EU/DE Fujitsu General source."
+            }
+          ],
+          "example_model": "FUJITSU GENERAL Waterstage WGTAH14D6B [WOTAF140DD + WOTAHAN140DD]",
+          "false_positive_notes": "WOTAF140DD, WOTAHAN140DD, WGTAH14D6B not found in any current Fujitsu General official documentation. These are likely discontinued pre-2015 Waterstage models. The WO=outdoor rule is applied by family convention, not specific model confirmation. Manual review recommended for WOTAF/WOTAHAN BAFA entries.",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "MTF",
+      "manufacturer_name": "MTF",
+      "bafa_manufacturer_contains": "MTF",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "MTF-001",
+          "label": "MTF — bracket-plus Samsung OEM split set [AE.../EU + AE.../EU]",
+          "manufacturer_contains": "MTF",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[[^\\[\\]]+\\+[^\\[\\]]+\\]"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "bracket_plus",
+          "idu_label": "Samsung AE indoor hydrobox (/EU suffix)",
+          "odu_label": "Samsung AE outdoor unit (/EU suffix)",
+          "bafa_count_approx": 32,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "MTF official DACH website — Samsung EHS exclusive distributor since 2003",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "MTF official website confirms 'exklusiver Vertriebspartner Samsung seit 2003' (exclusive Samsung distribution partner since 2003). MTF products are Samsung EHS rebrands. MTF uses 'Außengerät' (outdoor) and 'Hydro-Einheit' (indoor) labeling consistent with Samsung EHS documentation. Bracket-plus notation confirms ODU + IDU split system."
+            }
+          ],
+          "example_model": "WPLW-Hub Split-4-200 [AE 040 RXEDEG/EU + AE 200 RNWSEG/EU]",
+          "validated": true,
+          "model_exclude": {
+            "type": "regex",
+            "pattern": "MIM-?\\s*E03"
+          },
+          "notes": "Excludes MIM-E03EN products (handled by MTF-002). BAFA data has two spacing variants: MIM-E03EN and MIM- E03EN."
+        },
+        {
+          "rule_id": "MTF-002",
+          "label": "MTF — WPLW-Mono + MIM-E03EN control box",
+          "manufacturer_contains": "MTF",
+          "model_match": {
+            "type": "regex",
+            "pattern": "MIM-?\\s*E03"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.92,
+          "extraction_method": "bracket_plus_control_box",
+          "idu_label": null,
+          "odu_label": "AE-RXYDEG/GG monoblock outdoor unit",
+          "control_box_label": "MIM-E03EN multi-zone interface module (control_box; NOT IDU)",
+          "system_architecture_note": "monoblock_with_control_box",
+          "bafa_count_approx": 6,
+          "notes": "MTF rebrands Samsung EHS Mono. MIM-E03EN is a multi-zone controller — NOT IDU. BAFA data has two spacing variants (MIM-E03EN and MIM- E03EN), handled by regex pattern. Split from MTF-001 in registry v2.1.0.",
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Samsung EHS service manual — MIM-E03 multi-zone interface module identification",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "MIM-E03EN is the same Samsung multi-zone interface controller as MIM-E03FN/GN. It is a control_box, not an indoor hydrobox. MTF WPLW-Mono-RE products pair Samsung monoblock outdoor units with this controller for multi-zone heating."
+            }
+          ],
+          "example_model": "WPLW-Mono-12-RE-3 [AE 120 RXYDGG/EU + MIM-E03EN]",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "BUD",
+      "manufacturer_name": "Buderus",
+      "bafa_manufacturer_contains": "Buderus",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "BUD-001",
+          "label": "Buderus — paren-ampersand split set (ODU & IDU)",
+          "manufacturer_contains": "Buderus",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\([^()&]+&[^()]+\\)"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.85,
+          "extraction_method": "paren_ampersand",
+          "idu_label": "indoor unit (WLW indoor)",
+          "odu_label": "outdoor unit (WLW outdoor)",
+          "bafa_count_approx": 6,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85. No external Buderus/Bosch documentation was consulted to confirm which component is ODU vs IDU in the paren-ampersand notation.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Buderus paren-ampersand notation",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Buderus Logatherm WLW split systems use '(outdoor_model & indoor_model)' parenthetical notation. Pattern is consistent across all 6 registrations. First segment precedes '&'; second segment follows. Component role order inferred from BAFA pattern; no external URL validation performed."
+            }
+          ],
+          "example_model": "Buderus Logatherm WLW196i.2-8 AR E (WLW196i.2-8 AR-S.2 E & WLW196i.2 IK8 E)",
+          "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "SAM",
+      "manufacturer_name": "Samsung Klimatechnik",
+      "bafa_manufacturer_contains": "Samsung Klimatechnik",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "SAM-001",
+          "label": "Samsung Klimatechnik — monoblock outdoor + tank/indoor-side accessory (non-MIM)",
+          "manufacturer_contains": "Samsung Klimatechnik",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "plus_separator",
+          "idu_label": "AE-DN/RNW/CNW buffer or DHW tank (indoor-side; will be reclassified as tank_model in schema migration)",
+          "odu_label": "AE-BX/CX/DX/HCT monoblock outdoor unit",
+          "bafa_count_approx": 51,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Samsung EHS service manual — AE-BX/RX outdoor / AE-DN indoor identification",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Samsung service manual and official Samsung support page filename 'EHS_R-32_MONO_OUTDOOR_IM_EU' confirm AE-BX/RX/CX/DX are outdoor units. Samsung energy label confirms AE-DN is indoor hydrobox. Plus-separator notation 'AE[outdoor]+AE[indoor]' validated."
+            }
+          ],
+          "example_model": "AE080BXYDGG/EU + AE200DNWMPK/EU",
+          "false_positive_notes": "FläktGroup embeds '+' within model option codes (e.g. FGAH2020AG1.SL+.E79) — prevented by manufacturer_contains match on 'Samsung Klimatechnik'.",
+          "validated": true,
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "MIM-E03"
+            ]
+          },
+          "notes": "Excludes MIM-E03 products — those are handled by SAM-002. idu_model currently holds tank code; will migrate to tank_model in next schema update."
+        },
+        {
+          "rule_id": "SAM-002",
+          "label": "Samsung Klimatechnik — monoblock outdoor + MIM-E03 control box",
+          "manufacturer_contains": "Samsung Klimatechnik",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "MIM-E03"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.92,
+          "extraction_method": "samsung_mim_e03",
+          "idu_label": null,
+          "odu_label": "AE-BX/CX/DX monoblock outdoor unit",
+          "control_box_label": "MIM-E03FN/GN multi-zone interface module (control_box; NOT IDU)",
+          "system_architecture_note": "monoblock_with_control_box",
+          "bafa_count_approx": 27,
+          "notes": "MIM-E03 is Samsung multi-zone interface controller — it is a control_box, not an IDU or hydrobox. idu_model is null for all SAM-002 products. control_box_model holds the MIM-E03 code. Split from SAM-001 in registry v2.1.0 per policy §14.2.",
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Samsung EHS service manual — MIM-E03 identified as multi-zone interface module",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Samsung official documentation confirms MIM-E03FN/GN is a Multi-zone Interface Module — a zone bridging controller with no heat exchanger. It is not an indoor hydrobox. Pairs with AE-BX/CX monoblock outdoor units as system controller."
+            }
+          ],
+          "example_model": "AE080BXYDGG/EU + MIM-E03FN",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "BSH",
+      "manufacturer_name": "Bosch",
+      "bafa_manufacturer_contains": "Bosch",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "BSH-001",
+          "label": "Bosch — paren-plus split set bundle SKU (ODU + IDU)",
+          "manufacturer_contains": "Bosch",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\([^()]+\\+[^()]+\\)"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "paren_plus",
+          "idu_label": "AWEi/AWMi indoor unit or CS[n]800iAW indoor",
+          "odu_label": "CS[n]800iAW outdoor unit",
+          "bafa_count_approx": 36,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Bosch Compress CS3800iAW/CS5800iAW/CS6800iAW/CS8800iAW product documentation",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official Bosch documentation confirms bundle SKUs embed component codes in trailing parenthetical: 'Bundle Name (outdoor_model + indoor_module)'. AWEi = E-series indoor, AWMi = M-series indoor. Outdoor unit always listed first in paren-plus."
+            }
+          ],
+          "example_model": "Compress CS5800iAW 4 ORE-S (AW 4 OR-S + CS5800iAW 12 E)",
+          "validated": true
+        },
+        {
+          "rule_id": "BSH-002",
+          "label": "Bosch — standalone outdoor units (no paren-plus)",
+          "manufacturer_contains": "Bosch",
+          "model_match": {
+            "type": "regex",
+            "pattern": "Compress (CS ?[0-9]|6800|Supraeco)"
+          },
+          "model_exclude": {
+            "type": "regex",
+            "pattern": "\\([^()]+\\+[^()]+\\)"
+          },
+          "classification": "standalone_odu",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 44,
+          "confidence_cap_applied": "BAFA-only pattern for standalone classification; BSH-001 external validation partially supports this by confirming that bundle products always have paren-plus suffix.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Bosch standalone outdoor units",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Bosch Compress CS 5000 AW, CS 6800 AW, CS 7000i, CS 7001i, CS 7400i, CS3400i AWS, and Supraeco SAS series without trailing '(ODU + IDU)' parenthetical are standalone outdoor units. Consistent across all 44 registrations."
+            }
+          ],
+          "example_model": "Compress CS 7001i AW 9 OR (M/MS/E/B)-S",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "CLI",
+      "manufacturer_name": "CLIVET",
+      "bafa_manufacturer_contains": "CLIVET",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "CLI-001",
+          "label": "CLIVET EDGE — 3-component set (EDGE + IDU form / WiSAN + HQCN)",
+          "manufacturer_contains": "CLIVET",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "EDGE",
+              "WiSAN",
+              "HQCN"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "clivet_edge_wisan_hqcn",
+          "idu_label": "HQCN-NEE indoor hydrobox",
+          "odu_label": "WiSAN outdoor unit",
+          "bafa_count_approx": 122,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "CLIVET official system documentation — EDGE Evo 2.0 + WiSAN + HQCN-NEE architecture",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "CLIVET official documentation confirms EDGE Evo 2.0 is the system controller; WiSAN is the outdoor unit; HQCN-NEE is the indoor hydrobox. The '/' separates the system name from component codes; the '+' between WiSAN and HQCN separates ODU from IDU. All 122 BAFA entries follow this pattern."
+            }
+          ],
+          "example_model": "EDGE Evo 2.0 + Box / WiSAN-YME 1 S 2.1 + HQCN-NEE 1 BC A",
+          "validated": true
+        },
+        {
+          "rule_id": "CLI-002",
+          "label": "CLIVET EDGE — packaged WiSAN unit (EDGE / WiSAN, no HQCN) — standalone monobloc",
+          "manufacturer_contains": "CLIVET",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "EDGE",
+              "WiSAN"
+            ]
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "HQCN"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.88,
+          "extraction_method": "none",
+          "idu_label": null,
+          "odu_label": null,
+          "bafa_count_approx": 46,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "CLIVET official documentation — EDGE Evo 2.0 is a product LINE NAME, not a physical indoor unit",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "CLIVET official documentation confirms 'EDGE Evo 2.0' is the system controller/branding line name. Without a HQCN-NEE indoor hydrobox code, the WiSAN registration is a packaged monobloc outdoor unit. The '/' is the system-name-to-component-code separator, not an ODU/IDU pair separator. Compare CLI-001 which explicitly includes HQCN indoor unit code."
+            }
+          ],
+          "example_model": "EDGE Evo 2.0 / WiSAN-YME 1 S 10.1",
+          "false_positive_notes": "PREVIOUSLY MISCLASSIFIED as confirmed_set. Reclassified 2026-06-21: EDGE Evo 2.0 without HQCN = monobloc WiSAN outdoor unit only, no separate indoor unit registered.",
+          "validated": true
+        },
+        {
+          "rule_id": "CLI-003",
+          "label": "CLIVET Sphera EVO — plus-separator set (SQKN + MiSAN)",
+          "manufacturer_contains": "CLIVET",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "Sphera",
+              "MiSAN"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.94,
+          "extraction_method": "clivet_sphera_misan",
+          "idu_label": "SQKN indoor hydrobox",
+          "odu_label": "MiSAN outdoor unit",
+          "bafa_count_approx": 22,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "CLIVET Sphera EVO 2.0 system documentation — SQKN + MiSAN architecture",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "CLIVET official documentation confirms Sphera EVO 2.0 as a split system with SQKN indoor hydrobox and MiSAN outdoor unit. Plain '+' separator (not '/' + '+' as in EDGE). All 22 BAFA registrations follow this pattern."
+            }
+          ],
+          "example_model": "Sphera EVO 2.0 Box SQKN-YEE 1 BC + MiSAN-YEE 1 S 2.1",
+          "validated": true
+        },
+        {
+          "rule_id": "CLI-004",
+          "label": "CLIVET — standalone outdoor units (WSAN-*/WiSAN-P/YEE1/YSE1/PMP)",
+          "manufacturer_contains": "CLIVET",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^W[Si]?SAN-(?:YES|YMi|YSC4|P[^a-z]|YEE1|YSE1|PMP)"
+          },
+          "classification": "standalone_odu",
+          "confidence_score": 0.8,
+          "extraction_method": "none",
+          "bafa_count_approx": 134,
+          "confidence_cap_applied": "BAFA-only: unvalidated. Some WiSAN-P variants might represent complete packaged units.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — CLIVET standalone WiSAN/WSAN units",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "CLIVET WSAN-YES/YMi/YSC4 and WiSAN-P/YEE1/YSE1/PMP registered without inline IDU code. Likely paired with separate indoor equipment not named in the BAFA registration. External validation not performed."
+            }
+          ],
+          "example_model": "WSAN-YES 18.2",
+          "false_positive_notes": "Lower confidence (0.80) because some WiSAN-P variants might be complete packaged units. Flag for manual review.",
+          "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "VAI",
+      "manufacturer_name": "Vaillant",
+      "bafa_manufacturer_contains": "Vaillant",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "VAI-001",
+          "label": "Vaillant — aroTHERM Split/perform set (VWL AS + VWL IS)",
+          "manufacturer_contains": "Vaillant",
+          "model_match": {
+            "type": "regex",
+            "pattern": "aroTHERM.*(Split|perform).*\\+.*(IS|Hydraulikstation|uniTOWER|aroCOLLECT)"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "plus_separator",
+          "idu_label": "VWL IS / Hydraulikstation / uniTOWER indoor module",
+          "odu_label": "VWL AS / aroTHERM outdoor split unit",
+          "bafa_count_approx": 23,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Vaillant aroTHERM Split official documentation — AS/IS notation",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official Vaillant documentation confirms AS = Außenstation (outdoor station) and IS = Innenstation (indoor station). Hydraulikstation and uniTOWER are indoor module variants. Plus-separator in BAFA name confirmed as [outdoor AS] + [indoor IS]."
+            }
+          ],
+          "example_model": "aroTHERM Split plus VWL 35/8.2 (AS/230V/S2) + Hydraulikstation VWL 57/8.2 IS",
+          "validated": true
+        },
+        {
+          "rule_id": "VAI-002",
+          "label": "Vaillant — flexoCOMPACT/flexoTHERM set (+ aroCOLLECT)",
+          "manufacturer_contains": "Vaillant",
+          "model_match": {
+            "type": "regex",
+            "pattern": "flexo(COMPACT|THERM).*\\+.*aroCOLLECT"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "plus_separator_idu_first",
+          "idu_label": "flexoCOMPACT/flexoTHERM VWF indoor heat pump unit (position 1 in BAFA name)",
+          "odu_label": "aroCOLLECT VWL outdoor air-source collector (position 2 in BAFA name)",
+          "bafa_count_approx": 6,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Vaillant flexoCOMPACT/flexoTHERM official documentation — aroCOLLECT pairing",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official Vaillant documentation confirms flexoCOMPACT/flexoTHERM VWF is the indoor heat pump unit; aroCOLLECT VWL is the outdoor air-source collector module. Role order noted: VWF=indoor, aroCOLLECT=outdoor collector."
+            }
+          ],
+          "example_model": "flexoCOMPACT exclusive VWF 58/4 + aroCOLLECT VWL 11/4 SA",
+          "validated": true,
+          "notes": "BAFA name order is IDU first, ODU second (flexoCOMPACT + aroCOLLECT). Uses plus_separator_idu_first extractor which reverses the default plus_separator assignment. Fixed in registry v2.1.0 — prior v2.0.0 had idu/odu roles swapped."
+        },
+        {
+          "rule_id": "VAI-003",
+          "label": "Vaillant — aroTHERM plus single outdoor unit (no +)",
+          "manufacturer_contains": "Vaillant",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "aroTHERM plus",
+              "aroTHERM perform"
+            ]
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.9,
+          "extraction_method": "none",
+          "bafa_count_approx": 21,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Vaillant aroTHERM plus official documentation — single outdoor unit without indoor module",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Vaillant documentation confirms aroTHERM plus (single outdoor unit) registered without '+'. The '(A/S2)' or '(A/400V)' in the name are option codes, not IDU/ODU separators."
+            }
+          ],
+          "example_model": "aroTHERM plus VWL 105/6 (A/S2)",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "INV",
+      "manufacturer_name": "INVENTOR",
+      "bafa_manufacturer_contains": "INVENTOR",
+      "validated_at": "2026-06-21",
+      "validation_status": "third_party_manualslib",
+      "rules": [
+        {
+          "rule_id": "INV-001",
+          "label": "INVENTOR — ATS outdoor / HU indoor split (slash separator)",
+          "manufacturer_contains": "INVENTOR",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^ATS\\w+\\/HU\\w+"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.88,
+          "extraction_method": "inventor_ats_hu",
+          "idu_label": "HU indoor hydraulic unit",
+          "odu_label": "ATS outdoor split unit",
+          "bafa_count_approx": 24,
+          "confidence_cap_applied": "ManualsLib source: one extract described ATS as 'wired controller' while acoustic databook placed ATS outdoors. Resolved by weight of evidence (ATS=outdoor, HU=indoor) but confidence capped at 0.88 due to ambiguity.",
+          "evidence": [
+            {
+              "source_type": "third_party",
+              "title": "ManualsLib: INVENTOR ATS Installation Manual — ATS outdoor / HU indoor",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Installation manual and product acoustic databook confirm ATS is outdoor unit (acoustics measured at outdoor unit position) and HU is indoor hydraulic unit. One ManualsLib extract described ATS as 'wired controller' creating ambiguity; resolved by weight of evidence from databook."
+            }
+          ],
+          "example_model": "ATS08S/HU100WT190S3",
+          "validated": true
+        },
+        {
+          "rule_id": "INV-002",
+          "label": "INVENTOR — ATM/ATMH/XFMH/MX monoblock units (no slash)",
+          "manufacturer_contains": "INVENTOR",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^(ATM|ATMH|XFMH|MX)"
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 34,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85. INV-001 external validation partially supports (ATS=split implies ATM=monoblock) but ATM series not independently confirmed via external source.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — INVENTOR ATM/ATMH monoblock prefix",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "INVENTOR ATM (Air-To-water Mono) and ATMH series have no '/' separator and follow monoblock naming convention. INV-001 (ATS=split) implicitly supports ATM as monoblock by naming contrast."
+            }
+          ],
+          "example_model": "ATM08S",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "JCH",
+      "manufacturer_name": "Johnson Controls Hitachi",
+      "bafa_manufacturer_contains": "Johnson Controls Hitachi",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "JCH-001",
+          "label": "Johnson Controls Hitachi — airH2O RAS+RWM/RWD split set",
+          "manufacturer_contains": "Johnson Controls Hitachi",
+          "model_match": {
+            "type": "regex",
+            "pattern": "RAS-\\S+\\+RW[MD]-"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "jch_ras_rwm",
+          "idu_label": "RWM/RWD indoor module (RWM = water module, RWD = DHW combo module)",
+          "odu_label": "RAS outdoor air source unit",
+          "bafa_count_approx": 88,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Hitachi Aircon Documentation Portal: RAS-WH(V)RP2E — Outdoor Units",
+              "url": "https://documentation.hitachiaircon.com/glb/en/heating/ras-whvrp2e",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official Hitachi documentation portal explicitly categorizes RAS-1.5/2/2.5/3WHVRP2E etc. under 'Outdoor Units'."
+            },
+            {
+              "source_type": "manufacturer_official",
+              "title": "Hitachi Aircon Documentation Portal: RWM-(N/R)3E — Indoor Units",
+              "url": "https://documentation.hitachiaircon.com/glb/en/heating/rwm-n-r-3e",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official Hitachi documentation portal explicitly categorizes RWM-1.5R3E through RWM-10.0N3E under 'Indoor Units'."
+            },
+            {
+              "source_type": "third_party",
+              "title": "ManualsLib: Hitachi airH2O 600 Series Installation and Operation Manual",
+              "url": "https://www.manualslib.com/manual/3971999/Hitachi-Airh2o-600-Series.html",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Manual states: 'Split system – Single water module (Indoor unit)' for RWM models. Outdoor units listed as RAS-1.5/2.5/3/5/6/8/10WHVRP2E. RWD is indoor DHW combo module variant. Directly validates split architecture."
+            },
+            {
+              "source_type": "third_party",
+              "title": "ManualsLib: Hitachi RAS-1.5WHVRP2E Installation Manual — Product Guide p.13",
+              "url": "https://www.manualslib.com/manual/3194522/Hitachi-Ras-1-5whvrp2e.html?page=13",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Product guide labels RAS-1.5/2/2.5/3WHVRP2E as 'Outdoor unit (Split air system)'. Unambiguous direct validation."
+            }
+          ],
+          "example_model": "airH2O 600 S (1.5HP) RAS-1.5WHVRP2E+RWM-1.5R3E",
+          "validated": true
+        },
+        {
+          "rule_id": "JCH-002",
+          "label": "Johnson Controls Hitachi — Yutaki M monoblock (no +)",
+          "manufacturer_contains": "Johnson Controls Hitachi",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^Yutaki"
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.97,
+          "extraction_method": "none",
+          "bafa_count_approx": 5,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Hitachi Air Conditioning UK: Yutaki M official product page",
+              "url": "https://www.hitachiaircon.com/uk/ranges/heating/yutaki-m",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Hitachi official page states verbatim: 'The Yutaki M range is a monobloc system, which means it consists only of a compact outdoor unit.' RASM models are single outdoor units with no separate indoor unit."
+            }
+          ],
+          "example_model": "Yutaki M (2HP) RASM-2VR2E",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "SAL",
+      "manufacturer_name": "Salvador Escoda",
+      "bafa_manufacturer_contains": "Salvador Escoda",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "SAL-001",
+          "label": "Salvador Escoda — MAB plus HR plus-separator set",
+          "manufacturer_contains": "Salvador Escoda",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^MAB-.*\\+\\s*HR-"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.85,
+          "extraction_method": "plus_separator",
+          "idu_label": "HR indoor hydrobox/tank unit",
+          "odu_label": "MAB outdoor air source unit",
+          "bafa_count_approx": 24,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85. No external Salvador Escoda documentation was consulted to confirm MAB=outdoor and HR=indoor role assignment.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Salvador Escoda MAB+HR notation",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Salvador Escoda split systems consistently registered as 'MAB-[model] + HR-[model]'. MAB prefix likely = Modulo Aire-Bomba (outdoor air module); HR = Hydronic unit with Reservoir. Pattern consistent across 24 registrations. No external URL validation performed."
+            }
+          ],
+          "example_model": "MAB-10-V10M + HR-8-10-190L-V10M",
+          "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "MDE",
+      "manufacturer_name": "Midea Europe",
+      "bafa_manufacturer_contains": "Midea Europe",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "MDE-001",
+          "label": "Midea Europe — MHA plus HB plus-separator set",
+          "manufacturer_contains": "Midea Europe",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^MHA-.*\\+\\s*HB"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.85,
+          "extraction_method": "plus_separator",
+          "idu_label": "HB indoor hydrobox module",
+          "odu_label": "MHA outdoor unit",
+          "bafa_count_approx": 22,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85. No external Midea Europe documentation was consulted to confirm MHA=outdoor and HB=indoor role assignment.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Midea M-Thermal MHA+HB notation",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Midea Europe M-Thermal split series consistently registered as 'MHA-[model] + HB-[model]'. MHA = outdoor air-source heat pump; HB = indoor Hydraulic Buffer module. Pattern consistent across 22 registrations. No external URL validation performed."
+            }
+          ],
+          "example_model": "MHA-V10W/D2N8-B + HB-A100/C***GN8-B",
+          "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "NIB",
+      "manufacturer_name": "NIBE",
+      "bafa_manufacturer_contains": "NIBE",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "NIB-001",
+          "label": "NIBE — NIBE SPLIT paren-plus set (AMS + HK)",
+          "manufacturer_contains": "NIBE",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "NIBE SPLIT",
+              "("
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "nibe_split_paren",
+          "idu_label": "HK 200S indoor module",
+          "odu_label": "AMS outdoor unit",
+          "bafa_count_approx": 2,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "NIBE official installation manual — AMS 10 outdoor module / HK 200S indoor module",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "NIBE official manual titles: 'Outdoor module AMS 10-8' (outdoor) and 'Inner unit cooperating with air heat pumps HK 200S' (indoor). NIBE SPLIT BAFA names '(AMS 10-8 + HK 200S)' directly match these component names."
+            }
+          ],
+          "example_model": "NIBE SPLIT (AMS 10-12 + HK 200S)",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "REH",
+      "manufacturer_name": "Remeha",
+      "bafa_manufacturer_contains": "Remeha",
+      "validated_at": "2026-06-21",
+      "validation_status": "self_describing",
+      "rules": [
+        {
+          "rule_id": "REH-001",
+          "label": "Remeha — Elga Ace Split IDU+ODU (text label, no extractable codes)",
+          "manufacturer_contains": "Remeha",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "IDU+ODU"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.95,
+          "extraction_method": "none",
+          "bafa_count_approx": 2,
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA registration name contains literal 'IDU+ODU' label",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Remeha Elga Ace Split registered with literal text 'IDU+ODU' in the BAFA name confirming split set. Individual component model codes are NOT embedded — the name is a product bundle label only."
+            }
+          ],
+          "example_model": "Elga Ace Split, IDU+ODU, 4 kW",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "DIM",
+      "manufacturer_name": "Dimplex",
+      "bafa_manufacturer_contains": "Dimplex",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "DIM-001",
+          "label": "Dimplex — System M compound set products",
+          "manufacturer_contains": "Dimplex",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "System M"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 3,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85. Compound model codes are opaque; no external Dimplex documentation validated.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Dimplex System M compound products",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Dimplex 'System M' products are compound heat pump + ventilation systems. The compound model codes embed both components but the encoding is opaque (e.g. '121HCIAOC6'). Classification as set is inferred from product name semantics. No external URL validation performed."
+            }
+          ],
+          "example_model": "System M Comfort C 121HCIAOC6",
+          "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "STI",
+      "manufacturer_name": "STIEBEL ELTRON",
+      "bafa_manufacturer_contains": "STIEBEL ELTRON",
+      "validated_at": "2026-06-21",
+      "validation_status": "self_describing",
+      "rules": [
+        {
+          "rule_id": "STI-001",
+          "label": "Stiebel Eltron — WPL Set keyword",
+          "manufacturer_contains": "STIEBEL ELTRON",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\bSet\\b"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.92,
+          "extraction_method": "none",
+          "bafa_count_approx": 2,
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA registration name contains literal 'Set' keyword",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Only 2 BAFA registrations: 'WPL 19 (I/ IK/ A/ SR/ dB) Set' and 'WPL 24 (I/ IK/ A/ SR/ dB) Set'. The word 'Set' is explicitly included, confirming multi-component package. The '(I/ IK/ A/ SR/ dB)' are unit type variants, not IDU/ODU codes."
+            }
+          ],
+          "example_model": "WPL 19 (I/ IK/ A/ SR/ dB) Set",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "XTH",
+      "manufacturer_name": "Xtherma",
+      "bafa_manufacturer_contains": "Xtherma",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official_partial",
+      "rules": [
+        {
+          "rule_id": "XTH-001",
+          "label": "Xtherma — Flex-System/Kombi-System/Pro-System (set name indicators)",
+          "manufacturer_contains": "Xtherma",
+          "model_match": {
+            "type": "regex",
+            "pattern": "(Flex|Kombi|Pro)-System"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.88,
+          "extraction_method": "none",
+          "bafa_count_approx": 16,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Xtherma manufacturer documentation — System product family naming",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "External manufacturer documentation confirms Xtherma Kombi-System = combined multi-component set; Flex-System = flexible split configuration. Confidence upgraded from 0.78 to 0.88 following manufacturer validation. No individual component codes extractable from BAFA name."
+            }
+          ],
+          "example_model": "Kombi-System 08",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "MIT",
+      "manufacturer_name": "Mitsubishi Electric",
+      "bafa_manufacturer_contains": "Mitsubishi Electric",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "MIT-001",
+          "label": "Mitsubishi Electric — slash = config/region variant (not ODU/IDU)",
+          "manufacturer_contains": "Mitsubishi Electric",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.93,
+          "extraction_method": "none",
+          "bafa_count_approx": 571,
+          "evidence": [
+            {
+              "source_type": "third_party",
+              "title": "ManualsLib: Mitsubishi Ecodan Installation Manual — Unit Compatibility (page 8)",
+              "url": "https://www.manualslib.com/manual/1455392/Mitsubishi-Ecodan.html?page=8",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Official installation manual explicitly lists PUHZ as outdoor unit and EHST/ERSC/ERST as indoor cylinder units. '/' in model codes (e.g., EHST20C-*M*HB/*M*B) separates variants of the same unit type, not indoor/outdoor pairs."
+            },
+            {
+              "source_type": "third_party",
+              "title": "EasyHeatPumps PI Sheet: PUHZ-SW50-120VKA/VHA(-BS)",
+              "url": "https://www.easyheatpumps.com/wp-content/uploads/2024/01/PUHZ-SW50-120VKAVHA_-BS__PI_Sheet.pdf",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Single PI Sheet covers all four variants VKA/VHA/VKA-BS/VHA-BS of the same outdoor unit range. '/' separates variant subgroups of the same outdoor unit, not indoor/outdoor pairs."
+            },
+            {
+              "source_type": "third_party",
+              "title": "ShopClima: Ecodan Split System ERSC-VM2B + PUHZ-SHW80VHA set notation",
+              "url": "https://www.shopclima.it/en/mitsubishi-electric-ecodan-split-system-hydrobox-zubadan-ersc-vm2b-puhz-shw80vha.html",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Mitsubishi Ecodan split sets use '+' notation (ERSC-VM2B + PUHZ-SHW80VHA), not '/'. This proves that '/' in BAFA names like 'PUHZ-SHW80VHA/PUHZ-SHW80VHA-BS' cannot be a set separator."
+            }
+          ],
+          "example_model": "PUHZ-SHW80VHA/PUHZ-SHW80VHA-BS",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "DAI",
+      "manufacturer_name": "Daikin",
+      "bafa_manufacturer_contains": "Daikin",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official",
+      "rules": [
+        {
+          "rule_id": "DAI-001",
+          "label": "Daikin — slash = tank size, antifreeze variant, or wiring option",
+          "manufacturer_contains": "Daikin",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.92,
+          "extraction_method": "none",
+          "bafa_count_approx": 103,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Daikin EU product page: EHBH-E6V / ERGA04-08EVA — indoor and outdoor roles",
+              "url": "https://www.daikin.eu/en_us/products/product.html/EHBH-E6V---ERGA04-08EVA.html",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Daikin's own product page labels EHBH-E6V as indoor unit and ERGA04-08EVA as outdoor unit. In BAFA entries like 'EHBH08D6V/EHBH08D6W', both codes begin with EHBH (same unit family) — confirming '/' separates variants of the same indoor unit, not an indoor/outdoor pair."
+            },
+            {
+              "source_type": "manufacturer_official",
+              "title": "Daikin UK: EHBH-D6V product page — D6V/D9W as variant suffixes",
+              "url": "https://www.daikin.co.uk/en_gb/products/product.html/EHBH-D6V.html",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "EHBH-D6V is the indoor wall-hung unit; related outdoor unit is ERGA-DV3. D6V and D9W suffixes both appear in the EHBH indoor unit specification table — confirming D6V/D9W are wiring/phase variants of the same indoor unit."
+            },
+            {
+              "source_type": "manufacturer_official",
+              "title": "Daikin EU: ETSH-D ECH2O floor-standing — P30/P50 tank size variants",
+              "url": "https://daikin.eu/en_us/products/ETSH-D.table.html",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "ECH2O models use P30 and P50 to distinguish tank sizes (ETSH16P30DA vs ETSH16P50DA). Confirms 'Altherma 3 HT ECH2O 180l/230l' uses '/' to separate tank-size variants of the same product, not components."
+            }
+          ],
+          "example_model": "EHBH08D6V/EHBH08D6W",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "WLF",
+      "manufacturer_name": "Wolf",
+      "bafa_manufacturer_contains": "Wolf",
+      "validated_at": "2026-06-21",
+      "validation_status": "self_describing",
+      "rules": [
+        {
+          "rule_id": "WLF-001",
+          "label": "Wolf — CHC/CHT-MONOBLOCK explicit",
+          "manufacturer_contains": "Wolf",
+          "model_match": {
+            "type": "regex",
+            "pattern": "CHC-MONOBLOCK|CHT-MONOBLOCK"
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.98,
+          "extraction_method": "none",
+          "bafa_count_approx": 6,
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA registration name contains literal 'MONOBLOCK' keyword",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Wolf CHC-MONOBLOCK and CHT-MONOBLOCK series have the word 'MONOBLOCK' literally in the BAFA model name. No ambiguity."
+            }
+          ],
+          "example_model": "CHC-MONOBLOCK",
+          "validated": true,
+          "active": false,
+          "status": "inactive_zero_bafa_hits",
+          "notes": "Pattern CHC-MONOBLOCK|CHT-MONOBLOCK does not match any Wolf BAFA model names in 2026-06 snapshot. Wolf CHC/CHT models use different naming in BAFA registrations. Disabled pending pattern fix. WLF-002 remains active."
+        },
+        {
+          "rule_id": "WLF-002",
+          "label": "Wolf — CHA-nn/nn capacity range slash (not ODU/IDU)",
+          "manufacturer_contains": "Wolf",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "model_exclude": {
+            "type": "regex",
+            "pattern": "CHC-MONOBLOCK|CHT-MONOBLOCK"
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.88,
+          "extraction_method": "none",
+          "bafa_count_approx": 9,
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Wolf CHA capacity range slash",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Wolf CHA product codes use '/' to indicate capacity range steps (e.g. CHA-16/20-400V = 16 kW or 20 kW capacity). Both segments share the same CHA prefix, confirming this is a capacity variant, not ODU/IDU separation. Pattern is self-evident from model code structure."
+            }
+          ],
+          "example_model": "CHA-16/20-400V-M2",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "ELC",
+      "manufacturer_name": "ELCO",
+      "bafa_manufacturer_contains": "ELCO",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "ELC-001",
+          "label": "ELCO — slash = variant name within single registration",
+          "manufacturer_contains": "ELCO",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.88,
+          "extraction_method": "none",
+          "bafa_count_approx": 22,
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — ELCO AEROTOP slash variant naming",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "ELCO AEROTOP uses '/' to register multiple variant names (e.g. INOX / INOX OPTIC, -RXL / -CRX 1Z / -CRX 2Z) and 2-part installation notes under one BAFA entry. Pattern is self-evident: slash segments share the same AEROTOP base model name."
+            }
+          ],
+          "example_model": "AEROTOP S05.2 / S05.2_2-part",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "WEI",
+      "manufacturer_name": "Weishaupt",
+      "bafa_manufacturer_contains": "Weishaupt",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "WEI-001",
+          "label": "Weishaupt — slash = capacity range or variant suffix",
+          "manufacturer_contains": "Weishaupt",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.88,
+          "extraction_method": "none",
+          "bafa_count_approx": 9,
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Weishaupt WWP slash variant",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Weishaupt WWP products use '/' for capacity ranges (WEB 10/15-A = 10 or 15 kW) or recovery option variants (AD / ADR where ADR = AD + Recovery). Both cases are self-evident variant patterns, not ODU/IDU separators."
+            }
+          ],
+          "example_model": "WWP L 12 AD / ADR",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "GDT",
+      "manufacturer_name": "GD TCL",
+      "bafa_manufacturer_contains": "GD TCL",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "GDT-001",
+          "label": "GD TCL — SMKL indoor / THF outdoor split set",
+          "manufacturer_contains": "GD TCL",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "SMKL",
+              "THF"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.85,
+          "extraction_method": "gdt_smkl_thf",
+          "idu_label": "SMKL indoor controller/module",
+          "odu_label": "THF outdoor heat pump unit",
+          "bafa_count_approx": 88,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85. No external GD TCL documentation was consulted to confirm SMKL=indoor and THF=outdoor role assignment.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — GD TCL SMKL/THF notation",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "GD TCL registers split systems as 'SMKL-[indoor model] / THF-[outdoor model]'. Space-slash-space separator consistent across 88 registrations. SMKL appears to be the indoor controller; THF the outdoor heat pump unit. Role assignment is inferred from prefix ordering and pattern structure — no external validation performed."
+            }
+          ],
+          "example_model": "SMKL-10D/HBp-B / THF-10D/HBpO-B",
+          "validated": false
+        },
+        {
+          "rule_id": "GDT-002",
+          "label": "GD TCL — HB[n]SP0/TP0 monoblock model codes",
+          "manufacturer_contains": "GD TCL",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^HB\\d+[ST]P0$"
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 26,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85. No external GD TCL documentation consulted.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — GD TCL HB monoblock codes",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "GD TCL standalone monoblock units are registered with simple HB[capacity][S/T]P0 codes. S = single-phase, T = three-phase. No separator characters. Pattern consistent across 26 registrations."
+            }
+          ],
+          "example_model": "HB043SP0",
+          "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "GRE",
+      "manufacturer_name": "Germany GREE",
+      "bafa_manufacturer_contains": "Germany GREE",
+      "validated_at": "2026-06-21",
+      "validation_status": "manufacturer_official_partial",
+      "rules": [
+        {
+          "rule_id": "GRE-001",
+          "label": "Germany GREE — GRS-CQ confirmed split set (slash = refrigerant/variant suffix within single code, no extractable component codes)",
+          "manufacturer_contains": "Germany GREE",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.87,
+          "extraction_method": "none",
+          "idu_label": "split indoor unit (codes not separable from BAFA registration)",
+          "odu_label": "split outdoor unit (codes not separable from BAFA registration)",
+          "bafa_count_approx": 53,
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "GREE GRS-CQ Service Manual and Split-VERSATI-Submittal documentation",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "GREE service manual and 'Split-VERSATI-Submittal' documentation confirm GRS-CQ series are genuine SPLIT systems with separate outdoor and indoor units. The '/' in model codes like 'GRS-CQ10Pd/NhH-M' is a refrigerant-class/noise-suffix separator WITHIN a single combined model code, not an IDU/ODU pair separator. The combined code represents one BAFA registration for a complete split system."
+            }
+          ],
+          "example_model": "GRS-CQ10Pd/NhH-M",
+          "false_positive_notes": "PREVIOUSLY MISCLASSIFIED as variant_label. Reclassified 2026-06-21: GRS-CQ IS a split system (service manual confirmed), but no individual IDU/ODU model codes can be extracted from the BAFA name. The '/' is a model-code-internal separator, not an outdoor/indoor separator.",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "AUX",
+      "manufacturer_name": "Ningbo AUX",
+      "bafa_manufacturer_contains": "Ningbo AUX",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "AUX-001",
+          "label": "AUX/Ningbo — slash within single model code (refrigerant class suffix)",
+          "manufacturer_contains": "Ningbo AUX",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "/"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 58,
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Ningbo AUX ACHP-H refrigerant suffix slash",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Ningbo AUX ACHP-H series encode refrigerant class and variant after '/' within a single model code (e.g. ACHP-H04/4R2HA-M where 4R2 = R32/R410A variant). The post-slash segment is a refrigerant code, not a component model."
+            }
+          ],
+          "example_model": "ACHP-H04/4R2HA-M",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "FLG",
+      "manufacturer_name": "FläktGroup",
+      "bafa_manufacturer_contains": "FläktGroup",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "FLG-001",
+          "label": "FläktGroup — embedded '+' in model code (not set separator)",
+          "manufacturer_contains": "FläktGroup",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 68,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — FläktGroup FGAH embedded plus option code",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "FläktGroup FGAH product codes embed '+' as a product-option indicator within a single model string (e.g. FGAH2020AG1.SL+.E79 where '+' signals an added option package). The '+' appears between model suffix fragments, not between two independent model codes."
+            }
+          ],
+          "example_model": "FGAH2020AG1.SL+.E79",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "ENP",
+      "manufacturer_name": "Enpal",
+      "bafa_manufacturer_contains": "Enpal",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "ENP-001",
+          "label": "Enpal — EODU prefix (standalone outdoor unit)",
+          "manufacturer_contains": "Enpal",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^EODU"
+          },
+          "classification": "standalone_odu",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 9,
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Enpal EODU prefix",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Enpal registers products with 'EODU' (Enpal Outdoor Unit) prefix. The literal 'ODU' in the prefix indicates outdoor-only registration. Paired indoor unit may be a separate BAFA entry or not registered. No external validation performed."
+            }
+          ],
+          "example_model": "EODU-V10-M1-AW-9E",
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "CAR",
+      "manufacturer_name": "Carrier",
+      "bafa_manufacturer_contains": "Carrier",
+      "validated_at": "2026-06-21",
+      "validation_status": "unvalidated",
+      "rules": [
+        {
+          "rule_id": "CAR-001",
+          "label": "Carrier — multi-unit commercial (requires research)",
+          "manufacturer_contains": "Carrier",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "requires_research",
+          "confidence_score": 0.5,
+          "extraction_method": "none",
+          "bafa_count_approx": 15,
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Carrier 30RQ multi-component commercial",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Carrier 30RQ commercial heat pump registrations include '+' separating unit codes (e.g. '30RQ-060R + 15LS + 119D'). Structure appears to be a multi-unit commercial system with 3+ components. Requires product documentation research to confirm component roles."
+            }
+          ],
+          "example_model": "30RQ-060R + 15LS + 119D",
+          "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "JCS",
+      "manufacturer_name": "Johnson Controls Systems",
+      "bafa_manufacturer_contains": "Johnson Controls Systems",
+      "validated_at": "2026-06-21",
+      "validation_status": "bafa_pattern_only",
+      "rules": [
+        {
+          "rule_id": "JCS-001",
+          "label": "Johnson Controls Systems — York YKF plus-separator split set",
+          "manufacturer_contains": "Johnson Controls Systems",
+          "model_match": {
+            "type": "regex",
+            "pattern": "^YKF\\d+.*\\+"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.82,
+          "extraction_method": "plus_separator",
+          "idu_label": "YKF indoor module (DHW tank integration suffix)",
+          "odu_label": "YKF outdoor unit",
+          "bafa_count_approx": 18,
+          "confidence_cap_applied": "BAFA-only: capped at 0.85; actual value 0.82 due to model code pattern ambiguity (both outdoor and indoor share YKF prefix, role determination by code structure only).",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — York YKF outdoor/indoor code structure",
+              "url": null,
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Johnson Controls Systems registers York YKF heat pumps as 'YKF[outdoor capacity]ANB + YKF[indoor size][tank]ANB***'. The '+' separates outdoor from indoor module with optional DHW tank (060L, 100L, 190L, 240L). The '***' suffix = variant placeholder. Not external-documentation-validated."
+            }
+          ],
+          "example_model": "YKF04ANB+YKF060ANB***",
+          "validated": false
+        }
+      ]
+    }
+  ]
+}
