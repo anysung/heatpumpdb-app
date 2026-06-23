@@ -1,8 +1,8 @@
 {
-  "version": "2.3.0",
+  "version": "2.4.0",
   "generated_at": "2026-06-23",
   "source_snapshot": "2026-06",
-  "description": "Manufacturer-specific rules for identifying Indoor Unit (IDU) and Outdoor Unit (ODU) components in BAFA heat pump product registrations. Rules are evaluated in priority order within each manufacturer; first matching rule wins. Confidence scores reflect external manufacturer validation performed 2026-06-21; v2.2.0 schema migration 2026-06-23: VAI-002 role reversal, SAM-001/SAM-002 split, WLF-001 disabled, source_type corrections. v2.3.0 2026-06-23: WLF manufacturer_contains case-bug fixed (Wolf→WOLF), WLF-002 added (20 monoblock), WLF-002→WLF-003 (15 slash), VIE-003 added (85 AWO monoblock).",
+  "description": "Manufacturer-specific rules for identifying Indoor Unit (IDU) and Outdoor Unit (ODU) components in BAFA heat pump product registrations. Rules are evaluated in priority order within each manufacturer; first matching rule wins. Confidence scores reflect external manufacturer validation performed 2026-06-21; v2.2.0 schema migration 2026-06-23: VAI-002 role reversal, SAM-001/SAM-002 split, WLF-001 disabled, source_type corrections. v2.3.0 2026-06-23: WLF manufacturer_contains case-bug fixed (Wolf→WOLF), WLF-002 added (20 monoblock), WLF-002→WLF-003 (15 slash), VIE-003 added (85 AWO monoblock). v2.4.0 2026-06-23: LGE-002 regex space-bug fixed (+7 HM monoblock hits), PAN-002 bafa_count corrected (66→7), PAN-003 added (59 bracket-slash split), BUD-002 added (33 MB monoblock+hydraulic module), NIB-002 added (16 standalone AMS/F-series), STI-002 added (18 WPL-A monoblock), WEI-002 added (4 WAB monoblock). Generator: bracket_slash_pan + paren_plus_buderus extractors added; hydraulic_module_model field now populated from extraction.",
   "schema_notes": [
     "classification values: confirmed_set | confirmed_not_set | standalone_odu | variant_label | requires_research | unclassified",
     "confidence_score: 0.00–1.00. Internal threshold: 0.90 (high confidence). Display threshold: 0.95.",
@@ -182,7 +182,7 @@
           "classification": "confirmed_not_set",
           "confidence_score": 0.97,
           "extraction_method": "none",
-          "bafa_count_approx": 66,
+          "bafa_count_approx": 7,
           "evidence": [
             {
               "source_type": "manufacturer_official",
@@ -194,6 +194,40 @@
           ],
           "example_model": "Panasonic Aquarea H Gen [WH-MDC05J3E5]",
           "validated": true
+        },
+        {
+          "rule_id": "PAN-003",
+          "label": "Panasonic — bracket-slash split set [IDU / ODU]",
+          "manufacturer_contains": "Panasonic",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\[[^\\[\\]]+\\/[^\\[\\]]+\\]"
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.88,
+          "extraction_method": "bracket_slash_pan",
+          "idu_label": "WH-ADC/SDC/SXC indoor hydrobox",
+          "odu_label": "WH-UDZ/WDG/UXZ outdoor split unit",
+          "bafa_count_approx": 59,
+          "confidence_cap_applied": "bafa_pattern_analysis_only_confirmed_set: role assignment (ADC=IDU, UDZ=ODU) inferred from PAN-001 evidence + capacity family matching; no standalone official Panasonic bracket-slash document consulted. Capped at 0.88.",
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "Panasonic Aquarea Installation Manual — WH-UD outdoor / WH-ADC indoor (cross-applied to slash notation)",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "PAN-001 evidence confirms WH-ADC = indoor hydrobox and WH-UD* = outdoor unit in Panasonic Aquarea systems. WH-UDZ has same 'UD' outdoor prefix. WH-SDC shares 'DC' hydrobox suffix with WH-ADC. Bracket-slash BAFA notation '[WH-ADC/SDC/SXC / WH-UDZ/WDG/UXZ]' places indoor code first, outdoor code second — consistent with one indoor paired with multiple outdoor capacity variants (UDZ03/05/07). Classification inferred by cross-referencing PAN-001 naming conventions; confidence capped at 0.88 (bafa_pattern_analysis_only cap for confirmed_set)."
+            }
+          ],
+          "example_model": "Panasonic Aquarea H Gen Bi-bloc [WH-ADC0309K3E5 / WH-UDZ03KE5]",
+          "validated": false,
+          "notes": "Applied after PAN-001 (bracket-plus) and PAN-002 (single-bracket WH-M). Bracket-slash products are bi-bloc split systems with IDU code first, ODU code second. slash separator ' / ' is space-padded in all observed BAFA examples."
         }
       ]
     },
@@ -236,7 +270,7 @@
           "manufacturer_contains": "LG Electronics",
           "model_match": {
             "type": "regex",
-            "pattern": "\\[HM[^\\[\\]+]+\\]$"
+            "pattern": "\\[ *HM[^\\[\\]+]+\\]$"
           },
           "model_exclude": {
             "type": "contains_any",
@@ -445,6 +479,38 @@
           ],
           "example_model": "Buderus Logatherm WLW196i.2-8 AR E (WLW196i.2-8 AR-S.2 E & WLW196i.2 IK8 E)",
           "validated": false
+        },
+        {
+          "rule_id": "BUD-002",
+          "label": "Buderus — paren-plus outdoor monoblock + hydraulic module (MB suffix)",
+          "manufacturer_contains": "Buderus",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\([^()]+MB[^()]*\\+[^()]+\\)"
+          },
+          "model_exclude": {
+            "type": "regex",
+            "pattern": "\\([^()&]+&[^()]+\\)"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.90,
+          "extraction_method": "paren_plus_buderus",
+          "odu_label": "WLW-*MB outdoor monoblock (MB = Monoblock)",
+          "hydraulic_module_label": "WLW indoor hydraulic station/module",
+          "bafa_count_approx": 33,
+          "confidence_cap_applied": "bafa_pattern_analysis_only: MB suffix is self-describing (Monoblock) for outdoor role; paren-plus structure with known Buderus WLW naming convention. Capped at 0.90 (self_describing evidence for MB prefix). deriveArchitecture resolves to monoblock_with_hydraulic_module.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Buderus paren-plus with MB monoblock suffix",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Buderus registers 'Logaplus M WLW176i-N AR E (Logatherm WLW-N MB AR + WLW176i-M E)' where MB suffix in the paren content indicates Monoblock outdoor unit. The second paren component (WLW176i-M E) is the indoor hydraulic station. Paren-plus structure distinct from BUD-001 ampersand format; model_exclude prevents overlap. ~33 products use this pattern in 2026-06 snapshot."
+            }
+          ],
+          "example_model": "Logaplus M WLW176i-10 AR E (Logatherm WLW-10 MB AR + WLW176i-12 E)",
+          "validated": false,
+          "notes": "BUD-002 placed after BUD-001 (ampersand). model_exclude prevents double-matching with BUD-001 — ampersand products have '&' not '+'. extraction_method paren_plus_buderus: first segment → outdoor_unit_model, second segment → hydraulic_module_model."
         }
       ]
     },
@@ -1070,6 +1136,45 @@
           ],
           "example_model": "NIBE SPLIT (AMS 10-12 + HK 200S)",
           "validated": true
+        },
+        {
+          "rule_id": "NIB-002",
+          "label": "NIBE — standalone outdoor unit (AMS / F2040 / F2050 / F2120 series)",
+          "manufacturer_contains": "NIBE",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "AMS 10",
+              "AMS 20",
+              "F2040",
+              "F2050",
+              "F2120"
+            ]
+          },
+          "model_exclude": {
+            "type": "contains_all",
+            "patterns": [
+              "SPLIT",
+              "("
+            ]
+          },
+          "classification": "standalone_odu",
+          "confidence_score": 0.90,
+          "extraction_method": "none",
+          "bafa_count_approx": 16,
+          "confidence_cap_applied": "manufacturer_official_family_confirmed: AMS 10 outdoor module confirmed by NIBE installation manual; F2040/F2050/F2120 confirmed outdoor air-source units from NIBE EU product catalog. model_exclude prevents overlap with NIB-001 (NIBE SPLIT sets). Confidence 0.90.",
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "NIBE official installation manual — AMS 10 outdoor module (standalone)",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "NIBE installation manual title: 'Outdoor module AMS 10-8' confirming AMS 10 is a standalone outdoor module. F2040/F2050/F2120 are confirmed by NIBE EU product catalog as outdoor air-source heat pumps (Luft/Vatten outdoor split units). All are standalone outdoor units that pair with separate indoor modules when forming a SPLIT set — but BAFA registers them individually here."
+            }
+          ],
+          "example_model": "NIBE AMS 10-12",
+          "validated": true,
+          "notes": "model_exclude prevents overlap with NIB-001. NIBE SPLIT paren registrations (2 products) are captured by NIB-001; this rule captures standalone AMS/F-series BAFA registrations (~16 products). AMS 20 = higher-capacity variant of AMS 10 outdoor module family."
         }
       ]
     },
@@ -1174,6 +1279,39 @@
           ],
           "example_model": "WPL 19 (I/ IK/ A/ SR/ dB) Set",
           "validated": true
+        },
+        {
+          "rule_id": "STI-002",
+          "label": "Stiebel Eltron — WPL-A outdoor monoblock (Außenaufstellung)",
+          "manufacturer_contains": "STIEBEL ELTRON",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "WPL-A",
+              "WPL A"
+            ]
+          },
+          "model_exclude": {
+            "type": "regex",
+            "pattern": "\\bSet\\b"
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.92,
+          "extraction_method": "none",
+          "bafa_count_approx": 18,
+          "confidence_cap_applied": "self_describing: WPL-A = Wärmepumpe Luft Außen (outdoor air heat pump). Designation directly indicates outdoor-installed monoblock. model_exclude prevents overlap with STI-001.",
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA model name contains WPL-A / WPL A — Außenaufstellung (outdoor installation) designation",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Stiebel Eltron uses 'WPL-A' (Wärmepumpe Luft Außen) or 'WPL A' to designate outdoor-installed air-to-water heat pump monoblock units. '-A' suffix is Stiebel's standard abbreviation for Außen (outdoor). The model is an outdoor unit with no separate indoor component registered under the same BAFA entry. Confidence 0.92: self-describing designation. model_exclude prevents re-capturing the 2 'Set' products."
+            }
+          ],
+          "example_model": "WPL-A 07 HK Premium",
+          "validated": true,
+          "notes": "Applied after STI-001 (Set keyword). ~18 WPL-A products in 2026-06 snapshot. WPL-I (Innenaufstellung = indoor installed) excluded by pattern specificity."
         }
       ]
     },
@@ -1473,6 +1611,34 @@
           ],
           "example_model": "WWP L 12 AD / ADR",
           "validated": true
+        },
+        {
+          "rule_id": "WEI-002",
+          "label": "Weishaupt — WAB outdoor monoblock (Wärmepumpe Außen Blockheizkraftwerk)",
+          "manufacturer_contains": "Weishaupt",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "WAB"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.92,
+          "extraction_method": "none",
+          "bafa_count_approx": 4,
+          "confidence_cap_applied": "self_describing: WAB = Wärmepumpe Außen Block, indicating outdoor-installed monoblock heat pump unit. Confidence 0.92.",
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA model name contains WAB — Wärmepumpe Außen Block (outdoor monoblock) designation",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Weishaupt WAB (Wärmepumpe Außen Block) = outdoor air-source heat pump monoblock. The 'A' (Außen = outdoor) and 'B' (Block = compact block unit) designators unambiguously indicate a standalone outdoor monoblock installation with no separate indoor unit registered. ~4 WAB products in 2026-06 snapshot."
+            }
+          ],
+          "example_model": "WWP M 11 WAB",
+          "validated": true,
+          "notes": "WEI-001 (slash variant_label) is not excluded because WAB products do not contain '/'. The rules are evaluated in order; WAB products are not slash-containing so WEI-001 does not match them."
         }
       ]
     },

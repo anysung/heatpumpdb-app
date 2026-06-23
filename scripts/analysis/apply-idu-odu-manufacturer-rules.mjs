@@ -199,6 +199,26 @@ const EXTRACTORS = {
     return null;
   },
 
+  // Panasonic bracket-slash split set [IDU / ODU].
+  // Format: [WH-ADC.../WH-SDC... / WH-UDZ.../WH-WDG.../WH-UXZ...]
+  // Position 1 (before /) = IDU (indoor hydrobox: ADC/SDC/SXC prefix)
+  // Position 2 (after /)  = ODU (outdoor unit: UDZ/WDG/UXZ prefix)
+  bracket_slash_pan(model) {
+    const m = model.match(/\[([^\[\]+]+)\s*\/\s*([^\[\]]+)\]/);
+    if (!m) return null;
+    return { idu: m[1].trim(), odu: m[2].trim() };
+  },
+
+  // Buderus paren-plus: (outdoor monoblock + hydraulic module).
+  // Format: (Logatherm WLW-10 MB AR + WLW176i-12 E)
+  // Position 1 (before +) = ODU (MB = Monoblock outdoor)
+  // Position 2 (after +)  = hydraulic_module (indoor station)
+  paren_plus_buderus(model) {
+    const m = model.match(/\(([^()]+)\+([^()]+)\)/);
+    if (!m) return null;
+    return { odu: m[1].trim(), idu: null, hydraulic_module: m[2].trim() };
+  },
+
   none() { return null; },
 };
 
@@ -407,7 +427,7 @@ for (const item of items) {
       controller_model: null,
       tank_model: extracted?.tank || null,
       tower_model: null,
-      hydraulic_module_model: null,
+      hydraulic_module_model: extracted?.hydraulic_module || null,
       indoor_side_equipment_model: extracted?.indoor_side_equipment || null,
       system_architecture: deriveArchitecture(matched, extracted, cls),
       component_mapping_status: deriveMappingStatus(matched, extracted, cls),
