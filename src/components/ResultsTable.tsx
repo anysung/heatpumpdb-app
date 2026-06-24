@@ -234,9 +234,10 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
               {isSelectionMode && (
                 <th className={`${TH_BASE} w-8 sticky top-0 left-0 z-40`}>{labels.colSelect || ''}</th>
               )}
-              {/* Manufacturer — sticky top + left */}
+              {/* Manufacturer — sticky top + left, constrained width */}
               <th ref={mfrThRef}
-                className={`${TH_BASE} text-center text-gray-600 sticky top-0 left-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.08)]`}>
+                style={{ width: '130px', maxWidth: '130px', minWidth: '110px' }}
+                className={`${TH_BASE} text-center text-gray-600 sticky top-0 left-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.08)] overflow-hidden`}>
                 {labels.colManufacturer}
               </th>
               {/* Type — sticky top + left */}
@@ -245,9 +246,9 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                 className={`${TH_BASE} text-gray-500 sticky top-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.06)]`}>
                 {labels.colInstallType || 'Type'}
               </th>
-              {/* Model — sticky top + left */}
-              <th style={{ left: modelLeft, maxWidth: '200px' }}
-                className={`${TH_BASE} text-gray-500 text-left pl-3 sticky top-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.05)]`}>
+              {/* Model — sticky top + left, wider to fit model name + component box */}
+              <th style={{ left: modelLeft, maxWidth: '270px', minWidth: '0' }}
+                className={`${TH_BASE} text-gray-500 text-left pl-3 sticky top-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.05)] overflow-hidden`}>
                 {labels.colModel}
               </th>
               {/* Scrollable columns */}
@@ -316,8 +317,10 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                     </td>
                   )}
 
-                  {/* Manufacturer — sticky */}
-                  <td title={displayName} className={`px-2 py-1 text-[13px] font-semibold text-gray-900 text-center whitespace-nowrap sticky left-0 z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.06)] ${stickyBg}`}>
+                  {/* Manufacturer — sticky, width-constrained */}
+                  <td title={displayName}
+                    style={{ width: '130px', maxWidth: '130px', minWidth: '110px' }}
+                    className={`px-2 py-1 text-[13px] font-semibold text-gray-900 text-center whitespace-nowrap overflow-hidden text-ellipsis sticky left-0 z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.06)] ${stickyBg}`}>
                     {displayNameTxt}
                   </td>
 
@@ -329,22 +332,34 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                     </span>
                   </td>
 
-                  {/* Model — sticky */}
-                  <td style={{ left: modelLeft, maxWidth: '200px', minWidth: '0' }}
+                  {/* Model — sticky, flex: model-name | component-box */}
+                  <td style={{ left: modelLeft, maxWidth: '270px', minWidth: '0' }}
                     className={`pl-3 pr-2 py-1 text-left align-middle sticky z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.03)] overflow-hidden ${stickyBg}`}>
-                    <div className="text-[13px] text-blue-600 font-semibold whitespace-nowrap overflow-hidden text-ellipsis" title={item.model}>
-                      {modelTxt}
+                    <div className="flex items-start gap-1.5 min-w-0">
+                      {/* model-main */}
+                      <div className="flex-shrink-0 min-w-0" style={{ maxWidth: '130px' }}>
+                        <div className="text-[13px] text-blue-600 font-semibold whitespace-nowrap overflow-hidden text-ellipsis" title={item.model}>
+                          {modelTxt}
+                        </div>
+                      </div>
+                      {/* component-box */}
+                      {(components.oduLine || components.innerLine) && (
+                        <div className="flex-1 min-w-0 border-l border-gray-200 pl-1.5">
+                          {components.oduLine && (
+                            <div className="text-[10px] text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis leading-tight" title={components.oduFull ?? undefined}>
+                              <span className="font-semibold text-gray-400">ODU</span>
+                              <span className="text-gray-400"> : </span>
+                              <span>{truncateChars(components.oduFull ?? '', 16)}</span>
+                            </div>
+                          )}
+                          {components.innerLine && (
+                            <div className="text-[10px] text-gray-400 whitespace-nowrap overflow-hidden text-ellipsis leading-tight" title={components.innerLine}>
+                              {components.innerLine}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-                    {components.oduLine && (
-                      <div className="text-[10px] text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis mt-0.5 leading-tight" title={components.oduFull ?? undefined}>
-                        {components.oduLine}
-                      </div>
-                    )}
-                    {components.innerLine && (
-                      <div className="text-[10px] text-gray-400 whitespace-nowrap overflow-hidden text-ellipsis leading-tight" title={components.innerLine}>
-                        {components.innerLine}
-                      </div>
-                    )}
                   </td>
 
                   {/* Capacity */}

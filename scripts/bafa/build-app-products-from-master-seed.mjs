@@ -16,7 +16,7 @@
  *   > 45 kW                  → commercial_project → products-commercial.json
  *   null / invalid           → excluded; written to segmentation-pending report
  *
- * Output field count: 65 (matching existing schema)
+ * Output field count: 75 (72 base + 3 outdoor-side display fields)
  * BAFA List Yes filter: bafa_list_current === true (default export only)
  */
 
@@ -29,7 +29,7 @@ const ROOT = resolve(__dirname, '../..');
 
 const MARCH_SNAPSHOT_FETCHED_AT = '2026-03-19T12:07:14.787Z';
 const JUNE_SNAPSHOT_FETCHED_AT = '2026-06-19T05:17:14.627Z';
-const EXPECTED_FIELD_COUNT = 72;
+const EXPECTED_FIELD_COUNT = 75;
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
 function loadJSON(relPath) {
@@ -74,6 +74,134 @@ for (const item of iduOduMapping.items) {
   iduOduByBafaId.set(String(item.bafa_id), item);
 }
 
+// ── Outdoor-side classification (inline from analysis logic) ──────────────────
+// Assigns each product to one of:
+//   'exact_model'          — outdoor_unit_model extracted and differs from main model
+//   'product_is_outdoor_unit' — product itself is the monoblock/standalone outdoor unit
+//   'rule_inferred'        — active mapping rule implies outdoor-side
+//   'model_name_inferred'  — manufacturer model-name pattern matches outdoor-side
+//   'safe_app_fallback'    — app installation_type=Monoblock (safe exclusions applied)
+//   null                   — outdoor-side not identified
+
+const B_OUTDOOR_TYPES = new Set(['split_odu', 'monoblock_outdoor_main', 'standalone_outdoor_unit']);
+const B_ARCHITECTURES = new Set([
+  'monoblock', 'monoblock_with_tank', 'monoblock_with_control_box',
+  'monoblock_with_hydraulic_module', 'split', 'component_only',
+]);
+const B_STATUSES = new Set([
+  'outdoor_only', 'outdoor_plus_idu', 'outdoor_plus_tank',
+  'outdoor_plus_control_box', 'outdoor_plus_hydraulic_module',
+]);
+
+function matchesModelNamePattern(s) {
+  const mfr   = (s.manufacturer || '').toLowerCase();
+  const model = s.model || '';
+  if (mfr.includes('mitsubishi') && /\b(puhz|puz|pud|suhz|suZ)\b/i.test(model)) return true;
+  if (mfr.includes('panasonic') && /\bWH-(MXC|MDC|UD|UDZ|WDG)\b/i.test(model)) return true;
+  if ((mfr.includes('lg') || mfr.includes('lg electronics')) &&
+      (/\b(HM|HU)\d+/i.test(model) || (/\bBULG\b/i.test(model) && /\bMono\b/i.test(model)))) return true;
+  if (mfr.includes('samsung') && (/WPLW-(Mono|Split)/i.test(model) || /EHS\s*Mono/i.test(model))) return true;
+  if (mfr.includes('vaillant') && /\b(VWL|aroTHERM|recoCOMPACT|versoTHERM)\b/i.test(model)) return true;
+  if ((mfr.includes('buderus') || mfr.includes('bosch') || mfr.includes('bsh')) &&
+      (/\b(Logaplus|Logatherm|Compress)\b/i.test(model) || /CS\s*7001i?\s*AW/i.test(model) ||
+       /\bWLW\d/i.test(model) || /Supraeco\s*A\b/i.test(model))) return true;
+  if (mfr.includes('viessmann') && (/\b(AWO|AWOT|HAWO|AWB|AWBT|AWCI)\b/i.test(model) ||
+      /Vitocal\s+\d+-A\b/i.test(model) || /Vitocal.*AWB/i.test(model))) return true;
+  if (mfr.includes('nibe')) {
+    if (/\b(SMO|VVM|S2060|S1155|S1255)\b/i.test(model)) return false;
+    if (/\bS2125\b/i.test(model) || /\b(F2040|F2050|F2120)\b/i.test(model) ||
+        /\bAMS\s*(10|20)\b/i.test(model)) return true;
+  }
+  if ((mfr.includes('stiebel') || mfr.includes('tecalor')) &&
+      (/\bWPL[-\s]A\b/i.test(model) || /\bWPF-A\b/i.test(model) || /\bHPA-O\b/i.test(model))) return true;
+  if (mfr.includes('weishaupt') && (/\bWAB\b/i.test(model) || /\bWWP\s+(LS|LA)\b/i.test(model))) return true;
+  if ((mfr.includes('wolf') && (/\b(CHC|CHT)-?MONOBLOCK\b/i.test(model) || /\bCHA\b/i.test(model) || /\bFHA\b/i.test(model)))) return true;
+  if (mfr.includes('daikin') && (/\bAltherma\b/i.test(model) || /\bER(GA|LA)\b/i.test(model))) return true;
+  return false;
+}
+
+function isSafeAppMonoblock(s, installationType) {
+  if (!installationType || installationType !== 'Monoblock') return false;
+  const mfr = (s.manufacturer || '').toLowerCase();
+  if (mfr.includes('mitsubishi') && /\b(EHS|ERS|EHST|ERSD|EHP|ERP)\b/i.test(s.model) &&
+      /\b(PUZ|PUD|PUHZ|SUHZ)\b/i.test(s.model)) return false;
+  if (mfr.includes('panasonic') && /\bWH-(UD|UDZ|WDG)\b/i.test(s.model)) return false;
+  if (mfr.includes('hitachi') && /\bRAS\b/i.test(s.model) && /\bRWM\b/i.test(s.model)) return false;
+  if ((mfr.includes('ait') || mfr.includes('ait-deutschland')) &&
+      /\[.*LAV.*\+.*HV.*\]/i.test(s.model)) return false;
+  if (mfr.includes('clivet') && (/\bEDGE\b/i.test(s.model) || /WiSAN-YME/i.test(s.model))) return false;
+  if (/MIM-E03/i.test(s.model)) return false;
+  if (mfr.includes('nibe') && /\b(SMO|VVM|S2060)\b/i.test(s.model)) return false;
+  return true;
+}
+
+function isClearIndoorControllerTankOnly(s) {
+  const model = s.model || '';
+  const mfr   = (s.manufacturer || '').toLowerCase();
+  if (mfr.includes('nilan') && /\bCompact\s*P/i.test(model)) return true;
+  if (/\b(Hydraulikmodul|Hydraulic\s*Station|Hydraulic\s*Module)\b/i.test(model)) return true;
+  if (/\b(uniTOWER|Indoor\s*Unit|Innengerät|Innenmodul)\b/i.test(model)) return true;
+  if ((mfr.includes('stiebel') || mfr.includes('tecalor')) && /\bLWZ\b/i.test(model)) return true;
+  if (/\bLWi\b/i.test(model)) return true;
+  return false;
+}
+
+function isSingleStandaloneModel(s) {
+  const model = s.model || '';
+  if (/\s\+\s/.test(model)) return false;
+  if (/\[.+\/.*\]/.test(model)) return false;
+  if (/\b(Set|Paket|Package|Kit|Kombination|Kombi(?!\w))\b/i.test(model)) return false;
+  if (/\b(Hydraulikmodul|Hydraulic\s*Module|uniTOWER|Tank\s*Unit|Speichereinheit|Innenmodul)\b/i.test(model)) return false;
+  const slashComponentPattern = /[A-Z0-9]{3,}\s*\/\s*[A-Z0-9]{3,}/;
+  if (slashComponentPattern.test(model)) {
+    const modeSlashPattern = /\b[A-Z]{2,4}\s*\/\s*[A-Z]{2,4}\b/;
+    if (!modeSlashPattern.test(model)) return false;
+    if (/[A-Z0-9]{5,}\s*\/\s*[A-Z0-9]{5,}/.test(model)) return false;
+  }
+  return true;
+}
+
+function classifyOutdoorSide(s, comp, installationType) {
+  const model = s.model;
+
+  // A — exact outdoor_unit_model extracted
+  if (comp.outdoor_unit_model) {
+    const kind = comp.outdoor_unit_model !== model ? 'exact_model' : 'product_is_outdoor_unit';
+    return { identified: true, displayModel: comp.outdoor_unit_model, displayKind: kind };
+  }
+
+  // B — mapping rule implies outdoor-side (no extracted model string)
+  if (comp.component_rule_id) {
+    const cms = comp.component_mapping_status;
+    if (cms === 'package_label_only' || cms === 'requires_research' ||
+        (cms === 'not_extractable' && comp.classification === 'confirmed_set') ||
+        B_OUTDOOR_TYPES.has(comp.outdoor_unit_type) ||
+        B_ARCHITECTURES.has(comp.system_architecture) ||
+        B_STATUSES.has(cms)) {
+      return { identified: true, displayModel: model, displayKind: 'rule_inferred' };
+    }
+  }
+
+  // C — model-name pattern
+  if (matchesModelNamePattern(s)) {
+    return { identified: true, displayModel: model, displayKind: 'model_name_inferred' };
+  }
+
+  // D — safe app monoblock fallback
+  if (isSafeAppMonoblock(s, installationType)) {
+    return { identified: true, displayModel: model, displayKind: 'safe_app_fallback' };
+  }
+
+  // E1 — commercial (>=21 kW) single standalone (practical inference)
+  const kw = s.power_35C_kw;
+  if (kw != null && kw >= 21 && !isClearIndoorControllerTankOnly(s) && isSingleStandaloneModel(s)) {
+    return { identified: true, displayModel: model, displayKind: 'rule_inferred' };
+  }
+
+  // Not identified
+  return { identified: false, displayModel: null, displayKind: null };
+}
+
 // ── Filter to BAFA List Yes products ─────────────────────────────────────────
 
 const bafaListYes = seed.items.filter(s => s.bafa_list_current === true);
@@ -87,6 +215,7 @@ function buildItem(s) {
   const pricing = legacy?._pricing ?? {};
   const phys = legacy?._physical_specs ?? {};
   const comp = iduOduByBafaId.get(String(s.bafa_id)) ?? {};
+  const outdoor = classifyOutdoorSide(s, comp, pricing.installation_type ?? null);
 
   return {
     // ── Identity ────────────────────────────────────────────────────────────
@@ -186,6 +315,11 @@ function buildItem(s) {
     tower_model: comp.tower_model ?? null,
     hydraulic_module_model: comp.hydraulic_module_model ?? null,
     indoor_side_equipment_model: comp.indoor_side_equipment_model ?? null,
+
+    // ── Outdoor-side display fields (computed from classification) ───────────
+    outdoor_side_identified: outdoor.identified,
+    outdoor_side_display_model: outdoor.displayModel,
+    outdoor_side_display_kind: outdoor.displayKind,
   };
 }
 
@@ -284,6 +418,8 @@ const withOverlay = allItems.filter(i => enrichedByBafaId.has(String(i.bafa_id))
 const withoutOverlay = allItems.length - withOverlay;
 const withODU = allItems.filter(i => i.outdoor_unit_model !== null).length;
 const withIDU = allItems.filter(i => i.idu_model !== null).length;
+const outdoorIdentified = allItems.filter(i => i.outdoor_side_identified === true).length;
+const outdoorDisplayModel = allItems.filter(i => i.outdoor_side_display_model !== null).length;
 const lightCommercial = commercial.filter(i => i.market_segment === 'light_commercial').length;
 const commProject = commercial.filter(i => i.market_segment === 'commercial_project').length;
 
@@ -301,6 +437,9 @@ console.log(`  Pending (null capacity):   ${pending.length}  → segmentation-pe
 console.log(`Component fields joined from IDU/ODU mapping:`);
 console.log(`  outdoor_unit_model:  ${withODU}`);
 console.log(`  idu_model:           ${withIDU}`);
+console.log(`Outdoor-side display (all exported records):`);
+console.log(`  outdoor_side_identified=true: ${outdoorIdentified}`);
+console.log(`  outdoor_side_display_model:   ${outdoorDisplayModel}`);
 console.log(`Field count:          ${fieldCount} ✓`);
 console.log(`No price keys:        ✓`);
 console.log(`Provenance complete:  ✓`);

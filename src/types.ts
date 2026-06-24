@@ -86,6 +86,17 @@ export interface HeatPump {
   tower_model?: string | null;
   hydraulic_module_model?: string | null;
   indoor_side_equipment_model?: string | null;
+
+  // ── Outdoor-side display fields (computed by pipeline classification) ────────
+  outdoor_side_identified?: boolean;
+  outdoor_side_display_model?: string | null;
+  outdoor_side_display_kind?:
+    | 'exact_model'
+    | 'product_is_outdoor_unit'
+    | 'rule_inferred'
+    | 'model_name_inferred'
+    | 'safe_app_fallback'
+    | null;
 }
 
 export type AppMode = 'DATABASE' | 'LIVE_API';
