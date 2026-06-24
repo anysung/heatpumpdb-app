@@ -77,6 +77,15 @@ export interface HeatPump {
   grid_ready_type: string | null;
 
   market_segment: string | null;
+
+  // ── Component fields (from IDU/ODU mapping, display-only) ──────────────────
+  outdoor_unit_model?: string | null;
+  idu_model?: string | null;
+  control_box_model?: string | null;
+  tank_model?: string | null;
+  tower_model?: string | null;
+  hydraulic_module_model?: string | null;
+  indoor_side_equipment_model?: string | null;
 }
 
 export type AppMode = 'DATABASE' | 'LIVE_API';

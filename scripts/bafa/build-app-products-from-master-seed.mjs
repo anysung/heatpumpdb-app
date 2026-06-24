@@ -29,7 +29,7 @@ const ROOT = resolve(__dirname, '../..');
 
 const MARCH_SNAPSHOT_FETCHED_AT = '2026-03-19T12:07:14.787Z';
 const JUNE_SNAPSHOT_FETCHED_AT = '2026-06-19T05:17:14.627Z';
-const EXPECTED_FIELD_COUNT = 65;
+const EXPECTED_FIELD_COUNT = 72;
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
 function loadJSON(relPath) {
@@ -58,12 +58,20 @@ const seed = loadJSON('data_sources/bafa/master_seed/2026-06/bafa-master-seed.js
 const enriched = loadJSON('scraper/pricing/output/dataset-enriched-full.json');
 const shortNamesFile = loadJSON('scraper/pricing/manufacturer-short-names.json');
 const shortNameMap = new Map(Object.entries(shortNamesFile.mapping));
+const iduOduMapping = loadJSON('data_sources/bafa/idu_odu_mapping/2026-06/idu-odu-mapping.json');
 
 // ── Build enriched-dataset lookup keyed by bafa_id ───────────────────────────
 
 const enrichedByBafaId = new Map();
 for (const item of enriched.items) {
   enrichedByBafaId.set(String(item.bafa_id), item);
+}
+
+// ── Build IDU/ODU mapping lookup keyed by bafa_id ────────────────────────────
+
+const iduOduByBafaId = new Map();
+for (const item of iduOduMapping.items) {
+  iduOduByBafaId.set(String(item.bafa_id), item);
 }
 
 // ── Filter to BAFA List Yes products ─────────────────────────────────────────
@@ -78,6 +86,7 @@ function buildItem(s) {
   const legacy = enrichedByBafaId.get(String(s.bafa_id)) ?? null;
   const pricing = legacy?._pricing ?? {};
   const phys = legacy?._physical_specs ?? {};
+  const comp = iduOduByBafaId.get(String(s.bafa_id)) ?? {};
 
   return {
     // ── Identity ────────────────────────────────────────────────────────────
@@ -168,6 +177,15 @@ function buildItem(s) {
       ? MARCH_SNAPSHOT_FETCHED_AT
       : JUNE_SNAPSHOT_FETCHED_AT,
     source_snapshot_generated_at: generatedAt,
+
+    // ── Component fields (from IDU/ODU mapping, display-only) ───────────────
+    outdoor_unit_model: comp.outdoor_unit_model ?? null,
+    idu_model: comp.idu_model ?? null,
+    control_box_model: comp.control_box_model ?? null,
+    tank_model: comp.tank_model ?? null,
+    tower_model: comp.tower_model ?? null,
+    hydraulic_module_model: comp.hydraulic_module_model ?? null,
+    indoor_side_equipment_model: comp.indoor_side_equipment_model ?? null,
   };
 }
 
@@ -264,6 +282,8 @@ if (pending.length > 0) {
 
 const withOverlay = allItems.filter(i => enrichedByBafaId.has(String(i.bafa_id))).length;
 const withoutOverlay = allItems.length - withOverlay;
+const withODU = allItems.filter(i => i.outdoor_unit_model !== null).length;
+const withIDU = allItems.filter(i => i.idu_model !== null).length;
 const lightCommercial = commercial.filter(i => i.market_segment === 'light_commercial').length;
 const commProject = commercial.filter(i => i.market_segment === 'commercial_project').length;
 
@@ -278,6 +298,9 @@ console.log(`  Light Commercial (21-45):  ${lightCommercial}`);
 console.log(`  Commercial Project (>45):  ${commProject}`);
 console.log(`  Commercial total:          ${commercial.length}  → products-commercial.json`);
 console.log(`  Pending (null capacity):   ${pending.length}  → segmentation-pending report`);
+console.log(`Component fields joined from IDU/ODU mapping:`);
+console.log(`  outdoor_unit_model:  ${withODU}`);
+console.log(`  idu_model:           ${withIDU}`);
 console.log(`Field count:          ${fieldCount} ✓`);
 console.log(`No price keys:        ✓`);
 console.log(`Provenance complete:  ✓`);

@@ -14,7 +14,7 @@
 
 import React, { useRef, useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import { HeatPump } from '../types';
-import { getDisplayName, getInstallationTypeDisplay, fmtGridReady } from '../utils/displayHelpers';
+import { getDisplayName, getInstallationTypeDisplay, fmtGridReady, truncateChars, truncateWords, buildComponentLines } from '../utils/displayHelpers';
 
 interface ResultsTableProps {
   data: HeatPump[];
@@ -29,7 +29,10 @@ interface ResultsTableProps {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 /** Max visible characters for model name before truncation (spaces count). */
-const MODEL_MAX_CHARS = 25;
+const MODEL_MAX_CHARS = 20;
+
+/** Max words for manufacturer display name before truncation. */
+const MFR_MAX_WORDS = 3;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -276,7 +279,10 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
               const rowBg = isSelected ? 'bg-blue-50' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50';
 
               const modelStr = item.model || '';
-              const modelTxt = modelStr.length > MODEL_MAX_CHARS ? modelStr.slice(0, MODEL_MAX_CHARS) + '…' : modelStr;
+              const modelTxt = truncateChars(modelStr, MODEL_MAX_CHARS);
+              const displayName = getDisplayName(item);
+              const displayNameTxt = truncateWords(displayName, MFR_MAX_WORDS);
+              const components = buildComponentLines(item);
 
               // Format fields
               const capacity = fmtKw(item.power_35C_kw);
@@ -311,8 +317,8 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                   )}
 
                   {/* Manufacturer — sticky */}
-                  <td className={`px-2 py-1 text-[13px] font-semibold text-gray-900 text-center whitespace-nowrap sticky left-0 z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.06)] ${stickyBg}`}>
-                    {getDisplayName(item)}
+                  <td title={displayName} className={`px-2 py-1 text-[13px] font-semibold text-gray-900 text-center whitespace-nowrap sticky left-0 z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.06)] ${stickyBg}`}>
+                    {displayNameTxt}
                   </td>
 
                   {/* Type — sticky */}
@@ -324,11 +330,21 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                   </td>
 
                   {/* Model — sticky */}
-                  <td style={{ left: modelLeft, maxWidth: '200px' }}
-                    className={`pl-3 pr-2 py-1 text-left align-middle sticky z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.03)] ${stickyBg}`}>
+                  <td style={{ left: modelLeft, maxWidth: '200px', minWidth: '0' }}
+                    className={`pl-3 pr-2 py-1 text-left align-middle sticky z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.03)] overflow-hidden ${stickyBg}`}>
                     <div className="text-[13px] text-blue-600 font-semibold whitespace-nowrap overflow-hidden text-ellipsis" title={item.model}>
                       {modelTxt}
                     </div>
+                    {components.oduLine && (
+                      <div className="text-[10px] text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis mt-0.5 leading-tight" title={components.oduFull ?? undefined}>
+                        {components.oduLine}
+                      </div>
+                    )}
+                    {components.innerLine && (
+                      <div className="text-[10px] text-gray-400 whitespace-nowrap overflow-hidden text-ellipsis leading-tight" title={components.innerLine}>
+                        {components.innerLine}
+                      </div>
+                    )}
                   </td>
 
                   {/* Capacity */}
