@@ -1,8 +1,8 @@
 {
-  "version": "2.4.0",
+  "version": "2.5.0",
   "generated_at": "2026-06-23",
   "source_snapshot": "2026-06",
-  "description": "Manufacturer-specific rules for identifying Indoor Unit (IDU) and Outdoor Unit (ODU) components in BAFA heat pump product registrations. Rules are evaluated in priority order within each manufacturer; first matching rule wins. Confidence scores reflect external manufacturer validation performed 2026-06-21; v2.2.0 schema migration 2026-06-23: VAI-002 role reversal, SAM-001/SAM-002 split, WLF-001 disabled, source_type corrections. v2.3.0 2026-06-23: WLF manufacturer_contains case-bug fixed (Wolf→WOLF), WLF-002 added (20 monoblock), WLF-002→WLF-003 (15 slash), VIE-003 added (85 AWO monoblock). v2.4.0 2026-06-23: LGE-002 regex space-bug fixed (+7 HM monoblock hits), PAN-002 bafa_count corrected (66→7), PAN-003 added (59 bracket-slash split), BUD-002 added (33 MB monoblock+hydraulic module), NIB-002 added (16 standalone AMS/F-series), STI-002 added (18 WPL-A monoblock), WEI-002 added (4 WAB monoblock). Generator: bracket_slash_pan + paren_plus_buderus extractors added; hydraulic_module_model field now populated from extraction.",
+  "description": "Manufacturer-specific rules for identifying Indoor Unit (IDU) and Outdoor Unit (ODU) components in BAFA heat pump product registrations. Rules are evaluated in priority order within each manufacturer; first matching rule wins. Confidence scores reflect external manufacturer validation performed 2026-06-21; v2.2.0 schema migration 2026-06-23: VAI-002 role reversal, SAM-001/SAM-002 split, WLF-001 disabled, source_type corrections. v2.3.0 2026-06-23: WLF manufacturer_contains case-bug fixed (Wolf→WOLF), WLF-002 added (20 monoblock), WLF-002→WLF-003 (15 slash), VIE-003 added (85 AWO monoblock). v2.4.0 2026-06-23: LGE-002 regex space-bug fixed (+7 HM monoblock hits), PAN-002 bafa_count corrected (66→7), PAN-003 added (59 bracket-slash split), BUD-002 added (33 MB monoblock+hydraulic module), NIB-002 added (16 standalone AMS/F-series), STI-002 added (18 WPL-A monoblock), WEI-002 added (4 WAB monoblock). Generator: bracket_slash_pan + paren_plus_buderus extractors added; hydraulic_module_model field now populated from extraction. v2.5.0 2026-06-23: MIT-002 added (713 ECODAN plus-separator split), MIT-003 added (3 PUHZ-W monoblock), MIT-004 added (6 PUZ-WZ standalone outdoor), LGE-003 added (4 HM+HN split), LGE-004 added (6 standalone HM monoblock), SAM-003 added (29 WPLW-Mono), SAM-004 added (4 WPLW-Split), VAI-004 added (10 VWL outdoor), BUD-003 added (6 nested paren MB+hydraulic), BUD-004 added (6 MBE+ nested paren&hydraulic). Generator: paren_plus_buderus_nested + paren_amp_buderus_nested extractors added.",
   "schema_notes": [
     "classification values: confirmed_set | confirmed_not_set | standalone_odu | variant_label | requires_research | unclassified",
     "confidence_score: 0.00–1.00. Internal threshold: 0.90 (high confidence). Display threshold: 0.95.",
@@ -293,6 +293,66 @@
           ],
           "example_model": "LG THERMA V [ HM091MR.U44 ]",
           "validated": true
+        },
+        {
+          "rule_id": "LGE-003",
+          "label": "LG — THERMA V HM + HN plus-separator split package",
+          "manufacturer_contains": "LG Electronics",
+          "model_match": {
+            "type": "regex",
+            "pattern": "HM\\d+\\w*\\s+\\+\\s+HN\\d+"
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.85,
+          "extraction_method": "plus_separator",
+          "odu_label": "HM outdoor heat module",
+          "idu_label": "HN indoor hydrobox unit",
+          "bafa_count_approx": 4,
+          "confidence_cap_applied": "bafa_pattern_analysis_only_confirmed_set: HM+HN plus-separator role assignment inferred from BAFA name pattern and LG naming convention analogy. No dedicated LG EU documentation for this specific HM+HN bracket-free format found. Capped at 0.85.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — LG THERMA V HM + HN plus-separator format",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "4 BAFA products use 'THERMA V HMnnnHF + HNnnnnHY' notation without brackets. The ' + ' separator is consistent with other multi-component BAFA registrations. HM prefix (Heat Module) appears first (ODU position); HN prefix (Hydro Node/indoor unit) appears second (IDU position). Role assignment is inferred from the LG THERMA V naming convention where HM=outdoor-side, HN=indoor-side, analogous to the bracket-plus format captured by LGE-001."
+            }
+          ],
+          "example_model": "THERMA V HM071HF + HN1616HY",
+          "validated": false,
+          "notes": "Applied after LGE-001 (bracket-plus) and LGE-002 (single-bracket). The HM+HN non-bracket format is distinct from LGE-001 ([HU+HN] bracket) and LGE-002 ([HM] single bracket). The 'HF' and 'HY' suffixes indicate capacity/configuration variants. 4 products: HM071HF+HN1616HY, HM073HF+HN1639HY, HM091HF+HN1616HY, HM093HF+HN1639HY."
+        },
+        {
+          "rule_id": "LGE-004",
+          "label": "LG — THERMA V HM standalone monoblock (no brackets, no +)",
+          "manufacturer_contains": "LG Electronics",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "HM"
+            ]
+          },
+          "model_exclude": {
+            "type": "regex",
+            "pattern": "\\[|\\+"
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.90,
+          "extraction_method": "none",
+          "bafa_count_approx": 6,
+          "confidence_cap_applied": "self_describing: HM = HeatMonoblock per LGE-002 evidence. Products without brackets and without '+' are standalone monoblock units. Confidence 0.90.",
+          "evidence": [
+            {
+              "source_type": "manufacturer_official",
+              "title": "LG THERMA V Monobloc — HM (HeatMonoblock) product family (cross-applied from LGE-002)",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "LGE-002 confirms HM prefix = HeatMonoblock (single integrated outdoor unit). This rule captures the same HM monoblock family registered in a non-bracket format 'THERMA V HM051MRS.UA40' without the bracket notation used in LGE-002 '[HM...]'. The standalone (no brackets, no '+') format confirms a single-unit registration."
+            }
+          ],
+          "example_model": "THERMA V HM051MRS.UA40",
+          "validated": true,
+          "notes": "Applied after LGE-001/LGE-002/LGE-003. model_exclude for '[' prevents overlap with LGE-001/LGE-002 (bracket formats); model_exclude for '+' prevents overlap with LGE-003. 6 products: HM051/071/091MRS.UA40 and HM123/143/163MRS.UB40."
         }
       ]
     },
@@ -511,6 +571,69 @@
           "example_model": "Logaplus M WLW176i-10 AR E (Logatherm WLW-10 MB AR + WLW176i-12 E)",
           "validated": false,
           "notes": "BUD-002 placed after BUD-001 (ampersand). model_exclude prevents double-matching with BUD-001 — ampersand products have '&' not '+'. extraction_method paren_plus_buderus: first segment → outdoor_unit_model, second segment → hydraulic_module_model."
+        },
+        {
+          "rule_id": "BUD-003",
+          "label": "Buderus — nested paren MB plus monoblock + hydraulic module (W variant)",
+          "manufacturer_contains": "Buderus",
+          "model_match": {
+            "type": "regex",
+            "pattern": "\\(.*MB.*\\+.*\\(W\\)"
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": ["&"]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.88,
+          "extraction_method": "paren_plus_buderus_nested",
+          "odu_label": "WLW-*MB outdoor monoblock (MB = Monoblock)",
+          "hydraulic_module_label": "WLW indoor hydraulic station/module (with (W) variant option)",
+          "bafa_count_approx": 6,
+          "confidence_cap_applied": "bafa_pattern_analysis_only: same classification logic as BUD-002 but with nested (W) variant option in the hydraulic module code. MB suffix is self-describing for outdoor role. Capped at 0.88. Uses paren_plus_buderus_nested extractor to handle one level of inner paren nesting.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Buderus WLW186i MB + (W) variant nested paren format",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "6 Buderus products use '... (W) (Logatherm WLW-N MB AR + WLW186i-12 E (W))' format where the inner paren group contains a nested '(W)' at the end of the hydraulic module code. BUD-002's [^()] character class fails to match the nested (W). paren_plus_buderus_nested tolerates one level of nested parens. Extraction: odu = 'Logatherm WLW-N MB AR', hydraulic_module = 'WLW186i-12 E (W)'."
+            }
+          ],
+          "example_model": "Logaplus M WLW186i-4 AR E (W) (Logatherm WLW-4 MB AR + WLW186i-12 E (W))",
+          "validated": false,
+          "notes": "BUD-003 placed after BUD-002. The regex \\(.*MB.*\\+.*\\(W\\) specifically targets products with '(W)' inside the outer paren group. BUD-002 naturally fails these due to the nested paren issue."
+        },
+        {
+          "rule_id": "BUD-004",
+          "label": "Buderus — MBE+ paren-ampersand monoblock + hydraulic module (nested W variant)",
+          "manufacturer_contains": "Buderus",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "MBE+",
+              "&"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.88,
+          "extraction_method": "paren_amp_buderus_nested",
+          "odu_label": "WLW-*MBE+ outdoor monoblock enhanced (MBE+ = Monoblock Enhanced)",
+          "hydraulic_module_label": "Logatherm WLW indoor hydraulic station (with (W) variant option)",
+          "bafa_count_approx": 6,
+          "confidence_cap_applied": "bafa_pattern_analysis_only: MBE+ suffix indicates enhanced monoblock outdoor unit. Ampersand separator analogous to BUD-001. Nested (W) inside paren group requires paren_amp_buderus_nested extractor. Capped at 0.88.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Buderus WLW186i MBE+ ampersand nested paren format",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "6 Buderus products use 'Logaplus WLW186i-N MBE+ AR (WLW-N MBE+ AR & Logatherm WLW186i.2 E (W))' format. MBE+ = MB Enhanced outdoor monoblock. The ampersand separates outdoor (WLW-N MBE+ AR) from indoor hydraulic module (Logatherm WLW186i.2 E (W)). The nested (W) breaks BUD-001's [^()] class. paren_amp_buderus_nested handles one level of nesting."
+            }
+          ],
+          "example_model": "Logaplus WLW186i-11 MBE+ AR E (WLW-11 MBE+ AR & Logatherm WLW186i.2 E (W))",
+          "validated": false,
+          "notes": "6 products: WLW186i-11/13/15 MBE+ AR E/TP variants. BUD-004 placed after BUD-003. paren_amp_buderus_nested: outer paren group split at ' & ', first segment → odu, second → hydraulic_module."
         }
       ]
     },
@@ -590,6 +713,63 @@
           ],
           "example_model": "AE080BXYDGG/EU + MIM-E03FN",
           "validated": true
+        },
+        {
+          "rule_id": "SAM-003",
+          "label": "Samsung Klimatechnik — WPLW-Mono monoblock outdoor unit (self-describing name)",
+          "manufacturer_contains": "Samsung Klimatechnik",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "WPLW-",
+              "Mono"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.90,
+          "extraction_method": "none",
+          "bafa_count_approx": 29,
+          "confidence_cap_applied": "self_describing: 'Mono' keyword in BAFA product name directly indicates monoblock configuration. Applied after SAM-001 (plus-separator) and SAM-002 (MIM-E03). Samsung WPLW-Hub Mono and WPLW-Hydro Mono and WPLW-Mono product families all carry the Mono designation. Confidence 0.90.",
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA registration name contains literal 'Mono' keyword within WPLW- product family",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Samsung Klimatechnik registers monoblock heat pumps under WPLW- product families (WPLW-Hub Mono, WPLW-Hydro Mono, WPLW-Mono). The word 'Mono' is an explicit monoblock designation in the BAFA name. No '+' separator is present — these are single-unit registrations. The whole BAFA name functions as the outdoor monoblock product identifier."
+            }
+          ],
+          "example_model": "WPLW-Mono HT R290-12-RE-KA",
+          "validated": true,
+          "notes": "29 products: 8 WPLW-Hub Mono, 7 WPLW-Hydro Mono, 14 WPLW-Mono HT. All contain 'WPLW-' and 'Mono'. model classification as confirmed_not_set (outdoor_unit_model = item.model). Does not match WPLW-Split products (caught by SAM-004)."
+        },
+        {
+          "rule_id": "SAM-004",
+          "label": "Samsung Klimatechnik — WPLW-Split package label (no extractable component codes)",
+          "manufacturer_contains": "Samsung Klimatechnik",
+          "model_match": {
+            "type": "contains_all",
+            "patterns": [
+              "WPLW-",
+              "Split"
+            ]
+          },
+          "classification": "variant_label",
+          "confidence_score": 0.85,
+          "extraction_method": "none",
+          "bafa_count_approx": 4,
+          "confidence_cap_applied": "bafa_pattern_analysis_only: 'Split' keyword in BAFA product name indicates split-type heat pump system. No extractable ODU/IDU model codes in the registration name. Classification as variant_label (package bundle label). Capped at 0.85.",
+          "evidence": [
+            {
+              "source_type": "bafa_pattern_analysis",
+              "title": "BAFA master seed pattern analysis — Samsung WPLW-Split product family",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "4 BAFA products: WPLW-Hub Split HT R32-12-200-3A, WPLW-Hub Split HT R32-16-200-3A, WPLW-Hydro Split HT R32-12-160-3AI, WPLW-Hydro Split HT R32-16-160-3A. The 'Split' keyword confirms split heat pump system but no individual ODU or IDU model codes are embedded in the name. Registered as complete system bundle labels."
+            }
+          ],
+          "example_model": "WPLW-Hub Split HT R32-12-200-3A",
+          "validated": false
         }
       ]
     },
@@ -879,6 +1059,40 @@
           ],
           "example_model": "aroTHERM plus VWL 105/6 (A/S2)",
           "validated": true
+        },
+        {
+          "rule_id": "VAI-004",
+          "label": "Vaillant — VWL outdoor unit (aroTHERM pro, recoCOMPACT, versoTHERM, standalone VWL)",
+          "manufacturer_contains": "Vaillant",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "VWL"
+            ]
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.88,
+          "extraction_method": "none",
+          "bafa_count_approx": 10,
+          "confidence_cap_applied": "self_describing: VWL = Vaillant Wärmepumpe Luft (air-source heat pump) outdoor unit. Products without '+' are registered without a paired indoor unit in this BAFA entry. model_exclude prevents overlap with VAI-001 (aroTHERM Split with + separator). Applied after VAI-001/VAI-002/VAI-003. Confidence 0.88.",
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "Vaillant VWL product naming — VWL = Vaillant Wärmepumpe Luft (outdoor air-source heat pump)",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Vaillant uses VWL (Vaillant Wärmepumpe Luft) as the product code for outdoor air-source heat pump units across multiple product families: aroTHERM pro, recoCOMPACT exclusive, versoTHERM plus, and standalone VWL. Products without '+' are registered as single outdoor units (monoblock or standalone). The '/N.N' notation in some models (e.g. VWL 115/7.1) is a capacity/generation variant code, not an ODU/IDU separator."
+            }
+          ],
+          "example_model": "aroTHERM pro VWL 75/7.1 (A/230V)",
+          "validated": true,
+          "notes": "10 products: 3 aroTHERM pro VWL, 3 recoCOMPACT exclusive VWL, 3 versoTHERM plus VWL, 1 VWL 55/8.2 AS with Hydraulic Station. Applied after VAI-003 (aroTHERM plus/perform). model_exclude '+' prevents overlap with VAI-001. Variant '/N.N' codes in product names (VWL 115/7.1) are correctly not treated as set separators (consistent with DAI-001 and MIT-001 slash=variant policy). The 'with Hydraulic Station' product is classified as confirmed_not_set since the VWL outdoor unit is the primary BAFA registration subject."
         }
       ]
     },
@@ -1394,6 +1608,103 @@
           ],
           "example_model": "PUHZ-SHW80VHA/PUHZ-SHW80VHA-BS",
           "validated": true
+        },
+        {
+          "rule_id": "MIT-002",
+          "label": "Mitsubishi Electric — ECODAN plus-separator split package (ODU + IDU)",
+          "manufacturer_contains": "Mitsubishi Electric",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              " + "
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.95,
+          "extraction_method": "plus_separator",
+          "odu_label": "PUD/PUZ/PUHZ/SUZ ECODAN outdoor unit",
+          "idu_label": "EHS/ERS/EHP/ERP/EHST/ERST indoor-side unit (cylinder or hydrobox)",
+          "bafa_count_approx": 713,
+          "evidence": [
+            {
+              "source_type": "third_party",
+              "title": "ShopClima: Ecodan Split System — ERSC-VM2B + PUHZ-SHW80VHA set notation (confirmed ODU/IDU roles)",
+              "url": "https://www.shopclima.it/en/mitsubishi-electric-ecodan-split-system-hydrobox-zubadan-ersc-vm2b-puhz-shw80vha.html",
+              "accessed_at": "2026-06-21",
+              "what_it_proves": "Mitsubishi ECODAN split set uses ' + ' notation: indoor cylinder/hydrobox (ERS/EHS prefix) + outdoor unit (PUHZ/PUZ prefix). Role order in BAFA BAFA names is [ODU] + [IDU]: PUD/PUZ/PUHZ/SUZ code before ' + ', EHS/ERS/EHP/ERP code after ' + '. Cross-references MIT-001 evidence: '/' = variant, '+' = set separator. Confidence 0.95."
+            }
+          ],
+          "example_model": "PUD-SHWM100YAA + EHSD-MED",
+          "validated": true,
+          "notes": "Applied after MIT-001 (slash=variant_label). All 713 Mitsubishi BAFA products with ' + ' (space-plus-space) are split packages. ODU families: PUD-SHWM/SWM, PUHZ-SHW/SW, PUZ-SHWM/SWM/WM/WZ/HWM, SUZ-SWM. IDU families: EHSD/EHSC/EHST (cylinder indoor), ERSD/ERSC/ERST/ERST (hydrobox), ERPT/EHPT/ERPX (pump type). The 1 model with both '/' and '+' is already captured by MIT-001."
+        },
+        {
+          "rule_id": "MIT-003",
+          "label": "Mitsubishi Electric — PUHZ-W standalone packaged/monobloc outdoor unit",
+          "manufacturer_contains": "Mitsubishi Electric",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "PUHZ-W"
+            ]
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+",
+              "/"
+            ]
+          },
+          "classification": "confirmed_not_set",
+          "confidence_score": 0.92,
+          "extraction_method": "none",
+          "bafa_count_approx": 3,
+          "confidence_cap_applied": "self_describing: PUHZ-W designation per Mitsubishi technical documentation indicates Packaged/Monobloc outdoor unit (W = without separate indoor unit). model_exclude prevents overlap with MIT-001/MIT-002.",
+          "evidence": [
+            {
+              "source_type": "third_party",
+              "title": "Manufacturer technical report — PUHZ-W = Packaged / Monobloc outdoor main unit",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Mitsubishi ECODAN PUHZ-W series (PUHZ-W60VAA, PUHZ-W85(V)YAA, PUHZ-W112(V)YAA) are registered as standalone outdoor packaged/monobloc units with no separate indoor unit in this BAFA entry. The '-W' designation indicates a packaged outdoor configuration where the refrigerant cycle is self-contained outdoors."
+            }
+          ],
+          "example_model": "PUHZ-W85(V)YAA",
+          "validated": true,
+          "notes": "Only 3 BAFA products: PUHZ-W60VAA, PUHZ-W85(V)YAA, PUHZ-W112(V)YAA. Applied after MIT-001 (slash) and MIT-002 (plus). PUHZ-W contains 'PUHZ-W' but NOT 'PUHZ-SW' or 'PUHZ-SHW' (different prefix characters). model_exclude guards against + and / products already handled by earlier rules."
+        },
+        {
+          "rule_id": "MIT-004",
+          "label": "Mitsubishi Electric — PUZ-WZ standalone split outdoor unit (registered without IDU)",
+          "manufacturer_contains": "Mitsubishi Electric",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "PUZ-WZ"
+            ]
+          },
+          "model_exclude": {
+            "type": "contains_any",
+            "patterns": [
+              "+"
+            ]
+          },
+          "classification": "standalone_odu",
+          "confidence_score": 0.92,
+          "extraction_method": "none",
+          "bafa_count_approx": 6,
+          "evidence": [
+            {
+              "source_type": "third_party",
+              "title": "Manufacturer technical report — PUZ-WZ outdoor split unit, registered standalone in BAFA",
+              "url": null,
+              "accessed_at": "2026-06-23",
+              "what_it_proves": "Mitsubishi PUZ-WZ series appears both as standalone outdoor unit (PUZ-WZ100VAA(-BS)) and paired with EHP/ERP indoor units (PUZ-WZ100VAA(-BS) + EHPT20X-YM9E). The 6 standalone BAFA entries register the outdoor split unit without a paired indoor unit in the same registration. '-BS' = Bivalent System option code."
+            }
+          ],
+          "example_model": "PUZ-WZ100VAA(-BS)",
+          "validated": true,
+          "notes": "6 standalone products: PUZ-WZ50/60/80/85/100/120 (VAA/YAA) (-BS) variants. Applied after MIT-001/MIT-002. model_exclude for '+' prevents overlap with MIT-002 (PUZ-WZ products that appear paired with EHP/ERP indoor units)."
         }
       ]
     },

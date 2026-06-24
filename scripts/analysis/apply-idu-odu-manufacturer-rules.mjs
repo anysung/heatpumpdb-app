@@ -199,6 +199,37 @@ const EXTRACTORS = {
     return null;
   },
 
+  // Buderus paren-plus with nested inner (W) group: (MB_ODU + hydraulic_module (W))
+  // Tolerates one level of inner parens so BUD-003 can extract from names like
+  // "... (Logatherm WLW-4 MB AR + WLW186i-12 E (W))"
+  paren_plus_buderus_nested(model) {
+    const nested = /\(([^()]*(?:\([^()]*\))*[^()]*)\)/g;
+    const matches = [...model.matchAll(nested)].reverse();
+    for (const m of matches) {
+      const inner = m[1];
+      const plusIdx = inner.indexOf(' + ');
+      if (plusIdx !== -1 && inner.includes('MB')) {
+        return { odu: inner.slice(0, plusIdx).trim(), idu: null, hydraulic_module: inner.slice(plusIdx + 3).trim() };
+      }
+    }
+    return null;
+  },
+
+  // Buderus MBE+ paren-ampersand with nested inner (W) group: (MBE+_ODU & hydraulic_module (W))
+  // For products like "... (WLW-11 MBE+ AR & Logatherm WLW186i.2 E (W))"
+  paren_amp_buderus_nested(model) {
+    const nested = /\(([^()]*(?:\([^()]*\))*[^()]*)\)/g;
+    const matches = [...model.matchAll(nested)].reverse();
+    for (const m of matches) {
+      const inner = m[1];
+      const ampIdx = inner.indexOf(' & ');
+      if (ampIdx !== -1 && (inner.includes('MBE') || inner.includes('MB'))) {
+        return { odu: inner.slice(0, ampIdx).trim(), idu: null, hydraulic_module: inner.slice(ampIdx + 3).trim() };
+      }
+    }
+    return null;
+  },
+
   // Panasonic bracket-slash split set [IDU / ODU].
   // Format: [WH-ADC.../WH-SDC... / WH-UDZ.../WH-WDG.../WH-UXZ...]
   // Position 1 (before /) = IDU (indoor hydrobox: ADC/SDC/SXC prefix)
