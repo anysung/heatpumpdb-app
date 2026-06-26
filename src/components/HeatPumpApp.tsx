@@ -61,7 +61,7 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
   // Active search config based on segment
   const searchConfig: SearchConfig = searchSegment === 'commercial' ? commercialConfig : residentialConfig;
 
-  // Top 20 manufacturers by product count for the current segment
+  // Top 25 manufacturers by product count for the current segment
   const top20Manufacturers = useMemo(() => {
     const ALIASES: Record<string, string> = {
       'GD TCL Intelligent Heating & Ventilating Equipment Co., Ltd.': 'GD TCL',
@@ -77,7 +77,7 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
     }
     return Array.from(counts.entries())
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 20)
+      .slice(0, 25)
       .map(([label, count]) => ({ label, count }));
   }, [dbData, searchSegment]);
 
@@ -140,7 +140,9 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
       // Brand filter — substring match
       if (selectedBrand) {
         const brandLower = selectedBrand.toLowerCase();
-        filtered = filtered.filter((item: HeatPump) => item.manufacturer.toLowerCase().includes(brandLower));
+        filtered = filtered.filter((item: HeatPump) =>
+          (item.manufacturer_short || item.manufacturer).toLowerCase() === brandLower
+        );
       }
 
       // Capacity range filter — uses config's parser
@@ -471,7 +473,7 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
                 <div className="bg-white px-3 py-2 rounded-lg shadow-sm border border-gray-200">
                   <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                     {t.filterManufacturer}
-                    <span className="ml-1.5 text-gray-300 font-normal normal-case">top 20</span>
+                    <span className="ml-1.5 text-gray-300 font-normal normal-case">top 25</span>
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
                     {top20Manufacturers.map(({ label, count }) => (
