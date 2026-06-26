@@ -14,7 +14,7 @@
 
 import React, { useRef, useState, useEffect, useCallback, useLayoutEffect, useMemo } from 'react';
 import { HeatPump } from '../types';
-import { getDisplayName, getInstallationTypeDisplay, fmtGridReady, truncateChars, truncateWords, getPercentileLength, truncateByDynamicLimit, buildModelCardComponentData } from '../utils/displayHelpers';
+import { getDisplayName, getInstallationTypeDisplay, fmtGridReady, truncateChars, truncateWords, getPercentileLength, truncateByDynamicLimit } from '../utils/displayHelpers';
 
 interface ResultsTableProps {
   data: HeatPump[];
@@ -241,7 +241,7 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
               )}
               {/* Manufacturer — sticky top + left, compact width */}
               <th ref={mfrThRef}
-                style={{ width: '130px', maxWidth: '150px', minWidth: '110px' }}
+                style={{ width: '195px', maxWidth: '225px', minWidth: '165px' }}
                 className={`${TH_BASE} text-center text-gray-600 sticky top-0 left-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.08)] overflow-hidden`}>
                 {labels.colManufacturer}
               </th>
@@ -251,11 +251,15 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                 className={`${TH_BASE} text-gray-500 sticky top-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.06)]`}>
                 {labels.colInstallType || 'Type'}
               </th>
-              {/* Model — sticky top + left, card layout */}
-              <th style={{ left: modelLeft, width: '380px', minWidth: '380px' }}
+              {/* BAFA Model — sticky top + left */}
+              <th style={{ left: modelLeft, width: '220px', minWidth: '180px', maxWidth: '260px' }}
                 className={`${TH_BASE} text-gray-500 text-center sticky top-0 z-40 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.05)]`}>
-                {labels.colModel}
+                BAFA MODEL
               </th>
+              {/* ODU column */}
+              <th className={`${TH_BASE} text-orange-600 bg-orange-50 sticky top-0 z-30`} style={{ minWidth: '140px' }}>ODU</th>
+              {/* IDU & Others column */}
+              <th className={`${TH_BASE} text-blue-600 bg-blue-50 sticky top-0 z-30`} style={{ minWidth: '170px' }}>IDU & Others</th>
               {/* Scrollable columns */}
               <th className={`${TH_BASE} text-gray-500 sticky top-0 z-30`}>{labels.colCapacity}</th>
               <th className={`${TH_BASE} text-gray-500 sticky top-0 z-30`}>{labels.colRefrigerant}</th>
@@ -288,7 +292,15 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
               const modelTxt = truncateByDynamicLimit(modelStr, modelCharLimit);
               const displayName = getDisplayName(item);
               const displayNameTxt = truncateWords(displayName, MFR_MAX_WORDS);
-              const modelCard = buildModelCardComponentData(item);
+              // ODU & IDU component data for dedicated columns
+              const oduModel = item.outdoor_side_display_model ?? item.outdoor_unit_model ?? null;
+              const indoorComponents: Array<{ label: string; labelCls: string; value: string }> = [];
+              if (item.idu_model)                   indoorComponents.push({ label: 'IDU',       labelCls: 'text-blue-500',  value: item.idu_model });
+              if (item.control_box_model)           indoorComponents.push({ label: 'Cont. Unit', labelCls: 'text-teal-500',  value: item.control_box_model });
+              if (item.tank_model)                  indoorComponents.push({ label: 'Tank',       labelCls: 'text-purple-500', value: item.tank_model });
+              if (item.tower_model)                 indoorComponents.push({ label: 'Tower',      labelCls: 'text-gray-500',  value: item.tower_model });
+              if (item.hydraulic_module_model)      indoorComponents.push({ label: 'Hyd. Unit',  labelCls: 'text-green-500', value: item.hydraulic_module_model });
+              if (item.indoor_side_equipment_model) indoorComponents.push({ label: 'Indoor Eq.', labelCls: 'text-gray-500',  value: item.indoor_side_equipment_model });
 
               // Format fields
               const capacity = fmtKw(item.power_35C_kw);
@@ -324,7 +336,7 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
 
                   {/* Manufacturer — sticky, compact width */}
                   <td title={displayName}
-                    style={{ width: '130px', maxWidth: '150px', minWidth: '110px' }}
+                    style={{ width: '195px', maxWidth: '225px', minWidth: '165px' }}
                     className={`px-2 py-1 text-[13px] font-semibold text-gray-900 text-center whitespace-nowrap overflow-hidden text-ellipsis sticky left-0 z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.06)] ${stickyBg}`}>
                     {displayNameTxt}
                   </td>
@@ -337,51 +349,45 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                     </span>
                   </td>
 
-                  {/* Model — sticky, 3-row card: MODEL header / BAFA name / component row */}
-                  <td style={{ left: modelLeft, width: '380px', minWidth: '380px' }}
-                    className={`py-1 px-2 align-middle sticky z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.03)] ${stickyBg}`}>
-                    <div className="border border-gray-200 rounded overflow-hidden bg-white">
-                      {/* Row 1: MODEL header */}
-                      <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center py-0.5 bg-gray-50 border-b border-gray-100 leading-none">
-                        MODEL
-                      </div>
-                      {/* Row 2: BAFA registered model name */}
-                      <div
-                        className="text-[12px] text-blue-600 font-semibold text-center whitespace-nowrap overflow-hidden text-ellipsis px-2 py-0.5 leading-snug"
-                        title={item.model}
+                  {/* BAFA Model — sticky, plain text only */}
+                  <td style={{ left: modelLeft, width: '220px', minWidth: '180px', maxWidth: '260px' }}
+                    className={`px-2 py-1 align-middle text-center sticky z-20 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.03)] ${stickyBg}`}>
+                    <span
+                      className="text-[12px] text-blue-600 font-semibold whitespace-nowrap overflow-hidden text-ellipsis block"
+                      title={item.model}
+                    >
+                      {modelTxt}
+                    </span>
+                  </td>
+
+                  {/* ODU */}
+                  <td className={`${TD_BASE} bg-orange-50/20`} style={{ minWidth: '140px' }}>
+                    {oduModel ? (
+                      <span
+                        className="text-[12px] text-gray-700 font-medium block text-center leading-snug"
+                        title={oduModel}
                       >
-                        {modelTxt}
+                        {truncateChars(oduModel, 20)}
+                      </span>
+                    ) : (
+                      <span className="text-gray-300 text-[12px]">—</span>
+                    )}
+                  </td>
+
+                  {/* IDU & Others */}
+                  <td className={`${TD_BASE} bg-blue-50/20`} style={{ minWidth: '170px' }}>
+                    {indoorComponents.length > 0 ? (
+                      <div className="flex flex-col gap-0.5 items-center">
+                        {indoorComponents.map((comp, i) => (
+                          <div key={i} className="flex items-baseline gap-1 whitespace-nowrap" title={comp.value}>
+                            <span className={`text-[9px] font-bold ${comp.labelCls} shrink-0`}>{comp.label}</span>
+                            <span className="text-[11px] text-gray-700">{truncateChars(comp.value, 18)}</span>
+                          </div>
+                        ))}
                       </div>
-                      {/* Row 3: Component row — ODU left, first indoor right */}
-                      {modelCard.hasComponents && (
-                        <div className="border-t border-gray-100 flex divide-x divide-gray-100">
-                          <div
-                            className="flex-1 min-w-0 px-1.5 py-0.5 overflow-hidden whitespace-nowrap"
-                            title={modelCard.oduValue ?? undefined}
-                          >
-                            {modelCard.oduValue ? (
-                              <span className="text-[9px] text-gray-600 overflow-hidden text-ellipsis block">
-                                <span className="font-bold text-orange-500">ODU</span>
-                                <span className="text-gray-400"> : </span>
-                                {truncateChars(modelCard.oduValue, 18)}
-                              </span>
-                            ) : null}
-                          </div>
-                          <div
-                            className="flex-1 min-w-0 px-1.5 py-0.5 overflow-hidden whitespace-nowrap"
-                            title={modelCard.allIndoorTitle ?? undefined}
-                          >
-                            {modelCard.indoorLabel && modelCard.indoorValue ? (
-                              <span className="text-[9px] text-gray-600 overflow-hidden text-ellipsis block">
-                                <span className="font-bold text-blue-400">{modelCard.indoorLabel}</span>
-                                <span className="text-gray-400"> : </span>
-                                {truncateChars(modelCard.indoorValue, 18)}
-                              </span>
-                            ) : null}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    ) : (
+                      <span className="text-gray-300 text-[12px]">—</span>
+                    )}
                   </td>
 
                   {/* Capacity */}

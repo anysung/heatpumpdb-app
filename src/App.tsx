@@ -163,6 +163,7 @@ const App: React.FC = () => {
 
   if (authLoading) return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-400">Loading App...</div>;
 
+
   // ... (Return JSX - Keep exactly the same structure as before) ...
   // I am omitting the full JSX here for brevity as it hasn't changed, just the data loading logic above.
   // Please ensure you keep the full JSX for LANDING, LOGIN, SIGNUP, APP, ADMIN_DASHBOARD.

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchHeatPumps } from '../services/geminiService';
 import { logActivity } from '../services/authService';
 import { HeatPump, InstallationType, FetchState, User, Language, AppMode, HeatPumpDatabase } from '../types';
@@ -60,6 +60,26 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
 
   // Active search config based on segment
   const searchConfig: SearchConfig = searchSegment === 'commercial' ? commercialConfig : residentialConfig;
+
+  // Top 20 manufacturers by product count for the current segment
+  const top20Manufacturers = useMemo(() => {
+    const ALIASES: Record<string, string> = {
+      'GD TCL Intelligent Heating & Ventilating Equipment Co., Ltd.': 'GD TCL',
+    };
+    const source = searchSegment === 'commercial'
+      ? (dbData?.commercialProducts || [])
+      : (dbData?.products || []);
+    const counts = new Map<string, number>();
+    for (const item of source) {
+      const raw = item.manufacturer_short || item.manufacturer;
+      const label = ALIASES[raw] ?? raw;
+      counts.set(label, (counts.get(label) || 0) + 1);
+    }
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([label, count]) => ({ label, count }));
+  }, [dbData, searchSegment]);
 
   // Source dataset for current segment
   const getSourceProducts = useCallback((): HeatPump[] => {
@@ -447,12 +467,22 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
 
               {/* ── Config-Driven Filters ──────────────────────────────── */}
               <section className="mb-2 space-y-1.5">
-                {/* Row 1 — Manufacturer */}
+                {/* Row 1 — Manufacturer (top 20 by product count) */}
                 <div className="bg-white px-3 py-2 rounded-lg shadow-sm border border-gray-200">
-                  <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">{t.filterManufacturer}</h3>
+                  <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                    {t.filterManufacturer}
+                    <span className="ml-1.5 text-gray-300 font-normal normal-case">top 20</span>
+                  </h3>
                   <div className="flex flex-wrap gap-1.5">
-                    {searchConfig.manufacturers.map((brand) => (
-                      <FilterBadge key={brand} label={brand} isActive={selectedBrand === brand} onClick={() => setSelectedBrand(selectedBrand === brand ? null : brand)} />
+                    {top20Manufacturers.map(({ label, count }) => (
+                      <FilterBadge
+                        key={label}
+                        label={label}
+                        count={count}
+                        compact
+                        isActive={selectedBrand === label}
+                        onClick={() => setSelectedBrand(selectedBrand === label ? null : label)}
+                      />
                     ))}
                   </div>
                 </div>
