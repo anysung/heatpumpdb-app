@@ -250,6 +250,38 @@ const EXTRACTORS = {
     return { odu: m[1].trim(), idu: null, hydraulic_module: m[2].trim() };
   },
 
+  // Extracts OU: / IU: or IU: / OU: (or UI: typo variant) explicit labels from BAFA model name.
+  // Handles all separator variants: ' + ', ' ; ', ';', '\t', no space.
+  // Example: "OU: HPM-V120W/SR3-B + IU: HM-90/DM" → {odu: "HPM-V120W/SR3-B", idu: "HM-90/DM"}
+  //          "IU: STN1-C01 ; OU: STU3-C16R290"     → {odu: "STU3-C16R290",    idu: "STN1-C01"}
+  ou_iu_markers(model) {
+    const ouRe = /\bOU\s*:\s*([A-Za-z0-9][A-Za-z0-9\-\/._()]*)/i;
+    const iuRe = /\b(?:IU|UI)\s*:\s*([A-Za-z0-9][A-Za-z0-9\-\/._()]*)/i;
+    const ouM = model.match(ouRe);
+    const iuM = model.match(iuRe);
+    if (!ouM && !iuM) return null;
+    return {
+      odu: ouM ? ouM[1].trim() : null,
+      idu: iuM ? iuM[1].trim() : null,
+    };
+  },
+
+  // Extracts "Indoor unit:" / "Outdoor unit:" (or "Outdoor uni:" typo) labels from BAFA model name.
+  // Example: "Indoor unit:ACHP-H04/4R3HA-I Outdoor unit:ACHP-H04/4R3HA-O"
+  //        → {odu: "ACHP-H04/4R3HA-O", idu: "ACHP-H04/4R3HA-I"}
+  // Tolerates the "Outdoor uni:" typo variant present in 10 of 12 AUX ACHP-H R3 products.
+  indoor_outdoor_unit_label(model) {
+    const outdoorRe = /outdoor\s*uni(?:t)?\s*:([A-Za-z0-9][A-Za-z0-9\-\/._()]*)/i;
+    const indoorRe  = /indoor\s*uni(?:t)?\s*:([A-Za-z0-9][A-Za-z0-9\-\/._()]*)/i;
+    const outM = model.match(outdoorRe);
+    const inM  = model.match(indoorRe);
+    if (!outM && !inM) return null;
+    return {
+      odu: outM ? outM[1].trim() : null,
+      idu: inM  ? inM[1].trim()  : null,
+    };
+  },
+
   none() { return null; },
 };
 

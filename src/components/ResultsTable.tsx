@@ -14,7 +14,7 @@
 
 import React, { useRef, useState, useEffect, useCallback, useLayoutEffect, useMemo } from 'react';
 import { HeatPump } from '../types';
-import { getDisplayName, getInstallationTypeDisplay, fmtGridReady, truncateChars, truncateWords, getPercentileLength, truncateByDynamicLimit } from '../utils/displayHelpers';
+import { getDisplayName, getInstallationTypeDisplay, fmtGridReady, truncateChars, truncateWords, getPercentileLength, truncateByDynamicLimit, compactComponentDisplayValue } from '../utils/displayHelpers';
 
 interface ResultsTableProps {
   data: HeatPump[];
@@ -367,7 +367,7 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                         className="text-[12px] text-gray-700 font-medium block text-center leading-snug"
                         title={oduModel}
                       >
-                        {truncateChars(oduModel, 20)}
+                        {truncateChars(compactComponentDisplayValue(oduModel, item.model), 20)}
                       </span>
                     ) : (
                       <span className="text-gray-300 text-[12px]">—</span>
@@ -381,7 +381,7 @@ export const ResultsTable: React.FC<ResultsTableProps> = ({
                         {indoorComponents.map((comp, i) => (
                           <div key={i} className="flex items-baseline gap-1 whitespace-nowrap" title={comp.value}>
                             <span className={`text-[9px] font-bold ${comp.labelCls} shrink-0`}>{comp.label}</span>
-                            <span className="text-[11px] text-gray-700">{truncateChars(comp.value, 18)}</span>
+                            <span className="text-[11px] text-gray-700">{truncateChars(compactComponentDisplayValue(comp.value, item.model), 18)}</span>
                           </div>
                         ))}
                       </div>

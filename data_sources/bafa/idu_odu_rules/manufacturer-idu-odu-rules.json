@@ -1,8 +1,8 @@
 {
-  "version": "2.5.0",
+  "version": "2.6.0",
   "generated_at": "2026-06-23",
   "source_snapshot": "2026-06",
-  "description": "Manufacturer-specific rules for identifying Indoor Unit (IDU) and Outdoor Unit (ODU) components in BAFA heat pump product registrations. Rules are evaluated in priority order within each manufacturer; first matching rule wins. Confidence scores reflect external manufacturer validation performed 2026-06-21; v2.2.0 schema migration 2026-06-23: VAI-002 role reversal, SAM-001/SAM-002 split, WLF-001 disabled, source_type corrections. v2.3.0 2026-06-23: WLF manufacturer_contains case-bug fixed (Wolf→WOLF), WLF-002 added (20 monoblock), WLF-002→WLF-003 (15 slash), VIE-003 added (85 AWO monoblock). v2.4.0 2026-06-23: LGE-002 regex space-bug fixed (+7 HM monoblock hits), PAN-002 bafa_count corrected (66→7), PAN-003 added (59 bracket-slash split), BUD-002 added (33 MB monoblock+hydraulic module), NIB-002 added (16 standalone AMS/F-series), STI-002 added (18 WPL-A monoblock), WEI-002 added (4 WAB monoblock). Generator: bracket_slash_pan + paren_plus_buderus extractors added; hydraulic_module_model field now populated from extraction. v2.5.0 2026-06-23: MIT-002 added (713 ECODAN plus-separator split), MIT-003 added (3 PUHZ-W monoblock), MIT-004 added (6 PUZ-WZ standalone outdoor), LGE-003 added (4 HM+HN split), LGE-004 added (6 standalone HM monoblock), SAM-003 added (29 WPLW-Mono), SAM-004 added (4 WPLW-Split), VAI-004 added (10 VWL outdoor), BUD-003 added (6 nested paren MB+hydraulic), BUD-004 added (6 MBE+ nested paren&hydraulic). Generator: paren_plus_buderus_nested + paren_amp_buderus_nested extractors added.",
+  "description": "Manufacturer-specific rules for identifying Indoor Unit (IDU) and Outdoor Unit (ODU) components in BAFA heat pump product registrations. Rules are evaluated in priority order within each manufacturer; first matching rule wins. Confidence scores reflect external manufacturer validation performed 2026-06-21; v2.2.0 schema migration 2026-06-23: VAI-002 role reversal, SAM-001/SAM-002 split, WLF-001 disabled, source_type corrections. v2.3.0 2026-06-23: WLF manufacturer_contains case-bug fixed (Wolf→WOLF), WLF-002 added (20 monoblock), WLF-002→WLF-003 (15 slash), VIE-003 added (85 AWO monoblock). v2.4.0 2026-06-23: LGE-002 regex space-bug fixed (+7 HM monoblock hits), PAN-002 bafa_count corrected (66→7), PAN-003 added (59 bracket-slash split), BUD-002 added (33 MB monoblock+hydraulic module), NIB-002 added (16 standalone AMS/F-series), STI-002 added (18 WPL-A monoblock), WEI-002 added (4 WAB monoblock). Generator: bracket_slash_pan + paren_plus_buderus extractors added; hydraulic_module_model field now populated from extraction. v2.5.0 2026-06-23: MIT-002 added (713 ECODAN plus-separator split), MIT-003 added (3 PUHZ-W monoblock), MIT-004 added (6 PUZ-WZ standalone outdoor), LGE-003 added (4 HM+HN split), LGE-004 added (6 standalone HM monoblock), SAM-003 added (29 WPLW-Mono), SAM-004 added (4 WPLW-Split), VAI-004 added (10 VWL outdoor), BUD-003 added (6 nested paren MB+hydraulic), BUD-004 added (6 MBE+ nested paren&hydraulic). Generator: paren_plus_buderus_nested + paren_amp_buderus_nested extractors added. v2.6.0 2026-06-27: AUX-002 added (12 Ningbo AUX ACHP-H R3 explicit Indoor/Outdoor unit label split sets, before AUX-001); SHE manufacturer group added (11 Shenling HPM/HPS explicit OU:/IU: split sets); SOL manufacturer group added (30 Solax STU/STN explicit IU:/OU: split sets). New extractors: ou_iu_markers (handles OU:/IU:/UI: with any separator), indoor_outdoor_unit_label (handles Indoor unit:/Outdoor unit: with Outdoor uni: typo tolerance).",
   "schema_notes": [
     "classification values: confirmed_set | confirmed_not_set | standalone_odu | variant_label | requires_research | unclassified",
     "confidence_score: 0.00–1.00. Internal threshold: 0.90 (high confidence). Display threshold: 0.95.",
@@ -337,7 +337,7 @@
             "pattern": "\\[|\\+"
           },
           "classification": "confirmed_not_set",
-          "confidence_score": 0.90,
+          "confidence_score": 0.9,
           "extraction_method": "none",
           "bafa_count_approx": 6,
           "confidence_cap_applied": "self_describing: HM = HeatMonoblock per LGE-002 evidence. Products without brackets and without '+' are standalone monoblock units. Confidence 0.90.",
@@ -553,7 +553,7 @@
             "pattern": "\\([^()&]+&[^()]+\\)"
           },
           "classification": "confirmed_set",
-          "confidence_score": 0.90,
+          "confidence_score": 0.9,
           "extraction_method": "paren_plus_buderus",
           "odu_label": "WLW-*MB outdoor monoblock (MB = Monoblock)",
           "hydraulic_module_label": "WLW indoor hydraulic station/module",
@@ -582,7 +582,9 @@
           },
           "model_exclude": {
             "type": "contains_any",
-            "patterns": ["&"]
+            "patterns": [
+              "&"
+            ]
           },
           "classification": "confirmed_set",
           "confidence_score": 0.88,
@@ -726,7 +728,7 @@
             ]
           },
           "classification": "confirmed_not_set",
-          "confidence_score": 0.90,
+          "confidence_score": 0.9,
           "extraction_method": "none",
           "bafa_count_approx": 29,
           "confidence_cap_applied": "self_describing: 'Mono' keyword in BAFA product name directly indicates monoblock configuration. Applied after SAM-001 (plus-separator) and SAM-002 (MIM-E03). Samsung WPLW-Hub Mono and WPLW-Hydro Mono and WPLW-Mono product families all carry the Mono designation. Confidence 0.90.",
@@ -1373,7 +1375,7 @@
             ]
           },
           "classification": "standalone_odu",
-          "confidence_score": 0.90,
+          "confidence_score": 0.9,
           "extraction_method": "none",
           "bafa_count_approx": 16,
           "confidence_cap_applied": "manufacturer_official_family_confirmed: AMS 10 outdoor module confirmed by NIBE installation manual; F2040/F2050/F2120 confirmed outdoor air-source units from NIBE EU product catalog. model_exclude prevents overlap with NIB-001 (NIBE SPLIT sets). Confidence 0.90.",
@@ -2063,6 +2065,39 @@
       "validation_status": "bafa_pattern_only",
       "rules": [
         {
+          "rule_id": "AUX-002",
+          "label": "Ningbo AUX — explicit Indoor unit / Outdoor unit label split set",
+          "manufacturer_contains": "Ningbo AUX",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "Indoor unit",
+              "Outdoor unit",
+              "Indoor uni",
+              "Outdoor uni"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "indoor_outdoor_unit_label",
+          "system_architecture": "split",
+          "outdoor_unit_type": "split_odu",
+          "component_mapping_status": "outdoor_plus_idu",
+          "bafa_count_approx": 12,
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA model name contains literal 'Indoor unit:' and 'Outdoor unit:'/'Outdoor uni:' labels",
+              "url": null,
+              "accessed_at": "2026-06-27",
+              "what_it_proves": "Ningbo AUX ACHP-H R3-series registers split sets using explicit English role labels in the BAFA product name. Format: 'Indoor unit:ACHP-H[n]/[refrigerant]-I Outdoor unit[/uni]:ACHP-H[n]/[refrigerant]-O'. 10 of 12 products use 'Outdoor uni:' (truncated typo) instead of 'Outdoor unit:'. Classification is self-certifying from BAFA registration text."
+            }
+          ],
+          "example_model": "Indoor unit:ACHP-H04/4R3HA-I Outdoor unit:ACHP-H04/4R3HA-O",
+          "false_positive_notes": "AUX-001 catches all AUX products with '/' as variant_label. AUX-002 must appear first in the rules array to correctly capture the 12 explicit-label split sets before AUX-001 matches them as variant_label.",
+          "validated": true
+        },
+        {
           "rule_id": "AUX-001",
           "label": "AUX/Ningbo — slash within single model code (refrigerant class suffix)",
           "manufacturer_contains": "Ningbo AUX",
@@ -2227,6 +2262,87 @@
           ],
           "example_model": "YKF04ANB+YKF060ANB***",
           "validated": false
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "SHE",
+      "manufacturer_name": "GD Shenling",
+      "bafa_manufacturer_contains": "Shenling",
+      "validated_at": "2026-06-27",
+      "validation_status": "self_describing",
+      "rules": [
+        {
+          "rule_id": "SHE-001",
+          "label": "GD Shenling — explicit OU:/IU: label split set",
+          "manufacturer_contains": "Shenling",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "OU:",
+              "IU:"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "ou_iu_markers",
+          "system_architecture": "split",
+          "outdoor_unit_type": "split_odu",
+          "component_mapping_status": "outdoor_plus_idu",
+          "bafa_count_approx": 11,
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA model name contains literal 'OU:' and 'IU:' role labels",
+              "url": null,
+              "accessed_at": "2026-06-27",
+              "what_it_proves": "GD Shenling registers split heat pumps using explicit role labels in the BAFA product name: 'OU: [outdoor model] + IU: [indoor model]' or 'OU: [outdoor] ; IU: [indoor]'. HPM-V-series outdoor units pair with HM-XX/DM or HM-XX/DR indoor modules. HPS-V-series outdoor units pair with HM-XX/DR indoor modules. Classification is self-certifying from BAFA registration text."
+            }
+          ],
+          "example_model": "OU: HPM-V120W/SR3-B + IU: HM-90/DM",
+          "false_positive_notes": null,
+          "validated": true
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "SOL",
+      "manufacturer_name": "Solax Power",
+      "bafa_manufacturer_contains": "SolaX",
+      "validated_at": "2026-06-27",
+      "validation_status": "self_describing",
+      "rules": [
+        {
+          "rule_id": "SOL-001",
+          "label": "Solax Power — explicit IU:/OU: label split set",
+          "manufacturer_contains": "SolaX",
+          "model_match": {
+            "type": "contains_any",
+            "patterns": [
+              "IU:",
+              "OU:",
+              "UI:"
+            ]
+          },
+          "classification": "confirmed_set",
+          "confidence_score": 0.97,
+          "extraction_method": "ou_iu_markers",
+          "system_architecture": "split",
+          "outdoor_unit_type": "split_odu",
+          "component_mapping_status": "outdoor_plus_idu",
+          "bafa_count_approx": 30,
+          "evidence": [
+            {
+              "source_type": "self_describing",
+              "title": "BAFA model name contains literal 'IU:' and 'OU:' role labels (one product uses 'UI:'/'OR:' typos)",
+              "url": null,
+              "accessed_at": "2026-06-27",
+              "what_it_proves": "Solax Power registers split heat pumps using IU: (Indoor Unit) and OU: (Outdoor Unit) labels directly in the BAFA product name. Separator varies: ' ; ', '; ', ' + '. Order varies: IU-first (15 products) or OU-first (15 products). STN-series = indoor station; STU-series = outdoor unit. R290 refrigerant. One product (bafa_id=16018498) uses typo variants 'UI:' and 'OR:' — IDU extraction succeeds (UI: matched), ODU extraction fails (OR: not matched). Classification is self-certifying from BAFA registration text."
+            }
+          ],
+          "example_model": "IU: STN1-C01 ; OU: STU1-C16R290",
+          "false_positive_notes": "One Solax product uses 'UI:'/'OR:' notation typos — IDU extracted (UI: treated as IU: variant), ODU extraction fails for that product (classified confirmed_set / not_extractable).",
+          "validated": true
         }
       ]
     }

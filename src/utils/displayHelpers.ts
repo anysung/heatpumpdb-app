@@ -66,6 +66,65 @@ export function buildComponentLines(item: HeatPump): ComponentLines {
   };
 }
 
+// ─── Component Display Compaction ─────────────────────────────────────────────
+
+/**
+ * Brand/series prefixes that are redundant in the component display row when
+ * the same prefix already appears in the BAFA model name shown above it.
+ * Sorted longest-first so multi-word prefixes take priority over their sub-strings.
+ */
+const COMPONENT_DISPLAY_PREFIXES: string[] = [
+  'AROTHERM PLUS', 'JÄSPI INVERTER', 'JASPI INVERTER', 'X-CHANGE DYNAMIC',
+  'UNITÀ ESTERNA', 'UNITA ESTERNA', 'OCHSNER AIR', 'SHERPA TOWER',
+  'EZEE WHISPER', 'AURACOMPACT', 'ZEWOLAMBDA', 'WPLW-HUBC', 'THERMA V',
+  'COMMOTHERM', 'HI-THERMA', 'THERMATEC', 'MULTITHERMA', 'LOGAPLUS',
+  'LOGATHERM', 'ECOAIR+', 'EASYAIR', 'ECOHEAT', 'AROTHERM', 'YUTAKI',
+  'AEROTOP', 'KACLIMA', 'CONFIDA', 'BELARIA', 'HOTJET', 'ATTACK',
+  'ENERGION', 'COMPRESS', 'CALLA', 'DAIKIN', 'OCHSNER', 'AERO', 'EDGE',
+  'LWAV', 'MTT', 'BLW', 'HWT', 'HPM', 'DM', 'DVI', 'CBHA',
+];
+
+/**
+ * Return a compact display string for a component value by stripping a
+ * redundant brand/series prefix that already appears in the full BAFA model name.
+ *
+ * The full original value MUST still be used in `title`/hover — this function
+ * only produces a shorter visible label, never mutates source data.
+ *
+ * Stripping conditions (all must be true):
+ *   1. The component value starts with the prefix.
+ *   2. The next character after the prefix is a separator (space, hyphen, slash, underscore) or end.
+ *   3. The same prefix appears in the full BAFA model name (context check).
+ *   4. The stripped remainder is at least 3 characters (not a trivial fragment).
+ */
+export function compactComponentDisplayValue(
+  value: string | null | undefined,
+  fullBafaModelName: string | null | undefined
+): string {
+  if (!value) return '';
+  const trimmed = value.trim();
+  if (!trimmed || !fullBafaModelName) return trimmed;
+
+  const trimmedUpper = trimmed.toUpperCase();
+  const bafaUpper = fullBafaModelName.toUpperCase();
+
+  for (const prefix of COMPONENT_DISPLAY_PREFIXES) {
+    const prefUpper = prefix.toUpperCase();
+    if (!trimmedUpper.startsWith(prefUpper)) continue;
+    // Next character must be a separator or end of string
+    const afterChar = trimmedUpper[prefUpper.length];
+    if (afterChar !== undefined && !/[\s\-_\/]/.test(afterChar)) continue;
+    // Prefix must appear in the BAFA model name (context guard)
+    if (!bafaUpper.includes(prefUpper)) continue;
+    // Strip the prefix and clean leading separators
+    const stripped = trimmed.slice(prefix.length).replace(/^[\s\-_\/]+/, '').trim();
+    if (stripped.length < 3) continue;
+    return stripped;
+  }
+
+  return trimmed;
+}
+
 // ─── Dynamic Truncation ──────────────────────────────────────────────────────
 
 /**
