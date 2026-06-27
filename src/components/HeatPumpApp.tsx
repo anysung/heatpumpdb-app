@@ -17,6 +17,15 @@ import { translations } from '../translations';
 /** Maximum number of models that can be compared side-by-side. */
 const MAX_COMPARISON = 4;
 
+/**
+ * Maps verbose BAFA manufacturer names to shorter display labels for the filter UI.
+ * Both filter-option building and filter-predicate evaluation must use this same map
+ * so that clicking a label always matches the products that were counted under it.
+ */
+const MFR_DISPLAY_ALIASES: Record<string, string> = {
+  'GD TCL Intelligent Heating & Ventilating Equipment Co., Ltd.': 'GD TCL',
+};
+
 interface HeatPumpAppProps {
   user: User;
   onLogout: () => void;
@@ -63,16 +72,13 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
 
   // Top 25 manufacturers by product count for the current segment
   const top20Manufacturers = useMemo(() => {
-    const ALIASES: Record<string, string> = {
-      'GD TCL Intelligent Heating & Ventilating Equipment Co., Ltd.': 'GD TCL',
-    };
     const source = searchSegment === 'commercial'
       ? (dbData?.commercialProducts || [])
       : (dbData?.products || []);
     const counts = new Map<string, number>();
     for (const item of source) {
       const raw = item.manufacturer_short || item.manufacturer;
-      const label = ALIASES[raw] ?? raw;
+      const label = MFR_DISPLAY_ALIASES[raw] ?? raw;
       counts.set(label, (counts.get(label) || 0) + 1);
     }
     return Array.from(counts.entries())
@@ -137,12 +143,14 @@ export const HeatPumpApp: React.FC<HeatPumpAppProps> = ({ user, onLogout, onAdmi
     if (source.length > 0) {
       let filtered = [...source];
 
-      // Brand filter — substring match
+      // Brand filter — match via the same alias map used to build filter options
       if (selectedBrand) {
         const brandLower = selectedBrand.toLowerCase();
-        filtered = filtered.filter((item: HeatPump) =>
-          (item.manufacturer_short || item.manufacturer).toLowerCase() === brandLower
-        );
+        filtered = filtered.filter((item: HeatPump) => {
+          const raw = item.manufacturer_short || item.manufacturer || '';
+          const label = MFR_DISPLAY_ALIASES[raw] ?? raw;
+          return label.toLowerCase() === brandLower;
+        });
       }
 
       // Capacity range filter — uses config's parser
