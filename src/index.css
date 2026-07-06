@@ -15,6 +15,34 @@
   border-radius: 4px;
 }
 
+/* ── HeatpumpIQ Auth surface (eco-futuristic energy field) ── */
+@keyframes hp-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hp-fade-up { animation: hp-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hp-fade-up-delay { animation: hp-fade-up 0.7s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes hp-aurora-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(6%, -4%) scale(1.15); }
+}
+@keyframes hp-aurora-b {
+  0%, 100% { transform: translate(0, 0) scale(1.1); }
+  50%      { transform: translate(-5%, 6%) scale(0.95); }
+}
+.hp-aurora-a { animation: hp-aurora-a 18s ease-in-out infinite; }
+.hp-aurora-b { animation: hp-aurora-b 22s ease-in-out infinite; }
+
+@keyframes hp-flow { to { stroke-dashoffset: -240; } }
+.hp-flow-line { stroke-dasharray: 4 8; animation: hp-flow 8s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-fade-up, .hp-fade-up-delay, .hp-aurora-a, .hp-aurora-b, .hp-flow-line {
+    animation: none;
+  }
+}
+
 /* ── Print Styles for Data Sheet ──────────────────────────── */
 @media print {
   /* Hide all app chrome */

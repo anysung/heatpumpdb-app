@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { loginUser, registerUser, logoutUser, verifyAdminPassword, onUserChange } from './services/authService';
 import { HpiqApp } from './hpiq/HpiqApp';
 import { AdminDashboard } from './components/AdminDashboard';
+import {
+  AuthShell, GlassCard, SegmentTiles, LeafIcon,
+  authInput, authSelect, authLabel, primaryBtn, ghostBtn,
+} from './components/auth/AuthShell';
 import { HeatPumpDatabase, HeatPump, User, AppMode, Language } from './types';
 import { translations } from './translations';
 // Use Firestore Service
@@ -187,95 +191,130 @@ const App: React.FC = () => {
   
   // ... (Previous JSX code) ...
   if (currentView === 'LANDING') {
-      // ... (Same as previous App.tsx)
-      return (
-      <div className="min-h-screen relative flex items-center justify-center font-sans">
-        <LanguageSwitcher />
-        <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070')" }}></div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/80 via-blue-900/50 to-slate-900/80 z-10"></div>
-        <div className="absolute top-0 left-0 w-1/2 h-[10%] z-20 p-6 flex items-center gap-4 text-white">
-          <span className="text-4xl md:text-5xl shadow-sm">🇩🇪</span>
-          <div><h1 className="text-2xl md:text-3xl font-bold tracking-tight">German Heat Pump Database</h1><p className="text-sm opacity-80">{t.subTitle}</p></div>
-        </div>
-        <div className="z-20 w-full max-w-md p-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl flex flex-col gap-4 animate-fade-in-up">
-          <h2 className="text-center text-white text-xl font-medium mb-4">{t.welcomeTitle}</h2>
-          <button onClick={() => setCurrentView('SIGNUP')} className="w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow-lg transition transform hover:scale-105">{t.signup}</button>
-          <button onClick={() => setCurrentView('LOGIN')} className="w-full py-3.5 px-4 bg-white hover:bg-gray-100 text-gray-900 font-bold rounded-lg shadow-lg transition transform hover:scale-105">{t.login}</button>
-          <div className="mt-8 text-center"><button onClick={() => setCurrentView('ADMIN_GATE')} className="text-gray-400 text-xs hover:text-white underline">{t.adminAccess}</button></div>
-        </div>
-      </div>
-    );
-  }
-  if (currentView === 'LOGIN') { 
-     // ... (Same as previous App.tsx)
-     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans relative">
-        <LanguageSwitcher />
-        <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
-          <button onClick={() => setCurrentView('LANDING')} className="text-gray-400 mb-4 hover:text-gray-600">← {t.back}</button>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.loginTitle}</h2>
-          <p className="text-gray-500 mb-6">{t.loginSub}</p>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div><label className="block text-sm font-medium text-gray-700">{t.email}</label><input type="email" required className="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} /></div>
-            <div><label className="block text-sm font-medium text-gray-700">{t.password}</label><input type="password" required className="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none" value={loginPass} onChange={e => setLoginPass(e.target.value)} /></div>
-            <div className="flex justify-end"><button type="button" onClick={() => alert("Reset link sent to email.")} className="text-sm text-blue-600 hover:underline">{t.forgotPass}</button></div>
-            <button type="submit" disabled={isLoading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors">{isLoading ? t.loggingIn : t.loginTitle}</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-  if (currentView === 'SIGNUP') { 
-    // ... (Same as previous App.tsx)
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans relative">
-        <LanguageSwitcher />
-        <div className="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-8">
-          <button onClick={() => setCurrentView('LANDING')} className="text-gray-400 mb-4 hover:text-gray-600">← {t.back}</button>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.createAccount}</h2>
-          <form onSubmit={handleSignup} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div className="col-span-1"><label className="block text-xs font-bold text-gray-700 uppercase mb-1">{t.firstName} *</label><input type="text" required className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none" onChange={e => setSignupData({...signupData, firstName: e.target.value})} /></div>
-             <div className="col-span-1"><label className="block text-xs font-bold text-gray-700 uppercase mb-1">{t.lastName} *</label><input type="text" required className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none" onChange={e => setSignupData({...signupData, lastName: e.target.value})} /></div>
-             <div className="col-span-2"><label className="block text-xs font-bold text-gray-700 uppercase mb-1">{t.email} *</label><input type="email" required className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none" onChange={e => setSignupData({...signupData, email: e.target.value})} /></div>
-             <div className="col-span-2"><label className="block text-xs font-bold text-gray-700 uppercase mb-1">{t.password} *</label><input type="password" required className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none" onChange={e => setSignupData({...signupData, password: e.target.value})} /></div>
-             <div className="col-span-1"><label className="block text-xs font-bold text-gray-700 uppercase mb-1">{t.companyType} *</label><select required className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none bg-white" onChange={e => setSignupData({...signupData, companyType: e.target.value})}><option value="">{t.select}</option><option value="Manufacturer">Manufacturer</option><option value="Distributor">Distributor</option><option value="Installer">Installer</option><option value="Private Individual">Private Individual</option></select></div>
-             <div className="col-span-1"><label className="block text-xs font-bold text-gray-700 uppercase mb-1">{t.jobRole} *</label><select required className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none bg-white" onChange={e => setSignupData({...signupData, jobRole: e.target.value})}><option value="">{t.select}</option><option value="C-Level">C-Level</option><option value="Director">Director</option><option value="Sales Manager">Sales Manager</option><option value="Technician">Technician</option><option value="Service">Service</option><option value="Product Management">Product Management</option><option value="General Public">General Public</option><option value="Other">Other</option></select></div>
-             <div className="col-span-1"><label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t.companyName}</label><input type="text" className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none" onChange={e => setSignupData({...signupData, companyName: e.target.value})} /></div>
-             <div className="col-span-1"><label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t.city}</label><input type="text" className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none" onChange={e => setSignupData({...signupData, companyCity: e.target.value})} /></div>
-             <div className="col-span-2"><label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t.referralSource}</label><select className="w-full px-3 py-2 border rounded focus:ring-blue-500 outline-none bg-white" onChange={e => setSignupData({...signupData, referralSource: e.target.value})}><option value="">{t.select}</option><option value="Google">Google Search</option><option value="Friend">Friend/Colleague</option><option value="Ad">Online Ad</option><option value="Other">Other</option></select></div>
-             <div className="col-span-2 mt-4"><button type="submit" disabled={isLoading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors shadow-lg">{isLoading ? t.registering : t.completeSignup}</button></div>
-          </form>
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <div className="w-full max-w-6xl grid lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-16 items-center">
+          {/* Hero — market story */}
+          <div className="max-w-xl hp-fade-up">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-semibold tracking-wide uppercase">
+              <LeafIcon className="w-3.5 h-3.5" />
+              {t.authTagline}
+            </span>
+            <h1 className="mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-[1.08]">
+              {t.authHeadline}
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+                {t.authHeadlineAccent}
+              </span>
+            </h1>
+            <p className="mt-4 text-white/60 text-base md:text-lg">{t.subTitle}</p>
+            <div className="mt-8">
+              <SegmentTiles t={t} />
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {[t.authChipBafa, t.authChipRefrigerant, t.authChipScop].map((chip: string) => (
+                <span key={chip} className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/70">
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Entry card */}
+          <GlassCard className="w-full max-w-md justify-self-center lg:justify-self-end p-8 hp-fade-up-delay">
+            <h2 className="text-xl font-semibold text-white mb-6 text-center">{t.welcomeTitle}</h2>
+            <div className="flex flex-col gap-3">
+              <button onClick={() => setCurrentView('SIGNUP')} className={primaryBtn}>{t.signup}</button>
+              <button onClick={() => setCurrentView('LOGIN')} className={ghostBtn}>{t.login}</button>
+            </div>
+            <div className="mt-8 text-center">
+              <button onClick={() => setCurrentView('ADMIN_GATE')} className="text-white/30 text-xs hover:text-white/70 underline transition-colors">
+                {t.adminAccess}
+              </button>
+            </div>
+          </GlassCard>
         </div>
-      </div>
+      </AuthShell>
+    );
+  }
+  if (currentView === 'LOGIN') {
+    return (
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <GlassCard className="w-full max-w-md p-8 hp-fade-up">
+          <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
+          <h2 className="text-2xl font-bold text-white mb-1">{t.loginTitle}</h2>
+          <p className="text-white/50 text-sm mb-7">{t.loginSub}</p>
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className={authLabel}>{t.email}</label>
+              <input type="email" required autoComplete="email" className={authInput} value={loginEmail} onChange={e => setLoginEmail(e.target.value)} />
+            </div>
+            <div>
+              <label className={authLabel}>{t.password}</label>
+              <input type="password" required autoComplete="current-password" className={authInput} value={loginPass} onChange={e => setLoginPass(e.target.value)} />
+            </div>
+            <div className="flex justify-end">
+              <button type="button" onClick={() => alert("Reset link sent to email.")} className="text-sm text-emerald-300/80 hover:text-emerald-200 transition-colors">{t.forgotPass}</button>
+            </div>
+            <button type="submit" disabled={isLoading} className={primaryBtn}>{isLoading ? t.loggingIn : t.loginTitle}</button>
+          </form>
+          <p className="mt-6 text-center text-sm text-white/45">
+            {t.authNoAccount}{' '}
+            <button onClick={() => setCurrentView('SIGNUP')} className="text-emerald-300 font-semibold hover:text-emerald-200 transition-colors">{t.signup}</button>
+          </p>
+        </GlassCard>
+      </AuthShell>
+    );
+  }
+  if (currentView === 'SIGNUP') {
+    return (
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <GlassCard className="w-full max-w-2xl p-8 hp-fade-up">
+          <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
+          <h2 className="text-2xl font-bold text-white mb-6">{t.createAccount}</h2>
+          <form onSubmit={handleSignup} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <div className="col-span-1"><label className={authLabel}>{t.firstName} *</label><input type="text" required className={authInput} onChange={e => setSignupData({...signupData, firstName: e.target.value})} /></div>
+             <div className="col-span-1"><label className={authLabel}>{t.lastName} *</label><input type="text" required className={authInput} onChange={e => setSignupData({...signupData, lastName: e.target.value})} /></div>
+             <div className="md:col-span-2"><label className={authLabel}>{t.email} *</label><input type="email" required autoComplete="email" className={authInput} onChange={e => setSignupData({...signupData, email: e.target.value})} /></div>
+             <div className="md:col-span-2"><label className={authLabel}>{t.password} *</label><input type="password" required autoComplete="new-password" className={authInput} onChange={e => setSignupData({...signupData, password: e.target.value})} /></div>
+             <div className="col-span-1"><label className={authLabel}>{t.companyType} *</label><select required className={authSelect} onChange={e => setSignupData({...signupData, companyType: e.target.value})}><option value="">{t.select}</option><option value="Manufacturer">Manufacturer</option><option value="Distributor">Distributor</option><option value="Installer">Installer</option><option value="Private Individual">Private Individual</option></select></div>
+             <div className="col-span-1"><label className={authLabel}>{t.jobRole} *</label><select required className={authSelect} onChange={e => setSignupData({...signupData, jobRole: e.target.value})}><option value="">{t.select}</option><option value="C-Level">C-Level</option><option value="Director">Director</option><option value="Sales Manager">Sales Manager</option><option value="Technician">Technician</option><option value="Service">Service</option><option value="Product Management">Product Management</option><option value="General Public">General Public</option><option value="Other">Other</option></select></div>
+             <div className="col-span-1"><label className={authLabel}>{t.companyName}</label><input type="text" className={authInput} onChange={e => setSignupData({...signupData, companyName: e.target.value})} /></div>
+             <div className="col-span-1"><label className={authLabel}>{t.city}</label><input type="text" className={authInput} onChange={e => setSignupData({...signupData, companyCity: e.target.value})} /></div>
+             <div className="md:col-span-2"><label className={authLabel}>{t.referralSource}</label><select className={authSelect} onChange={e => setSignupData({...signupData, referralSource: e.target.value})}><option value="">{t.select}</option><option value="Google">Google Search</option><option value="Friend">Friend/Colleague</option><option value="Ad">Online Ad</option><option value="Other">Other</option></select></div>
+             <div className="md:col-span-2 mt-4"><button type="submit" disabled={isLoading} className={primaryBtn}>{isLoading ? t.registering : t.completeSignup}</button></div>
+          </form>
+          <p className="mt-6 text-center text-sm text-white/45">
+            {t.authHaveAccount}{' '}
+            <button onClick={() => setCurrentView('LOGIN')} className="text-emerald-300 font-semibold hover:text-emerald-200 transition-colors">{t.login}</button>
+          </p>
+        </GlassCard>
+      </AuthShell>
     );
   }
   if (currentView === 'PENDING_APPROVAL') {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans relative">
-        <LanguageSwitcher />
-        <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-10 text-center">
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <GlassCard className="w-full max-w-md p-10 text-center hp-fade-up">
           <div className="text-6xl mb-6">⏳</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Registration Submitted</h2>
-          <p className="text-gray-600 mb-2">Your application is <span className="font-semibold text-yellow-600">pending approval</span>.</p>
-          <p className="text-gray-500 text-sm mb-8">
+          <h2 className="text-2xl font-bold text-white mb-3">Registration Submitted</h2>
+          <p className="text-white/70 mb-2">Your application is <span className="font-semibold text-amber-300">pending approval</span>.</p>
+          <p className="text-white/50 text-sm mb-8">
             An administrator will review your registration and notify you by email once your account is activated. This typically takes 1–2 business days.
           </p>
-          <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-700 mb-8 text-left">
+          <div className="bg-emerald-400/10 border border-emerald-400/20 rounded-xl p-4 text-sm text-emerald-200 mb-8 text-left">
             <p className="font-bold mb-1">What happens next?</p>
-            <ol className="list-decimal list-inside space-y-1 text-blue-600">
+            <ol className="list-decimal list-inside space-y-1 text-emerald-200/80">
               <li>Admin reviews your profile</li>
               <li>Account is approved &amp; activated</li>
               <li>You can log in with your credentials</li>
             </ol>
           </div>
-          <button
-            onClick={() => setCurrentView('LANDING')}
-            className="w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
-          >
+          <button onClick={() => setCurrentView('LANDING')} className={ghostBtn}>
             ← Back to Home
           </button>
-        </div>
-      </div>
+        </GlassCard>
+      </AuthShell>
     );
   }
 

@@ -28,7 +28,21 @@ export const translations = {
     registering: "Registering...",
     completeSignup: "Complete Registration",
     searchPlaceholder: "Search for model, brand, or capacity...",
-    
+
+    // Auth surface (eco-futuristic login)
+    authTagline: "Intelligence for the heat transition",
+    authHeadline: "Every heat pump on the market.",
+    authHeadlineAccent: "One intelligent database.",
+    authMarketLabel: "Market",
+    authResidentialDesc: "Single- & multi-family homes",
+    authCommercialDesc: "Commercial & large-scale systems",
+    authChipBafa: "BAFA / KfW eligibility",
+    authChipRefrigerant: "R290 & refrigerant data",
+    authChipScop: "SCOP, noise & capacity compare",
+    authEcoLine: "Data for a climate-neutral building stock",
+    authNoAccount: "No account yet?",
+    authHaveAccount: "Already registered?",
+
     // Admin
     adminPanel: "Admin Panel",
     tabUsers: "Members", 
@@ -164,6 +178,20 @@ export const translations = {
     registering: "Registrierung...",
     completeSignup: "Registrierung abschließen",
     searchPlaceholder: "Suche nach Modell, Marke oder Leistung...",
+
+    // Auth surface (eco-futuristic login)
+    authTagline: "Intelligenz für die Wärmewende",
+    authHeadline: "Jede Wärmepumpe am Markt.",
+    authHeadlineAccent: "Eine intelligente Datenbank.",
+    authMarketLabel: "Markt",
+    authResidentialDesc: "Ein- & Mehrfamilienhäuser",
+    authCommercialDesc: "Gewerbe & Großanlagen",
+    authChipBafa: "BAFA-/KfW-Förderfähigkeit",
+    authChipRefrigerant: "R290- & Kältemitteldaten",
+    authChipScop: "SCOP-, Schall- & Leistungsvergleich",
+    authEcoLine: "Daten für einen klimaneutralen Gebäudebestand",
+    authNoAccount: "Noch kein Konto?",
+    authHaveAccount: "Bereits registriert?",
 
     // Admin
     adminPanel: "Admin-Bereich",
