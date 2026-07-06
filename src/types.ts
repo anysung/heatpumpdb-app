@@ -66,12 +66,6 @@ export interface HeatPump {
   noise_outdoor_dB: number | null;
   noise_indoor_dB: number | null;
 
-  // Physical specs
-  width_mm: number | null;
-  height_mm: number | null;
-  depth_mm: number | null;
-  weight_kg: number | null;
-
   // Grid readiness
   grid_ready: boolean;
   grid_ready_type: string | null;

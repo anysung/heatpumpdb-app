@@ -1,153 +1,62 @@
-# German Heat Pump Database — Layout & Alignment Rules
+# HeatPump DB — Project Rules
 
-> **UI handover (Jul 2026):** The user-facing app now renders the approved **HeatpumpIQ** design
-> (`src/hpiq/`, spec in `design_handoff_heatpumpiq/README.md` — that handoff is the authoritative
-> UI spec and explicitly overrides the layout rules below). The rules below still apply to the
-> **legacy components** (`HeatPumpApp.tsx`, `ResultsTable.tsx`, `NewsView.tsx`) and the Admin
-> dashboard, which are unchanged.
+> **Brand (Jul 2026):** The app brand is **"HeatPump DB"** (capital P, one space before "DB").
+> Never introduce the old "HeatpumpIQ" name in UI text. Logo: use `BrandLogo` /
+> `WavingFlag` from `src/components/BrandLogo.tsx` (brand assets in `brand-assets/`,
+> colors documented in `brand-assets/README.md`).
 
-These rules are **confirmed and locked**. Apply them to all future changes unless explicitly overridden by the user.
-
----
-
-## 1. Filter Section (HeatPumpApp.tsx)
-
-### Row 1 — Manufacturer
-- Full-width single panel: `bg-white px-3 py-2 rounded-lg shadow-sm border border-gray-200`
-- Label: `text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1`
-- Badges: horizontal wrap `flex flex-wrap gap-1.5`
-
-### Row 2 — Capacity | Installation Type | Refrigerant Type
-- 3-column grid with **unequal widths**: `gridTemplateColumns: '5fr 4fr 2.5fr'` (inline style, not Tailwind grid)
-- All three panels use the same panel style as Row 1
-- **Capacity** (5fr): 4 badges — `4 kW ~ 7 kW`, `8 kW ~ 10 kW`, `11 kW ~ 12 kW`, `13 kW ~ 17 kW` — must all fit in **one row**
-- **Installation Type** (4fr): 2 badges — `Monoblock`, `Split` — must all fit in **one row**
-- **Refrigerant Type** (2.5fr): 3 badges — `🌿 R290`, `R32`, `R410A` — must all fit in **one row**
-- Refrigerant filter logic: **contains** (`item.refrigerant.includes(value)`), not exact match
-- Installation Type filter logic: matches `item.installation_type` directly (exact match)
-
-### Section spacing
-- `mb-2 space-y-1.5` between rows — keep compact, no excess vertical padding
-
-### Active Filters Bar
-- Shown only when at least one filter is active
-- Clear All button: `bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded border border-red-700 shadow-sm` with `ml-auto`
-- Active filter chips: yellow for search query, blue for brand, green for refrigerant
+> **UI (Jul 2026):** The user-facing app is the **hpiq** design (`src/hpiq/`, spec in
+> `design_handoff_heatpumpiq/README.md` — authoritative UI spec). The legacy components
+> (`HeatPumpApp.tsx`, `ResultsTable.tsx`, `NewsView.tsx`, etc.) were **removed** in the
+> Jul 2026 cleanup; their layout rules no longer apply. The Admin dashboard lives in
+> `src/components/admin/` + `AdminDashboard.tsx`.
 
 ---
 
-## 2. Results Table (ResultsTable.tsx)
+## 1. Architecture Facts
 
-### Column Order (left → right)
-| # | Column | Sticky | Notes |
-|---|--------|--------|-------|
-| 1 | Manufacturer | ✅ Left-sticky | Center aligned (header + content) |
-| 2 | Installation Type | ✅ Left-sticky | Monoblock = orange badge, Split = purple badge |
-| 3 | Model | ✅ Left-sticky | Max 35 chars, truncate with `…`, full on hover |
-| 4 | Capacity | — | 2-line split at `' ('` or `';'` |
-| 5 | Refrigerant | — | R290 (contains) → `🌿` green; others gray |
-| 6 | Dimensions | — | 2-line split at `'; '` or `';'` |
-| 7 | COP | — | Blue header bg, 2-line split at `'; '` |
-| 8 | SCOP | — | Blue header bg, 2-line split at `'; '` |
-| 9 | Noise | — | Blue header bg, 2-line split at `';'` |
-| 10 | Weight | — | Purple header bg, extracted from `others` field |
-| 11 | Price | — | Green header bg, 2-line split at `' ('` |
-| 12 | Others | — | Remaining after weight extraction, `min/max-w-[400px]` |
+- Entry: `src/index.tsx` → `src/App.tsx`. Views: auth surface (`src/components/auth/AuthShell.tsx`),
+  main app (`src/hpiq/HpiqApp.tsx`), admin (`src/components/AdminDashboard.tsx`).
+- Two parallel i18n systems, both live: `src/translations.ts` (auth + admin) and
+  `src/hpiq/i18n.ts` (main app, EN/DE dictionaries). Add strings to the matching one.
+- Country config is centralized in `src/config/countryProfiles.ts` (`ACTIVE_COUNTRY`,
+  resolved from `VITE_COUNTRY_CODE`). New-country work goes there — flag, dataset paths,
+  subsidy labels all derive from it. Do not scatter country logic.
+- Product data is loaded from static JSON: `public/data/products.json` and
+  `public/data/products-commercial.json` (gitignored; rebuilt by pipeline before deploy).
+- hpiq global nav is **60px** tall; pages size themselves with `calc(100vh - 60px)` —
+  keep in sync if the header changes.
+- Printing: hpiq data sheet uses `body.hpiq-printing` + `.hpiq-print-doc` visibility
+  rules in `src/hpiq/hpiq.css`. The legacy print block in `src/index.css` is scoped to
+  `body:not(.hpiq-printing)` — do not unscope it (it blanks hpiq print/PDF output).
 
-### Sticky Column Rules
-- Manufacturer: `sticky left-0 z-20` (body), `sticky top-0 left-0 z-40` (header)
-- Type: `sticky left-[mfrWidth] z-20/40` (measured via `useLayoutEffect`)
-- Model: `sticky left-[mfrWidth+typeWidth] z-20/40` (measured via `useLayoutEffect`)
-- All sticky cells: **solid white** background (`bg-white`) — never transparent/semi-transparent
-- Non-sticky header cells: `sticky top-0 z-30`
+## 2. Data Pipeline (BAFA → app)
 
-### Font Sizes
-- Header (TH): `text-[12px]`
-- Body (TD): `text-[13px]`
-- Badges / second lines / small labels: `text-[11px]`
-- Others column font: same as TD (`text-[13px]`)
+`scripts/bafa/`: `fetch-bafa-raw` → `parse-bafa-raw` → `build-master-seed` →
+`build-app-products-from-master-seed` (auto-selects newest `data_sources/bafa/master_seed/YYYY-MM/`).
+- `bafa_id` comes from BAFA raw (`anlagennummer`) and flows through automatically.
+- Overlay source: `scraper/pricing/output/dataset-enriched-full.json` (installation_type,
+  uuid — price fields are gone and guarded against; do not reintroduce).
+- Diff reference baseline snapshot: `2026-03` (keep `data_sources/bafa/raw/2026-03` + `parsed/2026-03`).
+- EPREL matching is **not yet implemented** (0 matches); energy-label classes are derived
+  from BAFA ηs per EU 811/2013 and the data sheet says so — keep that honesty.
+- Cloud Function (`google_cloud_function/index.js`) is deployed separately via its own
+  `deploy.sh`; it owns the news pipeline.
 
-### Two-Line Display (TwoLine component)
-- Line 1: normal weight
-- Line 2: `text-[11px] text-gray-400 mt-0.5`
-- All cells center-aligned within `TwoLine`
+## 3. Market News Image Rules (google_cloud_function/index.js)
 
-### Scroll Control Bar (top of table)
-- Blue progress bar showing horizontal scroll position
-- Left `←` button (disabled when at start)
-- Right `→ more` button with blue bg when more content exists (disabled when at end)
-- Right-edge fade gradient overlay when scrollable
-
-### Table Dimensions
-- `max-h-[70vh]` with `overflow-y-auto` for vertical scroll
-- `overflow-x-auto` for horizontal scroll
-- Striped rows: even=`bg-white`, odd=`bg-gray-50/50`, selected=`bg-blue-50`
-
-### R290 Green Icon Rule
-- Condition: `item.refrigerant.includes('R290')` — **contains**, not exact match
-- Display: `🌿` prefix + `text-green-600 font-bold`
-- Applies to values like `R290(estimated)`, `R290(likely)`, etc.
-
-### Weight Extraction Logic
-- Try labelled: `/(?:weight|wt\.?|gewicht)[:\s]+(\d+(?:[.,]\d+)?\s*kg)/i`
-- Fallback: standalone `/\b(\d+(?:[.,]\d+)?\s*kg)\b/i`
-- Remaining text after extraction → Others column
-- If no weight found: display `—`
-
----
-
-## 3. Market News Image Rules (NewsView.tsx + index.js)
-
-### Core Rule
 - **Every news article must always display an image** — never leave the image slot empty.
-- **Never let AI (Gemini) generate or hallucinate image URLs** — it repeats or fabricates broken URLs.
-- Images are assigned by **keyword matching** against the article title + summary.
+- **Never let AI (Gemini) generate or hallucinate image URLs** — assign images by keyword
+  matching (`selectNewsImage(title, summary)` with `NEWS_IMAGE_RULES` priority list) from
+  the curated Unsplash `NEWS_IMAGES` set in `index.js`.
+- The hpiq NewsPage renders `imageUrl` assigned at write time by the function.
 
-### Image Assignment Logic
-- `selectNewsImage(title, summary)` matches keywords (case-insensitive) in priority order:
+## 4. General Rules
 
-| Priority | Category key | Trigger keywords |
-|---|---|---|
-| 1 | `subsidy` | bafa, beg, subsidy, funding, grant, zuschuss, kfw, förder |
-| 2 | `government` | parliament, bundestag, bundesrat, minister, geg, regulation, gesetz, law |
-| 3 | `solar` | solar, photovoltaic, pv, renewable, wind, erneuerbar |
-| 4 | `technology` | r290, r32, refrigerant, cop, scop, efficiency, innovation |
-| 5 | `installation` | install, installer, montage, handwerk, technician |
-| 6 | `market` | market, sales, statistics, trend, bwp, report, growth, demand |
-| 7 | `energy` | energy, electricity, power, grid, strom, tariff |
-| 8 | `house` | house, home, building, residential, renovation, retrofit |
-| 9 | `heatpump` | heat pump, wärmepumpe, hvac, viessmann, vaillant, stiebel… |
-| default | `heatpump` | (no match) |
-
-### Curated Unsplash Image URLs (open-source, no API key needed)
-```
-heatpump:     photo-1621905251189-08b1059efa82
-subsidy:      photo-1554224155-6726b3ff858f
-house:        photo-1570129477492-45c003edd2be
-government:   photo-1555900234-35b55afe19df
-solar:        photo-1509391366360-2e959784a276
-technology:   photo-1518770660439-4636190af475
-installation: photo-1504307651254-35680f356dfd
-market:       photo-1551288049-bebda4e38f71
-energy:       photo-1473341304170-971dccb5ac1e
-```
-URL format: `https://images.unsplash.com/photo-{ID}?auto=format&fit=crop&q=80&w=600`
-
-### Both sides must be in sync
-- `NEWS_IMAGES` + `NEWS_IMAGE_RULES` + `selectNewsImage()` exist in **both** `index.js` (Cloud Function) and `NewsView.tsx` (frontend fallback).
-- Cloud Function assigns `imageUrl` at write time; frontend uses `onError` fallback if URL breaks.
-- When adding a new image category: update **both** files.
-
----
-
-## 4. General Code Rules
-
-- **Do not change column order** without explicit user instruction
-- **Do not change sticky column behavior** (Manufacturer, Type, Model always sticky)
-- **Do not make sticky backgrounds transparent** — always solid white
-- **Do not widen/narrow Others column** from `min-w-[400px] max-w-[400px]` without explicit instruction
-- **Refrigerant filter** always uses `.includes()` contains logic, never exact match
-- **Installation Type filter** matches `installation_type` directly; "Set" products match both Monoblock and Split
-- **Filter grid proportions** (`5fr 4fr 2.5fr`) must keep all badges in single row — verify before changing
-- Build command: `export PATH="/Users/christophersung/.nvm/versions/node/v20.19.6/bin:$PATH" && npm run build`
-- Deploy command: `firebase deploy --only hosting`
+- Refrigerant filtering always uses `.includes()` contains logic (values like
+  `R290(estimated)` must match), never exact match.
+- Auth flow is approval-gated: registration (email or Google/Apple social) creates a
+  `pending` profile; only admin approval activates it. Social sign-in must never bypass
+  this gate.
+- Build: `export PATH="/Users/christophersung/.nvm/versions/node/v20.19.6/bin:$PATH" && npm run build`
+- Deploy: `firebase deploy --only hosting`
