@@ -7,7 +7,7 @@ import { ProductStore } from './productService';
 
 export type HpPage = 'find' | 'products' | 'label' | 'datasheet' | 'bafa' | 'guide' | 'news' | 'account';
 export type DsMode = 'product' | 'label';
-export type DsSectionKey = 'identity' | 'performance' | 'env' | 'bafa' | 'source';
+export type DsSectionKey = 'identity' | 'performance' | 'env' | 'physical' | 'bafa' | 'source';
 export type HpSegment = 'residential' | 'commercial';
 
 export interface HpApp {
