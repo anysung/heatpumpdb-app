@@ -64,9 +64,16 @@ export class ProductStore {
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count);
 
-    const first = products[0];
-    this.bafaSnapshotDate = first?.bafa_snapshot_fetched_at ?? null;
-    this.sourceSnapshotDate = first?.source_snapshot_generated_at ?? null;
+    // Latest (max) timestamps across records — mixed dates are expected now
+    // that delisted products keep the fetched_at of their last snapshot.
+    let maxFetched: string | null = null;
+    let maxGenerated: string | null = null;
+    for (const p of products) {
+      if (p.bafa_snapshot_fetched_at && (!maxFetched || p.bafa_snapshot_fetched_at > maxFetched)) maxFetched = p.bafa_snapshot_fetched_at;
+      if (p.source_snapshot_generated_at && (!maxGenerated || p.source_snapshot_generated_at > maxGenerated)) maxGenerated = p.source_snapshot_generated_at;
+    }
+    this.bafaSnapshotDate = maxFetched;
+    this.sourceSnapshotDate = maxGenerated;
 
     const kws = this.all.map(v => v.kwNum).filter((n): n is number => n != null);
     this.kwBounds = kws.length

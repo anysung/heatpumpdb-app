@@ -291,7 +291,11 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
               {app.dsSections.bafa && !isLabelMode && (
                 <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 22 }}>
                   <SectionHead title="BAFA / FUNDING STATUS" />
-                  <FieldRow label="BAFA list status" value="Listed" note={n('bafaStatus')} />
+                  <FieldRow
+                    label="BAFA list status"
+                    value={(dsp.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot' ? 'Listed' : 'Not listed (previously listed)'}
+                    note={n('bafaStatus')}
+                  />
                   <FieldRow label="BEG EM relevance" value="Potentially eligible — verify" note={n('begRel')} />
                 </div>
               )}

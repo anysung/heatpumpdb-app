@@ -3,10 +3,12 @@ import React from 'react';
 import { HpApp } from '../appState';
 import { FD, sectionLabel } from '../ui';
 
+// Real change history from the versioned BAFA snapshot diffs
+// (data_sources/bafa/diffs/) — update alongside each data refresh.
 const TIMELINE: { date: string; badge: 'CONFIRMED' | 'GUIDANCE'; strong: string; rest: string }[] = [
-  { date: '2 Jul 2026', badge: 'CONFIRMED', strong: 'KfW simplifies proof-of-installation upload', rest: ' — invoices and installer confirmation now in one step for grant 458.' },
-  { date: '14 Jun 2026', badge: 'CONFIRMED', strong: 'BAFA list update', rest: ' — 214 new R290 monoblock entries; 37 models delisted after datasheet corrections.' },
-  { date: '28 May 2026', badge: 'GUIDANCE', strong: 'Draft discussion on 2027 efficiency bonus criteria', rest: ' — no confirmed changes; monitor before advising customers on timing.' },
+  { date: '6 Jul 2026', badge: 'CONFIRMED', strong: 'BAFA list update (July snapshot)', rest: ' — 33 newly listed units; 3,594 entries no longer on the active list vs June; 23 spec corrections. Products that left the list remain in this app for reference, marked "Delisted".' },
+  { date: '6 Jul 2026', badge: 'GUIDANCE', strong: 'Delisted units and funding', rest: ' — units absent from the current BAFA list are unlikely to be BEG EM eligible. Always re-verify the BAFA ID on the official list on the day of application.' },
+  { date: '19 Jun 2026', badge: 'CONFIRMED', strong: 'BAFA list update (June snapshot)', rest: ' — 649 newly listed units; 276 entries left the active list vs March; 786 spec updates.' },
 ];
 
 const SOURCES = [

@@ -68,3 +68,10 @@ Note: foerderungAb/foerderungBis null in this snapshot (API does not return thes
 - 2026-06-19T06:03:06.532Z parse complete: snapshot=2026-06 records=6887 malformed=0 duplicates=0 missing_hash=0 manufacturers=227
 - 2026-06-19T06:03:13.254Z diff start: from=2026-03 (6514) to=2026-06 (6887)
 - 2026-06-19T06:03:13.278Z diff complete: from=2026-03 to=2026-06 still_listed=6238 changed_specs=786 newly_listed=649 missing_from_latest=276
+- 2026-07-06T02:50:07.706Z dry-run: probe OK — snapshot=2026-07 filter="foerderungAb=le="2026-07-06";foerderungBis=ge="2026-07-06";einzelabnahme==false;pumpentyp==LUFT_WASSER" total=3326
+- 2026-07-06T02:50:24.485Z fetch start: snapshot=2026-07 filter="foerderungAb=le="2026-07-06";foerderungBis=ge="2026-07-06";e..." total=3326 pages=34
+- 2026-07-06T02:50:41.228Z fetch complete: snapshot=2026-07 records=3326 total_available=3326 time=17s size=5094.3KB
+- 2026-07-06T02:50:53.113Z parse start: snapshot=2026-07 format=raw_api raw_items=3326
+- 2026-07-06T02:50:53.183Z parse complete: snapshot=2026-07 records=3326 malformed=0 duplicates=0 missing_hash=0 manufacturers=168
+- 2026-07-06T02:50:53.289Z diff start: from=2026-06 (6887) to=2026-07 (3326)
+- 2026-07-06T02:50:53.305Z diff complete: from=2026-06 to=2026-07 still_listed=3293 changed_specs=23 newly_listed=33 missing_from_latest=3594

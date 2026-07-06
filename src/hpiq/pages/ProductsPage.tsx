@@ -298,7 +298,11 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span>{r.scop}</span>
                     <span>{r.noise === '—' ? '—' : `${r.noise} dB`}</span>
                     <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-                      <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>BAFA</span>
+                      {(r.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot' ? (
+                        <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>BAFA</span>
+                      ) : (
+                        <span style={{ border: '1px solid #e8c9c9', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fdf3f3', color: '#a33' }}>Delisted</span>
+                      )}
                       {r.eprel && <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{r.label}</span>}
                       <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>Sheet ready</span>
                     </span>
@@ -378,7 +382,9 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 9 }}>
                   <span style={{ ...sectionLabel, fontSize: 10.5 }}>FÖRDERSTATUS · FUNDING</span>
                   <span style={{ fontSize: 13.5, lineHeight: 1.5 }}>
-                    Listed in the current BAFA source snapshot. Potentially eligible under BEG EM — up to 40% with the climate-speed bonus.
+                    {(sel.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot'
+                      ? 'Listed in the current BAFA source snapshot. Potentially eligible under BEG EM — up to 40% with the climate-speed bonus.'
+                      : 'No longer in the current BAFA source snapshot (previously listed — data retained for reference). Funding eligibility is unlikely; verify directly with BAFA.'}
                   </span>
                   <span style={{ fontSize: 12, color: '#7a7a7a' }}>
                     Verify current eligibility with BAFA before quoting.{' '}

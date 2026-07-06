@@ -28,6 +28,27 @@
   "snapshot_retention_policy": "raw/YYYY-MM/ and parsed/YYYY-MM/ are gitignored (large files, rebuilt by scripts). manifest.json and fetch-log.md are committed. diffs/YYYY-MM/ are gitignored. listing_history.json is gitignored (derived, rebuilt by diff-snapshots.mjs).",
   "known_snapshots": [
     {
+      "snapshot_id": "2026-07",
+      "fetched_at": "2026-07-06T02:50:41.194Z",
+      "record_count": 3326,
+      "total_available": 3326,
+      "format": "raw_api",
+      "test_mode": false,
+      "complete": true,
+      "fetch_script": "scripts/bafa/fetch-bafa-raw.mjs v2.0",
+      "parse_complete": true,
+      "diff_available": true,
+      "parsed_at": "2026-07-06T02:50:53.183Z",
+      "parsed_record_count": 3326,
+      "parse_validation": {
+        "record_count": "PASS",
+        "hash_complete": "PASS",
+        "malformed": "PASS",
+        "duplicates": "PASS"
+      },
+      "last_diff_from": "2026-06"
+    },
+    {
       "snapshot_id": "2026-06",
       "fetched_at": "2026-06-19T05:17:14.627Z",
       "record_count": 6887,
@@ -80,7 +101,7 @@
     "Presence in the BAFA registry (or in a snapshot of it) does NOT confirm current BEG subsidy application eligibility. Verify current eligibility and application requirements directly at www.bafa.de.",
     "Snapshot data reflects the state of the BAFA registry at the time of extraction only."
   ],
-  "next_recommended_step": "Master seed ready at master_seed/2026-06/. Review schema before app integration.",
+  "next_recommended_step": "Master seed ready at master_seed/2026-07/. Review schema before app integration.",
   "known_diffs": [
     {
       "diff_key": "2026-03-to-2026-06",
@@ -92,6 +113,17 @@
       "missing_from_latest": 276,
       "changed_specs": 786,
       "still_listed": 6238
+    },
+    {
+      "diff_key": "2026-06-to-2026-07",
+      "from_snapshot": "2026-06",
+      "to_snapshot": "2026-07",
+      "generated_at": "2026-07-06T02:50:53.354Z",
+      "output_file": "diffs/2026-07/diff-from-2026-06-to-2026-07.json",
+      "newly_listed": 33,
+      "missing_from_latest": 3594,
+      "changed_specs": 23,
+      "still_listed": 3293
     }
   ],
   "known_master_seeds": [
@@ -104,6 +136,18 @@
       "bafa_list_yes": 6887,
       "bafa_list_no": 276,
       "output_file": "master_seed/2026-06/bafa-master-seed.json",
+      "build_script": "scripts/bafa/build-master-seed.mjs",
+      "validation_overall": "PASS"
+    },
+    {
+      "out_label": "2026-07",
+      "reference_baseline_snapshot": "2026-03",
+      "latest_snapshot": "2026-07",
+      "generated_at": "2026-07-06T02:53:01.350Z",
+      "total_products": 7196,
+      "bafa_list_yes": 3326,
+      "bafa_list_no": 3870,
+      "output_file": "master_seed/2026-07/bafa-master-seed.json",
       "build_script": "scripts/bafa/build-master-seed.mjs",
       "validation_overall": "PASS"
     }

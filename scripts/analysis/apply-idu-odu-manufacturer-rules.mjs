@@ -27,7 +27,7 @@
  *   node scripts/analysis/apply-idu-odu-manufacturer-rules.mjs --dry-run
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -35,10 +35,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
 const args = process.argv.slice(2);
+// --snapshot=YYYY-MM or --snapshot YYYY-MM; default = newest master_seed dir.
 const SNAPSHOT = args.find(a => a.startsWith('--snapshot='))?.split('=')[1]
-  || args[args.indexOf('--snapshot') + 1]?.replace(/^--/, '') === undefined
-    ? '2026-06'
-    : args[args.indexOf('--snapshot') + 1];
+  ?? (args.includes('--snapshot') ? args[args.indexOf('--snapshot') + 1] : null)
+  ?? readdirSync(resolve(ROOT, 'data_sources/bafa/master_seed'))
+       .filter(d => /^\d{4}-\d{2}$/.test(d)).sort().reverse()[0];
 const DRY_RUN = args.includes('--dry-run');
 
 function loadJSON(rel) {

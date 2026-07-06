@@ -20,15 +20,13 @@
  * BAFA List Yes filter: bafa_list_current === true (default export only)
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const MARCH_SNAPSHOT_FETCHED_AT = '2026-03-19T12:07:14.787Z';
-const JUNE_SNAPSHOT_FETCHED_AT = '2026-06-19T05:17:14.627Z';
 const EXPECTED_FIELD_COUNT = 75;
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
@@ -54,7 +52,29 @@ function classifySegment(power_kw) {
 
 // ── Load sources ──────────────────────────────────────────────────────────────
 
-const seed = loadJSON('data_sources/bafa/master_seed/2026-06/bafa-master-seed.json');
+// ── Snapshot selection ────────────────────────────────────────────────────────
+// --snapshot=YYYY-MM overrides; default = newest master_seed/YYYY-MM directory.
+const snapArg = process.argv.find(a => a.startsWith('--snapshot='))?.split('=')[1] ?? null;
+const SEED_DIR = resolve(ROOT, 'data_sources/bafa/master_seed');
+const SNAPSHOT = snapArg ?? readdirSync(SEED_DIR).filter(d => /^\d{4}-\d{2}$/.test(d)).sort().reverse()[0];
+if (!SNAPSHOT) { console.error('No master seed snapshot found.'); process.exit(1); }
+console.log(`Master seed snapshot: ${SNAPSHOT}`);
+
+// Per-snapshot fetch timestamps from raw/_meta.json — bafa_snapshot_fetched_at
+// follows each product's last_seen_snapshot, so the app's "BAFA list updated"
+// date moves automatically with every regular data update.
+function snapshotFetchedAt(id) {
+  const p = resolve(ROOT, `data_sources/bafa/raw/${id}/_meta.json`);
+  if (!existsSync(p)) return null;
+  try { return JSON.parse(readFileSync(p, 'utf8')).fetched_at ?? null; } catch { return null; }
+}
+const FETCHED_AT_BY_SNAPSHOT = new Map(
+  readdirSync(resolve(ROOT, 'data_sources/bafa/raw'))
+    .filter(d => /^\d{4}-\d{2}$/.test(d))
+    .map(id => [id, snapshotFetchedAt(id)])
+);
+
+const seed = loadJSON(`data_sources/bafa/master_seed/${SNAPSHOT}/bafa-master-seed.json`);
 const enriched = loadJSON('scraper/pricing/output/dataset-enriched-full.json');
 const shortNamesFile = loadJSON('scraper/pricing/manufacturer-short-names.json');
 const shortNameMap = new Map(Object.entries(shortNamesFile.mapping));
@@ -202,9 +222,14 @@ function classifyOutdoorSide(s, comp, installationType) {
   return { identified: false, displayModel: null, displayKind: null };
 }
 
-// ── Filter to BAFA List Yes products ─────────────────────────────────────────
+// ── Export ALL master-seed products ───────────────────────────────────────────
+// Products absent from the current BAFA snapshot are NOT deleted — they are
+// exported with bafa_listing_status 'delisted' so the app's BAFA-listed-only
+// filter can distinguish them while their data remains fully available.
 
-const bafaListYes = seed.items.filter(s => s.bafa_list_current === true);
+const bafaListYes = seed.items;
+const listYesCount = seed.items.filter(s => s.bafa_list_current === true).length;
+const delistedCount = seed.items.length - listYesCount;
 
 const generatedAt = new Date().toISOString();
 
@@ -299,12 +324,10 @@ function buildItem(s) {
     source_id: String(s.bafa_id),
     country: 'DE',
     primary_source: 'BAFA',
-    bafa_listing_status: 'listed_in_snapshot',
+    bafa_listing_status: s.bafa_list_current === true ? 'listed_in_snapshot' : 'delisted',
     bafa_foerderung_von: null,
     bafa_foerderung_bis: null,
-    bafa_snapshot_fetched_at: s.seen_in_reference_baseline
-      ? MARCH_SNAPSHOT_FETCHED_AT
-      : JUNE_SNAPSHOT_FETCHED_AT,
+    bafa_snapshot_fetched_at: FETCHED_AT_BY_SNAPSHOT.get(s.last_seen_snapshot) ?? null,
     source_snapshot_generated_at: generatedAt,
 
     // ── Component fields (from IDU/ODU mapping, display-only) ───────────────
@@ -368,13 +391,14 @@ function writeOutput(relPath, items, dataset, segmentsIncluded) {
       dataset,
       description: 'BAFA master seed v2 export. Segmentation: capacity-based (power_35C_kw). Overlay source: dataset-enriched-full.json for installation_type, physical specs, uuid.',
       total_items: items.length,
-      primary_source: 'data_sources/bafa/master_seed/2026-06/bafa-master-seed.json',
+      primary_source: `data_sources/bafa/master_seed/${SNAPSHOT}/bafa-master-seed.json`,
       overlay_source: 'scraper/pricing/output/dataset-enriched-full.json',
       segments_included: segmentsIncluded,
       segmentation_policy: 'capacity_v2: ≤20.99kW=residential_core, 21-45kW=light_commercial, >45kW=commercial_project',
-      bafa_list_yes_total: bafaListYes.length,
-      bafa_snapshot_march_fetched_at: MARCH_SNAPSHOT_FETCHED_AT,
-      bafa_snapshot_june_fetched_at: JUNE_SNAPSHOT_FETCHED_AT,
+      exported_total: bafaListYes.length,
+      bafa_list_yes_total: listYesCount,
+      bafa_delisted_preserved_total: delistedCount,
+      snapshot_fetched_at: Object.fromEntries(FETCHED_AT_BY_SNAPSHOT),
     },
     items,
   };
@@ -425,7 +449,7 @@ const commProject = commercial.filter(i => i.market_segment === 'commercial_proj
 
 console.log('');
 console.log('── Build summary ──────────────────────────────────────────');
-console.log(`BAFA List Yes:        ${bafaListYes.length}`);
+console.log(`Exported (all):       ${bafaListYes.length}  (listed: ${listYesCount}, delisted preserved: ${delistedCount})`);
 console.log(`  with enriched overlay:  ${withOverlay}`);
 console.log(`  no overlay (new 2026-06): ${withoutOverlay}`);
 console.log(`Segmentation (capacity-based, v2.0):`);

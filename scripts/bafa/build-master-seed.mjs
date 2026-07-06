@@ -146,8 +146,32 @@ async function main() {
   const baselineMap = indexByKey(baselineItems);
   const latestMap   = indexByKey(latestItems);
 
-  // ── Build union key set ──────────────────────────────────────────────────
-  const allKeys = new Set([...baselineMap.keys(), ...latestMap.keys()]);
+  // ── Intermediate snapshots (baseline < id < latest) ───────────────────────
+  // Products observed in ANY snapshot are preserved in the master seed even if
+  // absent from both baseline and latest (listed and delisted in between) —
+  // nothing ever observed is dropped.
+  const intermediateIds = fs.existsSync(PARSED_DIR)
+    ? fs.readdirSync(PARSED_DIR)
+        .filter(d => /^\d{4}-\d{2}$/.test(d) && d > BASELINE && d < LATEST)
+        .sort()
+    : [];
+  const chronological = [
+    { id: BASELINE, map: baselineMap },
+    ...intermediateIds.map(id => {
+      const items = loadParsed(id);
+      if (!items) {
+        console.error(`ERROR: Intermediate snapshot unreadable: parsed/${id}/bafa-normalized.json`);
+        process.exit(1);
+      }
+      console.log(`Loaded intermediate (${id}): ${items.length} records`);
+      return { id, map: indexByKey(items) };
+    }),
+    { id: LATEST, map: latestMap },
+  ];
+
+  // ── Build union key set across ALL snapshots ──────────────────────────────
+  const allKeys = new Set();
+  for (const s of chronological) for (const k of s.map.keys()) allKeys.add(k);
 
   const seedItems = [];
   let dupCount = 0;
@@ -159,15 +183,16 @@ async function main() {
 
     const baselineRec = baselineMap.get(key) ?? null;
     const latestRec   = latestMap.get(key)   ?? null;
+    const containing  = chronological.filter(s => s.map.has(key));
 
     // Use the most recent available record for technical product fields
-    const primary = latestRec ?? baselineRec;
+    const primary = containing[containing.length - 1].map.get(key);
 
-    const seen_in_reference_baseline     = !!baselineRec;
+    const seen_in_reference_baseline      = !!baselineRec;
     const present_in_latest_bafa_snapshot = !!latestRec;
 
-    const first_seen_snapshot = seen_in_reference_baseline ? BASELINE : LATEST;
-    const last_seen_snapshot  = present_in_latest_bafa_snapshot ? LATEST : BASELINE;
+    const first_seen_snapshot = containing[0].id;
+    const last_seen_snapshot  = containing[containing.length - 1].id;
 
     seedItems.push({
       // ── Identity ────────────────────────────────────────────────────────
@@ -239,7 +264,7 @@ async function main() {
       bafa_list_current_as_of: LATEST,
 
       // ── Hashes ──────────────────────────────────────────────────────────
-      latest_source_record_hash:   (latestRec ?? baselineRec)?.source_record_hash ?? null,
+      latest_source_record_hash:   primary?.source_record_hash ?? null,
       baseline_source_record_hash: baselineRec?.source_record_hash ?? null,
     });
   }
