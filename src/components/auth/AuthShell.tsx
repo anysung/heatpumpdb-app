@@ -128,6 +128,167 @@ const FlowWave: React.FC = () => (
   </svg>
 );
 
+/* ── Installation scenes (line-art, looping) ─────────────────────────────
+ * Background-only concept animations: crews installing outdoor units.
+ * Stroke-only drawing — structures in faint white, units in emerald,
+ * people in cyan. Sits behind all content; cards/text overlap freely.
+ */
+
+const SCENE_STRUCT = 'rgba(255,255,255,0.32)';
+const SCENE_UNIT = '#34d399';
+const SCENE_CREW = '#67e8f9';
+
+/** Bottom-left: detached house, one tech commissioning a unit, two carrying the next one in. */
+const ResidentialInstallScene: React.FC = () => (
+  <svg
+    className="hp-scene absolute bottom-0 left-0 w-[clamp(180px,36vw,540px)] h-auto opacity-[0.55]"
+    viewBox="0 0 520 260"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {/* ground */}
+    <line x1="0" y1="248" x2="520" y2="248" stroke={SCENE_STRUCT} strokeWidth="1.6" />
+
+    {/* house */}
+    <g stroke={SCENE_STRUCT} strokeWidth="1.6">
+      <path d="M52 248 V130 H198 V248" />
+      <path d="M38 130 L125 66 L212 130" />
+      <path d="M92 248 V196 H122 V248" />
+      <circle cx="116" cy="222" r="1.5" />
+      <rect x="66" y="150" width="38" height="34" rx="2" />
+      <path d="M85 150 v34 M66 167 h38" opacity="0.6" />
+      <rect x="140" y="150" width="38" height="34" rx="2" />
+      <path d="M159 150 v34 M140 167 h38" opacity="0.6" />
+    </g>
+
+    {/* installed outdoor unit + spinning fan + refrigerant line to house */}
+    <g stroke={SCENE_UNIT} strokeWidth="1.6">
+      <line x1="252" y1="248" x2="352" y2="248" strokeWidth="2.5" opacity="0.7" />
+      <rect x="258" y="192" width="88" height="52" rx="6" />
+      <path d="M268 244 v4 M336 244 v4" />
+      <circle cx="288" cy="218" r="17" />
+      <circle cx="288" cy="218" r="2" />
+      <g className="hp-fan">
+        <line x1="288" y1="218" x2="288" y2="204" />
+        <line x1="288" y1="218" x2="276" y2="225" />
+        <line x1="288" y1="218" x2="300" y2="225" />
+      </g>
+      <path d="M318 202 v32 M326 202 v32 M334 202 v32" opacity="0.65" />
+      <path className="hp-flow-line" d="M258 206 H198" opacity="0.9" />
+    </g>
+
+    {/* tech A — kneeling, torquing the service valve */}
+    <g stroke={SCENE_CREW} strokeWidth="1.7">
+      <circle cx="366" cy="196" r="5.5" />
+      <path d="M366 202 L362 224" />
+      <path d="M362 224 L354 248 M362 224 L368 248" />
+      <path d="M365 207 L374 220" />
+      <g className="hp-wrench-arm">
+        <path d="M365 207 L348 214" />
+        <path d="M348 214 l-5 -6" />
+      </g>
+    </g>
+
+    {/* techs B + C — carrying the next unit in from the right (loops) */}
+    <g className="hp-carry">
+      <g className="hp-bob">
+        <rect x="392" y="206" width="40" height="26" rx="3" stroke={SCENE_UNIT} strokeWidth="1.6" opacity="0.9" />
+        <g stroke={SCENE_CREW} strokeWidth="1.7">
+          <circle cx="378" cy="192" r="5.5" />
+          <path d="M378 198 V222" />
+          <path d="M378 222 L370 248 M378 222 L384 248" />
+          <path d="M378 204 L392 213" />
+          <circle cx="446" cy="192" r="5.5" />
+          <path d="M446 198 V222" />
+          <path d="M446 222 L440 248 M446 222 L454 248" />
+          <path d="M446 204 L432 213" />
+        </g>
+      </g>
+    </g>
+  </svg>
+);
+
+/** Bottom-right: commercial rooftop — unit lowered by crane, two crew guiding, one servicing. */
+const CommercialInstallScene: React.FC = () => (
+  <svg
+    className="hp-scene absolute bottom-0 right-0 w-[clamp(190px,38vw,560px)] h-auto opacity-[0.55]"
+    viewBox="0 0 520 300"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {/* ground */}
+    <line x1="0" y1="288" x2="520" y2="288" stroke={SCENE_STRUCT} strokeWidth="1.6" />
+
+    {/* building */}
+    <g stroke={SCENE_STRUCT} strokeWidth="1.6">
+      <path d="M150 288 V112 H430 V288" />
+      <path d="M144 112 H436" />
+      {[136, 176, 216].map(y =>
+        [170, 214, 258, 302, 346, 390].map(x => (
+          <rect key={`${x}-${y}`} x={x} y={y} width="26" height="20" rx="1.5" opacity="0.5" />
+        )),
+      )}
+      <path d="M274 288 V250 H306 V288" />
+    </g>
+
+    {/* existing rooftop unit, running */}
+    <g stroke={SCENE_UNIT} strokeWidth="1.6">
+      <rect x="170" y="74" width="84" height="38" rx="4" />
+      <circle cx="196" cy="93" r="13" />
+      <circle cx="196" cy="93" r="1.8" />
+      <g className="hp-fan-slow">
+        <line x1="196" y1="93" x2="196" y2="82" />
+        <line x1="196" y1="93" x2="187" y2="99" />
+        <line x1="196" y1="93" x2="205" y2="99" />
+      </g>
+      <path d="M222 82 v22 M230 82 v22 M238 82 v22 M246 82 v22" opacity="0.65" />
+      {/* landing marks for the incoming unit */}
+      <path d="M310 112 h12 M350 112 h12" strokeWidth="2.5" opacity="0.6" />
+    </g>
+
+    {/* hoisted unit descending from crane (loops) */}
+    <g className="hp-hoist">
+      <line x1="336" y1="-320" x2="336" y2="66" stroke={SCENE_STRUCT} strokeWidth="1.4" />
+      <g stroke={SCENE_UNIT} strokeWidth="1.6">
+        <line x1="318" y1="66" x2="354" y2="66" />
+        <path d="M318 66 L310 78 M354 66 L362 78" />
+        <rect x="306" y="78" width="60" height="34" rx="4" />
+        <circle cx="324" cy="95" r="10" />
+        <path d="M344 86 v18 M352 86 v18" opacity="0.65" />
+      </g>
+    </g>
+
+    {/* crew — servicing tech + two riggers guiding the lift */}
+    <g stroke={SCENE_CREW} strokeWidth="1.7">
+      <circle cx="268" cy="66" r="5" />
+      <path d="M268 71 L264 90" />
+      <path d="M264 90 L258 112 M264 90 L270 112" />
+      <g className="hp-wrench-arm">
+        <path d="M267 76 L252 84" />
+        <path d="M252 84 l-5 -5" />
+      </g>
+
+      <circle cx="290" cy="76" r="5" />
+      <path d="M290 81 V98" />
+      <path d="M290 98 L284 112 M290 98 L296 112" />
+      <g className="hp-wave-arms">
+        <path d="M290 84 L280 72 M290 84 L300 72" />
+      </g>
+
+      <circle cx="382" cy="76" r="5" />
+      <path d="M382 81 V98" />
+      <path d="M382 98 L376 112 M382 98 L388 112" />
+      <g className="hp-wave-arms">
+        <path d="M382 84 L372 72 M382 84 L392 72" />
+      </g>
+    </g>
+  </svg>
+);
+
 const gridOverlayStyle: React.CSSProperties = {
   backgroundImage:
     'linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)',
@@ -188,6 +349,8 @@ export const AuthShell: React.FC<{
       <div className="absolute -bottom-52 left-1/4 w-[36rem] h-[36rem] rounded-full bg-amber-400/[0.07] blur-[130px]" />
       <div className="absolute inset-0" style={gridOverlayStyle} />
       <FlowWave />
+      <ResidentialInstallScene />
+      <CommercialInstallScene />
     </div>
 
     <header className="relative z-20 flex items-center justify-between gap-4 px-6 md:px-10 py-5">
