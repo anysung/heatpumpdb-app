@@ -120,6 +120,10 @@ export interface NewsItem {
   original?: boolean;
   /** Editorial category: FUNDING | MARKET | TECHNOLOGY | INSTALLER INSIGHT. */
   category?: string;
+  /** Stored German translations of the article (generated with the article). */
+  title_de?: string;
+  summary_de?: string;
+  body_de?: string;
 }
 
 export interface PolicyItem {

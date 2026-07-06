@@ -303,6 +303,11 @@ STEP 2 — WRITE. Compose exactly 3 ORIGINAL editorial articles in English for H
   (official or reputable pages only — bafa.de, kfw.de, bmwk.de, waermepumpe.de,
   manufacturer newsrooms, established trade press). Never invent URLs.
 - "category": exactly one of FUNDING | MARKET | TECHNOLOGY | INSTALLER INSIGHT.
+- For EACH article ALSO provide a professional German version of the same
+  content in "title_de", "summary_de", and "body_de": natural, journalistic
+  German for professional installers (correct Fachbegriffe: Wärmepumpe,
+  Förderung, Schallleistung, Kältemittel…), not a literal word-by-word
+  translation. Same paragraph structure as "body".
 
 Also compile 3-5 current policy/regulation items (BAFA/KfW programs with amounts, GEG requirements, efficiency standards).
 
@@ -311,9 +316,12 @@ Return ONLY valid JSON with this exact structure:
   "news": [
     {
       "id": "news-${yearMonth}-001",
-      "title": "Concise editorial headline",
-      "summary": "2-3 sentence standfirst/dek",
+      "title": "Concise editorial headline (English)",
+      "summary": "2-3 sentence standfirst/dek (English)",
       "body": "Paragraph one...\\n\\nParagraph two...\\n\\nParagraph three...",
+      "title_de": "Prägnante redaktionelle Überschrift (Deutsch)",
+      "summary_de": "2-3 Sätze Vorspann (Deutsch)",
+      "body_de": "Erster Absatz...\\n\\nZweiter Absatz...\\n\\nDritter Absatz...",
       "category": "MARKET",
       "sources": [ { "title": "Source page title", "url": "https://real-url.de" } ],
       "date": "${today}T00:00:00Z"

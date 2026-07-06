@@ -18,23 +18,24 @@ function categoryOf(item: NewsItem): string {
   return 'MARKET';
 }
 
+/** Pick the stored translation of an article for the active language.
+ *  Articles are generated bilingually (title/summary/body + *_de fields);
+ *  falls back to English when a German field is missing. */
+function localized(item: NewsItem, lang: string): { title: string; summary: string; body: string } {
+  if (lang === 'de') {
+    return {
+      title: item.title_de ?? item.title,
+      summary: item.summary_de ?? item.summary,
+      body: item.body_de ?? item.body ?? '',
+    };
+  }
+  return { title: item.title, summary: item.summary, body: item.body ?? '' };
+}
+
 function readTime(item: NewsItem, unit: string): string {
   const words = `${item.title} ${item.summary} ${item.body ?? ''}`.split(/\s+/).length;
   return `${Math.max(3, Math.min(8, Math.round(words / 120) + 2))} ${unit}`;
 }
-
-/** Approved-design editorial content, used when the curated feed is empty. */
-const FALLBACK_FEATURED = {
-  badge: 'MARKET',
-  kicker: 'July 2026 briefing',
-  title: 'German heat pump sales up 31% in H1 — R290 monoblocks now half of all new residential installs.',
-  dek: 'What the shift means for installer stock planning, and which manufacturers gained BAFA list share this quarter.',
-};
-const FALLBACK_CARDS = [
-  { badge: 'FUNDING', title: 'KfW processing times drop below three weeks', dek: 'Grant 458 commitments accelerated after the June portal update — what it changes for project timelines.', meta: '28 Jun 2026 · 4 min' },
-  { badge: 'TECHNOLOGY', title: 'Sound power is the new spec battleground', dek: 'Sub-50 dB(A) units doubled year over year. How noise limits in dense housing are reshaping model lineups.', meta: '19 Jun 2026 · 6 min' },
-  { badge: 'INSTALLER INSIGHT', title: 'Hydraulic balancing documentation, done right', dek: 'The proof most often missing from funding files — and a template that passes review the first time.', meta: '7 Jun 2026 · 5 min' },
-];
 
 export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
@@ -73,17 +74,17 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           <div style={{ padding: '30px 36px 34px', display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '3px 11px' }}>
-                {featured ? categoryOf(featured) : FALLBACK_FEATURED.badge}
+                {featured ? (t.news.categories[categoryOf(featured)] ?? categoryOf(featured)) : (t.news.categories[t.news.fallbackFeatured.badge] ?? t.news.fallbackFeatured.badge)}
               </span>
               <span style={{ fontSize: 12, color: '#ccc' }}>
-                {featured ? `${shortDate(featured.date)} ${t.news.briefing}${featured.author ? ` · ${featured.author}` : ''}` : FALLBACK_FEATURED.kicker}
+                {featured ? `${shortDate(featured.date, t.locale)} ${t.news.briefing}${featured.author ? ` · ${featured.author}` : ''}` : t.news.fallbackFeatured.kicker}
               </span>
             </div>
             <span style={{ fontFamily: FD, fontSize: 28, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.15, maxWidth: 720 }}>
-              {featured ? featured.title : FALLBACK_FEATURED.title}
+              {featured ? localized(featured, app.lang).title : t.news.fallbackFeatured.title}
             </span>
             <span style={{ fontSize: 15, color: '#ccc', lineHeight: 1.55, maxWidth: 680 }}>
-              {featured ? featured.summary : FALLBACK_FEATURED.dek}
+              {featured ? localized(featured, app.lang).summary : t.news.fallbackFeatured.dek}
             </span>
             <span onClick={() => openArticle(featured)} style={{ fontSize: 14, color: '#2997ff', cursor: 'pointer' }}>{t.news.readBriefing}</span>
           </div>
@@ -95,15 +96,15 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div key={item.id} onClick={() => openArticle(item)} style={{ border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden', display: 'flex', flexDirection: 'column', cursor: 'pointer', background: '#fff' }}>
               {item.imageUrl && <img src={item.imageUrl} alt="" style={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }} />}
               <div style={{ padding: 22, display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
-                <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', width: 'fit-content' }}>{categoryOf(item)}</span>
-                <span style={{ fontFamily: FD, fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.25 }}>{item.title}</span>
-                <span style={{ fontSize: 13, color: '#7a7a7a', lineHeight: 1.55 }}>{item.summary}</span>
-                <span style={{ fontSize: 12, color: '#7a7a7a', marginTop: 'auto' }}>{shortDate(item.date)} · {readTime(item, t.news.minRead)}</span>
+                <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', width: 'fit-content' }}>{t.news.categories[categoryOf(item)] ?? categoryOf(item)}</span>
+                <span style={{ fontFamily: FD, fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.25 }}>{localized(item, app.lang).title}</span>
+                <span style={{ fontSize: 13, color: '#7a7a7a', lineHeight: 1.55 }}>{localized(item, app.lang).summary}</span>
+                <span style={{ fontSize: 12, color: '#7a7a7a', marginTop: 'auto' }}>{shortDate(item.date, t.locale)} · {readTime(item, t.news.minRead)}</span>
               </div>
             </div>
-          )) ?? FALLBACK_CARDS.map(card => (
+          )) ?? t.news.fallbackCards.map(card => (
             <div key={card.title} style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: 24, display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', width: 'fit-content' }}>{card.badge}</span>
+              <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', width: 'fit-content' }}>{t.news.categories[card.badge] ?? card.badge}</span>
               <span style={{ fontFamily: FD, fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.25 }}>{card.title}</span>
               <span style={{ fontSize: 13, color: '#7a7a7a', lineHeight: 1.55 }}>{card.dek}</span>
               <span style={{ fontSize: 12, color: '#7a7a7a', marginTop: 'auto' }}>{card.meta}</span>
@@ -138,8 +139,8 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             style={{ background: '#fff', borderRadius: 18, width: 'min(760px, 100%)', maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 24px 64px rgba(0,0,0,.28)' }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 22px', borderBottom: '1px solid #e0e0e0', flex: 'none' }}>
-              <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px' }}>{categoryOf(reader)}</span>
-              <span style={{ fontSize: 12, color: '#7a7a7a' }}>{shortDate(reader.date)} · {reader.author ?? 'HeatpumpIQ Editorial'}</span>
+              <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px' }}>{t.news.categories[categoryOf(reader)] ?? categoryOf(reader)}</span>
+              <span style={{ fontSize: 12, color: '#7a7a7a' }}>{shortDate(reader.date, t.locale)} · {reader.author ?? 'HeatpumpIQ Editorial'}</span>
               <span
                 className="hp-press"
                 onClick={() => setReader(null)}
@@ -151,10 +152,10 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div style={{ overflow: 'auto' }}>
               {reader.imageUrl && <img src={reader.imageUrl} alt="" style={{ width: '100%', height: 190, objectFit: 'cover', display: 'block' }} />}
               <div style={{ padding: '26px 32px 30px', display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <span style={{ fontFamily: FD, fontSize: 26, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.2 }}>{reader.title}</span>
-                <span style={{ fontSize: 15, color: '#7a7a7a', lineHeight: 1.55 }}>{reader.summary}</span>
+                <span style={{ fontFamily: FD, fontSize: 26, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.2 }}>{localized(reader, app.lang).title}</span>
+                <span style={{ fontSize: 15, color: '#7a7a7a', lineHeight: 1.55 }}>{localized(reader, app.lang).summary}</span>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  {(reader.body ?? '').split(/\n{2,}/).map((para, i) => (
+                  {localized(reader, app.lang).body.split(/\n{2,}/).map((para, i) => (
                     <span key={i} style={{ fontSize: 14.5, lineHeight: 1.7, color: '#1d1d1f' }}>{para}</span>
                   ))}
                 </div>
