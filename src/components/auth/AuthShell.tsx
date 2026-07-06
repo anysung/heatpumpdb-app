@@ -154,43 +154,58 @@ const ResidentialInstallScene: React.FC = () => (
     strokeLinejoin="round"
     aria-hidden="true"
   >
+    <defs>
+      {/* openings punched out of the solid house silhouette */}
+      <mask id="hpHouseMask">
+        <rect x="0" y="0" width="520" height="260" fill="#fff" />
+        <rect x="84" y="198" width="30" height="50" rx="2" fill="#000" />
+        <rect x="58" y="158" width="28" height="24" rx="2" fill="#000" />
+        <rect x="126" y="158" width="28" height="24" rx="2" fill="#000" />
+        <rect x="178" y="188" width="52" height="60" rx="2" fill="#000" />
+      </mask>
+    </defs>
+
     {/* ground */}
     <line x1="0" y1="248" x2="520" y2="248" stroke={SCENE_STRUCT} strokeWidth="4" />
 
-    {/* house — bold pictogram: heavy outline, filled door/windows, chimney */}
-    <g stroke={SCENE_STRUCT} strokeWidth="4">
-      <path d="M48 246 V132 H204 V246" fill="rgba(255,255,255,0.06)" />
-      <path d="M34 132 L126 58 L218 132" strokeWidth="5" />
-      <path d="M172 94 V70 H192 V110" />
-      <rect x="88" y="198" width="32" height="48" rx="2" fill={SCENE_FILL} stroke="none" />
-      <rect x="62" y="152" width="32" height="30" rx="2" fill={SCENE_FILL} stroke="none" />
-      <rect x="142" y="152" width="32" height="30" rx="2" fill={SCENE_FILL} stroke="none" />
+    {/* house — solid pictogram silhouette: pitched roof, chimney, attached garage */}
+    <g fill={SCENE_FILL} stroke="none" mask="url(#hpHouseMask)">
+      <path d="M52 248 V134 H170 V248 Z" />
+      <path d="M28 144 L111 56 L194 144 Z" />
+      <path d="M138 80 H158 V140 H138 Z" />
+      <path d="M162 162 H240 V174 H162 Z" />
+      <path d="M168 174 H234 V248 H168 Z" />
+    </g>
+    {/* window cross bars + garage door slats drawn back over the openings */}
+    <g stroke={SCENE_FILL} strokeWidth="3">
+      <path d="M72 158 V182 M58 170 H86 M140 158 V182 M126 170 H154" />
+      <path d="M178 208 H230 M178 228 H230" opacity="0.7" />
     </g>
 
     {/* installed outdoor unit — bold outline, petal fan, chunky grill */}
     <g stroke={SCENE_UNIT} strokeWidth="3.5">
-      <line x1="248" y1="247" x2="358" y2="247" strokeWidth="6" opacity="0.7" />
-      <rect x="256" y="184" width="94" height="58" rx="8" />
-      <circle cx="288" cy="213" r="20" />
-      <circle cx="288" cy="213" r="3.5" fill={SCENE_UNIT} stroke="none" />
+      <line x1="252" y1="247" x2="362" y2="247" strokeWidth="6" opacity="0.7" />
+      <rect x="260" y="184" width="94" height="58" rx="8" />
+      <circle cx="292" cy="213" r="20" />
+      <circle cx="292" cy="213" r="3.5" fill={SCENE_UNIT} stroke="none" />
       <g className="hp-fan">
-        <path d="M288 213 C282 207 282 199 288 195" />
-        <path d="M288 213 C290 221 297 224 303 221" />
-        <path d="M288 213 C280 215 275 222 278 228" transform="rotate(-125 288 213)" />
+        <path d="M292 213 C286 207 286 199 292 195" />
+        <path d="M292 213 C294 221 301 224 307 221" />
+        <path d="M292 213 C284 215 279 222 282 228" transform="rotate(-125 292 213)" />
       </g>
-      <path d="M322 198 V230 M333 198 V230 M344 198 V230" strokeWidth="3" opacity="0.75" />
-      <path className="hp-flow-line" d="M256 200 H204" strokeWidth="3" opacity="0.9" />
+      <path d="M326 198 V230 M337 198 V230 M348 198 V230" strokeWidth="3" opacity="0.75" />
+      <path className="hp-flow-line" d="M260 200 H234" strokeWidth="3" opacity="0.9" />
     </g>
 
     {/* tech A — kneeling, torquing the service valve (pictogram) */}
     <g stroke={SCENE_CREW} strokeWidth="5">
-      <CrewHead cx={374} cy={191} />
-      <path d="M373 199 L367 226" />
-      <path d="M367 226 L356 246 M367 226 L376 246" />
-      <path d="M372 205 L382 220" />
+      <CrewHead cx={380} cy={191} />
+      <path d="M379 199 L373 226" />
+      <path d="M373 226 L362 246 M373 226 L382 246" />
+      <path d="M378 205 L388 220" />
       <g className="hp-wrench-arm">
-        <path d="M372 205 L352 213" />
-        <path d="M352 213 l-7 -8" strokeWidth="4" />
+        <path d="M378 205 L358 213" />
+        <path d="M358 213 l-7 -8" strokeWidth="4" />
       </g>
     </g>
 
@@ -198,21 +213,21 @@ const ResidentialInstallScene: React.FC = () => (
     <g className="hp-carry">
       <g className="hp-bob">
         <g stroke={SCENE_UNIT} strokeWidth="3">
-          <rect x="394" y="198" width="46" height="34" rx="4" />
-          <circle cx="408" cy="215" r="8" strokeWidth="2.5" />
-          <path d="M426 205 V225" strokeWidth="2.5" opacity="0.75" />
+          <rect x="408" y="198" width="46" height="34" rx="4" />
+          <circle cx="422" cy="215" r="8" strokeWidth="2.5" />
+          <path d="M440 205 V225" strokeWidth="2.5" opacity="0.75" />
         </g>
         <g stroke={SCENE_CREW} strokeWidth="5">
-          <CrewHead cx={376} cy={184} />
-          <path d="M377 192 L373 220" />
-          <path d="M373 220 L361 246 M373 220 L383 246" />
-          <path d="M376 198 L394 208" />
-          <path d="M375 202 L394 222" />
-          <CrewHead cx={458} cy={184} />
-          <path d="M457 192 L461 220" />
-          <path d="M461 220 L451 246 M461 220 L471 246" />
-          <path d="M458 198 L440 208" />
-          <path d="M459 202 L440 222" />
+          <CrewHead cx={390} cy={184} />
+          <path d="M391 192 L387 220" />
+          <path d="M387 220 L375 246 M387 220 L397 246" />
+          <path d="M390 198 L408 208" />
+          <path d="M389 202 L408 222" />
+          <CrewHead cx={472} cy={184} />
+          <path d="M471 192 L475 220" />
+          <path d="M475 220 L465 246 M475 220 L485 246" />
+          <path d="M472 198 L454 208" />
+          <path d="M473 202 L454 222" />
         </g>
       </g>
     </g>
@@ -229,87 +244,89 @@ const CommercialInstallScene: React.FC = () => (
     strokeLinejoin="round"
     aria-hidden="true"
   >
-    {/* ground */}
-    <line x1="0" y1="286" x2="520" y2="286" stroke={SCENE_STRUCT} strokeWidth="4" />
+    <defs>
+      {/* window grid + door punched out of the solid tower silhouettes */}
+      <mask id="hpBldgMask">
+        <rect x="0" y="0" width="520" height="300" fill="#fff" />
+        {[134, 162, 190, 218].map(y =>
+          [176, 220, 264, 308].map(x => (
+            <rect key={`f${x}-${y}`} x={x} y={y} width="30" height="18" rx="1.5" fill="#000" />
+          )),
+        )}
+        {[172, 198, 224].map(y =>
+          [382, 414].map(x => (
+            <rect key={`s${x}-${y}`} x={x} y={y} width="24" height="16" rx="1.5" fill="#000" />
+          )),
+        )}
+        <rect x="250" y="240" width="36" height="38" rx="2" fill="#000" />
+      </mask>
+    </defs>
 
-    {/* building — bold pictogram: stepped towers, filled window grid, filled door */}
-    <g stroke={SCENE_STRUCT} strokeWidth="4">
-      <path d="M160 284 V120 H380 V284" fill="rgba(255,255,255,0.06)" />
-      <path d="M380 284 V170 H450 V284" fill="rgba(255,255,255,0.06)" />
-      <path d="M154 120 H386" strokeWidth="5" />
-      <path d="M380 170 H456" strokeWidth="4.5" />
-      {[138, 168, 198, 228].map(y =>
-        [174, 226, 278, 330].map(x => (
-          <rect key={`${x}-${y}`} x={x} y={y} width="28" height="17" rx="1.5" fill={SCENE_FILL} stroke="none" />
-        )),
-      )}
-      {[184, 212, 240].map(y =>
-        [392, 422].map(x => (
-          <rect key={`${x}-${y}`} x={x} y={y} width="20" height="14" rx="1.5" fill={SCENE_FILL} stroke="none" />
-        )),
-      )}
-      <rect x="252" y="250" width="36" height="34" rx="2" fill={SCENE_FILL} stroke="none" />
+    {/* ground */}
+    <line x1="0" y1="288" x2="520" y2="288" stroke={SCENE_STRUCT} strokeWidth="4" />
+
+    {/* building — solid pictogram: stepped towers, rooftop penthouse, base plinth */}
+    <g fill={SCENE_FILL} stroke="none" mask="url(#hpBldgMask)">
+      <path d="M160 278 V120 H368 V278 Z" />
+      <path d="M368 278 V156 H452 V278 Z" />
+      <path d="M164 120 V98 H200 V120 Z" />
+      <rect x="146" y="278" width="320" height="10" rx="2" />
     </g>
 
-    {/* existing rooftop unit, running — twin-fan commercial pictogram */}
+    {/* existing rooftop unit — chiller pictogram, twin spinning fan panels */}
     <g stroke={SCENE_UNIT} strokeWidth="3.5">
-      <rect x="168" y="78" width="92" height="42" rx="5" />
-      <path d="M168 108 H260" strokeWidth="2.5" opacity="0.7" />
-      <circle cx="192" cy="94" r="13" />
-      <circle cx="192" cy="94" r="2.5" fill={SCENE_UNIT} stroke="none" />
+      <rect x="208" y="78" width="88" height="36" rx="3" />
+      <rect x="214" y="84" width="32" height="24" rx="2" strokeWidth="3" />
       <g className="hp-fan-slow">
-        <path d="M192 94 C188 90 188 84 192 82" />
-        <path d="M192 94 C194 99 199 101 203 99" />
-        <path d="M192 94 C187 95 184 100 186 104" transform="rotate(-125 192 94)" />
+        <path d="M221 87 L239 105 M239 87 L221 105" strokeWidth="3" />
       </g>
-      <circle cx="234" cy="94" r="13" />
-      <circle cx="234" cy="94" r="2.5" fill={SCENE_UNIT} stroke="none" />
+      <circle cx="230" cy="96" r="2.5" fill={SCENE_UNIT} stroke="none" />
+      <rect x="252" y="84" width="32" height="24" rx="2" strokeWidth="3" />
       <g className="hp-fan-slow" style={{ animationDelay: '-2s' }}>
-        <path d="M234 94 C230 90 230 84 234 82" />
-        <path d="M234 94 C236 99 241 101 245 99" />
-        <path d="M234 94 C229 95 226 100 228 104" transform="rotate(-125 234 94)" />
+        <path d="M259 87 L277 105 M277 87 L259 105" strokeWidth="3" />
       </g>
+      <circle cx="268" cy="96" r="2.5" fill={SCENE_UNIT} stroke="none" />
+      <path d="M216 114 V120 M288 114 V120" strokeWidth="4" />
       {/* landing marks for the incoming unit */}
-      <path d="M292 120 h14 M342 120 h14" strokeWidth="5" opacity="0.65" />
+      <path d="M316 120 h12 M352 120 h12" strokeWidth="5" opacity="0.65" />
     </g>
 
     {/* hoisted unit descending from crane (loops) */}
     <g className="hp-hoist">
-      <line x1="316" y1="-320" x2="316" y2="64" stroke={SCENE_STRUCT} strokeWidth="3" />
+      <line x1="340" y1="-320" x2="340" y2="68" stroke={SCENE_STRUCT} strokeWidth="3" />
       <g stroke={SCENE_UNIT} strokeWidth="3.5">
-        <line x1="292" y1="64" x2="340" y2="64" strokeWidth="4" />
-        <path d="M292 64 L286 76 M340 64 L346 76" strokeWidth="3" />
-        <rect x="284" y="76" width="64" height="44" rx="5" />
-        <circle cx="306" cy="98" r="12" />
-        <circle cx="306" cy="98" r="2.5" fill={SCENE_UNIT} stroke="none" />
-        <path d="M330 86 V110 M340 86 V110" strokeWidth="3" opacity="0.75" />
+        <line x1="320" y1="68" x2="360" y2="68" strokeWidth="4" />
+        <path d="M320 68 L312 80 M360 68 L368 80" strokeWidth="3" />
+        <rect x="312" y="80" width="56" height="40" rx="5" />
+        <circle cx="332" cy="100" r="11" />
+        <circle cx="332" cy="100" r="2.5" fill={SCENE_UNIT} stroke="none" />
+        <path d="M352 88 V112 M360 88 V112" strokeWidth="3" opacity="0.75" />
       </g>
     </g>
 
-    {/* crew — servicing tech + two riggers guiding the lift (pictogram) */}
+    {/* crew — servicing tech at the chiller + two riggers on the lower roof (pictogram) */}
     <g stroke={SCENE_CREW} strokeWidth="5">
-      <CrewHead cx={270} cy={84} r={6.5} />
-      <path d="M269 91 L264 106" />
-      <path d="M264 106 L256 120 M264 106 L270 120" />
+      <CrewHead cx={304} cy={84} r={6.5} />
+      <path d="M303 91 L299 106" />
+      <path d="M299 106 L291 120 M299 106 L305 120" />
       <g className="hp-wrench-arm">
-        <path d="M268 95 L252 102" />
-        <path d="M252 102 l-6 -7" strokeWidth="4" />
+        <path d="M302 95 L287 102" />
+        <path d="M287 102 l-6 -7" strokeWidth="4" />
       </g>
 
-      {/* rigger on the main roof, right of the landing marks */}
-      <CrewHead cx={366} cy={80} r={6.5} />
-      <path d="M366 87 V106" />
-      <path d="M366 106 L358 120 M366 106 L374 120" />
+      {/* riggers guiding from the lower side-tower roof */}
+      <CrewHead cx={392} cy={116} r={6.5} />
+      <path d="M392 123 V142" />
+      <path d="M392 142 L384 156 M392 142 L400 156" />
       <g className="hp-wave-arms">
-        <path d="M366 91 L354 78 M366 91 L378 78" />
+        <path d="M392 127 L380 114 M392 127 L404 114" />
       </g>
 
-      {/* rigger guiding from the lower side-tower roof */}
-      <CrewHead cx={410} cy={130} r={6.5} />
-      <path d="M410 137 V156" />
-      <path d="M410 156 L402 170 M410 156 L418 170" />
+      <CrewHead cx={430} cy={116} r={6.5} />
+      <path d="M430 123 V142" />
+      <path d="M430 142 L422 156 M430 142 L438 156" />
       <g className="hp-wave-arms">
-        <path d="M410 141 L398 128 M410 141 L422 128" />
+        <path d="M430 127 L418 114 M430 127 L442 114" />
       </g>
     </g>
   </svg>
@@ -387,7 +404,9 @@ export const AuthShell: React.FC<{
       <LanguagePill language={language} setLanguage={setLanguage} />
     </header>
 
-    <main className="relative z-20 flex-1 flex items-center justify-center px-4 py-8">
+    {/* items-start + small top padding keeps content high so the bottom
+        installation scenes stay visible on laptop-height screens */}
+    <main className="relative z-20 flex-1 flex items-start justify-center px-4 pt-[4vh] md:pt-[5vh] pb-8">
       {children}
     </main>
 
