@@ -160,9 +160,6 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             );
           })}
         </div>
-        <span style={{ fontSize: 12, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '5px 13px' }}>
-          BAFA snapshot {app.bafaSnapshotDate} — verify eligibility before quoting
-        </span>
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
           {fmtInt(filteredTotal)} of {fmtInt(store?.total ?? 0)} {app.segment} products
         </span>
