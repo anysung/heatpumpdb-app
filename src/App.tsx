@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { loginUser, registerUser, logoutUser, verifyAdminPassword, onUserChange } from './services/authService';
-import { HeatPumpApp } from './components/HeatPumpApp';
+import { HpiqApp } from './hpiq/HpiqApp';
 import { AdminDashboard } from './components/AdminDashboard';
 import { HeatPumpDatabase, HeatPump, User, AppMode, Language } from './types';
 import { translations } from './translations';
@@ -161,6 +161,23 @@ const App: React.FC = () => {
     </div>
   );
 
+  // Dev-only UI preview (no auth): vite dev server + ?preview=hpiq
+  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === 'hpiq') {
+    const previewUser: User = {
+      id: 'preview', email: 'c.sung@example.de', firstName: 'Christopher', lastName: 'Sung',
+      companyType: 'Installer', jobRole: 'Technician', isActive: true, registeredAt: new Date().toISOString(),
+    };
+    return (
+      <HpiqApp
+        user={previewUser}
+        onLogout={() => {}}
+        dbData={fullDatabase}
+        language={language}
+        setLanguage={setLanguage}
+      />
+    );
+  }
+
   if (authLoading) return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-400">Loading App...</div>;
 
 
@@ -295,19 +312,17 @@ const App: React.FC = () => {
     );
   }
   if (currentView === 'APP' && currentUser) {
+    // HeatpumpIQ shell owns its own language toggle (DE|EN in the global nav) —
+    // no floating switcher overlay here.
     return (
-      <div className="relative h-full">
-        <LanguageSwitcher />
-        <HeatPumpApp
-          user={currentUser}
-          onLogout={handleLogout}
-          onAdminAccess={currentUser.role === 'owner' ? handleOwnerAdminAccess : undefined}
-          dbData={fullDatabase}
-          lastUpdated={fullDatabase?.generatedAt || null}
-          language={language}
-          appMode={fullDatabase?.appMode || 'DATABASE'}
-        />
-      </div>
+      <HpiqApp
+        user={currentUser}
+        onLogout={handleLogout}
+        onAdminAccess={currentUser.role === 'owner' ? handleOwnerAdminAccess : undefined}
+        dbData={fullDatabase}
+        language={language}
+        setLanguage={setLanguage}
+      />
     );
   }
 

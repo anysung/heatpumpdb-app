@@ -1,0 +1,149 @@
+/* ============================================================
+   TYPOGRAPHY — A Company Design System
+   ------------------------------------------------------------
+   Two faces: a Display voice (headlines ≥19px) and a Text voice
+   (body/UI ≤20px). The boundary is unbreakable. Negative
+   letter-spacing at display sizes creates the signature tight
+   headline cadence. Body runs at 17px, not 16px. Weight ladder
+   is 300 / 400 / 600 / 700 — 500 is deliberately absent.
+
+   On Apple platforms system-ui resolves to the real SF Pro;
+   elsewhere Inter substitutes (see fonts.css). When Inter is
+   in play, display sizes nudge tracking -0.01em tighter and
+   body line-height -0.03 to match SF Pro's metrics.
+   ============================================================ */
+
+:root {
+  /* --- Families ------------------------------------------- */
+  --font-display: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  --font-text:    "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+
+  /* --- Weights (300 / 400 / 600 / 700 — no 500) ----------- */
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ========================================================
+     TYPE TOKENS  (size / weight / line-height / tracking)
+     Each named to its role. Use the composite custom props
+     or the utility classes at the bottom.
+     ======================================================== */
+
+  /* Hero headline — the signature "Apple tight" tracking */
+  --type-hero-display-size: 56px;
+  --type-hero-display-weight: 600;
+  --type-hero-display-lh: 1.07;
+  --type-hero-display-tracking: -0.28px;
+
+  /* Tile headlines atop every product tile */
+  --type-display-lg-size: 40px;
+  --type-display-lg-weight: 600;
+  --type-display-lg-lh: 1.10;
+  --type-display-lg-tracking: 0px;
+
+  /* Section heads */
+  --type-display-md-size: 34px;
+  --type-display-md-weight: 600;
+  --type-display-md-lh: 1.47;
+  --type-display-md-tracking: -0.374px;
+
+  /* Product tile subcopy */
+  --type-lead-size: 28px;
+  --type-lead-weight: 400;
+  --type-lead-lh: 1.14;
+  --type-lead-tracking: 0.196px;
+
+  /* Airy lead paragraphs (rare weight 300) */
+  --type-lead-airy-size: 24px;
+  --type-lead-airy-weight: 300;
+  --type-lead-airy-lh: 1.5;
+  --type-lead-airy-tracking: 0px;
+
+  /* Sub-tile tagline; sub-nav category name */
+  --type-tagline-size: 21px;
+  --type-tagline-weight: 600;
+  --type-tagline-lh: 1.19;
+  --type-tagline-tracking: 0.231px;
+
+  /* Inline strong emphasis */
+  --type-body-strong-size: 17px;
+  --type-body-strong-weight: 600;
+  --type-body-strong-lh: 1.24;
+  --type-body-strong-tracking: -0.374px;
+
+  /* Default paragraph — 17px, not 16px */
+  --type-body-size: 17px;
+  --type-body-weight: 400;
+  --type-body-lh: 1.47;
+  --type-body-tracking: -0.374px;
+
+  /* Footer / utility link lists (relaxed leading) */
+  --type-dense-link-size: 17px;
+  --type-dense-link-weight: 400;
+  --type-dense-link-lh: 2.41;
+  --type-dense-link-tracking: 0px;
+
+  /* Secondary captions, button text */
+  --type-caption-size: 14px;
+  --type-caption-weight: 400;
+  --type-caption-lh: 1.43;
+  --type-caption-tracking: -0.224px;
+
+  /* Emphasized captions, column headings */
+  --type-caption-strong-size: 14px;
+  --type-caption-strong-weight: 600;
+  --type-caption-strong-lh: 1.29;
+  --type-caption-strong-tracking: -0.224px;
+
+  /* Store hero CTAs (rare weight 300) */
+  --type-button-large-size: 18px;
+  --type-button-large-weight: 300;
+  --type-button-large-lh: 1.0;
+  --type-button-large-tracking: 0px;
+
+  /* Utility / nav button labels */
+  --type-button-utility-size: 14px;
+  --type-button-utility-weight: 400;
+  --type-button-utility-lh: 1.29;
+  --type-button-utility-tracking: -0.224px;
+
+  /* Fine-print, footer body */
+  --type-fine-print-size: 12px;
+  --type-fine-print-weight: 400;
+  --type-fine-print-lh: 1.0;
+  --type-fine-print-tracking: -0.12px;
+
+  /* Micro legal disclaimers */
+  --type-micro-legal-size: 10px;
+  --type-micro-legal-weight: 400;
+  --type-micro-legal-lh: 1.3;
+  --type-micro-legal-tracking: -0.08px;
+
+  /* Global nav menu items */
+  --type-nav-link-size: 12px;
+  --type-nav-link-weight: 400;
+  --type-nav-link-lh: 1.0;
+  --type-nav-link-tracking: -0.12px;
+}
+
+/* ==========================================================
+   UTILITY CLASSES — apply a full type token in one class.
+   Display tokens use --font-display; text tokens --font-text.
+   ========================================================== */
+.type-hero-display { font-family: var(--font-display); font-size: var(--type-hero-display-size); font-weight: var(--type-hero-display-weight); line-height: var(--type-hero-display-lh); letter-spacing: var(--type-hero-display-tracking); }
+.type-display-lg   { font-family: var(--font-display); font-size: var(--type-display-lg-size); font-weight: var(--type-display-lg-weight); line-height: var(--type-display-lg-lh); letter-spacing: var(--type-display-lg-tracking); }
+.type-display-md   { font-family: var(--font-text); font-size: var(--type-display-md-size); font-weight: var(--type-display-md-weight); line-height: var(--type-display-md-lh); letter-spacing: var(--type-display-md-tracking); }
+.type-lead         { font-family: var(--font-display); font-size: var(--type-lead-size); font-weight: var(--type-lead-weight); line-height: var(--type-lead-lh); letter-spacing: var(--type-lead-tracking); }
+.type-lead-airy    { font-family: var(--font-display); font-size: var(--type-lead-airy-size); font-weight: var(--type-lead-airy-weight); line-height: var(--type-lead-airy-lh); letter-spacing: var(--type-lead-airy-tracking); }
+.type-tagline      { font-family: var(--font-display); font-size: var(--type-tagline-size); font-weight: var(--type-tagline-weight); line-height: var(--type-tagline-lh); letter-spacing: var(--type-tagline-tracking); }
+.type-body-strong  { font-family: var(--font-text); font-size: var(--type-body-strong-size); font-weight: var(--type-body-strong-weight); line-height: var(--type-body-strong-lh); letter-spacing: var(--type-body-strong-tracking); }
+.type-body         { font-family: var(--font-text); font-size: var(--type-body-size); font-weight: var(--type-body-weight); line-height: var(--type-body-lh); letter-spacing: var(--type-body-tracking); }
+.type-dense-link   { font-family: var(--font-text); font-size: var(--type-dense-link-size); font-weight: var(--type-dense-link-weight); line-height: var(--type-dense-link-lh); letter-spacing: var(--type-dense-link-tracking); }
+.type-caption      { font-family: var(--font-text); font-size: var(--type-caption-size); font-weight: var(--type-caption-weight); line-height: var(--type-caption-lh); letter-spacing: var(--type-caption-tracking); }
+.type-caption-strong { font-family: var(--font-text); font-size: var(--type-caption-strong-size); font-weight: var(--type-caption-strong-weight); line-height: var(--type-caption-strong-lh); letter-spacing: var(--type-caption-strong-tracking); }
+.type-button-large { font-family: var(--font-text); font-size: var(--type-button-large-size); font-weight: var(--type-button-large-weight); line-height: var(--type-button-large-lh); letter-spacing: var(--type-button-large-tracking); }
+.type-button-utility { font-family: var(--font-text); font-size: var(--type-button-utility-size); font-weight: var(--type-button-utility-weight); line-height: var(--type-button-utility-lh); letter-spacing: var(--type-button-utility-tracking); }
+.type-fine-print   { font-family: var(--font-text); font-size: var(--type-fine-print-size); font-weight: var(--type-fine-print-weight); line-height: var(--type-fine-print-lh); letter-spacing: var(--type-fine-print-tracking); }
+.type-micro-legal  { font-family: var(--font-text); font-size: var(--type-micro-legal-size); font-weight: var(--type-micro-legal-weight); line-height: var(--type-micro-legal-lh); letter-spacing: var(--type-micro-legal-tracking); }
+.type-nav-link     { font-family: var(--font-text); font-size: var(--type-nav-link-size); font-weight: var(--type-nav-link-weight); line-height: var(--type-nav-link-lh); letter-spacing: var(--type-nav-link-tracking); }

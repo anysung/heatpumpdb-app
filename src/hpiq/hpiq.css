@@ -1,0 +1,49 @@
+/* HeatpumpIQ design tokens & primitives — from design_handoff_heatpumpiq/tokens */
+:root {
+  --hp-primary: #0066cc;
+  --hp-primary-focus: #0071e3;
+  --hp-primary-on-dark: #2997ff;
+  --hp-ink: #1d1d1f;
+  --hp-muted: #7a7a7a;
+  --hp-body-soft: #333333;
+  --hp-parchment: #f5f5f7;
+  --hp-tile: #272729;
+  --hp-hairline: #e0e0e0;
+  --hp-divider: #f0f0f0;
+  --hp-font-display: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  --hp-font-text: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+}
+
+.hpiq-root {
+  font-family: var(--hp-font-text, Inter, system-ui, sans-serif);
+  color: #1d1d1f;
+  background: #fff;
+}
+.hpiq-root input::placeholder { color: #7a7a7a; }
+.hpiq-root input:focus { outline: none; }
+
+/* Press state: every button scales down 5% while active. No bounces. */
+.hp-press { transition: transform 0.12s, opacity 0.18s, color 0.18s, background-color 0.18s; }
+.hp-press:active { transform: scale(0.95); }
+
+.hp-navlink { transition: color 0.18s; }
+.hp-navlink:hover { color: #fff; }
+
+.hp-row { content-visibility: auto; contain-intrinsic-size: auto 55px; }
+
+/* Print: only the data sheet document */
+@media print {
+  body.hpiq-printing #root { visibility: hidden; }
+  body.hpiq-printing .hpiq-print-doc,
+  body.hpiq-printing .hpiq-print-doc * { visibility: visible; }
+  body.hpiq-printing .hpiq-print-doc {
+    position: absolute !important;
+    top: 0; left: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+  @page { size: A4; margin: 15mm 12mm; }
+}

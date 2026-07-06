@@ -1,0 +1,31 @@
+/* ============================================================
+   SPACING — A Company Design System
+   ------------------------------------------------------------
+   Base unit 8px. Sub-base values (2/4/5/6/7) exist for tight
+   typographic adjustment; structural layout snaps to 8/12/16/
+   20/24. Product tiles get 80px of vertical air; cards 24px.
+   ============================================================ */
+
+:root {
+  --space-xxs:     4px;   /* tight gaps inside chips/labels */
+  --space-xs:      8px;   /* base unit */
+  --space-sm:      12px;  /* button vertical padding, card gutters */
+  --space-md:      17px;  /* matches the body line rhythm */
+  --space-lg:      24px;  /* card padding, utility-grid gutters */
+  --space-xl:      32px;  /* generous block separation */
+  --space-xxl:     48px;  /* below-headline air on tiles */
+  --space-section: 80px;  /* vertical padding inside a product tile */
+
+  /* --- Button padding presets ----------------------------- */
+  --pad-button-primary:  11px 22px;
+  --pad-button-utility:  8px 15px;
+  --pad-button-pearl:    8px 14px;
+  --pad-button-store:    14px 28px;
+  --pad-chip:            12px 16px;
+  --pad-input:           12px 20px;
+
+  /* --- Containers ----------------------------------------- */
+  --container-text:    980px;   /* text-heavy / editorial sections */
+  --container-grid:    1440px;   /* product & utility grids */
+  --grid-gutter:       24px;     /* between cards in a utility grid */
+}

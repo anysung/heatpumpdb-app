@@ -1,5 +1,11 @@
 # German Heat Pump Database — Layout & Alignment Rules
 
+> **UI handover (Jul 2026):** The user-facing app now renders the approved **HeatpumpIQ** design
+> (`src/hpiq/`, spec in `design_handoff_heatpumpiq/README.md` — that handoff is the authoritative
+> UI spec and explicitly overrides the layout rules below). The rules below still apply to the
+> **legacy components** (`HeatPumpApp.tsx`, `ResultsTable.tsx`, `NewsView.tsx`) and the Admin
+> dashboard, which are unchanged.
+
 These rules are **confirmed and locked**. Apply them to all future changes unless explicitly overridden by the user.
 
 ---

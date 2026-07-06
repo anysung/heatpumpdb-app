@@ -1,0 +1,23 @@
+/* ============================================================
+   SHAPES — A Company Design System
+   ------------------------------------------------------------
+   Radii are a fixed grammar, never interpolated. Pill = action.
+   sm = compact utility. lg = utility card. md = the rare Pearl
+   capsule. Full-bleed tiles are never rounded — the color
+   change is the divider.
+   ============================================================ */
+
+:root {
+  --radius-none:  0px;     /* full-bleed product tiles */
+  --radius-xs:    5px;     /* rare inline chip links */
+  --radius-sm:    8px;     /* dark utility buttons, inline card imagery */
+  --radius-md:    11px;    /* white Pearl button capsules (rare) */
+  --radius-lg:    18px;    /* store / accessories utility cards */
+  --radius-pill:  9999px;  /* primary blue CTA, search input, chips */
+  --radius-full:  9999px;  /* circular control chips over photography */
+
+  /* --- Semantic aliases ----------------------------------- */
+  --radius-action:  var(--radius-pill);
+  --radius-card:    var(--radius-lg);
+  --radius-utility: var(--radius-sm);
+}

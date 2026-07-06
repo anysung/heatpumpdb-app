@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/tokens/colors.css">
+<link rel="stylesheet" href="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/tokens/typography.css">
+<link rel="stylesheet" href="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/tokens/shapes.css">
+<link rel="stylesheet" href="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/styles.css">
+<script src="_ds/a-company-design-system-b298f3c4-913b-4f00-8e1a-0a3143761556/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:#fff;font-family:var(--font-text,Inter,system-ui,sans-serif);color:#1d1d1f}
+input::placeholder{color:#7a7a7a}
+input:focus{outline:none}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#fff" data-screen-label="HeatpumpIQ app">
+
+  <!-- ============ Global nav ============ -->
+  <div style="background:#000;color:#fff;display:flex;align-items:center;gap:26px;padding:0 28px;height:46px;position:sticky;top:0;z-index:50">
+    <span style="font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-0.2px;display:flex;align-items:center;gap:9px">
+      HeatpumpIQ
+      <span style="display:inline-flex;flex-direction:column;gap:3px;background:#fff;border-radius:6px;padding:4px 9px 5px">
+        <span style="font-size:10.5px;font-weight:600;color:#1d1d1f;letter-spacing:.03em;line-height:1">Germany</span>
+        <span style="display:flex;height:3px;border-radius:2px;overflow:hidden"><span style="flex:1;background:#000"></span><span style="flex:1;background:#dd0000"></span><span style="flex:1;background:#ffcc00"></span></span>
+      </span>
+    </span>
+    <div style="display:flex;gap:4px;font-size:12.5px">
+      <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="7">
+        <span onClick="{{ nav.onClick }}" style="{{ nav.style }}" style-hover="color:#fff">{{ nav.label }}</span>
+      </sc-for>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;font-size:12px;color:rgba(255,255,255,.75)">
+      <span>Data status: 5 Jul 2026</span>
+      <div style="display:flex;border:1px solid rgba(255,255,255,.3);border-radius:999px;overflow:hidden;font-size:11.5px">
+        <sc-for list="{{ langChips }}" as="lc" hint-placeholder-count="2">
+          <span onClick="{{ lc.onClick }}" style="{{ lc.style }}">{{ lc.label }}</span>
+        </sc-for>
+      </div>
+      <span onClick="{{ goAccount }}" style="{{ accountAvatarStyle }}" title="Account">CS</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:5px 13px;font-size:11.5px;color:rgba(255,255,255,.85);cursor:pointer" style-active="transform:scale(0.95)" title="Sign out">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg>
+        Sign out
+      </span>
+    </div>
+  </div>
+
+  <!-- ============ PAGE: Find product ============ -->
+  <sc-if value="{{ isFind }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div style="background:#f5f5f7;padding:64px 48px 44px;display:flex;flex-direction:column;align-items:center;gap:24px">
+        <div style="text-align:center;display:flex;flex-direction:column;gap:9px">
+          <span style="font-family:var(--font-display);font-size:40px;font-weight:600;letter-spacing:-0.374px;line-height:1.1">Find a product.</span>
+          <span style="font-size:17px;color:#7a7a7a;letter-spacing:-0.374px">Fast model lookup across 6,851 BAFA-listed heat pumps.</span>
+        </div>
+        <div style="width:660px;max-width:90%;display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #e0e0e0;border-radius:999px;padding:6px 8px 6px 22px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7a7a7a" stroke-width="1.5" style="flex:none"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input onInput="{{ onSearch }}" placeholder="Search model name, outdoor unit, manufacturer…" style="flex:1;border:none;background:transparent;font-size:16px;font-family:inherit;color:#1d1d1f;padding:9px 0"></input>
+          <span style="background:#0066cc;color:#fff;border-radius:999px;padding:9px 20px;font-size:14px;cursor:pointer" style-active="transform:scale(0.95)">Search</span>
+        </div>
+        <span style="font-size:12.5px;color:#7a7a7a">Search by model name, BAFA ID, outdoor-unit code or manufacturer — e.g. "Vitocal", "5800i", "PUZ-WM".</span>
+      </div>
+
+      <!-- empty state -->
+      <sc-if value="{{ findEmpty }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:72px 48px;color:#7a7a7a">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d2d2d7" stroke-width="1.3"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <span style="font-size:15px;color:#1d1d1f">Start typing to look up a model.</span>
+          <span style="font-size:13px">Results appear as you type — no page reloads.</span>
+        </div>
+      </sc-if>
+
+      <!-- no match -->
+      <sc-if value="{{ findNoMatch }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:64px 48px;color:#7a7a7a">
+          <span style="font-size:15px;color:#1d1d1f">No models match "{{ query }}".</span>
+          <span style="font-size:13px">Check the spelling, or browse the full catalog in Products.</span>
+        </div>
+      </sc-if>
+
+      <!-- results -->
+      <sc-if value="{{ findHasResults }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:24px 48px 8px;font-size:13px;color:#7a7a7a">{{ findCountText }}</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 48px 40px">
+          <sc-for list="{{ findRows }}" as="p" hint-placeholder-count="3">
+            <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:13px;background:#fff">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+                <div style="display:flex;flex-direction:column;gap:3px">
+                  <span style="font-size:12.5px;color:#7a7a7a">{{ p.mfr }}</span>
+                  <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px;line-height:1.22">{{ p.model }}</span>
+                  <span style="font-size:12px;color:#7a7a7a">Outdoor unit: {{ p.odu }}</span>
+                </div>
+                <span onClick="{{ p.onToggle }}" style="{{ p.checkStyle }}" title="Add to compare">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" style="{{ p.checkIconStyle }}"><path d="m5 13 4 4L19 7"></path></svg>
+                </span>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <span style="border:1px solid #e0e0e0;border-radius:999px;padding:3px 11px;font-size:11.5px">BAFA listed</span>
+                <sc-if value="{{ p.eprel }}" hint-placeholder-val="{{ true }}"><span style="border:1px solid #e0e0e0;border-radius:999px;padding:3px 11px;font-size:11.5px">EU label {{ p.label }}</span></sc-if>
+                <sc-if value="{{ p.noEprel }}" hint-placeholder-val="{{ false }}"><span style="border:1px solid #e0e0e0;border-radius:999px;padding:3px 11px;font-size:11.5px;color:#7a7a7a">EPREL not matched</span></sc-if>
+                <span style="border:1px solid #e0e0e0;border-radius:999px;padding:3px 11px;font-size:11.5px">{{ p.ref }}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px 16px;border-top:1px solid #f0f0f0;padding-top:13px">
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#7a7a7a">Capacity 55°C</span><span style="font-size:16px;font-weight:600">{{ p.kw }} kW</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#7a7a7a">Energy class</span><span style="font-size:16px;font-weight:600">{{ p.label }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#7a7a7a">SCOP</span><span style="font-size:16px;font-weight:600">{{ p.scop }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#7a7a7a">Sound power</span><span style="font-size:16px;font-weight:600">{{ p.noise }} dB(A)</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;margin-top:2px">
+                <span onClick="{{ p.onOpen }}" style="background:#0066cc;color:#fff;border-radius:999px;padding:8px 18px;font-size:13.5px;cursor:pointer" style-active="transform:scale(0.95)">View details ›</span>
+                <span onClick="{{ p.onDataSheet }}" style="color:#0066cc;font-size:13.5px;cursor:pointer">Data sheet ›</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAGE: Products ============ -->
+  <sc-if value="{{ isProducts }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;display:flex;flex-direction:column;min-height:0">
+
+      <!-- toolbar -->
+      <div style="display:flex;align-items:center;gap:14px;padding:13px 28px;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.9);backdrop-filter:blur(20px) saturate(180%)">
+        <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Products</span>
+        <div style="display:flex;border:1px solid #e0e0e0;border-radius:999px;overflow:hidden;font-size:12.5px">
+          <span style="padding:6px 16px;background:#1d1d1f;color:#fff;font-weight:600">Residential</span>
+          <span style="padding:6px 16px;color:#1d1d1f;cursor:pointer">Commercial</span>
+        </div>
+        <sc-if value="{{ showBafaNotice }}" hint-placeholder-val="{{ true }}">
+          <span style="font-size:12px;color:#7a7a7a;border:1px solid #e0e0e0;border-radius:999px;padding:5px 13px">BAFA snapshot 19 Mar 2026 — verify eligibility before quoting</span>
+        </sc-if>
+        <span style="margin-left:auto;font-size:13px;color:#7a7a7a">{{ matchCountText }}</span>
+        <span style="font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer">Sort: COP A2/W35 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </div>
+
+      <div style="flex:1;overflow-x:auto;min-height:0"><div style="display:flex;align-items:stretch;min-width:1240px;min-height:100%;box-sizing:border-box">
+        <!-- filter rail -->
+        <div style="flex:0 0 248px;border-right:1px solid rgba(0,0,0,.08);padding:20px 20px 24px;display:flex;flex-direction:column;gap:22px;background:#fff">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">APPLIED</span><span onClick="{{ clearFilters }}" style="font-size:12px;color:#0066cc;cursor:pointer">Clear all</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ appliedChips }}" as="chip" hint-placeholder-count="1">
+                <span onClick="{{ chip.onRemove }}" style="display:inline-flex;align-items:center;gap:6px;background:#1d1d1f;color:#fff;border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer">{{ chip.label }} <span style="opacity:.6">×</span></span>
+              </sc-for>
+              <sc-if value="{{ noFilters }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:#7a7a7a">No filters applied</span></sc-if>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">REFRIGERANT</span>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ refChips }}" as="rc" hint-placeholder-count="3">
+                <span onClick="{{ rc.onClick }}" style="{{ rc.style }}" style-active="transform:scale(0.95)">{{ rc.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">MANUFACTURER</span>
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:13.5px">
+              <sc-for list="{{ mfrChecks }}" as="m" hint-placeholder-count="5">
+                <span onClick="{{ m.onClick }}" style="display:flex;align-items:center;gap:9px;cursor:pointer">
+                  <span style="{{ m.boxStyle }}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" style="{{ m.tickStyle }}"><path d="m5 13 4 4L19 7"></path></svg></span>
+                  {{ m.name }} <span style="margin-left:auto;color:#7a7a7a;font-size:12px">{{ m.count }}</span>
+                </span>
+              </sc-for>
+              <span style="color:#0066cc;font-size:12.5px;cursor:pointer">Show all 25 ›</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">CAPACITY (55°C)</span>
+            <div style="padding:4px 2px 0">
+              <div style="position:relative;height:3px;background:#e0e0e0;border-radius:2px">
+                <div style="position:absolute;left:20%;right:22%;top:0;bottom:0;background:#0066cc;border-radius:2px"></div>
+                <span style="position:absolute;left:20%;top:50%;transform:translate(-50%,-50%);width:15px;height:15px;border-radius:50%;background:#fff;border:1px solid #d2d2d7"></span>
+                <span style="position:absolute;right:22%;top:50%;transform:translate(50%,-50%);width:15px;height:15px;border-radius:50%;background:#fff;border:1px solid #d2d2d7"></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:#7a7a7a;margin-top:9px"><span>8 kW</span><span>12 kW</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">FÖRDERUNG · FUNDING</span>
+            <span style="display:flex;align-items:center;gap:10px;font-size:13.5px">
+              <span style="width:34px;height:20px;border-radius:999px;background:#0066cc;position:relative;display:inline-block"><span style="position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#fff"></span></span>
+              BAFA-listed only
+            </span>
+            <span style="font-size:11.5px;color:#7a7a7a;line-height:1.45">BEG EM eligible units per BAFA list.</span>
+            <span style="font-size:11px;color:#7a7a7a;line-height:1.5;border-top:1px solid #f0f0f0;padding-top:8px">Between regular updates, list entries may change at a manufacturer's request or by decision of the issuing authority. All data is for reference only — final verification against the official sources is the user's responsibility.</span>
+          </div>
+        </div>
+
+        <!-- table -->
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;border-right:1px solid rgba(0,0,0,.08)">
+          <div style="display:grid;grid-template-columns:34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr;gap:0 12px;align-items:center;padding:10px 20px;border-bottom:1px solid rgba(0,0,0,.08);font-size:10.5px;font-weight:600;letter-spacing:.05em;color:#7a7a7a">
+            <span></span><span>MODEL</span><span>MANUFACTURER</span><span>KW (55°)</span><span style="color:#1d1d1f">COP A2 ↓</span><span>SCOP</span><span>NOISE</span><span>STATUS</span>
+          </div>
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+            <div onClick="{{ r.onOpen }}" style="{{ r.rowStyle }}">
+              <span onClick="{{ r.onToggle }}" style="{{ r.checkStyle }}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" style="{{ r.checkIconStyle }}"><path d="m5 13 4 4L19 7"></path></svg></span>
+              <span style="min-width:0"><span style="font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.model }}</span><span style="font-size:11px;color:#7a7a7a">BAFA {{ r.bafaId }}</span></span>
+              <span>{{ r.mfr }}</span>
+              <span>{{ r.kw }}</span>
+              <span style="font-weight:600">{{ r.cop2 }}</span>
+              <span>{{ r.scop }}</span>
+              <span>{{ r.noise }} dB</span>
+              <span style="display:flex;gap:5px;flex-wrap:wrap">
+                <span style="border:1px solid #e0e0e0;border-radius:999px;padding:2px 9px;font-size:10.5px;background:#fff">BAFA</span>
+                <sc-if value="{{ r.eprel }}" hint-placeholder-val="{{ true }}"><span style="border:1px solid #e0e0e0;border-radius:999px;padding:2px 9px;font-size:10.5px;background:#fff">{{ r.label }}</span></sc-if>
+                <span style="border:1px solid #e0e0e0;border-radius:999px;padding:2px 9px;font-size:10.5px;background:#fff">Sheet ready</span>
+              </span>
+            </div>
+          </sc-for>
+          <!-- skeleton rows -->
+          <div style="display:grid;grid-template-columns:34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr;gap:0 12px;align-items:center;padding:14px 20px;border-bottom:1px solid #f0f0f0">
+            <span></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:78%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:70%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:50%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:55%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:50%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:55%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:65%"></span>
+          </div>
+          <div style="display:grid;grid-template-columns:34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr;gap:0 12px;align-items:center;padding:14px 20px;border-bottom:1px solid #f0f0f0;opacity:.5">
+            <span></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:66%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:75%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:45%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:60%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:55%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:50%"></span><span style="height:10px;border-radius:6px;background:#f0f0f0;width:70%"></span>
+          </div>
+          <div style="padding:11px 20px;font-size:12px;color:#7a7a7a">Rows stream in as you scroll — no pagination. Click a row to inspect without leaving the list.</div>
+
+          <!-- compare expanded panel -->
+          <sc-if value="{{ showComparePanel }}" hint-placeholder-val="{{ false }}">
+            <div style="border-top:1px solid rgba(0,0,0,.08);background:#f5f5f7;padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Comparison</span>
+                <span style="font-size:12px;color:#7a7a7a">{{ compareCount }} of 4 products</span>
+                <span onClick="{{ toggleComparePanel }}" style="margin-left:auto;font-size:13px;color:#0066cc;cursor:pointer">Collapse ×</span>
+              </div>
+              <div style="display:flex;gap:0;background:#fff;border:1px solid #e0e0e0;border-radius:18px;overflow:hidden">
+                <div style="flex:0 0 168px;display:flex;flex-direction:column;border-right:1px solid #f0f0f0;padding:18px 0 14px 20px;font-size:12.5px;color:#7a7a7a">
+                  <span style="height:52px"></span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">Capacity 55°C</span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">COP A7/W35</span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">COP A2/W35</span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">SCOP</span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">Sound power</span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">Refrigerant</span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">Energy class</span>
+                  <span style="padding:9px 0;border-top:1px solid #f0f0f0">BAFA ID</span>
+                </div>
+                <sc-for list="{{ compareItems }}" as="c" hint-placeholder-count="2">
+                  <div style="flex:1;display:flex;flex-direction:column;padding:18px 20px 14px;border-right:1px solid #f0f0f0;font-size:13.5px;min-width:0">
+                    <span style="height:52px;display:flex;flex-direction:column;gap:2px"><span style="font-weight:600;line-height:1.25">{{ c.model }}</span><span style="font-size:11.5px;color:#7a7a7a">{{ c.mfr }} · <span onClick="{{ c.onRemove }}" style="color:#0066cc;cursor:pointer">remove</span></span></span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0;font-weight:600">{{ c.kw }} kW</span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0">{{ c.cop7 }}</span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0">{{ c.cop2 }}</span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0">{{ c.scop }}</span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0">{{ c.noise }} dB(A)</span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0">{{ c.ref }} · {{ c.refKg }} kg</span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0">{{ c.label }}</span>
+                    <span style="padding:9px 0;border-top:1px solid #f0f0f0;font-size:12px;color:#7a7a7a">{{ c.bafaId }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- compare tray -->
+          <div style="margin-top:auto;display:flex;align-items:center;gap:12px;padding:13px 20px;border-top:1px solid rgba(0,0,0,.08);background:rgba(245,245,247,.92);backdrop-filter:blur(20px) saturate(180%)">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">COMPARE</span>
+            <sc-for list="{{ compareItems }}" as="t" hint-placeholder-count="2">
+              <span style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e0e0e0;border-radius:999px;padding:6px 14px;font-size:12.5px">{{ t.shortName }} <span onClick="{{ t.onRemove }}" style="color:#7a7a7a;cursor:pointer">×</span></span>
+            </sc-for>
+            <span style="font-size:12px;color:#7a7a7a">{{ traySlotsText }}</span>
+            <span onClick="{{ toggleComparePanel }}" style="{{ compareBtnStyle }}" style-active="transform:scale(0.95)">{{ compareBtnLabel }}</span>
+          </div>
+        </div>
+
+        <!-- inspector -->
+        <sc-if value="{{ hasSelected }}" hint-placeholder-val="{{ true }}">
+          <div style="flex:0 0 400px;display:flex;flex-direction:column;background:#f5f5f7;min-width:0;overflow:auto">
+            <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-size:12px;color:#7a7a7a">{{ sel.mfr }} · BAFA {{ sel.bafaId }}</span><span onClick="{{ closeInspector }}" style="font-size:13px;color:#7a7a7a;cursor:pointer">×</span></div>
+              <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.28px;line-height:1.18">{{ sel.model }}</span>
+            </div>
+            <div style="padding:18px 24px;display:flex;flex-direction:column;gap:14px">
+              <div style="background:#fff;border:1px solid #e0e0e0;border-radius:18px;padding:18px 20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 12px">
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">Capacity 55°C</span><span style="font-size:16px;font-weight:600">{{ sel.kw }} kW</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">SCOP</span><span style="font-size:16px;font-weight:600">{{ sel.scop }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">Class</span><span style="font-size:16px;font-weight:600">{{ sel.label }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">COP A7/W35</span><span style="font-size:16px;font-weight:600">{{ sel.cop7 }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">COP A2/W35</span><span style="font-size:16px;font-weight:600">{{ sel.cop2 }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">COP A−7/W35</span><span style="font-size:16px;font-weight:600">{{ sel.copm7 }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">Refrigerant</span><span style="font-size:16px;font-weight:600">{{ sel.ref }} · {{ sel.refKg }} kg</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">Sound power</span><span style="font-size:16px;font-weight:600">{{ sel.noise }} dB(A)</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10.5px;color:#7a7a7a">Type</span><span style="font-size:16px;font-weight:600">Monoblock</span></div>
+              </div>
+              <div style="background:#fff;border:1px solid #e0e0e0;border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;gap:9px">
+                <span style="font-size:10.5px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">FÖRDERSTATUS · FUNDING</span>
+                <span style="font-size:13.5px;line-height:1.5">Listed in BAFA source snapshot (19 Mar 2026). Potentially eligible under BEG EM — up to 40% with the climate-speed bonus.</span>
+                <span style="font-size:12px;color:#7a7a7a">Verify current eligibility with BAFA before quoting. <span style="color:#0066cc;cursor:pointer">Open BAFA entry ›</span></span>
+              </div>
+              <div style="background:#fff;border:1px solid #e0e0e0;border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;gap:9px">
+                <span style="font-size:10.5px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">EU ENERGY LABEL</span>
+                <sc-if value="{{ sel.eprel }}" hint-placeholder-val="{{ true }}">
+                  <span style="font-size:13.5px">EPREL matched · class {{ sel.label }} (W35) / {{ sel.labelMed }} (W55)</span>
+                  <span onClick="{{ goLabelFromInspector }}" style="font-size:12.5px;color:#0066cc;cursor:pointer">Open label record ›</span>
+                </sc-if>
+                <sc-if value="{{ sel.noEprel }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:13.5px;color:#7a7a7a">No EPREL match yet — label data pending.</span>
+                </sc-if>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span onClick="{{ goDataSheetFromInspector }}" style="background:#0066cc;color:#fff;border-radius:999px;padding:10px 20px;font-size:13.5px;cursor:pointer" style-active="transform:scale(0.95)">Data sheet ›</span>
+                <span onClick="{{ toggleSelectedCompare }}" style="border:1px solid #d2d2d7;border-radius:999px;padding:10px 20px;font-size:13.5px;background:#fff;cursor:pointer" style-active="transform:scale(0.95)">{{ selCompareLabel }}</span>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div></div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAGE: EU energy label ============ -->
+  <sc-if value="{{ isLabel }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column;min-height:0">
+      <div style="display:flex;align-items:center;gap:14px;padding:13px 28px;border-bottom:1px solid rgba(0,0,0,.08)">
+        <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">EU energy label</span>
+        <span style="font-size:12px;color:#7a7a7a;border:1px solid #e0e0e0;border-radius:999px;padding:5px 13px">EPREL-style records · mock data</span>
+        <span style="margin-left:auto;font-size:13px;color:#7a7a7a">{{ labelCountText }}</span>
+      </div>
+      <div style="flex:1;overflow-x:auto;min-height:0"><div style="display:flex;align-items:stretch;min-width:1240px;min-height:100%;box-sizing:border-box">
+        <!-- label filter rail -->
+        <div style="flex:0 0 248px;border-right:1px solid rgba(0,0,0,.08);padding:20px;display:flex;flex-direction:column;gap:22px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">ENERGY CLASS (W35)</span>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ classChips }}" as="cc" hint-placeholder-count="3">
+                <span onClick="{{ cc.onClick }}" style="{{ cc.style }}" style-active="transform:scale(0.95)">{{ cc.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">EPREL STATUS</span>
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:13.5px">
+              <span style="display:flex;align-items:center;gap:9px"><span style="width:15px;height:15px;border-radius:4px;background:#0066cc;display:inline-flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4"><path d="m5 13 4 4L19 7"></path></svg></span>Matched</span>
+              <span style="display:flex;align-items:center;gap:9px"><span style="width:15px;height:15px;border-radius:4px;background:#0066cc;display:inline-flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4"><path d="m5 13 4 4L19 7"></path></svg></span>Not matched</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">ABOUT THIS DATA</span>
+            <span style="font-size:12px;color:#7a7a7a;line-height:1.5">Label records follow the EU energy labelling framework for space heaters. Always attach the official label from the manufacturer or EPREL for legal use.</span>
+          </div>
+        </div>
+        <!-- label table -->
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;border-right:1px solid rgba(0,0,0,.08)">
+          <div style="display:grid;grid-template-columns:2.2fr 1fr 0.8fr 0.8fr 0.9fr 1.1fr;gap:0 12px;padding:10px 20px;border-bottom:1px solid rgba(0,0,0,.08);font-size:10.5px;font-weight:600;letter-spacing:.05em;color:#7a7a7a">
+            <span>MODEL</span><span>MANUFACTURER</span><span>CLASS W35</span><span>CLASS W55</span><span>SOUND POWER</span><span>EPREL</span>
+          </div>
+          <sc-for list="{{ labelRows }}" as="lr" hint-placeholder-count="6">
+            <div onClick="{{ lr.onOpen }}" style="{{ lr.rowStyle }}">
+              <span style="min-width:0"><span style="font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lr.model }}</span><span style="font-size:11px;color:#7a7a7a">ODU {{ lr.odu }}</span></span>
+              <span>{{ lr.mfr }}</span>
+              <span style="font-weight:600">{{ lr.label }}</span>
+              <span>{{ lr.labelMed }}</span>
+              <span>{{ lr.noise }} dB(A)</span>
+              <span>{{ lr.eprelText }}</span>
+            </div>
+          </sc-for>
+          <div style="padding:11px 20px;font-size:12px;color:#7a7a7a">Click a record to inspect label details, or generate an energy label sheet from the inspector.</div>
+        </div>
+        <!-- label inspector -->
+        <div style="flex:0 0 400px;display:flex;flex-direction:column;background:#f5f5f7;overflow:auto">
+          <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:12px;color:#7a7a7a">{{ lsel.mfr }} · {{ lsel.eprelId }}</span>
+            <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.28px;line-height:1.18">{{ lsel.model }}</span>
+          </div>
+          <div style="padding:18px 24px;display:flex;flex-direction:column;gap:14px">
+            <div style="background:#fff;border:1px solid #e0e0e0;border-radius:18px;padding:20px;display:flex;gap:18px;align-items:center">
+              <div style="flex:0 0 96px;display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid #e0e0e0;border-radius:8px;padding:14px 10px">
+                <span style="font-size:9px;letter-spacing:.08em;color:#7a7a7a">ENERGY</span>
+                <span style="font-family:var(--font-display);font-size:30px;font-weight:700;letter-spacing:-0.5px">{{ lsel.label }}</span>
+                <span style="font-size:9px;color:#7a7a7a">space heating W35</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;min-width:0">
+                <span><span style="color:#7a7a7a">W35:</span> <strong style="font-weight:600">{{ lsel.label }}</strong> · <span style="color:#7a7a7a">W55:</span> <strong style="font-weight:600">{{ lsel.labelMed }}</strong></span>
+                <span><span style="color:#7a7a7a">Rated output:</span> <strong style="font-weight:600">{{ lsel.kw }} kW</strong></span>
+                <span><span style="color:#7a7a7a">Sound power:</span> <strong style="font-weight:600">{{ lsel.noise }} dB(A)</strong></span>
+                <span><span style="color:#7a7a7a">Refrigerant:</span> <strong style="font-weight:600">{{ lsel.ref }} · {{ lsel.refKg }} kg</strong></span>
+              </div>
+            </div>
+            <div style="background:#fff;border:1px solid #e0e0e0;border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;gap:8px;font-size:12.5px">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">SOURCE &amp; VERIFICATION</span>
+              <span style="display:flex;justify-content:space-between"><span style="color:#7a7a7a">EPREL status</span><span style="font-weight:600">{{ lsel.eprelText }}</span></span>
+              <span style="display:flex;justify-content:space-between"><span style="color:#7a7a7a">Registration</span><span style="font-weight:600">{{ lsel.eprelId }}</span></span>
+              <span style="display:flex;justify-content:space-between"><span style="color:#7a7a7a">Last updated</span><span style="font-weight:600">28 Jun 2026</span></span>
+              <span style="display:flex;justify-content:space-between"><span style="color:#7a7a7a">Data completeness</span><span style="font-weight:600">{{ lsel.completeness }}</span></span>
+              <span style="display:flex;justify-content:space-between"><span style="color:#7a7a7a">Product info sheet</span><span style="font-weight:600">Available</span></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span onClick="{{ goLabelSheet }}" style="background:#0066cc;color:#fff;border-radius:999px;padding:10px 20px;font-size:13.5px;cursor:pointer" style-active="transform:scale(0.95)">Energy label sheet ›</span>
+              <span onClick="{{ openProductFromLabel }}" style="border:1px solid #d2d2d7;border-radius:999px;padding:10px 20px;font-size:13.5px;background:#fff;cursor:pointer" style-active="transform:scale(0.95)">Open product profile</span>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAGE: Data sheet ============ -->
+  <sc-if value="{{ isDS }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column;min-height:0">
+      <div style="display:flex;align-items:center;gap:16px;padding:13px 28px;border-bottom:1px solid rgba(0,0,0,.08)">
+        <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Data sheet studio</span>
+        <div style="display:flex;border:1px solid #e0e0e0;border-radius:999px;overflow:hidden;font-size:12.5px">
+          <span onClick="{{ setDsProduct }}" style="{{ dsModeProductStyle }}">Product data sheet</span>
+          <span onClick="{{ setDsLabel }}" style="{{ dsModeLabelStyle }}">EU energy label sheet</span>
+        </div>
+        <span style="margin-left:auto;font-size:12px;color:#7a7a7a">Prints this month: 2 / {{ printQuota }}</span>
+      </div>
+      <div style="flex:1;display:flex;min-height:0">
+        <!-- picker + sections -->
+        <div style="flex:0 0 348px;border-right:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:0;overflow:auto">
+          <div style="padding:18px 20px 12px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">1 · SELECT MODEL</span>
+            <div style="display:flex;align-items:center;gap:8px;border:1px solid #e0e0e0;border-radius:999px;padding:7px 14px;color:#7a7a7a;font-size:12.5px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+              Search model…
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ dsRows }}" as="d" hint-placeholder-count="5">
+              <span onClick="{{ d.onPick }}" style="{{ d.style }}">
+                <span style="display:flex;flex-direction:column;gap:1px;min-width:0"><span style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.model }}</span><span style="font-size:11px;color:#7a7a7a">{{ d.mfr }} · {{ d.kw }} kW · {{ d.label }}</span></span>
+              </span>
+            </sc-for>
+          </div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:11px;border-top:1px solid rgba(0,0,0,.08);margin-top:8px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">2 · INCLUDED SECTIONS</span>
+            <sc-for list="{{ dsSectionRows }}" as="s" hint-placeholder-count="5">
+              <span onClick="{{ s.onToggle }}" style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+                <span style="{{ s.switchStyle }}"><span style="{{ s.knobStyle }}"></span></span>
+                {{ s.label }}
+              </span>
+            </sc-for>
+          </div>
+          <div style="padding:14px 20px 22px;display:flex;flex-direction:column;gap:10px;border-top:1px solid rgba(0,0,0,.08)">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">3 · EXPORT</span>
+            <div style="display:flex;gap:9px">
+              <span style="background:#0066cc;color:#fff;border-radius:999px;padding:10px 20px;font-size:13.5px;cursor:pointer" style-active="transform:scale(0.95)">Print ›</span>
+              <span style="border:1px solid #d2d2d7;border-radius:999px;padding:10px 20px;font-size:13.5px;background:#fff;cursor:pointer" style-active="transform:scale(0.95)">Download PDF</span>
+            </div>
+            <span style="font-size:11.5px;color:#7a7a7a;line-height:1.5">Sheets carry source references and the generation date — installer-ready documentation.</span>
+          </div>
+        </div>
+
+        <!-- preview -->
+        <div style="flex:1;background:#f5f5f7;padding:28px;display:flex;justify-content:center;overflow:auto">
+          <div style="width:680px;max-width:100%;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:40px 44px;display:flex;flex-direction:column;gap:0;height:fit-content">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px">
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.28px">HeatpumpIQ</span>
+                <span style="font-size:11px;letter-spacing:.08em;color:#7a7a7a">{{ dsDocTitle }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:2px;text-align:right;font-size:11px;color:#7a7a7a">
+                <span>Generated 6 July 2026</span>
+                <span>BAFA {{ dsp.bafaId }} · {{ dsp.eprelId }}</span>
+                <span>Source snapshot 19 Mar 2026</span>
+              </div>
+            </div>
+            <div style="background:#1d1d1f;color:#fff;border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:2px">
+              <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">{{ dsp.model }}</span>
+              <span style="font-size:13px;color:#ccc">{{ dsp.mfr }} · air/water · monoblock</span>
+            </div>
+
+            <sc-if value="{{ dsShowIdentity }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;padding-top:22px">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#0066cc;border-bottom:1px solid #e0e0e0;padding-bottom:7px">PRODUCT IDENTIFICATION</span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Manufacturer</span><span style="font-weight:600">{{ dsp.mfr }}</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Model</span><span style="font-weight:600">{{ dsp.model }}</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Outdoor unit</span><span style="font-weight:600">{{ dsp.odu }}</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Heat pump type</span><span style="font-weight:600">Luft/Wasser · Monoblock</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">BAFA ID</span><span style="font-weight:600">{{ dsp.bafaId }}</span></span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ dsIsLabelMode }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;padding-top:22px">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#0066cc;border-bottom:1px solid #e0e0e0;padding-bottom:7px">EU ENERGY LABEL</span>
+                <div style="display:flex;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid #f0f0f0">
+                  <div style="flex:0 0 92px;display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid #e0e0e0;border-radius:8px;padding:12px 8px">
+                    <span style="font-size:8.5px;letter-spacing:.08em;color:#7a7a7a">ENERGY</span>
+                    <span style="font-family:var(--font-display);font-size:27px;font-weight:700">{{ dsp.label }}</span>
+                    <span style="font-size:8.5px;color:#7a7a7a">W35</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px;font-size:13px">
+                    <span><span style="color:#7a7a7a">Seasonal space heating class (W35):</span> <strong style="font-weight:600">{{ dsp.label }}</strong></span>
+                    <span><span style="color:#7a7a7a">Medium-temperature class (W55):</span> <strong style="font-weight:600">{{ dsp.labelMed }}</strong></span>
+                    <span><span style="color:#7a7a7a">EPREL registration:</span> <strong style="font-weight:600">{{ dsp.eprelId }}</strong></span>
+                    <span><span style="color:#7a7a7a">Product information sheet:</span> <strong style="font-weight:600">Available</strong></span>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ dsShowPerformance }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;padding-top:22px">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#0066cc;border-bottom:1px solid #e0e0e0;padding-bottom:7px">PERFORMANCE DATA</span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Heating capacity (55°C)</span><span style="font-weight:600">{{ dsp.kw }} kW</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">COP (A7/W35)</span><span style="font-weight:600">{{ dsp.cop7 }}</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">COP (A2/W35)</span><span style="font-weight:600">{{ dsp.cop2 }}</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">COP (A−7/W35)</span><span style="font-weight:600">{{ dsp.copm7 }}</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">SCOP</span><span style="font-weight:600">{{ dsp.scop }}</span></span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ dsShowEnv }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;padding-top:22px">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#0066cc;border-bottom:1px solid #e0e0e0;padding-bottom:7px">ENVIRONMENTAL &amp; ACOUSTIC</span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Refrigerant</span><span style="font-weight:600">{{ dsp.ref }}</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Refrigerant amount</span><span style="font-weight:600">{{ dsp.refKg }} kg</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Sound power level (outdoor)</span><span style="font-weight:600">{{ dsp.noise }} dB(A)</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Grid ready (SG Ready)</span><span style="font-weight:600">Yes / Ja</span></span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ dsShowBafa }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;padding-top:22px">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#0066cc;border-bottom:1px solid #e0e0e0;padding-bottom:7px">BAFA / FUNDING STATUS</span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">BAFA list status</span><span style="font-weight:600">Listed (snapshot 19 Mar 2026)</span></span>
+                <span style="display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">BEG EM relevance</span><span style="font-weight:600">Potentially eligible — verify</span></span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ dsShowSource }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;padding-top:22px">
+                <span style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#7a7a7a;border-bottom:1px solid #e0e0e0;padding-bottom:7px">SOURCE &amp; VERIFICATION</span>
+                <span style="font-size:11.5px;color:#7a7a7a;line-height:1.6;padding-top:9px">Data compiled from BAFA source snapshot (19 Mar 2026) and EPREL-style records (28 Jun 2026). This sheet is generated documentation, not an official certificate. Verify current BAFA eligibility and the official EU energy label before contractual use.</span>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAGE: BAFA / KfW ============ -->
+  <sc-if value="{{ isBafa }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div style="background:#f5f5f7;padding:44px 48px 36px;display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:var(--font-display);font-size:34px;font-weight:600;letter-spacing:-0.374px">BAFA / KfW.</span>
+        <span style="font-size:17px;color:#7a7a7a;letter-spacing:-0.374px;max-width:640px">Curated German funding updates for heat pumps. Confirmed changes, clearly separated from guidance.</span>
+      </div>
+      <div style="max-width:1160px;width:100%;margin:0 auto;padding:28px 48px 48px;display:flex;flex-direction:column;gap:24px;box-sizing:border-box">
+        <!-- status summary -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">BEG EM — HEAT PUMPS</span>
+            <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">Up to 40%</span>
+            <span style="font-size:12.5px;color:#7a7a7a;line-height:1.5">Base 30% + 5% efficiency bonus (natural refrigerant) + climate-speed bonus. Caps apply.</span>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">KFW 458 — GRANT PORTAL</span>
+            <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">Open</span>
+            <span style="font-size:12.5px;color:#7a7a7a;line-height:1.5">Applications accepted for owner-occupied single-family homes; commitment before delivery contract.</span>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">BAFA LIST SNAPSHOT</span>
+            <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">19 Mar 2026</span>
+            <span style="font-size:12.5px;color:#7a7a7a;line-height:1.5">6,851 listed heat pumps in this app. Next sync expected mid-July.</span>
+          </div>
+        </div>
+        <!-- recent changes -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">Recent changes.</span>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;overflow:hidden">
+            <div style="display:flex;gap:18px;padding:18px 24px;border-bottom:1px solid #f0f0f0;align-items:baseline">
+              <span style="flex:0 0 92px;font-size:12px;color:#7a7a7a">2 Jul 2026</span>
+              <span style="flex:0 0 88px;font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid #e0e0e0;border-radius:999px;padding:3px 10px;text-align:center">CONFIRMED</span>
+              <span style="font-size:14px;line-height:1.5"><strong style="font-weight:600">KfW simplifies proof-of-installation upload</strong> — invoices and installer confirmation now in one step for grant 458.</span>
+            </div>
+            <div style="display:flex;gap:18px;padding:18px 24px;border-bottom:1px solid #f0f0f0;align-items:baseline">
+              <span style="flex:0 0 92px;font-size:12px;color:#7a7a7a">14 Jun 2026</span>
+              <span style="flex:0 0 88px;font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid #e0e0e0;border-radius:999px;padding:3px 10px;text-align:center">CONFIRMED</span>
+              <span style="font-size:14px;line-height:1.5"><strong style="font-weight:600">BAFA list update</strong> — 214 new R290 monoblock entries; 37 models delisted after datasheet corrections.</span>
+            </div>
+            <div style="display:flex;gap:18px;padding:18px 24px;align-items:baseline">
+              <span style="flex:0 0 92px;font-size:12px;color:#7a7a7a">28 May 2026</span>
+              <span style="flex:0 0 88px;font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid #e0e0e0;border-radius:999px;padding:3px 10px;text-align:center;color:#7a7a7a">GUIDANCE</span>
+              <span style="font-size:14px;line-height:1.5"><strong style="font-weight:600">Draft discussion on 2027 efficiency bonus criteria</strong> — no confirmed changes; monitor before advising customers on timing.</span>
+            </div>
+          </div>
+        </div>
+        <!-- two audiences -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:#272729;color:#fff;border-radius:18px;padding:26px 28px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#ccc">WHAT INSTALLERS SHOULD KNOW</span>
+            <span style="font-size:14.5px;line-height:1.6;color:#fff">Commitment must exist before the delivery contract is signed. Use the app's data sheet with BAFA ID as the technical annex, and re-verify list status on the day of the application.</span>
+            <span style="font-size:13px;color:#2997ff;cursor:pointer">Installer checklist ›</span>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:26px 28px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">WHAT HOMEOWNERS SHOULD KNOW</span>
+            <span style="font-size:14.5px;line-height:1.6">The grant is applied for at KfW, but the heat pump must appear on the BAFA list. Your installer confirms the technical requirements — ask for the BAFA ID of the offered unit.</span>
+            <span style="font-size:13px;color:#0066cc;cursor:pointer">Read the funding guide ›</span>
+          </div>
+        </div>
+        <!-- official sources -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">Official sources.</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+            <div style="border:1px solid #e0e0e0;border-radius:18px;padding:18px 22px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:600;font-size:14px">BAFA — Federal Office for Economic Affairs and Export Control</span><span style="font-size:12px;color:#7a7a7a">Official agency homepage</span><span style="font-size:12.5px;color:#0066cc;margin-top:4px;cursor:pointer">bafa.de ›</span></div>
+            <div style="border:1px solid #e0e0e0;border-radius:18px;padding:18px 22px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:600;font-size:14px">KfW grant 458</span><span style="font-size:12px;color:#7a7a7a">Application portal &amp; conditions</span><span style="font-size:12.5px;color:#0066cc;margin-top:4px;cursor:pointer">kfw.de ›</span></div>
+            <div style="border:1px solid #e0e0e0;border-radius:18px;padding:18px 22px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:600;font-size:14px">BMWK — Federal Ministry for Economic Affairs and Climate Action</span><span style="font-size:12px;color:#7a7a7a">Energy transition &amp; building efficiency policy</span><span style="font-size:12.5px;color:#0066cc;margin-top:4px;cursor:pointer">bmwk.de ›</span></div>
+          </div>
+          <span style="font-size:11.5px;color:#7a7a7a">Summaries above are editorial guidance, not legal or funding advice. Official sources prevail.</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAGE: Funding guide ============ -->
+  <sc-if value="{{ isGuide }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div style="background:#272729;color:#fff;padding:52px 48px 44px;display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:var(--font-display);font-size:34px;font-weight:600;letter-spacing:-0.374px">Funding, step by step.</span>
+        <span style="font-size:17px;color:#ccc;letter-spacing:-0.374px;max-width:640px">Prepare a BEG EM application with confidence — whether you install heat pumps or own the home.</span>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <sc-for list="{{ guideTabs }}" as="g" hint-placeholder-count="2">
+            <span onClick="{{ g.onClick }}" style="{{ g.style }}" style-active="transform:scale(0.95)">{{ g.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="max-width:1160px;width:100%;margin:0 auto;padding:32px 48px 48px;display:flex;flex-direction:column;gap:28px;box-sizing:border-box">
+        <!-- journey -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">{{ guideJourneyTitle }}</span>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0">
+            <sc-for list="{{ guideSteps }}" as="st" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:9px;padding:0 18px 0 0;position:relative">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="flex:none;width:26px;height:26px;border-radius:50%;background:#0066cc;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">{{ st.n }}</span>
+                  <span style="flex:1;height:1px;background:#e0e0e0"></span>
+                </div>
+                <span style="font-size:14px;font-weight:600;line-height:1.3">{{ st.title }}</span>
+                <span style="font-size:12.5px;color:#7a7a7a;line-height:1.5">{{ st.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <!-- checklist + video -->
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px">
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between">
+              <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Preparation checklist.</span>
+              <span style="font-size:12.5px;color:#0066cc;cursor:pointer">Download PDF ›</span>
+            </div>
+            <sc-for list="{{ guideChecklist }}" as="ck" hint-placeholder-count="5">
+              <span onClick="{{ ck.onToggle }}" style="display:flex;align-items:flex-start;gap:11px;font-size:14px;line-height:1.5;cursor:pointer;padding:2px 0">
+                <span style="{{ ck.boxStyle }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" style="{{ ck.tickStyle }}"><path d="m5 13 4 4L19 7"></path></svg></span>
+                <span style="{{ ck.textStyle }}">{{ ck.text }}</span>
+              </span>
+            </sc-for>
+            <span style="font-size:11.5px;color:#7a7a7a;margin-top:4px">A preparation aid, not legal advice. Verify each item against the official BAFA / KfW conditions.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="background:#f5f5f7;border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">3-MINUTE EXPLAINER</span>
+              <div style="aspect-ratio:16/9;background:#272729;border-radius:8px;display:flex;align-items:center;justify-content:center">
+                <span style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.14);display:inline-flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"></path></svg></span>
+              </div>
+              <span style="font-size:13.5px;line-height:1.5">How the BEG EM grant works — the 5 decisions that matter before you sign anything.</span>
+            </div>
+            <div style="border:1px solid #e0e0e0;border-radius:18px;padding:20px 24px;display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">GOOD TO KNOW</span>
+              <span style="font-size:13.5px;line-height:1.6">Natural-refrigerant units (R290) currently qualify for the +5% efficiency bonus. Filter Products by R290 to see them.</span>
+              <span onClick="{{ goProductsR290 }}" style="font-size:13px;color:#0066cc;cursor:pointer">Show R290 products ›</span>
+            </div>
+          </div>
+        </div>
+        <!-- FAQ -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">Common questions.</span>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;overflow:hidden">
+            <sc-for list="{{ faqRows }}" as="f" hint-placeholder-count="4">
+              <div style="border-bottom:1px solid #f0f0f0">
+                <span onClick="{{ f.onToggle }}" style="display:flex;align-items:center;justify-content:space-between;padding:17px 24px;font-size:14.5px;font-weight:600;cursor:pointer">{{ f.q }} <span style="{{ f.chevStyle }}">›</span></span>
+                <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+                  <span style="display:block;padding:0 24px 17px;font-size:14px;color:#333;line-height:1.6;max-width:760px">{{ f.a }}</span>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAGE: News ============ -->
+  <sc-if value="{{ isNews }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div style="max-width:1160px;width:100%;margin:0 auto;padding:40px 48px 48px;display:flex;flex-direction:column;gap:26px;box-sizing:border-box">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font-family:var(--font-display);font-size:34px;font-weight:600;letter-spacing:-0.374px">Market intelligence.</span>
+          <span style="font-size:12.5px;color:#7a7a7a;border:1px solid #e0e0e0;border-radius:999px;padding:4px 13px">Curated · updated 2–3× monthly</span>
+        </div>
+        <!-- featured -->
+        <div style="background:#272729;color:#fff;border-radius:18px;padding:34px 36px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:8px;align-items:center">
+            <span style="font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 11px">MARKET</span>
+            <span style="font-size:12px;color:#ccc">July 2026 briefing</span>
+          </div>
+          <span style="font-family:var(--font-display);font-size:28px;font-weight:600;letter-spacing:-0.28px;line-height:1.15;max-width:720px">German heat pump sales up 31% in H1 — R290 monoblocks now half of all new residential installs.</span>
+          <span style="font-size:15px;color:#ccc;line-height:1.55;max-width:680px">What the shift means for installer stock planning, and which manufacturers gained BAFA list share this quarter.</span>
+          <span style="font-size:14px;color:#2997ff;cursor:pointer">Read the briefing ›</span>
+        </div>
+        <!-- cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid #e0e0e0;border-radius:999px;padding:3px 11px;width:fit-content">FUNDING</span>
+            <span style="font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-0.2px;line-height:1.25">KfW processing times drop below three weeks</span>
+            <span style="font-size:13px;color:#7a7a7a;line-height:1.55">Grant 458 commitments accelerated after the June portal update — what it changes for project timelines.</span>
+            <span style="font-size:12px;color:#7a7a7a;margin-top:auto">28 Jun 2026 · 4 min</span>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid #e0e0e0;border-radius:999px;padding:3px 11px;width:fit-content">TECHNOLOGY</span>
+            <span style="font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-0.2px;line-height:1.25">Sound power is the new spec battleground</span>
+            <span style="font-size:13px;color:#7a7a7a;line-height:1.55">Sub-50 dB(A) units doubled year over year. How noise limits in dense housing are reshaping model lineups.</span>
+            <span style="font-size:12px;color:#7a7a7a;margin-top:auto">19 Jun 2026 · 6 min</span>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid #e0e0e0;border-radius:999px;padding:3px 11px;width:fit-content">INSTALLER INSIGHT</span>
+            <span style="font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-0.2px;line-height:1.25">Hydraulic balancing documentation, done right</span>
+            <span style="font-size:13px;color:#7a7a7a;line-height:1.55">The proof most often missing from funding files — and a template that passes review the first time.</span>
+            <span style="font-size:12px;color:#7a7a7a;margin-top:auto">7 Jun 2026 · 5 min</span>
+          </div>
+        </div>
+        <!-- subscribe -->
+        <div style="background:#f5f5f7;border-radius:18px;padding:26px 30px;display:flex;align-items:center;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">The monthly briefing, in your inbox.</span>
+            <span style="font-size:13.5px;color:#7a7a7a">One email per month. Funding changes, list updates, market signals. No noise.</span>
+          </div>
+          <span style="margin-left:auto;background:#0066cc;color:#fff;border-radius:999px;padding:10px 22px;font-size:14px;cursor:pointer;flex:none" style-active="transform:scale(0.95)">Subscribe ›</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAGE: Account ============ -->
+  <sc-if value="{{ isAccount }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column" data-screen-label="Account">
+      <div style="background:#f5f5f7;padding:40px 48px 32px;display:flex;flex-direction:column;gap:6px">
+        <span style="font-family:var(--font-display);font-size:34px;font-weight:600;letter-spacing:-0.374px">Account.</span>
+        <span style="font-size:17px;color:#7a7a7a;letter-spacing:-0.374px">Manage your subscription, profile and app settings.</span>
+      </div>
+      <div style="max-width:1160px;width:100%;margin:0 auto;padding:28px 48px 48px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+
+        <!-- Subscription -->
+        <div style="border:1px solid #e0e0e0;border-radius:18px;padding:26px 28px;display:flex;gap:28px;align-items:flex-start">
+          <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-0.2px">Subscription.</span>
+              <span style="border:1px solid #e0e0e0;border-radius:999px;padding:3px 12px;font-size:11.5px;font-weight:600">HeatpumpIQ Pro — active</span>
+            </div>
+            <span style="font-size:14px;color:#333;line-height:1.55;max-width:520px">Your plan renews on 5 August 2026 at €29/month. A 7-day free trial starts when a plan is first selected after installing the app.</span>
+            <span style="font-size:12.5px;color:#7a7a7a">Subscribed via Google Play / Apple App Store — plan changes and cancellation are handled in the store where the subscription was started.</span>
+            <div style="display:flex;gap:10px;margin-top:4px">
+              <span style="background:#0066cc;color:#fff;border-radius:999px;padding:10px 22px;font-size:13.5px;cursor:pointer" style-active="transform:scale(0.95)">Manage plan ›</span>
+              <span style="border:1px solid #d2d2d7;border-radius:999px;padding:10px 22px;font-size:13.5px;background:#fff;cursor:pointer" style-active="transform:scale(0.95)">Restore purchases</span>
+            </div>
+          </div>
+          <div style="flex:0 0 280px;background:#f5f5f7;border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:9px">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#7a7a7a">INCLUDED IN PRO</span>
+            <span style="font-size:13px;line-height:1.5">Full product database access</span>
+            <span style="font-size:13px;line-height:1.5">Unlimited comparisons</span>
+            <span style="font-size:13px;line-height:1.5">{{ printQuota }} data sheet prints / month</span>
+            <span style="font-size:13px;line-height:1.5">BAFA / KfW &amp; label updates</span>
+          </div>
+        </div>
+
+        <!-- Profile + Language -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:4px">
+            <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px;margin-bottom:8px">Profile.</span>
+            <span style="display:flex;justify-content:space-between;font-size:13.5px;padding:10px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Account email</span><span style="font-weight:600">c.sung@example.de</span></span>
+            <span style="display:flex;justify-content:space-between;font-size:13.5px;padding:10px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Display name</span><span style="font-weight:600">Christopher Sung</span></span>
+            <span style="display:flex;justify-content:space-between;font-size:13.5px;padding:10px 0;border-bottom:1px solid #f0f0f0"><span style="color:#7a7a7a">Company</span><span style="font-weight:600">—</span></span>
+            <span style="display:flex;justify-content:space-between;font-size:13.5px;padding:10px 0"><span style="color:#7a7a7a">Role</span><span style="font-weight:600">Installer / professional</span></span>
+            <span style="font-size:12.5px;color:#0066cc;cursor:pointer;margin-top:4px">Edit profile ›</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:12px">
+              <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">App language.</span>
+              <div style="display:flex;border:1px solid #e0e0e0;border-radius:999px;overflow:hidden;font-size:13px;width:fit-content">
+                <sc-for list="{{ acctLangChips }}" as="al" hint-placeholder-count="2">
+                  <span onClick="{{ al.onClick }}" style="{{ al.style }}">{{ al.label }}</span>
+                </sc-for>
+              </div>
+              <span style="font-size:12.5px;color:#7a7a7a;line-height:1.5">Deutsch is the default for the Germany edition. English is available everywhere in the app.</span>
+            </div>
+            <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:9px">
+              <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Use on the web.</span>
+              <span style="font-size:13px;color:#333;line-height:1.5">Open HeatpumpIQ in any browser and sign in with the same account — searches, comparisons and print quota stay in sync.</span>
+              <span style="border:1px solid #e0e0e0;border-radius:8px;padding:9px 14px;font-size:13px;font-family:ui-monospace,Menlo,monospace;background:#f5f5f7;width:fit-content">www.heatpumpiq.de/enter</span>
+              <div style="display:flex;gap:10px;margin-top:2px">
+                <span style="border:1px solid #d2d2d7;border-radius:999px;padding:8px 18px;font-size:13px;background:#fff;cursor:pointer" style-active="transform:scale(0.95)">Copy link</span>
+                <span style="border:1px solid #d2d2d7;border-radius:999px;padding:8px 18px;font-size:13px;background:#fff;cursor:pointer" style-active="transform:scale(0.95)">Email me the link</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security + Support -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:9px">
+            <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Email &amp; password.</span>
+            <span style="font-size:13px;color:#333;line-height:1.5">Receive a secure link by email to set or change your email/password sign-in.</span>
+            <span style="color:#0066cc;font-size:13px;cursor:pointer;margin-top:2px">Send setup link to c.sung@example.de ›</span>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:9px">
+            <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Support.</span>
+            <span style="font-size:13px;color:#333;line-height:1.5">Questions or problems? We reply within 1–3 business days.</span>
+            <span style="color:#0066cc;font-size:13px;cursor:pointer;margin-top:2px">Contact support &amp; view replies ›</span>
+          </div>
+        </div>
+
+        <!-- Legal + Delete -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:9px">
+            <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Terms &amp; policies.</span>
+            <span style="color:#0066cc;font-size:13.5px;cursor:pointer">Privacy policy ›</span>
+            <span style="color:#0066cc;font-size:13.5px;cursor:pointer">Terms of use ›</span>
+            <span style="color:#0066cc;font-size:13.5px;cursor:pointer">Impressum ›</span>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.2px">Delete account.</span>
+            <span style="font-size:13px;color:#333;line-height:1.5">Permanently deletes your account, saved comparisons and settings. This cannot be undone.</span>
+            <span style="font-size:12px;color:#7a7a7a;line-height:1.55;border:1px solid #e0e0e0;border-radius:8px;padding:10px 14px;background:#f5f5f7">Subscriptions started via the App Store or Google Play must be cancelled directly in that store before deleting the account.</span>
+            <span style="border:1px solid #d2d2d7;border-radius:999px;padding:9px 20px;font-size:13px;background:#fff;cursor:pointer;width:fit-content" style-active="transform:scale(0.95)">Delete account</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- footer -->
+  <div style="border-top:1px solid rgba(0,0,0,.08);background:#f5f5f7;padding:18px 28px;display:flex;align-items:center;gap:18px;font-size:11.5px;color:#7a7a7a">
+    <span style="font-weight:600;color:#1d1d1f">HeatpumpIQ</span>
+    <span>Germany edition · data snapshot 5 Jul 2026</span>
+    <span style="margin-left:auto">Product data is informational — verify BAFA, KfW and EPREL sources before contractual use.</span>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showBafaNotice&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Trust cues&quot;},&quot;printQuota&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:20,&quot;min&quot;:5,&quot;max&quot;:100,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Subscription&quot;}}">
+class Component extends DCLogic {
+  state = {
+    page: 'products',
+    query: '',
+    compare: ['p1', 'p2'],
+    selectedId: 'p1',
+    labelSelId: 'p2',
+    showCompare: false,
+    dsMode: 'product',
+    dsId: 'p2',
+    dsSections: { identity: true, performance: true, env: true, bafa: true, source: true },
+    refFilter: null,
+    classFilter: null,
+    mfrFilter: [],
+    guideTab: 'home',
+    lang: 'de',
+    checked: {},
+    faqOpen: 0
+  };
+
+  get products() {
+    return [
+      { id:'p1', mfr:'Viessmann', model:'Vitocal 250-A AWO-E-AC 251.A10', odu:'AWO 251.A10', kw:'10.4', cop7:'4.95', cop2:'4.41', copm7:'2.94', scop:'4.72', noise:'54', label:'A+++', labelMed:'A++', ref:'R290', refKg:'1.9', bafaId:'16019204', eprel:true },
+      { id:'p2', mfr:'Bosch', model:'Compress 5800i AW 10 OR', odu:'AW 10 OR', kw:'9.8', cop7:'4.88', cop2:'4.38', copm7:'2.88', scop:'4.65', noise:'52', label:'A+++', labelMed:'A++', ref:'R290', refKg:'1.6', bafaId:'16017315', eprel:true },
+      { id:'p3', mfr:'Viessmann', model:'Vitocal 252-A AWOT-E-AC 251.A08', odu:'AWOT 251.A08', kw:'8.2', cop7:'4.79', cop2:'4.29', copm7:'2.80', scop:'4.61', noise:'51', label:'A++', labelMed:'A+', ref:'R290', refKg:'1.7', bafaId:'16018871', eprel:true },
+      { id:'p4', mfr:'Bosch', model:'Compress 6800 AW 12 OR-T', odu:'AW 12 OR-T', kw:'11.6', cop7:'4.72', cop2:'4.22', copm7:'2.75', scop:'4.55', noise:'55', label:'A+++', labelMed:'A++', ref:'R290', refKg:'1.9', bafaId:'16017442', eprel:true },
+      { id:'p5', mfr:'Stiebel Eltron', model:'WPL 17 ACS classic compact', odu:'WPL 17 ACS', kw:'8.9', cop7:'4.70', cop2:'4.19', copm7:'2.71', scop:'4.51', noise:'48', label:'A++', labelMed:'A+', ref:'R290', refKg:'2.1', bafaId:'16015520', eprel:true },
+      { id:'p6', mfr:'Mitsubishi', model:'Ecodan PUZ-WM112VAA', odu:'PUZ-WM112VAA', kw:'11.2', cop7:'4.60', cop2:'4.12', copm7:'2.66', scop:'4.46', noise:'58', label:'A++', labelMed:'A+', ref:'R32', refKg:'2.4', bafaId:'16012001', eprel:false },
+      { id:'p7', mfr:'Vaillant', model:'aroTHERM plus VWL 105/6 A', odu:'VWL 105/6 A', kw:'10.0', cop7:'4.63', cop2:'4.10', copm7:'2.62', scop:'4.44', noise:'54', label:'A+++', labelMed:'A++', ref:'R290', refKg:'2.4', bafaId:'16014210', eprel:true },
+      { id:'p8', mfr:'Daikin', model:'Altherma 3 H HT EPRA10DW1', odu:'EPRA10DW1', kw:'10.2', cop7:'4.55', cop2:'4.08', copm7:'2.60', scop:'4.40', noise:'57', label:'A+++', labelMed:'A++', ref:'R32', refKg:'3.1', bafaId:'16011157', eprel:true },
+      { id:'p9', mfr:'Buderus', model:'Logatherm WLW186i-10 AR', odu:'WLW186i-10', kw:'10.1', cop7:'4.58', cop2:'4.05', copm7:'2.58', scop:'4.42', noise:'53', label:'A++', labelMed:'A+', ref:'R290', refKg:'1.8', bafaId:'16016633', eprel:true }
+    ];
+  }
+
+  enrich(p) {
+    return Object.assign({}, p, {
+      noEprel: !p.eprel,
+      eprelId: p.eprel ? 'EPREL-' + p.bafaId.slice(2) : '—',
+      eprelText: p.eprel ? 'Matched' : 'Not matched',
+      completeness: p.eprel ? '94%' : '61%',
+      shortName: p.model.split(' ').slice(0, 3).join(' ')
+    });
+  }
+
+  go(page) { this.setState({ page }); }
+
+  toggleCompare(id) {
+    this.setState(s => {
+      const has = s.compare.includes(id);
+      if (!has && s.compare.length >= 4) return {};
+      return { compare: has ? s.compare.filter(x => x !== id) : s.compare.concat(id) };
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const P = this.products.map(p => this.enrich(p));
+    const printQuota = this.props.printQuota ?? 20;
+    const showBafaNotice = this.props.showBafaNotice ?? true;
+
+    const pages = [
+      ['find', 'Find product'], ['products', 'Products'], ['label', 'EU energy label'],
+      ['datasheet', 'Data sheet'], ['bafa', 'BAFA / KfW'], ['guide', 'Funding guide'], ['news', 'News']
+    ];
+    const navItems = pages.map(([id, label]) => ({
+      label,
+      onClick: () => this.go(id),
+      style: 'padding:7px 12px;border-radius:999px;cursor:pointer;' +
+        (s.page === id ? 'color:#fff;font-weight:600;background:rgba(255,255,255,.12)' : 'color:rgba(255,255,255,.65)')
+    }));
+
+    // ---- shared row builders ----
+    const checkStyle = (on) => 'flex:none;width:16px;height:16px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;' +
+      (on ? 'background:#0066cc;' : 'background:#fff;border:1px solid #d2d2d7;');
+    const mkRow = (p) => {
+      const inCmp = s.compare.includes(p.id);
+      return Object.assign({}, p, {
+        inCompare: inCmp,
+        onOpen: () => this.setState({ selectedId: p.id }),
+        onToggle: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleCompare(p.id); },
+        onDataSheet: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ page: 'datasheet', dsId: p.id, dsMode: 'product' }); },
+        checkStyle: checkStyle(inCmp),
+        checkIconStyle: 'opacity:' + (inCmp ? 1 : 0),
+        rowStyle: 'display:grid;grid-template-columns:34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr;gap:0 12px;align-items:center;padding:12px 20px;border-bottom:1px solid #f0f0f0;font-size:13px;cursor:pointer;' +
+          (s.selectedId === p.id ? 'background:#f5f5f7;box-shadow:inset 2px 0 0 #0066cc;' : 'background:#fff;')
+      });
+    };
+
+    // ---- products page ----
+    let filtered = P;
+    if (s.refFilter) filtered = filtered.filter(p => p.ref === s.refFilter);
+    if (s.mfrFilter.length) filtered = filtered.filter(p => s.mfrFilter.includes(p.mfr));
+    const rows = filtered.map(mkRow);
+
+    const refChips = ['R290', 'R32', 'R410A'].map(r => ({
+      label: r,
+      onClick: () => this.setState({ refFilter: s.refFilter === r ? null : r }),
+      style: 'border-radius:999px;padding:5px 13px;font-size:12.5px;cursor:pointer;' +
+        (s.refFilter === r ? 'background:#0066cc;color:#fff;' : 'border:1px solid #e0e0e0;color:#1d1d1f;')
+    }));
+
+    const mfrCounts = { Viessmann: 315, Bosch: 77, Mitsubishi: 723, 'Stiebel Eltron': 47, Vaillant: 46 };
+    const mfrChecks = Object.keys(mfrCounts).map(name => {
+      const on = s.mfrFilter.includes(name);
+      return {
+        name, count: mfrCounts[name],
+        onClick: () => this.setState(st => ({ mfrFilter: on ? st.mfrFilter.filter(m => m !== name) : st.mfrFilter.concat(name) })),
+        boxStyle: 'flex:none;width:15px;height:15px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;' + (on ? 'background:#0066cc;' : 'border:1px solid #d2d2d7;'),
+        tickStyle: 'opacity:' + (on ? 1 : 0)
+      };
+    });
+
+    const appliedChips = [];
+    if (s.refFilter) appliedChips.push({ label: s.refFilter, onRemove: () => this.setState({ refFilter: null }) });
+    s.mfrFilter.forEach(m => appliedChips.push({ label: m, onRemove: () => this.setState(st => ({ mfrFilter: st.mfrFilter.filter(x => x !== m) })) }));
+
+    const compareItems = s.compare.map(id => P.find(p => p.id === id)).filter(Boolean).map(p => Object.assign({}, p, {
+      onRemove: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleCompare(p.id); }
+    }));
+    const compareCount = compareItems.length;
+    const canCompare = compareCount >= 2;
+
+    const sel = P.find(p => p.id === s.selectedId) || P[0];
+    const lsel = P.find(p => p.id === s.labelSelId) || P[1];
+
+    // ---- find page ----
+    const q = s.query.trim().toLowerCase();
+    const findMatches = q.length >= 2 ? P.filter(p =>
+      (p.model + ' ' + p.mfr + ' ' + p.odu + ' ' + p.bafaId).toLowerCase().includes(q)) : [];
+    const findRows = findMatches.map(p => Object.assign(mkRow(p), {
+      onOpen: () => this.setState({ page: 'products', selectedId: p.id }),
+      checkStyle: 'flex:none;width:18px;height:18px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin-top:2px;' +
+        (s.compare.includes(p.id) ? 'background:#0066cc;' : 'background:#fff;border:1px solid #d2d2d7;')
+    }));
+
+    // ---- label page ----
+    let labelFiltered = P;
+    if (s.classFilter) labelFiltered = labelFiltered.filter(p => p.label === s.classFilter);
+    const labelRows = labelFiltered.map(p => Object.assign({}, p, {
+      onOpen: () => this.setState({ labelSelId: p.id }),
+      rowStyle: 'display:grid;grid-template-columns:2.2fr 1fr 0.8fr 0.8fr 0.9fr 1.1fr;gap:0 12px;align-items:center;padding:12px 20px;border-bottom:1px solid #f0f0f0;font-size:13px;cursor:pointer;' +
+        (s.labelSelId === p.id ? 'background:#f5f5f7;box-shadow:inset 2px 0 0 #0066cc;' : 'background:#fff;')
+    }));
+    const classChips = ['A+++', 'A++', 'A+'].map(c => ({
+      label: c,
+      onClick: () => this.setState({ classFilter: s.classFilter === c ? null : c }),
+      style: 'border-radius:999px;padding:5px 13px;font-size:12.5px;cursor:pointer;' +
+        (s.classFilter === c ? 'background:#0066cc;color:#fff;' : 'border:1px solid #e0e0e0;color:#1d1d1f;')
+    }));
+
+    // ---- data sheet page ----
+    const dsp = P.find(p => p.id === s.dsId) || P[0];
+    const dsRows = P.map(p => ({
+      model: p.model, mfr: p.mfr, kw: p.kw, label: p.label,
+      onPick: () => this.setState({ dsId: p.id }),
+      style: 'display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid #f0f0f0;cursor:pointer;' +
+        (s.dsId === p.id ? 'background:#f5f5f7;box-shadow:inset 2px 0 0 #0066cc;' : '')
+    }));
+    const isLabelMode = s.dsMode === 'label';
+    const sectionDefs = isLabelMode
+      ? [['identity', 'Product identity'], ['performance', 'Rated output & efficiency'], ['env', 'Acoustic & refrigerant'], ['source', 'Source & verification']]
+      : [['identity', 'Product identification'], ['performance', 'Performance data'], ['env', 'Environmental & acoustic'], ['bafa', 'BAFA / funding status'], ['source', 'Source & verification']];
+    const dsSectionRows = sectionDefs.map(([key, label]) => {
+      const on = s.dsSections[key];
+      return {
+        label,
+        onToggle: () => this.setState(st => ({ dsSections: Object.assign({}, st.dsSections, { [key]: !st.dsSections[key] }) })),
+        switchStyle: 'flex:none;width:32px;height:19px;border-radius:999px;position:relative;display:inline-block;transition:background .18s;' + (on ? 'background:#0066cc;' : 'background:#d2d2d7;'),
+        knobStyle: 'position:absolute;top:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:left .18s;left:' + (on ? '15px' : '2px')
+      };
+    });
+    const segStyle = (on) => 'padding:6px 16px;font-size:12.5px;cursor:pointer;' + (on ? 'background:#1d1d1f;color:#fff;font-weight:600;' : 'color:#1d1d1f;');
+
+    // ---- funding guide ----
+    const guideTabs = [['home', 'For homeowners'], ['pro', 'For installers']].map(([id, label]) => ({
+      label,
+      onClick: () => this.setState({ guideTab: id }),
+      style: 'border-radius:999px;padding:7px 17px;font-size:13px;cursor:pointer;' +
+        (s.guideTab === id ? 'background:#fff;color:#1d1d1f;font-weight:600;' : 'border:1px solid rgba(255,255,255,.35);color:#fff;')
+    }));
+    const isPro = s.guideTab === 'pro';
+    const guideSteps = (isPro ? [
+      ['1', 'Qualify the building', 'Heat load estimate, radiator temperatures, existing system age.'],
+      ['2', 'Select a listed unit', 'Pick from the BAFA list — capture the BAFA ID in your quote.'],
+      ['3', 'Customer applies at KfW', 'Grant commitment must precede the signed delivery contract.'],
+      ['4', 'Install & document', 'Hydraulic balancing, commissioning report, invoices with BAFA ID.'],
+      ['5', 'Proof & payout', 'Upload the installation proof package; payout follows review.']
+    ] : [
+      ['1', 'Check your starting point', 'Building age, current heating, rough heat demand.'],
+      ['2', 'Get installer quotes', 'Ask for the BAFA ID of each offered heat pump.'],
+      ['3', 'Apply before signing', 'Submit at KfW and wait for the commitment first.'],
+      ['4', 'Installation', 'Your installer handles the technical documentation.'],
+      ['5', 'Submit proof, get paid', 'Upload invoices and confirmations; the grant is paid out.']
+    ]).map(([n, title, text]) => ({ n, title, text }));
+    const checklistItems = isPro ? [
+      'Heat load calculation (room-by-room or DIN EN 12831 estimate)',
+      'BAFA ID confirmed on the current list — on the day of application',
+      'Hydraulic balancing plan and commissioning checklist prepared',
+      'Sound assessment for the outdoor unit location',
+      'Customer informed: KfW commitment before delivery contract'
+    ] : [
+      'Confirm the building is older than 5 years',
+      'Collect two comparable installer quotes with BAFA IDs',
+      'Check the unit appears on the current BAFA list',
+      'Apply at KfW and wait for the commitment',
+      'Keep every invoice — proof upload comes after installation'
+    ];
+    const guideChecklist = checklistItems.map((text, i) => {
+      const key = (isPro ? 'pro' : 'home') + i;
+      const on = !!s.checked[key];
+      return {
+        text,
+        onToggle: () => this.setState(st => ({ checked: Object.assign({}, st.checked, { [key]: !st.checked[key] }) })),
+        boxStyle: 'flex:none;width:17px;height:17px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;margin-top:2px;' + (on ? 'background:#0066cc;' : 'border:1px solid #d2d2d7;'),
+        tickStyle: 'opacity:' + (on ? 1 : 0),
+        textStyle: on ? 'color:#7a7a7a;text-decoration:line-through' : ''
+      };
+    });
+    const faqs = [
+      ['Do I need the BAFA list if I apply at KfW?', 'Yes. The grant is applied for at KfW, but the heat pump itself must be on the BAFA list of eligible units. This app shows the list status of every product — always re-verify on the official list on the day of application.'],
+      ['When exactly must I apply?', 'The funding commitment must exist before you sign a delivery or installation contract. Planning services are allowed earlier. This is the single most common and most expensive mistake.'],
+      ['What is the efficiency bonus?', 'An additional 5 percentage points for heat pumps using a natural refrigerant such as R290, or certain heat sources. Most new monoblock units in this database qualify — filter by R290 to see them.'],
+      ['Is this page legal advice?', 'No. It is an editorial preparation guide based on public BAFA and KfW information. Conditions change; the official program documents always prevail.']
+    ];
+    const faqRows = faqs.map(([qq, a], i) => ({
+      q: qq, a,
+      open: s.faqOpen === i,
+      onToggle: () => this.setState({ faqOpen: s.faqOpen === i ? -1 : i }),
+      chevStyle: 'color:#7a7a7a;font-size:17px;transition:transform .18s;transform:rotate(' + (s.faqOpen === i ? '90deg' : '0deg') + ')'
+    }));
+
+    return {
+      // nav / pages
+      navItems,
+      isFind: s.page === 'find', isProducts: s.page === 'products', isLabel: s.page === 'label',
+      isDS: s.page === 'datasheet', isBafa: s.page === 'bafa', isGuide: s.page === 'guide', isNews: s.page === 'news',
+      isAccount: s.page === 'account',
+      goAccount: () => this.go('account'),
+      accountAvatarStyle: 'width:23px;height:23px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;' +
+        (s.page === 'account' ? 'background:#fff;color:#1d1d1f;border:1px solid #fff;font-weight:600;' : 'background:#2a2a2c;color:#fff;border:1px solid rgba(255,255,255,.25);'),
+      langChips: [['de', 'DE'], ['en', 'EN']].map(([id, label]) => ({
+        label,
+        onClick: () => this.setState({ lang: id }),
+        style: 'padding:5px 11px;cursor:pointer;' + (s.lang === id ? 'background:#fff;color:#1d1d1f;font-weight:600;' : 'color:rgba(255,255,255,.75);')
+      })),
+      acctLangChips: [['de', 'Deutsch'], ['en', 'English']].map(([id, label]) => ({
+        label,
+        onClick: () => this.setState({ lang: id }),
+        style: 'padding:7px 18px;cursor:pointer;' + (s.lang === id ? 'background:#1d1d1f;color:#fff;font-weight:600;' : 'color:#1d1d1f;')
+      })),
+      showBafaNotice, printQuota,
+
+      // find
+      onSearch: (e) => this.setState({ query: e.target.value }),
+      query: s.query,
+      findEmpty: q.length < 2,
+      findNoMatch: q.length >= 2 && findMatches.length === 0,
+      findHasResults: findMatches.length > 0,
+      findCountText: findMatches.length + ' match' + (findMatches.length === 1 ? '' : 'es') + ' for "' + s.query + '"',
+      findRows,
+
+      // products
+      rows,
+      matchCountText: rows.length + ' of 5,017 residential products',
+      refChips, mfrChecks, appliedChips,
+      noFilters: appliedChips.length === 0,
+      clearFilters: () => this.setState({ refFilter: null, mfrFilter: [] }),
+      compareItems, compareCount,
+      traySlotsText: compareCount >= 4 ? 'tray full' : '+ ' + (4 - compareCount) + ' more slot' + (4 - compareCount === 1 ? '' : 's'),
+      compareBtnLabel: s.showCompare ? 'Hide comparison' : 'Compare ' + compareCount + ' ›',
+      compareBtnStyle: 'margin-left:auto;border-radius:999px;padding:9px 22px;font-size:13.5px;cursor:pointer;' +
+        (canCompare ? 'background:#0066cc;color:#fff;' : 'background:#d2d2d7;color:#fff;'),
+      toggleComparePanel: () => { if (canCompare || s.showCompare) this.setState({ showCompare: !s.showCompare }); },
+      showComparePanel: s.showCompare && canCompare,
+      hasSelected: !!sel, sel,
+      closeInspector: () => this.setState({ selectedId: null }),
+      selCompareLabel: sel && s.compare.includes(sel.id) ? 'Remove from compare' : 'Add to compare',
+      toggleSelectedCompare: () => sel && this.toggleCompare(sel.id),
+      goDataSheetFromInspector: () => this.setState({ page: 'datasheet', dsId: sel.id, dsMode: 'product' }),
+      goLabelFromInspector: () => this.setState({ page: 'label', labelSelId: sel.id }),
+
+      // label page
+      labelRows, classChips, lsel,
+      labelCountText: labelRows.length + ' label records · EPREL sync 28 Jun 2026',
+      goLabelSheet: () => this.setState({ page: 'datasheet', dsId: lsel.id, dsMode: 'label' }),
+      openProductFromLabel: () => this.setState({ page: 'products', selectedId: lsel.id }),
+
+      // data sheet
+      dsRows, dsp, dsSectionRows,
+      dsIsLabelMode: isLabelMode,
+      dsDocTitle: isLabelMode ? 'EU ENERGY LABEL INFORMATION SHEET — RESIDENTIAL' : 'TECHNICAL PRODUCT DATA SHEET — RESIDENTIAL',
+      dsModeProductStyle: segStyle(!isLabelMode),
+      dsModeLabelStyle: segStyle(isLabelMode),
+      setDsProduct: () => this.setState({ dsMode: 'product' }),
+      setDsLabel: () => this.setState({ dsMode: 'label' }),
+      dsShowIdentity: s.dsSections.identity,
+      dsShowPerformance: s.dsSections.performance,
+      dsShowEnv: s.dsSections.env,
+      dsShowBafa: s.dsSections.bafa && !isLabelMode,
+      dsShowSource: s.dsSections.source,
+
+      // guide
+      guideTabs, guideSteps, guideChecklist, faqRows,
+      guideJourneyTitle: isPro ? 'The installer journey.' : 'The homeowner journey.',
+      goProductsR290: () => this.setState({ page: 'products', refFilter: 'R290' })
+    };
+  }
+}
+</script>
+</body>
+</html>

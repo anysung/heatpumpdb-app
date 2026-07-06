@@ -1,0 +1,233 @@
+/**
+ * HeatpumpIQ — app shell (global nav, page routing, footer).
+ * Implements the approved design in design_handoff_heatpumpiq/ pixel-faithfully.
+ */
+import React, { useEffect, useMemo, useState } from 'react';
+import './hpiq.css';
+import { HeatPumpDatabase, Language, User } from '../types';
+import { getQuotaStatus, consumePrintQuota } from '../services/quotaService';
+import { ProductStore } from './productService';
+import { shortDate } from './model';
+import { HpApp, HpPage, DsMode, DsSectionKey } from './appState';
+import { FD, SignOutIcon } from './ui';
+import { FindPage } from './pages/FindPage';
+import { ProductsPage } from './pages/ProductsPage';
+import { LabelPage } from './pages/LabelPage';
+import { DataSheetPage } from './pages/DataSheetPage';
+import { BafaPage } from './pages/BafaPage';
+import { GuidePage } from './pages/GuidePage';
+import { NewsPage } from './pages/NewsPage';
+import { AccountPage } from './pages/AccountPage';
+
+interface Props {
+  user: User;
+  onLogout: () => void;
+  onAdminAccess?: () => void;
+  dbData: HeatPumpDatabase | null;
+  language: Language;
+  setLanguage: (l: Language) => void;
+}
+
+const NAV_ITEMS: { id: HpPage; label: string }[] = [
+  { id: 'find', label: 'Find product' },
+  { id: 'products', label: 'Products' },
+  { id: 'label', label: 'EU energy label' },
+  { id: 'datasheet', label: 'Data sheet' },
+  { id: 'bafa', label: 'BAFA / KfW' },
+  { id: 'guide', label: 'Funding guide' },
+  { id: 'news', label: 'News' },
+];
+
+export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
+  const [page, setPage] = useState<HpPage>('find');
+  const [query, setQuery] = useState('');
+  const [compare, setCompare] = useState<string[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [labelSelId, setLabelSelId] = useState<string | null>(null);
+  const [showCompare, setShowCompare] = useState(false);
+  const [dsMode, setDsMode] = useState<DsMode>('product');
+  const [dsId, setDsId] = useState<string | null>(null);
+  const [dsSections, setDsSections] = useState<Record<DsSectionKey, boolean>>({
+    identity: true, performance: true, env: true, bafa: true, source: true,
+  });
+  const [refFilter, setRefFilter] = useState<string | null>(null);
+  const [classFilter, setClassFilter] = useState<string | null>(null);
+  const [mfrFilter, setMfrFilter] = useState<string[]>([]);
+  const [guideTab, setGuideTab] = useState<'home' | 'pro'>('home');
+  const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [faqOpen, setFaqOpen] = useState(0);
+  const [quota, setQuota] = useState({ used: 0, limit: 20 });
+
+  const store = useMemo(
+    () => (dbData?.products?.length ? new ProductStore(dbData.products) : null),
+    [dbData?.products],
+  );
+
+  // Default selections once data arrives (inspector patterns are always-on).
+  useEffect(() => {
+    if (!store) return;
+    setSelectedId(prev => prev ?? store.all[0]?.id ?? null);
+    setLabelSelId(prev => prev ?? store.all[0]?.id ?? null);
+    setDsId(prev => prev ?? store.all[0]?.id ?? null);
+  }, [store]);
+
+  useEffect(() => {
+    let alive = true;
+    getQuotaStatus(user.id)
+      .then(q => { if (alive) setQuota({ used: q.used, limit: q.limit }); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [user.id]);
+
+  const dataStatusDate = shortDate(dbData?.generatedAt ?? new Date().toISOString());
+  const bafaSnapshotDate = shortDate(store?.bafaSnapshotDate ?? undefined);
+  const eprelSyncDate = shortDate(store?.sourceSnapshotDate ?? undefined);
+  const totalListed = (dbData?.products?.length ?? 0) + (dbData?.commercialProducts?.length ?? 0);
+
+  const toggleCompare = (id: string) => {
+    setCompare(prev => {
+      const has = prev.includes(id);
+      if (!has && prev.length >= 4) return prev;
+      return has ? prev.filter(x => x !== id) : [...prev, id];
+    });
+  };
+
+  const printSheet = () => {
+    consumePrintQuota(user.id)
+      .then(ok => {
+        if (ok) setQuota(q => ({ ...q, used: q.used + 1 }));
+      })
+      .catch(() => {});
+    document.body.classList.add('hpiq-printing');
+    window.print();
+    document.body.classList.remove('hpiq-printing');
+  };
+
+  const app: HpApp = {
+    store, user,
+    news: dbData?.newsFeed ?? [],
+    dataStatusDate, bafaSnapshotDate, eprelSyncDate, totalListed,
+    quota,
+    page, go: setPage,
+    query, setQuery,
+    compare, toggleCompare,
+    selectedId, setSelectedId,
+    labelSelId, setLabelSelId,
+    showCompare, setShowCompare,
+    dsMode, setDsMode, dsId, setDsId,
+    dsSections, toggleDsSection: (k) => setDsSections(s => ({ ...s, [k]: !s[k] })),
+    refFilter, setRefFilter, classFilter, setClassFilter, mfrFilter, setMfrFilter,
+    guideTab, setGuideTab,
+    checked, toggleChecked: (k) => setChecked(c => ({ ...c, [k]: !c[k] })),
+    faqOpen, setFaqOpen,
+    lang: language, setLang: setLanguage,
+    onLogout, printSheet,
+    openProduct: (id) => { setSelectedId(id); setPage('products'); },
+    openDataSheet: (id, mode) => { setDsId(id); setDsMode(mode); setPage('datasheet'); },
+    openLabelRecord: (id) => { setLabelSelId(id); setPage('label'); },
+    goProductsR290: () => { setRefFilter('R290'); setPage('products'); },
+  };
+
+  const initials = (
+    ((user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')) || user.email?.[0] || 'U'
+  ).toUpperCase();
+
+  return (
+    <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
+
+      {/* ============ Global nav ============ */}
+      <div style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 26, padding: '0 28px', height: 46, position: 'sticky', top: 0, zIndex: 50, flex: 'none' }}>
+        <span
+          onDoubleClick={onAdminAccess}
+          style={{ fontFamily: FD, fontSize: 15, fontWeight: 600, letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', gap: 9 }}
+        >
+          HeatpumpIQ
+          <span style={{ display: 'inline-flex', flexDirection: 'column', gap: 3, background: '#fff', borderRadius: 6, padding: '4px 9px 5px' }}>
+            <span style={{ fontSize: 10.5, fontWeight: 600, color: '#1d1d1f', letterSpacing: '.03em', lineHeight: 1 }}>Germany</span>
+            <span style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden' }}>
+              <span style={{ flex: 1, background: '#000' }} />
+              <span style={{ flex: 1, background: '#dd0000' }} />
+              <span style={{ flex: 1, background: '#ffcc00' }} />
+            </span>
+          </span>
+        </span>
+        <div style={{ display: 'flex', gap: 4, fontSize: 12.5 }}>
+          {NAV_ITEMS.map(item => {
+            const active = page === item.id;
+            return (
+              <span
+                key={item.id}
+                className={active ? undefined : 'hp-navlink'}
+                onClick={() => setPage(item.id)}
+                style={{
+                  padding: '7px 12px', borderRadius: 999, cursor: 'pointer',
+                  ...(active
+                    ? { color: '#fff', fontWeight: 600, background: 'rgba(255,255,255,.12)' }
+                    : { color: 'rgba(255,255,255,.65)' }),
+                }}
+              >
+                {item.label}
+              </span>
+            );
+          })}
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14, fontSize: 12, color: 'rgba(255,255,255,.75)' }}>
+          <span>Data status: {dataStatusDate}</span>
+          <div style={{ display: 'flex', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, overflow: 'hidden', fontSize: 11.5 }}>
+            {(['de', 'en'] as Language[]).map(l => (
+              <span
+                key={l}
+                onClick={() => setLanguage(l)}
+                style={{
+                  padding: '5px 11px', cursor: 'pointer',
+                  ...(language === l ? { background: '#fff', color: '#1d1d1f', fontWeight: 600 } : { color: 'rgba(255,255,255,.75)' }),
+                }}
+              >
+                {l.toUpperCase()}
+              </span>
+            ))}
+          </div>
+          <span
+            onClick={() => setPage('account')}
+            title="Account"
+            style={{
+              width: 23, height: 23, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 10, cursor: 'pointer', boxSizing: 'border-box',
+              ...(page === 'account'
+                ? { background: '#fff', color: '#1d1d1f', border: '1px solid #fff', fontWeight: 600 }
+                : { background: '#2a2a2c', color: '#fff', border: '1px solid rgba(255,255,255,.25)' }),
+            }}
+          >
+            {initials}
+          </span>
+          <span
+            className="hp-press"
+            onClick={onLogout}
+            title="Sign out"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '5px 13px', fontSize: 11.5, color: 'rgba(255,255,255,.85)', cursor: 'pointer' }}
+          >
+            <SignOutIcon />
+            Sign out
+          </span>
+        </div>
+      </div>
+
+      {/* ============ Pages ============ */}
+      {page === 'find' && <FindPage app={app} />}
+      {page === 'products' && <ProductsPage app={app} />}
+      {page === 'label' && <LabelPage app={app} />}
+      {page === 'datasheet' && <DataSheetPage app={app} />}
+      {page === 'bafa' && <BafaPage app={app} />}
+      {page === 'guide' && <GuidePage app={app} />}
+      {page === 'news' && <NewsPage app={app} />}
+      {page === 'account' && <AccountPage app={app} />}
+
+      {/* ============ Footer ============ */}
+      <div style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 18, fontSize: 11.5, color: '#7a7a7a', flex: 'none' }}>
+        <span style={{ fontWeight: 600, color: '#1d1d1f' }}>HeatpumpIQ</span>
+        <span>Germany edition · data snapshot {dataStatusDate}</span>
+        <span style={{ marginLeft: 'auto' }}>Product data is informational — verify BAFA, KfW and EPREL sources before contractual use.</span>
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,64 @@
+/* ============================================================
+   COLORS — A Company Design System
+   ------------------------------------------------------------
+   One brand accent (Action Blue). One near-black ink. A ladder
+   of near-black tiles and two off-whites. No second accent,
+   no decorative gradients. The single accent carries every
+   interactive element; rhythm comes from surface alternation.
+   ============================================================ */
+
+:root {
+  /* --- Brand & Accent ------------------------------------- */
+  --color-primary:          #0066cc; /* Action Blue — every interactive element */
+  --color-primary-focus:    #0071e3; /* Keyboard focus ring (outline: 2px solid) */
+  --color-primary-on-dark:  #2997ff; /* Sky Link Blue — in-copy links on dark tiles */
+  --color-on-primary:       #ffffff; /* Text/icon on Action Blue fills */
+
+  /* --- Surface -------------------------------------------- */
+  --color-canvas:            #ffffff; /* Pure White — dominant canvas */
+  --color-canvas-parchment:  #f5f5f7; /* Parchment — alternating light tile, footer */
+  --color-surface-pearl:     #fafafc; /* Pearl — ghost/secondary button fill */
+  --color-surface-tile-1:    #272729; /* Near-Black Tile 1 — primary dark tile */
+  --color-surface-tile-2:    #2a2a2c; /* Near-Black Tile 2 — micro-step lighter */
+  --color-surface-tile-3:    #252527; /* Near-Black Tile 3 — micro-step darker */
+  --color-surface-black:     #000000; /* Pure Black — global nav, video, void */
+  --color-surface-chip:      #d2d2d7; /* Translucent chip base (use at ~64% alpha) */
+  --color-surface-chip-translucent: rgba(210, 210, 215, 0.64);
+
+  /* --- Text ----------------------------------------------- */
+  --color-ink:           #1d1d1f; /* Near-Black Ink — headlines, body, dark fills */
+  --color-body:          #1d1d1f; /* Body — same near-black on light surfaces */
+  --color-body-on-dark:  #ffffff; /* Text on dark tiles + global nav */
+  --color-body-muted:    #cccccc; /* Secondary copy on dark tiles */
+  --color-ink-muted-80:  #333333; /* Body on Pearl surface — softer than black */
+  --color-ink-muted-48:  #7a7a7a; /* Disabled text, legal fine-print */
+
+  /* --- Hairlines & Borders -------------------------------- */
+  --color-divider-soft:  #f0f0f0; /* Secondary-button ring (often rgba(0,0,0,.04)) */
+  --color-hairline:      #e0e0e0; /* 1px hairline on utility cards / chips */
+  --color-border-translucent: rgba(0, 0, 0, 0.08); /* Input / sub-nav separator */
+
+  /* ========================================================
+     SEMANTIC ALIASES
+     Reference these in components, not the raw scale above.
+     ======================================================== */
+  --text-default:        var(--color-body);
+  --text-muted:          var(--color-ink-muted-48);
+  --text-on-dark:        var(--color-body-on-dark);
+  --text-on-dark-muted:  var(--color-body-muted);
+  --text-link:           var(--color-primary);
+  --text-link-on-dark:   var(--color-primary-on-dark);
+
+  --surface-page:        var(--color-canvas);
+  --surface-alt:         var(--color-canvas-parchment);
+  --surface-card:        var(--color-canvas);
+  --surface-dark:        var(--color-surface-tile-1);
+  --surface-nav:         var(--color-surface-black);
+
+  --action:              var(--color-primary);
+  --action-focus-ring:   var(--color-primary-focus);
+  --on-action:           var(--color-on-primary);
+
+  --border-card:         var(--color-hairline);
+  --border-ghost:        var(--color-divider-soft);
+}
