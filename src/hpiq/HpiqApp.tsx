@@ -8,7 +8,7 @@ import { HeatPumpDatabase, Language, User } from '../types';
 import { getQuotaStatus, consumePrintQuota } from '../services/quotaService';
 import { ProductStore } from './productService';
 import { shortDate } from './model';
-import { HpApp, HpPage, DsMode, DsSectionKey } from './appState';
+import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { FD, SignOutIcon } from './ui';
 import { FindPage } from './pages/FindPage';
 import { ProductsPage } from './pages/ProductsPage';
@@ -50,6 +50,8 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   const [dsSections, setDsSections] = useState<Record<DsSectionKey, boolean>>({
     identity: true, performance: true, env: true, bafa: true, source: true,
   });
+  const [segment, setSegment] = useState<HpSegment>('residential');
+  const [bafaOnly, setBafaOnly] = useState(true);
   const [refFilter, setRefFilter] = useState<string | null>(null);
   const [classFilter, setClassFilter] = useState<string | null>(null);
   const [mfrFilter, setMfrFilter] = useState<string[]>([]);
@@ -58,10 +60,24 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   const [faqOpen, setFaqOpen] = useState(0);
   const [quota, setQuota] = useState({ used: 0, limit: 20 });
 
-  const store = useMemo(
-    () => (dbData?.products?.length ? new ProductStore(dbData.products) : null),
-    [dbData?.products],
-  );
+  const store = useMemo(() => {
+    const src = segment === 'commercial' ? dbData?.commercialProducts : dbData?.products;
+    return src?.length ? new ProductStore(src) : null;
+  }, [dbData?.products, dbData?.commercialProducts, segment]);
+
+  // Segment switch swaps the dataset — ids/manufacturers from the other
+  // segment do not resolve, so selection-dependent state is reset (the
+  // default-selection effect below refills it from the new store).
+  const switchSegment = (s: HpSegment) => {
+    if (s === segment) return;
+    setSegment(s);
+    setSelectedId(null);
+    setLabelSelId(null);
+    setDsId(null);
+    setCompare([]);
+    setShowCompare(false);
+    setMfrFilter([]);
+  };
 
   // Default selections once data arrives (inspector patterns are always-on).
   useEffect(() => {
@@ -116,6 +132,8 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     showCompare, setShowCompare,
     dsMode, setDsMode, dsId, setDsId,
     dsSections, toggleDsSection: (k) => setDsSections(s => ({ ...s, [k]: !s[k] })),
+    segment, setSegment: switchSegment,
+    bafaOnly, setBafaOnly,
     refFilter, setRefFilter, classFilter, setClassFilter, mfrFilter, setMfrFilter,
     guideTab, setGuideTab,
     checked, toggleChecked: (k) => setChecked(c => ({ ...c, [k]: !c[k] })),

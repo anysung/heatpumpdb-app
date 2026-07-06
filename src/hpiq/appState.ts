@@ -8,6 +8,7 @@ import { ProductStore } from './productService';
 export type HpPage = 'find' | 'products' | 'label' | 'datasheet' | 'bafa' | 'guide' | 'news' | 'account';
 export type DsMode = 'product' | 'label';
 export type DsSectionKey = 'identity' | 'performance' | 'env' | 'bafa' | 'source';
+export type HpSegment = 'residential' | 'commercial';
 
 export interface HpApp {
   store: ProductStore | null;
@@ -49,6 +50,15 @@ export interface HpApp {
   setDsId: (id: string | null) => void;
   dsSections: Record<DsSectionKey, boolean>;
   toggleDsSection: (k: DsSectionKey) => void;
+
+  /** Product catalog segment — switches the active ProductStore dataset. */
+  segment: HpSegment;
+  /** Switch segment; clears selection/compare/manufacturer filters (datasets differ). */
+  setSegment: (s: HpSegment) => void;
+
+  /** FÖRDERUNG toggle — restrict list to BAFA-listed units. */
+  bafaOnly: boolean;
+  setBafaOnly: (v: boolean) => void;
 
   refFilter: string | null;
   setRefFilter: (r: string | null) => void;

@@ -32,8 +32,8 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const filters: ProductFilters = useMemo(() => ({
     refrigerant: app.refFilter,
     manufacturers: app.mfrFilter,
-    bafaListedOnly: true,
-  }), [app.refFilter, app.mfrFilter]);
+    bafaListedOnly: app.bafaOnly,
+  }), [app.refFilter, app.mfrFilter, app.bafaOnly]);
 
   // First page (and reset) whenever data or filters change — cursor pagination.
   // If a row was preselected (e.g. Find → "View details"), stream pages until
@@ -104,14 +104,27 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 28px', borderBottom: '1px solid rgba(0,0,0,.08)', background: 'rgba(255,255,255,.9)', ...frosted, flex: 'none' }}>
         <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>Products</span>
         <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
-          <span style={{ padding: '6px 16px', background: '#1d1d1f', color: '#fff', fontWeight: 600 }}>Residential</span>
-          <span style={{ padding: '6px 16px', color: '#1d1d1f', cursor: 'pointer' }}>Commercial</span>
+          {(['residential', 'commercial'] as const).map(s => {
+            const on = app.segment === s;
+            return (
+              <span
+                key={s}
+                onClick={() => app.setSegment(s)}
+                style={{
+                  padding: '6px 16px', cursor: on ? 'default' : 'pointer',
+                  ...(on ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
+                }}
+              >
+                {s === 'residential' ? 'Residential' : 'Commercial'}
+              </span>
+            );
+          })}
         </div>
         <span style={{ fontSize: 12, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '5px 13px' }}>
           BAFA snapshot {app.bafaSnapshotDate} — verify eligibility before quoting
         </span>
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
-          {fmtInt(filteredTotal)} of {fmtInt(store?.total ?? 0)} residential products
+          {fmtInt(filteredTotal)} of {fmtInt(store?.total ?? 0)} {app.segment} products
         </span>
         <span style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>Sort: COP A2/W35 <ChevronDown /></span>
       </div>
@@ -194,9 +207,12 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <span style={sectionLabel}>FÖRDERUNG · FUNDING</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5 }}>
-                <span style={{ width: 34, height: 20, borderRadius: 999, background: '#0066cc', position: 'relative', display: 'inline-block' }}>
-                  <span style={{ position: 'absolute', top: 2, right: 2, width: 16, height: 16, borderRadius: '50%', background: '#fff' }} />
+              <span
+                onClick={() => app.setBafaOnly(!app.bafaOnly)}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, cursor: 'pointer', userSelect: 'none' }}
+              >
+                <span style={{ width: 34, height: 20, borderRadius: 999, background: app.bafaOnly ? '#0066cc' : '#d2d2d7', position: 'relative', display: 'inline-block', transition: 'background .18s ease' }}>
+                  <span style={{ position: 'absolute', top: 2, left: app.bafaOnly ? 16 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left .18s ease' }} />
                 </span>
                 BAFA-listed only
               </span>
