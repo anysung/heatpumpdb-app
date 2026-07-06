@@ -270,12 +270,12 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>
                 {t.account.webText}
               </span>
-              <span style={{ border: '1px solid #e0e0e0', borderRadius: 8, padding: '9px 14px', fontSize: 13, fontFamily: 'ui-monospace,Menlo,monospace', background: '#f5f5f7', width: 'fit-content' }}>www.heatpumpiq.de/enter</span>
+              <span style={{ border: '1px solid #e0e0e0', borderRadius: 8, padding: '9px 14px', fontSize: 13, fontFamily: 'ui-monospace,Menlo,monospace', background: '#f5f5f7', width: 'fit-content' }}>www.heatpumpdb.de/enter</span>
               <div style={{ display: 'flex', gap: 10, marginTop: 2 }}>
                 <span
                   className="hp-press"
                   onClick={() =>
-                    navigator.clipboard?.writeText('www.heatpumpiq.de/enter')
+                    navigator.clipboard?.writeText('www.heatpumpdb.de/enter')
                       .then(() => app.notify(t.account.copied))
                       .catch(() => app.notify(t.account.copyFailed))
                   }
