@@ -68,7 +68,7 @@ export const GlassCard: React.FC<{ className?: string; children: React.ReactNode
   className = '',
   children,
 }) => (
-  <div className={`bg-white/[0.06] backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl shadow-black/40 ${className}`}>
+  <div className={`bg-white/[0.035] backdrop-blur-md border border-white/10 rounded-3xl shadow-2xl shadow-black/40 ${className}`}>
     {children}
   </div>
 );
@@ -134,9 +134,15 @@ const FlowWave: React.FC = () => (
  * people in cyan. Sits behind all content; cards/text overlap freely.
  */
 
-const SCENE_STRUCT = 'rgba(255,255,255,0.32)';
+const SCENE_STRUCT = 'rgba(255,255,255,0.38)';
+const SCENE_FILL = 'rgba(255,255,255,0.30)';
 const SCENE_UNIT = '#34d399';
 const SCENE_CREW = '#67e8f9';
+
+/** Pictogram figure: filled head + thick round limbs (movers-style). */
+const CrewHead: React.FC<{ cx: number; cy: number; r?: number }> = ({ cx, cy, r = 7 }) => (
+  <circle cx={cx} cy={cy} r={r} fill={SCENE_CREW} stroke="none" />
+);
 
 /** Bottom-left: detached house, one tech commissioning a unit, two carrying the next one in. */
 const ResidentialInstallScene: React.FC = () => (
@@ -149,61 +155,64 @@ const ResidentialInstallScene: React.FC = () => (
     aria-hidden="true"
   >
     {/* ground */}
-    <line x1="0" y1="248" x2="520" y2="248" stroke={SCENE_STRUCT} strokeWidth="1.6" />
+    <line x1="0" y1="248" x2="520" y2="248" stroke={SCENE_STRUCT} strokeWidth="4" />
 
-    {/* house */}
-    <g stroke={SCENE_STRUCT} strokeWidth="1.6">
-      <path d="M52 248 V130 H198 V248" />
-      <path d="M38 130 L125 66 L212 130" />
-      <path d="M92 248 V196 H122 V248" />
-      <circle cx="116" cy="222" r="1.5" />
-      <rect x="66" y="150" width="38" height="34" rx="2" />
-      <path d="M85 150 v34 M66 167 h38" opacity="0.6" />
-      <rect x="140" y="150" width="38" height="34" rx="2" />
-      <path d="M159 150 v34 M140 167 h38" opacity="0.6" />
+    {/* house — bold pictogram: heavy outline, filled door/windows, chimney */}
+    <g stroke={SCENE_STRUCT} strokeWidth="4">
+      <path d="M48 246 V132 H204 V246" fill="rgba(255,255,255,0.06)" />
+      <path d="M34 132 L126 58 L218 132" strokeWidth="5" />
+      <path d="M172 94 V70 H192 V110" />
+      <rect x="88" y="198" width="32" height="48" rx="2" fill={SCENE_FILL} stroke="none" />
+      <rect x="62" y="152" width="32" height="30" rx="2" fill={SCENE_FILL} stroke="none" />
+      <rect x="142" y="152" width="32" height="30" rx="2" fill={SCENE_FILL} stroke="none" />
     </g>
 
-    {/* installed outdoor unit + spinning fan + refrigerant line to house */}
-    <g stroke={SCENE_UNIT} strokeWidth="1.6">
-      <line x1="252" y1="248" x2="352" y2="248" strokeWidth="2.5" opacity="0.7" />
-      <rect x="258" y="192" width="88" height="52" rx="6" />
-      <path d="M268 244 v4 M336 244 v4" />
-      <circle cx="288" cy="218" r="17" />
-      <circle cx="288" cy="218" r="2" />
+    {/* installed outdoor unit — bold outline, petal fan, chunky grill */}
+    <g stroke={SCENE_UNIT} strokeWidth="3.5">
+      <line x1="248" y1="247" x2="358" y2="247" strokeWidth="6" opacity="0.7" />
+      <rect x="256" y="184" width="94" height="58" rx="8" />
+      <circle cx="288" cy="213" r="20" />
+      <circle cx="288" cy="213" r="3.5" fill={SCENE_UNIT} stroke="none" />
       <g className="hp-fan">
-        <line x1="288" y1="218" x2="288" y2="204" />
-        <line x1="288" y1="218" x2="276" y2="225" />
-        <line x1="288" y1="218" x2="300" y2="225" />
+        <path d="M288 213 C282 207 282 199 288 195" />
+        <path d="M288 213 C290 221 297 224 303 221" />
+        <path d="M288 213 C280 215 275 222 278 228" transform="rotate(-125 288 213)" />
       </g>
-      <path d="M318 202 v32 M326 202 v32 M334 202 v32" opacity="0.65" />
-      <path className="hp-flow-line" d="M258 206 H198" opacity="0.9" />
+      <path d="M322 198 V230 M333 198 V230 M344 198 V230" strokeWidth="3" opacity="0.75" />
+      <path className="hp-flow-line" d="M256 200 H204" strokeWidth="3" opacity="0.9" />
     </g>
 
-    {/* tech A — kneeling, torquing the service valve */}
-    <g stroke={SCENE_CREW} strokeWidth="1.7">
-      <circle cx="366" cy="196" r="5.5" />
-      <path d="M366 202 L362 224" />
-      <path d="M362 224 L354 248 M362 224 L368 248" />
-      <path d="M365 207 L374 220" />
+    {/* tech A — kneeling, torquing the service valve (pictogram) */}
+    <g stroke={SCENE_CREW} strokeWidth="5">
+      <CrewHead cx={374} cy={191} />
+      <path d="M373 199 L367 226" />
+      <path d="M367 226 L356 246 M367 226 L376 246" />
+      <path d="M372 205 L382 220" />
       <g className="hp-wrench-arm">
-        <path d="M365 207 L348 214" />
-        <path d="M348 214 l-5 -6" />
+        <path d="M372 205 L352 213" />
+        <path d="M352 213 l-7 -8" strokeWidth="4" />
       </g>
     </g>
 
-    {/* techs B + C — carrying the next unit in from the right (loops) */}
+    {/* techs B + C — carrying the next unit in from the right (movers pictogram, loops) */}
     <g className="hp-carry">
       <g className="hp-bob">
-        <rect x="392" y="206" width="40" height="26" rx="3" stroke={SCENE_UNIT} strokeWidth="1.6" opacity="0.9" />
-        <g stroke={SCENE_CREW} strokeWidth="1.7">
-          <circle cx="378" cy="192" r="5.5" />
-          <path d="M378 198 V222" />
-          <path d="M378 222 L370 248 M378 222 L384 248" />
-          <path d="M378 204 L392 213" />
-          <circle cx="446" cy="192" r="5.5" />
-          <path d="M446 198 V222" />
-          <path d="M446 222 L440 248 M446 222 L454 248" />
-          <path d="M446 204 L432 213" />
+        <g stroke={SCENE_UNIT} strokeWidth="3">
+          <rect x="394" y="198" width="46" height="34" rx="4" />
+          <circle cx="408" cy="215" r="8" strokeWidth="2.5" />
+          <path d="M426 205 V225" strokeWidth="2.5" opacity="0.75" />
+        </g>
+        <g stroke={SCENE_CREW} strokeWidth="5">
+          <CrewHead cx={376} cy={184} />
+          <path d="M377 192 L373 220" />
+          <path d="M373 220 L361 246 M373 220 L383 246" />
+          <path d="M376 198 L394 208" />
+          <path d="M375 202 L394 222" />
+          <CrewHead cx={458} cy={184} />
+          <path d="M457 192 L461 220" />
+          <path d="M461 220 L451 246 M461 220 L471 246" />
+          <path d="M458 198 L440 208" />
+          <path d="M459 202 L440 222" />
         </g>
       </g>
     </g>
@@ -221,69 +230,86 @@ const CommercialInstallScene: React.FC = () => (
     aria-hidden="true"
   >
     {/* ground */}
-    <line x1="0" y1="288" x2="520" y2="288" stroke={SCENE_STRUCT} strokeWidth="1.6" />
+    <line x1="0" y1="286" x2="520" y2="286" stroke={SCENE_STRUCT} strokeWidth="4" />
 
-    {/* building */}
-    <g stroke={SCENE_STRUCT} strokeWidth="1.6">
-      <path d="M150 288 V112 H430 V288" />
-      <path d="M144 112 H436" />
-      {[136, 176, 216].map(y =>
-        [170, 214, 258, 302, 346, 390].map(x => (
-          <rect key={`${x}-${y}`} x={x} y={y} width="26" height="20" rx="1.5" opacity="0.5" />
+    {/* building — bold pictogram: stepped towers, filled window grid, filled door */}
+    <g stroke={SCENE_STRUCT} strokeWidth="4">
+      <path d="M160 284 V120 H380 V284" fill="rgba(255,255,255,0.06)" />
+      <path d="M380 284 V170 H450 V284" fill="rgba(255,255,255,0.06)" />
+      <path d="M154 120 H386" strokeWidth="5" />
+      <path d="M380 170 H456" strokeWidth="4.5" />
+      {[138, 168, 198, 228].map(y =>
+        [174, 226, 278, 330].map(x => (
+          <rect key={`${x}-${y}`} x={x} y={y} width="28" height="17" rx="1.5" fill={SCENE_FILL} stroke="none" />
         )),
       )}
-      <path d="M274 288 V250 H306 V288" />
+      {[184, 212, 240].map(y =>
+        [392, 422].map(x => (
+          <rect key={`${x}-${y}`} x={x} y={y} width="20" height="14" rx="1.5" fill={SCENE_FILL} stroke="none" />
+        )),
+      )}
+      <rect x="252" y="250" width="36" height="34" rx="2" fill={SCENE_FILL} stroke="none" />
     </g>
 
-    {/* existing rooftop unit, running */}
-    <g stroke={SCENE_UNIT} strokeWidth="1.6">
-      <rect x="170" y="74" width="84" height="38" rx="4" />
-      <circle cx="196" cy="93" r="13" />
-      <circle cx="196" cy="93" r="1.8" />
+    {/* existing rooftop unit, running — twin-fan commercial pictogram */}
+    <g stroke={SCENE_UNIT} strokeWidth="3.5">
+      <rect x="168" y="78" width="92" height="42" rx="5" />
+      <path d="M168 108 H260" strokeWidth="2.5" opacity="0.7" />
+      <circle cx="192" cy="94" r="13" />
+      <circle cx="192" cy="94" r="2.5" fill={SCENE_UNIT} stroke="none" />
       <g className="hp-fan-slow">
-        <line x1="196" y1="93" x2="196" y2="82" />
-        <line x1="196" y1="93" x2="187" y2="99" />
-        <line x1="196" y1="93" x2="205" y2="99" />
+        <path d="M192 94 C188 90 188 84 192 82" />
+        <path d="M192 94 C194 99 199 101 203 99" />
+        <path d="M192 94 C187 95 184 100 186 104" transform="rotate(-125 192 94)" />
       </g>
-      <path d="M222 82 v22 M230 82 v22 M238 82 v22 M246 82 v22" opacity="0.65" />
+      <circle cx="234" cy="94" r="13" />
+      <circle cx="234" cy="94" r="2.5" fill={SCENE_UNIT} stroke="none" />
+      <g className="hp-fan-slow" style={{ animationDelay: '-2s' }}>
+        <path d="M234 94 C230 90 230 84 234 82" />
+        <path d="M234 94 C236 99 241 101 245 99" />
+        <path d="M234 94 C229 95 226 100 228 104" transform="rotate(-125 234 94)" />
+      </g>
       {/* landing marks for the incoming unit */}
-      <path d="M310 112 h12 M350 112 h12" strokeWidth="2.5" opacity="0.6" />
+      <path d="M292 120 h14 M342 120 h14" strokeWidth="5" opacity="0.65" />
     </g>
 
     {/* hoisted unit descending from crane (loops) */}
     <g className="hp-hoist">
-      <line x1="336" y1="-320" x2="336" y2="66" stroke={SCENE_STRUCT} strokeWidth="1.4" />
-      <g stroke={SCENE_UNIT} strokeWidth="1.6">
-        <line x1="318" y1="66" x2="354" y2="66" />
-        <path d="M318 66 L310 78 M354 66 L362 78" />
-        <rect x="306" y="78" width="60" height="34" rx="4" />
-        <circle cx="324" cy="95" r="10" />
-        <path d="M344 86 v18 M352 86 v18" opacity="0.65" />
+      <line x1="316" y1="-320" x2="316" y2="64" stroke={SCENE_STRUCT} strokeWidth="3" />
+      <g stroke={SCENE_UNIT} strokeWidth="3.5">
+        <line x1="292" y1="64" x2="340" y2="64" strokeWidth="4" />
+        <path d="M292 64 L286 76 M340 64 L346 76" strokeWidth="3" />
+        <rect x="284" y="76" width="64" height="44" rx="5" />
+        <circle cx="306" cy="98" r="12" />
+        <circle cx="306" cy="98" r="2.5" fill={SCENE_UNIT} stroke="none" />
+        <path d="M330 86 V110 M340 86 V110" strokeWidth="3" opacity="0.75" />
       </g>
     </g>
 
-    {/* crew — servicing tech + two riggers guiding the lift */}
-    <g stroke={SCENE_CREW} strokeWidth="1.7">
-      <circle cx="268" cy="66" r="5" />
-      <path d="M268 71 L264 90" />
-      <path d="M264 90 L258 112 M264 90 L270 112" />
+    {/* crew — servicing tech + two riggers guiding the lift (pictogram) */}
+    <g stroke={SCENE_CREW} strokeWidth="5">
+      <CrewHead cx={270} cy={84} r={6.5} />
+      <path d="M269 91 L264 106" />
+      <path d="M264 106 L256 120 M264 106 L270 120" />
       <g className="hp-wrench-arm">
-        <path d="M267 76 L252 84" />
-        <path d="M252 84 l-5 -5" />
+        <path d="M268 95 L252 102" />
+        <path d="M252 102 l-6 -7" strokeWidth="4" />
       </g>
 
-      <circle cx="290" cy="76" r="5" />
-      <path d="M290 81 V98" />
-      <path d="M290 98 L284 112 M290 98 L296 112" />
+      {/* rigger on the main roof, right of the landing marks */}
+      <CrewHead cx={366} cy={80} r={6.5} />
+      <path d="M366 87 V106" />
+      <path d="M366 106 L358 120 M366 106 L374 120" />
       <g className="hp-wave-arms">
-        <path d="M290 84 L280 72 M290 84 L300 72" />
+        <path d="M366 91 L354 78 M366 91 L378 78" />
       </g>
 
-      <circle cx="382" cy="76" r="5" />
-      <path d="M382 81 V98" />
-      <path d="M382 98 L376 112 M382 98 L388 112" />
+      {/* rigger guiding from the lower side-tower roof */}
+      <CrewHead cx={410} cy={130} r={6.5} />
+      <path d="M410 137 V156" />
+      <path d="M410 156 L402 170 M410 156 L418 170" />
       <g className="hp-wave-arms">
-        <path d="M382 84 L372 72 M382 84 L392 72" />
+        <path d="M410 141 L398 128 M410 141 L422 128" />
       </g>
     </g>
   </svg>
