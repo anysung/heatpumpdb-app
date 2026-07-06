@@ -28,7 +28,6 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const [sortOpen, setSortOpen] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
   const pendingScrollRef = useRef<string | null>(null);
 
   // Capacity range — [lo, hi] in whole kW over the store's bounds; null = untouched (full range).
@@ -93,15 +92,20 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
     return () => io.disconnect();
   }, [store, filters, nextCursor]);
 
-  useEffect(() => {
-    if (app.showCompare) panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [app.showCompare]);
-
   const sel = app.selectedId && store ? store.byId.get(app.selectedId) ?? null : null;
   const compareItems = app.compare.map(id => store?.byId.get(id)).filter(Boolean) as HpVM[];
   const compareCount = compareItems.length;
   const canCompare = compareCount >= 2;
-  const showPanel = app.showCompare && canCompare;
+  const showModal = app.showCompare && canCompare;
+
+  // Comparison opens as a modal — close on Escape.
+  useEffect(() => {
+    if (!showModal) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') app.setShowCompare(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showModal]);
 
   const appliedChips: { label: string; onRemove: () => void }[] = [];
   if (app.refFilter) appliedChips.push({ label: app.refFilter, onRemove: () => app.setRefFilter(null) });
@@ -313,42 +317,6 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 Rows stream in as you scroll — no pagination. Click a row to inspect without leaving the list.
               </div>
 
-              {/* compare expanded panel */}
-              {showPanel && (
-                <div ref={panelRef} style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>Comparison</span>
-                    <span style={{ fontSize: 12, color: '#7a7a7a' }}>{compareCount} of 4 products</span>
-                    <span onClick={() => app.setShowCompare(false)} style={{ marginLeft: 'auto', fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>Collapse ×</span>
-                  </div>
-                  <div style={{ display: 'flex', gap: 0, background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden' }}>
-                    <div style={{ flex: '0 0 168px', display: 'flex', flexDirection: 'column', borderRight: '1px solid #f0f0f0', padding: '18px 0 14px 20px', fontSize: 12.5, color: '#7a7a7a' }}>
-                      <span style={{ height: 52 }} />
-                      {['Capacity 55°C', 'COP A7/W35', 'COP A2/W35', 'SCOP', 'Sound power', 'Refrigerant', 'Energy class', 'BAFA ID'].map(l => (
-                        <span key={l} style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{l}</span>
-                      ))}
-                    </div>
-                    {compareItems.map(c => (
-                      <div key={c.id} style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '18px 20px 14px', borderRight: '1px solid #f0f0f0', fontSize: 13.5, minWidth: 0 }}>
-                        <span style={{ height: 52, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                          <span style={{ fontWeight: 600, lineHeight: 1.25 }}>{c.model}</span>
-                          <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>
-                            {c.mfr} · <span onClick={() => app.toggleCompare(c.id)} style={{ color: '#0066cc', cursor: 'pointer' }}>remove</span>
-                          </span>
-                        </span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0', fontWeight: 600 }}>{c.kw} kW</span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.cop7}</span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.cop2}</span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.scop}</span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.noise === '—' ? '—' : `${c.noise} dB(A)`}</span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.refKg === '—' ? c.ref : `${c.ref} · ${c.refKg} kg`}</span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.label}</span>
-                        <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0', fontSize: 12, color: '#7a7a7a' }}>{c.bafaId}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* compare tray — docked, frosted */}
@@ -365,7 +333,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <span
                 className="hp-press"
                 onClick={() => {
-                  if (canCompare || app.showCompare) app.setShowCompare(!app.showCompare);
+                  if (canCompare) app.setShowCompare(true);
                   else app.notify(`Select at least 2 products to compare — tick the checkbox on each row (${compareCount} of 2 selected).`);
                 }}
                 style={{
@@ -373,7 +341,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   ...(canCompare ? { background: '#0066cc', color: '#fff' } : { background: '#d2d2d7', color: '#fff' }),
                 }}
               >
-                {app.showCompare ? 'Hide comparison' : `Compare ${compareCount} ›`}
+                Compare {compareCount} ›
               </span>
             </div>
           </div>
@@ -439,6 +407,59 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           )}
         </div>
       </div>
+
+      {/* ── Comparison modal ── */}
+      {showModal && (
+        <div
+          onClick={() => app.setShowCompare(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.45)', zIndex: 90, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#fff', borderRadius: 18, width: 'min(1040px, 100%)', maxHeight: '86vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 24px 64px rgba(0,0,0,.28)' }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 24px', borderBottom: '1px solid #e0e0e0', flex: 'none' }}>
+              <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px' }}>Comparison</span>
+              <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{compareCount} of 4 products</span>
+              <span
+                className="hp-press"
+                onClick={() => app.setShowCompare(false)}
+                style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 14.5, fontWeight: 600, cursor: 'pointer' }}
+              >
+                ✕ Close
+              </span>
+            </div>
+            <div style={{ overflow: 'auto', padding: '20px 24px' }}>
+              <div style={{ display: 'flex', gap: 0, background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden' }}>
+                <div style={{ flex: '0 0 168px', display: 'flex', flexDirection: 'column', borderRight: '1px solid #f0f0f0', padding: '18px 0 14px 20px', fontSize: 12.5, color: '#7a7a7a' }}>
+                  <span style={{ height: 52 }} />
+                  {['Capacity 55°C', 'COP A7/W35', 'COP A2/W35', 'SCOP', 'Sound power', 'Refrigerant', 'Energy class', 'BAFA ID'].map(l => (
+                    <span key={l} style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{l}</span>
+                  ))}
+                </div>
+                {compareItems.map(c => (
+                  <div key={c.id} style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '18px 20px 14px', borderRight: '1px solid #f0f0f0', fontSize: 13.5, minWidth: 0 }}>
+                    <span style={{ height: 52, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      <span style={{ fontWeight: 600, lineHeight: 1.25 }}>{c.model}</span>
+                      <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>
+                        {c.mfr} · <span onClick={() => app.toggleCompare(c.id)} style={{ color: '#0066cc', cursor: 'pointer' }}>remove</span>
+                      </span>
+                    </span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0', fontWeight: 600 }}>{c.kw} kW</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.cop7}</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.cop2}</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.scop}</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.noise === '—' ? '—' : `${c.noise} dB(A)`}</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.refKg === '—' ? c.ref : `${c.ref} · ${c.refKg} kg`}</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.label}</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0', fontSize: 12, color: '#7a7a7a' }}>{c.bafaId}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
