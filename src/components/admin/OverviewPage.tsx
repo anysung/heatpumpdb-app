@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getUsers, getLogs } from '../../services/authService';
-import { getMetadata, DbMetadata } from '../../services/dbService';
+import { getMetadata, DbMetadata, getNews } from '../../services/dbService';
 import { AdminStats, computeAdminStats } from '../../services/adminService';
 import { User, ActivityLog, Language } from '../../types';
 import { StatCard, SectionCard, ActionBadge, StatusBadge, PageHeader } from './shared';
@@ -8,26 +8,33 @@ import { translations } from '../../translations';
 
 interface OverviewPageProps {
   language: Language;
+  /** Product count from the loaded static dataset (the app's source of truth). */
+  productCount?: number;
+  /** Dataset load timestamp from the app shell. */
+  lastUpdated?: string | null;
 }
 
-export const OverviewPage: React.FC<OverviewPageProps> = ({ language }) => {
+export const OverviewPage: React.FC<OverviewPageProps> = ({ language, productCount, lastUpdated }) => {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [recentLogs, setRecentLogs] = useState<ActivityLog[]>([]);
   const [metadata, setMetadata] = useState<DbMetadata | null>(null);
+  const [newsCount, setNewsCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const t = translations[language];
 
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      const [users, logs, meta] = await Promise.all([
+      const [users, logs, meta, news] = await Promise.all([
         getUsers(),
         getLogs(),
         getMetadata(),
+        getNews(),
       ]);
       setStats(computeAdminStats(users));
       setRecentLogs(logs.slice(0, 10));
       setMetadata(meta);
+      setNewsCount(news.length);
       setLoading(false);
     };
     load();
@@ -83,17 +90,17 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ language }) => {
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">{language === 'de' ? 'Produkte in DB' : 'Products in DB'}</span>
-              <span className="font-bold text-blue-700">{metadata?.productCount ?? '-'}</span>
+              <span className="font-bold text-blue-700">{(productCount || metadata?.productCount || 0).toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">{language === 'de' ? 'Nachrichten' : 'News Items'}</span>
-              <span className="font-bold text-green-700">{metadata?.newsCount ?? '-'}</span>
+              <span className="font-bold text-green-700">{newsCount ?? metadata?.newsCount ?? '-'}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">{language === 'de' ? 'Letzte Aktualisierung' : 'Last Updated'}</span>
               <span className="font-medium text-gray-700">
-                {metadata?.lastUpdated
-                  ? new Date(metadata.lastUpdated).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+                {(lastUpdated || metadata?.lastUpdated)
+                  ? new Date((lastUpdated || metadata?.lastUpdated)!).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
                   : 'Never'}
               </span>
             </div>

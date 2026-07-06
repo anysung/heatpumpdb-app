@@ -1,29 +1,13 @@
-import React, { useState } from 'react';
-import { changeAdminPassword } from '../../services/authService';
-import { Language, AppMode } from '../../types';
-import { PLANS, USER_ROLES, BILLING_CHANNELS } from '../../config/adminConfig';
+import React from 'react';
+import { Language } from '../../types';
+import { PLANS, USER_ROLES } from '../../config/adminConfig';
 import { PageHeader, SectionCard } from './shared';
-import { translations } from '../../translations';
 
 interface SettingsPageProps {
   language: Language;
 }
 
 export const SettingsPage: React.FC<SettingsPageProps> = ({ language }) => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const t = translations[language];
-
-  const handlePasswordChange = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPassword.length < 8) { alert(t.passwordLength); return; }
-    if (newPassword !== confirmPassword) { alert(t.passwordMismatch); return; }
-    changeAdminPassword(newPassword);
-    alert(t.passwordUpdated);
-    setNewPassword('');
-    setConfirmPassword('');
-  };
-
   return (
     <div>
       <PageHeader
@@ -32,23 +16,13 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ language }) => {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Admin Password */}
-        <SectionCard title={language === 'de' ? 'Admin-Passwort ändern' : 'Change Admin Password'} icon="🔒">
-          <form onSubmit={handlePasswordChange} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">{t.newPassword}</label>
-              <input type="password" className="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none text-sm"
-                value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">{t.confirmPassword}</label>
-              <input type="password" className="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none text-sm"
-                value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
-            </div>
-            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-sm">
-              {t.updatePassword}
-            </button>
-          </form>
+        {/* Admin Access */}
+        <SectionCard title={language === 'de' ? 'Admin-Zugang' : 'Admin Access'} icon="🔒">
+          <p className="text-sm text-gray-700 leading-relaxed">
+            {language === 'de'
+              ? 'Der Admin-Zugang ist an das Firebase-Konto gebunden: nur angemeldete Benutzer mit einer Admin-Rolle (owner, admin, support, ops) können diese Konsole öffnen. Rollen werden auf der Mitglieder-Seite vergeben; die Firestore-Sicherheitsregeln erzwingen dieselben Rollen serverseitig.'
+              : 'Admin access is bound to the Firebase account: only signed-in users with an admin role (owner, admin, support, ops) can open this console. Roles are assigned on the Members page; Firestore security rules enforce the same roles server-side.'}
+          </p>
         </SectionCard>
 
         {/* User Roles Reference */}
@@ -67,11 +41,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ language }) => {
                   {role.isAdmin && (
                     <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">Admin Access</span>
                   )}
-                  {role.value === 'owner' && (
+                  {role.isAdmin && (
                     <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">Enforced</span>
-                  )}
-                  {role.isAdmin && role.value !== 'owner' && (
-                    <span className="text-xs bg-gray-100 text-gray-400 px-2 py-0.5 rounded">Not yet enforced</span>
                   )}
                 </div>
               </div>
@@ -79,8 +50,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ language }) => {
           </div>
           <p className="text-xs text-gray-400 mt-3">
             {language === 'de'
-              ? 'Derzeit wird nur die Owner-Rolle für den Admin-Zugang durchgesetzt. Weitere Admin-Rollen sind definiert, aber noch nicht erzwungen.'
-              : 'Currently only the owner role is enforced for admin access. Other admin roles are defined but not yet enforced.'}
+              ? 'Admin-Rollen werden in der App und in den Firestore-Sicherheitsregeln durchgesetzt.'
+              : 'Admin roles are enforced both in the app and in the Firestore security rules.'}
           </p>
         </SectionCard>
 

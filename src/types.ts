@@ -207,6 +207,32 @@ export interface User {
   adminNotes?: string;
 }
 
+// --- Support Tickets (in-app inquiries, store-required support channel) ---
+export type TicketStatus = 'open' | 'answered' | 'closed';
+export type TicketCategory = 'general' | 'data' | 'billing' | 'account';
+
+export interface TicketMessage {
+  from: 'user' | 'admin';
+  authorName: string;
+  text: string;
+  at: string; // ISO timestamp
+}
+
+export interface SupportTicket {
+  id: string;
+  userId: string;
+  userEmail: string;
+  userName: string;
+  /** ISO 3166-1 alpha-2 market code (set from ACTIVE_COUNTRY at creation). */
+  country: string;
+  category: TicketCategory;
+  subject: string;
+  status: TicketStatus;
+  messages: TicketMessage[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ActivityLog {
   id: string;
   userId: string;

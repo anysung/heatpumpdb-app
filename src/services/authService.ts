@@ -22,8 +22,13 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { User, ActivityLog } from '../types';
+import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 
 const OWNER_EMAIL = 'sungyongsoo1976@gmail.com';
+
+/** Roles allowed into the admin console — mirrors isAdmin() in firestore.rules. */
+export const isAdminRole = (role?: string): boolean =>
+  !!role && ['owner', 'admin', 'support', 'ops'].includes(role);
 
 // --- Activity Logging (Firestore) ---
 export const logActivity = async (
@@ -54,20 +59,6 @@ export const getLogs = async (fromDate?: string, toDate?: string): Promise<Activ
   }
 };
 
-// --- Admin Auth (local password) ---
-const ADMIN_PASS_KEY = 'ghpd_admin_pass';
-const DEFAULT_ADMIN_PASS = '10041004';
-
-export const verifyAdminPassword = (inputPass: string): boolean => {
-  const storedPass = localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_ADMIN_PASS;
-  return inputPass === storedPass;
-};
-
-export const changeAdminPassword = (newPass: string) => {
-  localStorage.setItem(ADMIN_PASS_KEY, newPass);
-  logActivity('ADMIN', 'PASS_CHANGE', 'Admin password updated');
-};
-
 // --- Registration (status: pending, auto sign-out) ---
 export const registerUser = async (userData: any): Promise<void> => {
   const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
@@ -83,6 +74,7 @@ export const registerUser = async (userData: any): Promise<void> => {
     jobRole: userData.jobRole,
     companyName: userData.companyName || '',
     companyCity: userData.companyCity || '',
+    country: ACTIVE_COUNTRY.code,
     referralSource: userData.referralSource || '',
     isActive: false,
     status: 'pending',
@@ -223,6 +215,7 @@ export const loginWithProvider = async (
       companyType: 'Private Individual',
       jobRole: 'General Public',
       companyName: '', companyCity: '',
+      country: ACTIVE_COUNTRY.code,
       referralSource: `${providerLabel} Sign-In`,
       isActive: false, status: 'pending',
       registeredAt: new Date().toISOString(),

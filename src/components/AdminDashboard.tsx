@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getUsers } from '../services/authService';
+import { getAllTickets } from '../services/supportService';
 import { User, Language, AppMode } from '../types';
 import { ADMIN_MENU, AdminPage } from '../config/adminConfig';
 import { translations } from '../translations';
 
 // Page components
 import { OverviewPage } from './admin/OverviewPage';
+import { InboxPage } from './admin/InboxPage';
 import { MembersPage } from './admin/MembersPage';
 import { PlansPage } from './admin/PlansPage';
 import { BillingPage } from './admin/BillingPage';
@@ -28,11 +30,12 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  onLogout, language, appMode, setAppMode
+  onLogout, language, appMode, setAppMode, cachedDatabase, lastUpdated
 }) => {
   const [activePage, setActivePage] = useState<AdminPage>('overview');
   const [pendingUsers, setPendingUsers] = useState(0);
   const [deletionRequests, setDeletionRequests] = useState(0);
+  const [openTickets, setOpenTickets] = useState(0);
   const t = translations[language];
 
   // Load badge counts
@@ -41,9 +44,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setPendingUsers(users.filter(u => u.status === 'pending').length);
       setDeletionRequests(users.filter(u => u.status === 'deletion_requested').length);
     });
+    getAllTickets().then(tickets => {
+      setOpenTickets(tickets.filter(tk => tk.status === 'open').length);
+    });
   }, [activePage]);
 
-  const badgeCtx = { pendingUsers, deletionRequests };
+  const badgeCtx = { pendingUsers, deletionRequests, openTickets };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row font-sans">
@@ -93,7 +99,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       {/* Main Content */}
       <main className="flex-grow p-6 overflow-y-auto mt-16 md:mt-0 h-screen">
-        {activePage === 'overview' && <OverviewPage language={language} />}
+        {activePage === 'overview' && <OverviewPage language={language} productCount={cachedDatabase?.length ?? 0} lastUpdated={lastUpdated} />}
+        {activePage === 'inbox' && <InboxPage language={language} />}
         {activePage === 'members' && <MembersPage language={language} />}
         {activePage === 'plans' && <PlansPage language={language} />}
         {activePage === 'billing' && <BillingPage language={language} />}

@@ -34,10 +34,41 @@ service cloud.firestore {
 
     // ── Users collection ──────────────────────────────────────────────────
     // - Any authenticated user may read their own doc (needed to check their own status at login).
-    // - Admins may read all user docs and write any user doc.
-    // - Regular users cannot update their own doc (status/plan changes are admin-only).
+    // - Registration (email or social) creates the user's own doc — allowed only
+    //   as a non-privileged pending profile (the owner account is the exception).
+    // - Users may update their own doc ONLY to request account deletion
+    //   (store-required in-app deletion flow); everything else is admin-only.
     match /users/{userId} {
       allow get: if isSignedIn() && request.auth.uid == userId;
+
+      allow create: if isSignedIn() && request.auth.uid == userId && (
+        // Normal self-registration: pending, inactive, non-privileged.
+        (request.resource.data.status == 'pending' &&
+         request.resource.data.isActive == false &&
+         request.resource.data.get('role', 'user') == 'user') ||
+        // Owner bootstrap profile (matched by the authenticated email).
+        request.auth.token.email == 'sungyongsoo1976@gmail.com'
+      );
+
+      allow update: if isSignedIn() && request.auth.uid == userId &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'isActive', 'deletionRequestedAt', 'deletionNote', 'lastActiveAt']) &&
+        (
+          // Self-service deletion request (Apple 5.1.1(v) / Google Play account deletion)
+          request.resource.data.status == 'deletion_requested' ||
+          // Heartbeat-only update
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastActiveAt'])
+        );
+
+      allow read, write: if isAdmin();
+    }
+
+    // ── Support tickets (in-app inquiries ↔ admin inbox) ──────────────────
+    // Users create tickets for themselves and read/update their own threads
+    // (follow-up replies). Admins see and manage everything.
+    match /supportTickets/{ticketId} {
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update: if isSignedIn() && resource.data.userId == request.auth.uid;
       allow read, write: if isAdmin();
     }
 

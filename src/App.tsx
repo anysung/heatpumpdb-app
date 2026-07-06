@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { loginUser, registerUser, logoutUser, verifyAdminPassword, onUserChange, loginWithProvider } from './services/authService';
+import { loginUser, registerUser, logoutUser, onUserChange, loginWithProvider, isAdminRole } from './services/authService';
 import { HpiqApp } from './hpiq/HpiqApp';
 import { AdminDashboard } from './components/AdminDashboard';
 import {
@@ -11,7 +11,7 @@ import { translations } from './translations';
 // Use Firestore Service
 import { getProducts, getCommercialProducts, getNews, getPolicies, getBAFA } from './services/dbService';
 
-type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'APP' | 'ADMIN_GATE' | 'ADMIN_LOGIN' | 'ADMIN_DASHBOARD';
+type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'APP' | 'ADMIN_DASHBOARD';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('LANDING');
@@ -25,8 +25,7 @@ const App: React.FC = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
   const [signupData, setSignupData] = useState<any>({});
-  const [adminPinInput, setAdminPinInput] = useState('');
-  
+
   const t = translations[language];
 
   useEffect(() => {
@@ -143,20 +142,21 @@ const App: React.FC = () => {
     await logoutUser(email, name);
   };
 
-  const handleAdminPinSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (verifyAdminPassword(adminPinInput)) {
+  // Admin access is role-based (Firebase account): owner/admin/support/ops only.
+  // Firestore security rules enforce the same roles server-side, so the view
+  // gate here is UX — data access is protected even if the gate were bypassed.
+  const handleAdminAccess = () => {
+    if (currentUser && isAdminRole(currentUser.role)) {
       setCurrentView('ADMIN_DASHBOARD');
+    } else if (currentUser) {
+      alert(language === 'de'
+        ? 'Der Admin-Bereich erfordert ein Administratorkonto.'
+        : 'The admin console requires an administrator account.');
     } else {
-      alert("Invalid Password");
-      setAdminPinInput('');
-    }
-  };
-
-  // Owner can access Admin Dashboard directly from APP view
-  const handleOwnerAdminAccess = () => {
-    if (currentUser?.role === 'owner') {
-      setCurrentView('ADMIN_DASHBOARD');
+      alert(language === 'de'
+        ? 'Bitte melden Sie sich mit einem Administratorkonto an.'
+        : 'Please log in with an administrator account first.');
+      setCurrentView('LOGIN');
     }
   };
 
@@ -243,7 +243,7 @@ const App: React.FC = () => {
               <button onClick={() => setCurrentView('LOGIN')} className={ghostBtn}>{t.login}</button>
             </div>
             <div className="mt-8 text-center">
-              <button onClick={() => setCurrentView('ADMIN_GATE')} className="text-white/30 text-xs hover:text-white/70 underline transition-colors">
+              <button onClick={handleAdminAccess} className="text-white/30 text-xs hover:text-white/70 underline transition-colors">
                 {t.adminAccess}
               </button>
             </div>
@@ -346,28 +346,18 @@ const App: React.FC = () => {
     );
   }
 
-  if (currentView === 'ADMIN_GATE') {
-    // ... (Same as previous App.tsx)
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 font-sans relative">
-        <LanguageSwitcher />
-        <div className="w-full max-w-sm text-center">
-          <h2 className="text-white text-xl font-mono mb-6">ADMIN ACCESS CONTROL</h2>
-          <form onSubmit={handleAdminPinSubmit}>
-            <input type="password" className="w-full px-4 py-3 bg-slate-800 border-2 border-slate-600 text-white text-center rounded-lg outline-none focus:border-blue-500 mb-6 text-lg" placeholder="Enter Password" value={adminPinInput} onChange={e => setAdminPinInput(e.target.value)} autoFocus />
-            <div className="flex gap-4 justify-center"><button type="button" onClick={() => setCurrentView('LANDING')} className="px-6 py-2 text-slate-400 hover:text-white">Cancel</button><button type="submit" className="px-6 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-500">Enter</button></div>
-          </form>
-        </div>
-      </div>
-    );
-  }
   if (currentView === 'ADMIN_DASHBOARD') {
+    // Role guard: never render the console without an admin account.
+    if (!currentUser || !isAdminRole(currentUser.role)) {
+      setTimeout(() => setCurrentView(currentUser ? 'APP' : 'LANDING'), 0);
+      return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-400">Redirecting…</div>;
+    }
     return (
       <div className="relative">
          <LanguageSwitcher />
-         <AdminDashboard 
-          onLogout={() => { setCurrentView('LANDING'); setAdminPinInput(''); }} 
-          cachedDatabase={fullDatabase?.products || null}
+         <AdminDashboard
+          onLogout={() => setCurrentView(currentUser ? 'APP' : 'LANDING')}
+          cachedDatabase={fullDatabase ? [...fullDatabase.products, ...(fullDatabase.commercialProducts ?? [])] : null}
           lastUpdated={fullDatabase?.generatedAt || null}
           setCachedDatabase={updateProducts}
           setLastUpdated={updateLastUpdated}
@@ -385,7 +375,7 @@ const App: React.FC = () => {
       <HpiqApp
         user={currentUser}
         onLogout={handleLogout}
-        onAdminAccess={currentUser.role === 'owner' ? handleOwnerAdminAccess : undefined}
+        onAdminAccess={isAdminRole(currentUser.role) ? handleAdminAccess : undefined}
         dbData={fullDatabase}
         language={language}
         setLanguage={setLanguage}

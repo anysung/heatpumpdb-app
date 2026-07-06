@@ -1,12 +1,14 @@
 /** Account — subscription, profile, language, web access, legal (store compliance). */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { requestDeletion } from '../../services/adminService';
+import { createTicket, getMyTickets, userReply } from '../../services/supportService';
 import { HpApp } from '../appState';
 import { tr } from '../i18n';
-import { Language } from '../../types';
+import { Language, SupportTicket, TicketCategory } from '../../types';
 import { FD, sectionLabel } from '../ui';
+import { shortDate } from '../model';
 
 const Card: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
   <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '24px 26px', display: 'flex', flexDirection: 'column', ...style }}>{children}</div>
@@ -21,6 +23,139 @@ const ProfileRow: React.FC<{ label: string; value: string; last?: boolean }> = (
     <span style={{ color: '#7a7a7a' }}>{label}</span><span style={{ fontWeight: 600 }}>{value}</span>
   </span>
 );
+
+const statusChip = (status: string, label: string) => (
+  <span style={{
+    fontSize: 10.5, fontWeight: 700, letterSpacing: '.03em', borderRadius: 999, padding: '2.5px 9px',
+    ...(status === 'open' ? { background: '#fff4e0', color: '#9a6b00' }
+      : status === 'answered' ? { background: '#e6f4ea', color: '#1a7f37' }
+      : { background: '#f0f0f0', color: '#7a7a7a' }),
+  }}>{label}</span>
+);
+
+/** In-app support: create inquiries, read admin replies, follow up — the
+ *  store-required support channel, wired to the admin inbox. */
+const SupportCard: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
+  const { user } = app;
+  const isPreview = user.id === 'preview';
+  const [tickets, setTickets] = useState<SupportTicket[]>([]);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [subject, setSubject] = useState('');
+  const [category, setCategory] = useState<TicketCategory>('general');
+  const [message, setMessage] = useState('');
+  const [reply, setReply] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  const refresh = () => {
+    if (isPreview) return;
+    getMyTickets(user.id).then(setTickets);
+  };
+  useEffect(refresh, [user.id]);
+
+  const submit = () => {
+    if (isPreview) { app.notify(t.account.previewOnly); return; }
+    if (!subject.trim() || !message.trim() || busy) return;
+    setBusy(true);
+    createTicket(user, category, subject.trim(), message.trim())
+      .then(() => {
+        setSubject(''); setMessage(''); setShowForm(false);
+        app.notify(t.account.tkSent);
+        refresh();
+      })
+      .catch(() => app.notify(t.account.tkFailed))
+      .finally(() => setBusy(false));
+  };
+
+  const sendReply = (ticket: SupportTicket) => {
+    if (!reply.trim() || busy) return;
+    setBusy(true);
+    userReply(ticket, user, reply.trim())
+      .then(() => { setReply(''); app.notify(t.account.tkReplySent); refresh(); })
+      .catch(() => app.notify(t.account.tkFailed))
+      .finally(() => setBusy(false));
+  };
+
+  const inputStyle: React.CSSProperties = {
+    border: '1px solid #d2d2d7', borderRadius: 10, padding: '9px 12px', fontSize: 13,
+    fontFamily: 'inherit', color: '#1d1d1f', background: '#fff', outline: 'none', width: '100%', boxSizing: 'border-box',
+  };
+
+  return (
+    <Card style={{ gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <CardTitle>{t.account.support}</CardTitle>
+        <span
+          className="hp-press"
+          onClick={() => setShowForm(f => !f)}
+          style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '7px 16px', fontSize: 12.5, background: showForm ? '#1d1d1f' : '#fff', color: showForm ? '#fff' : '#1d1d1f', cursor: 'pointer', fontWeight: 600 }}
+        >
+          {t.account.tkNew}
+        </span>
+      </div>
+      <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.supportText}</span>
+
+      {showForm && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, border: '1px solid #e0e0e0', borderRadius: 12, padding: 14, background: '#fafafa' }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <select value={category} onChange={e => setCategory(e.target.value as TicketCategory)} style={{ ...inputStyle, width: 180 }}>
+              {Object.entries(t.account.tkCats).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+            </select>
+            <input value={subject} onChange={e => setSubject(e.target.value)} placeholder={t.account.tkSubject} style={inputStyle} maxLength={120} />
+          </div>
+          <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder={t.account.tkMessage} rows={4} style={{ ...inputStyle, resize: 'vertical' }} maxLength={4000} />
+          <span
+            className="hp-press"
+            onClick={submit}
+            style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '9px 20px', fontSize: 13, cursor: 'pointer', width: 'fit-content', opacity: busy ? 0.6 : 1 }}
+          >
+            {t.account.tkSend}
+          </span>
+        </div>
+      )}
+
+      <span style={{ ...sectionLabel, marginTop: 4 }}>{t.account.tkMine}</span>
+      {tickets.length === 0 && <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{t.account.tkNone}</span>}
+      {tickets.map(tk => {
+        const expanded = openId === tk.id;
+        return (
+          <div key={tk.id} style={{ border: '1px solid #e0e0e0', borderRadius: 12, overflow: 'hidden' }}>
+            <div
+              onClick={() => setOpenId(expanded ? null : tk.id)}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', background: expanded ? '#f5f5f7' : '#fff' }}
+            >
+              <span style={{ fontSize: 13, fontWeight: 600, flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{tk.subject}</span>
+              {statusChip(tk.status, t.account.tkStatus[tk.status])}
+              <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{shortDate(tk.updatedAt, t.locale)}</span>
+            </div>
+            {expanded && (
+              <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10, borderTop: '1px solid #f0f0f0' }}>
+                {tk.messages.map((m, i) => (
+                  <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: m.from === 'user' ? 'flex-end' : 'flex-start' }}>
+                    <span style={{ fontSize: 10.5, color: '#7a7a7a' }}>{t.account.tkFrom[m.from]} · {shortDate(m.at, t.locale)}</span>
+                    <span style={{
+                      fontSize: 13, lineHeight: 1.55, borderRadius: 12, padding: '9px 13px', maxWidth: '85%', whiteSpace: 'pre-wrap',
+                      ...(m.from === 'user' ? { background: '#0066cc', color: '#fff' } : { background: '#f0f0f0', color: '#1d1d1f' }),
+                    }}>{m.text}</span>
+                  </div>
+                ))}
+                {tk.status !== 'closed' && (
+                  <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
+                    <input value={reply} onChange={e => setReply(e.target.value)} placeholder={t.account.tkReplyPlaceholder} style={inputStyle} maxLength={4000} onKeyDown={e => { if (e.key === 'Enter') sendReply(tk); }} />
+                    <span className="hp-press" onClick={() => sendReply(tk)} style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '8px 18px', fontSize: 12.5, background: '#fff', cursor: 'pointer', whiteSpace: 'nowrap', opacity: busy ? 0.6 : 1 }}>
+                      {t.account.tkReply}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </Card>
+  );
+};
 
 export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
@@ -169,18 +304,7 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.securityText}</span>
             <span onClick={sendSetupLink} style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>{t.account.sendLink(user.email)}</span>
           </Card>
-          <Card style={{ gap: 9 }}>
-            <CardTitle>{t.account.support}</CardTitle>
-            <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.supportText}</span>
-            <span
-              onClick={() => {
-                window.location.href = `mailto:support@heatpumpiq.de?subject=${encodeURIComponent(t.account.supportSubject)}&body=${encodeURIComponent(t.account.supportBody(user.email))}`;
-              }}
-              style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}
-            >
-              {t.account.contactSupport}
-            </span>
-          </Card>
+          <SupportCard app={app} />
         </div>
 
         {/* Legal + Delete */}

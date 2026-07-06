@@ -138,6 +138,7 @@ export interface PipelineStatus {
 
 export type AdminPage =
   | 'overview'
+  | 'inbox'
   | 'members'
   | 'plans'
   | 'billing'
@@ -154,11 +155,13 @@ export interface AdminMenuItem {
   labelEn: string;
   labelDe: string;
   /** Show notification badge count (e.g. pending approvals) */
-  getBadge?: (ctx: { pendingUsers: number; deletionRequests: number }) => number;
+  getBadge?: (ctx: { pendingUsers: number; deletionRequests: number; openTickets: number }) => number;
 }
 
 export const ADMIN_MENU: AdminMenuItem[] = [
   { key: 'overview',   icon: '📊', labelEn: 'Overview',              labelDe: 'Übersicht' },
+  { key: 'inbox',      icon: '📬', labelEn: 'Support Inbox',         labelDe: 'Support-Posteingang',
+    getBadge: ctx => ctx.openTickets },
   { key: 'members',    icon: '👥', labelEn: 'Members',               labelDe: 'Mitglieder',
     getBadge: ctx => ctx.pendingUsers },
   { key: 'plans',      icon: '💎', labelEn: 'Plans & Entitlements',  labelDe: 'Pläne & Berechtigungen' },
