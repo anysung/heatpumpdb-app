@@ -40,9 +40,9 @@ export const BafaPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>Applications accepted for owner-occupied single-family homes; commitment before delivery contract.</span>
           </div>
           <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <span style={sectionLabel}>BAFA LIST SNAPSHOT</span>
-            <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.2px' }}>{app.bafaSnapshotDate}</span>
-            <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>{totalText} listed heat pumps in this app. Next sync expected mid-July.</span>
+            <span style={sectionLabel}>BAFA LIST COVERAGE</span>
+            <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.2px' }}>{totalText} heat pumps</span>
+            <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>Listed units in this app — refreshed with every regular data update.</span>
           </div>
         </div>
 

@@ -118,8 +118,11 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   }, [user.id]);
 
   const dataStatusDate = shortDate(dbData?.generatedAt ?? new Date().toISOString());
-  const bafaSnapshotDate = shortDate(store?.bafaSnapshotDate ?? undefined);
-  const eprelSyncDate = shortDate(store?.sourceSnapshotDate ?? undefined);
+  // Derived from the data files themselves (bafa_snapshot_fetched_at /
+  // source_snapshot_generated_at) — they move automatically with each
+  // regular data update; read from allStore so they are segment-independent.
+  const bafaSnapshotDate = shortDate((allStore ?? store)?.bafaSnapshotDate ?? undefined);
+  const eprelSyncDate = shortDate((allStore ?? store)?.sourceSnapshotDate ?? undefined);
   const totalListed = (dbData?.products?.length ?? 0) + (dbData?.commercialProducts?.length ?? 0);
 
   const toggleCompare = (id: string) => {
@@ -222,7 +225,6 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
           })}
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14, fontSize: 12, color: 'rgba(255,255,255,.75)' }}>
-          <span>Data status: {dataStatusDate}</span>
           <div style={{ display: 'flex', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, overflow: 'hidden', fontSize: 11.5 }}>
             {(['de', 'en'] as Language[]).map(l => (
               <span
@@ -282,7 +284,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
       {/* ============ Footer ============ */}
       <div style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 18, fontSize: 11.5, color: '#7a7a7a', flex: 'none' }}>
         <span style={{ fontWeight: 600, color: '#1d1d1f' }}>HeatpumpIQ</span>
-        <span>Germany edition · data snapshot {dataStatusDate}</span>
+        <span>Germany edition</span>
         <span style={{ marginLeft: 'auto' }}>Product data is informational — verify BAFA, KfW and EPREL sources before contractual use.</span>
       </div>
     </div>

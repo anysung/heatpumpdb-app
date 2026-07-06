@@ -77,7 +77,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>EU energy label</span>
         <span style={{ fontSize: 12, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '5px 13px' }}>EPREL-style records</span>
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
-          {records.length.toLocaleString('en-US')} of {(store?.total ?? 0).toLocaleString('en-US')} label records · EPREL sync {app.eprelSyncDate}
+          {records.length.toLocaleString('en-US')} of {(store?.total ?? 0).toLocaleString('en-US')} label records
         </span>
       </div>
       <div style={{ flex: 1, overflowX: 'auto', minHeight: 0 }}>
@@ -189,6 +189,9 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.5 }}>
                 Label records follow the EU energy labelling framework for space heaters. Always attach the official label from the manufacturer or EPREL for legal use.
               </span>
+              <span style={{ fontSize: 13.5, borderTop: '1px solid #f0f0f0', paddingTop: 10 }}>
+                Label records updated: <span style={{ fontWeight: 600 }}>{app.eprelSyncDate}</span>
+              </span>
             </div>
           </div>
 
@@ -255,7 +258,6 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   <span style={{ ...sectionLabel, fontSize: 10.5 }}>SOURCE & VERIFICATION</span>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>EPREL status</span><span style={{ fontWeight: 600 }}>{lsel.eprelText}</span></span>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Registration</span><span style={{ fontWeight: 600 }}>{lsel.eprelId}</span></span>
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Last updated</span><span style={{ fontWeight: 600 }}>{app.eprelSyncDate}</span></span>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Data completeness</span><span style={{ fontWeight: 600 }}>{lsel.completeness}</span></span>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Product info sheet</span><span style={{ fontWeight: 600 }}>{lsel.eprel ? 'Available' : '—'}</span></span>
                 </div>

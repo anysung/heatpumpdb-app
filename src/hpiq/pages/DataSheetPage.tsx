@@ -30,7 +30,7 @@ const NOTES: Record<string, string> = {
   classW35: 'Seasonal space-heating energy efficiency class at low-temperature application (W35) per Regulation (EU) 811/2013, derived from the seasonal efficiency ηs.',
   classW55: 'Seasonal space-heating energy efficiency class at medium-temperature application (W55) per Regulation (EU) 811/2013.',
   eprelReg: 'Registration identifier in the European Product Registry for Energy Labelling (EPREL), where a match has been established.',
-  bafaStatus: 'Presence of the model on the BAFA list of eligible heat pumps at the stated source snapshot date.',
+  bafaStatus: 'Presence of the model on the BAFA list of eligible heat pumps as of the most recent data update.',
   begRel: 'Indicative relevance for BEG EM funding derived from the BAFA listing. Not a funding decision or commitment.',
 };
 
@@ -222,7 +222,6 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 2, textAlign: 'right', fontSize: 11, color: '#7a7a7a' }}>
                   <span>Generated {longDate(new Date().toISOString())}</span>
                   <span>BAFA {dsp.bafaId} · {dsp.eprelId}</span>
-                  <span>Source snapshot {app.bafaSnapshotDate}</span>
                 </div>
               </div>
               <div style={{ background: '#1d1d1f', color: '#fff', borderRadius: 8, padding: '18px 22px', display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -292,7 +291,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
               {app.dsSections.bafa && !isLabelMode && (
                 <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 22 }}>
                   <SectionHead title="BAFA / FUNDING STATUS" />
-                  <FieldRow label="BAFA list status" value={`Listed (snapshot ${app.bafaSnapshotDate})`} note={n('bafaStatus')} />
+                  <FieldRow label="BAFA list status" value="Listed" note={n('bafaStatus')} />
                   <FieldRow label="BEG EM relevance" value="Potentially eligible — verify" note={n('begRel')} />
                 </div>
               )}
@@ -301,7 +300,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 22 }}>
                   <SectionHead title="SOURCE & VERIFICATION" muted />
                   <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.6, paddingTop: 9 }}>
-                    Data compiled from BAFA source snapshot ({app.bafaSnapshotDate}) and EPREL-style records ({app.eprelSyncDate}). This sheet is generated documentation, not an official certificate. Verify current BAFA eligibility and the official EU energy label before contractual use.
+                    Data compiled from the BAFA list of eligible heat pumps and EPREL-style records. This sheet is generated documentation, not an official certificate. Verify current BAFA eligibility and the official EU energy label before contractual use.
                   </span>
                 </div>
               )}

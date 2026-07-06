@@ -250,6 +250,9 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <span style={{ fontSize: 11, color: '#7a7a7a', lineHeight: 1.5, borderTop: '1px solid #f0f0f0', paddingTop: 8 }}>
                 Between regular updates, list entries may change at a manufacturer's request or by decision of the issuing authority. All data is for reference only — final verification against the official sources is the user's responsibility.
               </span>
+              <span style={{ fontSize: 13.5 }}>
+                BAFA list updated: <span style={{ fontWeight: 600 }}>{app.bafaSnapshotDate}</span>
+              </span>
             </div>
           </div>
 
@@ -407,7 +410,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 9 }}>
                   <span style={{ ...sectionLabel, fontSize: 10.5 }}>FÖRDERSTATUS · FUNDING</span>
                   <span style={{ fontSize: 13.5, lineHeight: 1.5 }}>
-                    Listed in BAFA source snapshot ({app.bafaSnapshotDate}). Potentially eligible under BEG EM — up to 40% with the climate-speed bonus.
+                    Listed in the current BAFA source snapshot. Potentially eligible under BEG EM — up to 40% with the climate-speed bonus.
                   </span>
                   <span style={{ fontSize: 12, color: '#7a7a7a' }}>
                     Verify current eligibility with BAFA before quoting.{' '}
