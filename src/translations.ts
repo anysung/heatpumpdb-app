@@ -42,6 +42,9 @@ export const translations = {
     authEcoLine: "Data for a climate-neutral building stock",
     authNoAccount: "No account yet?",
     authHaveAccount: "Already registered?",
+    orContinueWith: "or continue with",
+    continueGoogle: "Continue with Google",
+    continueApple: "Continue with Apple",
 
     // Admin
     adminPanel: "Admin Panel",
@@ -192,6 +195,9 @@ export const translations = {
     authEcoLine: "Daten für einen klimaneutralen Gebäudebestand",
     authNoAccount: "Noch kein Konto?",
     authHaveAccount: "Bereits registriert?",
+    orContinueWith: "oder weiter mit",
+    continueGoogle: "Weiter mit Google",
+    continueApple: "Weiter mit Apple",
 
     // Admin
     adminPanel: "Admin-Bereich",

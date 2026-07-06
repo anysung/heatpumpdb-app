@@ -2,7 +2,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+  OAuthProvider,
 } from 'firebase/auth';
 import {
   doc,
@@ -167,6 +170,106 @@ export const loginUser = async (email: string, pass: string): Promise<User> => {
   } catch (error: any) {
     throw new Error(error.message);
   }
+};
+
+// --- Social login (Google / Apple via Firebase popup) ---
+// First-time social sign-in behaves like registration: a pending profile is
+// created and the user is signed out until an admin approves — the same
+// approval gate as email/password registration. Returning users pass through
+// the same status checks as loginUser.
+export const loginWithProvider = async (
+  providerName: 'google' | 'apple',
+): Promise<'active' | 'pending-created'> => {
+  const provider =
+    providerName === 'google'
+      ? new GoogleAuthProvider()
+      : (() => {
+          const p = new OAuthProvider('apple.com');
+          p.addScope('email');
+          p.addScope('name');
+          return p;
+        })();
+
+  const cred = await signInWithPopup(auth, provider);
+  const fbUser = cred.user;
+  const uid = fbUser.uid;
+  const email = fbUser.email || '';
+  const providerLabel = providerName === 'google' ? 'Google' : 'Apple';
+
+  const userDocRef = doc(db, 'users', uid);
+  const userDoc = await getDoc(userDocRef);
+
+  if (!userDoc.exists()) {
+    if (email === OWNER_EMAIL) {
+      const fallbackUser: User = {
+        id: uid, email,
+        firstName: 'Christopher', lastName: 'Sung',
+        companyType: 'Private Individual', jobRole: 'General Public',
+        isActive: true, status: 'active',
+        registeredAt: new Date().toISOString(),
+        role: 'owner', plan: 'standard',
+      };
+      await setDoc(userDocRef, fallbackUser);
+      await logActivity(uid, 'LOGIN', `Owner logged in via ${providerLabel} (profile created)`, email, 'Christopher Sung');
+      return 'active';
+    }
+    // New social user → pending registration, then sign out (admin approval flow)
+    const display = fbUser.displayName || email.split('@')[0] || 'New User';
+    const [firstName, ...rest] = display.split(' ');
+    const newUser: User = {
+      id: uid, email,
+      firstName: firstName || 'New',
+      lastName: rest.join(' ') || '—',
+      companyType: 'Private Individual',
+      jobRole: 'General Public',
+      companyName: '', companyCity: '',
+      referralSource: `${providerLabel} Sign-In`,
+      isActive: false, status: 'pending',
+      registeredAt: new Date().toISOString(),
+      role: 'user', plan: 'standard',
+    };
+    await setDoc(userDocRef, newUser);
+    await signOut(auth);
+    await logActivity(uid, 'REGISTER_PENDING', `Social registration pending (${providerLabel}): ${email}`, email, display);
+    return 'pending-created';
+  }
+
+  let userData = {
+    ...userDoc.data() as User,
+    role: email === OWNER_EMAIL ? 'owner' as const : (userDoc.data() as User).role || 'user' as const,
+  };
+
+  if (userData.status === 'pending') {
+    await signOut(auth);
+    throw new Error('Your registration is pending admin approval. You will be notified once approved.');
+  }
+  if (userData.status === 'suspended') {
+    await signOut(auth);
+    throw new Error('Your account has been suspended. Please contact the administrator.');
+  }
+  if (userData.status === 'rejected') {
+    await signOut(auth);
+    throw new Error('Your registration was not approved. Please contact the administrator.');
+  }
+  if (userData.status === 'disabled') {
+    await signOut(auth);
+    throw new Error('Your account has been disabled. Please contact the administrator.');
+  }
+  if (!userData.isActive) {
+    await signOut(auth);
+    throw new Error('Account is deactivated.');
+  }
+
+  // Legacy migration (same as loginUser): backfill status for pre-status accounts.
+  if (!userData.status && userData.isActive) {
+    try {
+      await updateDoc(userDocRef, { status: 'active' });
+      userData = { ...userData, status: 'active' };
+    } catch { /* non-blocking */ }
+  }
+
+  await logActivity(userData.id, 'LOGIN', `User logged in via ${providerLabel}`, email, `${userData.firstName} ${userData.lastName}`);
+  return 'active';
 };
 
 export const logoutUser = async (userEmail = '', userName = '') => {

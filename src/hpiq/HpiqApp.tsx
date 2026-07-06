@@ -11,7 +11,7 @@ import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
 import { FD, SignOutIcon } from './ui';
-import { BrandLogo } from '../components/BrandLogo';
+import { BrandLogo, WavingFlag } from '../components/BrandLogo';
 import { FindPage } from './pages/FindPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { LabelPage } from './pages/LabelPage';
@@ -190,14 +190,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
           style={{ display: 'flex', alignItems: 'center', gap: 12 }}
         >
           <BrandLogo height={30} theme="dark" />
-          <span style={{ display: 'inline-flex', flexDirection: 'column', gap: 3, background: '#fff', borderRadius: 6, padding: '4px 9px 5px' }}>
-            <span style={{ fontSize: 10.5, fontWeight: 600, color: '#1d1d1f', letterSpacing: '.03em', lineHeight: 1 }}>Germany</span>
-            <span style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden' }}>
-              <span style={{ flex: 1, background: '#000' }} />
-              <span style={{ flex: 1, background: '#dd0000' }} />
-              <span style={{ flex: 1, background: '#ffcc00' }} />
-            </span>
-          </span>
+          <WavingFlag height={26} />
         </span>
         <div style={{ display: 'flex', gap: 5, fontSize: 14 }}>
           {NAV_IDS.map(id => {

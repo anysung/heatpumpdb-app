@@ -4,7 +4,7 @@ import { HpApp, DsSectionKey } from '../appState';
 import { longDate } from '../model';
 import { FD, SearchIcon, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
-import { BrandLogo } from '../../components/BrandLogo';
+import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 
 const PICKER_LIMIT = 60;
 
@@ -192,8 +192,11 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {dsp && (
             <div className="hpiq-print-doc" style={{ width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 20 }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                  <BrandLogo height={26} theme="light" />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <BrandLogo height={26} theme="light" />
+                    <WavingFlag height={22} onLight />
+                  </span>
                   <span style={{ fontSize: 11.5, letterSpacing: '.08em', color: '#7a7a7a' }}>
                     {isLabelMode ? t.ds.docKindLabel : t.ds.docKindProduct}
                   </span>

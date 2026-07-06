@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { loginUser, registerUser, logoutUser, verifyAdminPassword, onUserChange } from './services/authService';
+import { loginUser, registerUser, logoutUser, verifyAdminPassword, onUserChange, loginWithProvider } from './services/authService';
 import { HpiqApp } from './hpiq/HpiqApp';
 import { AdminDashboard } from './components/AdminDashboard';
 import {
-  AuthShell, GlassCard, SegmentTiles, LeafIcon,
-  authInput, authSelect, authLabel, primaryBtn, ghostBtn,
+  AuthShell, GlassCard, SegmentTiles, LeafIcon, GoogleIcon, AppleIcon,
+  authInput, authSelect, authLabel, primaryBtn, ghostBtn, socialBtn,
 } from './components/auth/AuthShell';
 import { HeatPumpDatabase, HeatPump, User, AppMode, Language } from './types';
 import { translations } from './translations';
@@ -116,6 +116,21 @@ const App: React.FC = () => {
       await registerUser(signupData);
       setCurrentView('PENDING_APPROVAL');
     } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSocialLogin = async (provider: 'google' | 'apple') => {
+    setIsLoading(true);
+    try {
+      const result = await loginWithProvider(provider);
+      // 'active' → onUserChange routes into the app automatically.
+      if (result === 'pending-created') setCurrentView('PENDING_APPROVAL');
+    } catch (err: any) {
+      // User closed/cancelled the popup — not an error worth alerting.
+      if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return;
       alert(err.message);
     } finally {
       setIsLoading(false);
@@ -258,6 +273,19 @@ const App: React.FC = () => {
             </div>
             <button type="submit" disabled={isLoading} className={primaryBtn}>{isLoading ? t.loggingIn : t.loginTitle}</button>
           </form>
+          <div className="flex items-center gap-3 my-6">
+            <span className="flex-1 h-px bg-white/10" />
+            <span className="text-xs text-white/40">{t.orContinueWith}</span>
+            <span className="flex-1 h-px bg-white/10" />
+          </div>
+          <div className="flex flex-col gap-3">
+            <button type="button" onClick={() => handleSocialLogin('google')} disabled={isLoading} className={socialBtn}>
+              <GoogleIcon /> {t.continueGoogle}
+            </button>
+            <button type="button" onClick={() => handleSocialLogin('apple')} disabled={isLoading} className={socialBtn}>
+              <AppleIcon /> {t.continueApple}
+            </button>
+          </div>
           <p className="mt-6 text-center text-sm text-white/45">
             {t.authNoAccount}{' '}
             <button onClick={() => setCurrentView('SIGNUP')} className="text-emerald-300 font-semibold hover:text-emerald-200 transition-colors">{t.signup}</button>
