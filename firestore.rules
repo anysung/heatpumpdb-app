@@ -50,15 +50,20 @@ service cloud.firestore {
         request.auth.token.email == 'sungyongsoo1976@gmail.com'
       );
 
-      allow update: if isSignedIn() && request.auth.uid == userId &&
-        request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['status', 'isActive', 'deletionRequestedAt', 'deletionNote', 'lastActiveAt']) &&
+      allow update: if isSignedIn() && request.auth.uid == userId && (
+        // Owner may maintain their own profile (e.g. role backfill for rules).
+        request.auth.token.email == 'sungyongsoo1976@gmail.com' ||
         (
-          // Self-service deletion request (Apple 5.1.1(v) / Google Play account deletion)
-          request.resource.data.status == 'deletion_requested' ||
-          // Heartbeat-only update
-          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastActiveAt'])
-        );
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['status', 'isActive', 'deletionRequestedAt', 'deletionNote', 'lastActiveAt']) &&
+          (
+            // Self-service deletion request (Apple 5.1.1(v) / Google Play account deletion)
+            request.resource.data.status == 'deletion_requested' ||
+            // Heartbeat-only update
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastActiveAt'])
+          )
+        )
+      );
 
       allow read, write: if isAdmin();
     }

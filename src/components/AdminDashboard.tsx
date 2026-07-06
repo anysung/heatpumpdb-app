@@ -1,36 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { getUsers } from '../services/authService';
 import { getAllTickets } from '../services/supportService';
-import { User, Language, AppMode } from '../types';
+import { Language } from '../types';
 import { ADMIN_MENU, AdminPage } from '../config/adminConfig';
 import { translations } from '../translations';
 
-// Page components
+// Page components — essentials-only console
 import { OverviewPage } from './admin/OverviewPage';
 import { InboxPage } from './admin/InboxPage';
 import { MembersPage } from './admin/MembersPage';
-import { PlansPage } from './admin/PlansPage';
-import { BillingPage } from './admin/BillingPage';
 import { UsagePage } from './admin/UsagePage';
-import { CompliancePage } from './admin/CompliancePage';
-import { DataOpsPage } from './admin/DataOpsPage';
+import { DataPage } from './admin/DataPage';
 import { AuditPage } from './admin/AuditPage';
-import { AnalyticsPage } from './admin/AnalyticsPage';
-import { SettingsPage } from './admin/SettingsPage';
 
 interface AdminDashboardProps {
   onLogout: () => void;
+  /** Combined residential + commercial dataset loaded by the app shell. */
   cachedDatabase: any[] | null;
   lastUpdated: string | null;
-  setCachedDatabase: (data: any[]) => void;
-  setLastUpdated: (date: string) => void;
   language: Language;
-  appMode: AppMode;
-  setAppMode: (mode: AppMode) => void;
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  onLogout, language, appMode, setAppMode, cachedDatabase, lastUpdated
+  onLogout, language, cachedDatabase, lastUpdated
 }) => {
   const [activePage, setActivePage] = useState<AdminPage>('overview');
   const [pendingUsers, setPendingUsers] = useState(0);
@@ -102,14 +94,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {activePage === 'overview' && <OverviewPage language={language} productCount={cachedDatabase?.length ?? 0} lastUpdated={lastUpdated} />}
         {activePage === 'inbox' && <InboxPage language={language} />}
         {activePage === 'members' && <MembersPage language={language} />}
-        {activePage === 'plans' && <PlansPage language={language} />}
-        {activePage === 'billing' && <BillingPage language={language} />}
         {activePage === 'usage' && <UsagePage language={language} />}
-        {activePage === 'compliance' && <CompliancePage language={language} />}
-        {activePage === 'data_ops' && <DataOpsPage language={language} appMode={appMode} setAppMode={setAppMode} />}
+        {activePage === 'data' && <DataPage language={language} products={cachedDatabase} lastUpdated={lastUpdated} />}
         {activePage === 'audit' && <AuditPage language={language} />}
-        {activePage === 'analytics' && <AnalyticsPage language={language} />}
-        {activePage === 'settings' && <SettingsPage language={language} />}
       </main>
     </div>
   );

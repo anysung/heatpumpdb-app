@@ -140,14 +140,9 @@ export type AdminPage =
   | 'overview'
   | 'inbox'
   | 'members'
-  | 'plans'
-  | 'billing'
   | 'usage'
-  | 'compliance'
-  | 'data_ops'
-  | 'audit'
-  | 'analytics'
-  | 'settings';
+  | 'data'
+  | 'audit';
 
 export interface AdminMenuItem {
   key: AdminPage;
@@ -158,20 +153,16 @@ export interface AdminMenuItem {
   getBadge?: (ctx: { pendingUsers: number; deletionRequests: number; openTickets: number }) => number;
 }
 
+// Essentials-only console (store compliance + operations); every page works
+// per-country once more markets ship — no scaffold/mock pages.
 export const ADMIN_MENU: AdminMenuItem[] = [
-  { key: 'overview',   icon: '📊', labelEn: 'Overview',              labelDe: 'Übersicht' },
-  { key: 'inbox',      icon: '📬', labelEn: 'Support Inbox',         labelDe: 'Support-Posteingang',
+  { key: 'overview',   icon: '📊', labelEn: 'Overview',        labelDe: 'Übersicht' },
+  { key: 'inbox',      icon: '📬', labelEn: 'Support Inbox',   labelDe: 'Support-Posteingang',
     getBadge: ctx => ctx.openTickets },
-  { key: 'members',    icon: '👥', labelEn: 'Members',               labelDe: 'Mitglieder',
-    getBadge: ctx => ctx.pendingUsers },
-  { key: 'plans',      icon: '💎', labelEn: 'Plans & Entitlements',  labelDe: 'Pläne & Berechtigungen' },
-  { key: 'billing',    icon: '💳', labelEn: 'Billing & Store Sync',  labelDe: 'Abrechnung & Store-Sync' },
-  { key: 'usage',      icon: '📈', labelEn: 'Usage & Quotas',        labelDe: 'Nutzung & Kontingente' },
-  { key: 'compliance', icon: '🛡️', labelEn: 'Access & Compliance',  labelDe: 'Zugang & Compliance',
-    getBadge: ctx => ctx.deletionRequests },
-  { key: 'data_ops',   icon: '🔧', labelEn: 'Data Operations',       labelDe: 'Datenoperationen' },
-  { key: 'audit',      icon: '📋', labelEn: 'Audit Logs',            labelDe: 'Audit-Protokolle' },
-  { key: 'analytics',  icon: '📉', labelEn: 'Analytics',             labelDe: 'Analytik' },
-  { key: 'settings',   icon: '⚙️', labelEn: 'Settings',              labelDe: 'Einstellungen' },
+  { key: 'members',    icon: '👥', labelEn: 'Members',         labelDe: 'Mitglieder',
+    getBadge: ctx => ctx.pendingUsers + ctx.deletionRequests },
+  { key: 'usage',      icon: '📈', labelEn: 'Usage & Quotas',  labelDe: 'Nutzung & Kontingente' },
+  { key: 'data',       icon: '🗄️', labelEn: 'Data',            labelDe: 'Daten' },
+  { key: 'audit',      icon: '📋', labelEn: 'Audit Logs',      labelDe: 'Audit-Protokolle' },
 ];
 

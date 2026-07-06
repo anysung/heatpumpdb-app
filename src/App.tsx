@@ -160,18 +160,6 @@ const App: React.FC = () => {
     }
   };
 
-  const updateProducts = (newProducts: HeatPump[]) => {
-    setFullDatabase(prev => prev ? { ...prev, products: newProducts } : null);
-  };
-
-  const updateLastUpdated = (date: string) => {
-    setFullDatabase(prev => prev ? { ...prev, generatedAt: date } : null);
-  };
-
-  const updateAppMode = (mode: AppMode) => {
-    setFullDatabase(prev => prev ? { ...prev, appMode: mode } : null);
-  };
-
   // ... (Language Switcher Component - Keep same) ...
   const LanguageSwitcher = () => (
     <div className="fixed top-6 right-6 z-50 flex gap-6">
@@ -179,6 +167,19 @@ const App: React.FC = () => {
       <button onClick={() => setLanguage('de')} className={`text-5xl transition-transform hover:scale-110 drop-shadow-md ${language === 'de' ? 'opacity-100 scale-110' : 'opacity-60'}`}>🇩🇪</button>
     </div>
   );
+
+  // Dev-only admin console preview (no auth, layout only — Firestore reads
+  // still require a real admin account): vite dev server + ?preview=admin
+  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === 'admin') {
+    return (
+      <AdminDashboard
+        onLogout={() => {}}
+        cachedDatabase={fullDatabase ? [...fullDatabase.products, ...(fullDatabase.commercialProducts ?? [])] : null}
+        lastUpdated={fullDatabase?.generatedAt || null}
+        language={language}
+      />
+    );
+  }
 
   // Dev-only UI preview (no auth): vite dev server + ?preview=hpiq
   if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === 'hpiq') {
@@ -359,11 +360,7 @@ const App: React.FC = () => {
           onLogout={() => setCurrentView(currentUser ? 'APP' : 'LANDING')}
           cachedDatabase={fullDatabase ? [...fullDatabase.products, ...(fullDatabase.commercialProducts ?? [])] : null}
           lastUpdated={fullDatabase?.generatedAt || null}
-          setCachedDatabase={updateProducts}
-          setLastUpdated={updateLastUpdated}
           language={language}
-          appMode={fullDatabase?.appMode || 'DATABASE'}
-          setAppMode={updateAppMode}
         />
       </div>
     );

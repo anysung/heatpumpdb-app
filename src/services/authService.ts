@@ -283,6 +283,12 @@ export const onUserChange = (callback: (user: User | null) => void) => {
             ...userData,
             role: firebaseUser.email === OWNER_EMAIL ? 'owner' as const : userData.role || 'user' as const,
           };
+          // Backfill: the owner role must exist ON THE DOCUMENT — Firestore
+          // security rules read me().role, so an in-memory role alone leaves
+          // every admin query (inbox, members, logs) permission-denied.
+          if (firebaseUser.email === OWNER_EMAIL && userData.role !== 'owner') {
+            updateDoc(userDocRef, { role: 'owner' }).catch(() => {});
+          }
           callback(enriched);
         } else {
           // Only the owner gets an auto-created profile. All other Firebase Auth users without
