@@ -10,16 +10,18 @@ const PAGE_SIZE = 100;
 export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const { store } = app;
   const [visible, setVisible] = useState(PAGE_SIZE);
+  const [eprelStatus, setEprelStatus] = useState({ matched: true, notMatched: true });
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  const records = store ? store.labelRecords(app.classFilter) : [];
+  const records = (store ? store.labelRecords(app.classFilter) : [])
+    .filter(v => (v.eprel ? eprelStatus.matched : eprelStatus.notMatched));
   const rows = records.slice(0, visible);
 
   useEffect(() => {
     setVisible(PAGE_SIZE);
     scrollerRef.current?.scrollTo({ top: 0 });
-  }, [app.classFilter, store]);
+  }, [app.classFilter, store, eprelStatus]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -71,14 +73,21 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <span style={sectionLabel}>EPREL STATUS</span>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 7, fontSize: 13.5 }}>
-                {['Matched', 'Not matched'].map(l => (
-                  <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                    <span style={{ width: 15, height: 15, borderRadius: 4, background: '#0066cc', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Check size={9} visible strokeWidth={3.4} />
+                {([['matched', 'Matched'], ['notMatched', 'Not matched']] as ['matched' | 'notMatched', string][]).map(([key, l]) => {
+                  const on = eprelStatus[key];
+                  return (
+                    <span
+                      key={key}
+                      onClick={() => setEprelStatus(s => ({ ...s, [key]: !s[key] }))}
+                      style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer', userSelect: 'none' }}
+                    >
+                      <span style={{ width: 15, height: 15, borderRadius: 4, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', ...(on ? { background: '#0066cc' } : { background: '#fff', border: '1px solid #d2d2d7' }) }}>
+                        <Check size={9} visible={on} strokeWidth={3.4} />
+                      </span>
+                      {l}
                     </span>
-                    {l}
-                  </span>
-                ))}
+                  );
+                })}
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

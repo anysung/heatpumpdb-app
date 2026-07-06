@@ -1,5 +1,8 @@
 /** Account — subscription, profile, language, web access, legal (store compliance). */
 import React from 'react';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { requestDeletion } from '../../services/adminService';
 import { HpApp } from '../appState';
 import { Language } from '../../types';
 import { FD, sectionLabel } from '../ui';
@@ -22,6 +25,28 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const { user } = app;
   const displayName = [user.firstName, user.lastName].filter(Boolean).join(' ') || '—';
   const role = user.companyType === 'Private Individual' ? 'Homeowner / private' : 'Installer / professional';
+  const isPreview = user.id === 'preview';
+
+  const sendSetupLink = () => {
+    if (isPreview) { app.notify('Not available in preview mode.'); return; }
+    sendPasswordResetEmail(auth, user.email)
+      .then(() => app.notify(`Setup link sent to ${user.email} — check your inbox.`))
+      .catch(() => app.notify('Could not send the link — please try again later.'));
+  };
+
+  const deleteAccount = () => {
+    if (isPreview) { app.notify('Not available in preview mode.'); return; }
+    const ok = window.confirm(
+      'Delete your account?\n\nThis deactivates your account immediately and requests permanent deletion. Store subscriptions must be cancelled separately.'
+    );
+    if (!ok) return;
+    requestDeletion(user.id, 'Self-service request from Account page', displayName)
+      .then(() => {
+        app.notify('Deletion requested — your account is now deactivated.');
+        setTimeout(app.onLogout, 1800);
+      })
+      .catch(() => app.notify('Could not request deletion — please contact support.'));
+  };
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -45,8 +70,20 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
               Subscribed via Google Play / Apple App Store — plan changes and cancellation are handled in the store where the subscription was started.
             </span>
             <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-              <span className="hp-press" style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, cursor: 'pointer' }}>Manage plan ›</span>
-              <span className="hp-press" style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, background: '#fff', cursor: 'pointer' }}>Restore purchases</span>
+              <span
+                className="hp-press"
+                onClick={() => app.notify('Plan changes are managed in the App Store / Google Play once the store version launches.')}
+                style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, cursor: 'pointer' }}
+              >
+                Manage plan ›
+              </span>
+              <span
+                className="hp-press"
+                onClick={() => app.notify('Purchase restore applies to the App Store / Google Play version of the app.')}
+                style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, background: '#fff', cursor: 'pointer' }}
+              >
+                Restore purchases
+              </span>
             </div>
           </div>
           <div style={{ flex: '0 0 280px', background: '#f5f5f7', borderRadius: 18, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 9 }}>
@@ -66,7 +103,12 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <ProfileRow label="Display name" value={displayName} />
             <ProfileRow label="Company" value={user.companyName || '—'} />
             <ProfileRow label="Role" value={role} last />
-            <span style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer', marginTop: 4 }}>Edit profile ›</span>
+            <span
+              onClick={() => app.notify('Profile editing is coming soon — contact support to change your details.')}
+              style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer', marginTop: 4 }}
+            >
+              Edit profile ›
+            </span>
           </Card>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             <Card style={{ gap: 12 }}>
@@ -98,12 +140,24 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <div style={{ display: 'flex', gap: 10, marginTop: 2 }}>
                 <span
                   className="hp-press"
-                  onClick={() => navigator.clipboard?.writeText('www.heatpumpiq.de/enter').catch(() => {})}
+                  onClick={() =>
+                    navigator.clipboard?.writeText('www.heatpumpiq.de/enter')
+                      .then(() => app.notify('Link copied to clipboard.'))
+                      .catch(() => app.notify('Could not copy — please copy the link manually.'))
+                  }
                   style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '8px 18px', fontSize: 13, background: '#fff', cursor: 'pointer' }}
                 >
                   Copy link
                 </span>
-                <span className="hp-press" style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '8px 18px', fontSize: 13, background: '#fff', cursor: 'pointer' }}>Email me the link</span>
+                <span
+                  className="hp-press"
+                  onClick={() => {
+                    window.location.href = `mailto:${user.email}?subject=${encodeURIComponent('HeatpumpIQ on the web')}&body=${encodeURIComponent('Open HeatpumpIQ in any browser and sign in with your account:\n\nwww.heatpumpiq.de/enter')}`;
+                  }}
+                  style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '8px 18px', fontSize: 13, background: '#fff', cursor: 'pointer' }}
+                >
+                  Email me the link
+                </span>
               </div>
             </Card>
           </div>
@@ -114,12 +168,19 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
           <Card style={{ gap: 9 }}>
             <CardTitle>Email & password.</CardTitle>
             <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>Receive a secure link by email to set or change your email/password sign-in.</span>
-            <span style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>Send setup link to {user.email} ›</span>
+            <span onClick={sendSetupLink} style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>Send setup link to {user.email} ›</span>
           </Card>
           <Card style={{ gap: 9 }}>
             <CardTitle>Support.</CardTitle>
             <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>Questions or problems? We reply within 1–3 business days.</span>
-            <span style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>Contact support & view replies ›</span>
+            <span
+              onClick={() => {
+                window.location.href = `mailto:support@heatpumpiq.de?subject=${encodeURIComponent('HeatpumpIQ support request')}&body=${encodeURIComponent(`Account: ${user.email}\n\nDescribe your question or problem:\n`)}`;
+              }}
+              style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}
+            >
+              Contact support & view replies ›
+            </span>
           </Card>
         </div>
 
@@ -127,9 +188,15 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           <Card style={{ gap: 9 }}>
             <CardTitle>Terms & policies.</CardTitle>
-            <span style={{ color: '#0066cc', fontSize: 13.5, cursor: 'pointer' }}>Privacy policy ›</span>
-            <span style={{ color: '#0066cc', fontSize: 13.5, cursor: 'pointer' }}>Terms of use ›</span>
-            <span style={{ color: '#0066cc', fontSize: 13.5, cursor: 'pointer' }}>Impressum ›</span>
+            {(['Privacy policy', 'Terms of use', 'Impressum'] as const).map(doc => (
+              <span
+                key={doc}
+                onClick={() => app.notify(`${doc} is being finalized for launch — it will open here once published.`)}
+                style={{ color: '#0066cc', fontSize: 13.5, cursor: 'pointer' }}
+              >
+                {doc} ›
+              </span>
+            ))}
           </Card>
           <Card style={{ gap: 10 }}>
             <CardTitle>Delete account.</CardTitle>
@@ -137,7 +204,13 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.55, border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', background: '#f5f5f7' }}>
               Subscriptions started via the App Store or Google Play must be cancelled directly in that store before deleting the account.
             </span>
-            <span className="hp-press" style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 20px', fontSize: 13, background: '#fff', cursor: 'pointer', width: 'fit-content' }}>Delete account</span>
+            <span
+              className="hp-press"
+              onClick={deleteAccount}
+              style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 20px', fontSize: 13, background: '#fff', cursor: 'pointer', width: 'fit-content', color: '#c0392b' }}
+            >
+              Delete account
+            </span>
           </Card>
         </div>
       </div>

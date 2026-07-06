@@ -80,6 +80,8 @@ export interface HpApp {
   onLogout: () => void;
   /** Consumes one print quota unit then opens the browser print dialog. */
   printSheet: () => void;
+  /** Show a transient toast message (bottom center, ~2.5s). */
+  notify: (msg: string) => void;
 
   // Cross-page navigation with context
   openProduct: (id: string) => void;                 // → Products, row selected

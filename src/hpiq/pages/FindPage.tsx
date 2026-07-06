@@ -1,10 +1,11 @@
 /** Find product — fast model lookup (search-first page). */
-import React from 'react';
+import React, { useRef } from 'react';
 import { HpApp } from '../appState';
 import { FD, C, SearchIcon, Check } from '../ui';
 
 export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const { store } = app;
+  const inputRef = useRef<HTMLInputElement>(null);
   const q = app.query.trim().toLowerCase();
   const { items: matches, total } = store ? store.search(app.query) : { items: [], total: 0 };
   const empty = q.length < 2;
@@ -22,12 +23,23 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <div style={{ width: 660, maxWidth: '90%', display: 'flex', alignItems: 'center', gap: 11, background: '#fff', border: '1px solid #e0e0e0', borderRadius: 999, padding: '6px 8px 6px 22px' }}>
           <SearchIcon size={16} style={{ flex: 'none' }} />
           <input
+            ref={inputRef}
             value={app.query}
             onChange={e => app.setQuery(e.target.value)}
             placeholder="Search model name, outdoor unit, manufacturer…"
             style={{ flex: 1, border: 'none', background: 'transparent', fontSize: 16, fontFamily: 'inherit', color: '#1d1d1f', padding: '9px 0' }}
           />
-          <span className="hp-press" style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '9px 20px', fontSize: 14, cursor: 'pointer' }}>Search</span>
+          <span
+            className="hp-press"
+            onClick={() => {
+              // Search is live-as-you-type; the button focuses the field and nudges short queries.
+              inputRef.current?.focus();
+              if (q.length < 2) app.notify('Type at least 2 characters — results appear as you type.');
+            }}
+            style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '9px 20px', fontSize: 14, cursor: 'pointer' }}
+          >
+            Search
+          </span>
         </div>
         <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>Search by model name, BAFA ID, outdoor-unit code or manufacturer — e.g. "Vitocal", "5800i", "PUZ-WM".</span>
       </div>

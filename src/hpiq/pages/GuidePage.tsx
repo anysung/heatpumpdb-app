@@ -43,6 +43,30 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
   const steps = isPro ? STEPS_PRO : STEPS_HOME;
   const checklist = isPro ? CHECK_PRO : CHECK_HOME;
 
+  // Opens a minimal print document of the current checklist — the browser's
+  // print dialog offers "Save as PDF" on every platform.
+  const downloadChecklist = () => {
+    const w = window.open('', '_blank', 'width=720,height=900');
+    if (!w) { app.notify('Allow pop-ups to download the checklist.'); return; }
+    const title = isPro ? 'BEG EM preparation checklist — installers' : 'BEG EM preparation checklist — homeowners';
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${title}</title>
+      <style>
+        body{font-family:-apple-system,'Segoe UE',Roboto,sans-serif;color:#1d1d1f;max-width:640px;margin:48px auto;padding:0 24px}
+        h1{font-size:22px;letter-spacing:-.02em} p.sub{color:#7a7a7a;font-size:13px;margin-top:-8px}
+        li{margin:14px 0;font-size:15px;line-height:1.5;list-style:none;position:relative;padding-left:30px}
+        li:before{content:'';position:absolute;left:0;top:2px;width:16px;height:16px;border:1.5px solid #1d1d1f;border-radius:4px}
+        footer{margin-top:40px;font-size:11.5px;color:#7a7a7a;border-top:1px solid #e0e0e0;padding-top:12px;line-height:1.5}
+      </style></head><body>
+      <h1>${title}</h1>
+      <p class="sub">HeatpumpIQ · funding guide · generated from the app</p>
+      <ul>${checklist.map(item => `<li>${item}</li>`).join('')}</ul>
+      <footer>A preparation aid, not legal advice. Verify each item against the official BAFA / KfW conditions. heatpumpiq.de</footer>
+      </body></html>`);
+    w.document.close();
+    w.focus();
+    w.print();
+  };
+
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <div style={{ background: '#272729', color: '#fff', padding: '52px 48px 44px', display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -95,7 +119,7 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
           <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '24px 26px', display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
               <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>Preparation checklist.</span>
-              <span style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer' }}>Download PDF ›</span>
+              <span onClick={downloadChecklist} style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer' }}>Download PDF ›</span>
             </div>
             {checklist.map((text, i) => {
               const key = (isPro ? 'pro' : 'home') + i;
@@ -116,7 +140,10 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ background: '#f5f5f7', borderRadius: 18, padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
               <span style={sectionLabel}>3-MINUTE EXPLAINER</span>
-              <div style={{ aspectRatio: '16/9', background: '#272729', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div
+                onClick={() => app.notify('The video explainer is coming soon — the written guide below covers the same 5 decisions.')}
+                style={{ aspectRatio: '16/9', background: '#272729', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+              >
                 <span style={{ width: 52, height: 52, borderRadius: '50%', background: 'rgba(255,255,255,.14)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                   <PlayIcon />
                 </span>

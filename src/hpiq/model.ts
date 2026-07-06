@@ -11,6 +11,8 @@ export interface HpVM {
   odu: string;
   /** Heating capacity at 55°C, formatted with one decimal, or '—'. */
   kw: string;
+  /** Numeric capacity for range filtering/sorting (55°C, falls back to 35°C). */
+  kwNum: number | null;
   cop7: string;
   cop2: string;
   copm7: string;
@@ -71,6 +73,7 @@ export function toVM(p: HeatPump): HpVM {
     model: p.model,
     odu: p.outdoor_side_display_model || p.outdoor_unit_model || '—',
     kw: fmt(p.power_55C_kw, 1),
+    kwNum: p.power_55C_kw ?? p.power_35C_kw ?? null,
     cop7: fmt(p.cop_A7W35, 2),
     cop2: fmt(p.cop_A2W35, 2),
     copm7: fmt(p.cop_AMinus7W35, 2),

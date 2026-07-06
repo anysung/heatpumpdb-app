@@ -12,10 +12,25 @@
 import { HeatPump } from '../types';
 import { HpVM, toVM } from './model';
 
+export type ProductSort = 'cop2' | 'scop' | 'kwDesc' | 'kwAsc' | 'noise' | 'model';
+
+export const SORT_LABELS: Record<ProductSort, string> = {
+  cop2: 'COP A2/W35',
+  scop: 'SCOP',
+  kwDesc: 'Capacity — high to low',
+  kwAsc: 'Capacity — low to high',
+  noise: 'Sound power — quietest',
+  model: 'Model name A–Z',
+};
+
 export interface ProductFilters {
   refrigerant: string | null;      // contains-match, e.g. 'R290'
   manufacturers: string[];         // manufacturer_short exact set
   bafaListedOnly: boolean;
+  /** Capacity range in kW — null bound = unbounded. Items without kwNum pass only when both bounds are null. */
+  capMin: number | null;
+  capMax: number | null;
+  sort: ProductSort;
 }
 
 export interface ProductPage {
@@ -32,6 +47,8 @@ export class ProductStore {
   readonly mfrCounts: { name: string; count: number }[];
   readonly bafaSnapshotDate: string | null;
   readonly sourceSnapshotDate: string | null;
+  /** Whole-kW capacity bounds across the catalog, or null if no record has kwNum. */
+  readonly kwBounds: { min: number; max: number } | null;
 
   constructor(products: HeatPump[]) {
     // Sorted by COP A2/W35 descending, nulls last — the list's fixed sort.
@@ -50,6 +67,11 @@ export class ProductStore {
     const first = products[0];
     this.bafaSnapshotDate = first?.bafa_snapshot_fetched_at ?? null;
     this.sourceSnapshotDate = first?.source_snapshot_generated_at ?? null;
+
+    const kws = this.all.map(v => v.kwNum).filter((n): n is number => n != null);
+    this.kwBounds = kws.length
+      ? { min: Math.floor(Math.min(...kws)), max: Math.ceil(Math.max(...kws)) }
+      : null;
   }
 
   private applyFilters(filters: ProductFilters): HpVM[] {
@@ -65,7 +87,32 @@ export class ProductStore {
     if (filters.bafaListedOnly) {
       list = list.filter(v => (v.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot');
     }
-    return list;
+    if (filters.capMin != null || filters.capMax != null) {
+      list = list.filter(v =>
+        v.kwNum != null
+        && (filters.capMin == null || v.kwNum >= filters.capMin)
+        && (filters.capMax == null || v.kwNum <= filters.capMax));
+    }
+    return this.applySort(list, filters.sort);
+  }
+
+  /** Sort a filtered list; 'cop2' is the pre-sorted base order (no work). Nulls always sort last. */
+  private applySort(list: HpVM[], sort: ProductSort): HpVM[] {
+    if (!sort || sort === 'cop2') return list;
+    const sorted = [...list];
+    switch (sort) {
+      case 'scop':
+        sorted.sort((a, b) => (b.raw.scop ?? -Infinity) - (a.raw.scop ?? -Infinity)); break;
+      case 'kwDesc':
+        sorted.sort((a, b) => (b.kwNum ?? -Infinity) - (a.kwNum ?? -Infinity)); break;
+      case 'kwAsc':
+        sorted.sort((a, b) => (a.kwNum ?? Infinity) - (b.kwNum ?? Infinity)); break;
+      case 'noise':
+        sorted.sort((a, b) => (a.raw.noise_outdoor_dB ?? Infinity) - (b.raw.noise_outdoor_dB ?? Infinity)); break;
+      case 'model':
+        sorted.sort((a, b) => a.model.localeCompare(b.model)); break;
+    }
+    return sorted;
   }
 
   /** Fetch one page after the given cursor (null = first page). */

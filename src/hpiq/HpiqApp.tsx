@@ -2,7 +2,7 @@
  * HeatpumpIQ — app shell (global nav, page routing, footer).
  * Implements the approved design in design_handoff_heatpumpiq/ pixel-faithfully.
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './hpiq.css';
 import { HeatPumpDatabase, Language, User } from '../types';
 import { getQuotaStatus, consumePrintQuota } from '../services/quotaService';
@@ -59,6 +59,14 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [faqOpen, setFaqOpen] = useState(0);
   const [quota, setQuota] = useState({ used: 0, limit: 20 });
+  const [notice, setNotice] = useState<string | null>(null);
+  const noticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const notify = (msg: string) => {
+    setNotice(msg);
+    if (noticeTimer.current) clearTimeout(noticeTimer.current);
+    noticeTimer.current = setTimeout(() => setNotice(null), 2600);
+  };
 
   const store = useMemo(() => {
     const src = segment === 'commercial' ? dbData?.commercialProducts : dbData?.products;
@@ -139,7 +147,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     checked, toggleChecked: (k) => setChecked(c => ({ ...c, [k]: !c[k] })),
     faqOpen, setFaqOpen,
     lang: language, setLang: setLanguage,
-    onLogout, printSheet,
+    onLogout, printSheet, notify,
     openProduct: (id) => { setSelectedId(id); setPage('products'); },
     openDataSheet: (id, mode) => { setDsId(id); setDsMode(mode); setPage('datasheet'); },
     openLabelRecord: (id) => { setLabelSelId(id); setPage('label'); },
@@ -239,6 +247,13 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
       {page === 'guide' && <GuidePage app={app} />}
       {page === 'news' && <NewsPage app={app} />}
       {page === 'account' && <AccountPage app={app} />}
+
+      {/* ============ Toast ============ */}
+      {notice && (
+        <div style={{ position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)', zIndex: 100, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '11px 22px', fontSize: 13.5, boxShadow: '0 8px 24px rgba(0,0,0,.22)', maxWidth: '80vw' }}>
+          {notice}
+        </div>
+      )}
 
       {/* ============ Footer ============ */}
       <div style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 18, fontSize: 11.5, color: '#7a7a7a', flex: 'none' }}>

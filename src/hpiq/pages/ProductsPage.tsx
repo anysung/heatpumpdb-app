@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { HpVM } from '../model';
-import { ProductFilters } from '../productService';
+import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { FD, CheckBox, ChevronDown, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
 const GRID = '34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr';
@@ -24,16 +24,55 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const [items, setItems] = useState<HpVM[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [filteredTotal, setFilteredTotal] = useState(0);
+  const [sort, setSort] = useState<ProductSort>('cop2');
+  const [sortOpen, setSortOpen] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const pendingScrollRef = useRef<string | null>(null);
 
+  // Capacity range — [lo, hi] in whole kW over the store's bounds; null = untouched (full range).
+  const bounds = store?.kwBounds ?? null;
+  const [capRange, setCapRange] = useState<[number, number] | null>(null);
+  useEffect(() => { setCapRange(null); }, [store]);   // dataset switch resets the slider
+  const capLo = capRange?.[0] ?? bounds?.min ?? 0;
+  const capHi = capRange?.[1] ?? bounds?.max ?? 0;
+  const capNarrowed = !!bounds && !!capRange && (capRange[0] > bounds.min || capRange[1] < bounds.max);
+
   const filters: ProductFilters = useMemo(() => ({
     refrigerant: app.refFilter,
     manufacturers: app.mfrFilter,
     bafaListedOnly: app.bafaOnly,
-  }), [app.refFilter, app.mfrFilter, app.bafaOnly]);
+    capMin: capNarrowed ? capLo : null,
+    capMax: capNarrowed ? capHi : null,
+    sort,
+  }), [app.refFilter, app.mfrFilter, app.bafaOnly, capNarrowed, capLo, capHi, sort]);
+
+  // Dual-handle capacity slider — pointer drag maps track % to whole kW.
+  const trackRef = useRef<HTMLDivElement>(null);
+  const dragHandle = (which: 'lo' | 'hi') => (e: React.PointerEvent) => {
+    if (!bounds) return;
+    e.preventDefault();
+    const track = trackRef.current;
+    if (!track) return;
+    const move = (ev: PointerEvent) => {
+      const rect = track.getBoundingClientRect();
+      const pct = Math.min(1, Math.max(0, (ev.clientX - rect.left) / rect.width));
+      const kw = Math.round(bounds.min + pct * (bounds.max - bounds.min));
+      setCapRange(prev => {
+        const [lo, hi] = prev ?? [bounds.min, bounds.max];
+        return which === 'lo' ? [Math.min(kw, hi), hi] : [lo, Math.max(kw, lo)];
+      });
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    move(e.nativeEvent);
+  };
+  const pctOf = (kw: number) => (bounds && bounds.max > bounds.min ? ((kw - bounds.min) / (bounds.max - bounds.min)) * 100 : 0);
 
   // First page (and reset) whenever data or filters change — cursor pagination.
   // If a row was preselected (e.g. Find → "View details"), stream pages until
@@ -92,6 +131,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const appliedChips: { label: string; onRemove: () => void }[] = [];
   if (app.refFilter) appliedChips.push({ label: app.refFilter, onRemove: () => app.setRefFilter(null) });
   app.mfrFilter.forEach(m => appliedChips.push({ label: m, onRemove: () => app.setMfrFilter(app.mfrFilter.filter(x => x !== m)) }));
+  if (capNarrowed) appliedChips.push({ label: `${capLo}–${capHi} kW`, onRemove: () => setCapRange(null) });
 
   const mfrList = (store?.mfrCounts ?? []).slice(0, mfrExpanded ? 25 : 5);
 
@@ -126,7 +166,28 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
           {fmtInt(filteredTotal)} of {fmtInt(store?.total ?? 0)} {app.segment} products
         </span>
-        <span style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>Sort: COP A2/W35 <ChevronDown /></span>
+        <div style={{ position: 'relative' }}>
+          <span onClick={() => setSortOpen(o => !o)} style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+            Sort: {SORT_LABELS[sort]} <ChevronDown />
+          </span>
+          {sortOpen && (
+            <>
+              <div onClick={() => setSortOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 60 }} />
+              <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 8px)', zIndex: 61, background: '#fff', border: '1px solid #e0e0e0', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,.12)', padding: '6px 0', minWidth: 210 }}>
+                {(Object.keys(SORT_LABELS) as ProductSort[]).map(key => (
+                  <span
+                    key={key}
+                    onClick={() => { setSort(key); setSortOpen(false); }}
+                    className="hp-row"
+                    style={{ display: 'block', padding: '8px 16px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', ...(key === sort ? { fontWeight: 600, color: '#0066cc' } : {}) }}
+                  >
+                    {SORT_LABELS[key]}
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       <div style={{ flex: 1, overflowX: 'auto', minHeight: 0 }}>
@@ -137,7 +198,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
                 <span style={sectionLabel}>APPLIED</span>
-                <span onClick={() => { app.setRefFilter(null); app.setMfrFilter([]); }} style={{ fontSize: 12, color: '#0066cc', cursor: 'pointer' }}>Clear all</span>
+                <span onClick={() => { app.setRefFilter(null); app.setMfrFilter([]); setCapRange(null); }} style={{ fontSize: 12, color: '#0066cc', cursor: 'pointer' }}>Clear all</span>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {appliedChips.map(chip => (
@@ -195,14 +256,26 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <span style={sectionLabel}>CAPACITY (55°C)</span>
-              <div style={{ padding: '4px 2px 0' }}>
-                <div style={{ position: 'relative', height: 3, background: '#e0e0e0', borderRadius: 2 }}>
-                  <div style={{ position: 'absolute', left: '20%', right: '22%', top: 0, bottom: 0, background: '#0066cc', borderRadius: 2 }} />
-                  <span style={{ position: 'absolute', left: '20%', top: '50%', transform: 'translate(-50%,-50%)', width: 15, height: 15, borderRadius: '50%', background: '#fff', border: '1px solid #d2d2d7' }} />
-                  <span style={{ position: 'absolute', right: '22%', top: '50%', transform: 'translate(50%,-50%)', width: 15, height: 15, borderRadius: '50%', background: '#fff', border: '1px solid #d2d2d7' }} />
+              {bounds ? (
+                <div style={{ padding: '4px 2px 0' }}>
+                  <div ref={trackRef} style={{ position: 'relative', height: 3, background: '#e0e0e0', borderRadius: 2, touchAction: 'none' }}>
+                    <div style={{ position: 'absolute', left: `${pctOf(capLo)}%`, right: `${100 - pctOf(capHi)}%`, top: 0, bottom: 0, background: '#0066cc', borderRadius: 2 }} />
+                    <span
+                      onPointerDown={dragHandle('lo')}
+                      style={{ position: 'absolute', left: `${pctOf(capLo)}%`, top: '50%', transform: 'translate(-50%,-50%)', width: 15, height: 15, borderRadius: '50%', background: '#fff', border: '1px solid #d2d2d7', boxShadow: '0 1px 3px rgba(0,0,0,.15)', cursor: 'grab', touchAction: 'none' }}
+                    />
+                    <span
+                      onPointerDown={dragHandle('hi')}
+                      style={{ position: 'absolute', left: `${pctOf(capHi)}%`, top: '50%', transform: 'translate(-50%,-50%)', width: 15, height: 15, borderRadius: '50%', background: '#fff', border: '1px solid #d2d2d7', boxShadow: '0 1px 3px rgba(0,0,0,.15)', cursor: 'grab', touchAction: 'none' }}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#7a7a7a', marginTop: 9 }}>
+                    <span>{capLo} kW</span><span>{capHi} kW</span>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#7a7a7a', marginTop: 9 }}><span>8 kW</span><span>12 kW</span></div>
-              </div>
+              ) : (
+                <span style={{ fontSize: 12, color: '#7a7a7a' }}>No capacity data in this segment.</span>
+              )}
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -226,7 +299,12 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {/* table */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, borderRight: '1px solid rgba(0,0,0,.08)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: '0 12px', alignItems: 'center', padding: '10px 20px', borderBottom: '1px solid rgba(0,0,0,.08)', fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', color: '#7a7a7a', flex: 'none' }}>
-              <span /><span>MODEL</span><span>MANUFACTURER</span><span>KW (55°)</span><span style={{ color: '#1d1d1f' }}>COP A2 ↓</span><span>SCOP</span><span>NOISE</span><span>STATUS</span>
+              <span /><span>MODEL</span><span>MANUFACTURER</span>
+              <span style={sort === 'kwAsc' || sort === 'kwDesc' ? { color: '#1d1d1f' } : undefined}>KW (55°){sort === 'kwDesc' ? ' ↓' : sort === 'kwAsc' ? ' ↑' : ''}</span>
+              <span style={sort === 'cop2' ? { color: '#1d1d1f' } : undefined}>COP A2{sort === 'cop2' ? ' ↓' : ''}</span>
+              <span style={sort === 'scop' ? { color: '#1d1d1f' } : undefined}>SCOP{sort === 'scop' ? ' ↓' : ''}</span>
+              <span style={sort === 'noise' ? { color: '#1d1d1f' } : undefined}>NOISE{sort === 'noise' ? ' ↑' : ''}</span>
+              <span>STATUS</span>
             </div>
 
             <div ref={scrollerRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
@@ -326,7 +404,10 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
               </span>
               <span
                 className="hp-press"
-                onClick={() => { if (canCompare || app.showCompare) app.setShowCompare(!app.showCompare); }}
+                onClick={() => {
+                  if (canCompare || app.showCompare) app.setShowCompare(!app.showCompare);
+                  else app.notify(`Select at least 2 products to compare — tick the checkbox on each row (${compareCount} of 2 selected).`);
+                }}
                 style={{
                   marginLeft: 'auto', borderRadius: 999, padding: '9px 22px', fontSize: 13.5, cursor: 'pointer',
                   ...(canCompare ? { background: '#0066cc', color: '#fff' } : { background: '#d2d2d7', color: '#fff' }),

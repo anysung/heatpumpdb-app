@@ -37,8 +37,9 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const featured = feed[0] ?? null;
   const cards = feed.slice(1, 4);
 
-  const openArticle = (url?: string) => {
+  const openArticle = (url?: string | null) => {
     if (url) window.open(url, '_blank', 'noopener');
+    else app.notify('The full briefing will be published soon — no source link yet.');
   };
 
   return (
@@ -93,7 +94,13 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>The monthly briefing, in your inbox.</span>
             <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>One email per month. Funding changes, list updates, market signals. No noise.</span>
           </div>
-          <span className="hp-press" style={{ marginLeft: 'auto', background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 14, cursor: 'pointer', flex: 'none' }}>Subscribe ›</span>
+          <span
+            className="hp-press"
+            onClick={() => app.notify('The newsletter is launching soon — your account email will be invited first.')}
+            style={{ marginLeft: 'auto', background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 14, cursor: 'pointer', flex: 'none' }}
+          >
+            Subscribe ›
+          </span>
         </div>
       </div>
     </div>
