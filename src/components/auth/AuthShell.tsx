@@ -1,5 +1,5 @@
 /**
- * AuthShell — eco-futuristic authentication surface for HeatpumpIQ.
+ * AuthShell — eco-futuristic authentication surface for HeatPump DB.
  *
  * Design concept: "Energy Field" — a deep near-black canvas with a slow-moving
  * aurora of emerald (renewable) and cyan (intelligence), a faint smart-grid
@@ -13,6 +13,7 @@
 import React from 'react';
 import { Language } from '../../types';
 import { ACTIVE_COUNTRY } from '../../config/countryProfiles';
+import { BrandLogo, WavingGermanFlag } from '../BrandLogo';
 
 /** ISO 3166-1 alpha-2 → regional-indicator flag emoji. */
 const flagEmoji = (code: string) =>
@@ -342,10 +343,11 @@ const gridOverlayStyle: React.CSSProperties = {
 
 /* ── Chrome ──────────────────────────────────────────────────────────────── */
 
+/** Dynamic brand lockup + waving German flag — instantly reads as the German-market build. */
 const Wordmark: React.FC = () => (
-  <span className="text-xl font-bold tracking-tight text-white select-none">
-    Heatpump
-    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">IQ</span>
+  <span className="inline-flex items-center gap-4 select-none">
+    <BrandLogo height={40} theme="dark" />
+    <WavingGermanFlag height={36} />
   </span>
 );
 

@@ -1,5 +1,5 @@
 /**
- * Shared style constants + tiny primitives for the HeatpumpIQ design system.
+ * Shared style constants + tiny primitives for the HeatPump DB design system.
  * Values are the literal ones from the approved prototype markup.
  */
 import React from 'react';

@@ -1,5 +1,5 @@
 /**
- * HeatpumpIQ view model — adapts the real HeatPump records (BAFA dataset +
+ * HeatPump DB view model — adapts the real HeatPump records (BAFA dataset +
  * EPREL enrichment fields) to the display shape used by the approved design.
  */
 import { HeatPump } from '../types';

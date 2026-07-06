@@ -119,7 +119,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const fmtInt = (n: number) => n.toLocaleString(t.locale);
 
   return (
-    <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 46px)' }}>
+    <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 60px)' }}>
 
       {/* toolbar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 28px', borderBottom: '1px solid rgba(0,0,0,.08)', background: 'rgba(255,255,255,.9)', ...frosted, flex: 'none' }}>

@@ -15,7 +15,7 @@
   border-radius: 4px;
 }
 
-/* ── HeatpumpIQ Auth surface (eco-futuristic energy field) ── */
+/* ── HeatPump DB Auth surface (eco-futuristic energy field) ── */
 @keyframes hp-fade-up {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -77,15 +77,38 @@
 }
 .hp-hoist { animation: hp-hoist 11s ease-in-out infinite; }
 
+/* Brand logo (4a dynamic): hold → half-turn spin, " DB" red↔blue crossfade */
+@keyframes hp-logo-spin {
+  0%, 42%  { transform: rotate(0deg); }
+  50%, 92% { transform: rotate(180deg); }
+  100%     { transform: rotate(360deg); }
+}
+.hp-logo-spin { transform-box: fill-box; transform-origin: center; animation: hp-logo-spin 7s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+
+@keyframes hp-logo-db {
+  0%, 46%  { fill: var(--hp-db-a); }
+  54%, 96% { fill: var(--hp-db-b); }
+  100%     { fill: var(--hp-db-a); }
+}
+.hp-logo-db { fill: var(--hp-db-a); animation: hp-logo-db 7s linear infinite; }
+
+/* Waving flag: gentle cloth sway anchored at the hoist (left edge) */
+@keyframes hp-flag-sway {
+  from { transform: skewY(-1.4deg) translateY(0); }
+  to   { transform: skewY(1.4deg) translateY(1px); }
+}
+.hp-flag-sway { transform-box: fill-box; transform-origin: left center; animation: hp-flag-sway 2.8s ease-in-out infinite alternate; }
+
 @media (prefers-reduced-motion: reduce) {
   .hp-fade-up, .hp-fade-up-delay, .hp-aurora-a, .hp-aurora-b, .hp-flow-line,
-  .hp-fan, .hp-fan-slow, .hp-wrench-arm, .hp-wave-arms, .hp-bob, .hp-carry, .hp-hoist {
+  .hp-fan, .hp-fan-slow, .hp-wrench-arm, .hp-wave-arms, .hp-bob, .hp-carry, .hp-hoist,
+  .hp-logo-spin, .hp-logo-db, .hp-flag-sway {
     animation: none;
   }
 }
 
 /* ── Print Styles for Data Sheet (legacy modal) ───────────── */
-/* Scoped to body:not(.hpiq-printing): the HeatpumpIQ data sheet uses the
+/* Scoped to body:not(.hpiq-printing): the HeatPump DB data sheet uses the
    visibility-based print rules in hpiq.css, which display:none here would
    override and produce blank print/PDF output. */
 @media print {

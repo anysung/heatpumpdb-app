@@ -1,5 +1,5 @@
 /**
- * HeatpumpIQ — app shell (global nav, page routing, footer).
+ * HeatPump DB — app shell (global nav, page routing, footer).
  * Implements the approved design in design_handoff_heatpumpiq/ pixel-faithfully.
  */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -11,6 +11,7 @@ import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
 import { FD, SignOutIcon } from './ui';
+import { BrandLogo } from '../components/BrandLogo';
 import { FindPage } from './pages/FindPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { LabelPage } from './pages/LabelPage';
@@ -183,12 +184,12 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
 
       {/* ============ Global nav ============ */}
-      <div style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 26, padding: '0 28px', height: 46, position: 'sticky', top: 0, zIndex: 50, flex: 'none' }}>
+      <div style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 28, padding: '0 28px', height: 60, position: 'sticky', top: 0, zIndex: 50, flex: 'none' }}>
         <span
           onDoubleClick={onAdminAccess}
-          style={{ fontFamily: FD, fontSize: 15, fontWeight: 600, letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', gap: 9 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 12 }}
         >
-          HeatpumpIQ
+          <BrandLogo height={30} theme="dark" />
           <span style={{ display: 'inline-flex', flexDirection: 'column', gap: 3, background: '#fff', borderRadius: 6, padding: '4px 9px 5px' }}>
             <span style={{ fontSize: 10.5, fontWeight: 600, color: '#1d1d1f', letterSpacing: '.03em', lineHeight: 1 }}>Germany</span>
             <span style={{ display: 'flex', height: 3, borderRadius: 2, overflow: 'hidden' }}>
@@ -198,7 +199,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
             </span>
           </span>
         </span>
-        <div style={{ display: 'flex', gap: 4, fontSize: 12.5 }}>
+        <div style={{ display: 'flex', gap: 5, fontSize: 14 }}>
           {NAV_IDS.map(id => {
             const active = page === id;
             return (
@@ -207,7 +208,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
                 className={active ? undefined : 'hp-navlink'}
                 onClick={() => setPage(id)}
                 style={{
-                  padding: '7px 12px', borderRadius: 999, cursor: 'pointer',
+                  padding: '8px 14px', borderRadius: 999, cursor: 'pointer',
                   ...(active
                     ? { color: '#fff', fontWeight: 600, background: 'rgba(255,255,255,.12)' }
                     : { color: 'rgba(255,255,255,.65)' }),
@@ -218,14 +219,14 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
             );
           })}
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14, fontSize: 12, color: 'rgba(255,255,255,.75)' }}>
-          <div style={{ display: 'flex', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, overflow: 'hidden', fontSize: 11.5 }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14, fontSize: 13, color: 'rgba(255,255,255,.75)' }}>
+          <div style={{ display: 'flex', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
             {(['de', 'en'] as Language[]).map(l => (
               <span
                 key={l}
                 onClick={() => setLanguage(l)}
                 style={{
-                  padding: '5px 11px', cursor: 'pointer',
+                  padding: '6px 12px', cursor: 'pointer',
                   ...(language === l ? { background: '#fff', color: '#1d1d1f', fontWeight: 600 } : { color: 'rgba(255,255,255,.75)' }),
                 }}
               >
@@ -237,8 +238,8 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
             onClick={() => setPage('account')}
             title="Account"
             style={{
-              width: 23, height: 23, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 10, cursor: 'pointer', boxSizing: 'border-box',
+              width: 27, height: 27, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 11, cursor: 'pointer', boxSizing: 'border-box',
               ...(page === 'account'
                 ? { background: '#fff', color: '#1d1d1f', border: '1px solid #fff', fontWeight: 600 }
                 : { background: '#2a2a2c', color: '#fff', border: '1px solid rgba(255,255,255,.25)' }),
@@ -250,7 +251,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
             className="hp-press"
             onClick={onLogout}
             title="Sign out"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '5px 13px', fontSize: 11.5, color: 'rgba(255,255,255,.85)', cursor: 'pointer' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '6px 14px', fontSize: 12.5, color: 'rgba(255,255,255,.85)', cursor: 'pointer' }}
           >
             <SignOutIcon />
             {t.nav.signOut}
@@ -277,7 +278,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
 
       {/* ============ Footer ============ */}
       <div style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 18, fontSize: 11.5, color: '#7a7a7a', flex: 'none' }}>
-        <span style={{ fontWeight: 600, color: '#1d1d1f' }}>HeatpumpIQ</span>
+        <span style={{ fontWeight: 600, color: '#1d1d1f' }}>HeatPump DB</span>
         <span>{t.footer.edition}</span>
         <span style={{ marginLeft: 'auto' }}>{t.footer.note}</span>
       </div>

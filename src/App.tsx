@@ -351,7 +351,7 @@ const App: React.FC = () => {
     );
   }
   if (currentView === 'APP' && currentUser) {
-    // HeatpumpIQ shell owns its own language toggle (DE|EN in the global nav) —
+    // HeatPump DB shell owns its own language toggle (DE|EN in the global nav) —
     // no floating switcher overlay here.
     return (
       <HpiqApp

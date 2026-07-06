@@ -70,7 +70,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const lsel: HpVM | null = (app.labelSelId && store ? store.byId.get(app.labelSelId) : null) ?? records[0] ?? null;
 
   return (
-    <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 46px)' }}>
+    <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 60px)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 28px', borderBottom: '1px solid rgba(0,0,0,.08)', flex: 'none' }}>
         <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.label.title}</span>
         <span style={{ fontSize: 12, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '5px 13px' }}>{t.label.pill}</span>

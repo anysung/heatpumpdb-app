@@ -1,4 +1,4 @@
-/* HeatpumpIQ design tokens & primitives — from design_handoff_heatpumpiq/tokens */
+/* HeatPump DB design tokens & primitives — from design_handoff_heatpumpiq/tokens */
 :root {
   --hp-primary: #0066cc;
   --hp-primary-focus: #0071e3;
@@ -33,7 +33,10 @@
 
 /* Print: only the data sheet document */
 @media print {
-  body.hpiq-printing #root { visibility: hidden; }
+  /* height:0 collapses the hidden app layout — visibility alone keeps its
+     height and appends blank trailing pages to every print/PDF. The print
+     doc itself is position:absolute against the page, so it is unaffected. */
+  body.hpiq-printing #root { visibility: hidden; height: 0 !important; overflow: hidden !important; }
   body.hpiq-printing .hpiq-print-doc,
   body.hpiq-printing .hpiq-print-doc * { visibility: visible; }
   body.hpiq-printing .hpiq-print-doc {

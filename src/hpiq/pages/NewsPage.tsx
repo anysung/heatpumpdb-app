@@ -1,5 +1,5 @@
 /** News — curated market intelligence (featured card + 3 article cards).
- *  Original HeatpumpIQ editorial articles (item.original) open in an in-app
+ *  Original HeatPump DB editorial articles (item.original) open in an in-app
  *  reader modal with the full body and cited sources; aggregated items link out. */
 import React, { useEffect, useState } from 'react';
 import { HpApp } from '../appState';
@@ -128,7 +128,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
         </div>
       </div>
 
-      {/* ── Article reader modal (original HeatpumpIQ articles) ── */}
+      {/* ── Article reader modal (original HeatPump DB articles) ── */}
       {reader && (
         <div
           onClick={() => setReader(null)}
@@ -140,7 +140,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 22px', borderBottom: '1px solid #e0e0e0', flex: 'none' }}>
               <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px' }}>{t.news.categories[categoryOf(reader)] ?? categoryOf(reader)}</span>
-              <span style={{ fontSize: 12, color: '#7a7a7a' }}>{shortDate(reader.date, t.locale)} · {reader.author ?? 'HeatpumpIQ Editorial'}</span>
+              <span style={{ fontSize: 12, color: '#7a7a7a' }}>{shortDate(reader.date, t.locale)} · {reader.author ?? 'HeatPump DB Editorial'}</span>
               <span
                 className="hp-press"
                 onClick={() => setReader(null)}

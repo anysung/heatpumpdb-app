@@ -109,14 +109,14 @@ export interface NewsItem {
   sourceUrl: string;
   date: string;
   imageUrl?: string;
-  // ── Original HeatpumpIQ editorial articles (generated monthly) ──
+  // ── Original HeatPump DB editorial articles (generated monthly) ──
   /** Full article text — paragraphs separated by blank lines. */
   body?: string;
   /** Cited sources listed at the foot of the article. */
   sources?: { title: string; url: string }[];
-  /** Byline, e.g. 'HeatpumpIQ Editorial'. */
+  /** Byline, e.g. 'HeatPump DB Editorial'. */
   author?: string;
-  /** True when the article is HeatpumpIQ original content (not aggregated). */
+  /** True when the article is HeatPump DB original content (not aggregated). */
   original?: boolean;
   /** Editorial category: FUNDING | MARKET | TECHNOLOGY | INSTALLER INSIGHT. */
   category?: string;
