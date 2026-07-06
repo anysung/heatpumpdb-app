@@ -5,15 +5,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { HpVM } from '../model';
-import { FD, Check, CheckBox, KwRangeSlider, pillPrimary, pillSecondary, sectionLabel } from '../ui';
+import { FD, CheckBox, KwRangeSlider, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
-const GRID = '2.2fr 1fr 0.8fr 0.8fr 0.9fr 1.1fr';
+const GRID = '2.2fr 1fr 0.8fr 0.8fr 0.9fr';
 const PAGE_SIZE = 100;
 
 export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const store = app.allStore;
   const [visible, setVisible] = useState(PAGE_SIZE);
-  const [eprelStatus, setEprelStatus] = useState({ matched: true, notMatched: true });
   const [mfrFilter, setMfrFilter] = useState<string[]>([]);
   const [mfrExpanded, setMfrExpanded] = useState(false);
   const [refFilter, setRefFilter] = useState<string | null>(null);
@@ -30,7 +29,6 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
   const records = useMemo(() => {
     let list = store ? store.labelRecords(app.classFilter) : [];
-    list = list.filter(v => (v.eprel ? eprelStatus.matched : eprelStatus.notMatched));
     if (refFilter) list = list.filter(v => v.ref.includes(refFilter));
     if (mfrFilter.length) {
       const set = new Set(mfrFilter);
@@ -40,18 +38,16 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
       list = list.filter(v => v.kwNum != null && v.kwNum >= capLo && v.kwNum <= capHi);
     }
     return list;
-  }, [store, app.classFilter, eprelStatus, refFilter, mfrFilter, capNarrowed, capLo, capHi]);
+  }, [store, app.classFilter, refFilter, mfrFilter, capNarrowed, capLo, capHi]);
   const rows = records.slice(0, visible);
 
   const mfrList = (store?.mfrCounts ?? []).slice(0, mfrExpanded ? 25 : 5);
-  const hasFilters = !!app.classFilter || !!refFilter || mfrFilter.length > 0 || capNarrowed
-    || !eprelStatus.matched || !eprelStatus.notMatched;
+  const hasFilters = !!app.classFilter || !!refFilter || mfrFilter.length > 0 || capNarrowed;
   const clearAll = () => {
     app.setClassFilter(null);
     setRefFilter(null);
     setMfrFilter([]);
     setCapRange(null);
-    setEprelStatus({ matched: true, notMatched: true });
   };
 
   useEffect(() => {
@@ -106,26 +102,6 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       }}
                     >
                       {c}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>EPREL STATUS</span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 7, fontSize: 13.5 }}>
-                {([['matched', 'Matched'], ['notMatched', 'Not matched']] as ['matched' | 'notMatched', string][]).map(([key, l]) => {
-                  const on = eprelStatus[key];
-                  return (
-                    <span
-                      key={key}
-                      onClick={() => setEprelStatus(s => ({ ...s, [key]: !s[key] }))}
-                      style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer', userSelect: 'none' }}
-                    >
-                      <span style={{ width: 15, height: 15, borderRadius: 4, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', ...(on ? { background: '#0066cc' } : { background: '#fff', border: '1px solid #d2d2d7' }) }}>
-                        <Check size={9} visible={on} strokeWidth={3.4} />
-                      </span>
-                      {l}
                     </span>
                   );
                 })}
@@ -198,7 +174,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {/* label table */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, borderRight: '1px solid rgba(0,0,0,.08)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: '0 12px', padding: '10px 20px', borderBottom: '1px solid rgba(0,0,0,.08)', fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', color: '#7a7a7a', flex: 'none' }}>
-              <span>MODEL</span><span>MANUFACTURER</span><span>CLASS W35</span><span>CLASS W55</span><span>SOUND POWER</span><span>EPREL</span>
+              <span>MODEL</span><span>MANUFACTURER</span><span>CLASS W35</span><span>CLASS W55</span><span>SOUND POWER</span>
             </div>
             <div ref={scrollerRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
               {rows.map(lr => {
@@ -222,7 +198,6 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span style={{ fontWeight: 600 }}>{lr.label}</span>
                     <span>{lr.labelMed}</span>
                     <span>{lr.noise === '—' ? '—' : `${lr.noise} dB(A)`}</span>
-                    <span>{lr.eprelText}</span>
                   </div>
                 );
               })}
@@ -256,7 +231,6 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 8, fontSize: 12.5 }}>
                   <span style={{ ...sectionLabel, fontSize: 10.5 }}>SOURCE & VERIFICATION</span>
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>EPREL status</span><span style={{ fontWeight: 600 }}>{lsel.eprelText}</span></span>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Registration</span><span style={{ fontWeight: 600 }}>{lsel.eprelId}</span></span>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Data completeness</span><span style={{ fontWeight: 600 }}>{lsel.completeness}</span></span>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Product info sheet</span><span style={{ fontWeight: 600 }}>{lsel.eprel ? 'Available' : '—'}</span></span>
