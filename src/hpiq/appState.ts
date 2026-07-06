@@ -12,6 +12,8 @@ export type HpSegment = 'residential' | 'commercial';
 
 export interface HpApp {
   store: ProductStore | null;
+  /** Full downloaded catalog (residential + commercial) — used by the EU energy label page. */
+  allStore: ProductStore | null;
   user: User;
   news: NewsItem[];
 

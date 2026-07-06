@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
-import { FD, CheckBox, ChevronDown, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
+import { FD, CheckBox, ChevronDown, KwRangeSlider, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
 const GRID = '34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr';
 const PAGE_SIZE = 100;
@@ -48,31 +48,6 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
     sort,
   }), [app.refFilter, app.mfrFilter, app.bafaOnly, capNarrowed, capLo, capHi, sort]);
 
-  // Dual-handle capacity slider — pointer drag maps track % to whole kW.
-  const trackRef = useRef<HTMLDivElement>(null);
-  const dragHandle = (which: 'lo' | 'hi') => (e: React.PointerEvent) => {
-    if (!bounds) return;
-    e.preventDefault();
-    const track = trackRef.current;
-    if (!track) return;
-    const move = (ev: PointerEvent) => {
-      const rect = track.getBoundingClientRect();
-      const pct = Math.min(1, Math.max(0, (ev.clientX - rect.left) / rect.width));
-      const kw = Math.round(bounds.min + pct * (bounds.max - bounds.min));
-      setCapRange(prev => {
-        const [lo, hi] = prev ?? [bounds.min, bounds.max];
-        return which === 'lo' ? [Math.min(kw, hi), hi] : [lo, Math.max(kw, lo)];
-      });
-    };
-    const up = () => {
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-    };
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-    move(e.nativeEvent);
-  };
-  const pctOf = (kw: number) => (bounds && bounds.max > bounds.min ? ((kw - bounds.min) / (bounds.max - bounds.min)) * 100 : 0);
 
   // First page (and reset) whenever data or filters change — cursor pagination.
   // If a row was preselected (e.g. Find → "View details"), stream pages until
@@ -254,22 +229,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <span style={sectionLabel}>CAPACITY (55°C)</span>
               {bounds ? (
-                <div style={{ padding: '4px 2px 0' }}>
-                  <div ref={trackRef} style={{ position: 'relative', height: 3, background: '#e0e0e0', borderRadius: 2, touchAction: 'none' }}>
-                    <div style={{ position: 'absolute', left: `${pctOf(capLo)}%`, right: `${100 - pctOf(capHi)}%`, top: 0, bottom: 0, background: '#0066cc', borderRadius: 2 }} />
-                    <span
-                      onPointerDown={dragHandle('lo')}
-                      style={{ position: 'absolute', left: `${pctOf(capLo)}%`, top: '50%', transform: 'translate(-50%,-50%)', width: 15, height: 15, borderRadius: '50%', background: '#fff', border: '1px solid #d2d2d7', boxShadow: '0 1px 3px rgba(0,0,0,.15)', cursor: 'grab', touchAction: 'none' }}
-                    />
-                    <span
-                      onPointerDown={dragHandle('hi')}
-                      style={{ position: 'absolute', left: `${pctOf(capHi)}%`, top: '50%', transform: 'translate(-50%,-50%)', width: 15, height: 15, borderRadius: '50%', background: '#fff', border: '1px solid #d2d2d7', boxShadow: '0 1px 3px rgba(0,0,0,.15)', cursor: 'grab', touchAction: 'none' }}
-                    />
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#7a7a7a', marginTop: 9 }}>
-                    <span>{capLo} kW</span><span>{capHi} kW</span>
-                  </div>
-                </div>
+                <KwRangeSlider bounds={bounds} lo={capLo} hi={capHi} onChange={setCapRange} />
               ) : (
                 <span style={{ fontSize: 12, color: '#7a7a7a' }}>No capacity data in this segment.</span>
               )}

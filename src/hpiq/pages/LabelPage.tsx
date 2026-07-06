@@ -1,27 +1,63 @@
-/** EU energy label — EPREL-style records with always-on label inspector. */
-import React, { useEffect, useRef, useState } from 'react';
+/** EU energy label — EPREL-style records with always-on label inspector.
+ *  Lists the FULL downloaded catalog (residential + commercial) via app.allStore,
+ *  with a Products-style filter rail: class, EPREL status, manufacturer,
+ *  refrigerant and capacity. */
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { HpVM } from '../model';
-import { FD, Check, pillPrimary, pillSecondary, sectionLabel } from '../ui';
+import { FD, Check, CheckBox, KwRangeSlider, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
 const GRID = '2.2fr 1fr 0.8fr 0.8fr 0.9fr 1.1fr';
 const PAGE_SIZE = 100;
 
 export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
-  const { store } = app;
+  const store = app.allStore;
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [eprelStatus, setEprelStatus] = useState({ matched: true, notMatched: true });
+  const [mfrFilter, setMfrFilter] = useState<string[]>([]);
+  const [mfrExpanded, setMfrExpanded] = useState(false);
+  const [refFilter, setRefFilter] = useState<string | null>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  const records = (store ? store.labelRecords(app.classFilter) : [])
-    .filter(v => (v.eprel ? eprelStatus.matched : eprelStatus.notMatched));
+  // Capacity range over the full catalog's kW bounds; null = untouched.
+  const bounds = store?.kwBounds ?? null;
+  const [capRange, setCapRange] = useState<[number, number] | null>(null);
+  useEffect(() => { setCapRange(null); }, [store]);
+  const capLo = capRange?.[0] ?? bounds?.min ?? 0;
+  const capHi = capRange?.[1] ?? bounds?.max ?? 0;
+  const capNarrowed = !!bounds && !!capRange && (capRange[0] > bounds.min || capRange[1] < bounds.max);
+
+  const records = useMemo(() => {
+    let list = store ? store.labelRecords(app.classFilter) : [];
+    list = list.filter(v => (v.eprel ? eprelStatus.matched : eprelStatus.notMatched));
+    if (refFilter) list = list.filter(v => v.ref.includes(refFilter));
+    if (mfrFilter.length) {
+      const set = new Set(mfrFilter);
+      list = list.filter(v => set.has(v.mfr));
+    }
+    if (capNarrowed) {
+      list = list.filter(v => v.kwNum != null && v.kwNum >= capLo && v.kwNum <= capHi);
+    }
+    return list;
+  }, [store, app.classFilter, eprelStatus, refFilter, mfrFilter, capNarrowed, capLo, capHi]);
   const rows = records.slice(0, visible);
+
+  const mfrList = (store?.mfrCounts ?? []).slice(0, mfrExpanded ? 25 : 5);
+  const hasFilters = !!app.classFilter || !!refFilter || mfrFilter.length > 0 || capNarrowed
+    || !eprelStatus.matched || !eprelStatus.notMatched;
+  const clearAll = () => {
+    app.setClassFilter(null);
+    setRefFilter(null);
+    setMfrFilter([]);
+    setCapRange(null);
+    setEprelStatus({ matched: true, notMatched: true });
+  };
 
   useEffect(() => {
     setVisible(PAGE_SIZE);
     scrollerRef.current?.scrollTo({ top: 0 });
-  }, [app.classFilter, store, eprelStatus]);
+  }, [records]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -41,7 +77,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>EU energy label</span>
         <span style={{ fontSize: 12, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '5px 13px' }}>EPREL-style records</span>
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
-          {records.length.toLocaleString('en-US')} label records · EPREL sync {app.eprelSyncDate}
+          {records.length.toLocaleString('en-US')} of {(store?.total ?? 0).toLocaleString('en-US')} label records · EPREL sync {app.eprelSyncDate}
         </span>
       </div>
       <div style={{ flex: 1, overflowX: 'auto', minHeight: 0 }}>
@@ -50,7 +86,12 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {/* label filter rail */}
           <div style={{ flex: '0 0 248px', boxSizing: 'content-box', borderRight: '1px solid rgba(0,0,0,.08)', padding: 20, display: 'flex', flexDirection: 'column', gap: 22, overflowY: 'auto' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>ENERGY CLASS (W35)</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+                <span style={sectionLabel}>ENERGY CLASS (W35)</span>
+                {hasFilters && (
+                  <span onClick={clearAll} style={{ fontSize: 12, color: '#0066cc', cursor: 'pointer' }}>Clear all</span>
+                )}
+              </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {['A+++', 'A++', 'A+'].map(c => {
                   const on = app.classFilter === c;
@@ -90,6 +131,59 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 })}
               </div>
             </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <span style={sectionLabel}>MANUFACTURER</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 7, fontSize: 13.5 }}>
+                {mfrList.map(m => {
+                  const on = mfrFilter.includes(m.name);
+                  return (
+                    <span
+                      key={m.name}
+                      onClick={() => setMfrFilter(on ? mfrFilter.filter(x => x !== m.name) : [...mfrFilter, m.name])}
+                      style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}
+                    >
+                      <CheckBox on={on} size={15} radius={4} />
+                      {m.name} <span style={{ marginLeft: 'auto', color: '#7a7a7a', fontSize: 12 }}>{m.count}</span>
+                    </span>
+                  );
+                })}
+                {!mfrExpanded && (
+                  <span onClick={() => setMfrExpanded(true)} style={{ color: '#0066cc', fontSize: 12.5, cursor: 'pointer' }}>Show all 25 ›</span>
+                )}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <span style={sectionLabel}>REFRIGERANT</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {['R290', 'R32', 'R410A'].map(r => {
+                  const on = refFilter === r;
+                  return (
+                    <span
+                      key={r}
+                      className="hp-press"
+                      onClick={() => setRefFilter(on ? null : r)}
+                      style={{
+                        borderRadius: 999, padding: '5px 13px', fontSize: 12.5, cursor: 'pointer',
+                        ...(on ? { background: '#0066cc', color: '#fff' } : { border: '1px solid #e0e0e0', color: '#1d1d1f' }),
+                      }}
+                    >
+                      {r}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <span style={sectionLabel}>CAPACITY (55°C)</span>
+              {bounds ? (
+                <KwRangeSlider bounds={bounds} lo={capLo} hi={capHi} onChange={setCapRange} />
+              ) : (
+                <span style={{ fontSize: 12, color: '#7a7a7a' }}>No capacity data.</span>
+              )}
+            </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <span style={sectionLabel}>ABOUT THIS DATA</span>
               <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.5 }}>

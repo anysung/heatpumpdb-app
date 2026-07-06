@@ -68,10 +68,24 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     noticeTimer.current = setTimeout(() => setNotice(null), 2600);
   };
 
-  const store = useMemo(() => {
-    const src = segment === 'commercial' ? dbData?.commercialProducts : dbData?.products;
-    return src?.length ? new ProductStore(src) : null;
-  }, [dbData?.products, dbData?.commercialProducts, segment]);
+  const resStore = useMemo(
+    () => (dbData?.products?.length ? new ProductStore(dbData.products) : null),
+    [dbData?.products],
+  );
+  const comStore = useMemo(
+    () => (dbData?.commercialProducts?.length ? new ProductStore(dbData.commercialProducts) : null),
+    [dbData?.commercialProducts],
+  );
+  const store = segment === 'commercial' ? comStore : resStore;
+  // Full catalog for the EU energy label page — every downloaded product, both segments.
+  const allStore = useMemo(() => {
+    const src = [...(dbData?.products ?? []), ...(dbData?.commercialProducts ?? [])];
+    return src.length ? new ProductStore(src) : null;
+  }, [dbData?.products, dbData?.commercialProducts]);
+
+  /** Which segment dataset a product id belongs to (label page spans both). */
+  const segmentOf = (id: string): HpSegment | null =>
+    resStore?.byId.has(id) ? 'residential' : comStore?.byId.has(id) ? 'commercial' : null;
 
   // Segment switch swaps the dataset — ids/manufacturers from the other
   // segment do not resolve, so selection-dependent state is reset (the
@@ -128,7 +142,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   };
 
   const app: HpApp = {
-    store, user,
+    store, allStore, user,
     news: dbData?.newsFeed ?? [],
     dataStatusDate, bafaSnapshotDate, eprelSyncDate, totalListed,
     quota,
@@ -148,8 +162,18 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     faqOpen, setFaqOpen,
     lang: language, setLang: setLanguage,
     onLogout, printSheet, notify,
-    openProduct: (id) => { setSelectedId(id); setPage('products'); },
-    openDataSheet: (id, mode) => { setDsId(id); setDsMode(mode); setPage('datasheet'); },
+    // Label records span both segments — switch to the id's segment first
+    // (switchSegment clears selection; the setters below win within the batch).
+    openProduct: (id) => {
+      const s = segmentOf(id);
+      if (s && s !== segment) switchSegment(s);
+      setSelectedId(id); setPage('products');
+    },
+    openDataSheet: (id, mode) => {
+      const s = segmentOf(id);
+      if (s && s !== segment) switchSegment(s);
+      setDsId(id); setDsMode(mode); setPage('datasheet');
+    },
     openLabelRecord: (id) => { setLabelSelId(id); setPage('label'); },
     goProductsR290: () => { setRefFilter('R290'); setPage('products'); },
   };

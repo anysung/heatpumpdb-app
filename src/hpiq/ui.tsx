@@ -71,6 +71,56 @@ export const PlayIcon: React.FC = () => (
   <svg width={18} height={18} viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z" /></svg>
 );
 
+/**
+ * Dual-handle capacity range slider (pointer drag, whole kW).
+ * Stateless — parent owns [lo, hi]; stale-closure safe because each drag
+ * only moves its own handle while the other bound stays fixed.
+ */
+export const KwRangeSlider: React.FC<{
+  bounds: { min: number; max: number };
+  lo: number;
+  hi: number;
+  onChange: (next: [number, number]) => void;
+}> = ({ bounds, lo, hi, onChange }) => {
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const pctOf = (kw: number) => (bounds.max > bounds.min ? ((kw - bounds.min) / (bounds.max - bounds.min)) * 100 : 0);
+  const drag = (which: 'lo' | 'hi') => (e: React.PointerEvent) => {
+    e.preventDefault();
+    const track = trackRef.current;
+    if (!track) return;
+    const move = (ev: PointerEvent) => {
+      const rect = track.getBoundingClientRect();
+      const pct = Math.min(1, Math.max(0, (ev.clientX - rect.left) / rect.width));
+      const kw = Math.round(bounds.min + pct * (bounds.max - bounds.min));
+      onChange(which === 'lo' ? [Math.min(kw, hi), hi] : [lo, Math.max(kw, lo)]);
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    move(e.nativeEvent);
+  };
+  const handleStyle = (kw: number): React.CSSProperties => ({
+    position: 'absolute', left: `${pctOf(kw)}%`, top: '50%', transform: 'translate(-50%,-50%)',
+    width: 15, height: 15, borderRadius: '50%', background: '#fff', border: `1px solid ${C.chip}`,
+    boxShadow: '0 1px 3px rgba(0,0,0,.15)', cursor: 'grab', touchAction: 'none',
+  });
+  return (
+    <div style={{ padding: '4px 2px 0' }}>
+      <div ref={trackRef} style={{ position: 'relative', height: 3, background: C.hairline, borderRadius: 2, touchAction: 'none' }}>
+        <div style={{ position: 'absolute', left: `${pctOf(lo)}%`, right: `${100 - pctOf(hi)}%`, top: 0, bottom: 0, background: C.primary, borderRadius: 2 }} />
+        <span onPointerDown={drag('lo')} style={handleStyle(lo)} />
+        <span onPointerDown={drag('hi')} style={handleStyle(hi)} />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: C.muted, marginTop: 9 }}>
+        <span>{lo} kW</span><span>{hi} kW</span>
+      </div>
+    </div>
+  );
+};
+
 /** Small square compare/filter checkbox (15–18px, blue when on). */
 export const CheckBox: React.FC<{
   on: boolean; size?: number; radius?: number; onClick?: (e: React.MouseEvent) => void; style?: React.CSSProperties;
