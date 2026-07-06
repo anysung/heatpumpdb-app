@@ -86,7 +86,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
   const sectionDefs: [DsSectionKey, string][] = isLabelMode
     ? [['identity', t.ds.sections.identityL], ['performance', t.ds.sections.perfL], ['env', t.ds.sections.envL], ['source', t.ds.sections.source]]
-    : [['identity', t.ds.sections.identityP], ['performance', t.ds.sections.perfP], ['env', t.ds.sections.envP], ['physical', t.ds.sections.physical], ['bafa', t.ds.sections.bafa], ['source', t.ds.sections.source]];
+    : [['identity', t.ds.sections.identityP], ['performance', t.ds.sections.perfP], ['env', t.ds.sections.envP], ['bafa', t.ds.sections.bafa], ['source', t.ds.sections.source]];
 
   // Footnote numbering — assigned in render order, so only sections that are
   // actually shown contribute entries to TECHNICAL EXPLANATIONS below.
@@ -96,11 +96,6 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
     if (i === -1) { noteOrder.push(key); i = noteOrder.length - 1; }
     return i + 1;
   };
-
-  const dims = dsp && dsp.raw.width_mm && dsp.raw.height_mm && dsp.raw.depth_mm
-    ? `${dsp.raw.width_mm} × ${dsp.raw.height_mm} × ${dsp.raw.depth_mm} mm`
-    : '—';
-  const weightTxt = dsp?.raw.weight_kg ? `${dsp.raw.weight_kg} kg` : '—';
 
   const segStyle = (on: boolean): React.CSSProperties => ({
     padding: '6px 16px', fontSize: 12.5, cursor: 'pointer',
@@ -252,14 +247,6 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   <FieldRow label={t.ds.f.refKg} value={dsp.refKg === '—' ? '—' : `${dsp.refKg} kg`} note={n('refKg')} />
                   <FieldRow label={t.ds.f.noise} value={dsp.noise === '—' ? '—' : `${dsp.noise} dB(A)`} note={n('noise')} />
                   <FieldRow label={t.ds.f.grid} value={dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
-                </div>
-              )}
-
-              {app.dsSections.physical && !isLabelMode && (
-                <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 22 }}>
-                  <SectionHead title={t.ds.headPhysical} />
-                  <FieldRow label={t.ds.f.dims} value={dims} note={n('dims')} />
-                  <FieldRow label={t.ds.f.weight} value={weightTxt} note={n('weight')} />
                 </div>
               )}
 
