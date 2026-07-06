@@ -95,18 +95,18 @@ export function toVM(p: HeatPump): HpVM {
   };
 }
 
-/** Format an ISO date as the design's "5 Jul 2026" style. */
-export function shortDate(iso: string | null | undefined): string {
+/** Format an ISO date as the design's "5 Jul 2026" style (locale-aware, e.g. "5. Juli 2026" for de-DE). */
+export function shortDate(iso: string | null | undefined, locale = 'en-GB'): string {
   if (!iso) return '—';
   const d = new Date(iso);
   if (isNaN(d.getTime())) return '—';
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  return d.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-/** Format an ISO date as "6 July 2026" (data-sheet header style). */
-export function longDate(iso: string | null | undefined): string {
+/** Format an ISO date as "6 July 2026" (data-sheet header style, locale-aware). */
+export function longDate(iso: string | null | undefined, locale = 'en-GB'): string {
   if (!iso) return '—';
   const d = new Date(iso);
   if (isNaN(d.getTime())) return '—';
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  return d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
 }

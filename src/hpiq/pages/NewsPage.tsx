@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { HpApp } from '../appState';
 import { NewsItem } from '../../types';
 import { shortDate } from '../model';
+import { tr } from '../i18n';
 import { FD } from '../ui';
 
 /** Editorial category badge — explicit category field first, keyword fallback. */
@@ -17,9 +18,9 @@ function categoryOf(item: NewsItem): string {
   return 'MARKET';
 }
 
-function readTime(item: NewsItem): string {
+function readTime(item: NewsItem, unit: string): string {
   const words = `${item.title} ${item.summary} ${item.body ?? ''}`.split(/\s+/).length;
-  return `${Math.max(3, Math.min(8, Math.round(words / 120) + 2))} min`;
+  return `${Math.max(3, Math.min(8, Math.round(words / 120) + 2))} ${unit}`;
 }
 
 /** Approved-design editorial content, used when the curated feed is empty. */
@@ -36,6 +37,7 @@ const FALLBACK_CARDS = [
 ];
 
 export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
   const feed = app.news;
   const featured = feed[0] ?? null;
   const cards = feed.slice(1, 4);
@@ -49,18 +51,18 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   }, [reader]);
 
   const openArticle = (item?: NewsItem | null) => {
-    if (!item) { app.notify('The full briefing will be published soon.'); return; }
+    if (!item) { app.notify(t.news.notPublished); return; }
     if (item.body) { setReader(item); return; }               // original article → in-app reader
     if (item.sourceUrl) { window.open(item.sourceUrl, '_blank', 'noopener'); return; }
-    app.notify('The full briefing will be published soon — no source link yet.');
+    app.notify(t.news.noLink);
   };
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <div style={{ maxWidth: 1160, width: '100%', margin: '0 auto', padding: '40px 48px 48px', display: 'flex', flexDirection: 'column', gap: 26, boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
-          <span style={{ fontFamily: FD, fontSize: 34, fontWeight: 600, letterSpacing: '-0.374px' }}>Market intelligence.</span>
-          <span style={{ fontSize: 12.5, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '4px 13px' }}>Curated · updated monthly</span>
+          <span style={{ fontFamily: FD, fontSize: 34, fontWeight: 600, letterSpacing: '-0.374px' }}>{t.news.title}</span>
+          <span style={{ fontSize: 12.5, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '4px 13px' }}>{t.news.pill}</span>
         </div>
 
         {/* featured */}
@@ -74,7 +76,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 {featured ? categoryOf(featured) : FALLBACK_FEATURED.badge}
               </span>
               <span style={{ fontSize: 12, color: '#ccc' }}>
-                {featured ? `${shortDate(featured.date)} briefing${featured.author ? ` · ${featured.author}` : ''}` : FALLBACK_FEATURED.kicker}
+                {featured ? `${shortDate(featured.date)} ${t.news.briefing}${featured.author ? ` · ${featured.author}` : ''}` : FALLBACK_FEATURED.kicker}
               </span>
             </div>
             <span style={{ fontFamily: FD, fontSize: 28, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.15, maxWidth: 720 }}>
@@ -83,7 +85,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <span style={{ fontSize: 15, color: '#ccc', lineHeight: 1.55, maxWidth: 680 }}>
               {featured ? featured.summary : FALLBACK_FEATURED.dek}
             </span>
-            <span onClick={() => openArticle(featured)} style={{ fontSize: 14, color: '#2997ff', cursor: 'pointer' }}>Read the briefing ›</span>
+            <span onClick={() => openArticle(featured)} style={{ fontSize: 14, color: '#2997ff', cursor: 'pointer' }}>{t.news.readBriefing}</span>
           </div>
         </div>
 
@@ -96,7 +98,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', width: 'fit-content' }}>{categoryOf(item)}</span>
                 <span style={{ fontFamily: FD, fontSize: 18, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.25 }}>{item.title}</span>
                 <span style={{ fontSize: 13, color: '#7a7a7a', lineHeight: 1.55 }}>{item.summary}</span>
-                <span style={{ fontSize: 12, color: '#7a7a7a', marginTop: 'auto' }}>{shortDate(item.date)} · {readTime(item)}</span>
+                <span style={{ fontSize: 12, color: '#7a7a7a', marginTop: 'auto' }}>{shortDate(item.date)} · {readTime(item, t.news.minRead)}</span>
               </div>
             </div>
           )) ?? FALLBACK_CARDS.map(card => (
@@ -112,15 +114,15 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
         {/* subscribe */}
         <div style={{ background: '#f5f5f7', borderRadius: 18, padding: '26px 30px', display: 'flex', alignItems: 'center', gap: 20 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>The monthly briefing, in your inbox.</span>
-            <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>One email per month. Funding changes, list updates, market signals. No noise.</span>
+            <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.news.subTitle}</span>
+            <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>{t.news.subText}</span>
           </div>
           <span
             className="hp-press"
-            onClick={() => app.notify('The newsletter is launching soon — your account email will be invited first.')}
+            onClick={() => app.notify(t.news.subscribeSoon)}
             style={{ marginLeft: 'auto', background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 14, cursor: 'pointer', flex: 'none' }}
           >
-            Subscribe ›
+            {t.news.subscribe}
           </span>
         </div>
       </div>
@@ -143,7 +145,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 onClick={() => setReader(null)}
                 style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '9px 20px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
               >
-                ✕ Close
+                {t.news.close}
               </span>
             </div>
             <div style={{ overflow: 'auto' }}>
@@ -158,7 +160,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
                 {!!reader.sources?.length && (
                   <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 7 }}>
-                    <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.06em', color: '#7a7a7a' }}>SOURCES</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.06em', color: '#7a7a7a' }}>{t.news.sources}</span>
                     {reader.sources.map(s => (
                       <span
                         key={s.url}
@@ -171,7 +173,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   </div>
                 )}
                 <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5, borderTop: '1px solid #f0f0f0', paddingTop: 12 }}>
-                  Original HeatpumpIQ editorial, synthesized from the cited public sources. Editorial guidance, not legal or funding advice — official sources prevail.
+                  {t.news.editorialNote}
                 </span>
               </div>
             </div>

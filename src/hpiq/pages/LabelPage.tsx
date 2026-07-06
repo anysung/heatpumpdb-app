@@ -6,11 +6,13 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { FD, CheckBox, KwRangeSlider, pillPrimary, pillSecondary, sectionLabel } from '../ui';
+import { tr } from '../i18n';
 
 const GRID = '2.2fr 1fr 0.8fr 0.8fr 0.9fr';
 const PAGE_SIZE = 100;
 
 export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
   const store = app.allStore;
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [mfrFilter, setMfrFilter] = useState<string[]>([]);
@@ -70,10 +72,10 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
   return (
     <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 46px)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 28px', borderBottom: '1px solid rgba(0,0,0,.08)', flex: 'none' }}>
-        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>EU energy label</span>
-        <span style={{ fontSize: 12, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '5px 13px' }}>EPREL-style records</span>
+        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.label.title}</span>
+        <span style={{ fontSize: 12, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999, padding: '5px 13px' }}>{t.label.pill}</span>
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
-          {records.length.toLocaleString('en-US')} of {(store?.total ?? 0).toLocaleString('en-US')} label records
+          {t.label.countLine(records.length.toLocaleString('en-US'), (store?.total ?? 0).toLocaleString('en-US'))}
         </span>
       </div>
       <div style={{ flex: 1, overflowX: 'auto', minHeight: 0 }}>
@@ -83,9 +85,9 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
           <div style={{ flex: '0 0 248px', boxSizing: 'content-box', borderRight: '1px solid rgba(0,0,0,.08)', padding: 20, display: 'flex', flexDirection: 'column', gap: 22, overflowY: 'auto' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-                <span style={sectionLabel}>ENERGY CLASS (W35)</span>
+                <span style={sectionLabel}>{t.label.energyClass}</span>
                 {hasFilters && (
-                  <span onClick={clearAll} style={{ fontSize: 12, color: '#0066cc', cursor: 'pointer' }}>Clear all</span>
+                  <span onClick={clearAll} style={{ fontSize: 12, color: '#0066cc', cursor: 'pointer' }}>{t.label.clearAll}</span>
                 )}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -108,7 +110,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>MANUFACTURER</span>
+              <span style={sectionLabel}>{t.label.manufacturer}</span>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 7, fontSize: 13.5 }}>
                 {mfrList.map(m => {
                   const on = mfrFilter.includes(m.name);
@@ -124,13 +126,13 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   );
                 })}
                 {!mfrExpanded && (
-                  <span onClick={() => setMfrExpanded(true)} style={{ color: '#0066cc', fontSize: 12.5, cursor: 'pointer' }}>Show all 25 ›</span>
+                  <span onClick={() => setMfrExpanded(true)} style={{ color: '#0066cc', fontSize: 12.5, cursor: 'pointer' }}>{t.label.showAll}</span>
                 )}
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>REFRIGERANT</span>
+              <span style={sectionLabel}>{t.label.refrigerant}</span>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {['R290', 'R32', 'R410A'].map(r => {
                   const on = refFilter === r;
@@ -152,21 +154,21 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>CAPACITY (55°C)</span>
+              <span style={sectionLabel}>{t.label.capacity}</span>
               {bounds ? (
                 <KwRangeSlider bounds={bounds} lo={capLo} hi={capHi} onChange={setCapRange} />
               ) : (
-                <span style={{ fontSize: 12, color: '#7a7a7a' }}>No capacity data.</span>
+                <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.label.noCapacityData}</span>
               )}
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <span style={sectionLabel}>ABOUT THIS DATA</span>
+              <span style={sectionLabel}>{t.label.about}</span>
               <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.5 }}>
-                Label records follow the EU energy labelling framework for space heaters. Always attach the official label from the manufacturer or EPREL for legal use.
+                {t.label.aboutText}
               </span>
               <span style={{ fontSize: 13.5, borderTop: '1px solid #f0f0f0', paddingTop: 10 }}>
-                Label records updated: <span style={{ fontWeight: 600 }}>{app.eprelSyncDate}</span>
+                {t.label.updated} <span style={{ fontWeight: 600 }}>{app.eprelSyncDate}</span>
               </span>
             </div>
           </div>
@@ -174,7 +176,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {/* label table */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, borderRight: '1px solid rgba(0,0,0,.08)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: '0 12px', padding: '10px 20px', borderBottom: '1px solid rgba(0,0,0,.08)', fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', color: '#7a7a7a', flex: 'none' }}>
-              <span>MODEL</span><span>MANUFACTURER</span><span>CLASS W35</span><span>CLASS W55</span><span>SOUND POWER</span>
+              <span>{t.label.th.model}</span><span>{t.label.th.mfr}</span><span>{t.label.th.w35}</span><span>{t.label.th.w55}</span><span>{t.label.th.noise}</span>
             </div>
             <div ref={scrollerRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
               {rows.map(lr => {
@@ -203,7 +205,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
               })}
               {visible < records.length && <div ref={sentinelRef} style={{ height: 1 }} />}
               <div style={{ padding: '11px 20px', fontSize: 12, color: '#7a7a7a' }}>
-                Click a record to inspect label details, or generate an energy label sheet from the inspector.
+                {t.label.hint}
               </div>
             </div>
           </div>
@@ -218,26 +220,26 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <div style={{ padding: '18px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: 20, display: 'flex', gap: 18, alignItems: 'center' }}>
                   <div style={{ flex: '0 0 96px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, border: '1px solid #e0e0e0', borderRadius: 8, padding: '14px 10px' }}>
-                    <span style={{ fontSize: 9, letterSpacing: '.08em', color: '#7a7a7a' }}>ENERGY</span>
+                    <span style={{ fontSize: 9, letterSpacing: '.08em', color: '#7a7a7a' }}>{t.label.energy}</span>
                     <span style={{ fontFamily: FD, fontSize: 30, fontWeight: 700, letterSpacing: '-0.5px' }}>{lsel.label}</span>
-                    <span style={{ fontSize: 9, color: '#7a7a7a' }}>space heating W35</span>
+                    <span style={{ fontSize: 9, color: '#7a7a7a' }}>{t.label.spaceHeatingW35}</span>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, minWidth: 0 }}>
-                    <span><span style={{ color: '#7a7a7a' }}>W35:</span> <strong style={{ fontWeight: 600 }}>{lsel.label}</strong> · <span style={{ color: '#7a7a7a' }}>W55:</span> <strong style={{ fontWeight: 600 }}>{lsel.labelMed}</strong></span>
-                    <span><span style={{ color: '#7a7a7a' }}>Rated output:</span> <strong style={{ fontWeight: 600 }}>{lsel.kw === '—' ? '—' : `${lsel.kw} kW`}</strong></span>
-                    <span><span style={{ color: '#7a7a7a' }}>Sound power:</span> <strong style={{ fontWeight: 600 }}>{lsel.noise === '—' ? '—' : `${lsel.noise} dB(A)`}</strong></span>
-                    <span><span style={{ color: '#7a7a7a' }}>Refrigerant:</span> <strong style={{ fontWeight: 600 }}>{lsel.refKg === '—' ? lsel.ref : `${lsel.ref} · ${lsel.refKg} kg`}</strong></span>
+                    <span><span style={{ color: '#7a7a7a' }}>{t.label.w35}</span> <strong style={{ fontWeight: 600 }}>{lsel.label}</strong> · <span style={{ color: '#7a7a7a' }}>{t.label.w55}</span> <strong style={{ fontWeight: 600 }}>{lsel.labelMed}</strong></span>
+                    <span><span style={{ color: '#7a7a7a' }}>{t.label.ratedOutput}</span> <strong style={{ fontWeight: 600 }}>{lsel.kw === '—' ? '—' : `${lsel.kw} kW`}</strong></span>
+                    <span><span style={{ color: '#7a7a7a' }}>{t.label.soundPower}</span> <strong style={{ fontWeight: 600 }}>{lsel.noise === '—' ? '—' : `${lsel.noise} dB(A)`}</strong></span>
+                    <span><span style={{ color: '#7a7a7a' }}>{t.label.refrigerantRow}</span> <strong style={{ fontWeight: 600 }}>{lsel.refKg === '—' ? lsel.ref : `${lsel.ref} · ${lsel.refKg} kg`}</strong></span>
                   </div>
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 8, fontSize: 12.5 }}>
-                  <span style={{ ...sectionLabel, fontSize: 10.5 }}>SOURCE & VERIFICATION</span>
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Registration</span><span style={{ fontWeight: 600 }}>{lsel.eprelId}</span></span>
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Data completeness</span><span style={{ fontWeight: 600 }}>{lsel.completeness}</span></span>
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>Product info sheet</span><span style={{ fontWeight: 600 }}>{lsel.eprel ? 'Available' : '—'}</span></span>
+                  <span style={{ ...sectionLabel, fontSize: 10.5 }}>{t.label.sourceVerification}</span>
+                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>{t.label.registration}</span><span style={{ fontWeight: 600 }}>{lsel.eprelId}</span></span>
+                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>{t.label.completeness}</span><span style={{ fontWeight: 600 }}>{lsel.completeness}</span></span>
+                  <span style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: '#7a7a7a' }}>{t.label.infoSheet}</span><span style={{ fontWeight: 600 }}>{lsel.eprel ? t.label.available : '—'}</span></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                  <span className="hp-press" onClick={() => app.openDataSheet(lsel.id, 'label')} style={pillPrimary}>Energy label sheet ›</span>
-                  <span className="hp-press" onClick={() => app.openProduct(lsel.id)} style={pillSecondary}>Open product profile</span>
+                  <span className="hp-press" onClick={() => app.openDataSheet(lsel.id, 'label')} style={pillPrimary}>{t.label.labelSheetBtn}</span>
+                  <span className="hp-press" onClick={() => app.openProduct(lsel.id)} style={pillSecondary}>{t.label.openProfile}</span>
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@ import { getQuotaStatus, consumePrintQuota } from '../services/quotaService';
 import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
+import { tr } from './i18n';
 import { FD, SignOutIcon } from './ui';
 import { FindPage } from './pages/FindPage';
 import { ProductsPage } from './pages/ProductsPage';
@@ -28,17 +29,10 @@ interface Props {
   setLanguage: (l: Language) => void;
 }
 
-const NAV_ITEMS: { id: HpPage; label: string }[] = [
-  { id: 'find', label: 'Find product' },
-  { id: 'products', label: 'Products' },
-  { id: 'label', label: 'EU energy label' },
-  { id: 'datasheet', label: 'Data sheet' },
-  { id: 'bafa', label: 'BAFA / KfW' },
-  { id: 'guide', label: 'Funding guide' },
-  { id: 'news', label: 'News' },
-];
+const NAV_IDS: Exclude<HpPage, 'account'>[] = ['find', 'products', 'label', 'datasheet', 'bafa', 'guide', 'news'];
 
 export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
+  const t = tr(language);
   const [page, setPage] = useState<HpPage>('find');
   const [query, setQuery] = useState('');
   const [compare, setCompare] = useState<string[]>([]);
@@ -117,12 +111,12 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     return () => { alive = false; };
   }, [user.id]);
 
-  const dataStatusDate = shortDate(dbData?.generatedAt ?? new Date().toISOString());
+  const dataStatusDate = shortDate(dbData?.generatedAt ?? new Date().toISOString(), t.locale);
   // Derived from the data files themselves (bafa_snapshot_fetched_at /
   // source_snapshot_generated_at) — they move automatically with each
   // regular data update; read from allStore so they are segment-independent.
-  const bafaSnapshotDate = shortDate((allStore ?? store)?.bafaSnapshotDate ?? undefined);
-  const eprelSyncDate = shortDate((allStore ?? store)?.sourceSnapshotDate ?? undefined);
+  const bafaSnapshotDate = shortDate((allStore ?? store)?.bafaSnapshotDate ?? undefined, t.locale);
+  const eprelSyncDate = shortDate((allStore ?? store)?.sourceSnapshotDate ?? undefined, t.locale);
   const totalListed = (dbData?.products?.length ?? 0) + (dbData?.commercialProducts?.length ?? 0);
 
   const toggleCompare = (id: string) => {
@@ -205,13 +199,13 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
           </span>
         </span>
         <div style={{ display: 'flex', gap: 4, fontSize: 12.5 }}>
-          {NAV_ITEMS.map(item => {
-            const active = page === item.id;
+          {NAV_IDS.map(id => {
+            const active = page === id;
             return (
               <span
-                key={item.id}
+                key={id}
                 className={active ? undefined : 'hp-navlink'}
-                onClick={() => setPage(item.id)}
+                onClick={() => setPage(id)}
                 style={{
                   padding: '7px 12px', borderRadius: 999, cursor: 'pointer',
                   ...(active
@@ -219,7 +213,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
                     : { color: 'rgba(255,255,255,.65)' }),
                 }}
               >
-                {item.label}
+                {t.nav[id]}
               </span>
             );
           })}
@@ -259,7 +253,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
             style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '5px 13px', fontSize: 11.5, color: 'rgba(255,255,255,.85)', cursor: 'pointer' }}
           >
             <SignOutIcon />
-            Sign out
+            {t.nav.signOut}
           </span>
         </div>
       </div>
@@ -284,8 +278,8 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
       {/* ============ Footer ============ */}
       <div style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 18, fontSize: 11.5, color: '#7a7a7a', flex: 'none' }}>
         <span style={{ fontWeight: 600, color: '#1d1d1f' }}>HeatpumpIQ</span>
-        <span>Germany edition</span>
-        <span style={{ marginLeft: 'auto' }}>Product data is informational — verify BAFA, KfW and EPREL sources before contractual use.</span>
+        <span>{t.footer.edition}</span>
+        <span style={{ marginLeft: 'auto' }}>{t.footer.note}</span>
       </div>
     </div>
   );

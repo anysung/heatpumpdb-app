@@ -1,54 +1,21 @@
 /** Funding guide — educational, homeowner/installer tabs. */
 import React from 'react';
 import { HpApp } from '../appState';
+import { tr } from '../i18n';
 import { FD, Check, PlayIcon, sectionLabel } from '../ui';
 
-const STEPS_PRO: [string, string, string][] = [
-  ['1', 'Qualify the building', 'Heat load estimate, radiator temperatures, existing system age.'],
-  ['2', 'Select a listed unit', 'Pick from the BAFA list — capture the BAFA ID in your quote.'],
-  ['3', 'Customer applies at KfW', 'Grant commitment must precede the signed delivery contract.'],
-  ['4', 'Install & document', 'Hydraulic balancing, commissioning report, invoices with BAFA ID.'],
-  ['5', 'Proof & payout', 'Upload the installation proof package; payout follows review.'],
-];
-const STEPS_HOME: [string, string, string][] = [
-  ['1', 'Check your starting point', 'Building age, current heating, rough heat demand.'],
-  ['2', 'Get installer quotes', 'Ask for the BAFA ID of each offered heat pump.'],
-  ['3', 'Apply before signing', 'Submit at KfW and wait for the commitment first.'],
-  ['4', 'Installation', 'Your installer handles the technical documentation.'],
-  ['5', 'Submit proof, get paid', 'Upload invoices and confirmations; the grant is paid out.'],
-];
-const CHECK_PRO = [
-  'Heat load calculation (room-by-room or DIN EN 12831 estimate)',
-  'BAFA ID confirmed on the current list — on the day of application',
-  'Hydraulic balancing plan and commissioning checklist prepared',
-  'Sound assessment for the outdoor unit location',
-  'Customer informed: KfW commitment before delivery contract',
-];
-const CHECK_HOME = [
-  'Confirm the building is older than 5 years',
-  'Collect two comparable installer quotes with BAFA IDs',
-  'Check the unit appears on the current BAFA list',
-  'Apply at KfW and wait for the commitment',
-  'Keep every invoice — proof upload comes after installation',
-];
-const FAQS: [string, string][] = [
-  ['Do I need the BAFA list if I apply at KfW?', 'Yes. The grant is applied for at KfW, but the heat pump itself must be on the BAFA list of eligible units. This app shows the list status of every product — always re-verify on the official list on the day of application.'],
-  ['When exactly must I apply?', 'The funding commitment must exist before you sign a delivery or installation contract. Planning services are allowed earlier. This is the single most common and most expensive mistake.'],
-  ['What is the efficiency bonus?', 'An additional 5 percentage points for heat pumps using a natural refrigerant such as R290, or certain heat sources. Most new monoblock units in this database qualify — filter by R290 to see them.'],
-  ['Is this page legal advice?', 'No. It is an editorial preparation guide based on public BAFA and KfW information. Conditions change; the official program documents always prevail.'],
-];
-
 export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
   const isPro = app.guideTab === 'pro';
-  const steps = isPro ? STEPS_PRO : STEPS_HOME;
-  const checklist = isPro ? CHECK_PRO : CHECK_HOME;
+  const steps = isPro ? t.guide.stepsPro : t.guide.stepsHome;
+  const checklist = isPro ? t.guide.checkPro : t.guide.checkHome;
 
   // Opens a minimal print document of the current checklist — the browser's
   // print dialog offers "Save as PDF" on every platform.
   const downloadChecklist = () => {
     const w = window.open('', '_blank', 'width=720,height=900');
-    if (!w) { app.notify('Allow pop-ups to download the checklist.'); return; }
-    const title = isPro ? 'BEG EM preparation checklist — installers' : 'BEG EM preparation checklist — homeowners';
+    if (!w) { app.notify(t.guide.popupNote); return; }
+    const title = isPro ? t.guide.pdfTitlePro : t.guide.pdfTitleHome;
     w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${title}</title>
       <style>
         body{font-family:-apple-system,'Segoe UE',Roboto,sans-serif;color:#1d1d1f;max-width:640px;margin:48px auto;padding:0 24px}
@@ -58,9 +25,9 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
         footer{margin-top:40px;font-size:11.5px;color:#7a7a7a;border-top:1px solid #e0e0e0;padding-top:12px;line-height:1.5}
       </style></head><body>
       <h1>${title}</h1>
-      <p class="sub">HeatpumpIQ · funding guide · generated from the app</p>
+      <p class="sub">${t.guide.pdfSub}</p>
       <ul>${checklist.map(item => `<li>${item}</li>`).join('')}</ul>
-      <footer>A preparation aid, not legal advice. Verify each item against the official BAFA / KfW conditions. heatpumpiq.de</footer>
+      <footer>${t.guide.pdfFooter}</footer>
       </body></html>`);
     w.document.close();
     w.focus();
@@ -70,12 +37,12 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <div style={{ background: '#272729', color: '#fff', padding: '52px 48px 44px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <span style={{ fontFamily: FD, fontSize: 34, fontWeight: 600, letterSpacing: '-0.374px' }}>Funding, step by step.</span>
+        <span style={{ fontFamily: FD, fontSize: 34, fontWeight: 600, letterSpacing: '-0.374px' }}>{t.guide.heroTitle}</span>
         <span style={{ fontSize: 17, color: '#ccc', letterSpacing: '-0.374px', maxWidth: 640 }}>
-          Prepare a BEG EM application with confidence — whether you install heat pumps or own the home.
+          {t.guide.heroSub}
         </span>
         <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-          {([['home', 'For homeowners'], ['pro', 'For installers']] as ['home' | 'pro', string][]).map(([id, label]) => {
+          {([['home', t.guide.tabHome], ['pro', t.guide.tabPro]] as ['home' | 'pro', string][]).map(([id, label]) => {
             const on = app.guideTab === id;
             return (
               <span
@@ -98,7 +65,7 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
         {/* journey */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.2px' }}>
-            {isPro ? 'The installer journey.' : 'The homeowner journey.'}
+            {isPro ? t.guide.journeyPro : t.guide.journeyHome}
           </span>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 0 }}>
             {steps.map(([n, title, text]) => (
@@ -118,8 +85,8 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
         <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 20 }}>
           <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '24px 26px', display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-              <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>Preparation checklist.</span>
-              <span onClick={downloadChecklist} style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer' }}>Download PDF ›</span>
+              <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.guide.checklistTitle}</span>
+              <span onClick={downloadChecklist} style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer' }}>{t.guide.downloadPdf}</span>
             </div>
             {checklist.map((text, i) => {
               const key = (isPro ? 'pro' : 'home') + i;
@@ -134,37 +101,37 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
               );
             })}
             <span style={{ fontSize: 11.5, color: '#7a7a7a', marginTop: 4 }}>
-              A preparation aid, not legal advice. Verify each item against the official BAFA / KfW conditions.
+              {t.guide.checklistNote}
             </span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ background: '#f5f5f7', borderRadius: 18, padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <span style={sectionLabel}>3-MINUTE EXPLAINER</span>
+              <span style={sectionLabel}>{t.guide.explainer}</span>
               <div
-                onClick={() => app.notify('The video explainer is coming soon — the written guide below covers the same 5 decisions.')}
+                onClick={() => app.notify(t.guide.videoSoon)}
                 style={{ aspectRatio: '16/9', background: '#272729', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
               >
                 <span style={{ width: 52, height: 52, borderRadius: '50%', background: 'rgba(255,255,255,.14)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                   <PlayIcon />
                 </span>
               </div>
-              <span style={{ fontSize: 13.5, lineHeight: 1.5 }}>How the BEG EM grant works — the 5 decisions that matter before you sign anything.</span>
+              <span style={{ fontSize: 13.5, lineHeight: 1.5 }}>{t.guide.explainerText}</span>
             </div>
             <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 7 }}>
-              <span style={sectionLabel}>GOOD TO KNOW</span>
+              <span style={sectionLabel}>{t.guide.goodToKnow}</span>
               <span style={{ fontSize: 13.5, lineHeight: 1.6 }}>
-                Natural-refrigerant units (R290) currently qualify for the +5% efficiency bonus. Filter Products by R290 to see them.
+                {t.guide.goodToKnowText}
               </span>
-              <span onClick={app.goProductsR290} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>Show R290 products ›</span>
+              <span onClick={app.goProductsR290} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>{t.guide.showR290}</span>
             </div>
           </div>
         </div>
 
         {/* FAQ */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.2px' }}>Common questions.</span>
+          <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.guide.faqTitle}</span>
           <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden' }}>
-            {FAQS.map(([q, a], i) => {
+            {t.guide.faqs.map(([q, a], i) => {
               const open = app.faqOpen === i;
               return (
                 <div key={q} style={{ borderBottom: '1px solid #f0f0f0' }}>

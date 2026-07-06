@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
+import { tr } from '../i18n';
 import { FD, CheckBox, ChevronDown, KwRangeSlider, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
 const GRID = '34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr';
@@ -19,6 +20,7 @@ const SK1 = ['78%', '70%', '50%', '55%', '50%', '55%', '65%'];
 const SK2 = ['66%', '75%', '45%', '60%', '55%', '50%', '70%'];
 
 export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
   const { store } = app;
   const [mfrExpanded, setMfrExpanded] = useState(false);
   const [items, setItems] = useState<HpVM[]>([]);
@@ -114,14 +116,14 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
   const mfrList = (store?.mfrCounts ?? []).slice(0, mfrExpanded ? 25 : 5);
 
-  const fmtInt = (n: number) => n.toLocaleString('en-US');
+  const fmtInt = (n: number) => n.toLocaleString(t.locale);
 
   return (
     <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 46px)' }}>
 
       {/* toolbar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 28px', borderBottom: '1px solid rgba(0,0,0,.08)', background: 'rgba(255,255,255,.9)', ...frosted, flex: 'none' }}>
-        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>Products</span>
+        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.products.title}</span>
         <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
           {(['residential', 'commercial'] as const).map(s => {
             const on = app.segment === s;
@@ -134,17 +136,17 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   ...(on ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
                 }}
               >
-                {s === 'residential' ? 'Residential' : 'Commercial'}
+                {s === 'residential' ? t.products.residential : t.products.commercial}
               </span>
             );
           })}
         </div>
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
-          {fmtInt(filteredTotal)} of {fmtInt(store?.total ?? 0)} {app.segment} products
+          {t.products.countLine(fmtInt(filteredTotal), fmtInt(store?.total ?? 0), app.segment)}
         </span>
         <div style={{ position: 'relative' }}>
           <span onClick={() => setSortOpen(o => !o)} style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-            Sort: {SORT_LABELS[sort]} <ChevronDown />
+            {t.products.sortPrefix} {t.products.sortLabels[sort]} <ChevronDown />
           </span>
           {sortOpen && (
             <>
@@ -157,7 +159,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     className="hp-row"
                     style={{ display: 'block', padding: '8px 16px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', ...(key === sort ? { fontWeight: 600, color: '#0066cc' } : {}) }}
                   >
-                    {SORT_LABELS[key]}
+                    {t.products.sortLabels[key]}
                   </span>
                 ))}
               </div>
@@ -173,8 +175,8 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           <div style={{ flex: '0 0 248px', boxSizing: 'content-box', borderRight: '1px solid rgba(0,0,0,.08)', padding: '20px 20px 24px', display: 'flex', flexDirection: 'column', gap: 22, background: '#fff', overflowY: 'auto' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-                <span style={sectionLabel}>APPLIED</span>
-                <span onClick={() => { app.setRefFilter(null); app.setMfrFilter([]); setCapRange(null); }} style={{ fontSize: 12, color: '#0066cc', cursor: 'pointer' }}>Clear all</span>
+                <span style={sectionLabel}>{t.products.applied}</span>
+                <span onClick={() => { app.setRefFilter(null); app.setMfrFilter([]); setCapRange(null); }} style={{ fontSize: 12, color: '#0066cc', cursor: 'pointer' }}>{t.products.clearAll}</span>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {appliedChips.map(chip => (
@@ -182,12 +184,12 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     {chip.label} <span style={{ opacity: 0.6 }}>×</span>
                   </span>
                 ))}
-                {appliedChips.length === 0 && <span style={{ fontSize: 12, color: '#7a7a7a' }}>No filters applied</span>}
+                {appliedChips.length === 0 && <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.products.noFilters}</span>}
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>REFRIGERANT</span>
+              <span style={sectionLabel}>{t.products.refrigerant}</span>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {['R290', 'R32', 'R410A'].map(r => {
                   const on = app.refFilter === r;
@@ -209,7 +211,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>MANUFACTURER</span>
+              <span style={sectionLabel}>{t.products.manufacturer}</span>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 7, fontSize: 13.5 }}>
                 {mfrList.map(m => {
                   const on = app.mfrFilter.includes(m.name);
@@ -225,22 +227,22 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   );
                 })}
                 {!mfrExpanded && (
-                  <span onClick={() => setMfrExpanded(true)} style={{ color: '#0066cc', fontSize: 12.5, cursor: 'pointer' }}>Show all 25 ›</span>
+                  <span onClick={() => setMfrExpanded(true)} style={{ color: '#0066cc', fontSize: 12.5, cursor: 'pointer' }}>{t.products.showAll}</span>
                 )}
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>CAPACITY (55°C)</span>
+              <span style={sectionLabel}>{t.products.capacity}</span>
               {bounds ? (
                 <KwRangeSlider bounds={bounds} lo={capLo} hi={capHi} onChange={setCapRange} />
               ) : (
-                <span style={{ fontSize: 12, color: '#7a7a7a' }}>No capacity data in this segment.</span>
+                <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.products.noCapacityData}</span>
               )}
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>FÖRDERUNG · FUNDING</span>
+              <span style={sectionLabel}>{t.products.funding}</span>
               <span
                 onClick={() => app.setBafaOnly(!app.bafaOnly)}
                 style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, cursor: 'pointer', userSelect: 'none' }}
@@ -248,14 +250,14 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 <span style={{ width: 34, height: 20, borderRadius: 999, background: app.bafaOnly ? '#0066cc' : '#d2d2d7', position: 'relative', display: 'inline-block', transition: 'background .18s ease' }}>
                   <span style={{ position: 'absolute', top: 2, left: app.bafaOnly ? 16 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left .18s ease' }} />
                 </span>
-                BAFA-listed only
+                {t.products.bafaListedOnly}
               </span>
-              <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.45 }}>BEG EM eligible units per BAFA list.</span>
+              <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.45 }}>{t.products.begNote}</span>
               <span style={{ fontSize: 11, color: '#7a7a7a', lineHeight: 1.5, borderTop: '1px solid #f0f0f0', paddingTop: 8 }}>
-                Between regular updates, list entries may change at a manufacturer's request or by decision of the issuing authority. All data is for reference only — final verification against the official sources is the user's responsibility.
+                {t.products.listDisclaimer}
               </span>
               <span style={{ fontSize: 13.5 }}>
-                BAFA list updated: <span style={{ fontWeight: 600 }}>{app.bafaSnapshotDate}</span>
+                {t.products.bafaUpdated} <span style={{ fontWeight: 600 }}>{app.bafaSnapshotDate}</span>
               </span>
             </div>
           </div>
@@ -263,12 +265,12 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {/* table */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, borderRight: '1px solid rgba(0,0,0,.08)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: '0 12px', alignItems: 'center', padding: '10px 20px', borderBottom: '1px solid rgba(0,0,0,.08)', fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', color: '#7a7a7a', flex: 'none' }}>
-              <span /><span>MODEL</span><span>MANUFACTURER</span>
-              <span style={sort === 'kwAsc' || sort === 'kwDesc' ? { color: '#1d1d1f' } : undefined}>KW (55°){sort === 'kwDesc' ? ' ↓' : sort === 'kwAsc' ? ' ↑' : ''}</span>
-              <span style={sort === 'cop2' ? { color: '#1d1d1f' } : undefined}>COP A2{sort === 'cop2' ? ' ↓' : ''}</span>
-              <span style={sort === 'scop' ? { color: '#1d1d1f' } : undefined}>SCOP{sort === 'scop' ? ' ↓' : ''}</span>
-              <span style={sort === 'noise' ? { color: '#1d1d1f' } : undefined}>NOISE{sort === 'noise' ? ' ↑' : ''}</span>
-              <span>STATUS</span>
+              <span /><span>MODEL</span><span>{t.products.manufacturer}</span>
+              <span style={sort === 'kwAsc' || sort === 'kwDesc' ? { color: '#1d1d1f' } : undefined}>{t.products.th.kw}{sort === 'kwDesc' ? ' ↓' : sort === 'kwAsc' ? ' ↑' : ''}</span>
+              <span style={sort === 'cop2' ? { color: '#1d1d1f' } : undefined}>{t.products.th.cop2}{sort === 'cop2' ? ' ↓' : ''}</span>
+              <span style={sort === 'scop' ? { color: '#1d1d1f' } : undefined}>{t.products.th.scop}{sort === 'scop' ? ' ↓' : ''}</span>
+              <span style={sort === 'noise' ? { color: '#1d1d1f' } : undefined}>{t.products.th.noise}{sort === 'noise' ? ' ↑' : ''}</span>
+              <span>{t.products.th.status}</span>
             </div>
 
             <div ref={scrollerRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
@@ -299,12 +301,12 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span>{r.noise === '—' ? '—' : `${r.noise} dB`}</span>
                     <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                       {(r.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot' ? (
-                        <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>BAFA</span>
+                        <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{t.products.chipBafa}</span>
                       ) : (
-                        <span style={{ border: '1px solid #e8c9c9', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fdf3f3', color: '#a33' }}>Delisted</span>
+                        <span style={{ border: '1px solid #e8c9c9', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fdf3f3', color: '#a33' }}>{t.products.chipDelisted}</span>
                       )}
                       {r.eprel && <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{r.label}</span>}
-                      <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>Sheet ready</span>
+                      <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{t.products.chipSheet}</span>
                     </span>
                   </div>
                 );
@@ -318,34 +320,34 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
               )}
               <div style={{ padding: '11px 20px', fontSize: 12, color: '#7a7a7a' }}>
-                Rows stream in as you scroll — no pagination. Click a row to inspect without leaving the list.
+                {t.products.streamNote}
               </div>
 
             </div>
 
             {/* compare tray — docked, frosted */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 20px', borderTop: '1px solid rgba(0,0,0,.08)', background: 'rgba(245,245,247,.92)', ...frosted, flex: 'none' }}>
-              <span style={sectionLabel}>COMPARE</span>
+              <span style={sectionLabel}>{t.products.compare}</span>
               {compareItems.map(t => (
                 <span key={t.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', border: '1px solid #e0e0e0', borderRadius: 999, padding: '6px 14px', fontSize: 12.5 }}>
                   {t.shortName} <span onClick={() => app.toggleCompare(t.id)} style={{ color: '#7a7a7a', cursor: 'pointer' }}>×</span>
                 </span>
               ))}
               <span style={{ fontSize: 12, color: '#7a7a7a' }}>
-                {compareCount >= 4 ? 'tray full' : `+ ${4 - compareCount} more slot${4 - compareCount === 1 ? '' : 's'}`}
+                {compareCount >= 4 ? t.products.trayFull : t.products.moreSlots(4 - compareCount)}
               </span>
               <span
                 className="hp-press"
                 onClick={() => {
                   if (canCompare) app.setShowCompare(true);
-                  else app.notify(`Select at least 2 products to compare — tick the checkbox on each row (${compareCount} of 2 selected).`);
+                  else app.notify(t.products.compareGuide(compareCount));
                 }}
                 style={{
                   marginLeft: 'auto', borderRadius: 999, padding: '9px 22px', fontSize: 13.5, cursor: 'pointer',
                   ...(canCompare ? { background: '#0066cc', color: '#fff' } : { background: '#d2d2d7', color: '#fff' }),
                 }}
               >
-                Compare {compareCount} ›
+                {t.products.compareBtn(compareCount)}
               </span>
             </div>
           </div>
@@ -363,15 +365,15 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <div style={{ padding: '18px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '18px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px 12px' }}>
                   {([
-                    ['Capacity 55°C', sel.kw === '—' ? '—' : `${sel.kw} kW`],
-                    ['SCOP', sel.scop],
-                    ['Class', sel.label],
-                    ['COP A7/W35', sel.cop7],
-                    ['COP A2/W35', sel.cop2],
-                    ['COP A−7/W35', sel.copm7],
-                    ['Refrigerant', sel.refKg === '—' ? sel.ref : `${sel.ref} · ${sel.refKg} kg`],
-                    ['Sound power', sel.noise === '—' ? '—' : `${sel.noise} dB(A)`],
-                    ['Type', sel.installType],
+                    [t.products.inspSpecs.cap, sel.kw === '—' ? '—' : `${sel.kw} kW`],
+                    [t.products.inspSpecs.scop, sel.scop],
+                    [t.products.inspSpecs.cls, sel.label],
+                    [t.products.inspSpecs.cop7, sel.cop7],
+                    [t.products.inspSpecs.cop2, sel.cop2],
+                    [t.products.inspSpecs.copm7, sel.copm7],
+                    [t.products.inspSpecs.ref, sel.refKg === '—' ? sel.ref : `${sel.ref} · ${sel.refKg} kg`],
+                    [t.products.inspSpecs.noise, sel.noise === '—' ? '—' : `${sel.noise} dB(A)`],
+                    [t.products.inspSpecs.type, sel.installType],
                   ] as [string, string][]).map(([label, value]) => (
                     <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 10.5, color: '#7a7a7a' }}>{label}</span>
@@ -380,32 +382,32 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   ))}
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 9 }}>
-                  <span style={{ ...sectionLabel, fontSize: 10.5 }}>FÖRDERSTATUS · FUNDING</span>
+                  <span style={{ ...sectionLabel, fontSize: 10.5 }}>{t.products.inspFunding}</span>
                   <span style={{ fontSize: 13.5, lineHeight: 1.5 }}>
                     {(sel.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot'
-                      ? 'Listed in the current BAFA source snapshot. Potentially eligible under BEG EM — up to 40% with the climate-speed bonus.'
-                      : 'No longer in the current BAFA source snapshot (previously listed — data retained for reference). Funding eligibility is unlikely; verify directly with BAFA.'}
+                      ? t.products.inspListed
+                      : t.products.inspDelisted}
                   </span>
                   <span style={{ fontSize: 12, color: '#7a7a7a' }}>
-                    Verify current eligibility with BAFA before quoting.{' '}
-                    <span onClick={() => window.open('https://www.bafa.de', '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>Open BAFA entry ›</span>
+                    {t.products.inspVerify}{' '}
+                    <span onClick={() => window.open('https://www.bafa.de', '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.openBafa}</span>
                   </span>
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 9 }}>
-                  <span style={{ ...sectionLabel, fontSize: 10.5 }}>EU ENERGY LABEL</span>
+                  <span style={{ ...sectionLabel, fontSize: 10.5 }}>{t.products.inspEuLabel}</span>
                   {sel.eprel ? (
                     <>
-                      <span style={{ fontSize: 13.5 }}>EPREL matched · class {sel.label} (W35) / {sel.labelMed} (W55)</span>
-                      <span onClick={() => app.openLabelRecord(sel.id)} style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer' }}>Open label record ›</span>
+                      <span style={{ fontSize: 13.5 }}>{t.products.inspEprelMatched(sel.label, sel.labelMed)}</span>
+                      <span onClick={() => app.openLabelRecord(sel.id)} style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer' }}>{t.products.openLabelRecord}</span>
                     </>
                   ) : (
-                    <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>No EPREL match yet — label data pending.</span>
+                    <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>{t.products.noEprel}</span>
                   )}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span className="hp-press" onClick={() => app.openDataSheet(sel.id, 'product')} style={pillPrimary}>Data sheet ›</span>
+                  <span className="hp-press" onClick={() => app.openDataSheet(sel.id, 'product')} style={pillPrimary}>{t.products.dataSheetBtn}</span>
                   <span className="hp-press" onClick={() => app.toggleCompare(sel.id)} style={pillSecondary}>
-                    {app.compare.includes(sel.id) ? 'Remove from compare' : 'Add to compare'}
+                    {app.compare.includes(sel.id) ? t.products.removeCompare : t.products.addCompare}
                   </span>
                 </div>
               </div>
@@ -425,21 +427,21 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             style={{ background: '#fff', borderRadius: 18, width: 'min(1040px, 100%)', maxHeight: '86vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 24px 64px rgba(0,0,0,.28)' }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 24px', borderBottom: '1px solid #e0e0e0', flex: 'none' }}>
-              <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px' }}>Comparison</span>
-              <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{compareCount} of 4 products</span>
+              <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px' }}>{t.products.comparison}</span>
+              <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{t.products.comparisonCount(compareCount)}</span>
               <span
                 className="hp-press"
                 onClick={() => app.setShowCompare(false)}
                 style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 14.5, fontWeight: 600, cursor: 'pointer' }}
               >
-                ✕ Close
+                {t.products.close}
               </span>
             </div>
             <div style={{ overflow: 'auto', padding: '20px 24px' }}>
               <div style={{ display: 'flex', gap: 0, background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden' }}>
                 <div style={{ flex: '0 0 168px', display: 'flex', flexDirection: 'column', borderRight: '1px solid #f0f0f0', padding: '18px 0 14px 20px', fontSize: 12.5, color: '#7a7a7a' }}>
                   <span style={{ height: 52 }} />
-                  {['Capacity 55°C', 'COP A7/W35', 'COP A2/W35', 'SCOP', 'Sound power', 'Refrigerant', 'Energy class', 'BAFA ID'].map(l => (
+                  {t.products.cmpRows.map(l => (
                     <span key={l} style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{l}</span>
                   ))}
                 </div>
@@ -448,7 +450,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span style={{ height: 52, display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontWeight: 600, lineHeight: 1.25 }}>{c.model}</span>
                       <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>
-                        {c.mfr} · <span onClick={() => app.toggleCompare(c.id)} style={{ color: '#0066cc', cursor: 'pointer' }}>remove</span>
+                        {c.mfr} · <span onClick={() => app.toggleCompare(c.id)} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.remove}</span>
                       </span>
                     </span>
                     <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0', fontWeight: 600 }}>{c.kw} kW</span>
