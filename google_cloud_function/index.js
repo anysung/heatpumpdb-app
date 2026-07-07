@@ -5,7 +5,42 @@ const { GoogleGenAI } = require('@google/genai');
 admin.initializeApp();
 const firestoreDb = admin.firestore();
 
+// Legacy manufacturer-research loop still writes to the DE product collection.
 const COUNTRY_CODE = 'DE';
+
+// -------------------------------------------------------------------
+// Markets served by the news/policy pipeline. Each entry fully describes
+// the market's editorial research scope; articles are written into
+// countries/<code>/news and countries/<code>/policies.
+// includeGermanTranslation: the DE app has a DE|EN toggle and stores
+// title_de/summary_de/body_de; the GB edition is English-only.
+// -------------------------------------------------------------------
+const MARKETS = [
+  {
+    code: 'DE',
+    marketName: 'German',
+    includeGermanTranslation: true,
+    researchScope: `- BAFA/BEG funding changes and the BAFA list of eligible heat pumps
+- KfW grant 458 processing and conditions
+- German heat pump market trends, sales statistics (BWP, Statista, manufacturer reports)
+- Technology developments (R290/natural refrigerants, noise limits, efficiency)
+- GEG (Gebäudeenergiegesetz) regulatory developments`,
+    reputableSources: 'bafa.de, kfw.de, bmwk.de, waermepumpe.de, manufacturer newsrooms, established trade press',
+    policyScope: 'BAFA/KfW programs with amounts, GEG requirements, efficiency standards',
+  },
+  {
+    code: 'GB',
+    marketName: 'UK',
+    includeGermanTranslation: false,
+    researchScope: `- Boiler Upgrade Scheme (BUS) changes, voucher statistics and Ofgem administration
+- The Ofgem Product Eligibility List (PEL) and MCS product/installer certification
+- UK heat pump market trends and installation statistics (MCS data dashboard, Heat Pump Association, Nesta)
+- Technology developments (R290/natural refrigerants, sound power, permitted development rules)
+- UK policy developments (Future Homes Standard, Clean Heat Market Mechanism, Warm Homes Plan)`,
+    reputableSources: 'ofgem.gov.uk, gov.uk, mcscertified.com, heatpumps.org.uk, nesta.org.uk, manufacturer newsrooms, established trade press',
+    policyScope: 'Boiler Upgrade Scheme grant amounts and conditions, MCS standards, Future Homes Standard, Clean Heat Market Mechanism',
+  },
+];
 
 // -------------------------------------------------------------------
 // Budget Tracker
@@ -194,12 +229,12 @@ const NEWS_IMAGES = {
 };
 
 const NEWS_IMAGE_RULES = [
-  { key: 'subsidy',      keywords: ['bafa', 'beg', 'subsidy', 'funding', 'grant', 'zuschuss', 'kfw', 'förder', 'förderung'] },
-  { key: 'government',   keywords: ['parliament', 'bundestag', 'bundesrat', 'minister', 'government', 'geg', 'regulation', 'gesetz', 'policy', 'law', 'legislation'] },
+  { key: 'subsidy',      keywords: ['bafa', 'beg', 'subsidy', 'funding', 'grant', 'zuschuss', 'kfw', 'förder', 'förderung', 'ofgem', 'boiler upgrade', 'voucher'] },
+  { key: 'government',   keywords: ['parliament', 'bundestag', 'bundesrat', 'minister', 'government', 'geg', 'regulation', 'gesetz', 'policy', 'law', 'legislation', 'desnz', 'future homes', 'clean heat'] },
   { key: 'solar',        keywords: ['solar', 'photovoltaic', 'pv', 'renewable', 'wind', 'erneuerbar', 'green energy'] },
   { key: 'technology',   keywords: ['r290', 'r32', 'refrigerant', 'cop', 'scop', 'efficiency', 'innovation', 'technology', 'inverter', 'compressor'] },
   { key: 'installation', keywords: ['install', 'installer', 'montage', 'handwerk', 'technician', 'fachmann', 'workforce'] },
-  { key: 'market',       keywords: ['market', 'sales', 'statistics', 'stat', 'trend', 'bwp', 'report', 'record', 'growth', 'demand', 'forecast'] },
+  { key: 'market',       keywords: ['market', 'sales', 'statistics', 'stat', 'trend', 'bwp', 'report', 'record', 'growth', 'demand', 'forecast', 'mcs', 'installation figures'] },
   { key: 'energy',       keywords: ['energy', 'electricity', 'power', 'grid', 'strom', 'energie', 'tariff', 'price hike'] },
   { key: 'house',        keywords: ['house', 'home', 'building', 'residential', 'gebäude', 'renovation', 'refurb', 'retrofit'] },
   { key: 'heatpump',     keywords: ['heat pump', 'heatpump', 'wärmepumpe', 'outdoor unit', 'odu', 'idu', 'hvac', 'heating', 'viessmann', 'vaillant', 'stiebel', 'bosch', 'daikin', 'nibe', 'wolf', 'panasonic'] },
@@ -249,7 +284,7 @@ function generateArticleGraphic(category = 'MARKET') {
     + `<circle r="44" fill="${t.accent}" opacity=".85"/>`
     + `</g>`
     + `<text x="64" y="120" font-family="Helvetica,Arial,sans-serif" font-size="30" font-weight="600" letter-spacing="6" fill="${t.accent}">${category}</text>`
-    + `<text x="64" y="540" font-family="Helvetica,Arial,sans-serif" font-size="42" font-weight="700" fill="#ffffff">HeatpumpIQ</text>`
+    + `<text x="64" y="540" font-family="Helvetica,Arial,sans-serif" font-size="42" font-weight="700" fill="#ffffff">HeatPump DB</text>`
     + `<text x="64" y="580" font-family="Helvetica,Arial,sans-serif" font-size="22" fill="#ffffff" opacity=".65">Market intelligence briefing</text>`
     + `</svg>`;
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -274,56 +309,62 @@ async function resolveSourceUrl(url) {
 }
 
 // -------------------------------------------------------------------
-// Research market info and WRITE original HeatpumpIQ editorial articles
+// Research market info and WRITE original HeatPump DB editorial articles
 // (2-3 per run) + current policy items, using Gemini + Google Search.
+// Market-parameterized: the `market` entry (from MARKETS) sets the research
+// scope, reputable sources and whether German translations are produced.
 // -------------------------------------------------------------------
-async function researchNewsAndPolicies(ai, budget) {
+async function researchNewsAndPolicies(ai, budget, market) {
   if (budget.isOverBudget) return { news: [], policies: [] };
 
   const today = new Date().toISOString().split('T')[0];
   const yearMonth = today.slice(0, 7).replace('-', '');
+  const idPrefix = `news-${yearMonth}-${market.code.toLowerCase()}`;
 
-  const prompt = `You are the editorial engine of "HeatpumpIQ", a German heat pump market intelligence app.
+  const germanBlock = market.includeGermanTranslation
+    ? `- For EACH article ALSO provide a professional German version of the same
+  content in "title_de", "summary_de", and "body_de": natural, journalistic
+  German for professional installers (correct Fachbegriffe: Wärmepumpe,
+  Förderung, Schallleistung, Kältemittel…), not a literal word-by-word
+  translation. Same paragraph structure as "body".`
+    : `- Do NOT include any translated fields — this market edition is English-only.`;
 
-STEP 1 — RESEARCH. Search for current (as of ${today}) information about heat pumps (Wärmepumpen) in Germany:
-- BAFA/BEG funding changes and the BAFA list of eligible heat pumps
-- KfW grant 458 processing and conditions
-- German heat pump market trends, sales statistics (BWP, Statista, manufacturer reports)
-- Technology developments (R290/natural refrigerants, noise limits, efficiency)
-- GEG (Gebäudeenergiegesetz) regulatory developments
+  const germanJsonFields = market.includeGermanTranslation
+    ? `
+      "title_de": "Prägnante redaktionelle Überschrift (Deutsch)",
+      "summary_de": "2-3 Sätze Vorspann (Deutsch)",
+      "body_de": "Erster Absatz...\\n\\nZweiter Absatz...\\n\\nDritter Absatz...",`
+    : '';
 
-STEP 2 — WRITE. Compose exactly 3 ORIGINAL editorial articles in English for HeatpumpIQ:
-- Each article must be an ORIGINAL synthesis written in your own words for HeatpumpIQ.
+  const prompt = `You are the editorial engine of "HeatPump DB", a ${market.marketName} heat pump market intelligence app.
+
+STEP 1 — RESEARCH. Search for current (as of ${today}) information about heat pumps in the ${market.marketName} market:
+${market.researchScope}
+
+STEP 2 — WRITE. Compose exactly 3 ORIGINAL editorial articles in English for HeatPump DB:
+- Each article must be an ORIGINAL synthesis written in your own words for HeatPump DB.
   Do NOT copy or closely paraphrase any single source.
 - The three articles must cover three DIFFERENT topics, one each from:
   (a) funding/policy, (b) market/statistics, (c) technology or installer practice.
 - Write for professional installers and informed homeowners: factual, concrete, no hype.
 - "body": 4-6 short paragraphs of plain text, paragraphs separated by a blank line.
 - "sources": 2-4 of the real web pages found in STEP 1 that informed the article
-  (official or reputable pages only — bafa.de, kfw.de, bmwk.de, waermepumpe.de,
-  manufacturer newsrooms, established trade press). Never invent URLs.
+  (official or reputable pages only — ${market.reputableSources}). Never invent URLs.
 - "category": exactly one of FUNDING | MARKET | TECHNOLOGY | INSTALLER INSIGHT.
-- For EACH article ALSO provide a professional German version of the same
-  content in "title_de", "summary_de", and "body_de": natural, journalistic
-  German for professional installers (correct Fachbegriffe: Wärmepumpe,
-  Förderung, Schallleistung, Kältemittel…), not a literal word-by-word
-  translation. Same paragraph structure as "body".
+${germanBlock}
 
-Also compile 3-5 current policy/regulation items (BAFA/KfW programs with amounts, GEG requirements, efficiency standards).
+Also compile 3-5 current policy/regulation items (${market.policyScope}).
 
 Return ONLY valid JSON with this exact structure:
 {
   "news": [
     {
-      "id": "news-${yearMonth}-001",
+      "id": "${idPrefix}-001",
       "title": "Concise editorial headline (English)",
       "summary": "2-3 sentence standfirst/dek (English)",
-      "body": "Paragraph one...\\n\\nParagraph two...\\n\\nParagraph three...",
-      "title_de": "Prägnante redaktionelle Überschrift (Deutsch)",
-      "summary_de": "2-3 Sätze Vorspann (Deutsch)",
-      "body_de": "Erster Absatz...\\n\\nZweiter Absatz...\\n\\nDritter Absatz...",
+      "body": "Paragraph one...\\n\\nParagraph two...\\n\\nParagraph three...",${germanJsonFields}
       "category": "MARKET",
-      "sources": [ { "title": "Source page title", "url": "https://real-url.de" } ],
+      "sources": [ { "title": "Source page title", "url": "https://real-url.example" } ],
       "date": "${today}T00:00:00Z"
     }
   ],
@@ -333,12 +374,12 @@ Return ONLY valid JSON with this exact structure:
       "title": "Policy name",
       "category": "Subsidy",
       "summary": "Description of the policy",
-      "sourceUrl": "https://official-source.de"
+      "sourceUrl": "https://official-source.example"
     }
   ]
 }
 
-Increment the news ID counter (news-${yearMonth}-001, -002, -003).
+Increment the news ID counter (${idPrefix}-001, -002, -003).
 Do NOT include imageUrl — a related graphic is generated by the system.
 Return ONLY the JSON object, no other text:`;
 
@@ -361,7 +402,7 @@ Return ONLY the JSON object, no other text:`;
       return { news: [], policies: [] };
     }
 
-    // Original HeatpumpIQ articles: stamp byline/branding in code (not by AI),
+    // Original HeatPump DB articles: stamp byline/branding in code (not by AI),
     // attach a generated related graphic, resolve grounding-redirect source
     // URLs to real publisher URLs, and keep only sane source entries.
     const articles = await Promise.all(
@@ -379,7 +420,7 @@ Return ONLY the JSON object, no other text:`;
             ...item,
             category,
             sources,
-            author: 'HeatpumpIQ Editorial',
+            author: 'HeatPump DB Editorial',
             original: true,
             // Original articles open in-app; keep first source as fallback link.
             sourceUrl: sources[0]?.url ?? '',
@@ -420,56 +461,76 @@ async function deleteCollection(path, batchSize = 400) {
 // -------------------------------------------------------------------
 // Main update logic
 // -------------------------------------------------------------------
-async function runAutoUpdate(budget, options = {}) {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-  // Step 0 (FIRST — must never be starved by the research loop): generate
-  // the monthly HeatpumpIQ editorial articles + policy items and publish
-  // them immediately. The manufacturer research below can consume the whole
-  // function timeout; news/policies are the user-facing monthly deliverable.
-  console.log('Researching latest news and policies (priority step)...');
-  const { news, policies } = await researchNewsAndPolicies(ai, budget);
-  console.log(`  → Generated ${news.length} articles, ${policies.length} policy items.`);
-
+async function publishNewsAndPolicies(marketCode, news, policies) {
   if (news.length > 0) {
-    await deleteCollection(`countries/${COUNTRY_CODE}/news`);
-    const newsRef = firestoreDb.collection(`countries/${COUNTRY_CODE}/news`);
+    await deleteCollection(`countries/${marketCode}/news`);
+    const newsRef = firestoreDb.collection(`countries/${marketCode}/news`);
     const newsBatch = firestoreDb.batch();
     news.forEach((item, i) => {
       const id = item.id || `news-${Date.now()}-${i}`;
       newsBatch.set(newsRef.doc(id), item);
     });
     await newsBatch.commit();
-    console.log('News published.');
+    console.log(`[${marketCode}] News published.`);
   }
 
   if (policies.length > 0) {
-    await deleteCollection(`countries/${COUNTRY_CODE}/policies`);
-    const policyRef = firestoreDb.collection(`countries/${COUNTRY_CODE}/policies`);
+    await deleteCollection(`countries/${marketCode}/policies`);
+    const policyRef = firestoreDb.collection(`countries/${marketCode}/policies`);
     const polBatch = firestoreDb.batch();
     policies.forEach((item, i) => {
       const id = item.id || `pol-${Date.now()}-${i}`;
       polBatch.set(policyRef.doc(id), item);
     });
     await polBatch.commit();
-    console.log('Policies published.');
+    console.log(`[${marketCode}] Policies published.`);
+  }
+
+  await firestoreDb.collection('countries').doc(marketCode).set({
+    lastUpdated: new Date().toISOString(),
+    newsCount: news.length,
+    policyCount: policies.length,
+  }, { merge: true });
+}
+
+async function runAutoUpdate(budget, options = {}) {
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+  // Which markets to serve this run — options.countries (e.g. ['GB']) narrows
+  // the run; default is every configured market. Unknown codes are ignored.
+  const requested = Array.isArray(options.countries) && options.countries.length > 0
+    ? options.countries.map(c => String(c).toUpperCase())
+    : MARKETS.map(m => m.code);
+  const markets = MARKETS.filter(m => requested.includes(m.code));
+
+  // Step 0 (FIRST — must never be starved by the research loop): generate
+  // the monthly HeatPump DB editorial articles + policy items per market and
+  // publish them immediately. The manufacturer research below can consume the
+  // whole function timeout; news/policies are the user-facing deliverable.
+  const perMarket = {};
+  let deNews = [];
+  let dePolicies = [];
+  for (const market of markets) {
+    console.log(`[${market.code}] Researching latest news and policies (priority step)...`);
+    const { news, policies } = await researchNewsAndPolicies(ai, budget, market);
+    console.log(`[${market.code}]   → Generated ${news.length} articles, ${policies.length} policy items.`);
+    await publishNewsAndPolicies(market.code, news, policies);
+    perMarket[market.code] = { newsUpdated: news.length, policiesUpdated: policies.length };
+    if (market.code === 'DE') { deNews = news; dePolicies = policies; }
   }
 
   // newsOnly mode: publish news/policies and stop — used for manual refreshes
   // without spending time/budget on the manufacturer research loop.
   if (options.newsOnly) {
-    await firestoreDb.collection('countries').doc(COUNTRY_CODE).set({
-      lastUpdated: new Date().toISOString(),
-      newsCount: news.length,
-      policyCount: policies.length,
-    }, { merge: true });
     return {
       mode: 'newsOnly',
-      newsUpdated: news.length,
-      policiesUpdated: policies.length,
+      markets: perMarket,
       budget: budget.summary,
     };
   }
+
+  const news = deNews;
+  const policies = dePolicies;
 
   // Step 1: Load existing products from Firestore
   console.log('Loading existing products from Firestore...');
@@ -586,6 +647,7 @@ async function runAutoUpdate(budget, options = {}) {
     productsAdded,
     productsUpdated,
     totalProducts,
+    markets: perMarket,
     newsUpdated: news.length,
     policiesUpdated: policies.length,
     budget: budget.summary,
@@ -630,7 +692,15 @@ functions.http('autoUpdateDatabase', async (req, res) => {
 
   try {
     const newsOnly = req.query?.newsOnly === 'true' || req.body?.newsOnly === true;
-    const result = await runAutoUpdate(budget, { newsOnly });
+    // ?countries=GB or ?countries=DE,GB (body: {"countries":["GB"]}) narrows
+    // the run to specific markets; default = all configured markets.
+    const countriesRaw = req.query?.countries ?? req.body?.countries;
+    const countries = Array.isArray(countriesRaw)
+      ? countriesRaw
+      : typeof countriesRaw === 'string' && countriesRaw.trim()
+        ? countriesRaw.split(',').map(s => s.trim())
+        : undefined;
+    const result = await runAutoUpdate(budget, { newsOnly, countries });
     console.log('=== Auto Update Complete ===', JSON.stringify(result));
     return res.status(200).json({ status: 'success', ...result });
   } catch (err) {

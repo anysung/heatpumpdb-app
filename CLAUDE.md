@@ -57,7 +57,11 @@
   eligibility — keep the caveat. Brand short names:
   `scripts/ofgem/manufacturer-short-names-gb.json` (curated).
 - Cloud Function (`google_cloud_function/index.js`) is deployed separately via its own
-  `deploy.sh`; it owns the news pipeline.
+  `deploy.sh`; it owns the news pipeline. News/policies are market-parameterized
+  (`MARKETS`: DE + GB → `countries/<code>/news|policies`); a manual run can be narrowed
+  with `?newsOnly=true&countries=GB`. GB articles are English-only (no `_de` fields).
+  Redeploying with plain `gcloud functions deploy` (no env flags) preserves the
+  function's env vars; `deploy.sh` overwrites them — only run it with real secrets exported.
 
 ## 3. Market News Image Rules (google_cloud_function/index.js)
 

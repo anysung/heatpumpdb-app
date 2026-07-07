@@ -1,7 +1,11 @@
 #!/bin/bash
 # =============================================================================
-# Deploy script: Germany Heat Pump Auto-Updater
-# Deploys the Cloud Function and sets up monthly Cloud Scheduler
+# Deploy script: HeatPump DB Auto-Updater (news/policies for all markets)
+# Deploys the Cloud Function and sets up monthly Cloud Scheduler.
+# Markets served per run: MARKETS in index.js (DE + GB); narrow a manual run
+# with ?countries=GB. Note: redeploying with plain `gcloud functions deploy`
+# (no env flags) preserves existing env vars — this script SETS them, so only
+# run it with real secret values exported.
 # =============================================================================
 
 set -e
