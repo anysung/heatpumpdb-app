@@ -8,6 +8,7 @@ import {
 } from './components/auth/AuthShell';
 import { HeatPumpDatabase, HeatPump, User, AppMode, Language } from './types';
 import { translations } from './translations';
+import { DEFAULT_LANGUAGE } from './hpiq/market';
 // Use Firestore Service
 import { getProducts, getCommercialProducts, getNews, getPolicies, getBAFA } from './services/dbService';
 
@@ -18,7 +19,7 @@ const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
 
   const [fullDatabase, setFullDatabase] = useState<HeatPumpDatabase | null>(null);
   

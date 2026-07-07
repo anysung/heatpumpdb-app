@@ -5,11 +5,12 @@ import { ACTIVE_COUNTRY } from './config/countryProfiles';
 // Auth marketing chip for the market's funding scheme — the auth surface is
 // shared across editions; only this chip names the national scheme.
 const FUNDING_CHIP = ACTIVE_COUNTRY.code === 'GB'
-  ? { en: 'BUS / MCS eligibility', de: 'BUS / MCS eligibility' }
-  : { en: 'BAFA / KfW eligibility', de: 'BAFA-/KfW-Förderfähigkeit' };
+  ? { en: 'BUS / MCS eligibility', de: 'BUS / MCS eligibility', fr: 'BUS / MCS eligibility' }
+  : ACTIVE_COUNTRY.code === 'FR'
+    ? { en: "MaPrimeRénov' / CEE eligibility", de: "MaPrimeRénov' / CEE eligibility", fr: "Éligibilité MaPrimeRénov' / CEE" }
+    : { en: 'BAFA / KfW eligibility', de: 'BAFA-/KfW-Förderfähigkeit', fr: 'BAFA / KfW eligibility' };
 
-export const translations = {
-  en: {
+const EN_T = {
     // General / Auth
     subTitle: "The most comprehensive heat pump database",
     welcomeTitle: "Welcome to Heat Pump World",
@@ -159,8 +160,9 @@ export const translations = {
     adminQuotaRemaining: "Remaining",
     adminQuotaSave: "Save",
     adminQuotaSaved: "Saved!",
-  },
-  de: {
+};
+
+const DE_T = {
     // General / Auth
     subTitle: "Die umfassendste Wärmepumpen-Datenbank",
     welcomeTitle: "Willkommen",
@@ -310,5 +312,53 @@ export const translations = {
     adminQuotaRemaining: "Verbleibend",
     adminQuotaSave: "Speichern",
     adminQuotaSaved: "Gespeichert!",
-  }
 };
+
+// French auth surface (FR edition) — user-facing auth/footer strings in
+// French; admin-console strings intentionally stay English (operator-facing).
+const FR_T = {
+    ...EN_T,
+    subTitle: "La base de données de pompes à chaleur la plus complète",
+    welcomeTitle: "Bienvenue dans l'univers des pompes à chaleur",
+    signup: "Créer un compte",
+    login: "Se connecter",
+    back: "Retour",
+    loginTitle: "Connexion",
+    loginSub: "Saisissez vos identifiants pour accéder à la base de données.",
+    email: "Adresse e-mail",
+    password: "Mot de passe",
+    forgotPass: "Mot de passe oublié ?",
+    loggingIn: "Connexion en cours…",
+    createAccount: "Créer un compte",
+    firstName: "Prénom",
+    lastName: "Nom",
+    companyType: "Type d'entreprise",
+    select: "Sélectionner…",
+    jobRole: "Fonction",
+    companyName: "Nom de l'entreprise",
+    city: "Ville",
+    referralSource: "Comment nous avez-vous connus ?",
+    registering: "Inscription en cours…",
+    completeSignup: "Finaliser l'inscription",
+    searchPlaceholder: "Rechercher un modèle, une marque ou une puissance…",
+    authTagline: "L'intelligence de la transition thermique",
+    authHeadline: "Toutes les pompes à chaleur du marché.",
+    authHeadlineAccent: "Une base de données intelligente.",
+    authMarketLabel: "Marché",
+    authResidentialDesc: "Maisons individuelles & petits collectifs",
+    authCommercialDesc: "Tertiaire & grandes installations",
+    authChipBafa: FUNDING_CHIP.fr,
+    authChipRefrigerant: "Données R290 & fluides frigorigènes",
+    authChipScop: "Comparaison SCOP, acoustique & puissance",
+    authEcoLine: "Des données pour un parc immobilier neutre en carbone",
+    authNoAccount: "Pas encore de compte ?",
+    authHaveAccount: "Déjà inscrit ?",
+    orContinueWith: "ou continuer avec",
+    continueGoogle: "Continuer avec Google",
+    continueApple: "Continuer avec Apple",
+    legalDisclaimer: "Avertissement : ces données sont générées automatiquement et peuvent contenir des erreurs. Vérifiez toujours les fiches techniques des fabricants.",
+    loading: "Chargement…",
+    noResults: "Aucun résultat.",
+};
+
+export const translations = { en: EN_T, de: DE_T, fr: FR_T };

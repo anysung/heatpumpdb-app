@@ -10,6 +10,9 @@
         ],
         "uk": [
           "heatpumpdb-uk"
+        ],
+        "fr": [
+          "heatpumpdb-fr"
         ]
       }
     }

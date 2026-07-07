@@ -19,14 +19,21 @@ function categoryOf(item: NewsItem): string {
 }
 
 /** Pick the stored translation of an article for the active language.
- *  Articles are generated bilingually (title/summary/body + *_de fields);
- *  falls back to English when a German field is missing. */
+ *  Articles are generated bilingually (title/summary/body + *_de or *_fr
+ *  fields per market); falls back to English when a translation is missing. */
 function localized(item: NewsItem, lang: string): { title: string; summary: string; body: string } {
   if (lang === 'de') {
     return {
       title: item.title_de ?? item.title,
       summary: item.summary_de ?? item.summary,
       body: item.body_de ?? item.body ?? '',
+    };
+  }
+  if (lang === 'fr') {
+    return {
+      title: item.title_fr ?? item.title,
+      summary: item.summary_fr ?? item.summary,
+      body: item.body_fr ?? item.body ?? '',
     };
   }
   return { title: item.title, summary: item.summary, body: item.body ?? '' };

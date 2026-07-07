@@ -235,6 +235,10 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <FieldCell label={t.ds.f.odu} value={dsp.odu} note={n('odu')} />
                     <FieldCell label={t.ds.f.type} value={typeLine} note={n('type')} />
                     <FieldCell label={t.ds.f.bafaId} value={dsp.sourceId} note={n('bafaId')} />
+                    {/* NF PAC reference — only present on confident matches (FR policy). */}
+                    {dsp.raw.nf_pac_reference && (
+                      <FieldCell label={t.ds.f.nfPac} value={dsp.raw.nf_pac_reference} note={n('nfPac')} />
+                    )}
                   </SectionGrid>
                 </div>
               )}

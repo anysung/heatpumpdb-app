@@ -8,8 +8,10 @@
     "build": "vite build",
     "build:de": "vite build",
     "build:uk": "VITE_COUNTRY_CODE=GB vite build --outDir dist-uk",
+    "build:fr": "VITE_COUNTRY_CODE=FR vite build --outDir dist-fr",
     "deploy:de": "npm run build:de && firebase deploy --only hosting:de",
     "deploy:uk": "npm run build:uk && firebase deploy --only hosting:uk",
+    "deploy:fr": "npm run build:fr && firebase deploy --only hosting:fr",
     "preview": "vite preview",
     "start": "node server.js"
   },
