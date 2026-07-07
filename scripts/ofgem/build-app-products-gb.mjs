@@ -7,14 +7,19 @@
  * Primary source:  data_sources/ofgem_pel/parsed/YYYY-MM/pel-normalized.json
  *                  (newest snapshot auto-selected; --snapshot=YYYY-MM overrides)
  * Short names:     scripts/ofgem/manufacturer-short-names-gb.json (curated, committed)
- * Overlay source:  data_sources/ofgem_pel/matching/YYYY-MM/pel-bafa-matches.json
- *                  (optional; produced by match-pel-to-bafa.mjs — BAFA_REFERENCE
- *                  technical specs for PEL models also listed on the German
- *                  BAFA registry; performance_source is stamped 'BAFA_REFERENCE')
+ * Overlay sources (both optional, from data_sources/ofgem_pel/matching/YYYY-MM/):
+ *   pel-bafa-matches.json   (match-pel-to-bafa.mjs)  — BAFA_REFERENCE technical
+ *     specs for PEL models also listed on the German BAFA registry.
+ *   pel-eprel-matches.json  (match-pel-to-eprel.mjs) — official EPREL label data
+ *     (registration number, ηs, design output, sound power).
+ *   Precedence: BAFA_REFERENCE fills performance fields first; EPREL label
+ *     values fill performance fields ONLY on records without a BAFA match
+ *     (performance_source='EPREL'); eprel_registration_number is set on every
+ *     EPREL-matched record regardless.
  *
  * Output shape mirrors the DE builder (build-app-products-from-master-seed.mjs):
  * same 75 base keys (DE-only values null) + 17 GB/PEL provenance keys
- * + 4 BAFA_REFERENCE keys = 96 fields.
+ * + 4 BAFA_REFERENCE keys + 3 EPREL keys = 99 fields.
  * The app loader reads `data.items`; the view model renders nulls as '—'.
  *
  * Policies:
@@ -43,7 +48,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const EXPECTED_FIELD_COUNT = 96;
+const EXPECTED_FIELD_COUNT = 99;
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
 function loadJSON(relPath) {
@@ -82,6 +87,14 @@ const matchByKey = new Map((matchFile?.matches ?? []).map(m => [m.match_key, m])
 console.log(matchFile
   ? `BAFA_REFERENCE overlay: ${matchByKey.size} matches (seed ${matchFile._meta.bafa_seed_snapshot})`
   : 'BAFA_REFERENCE overlay: none (building without enrichment)');
+
+// EPREL overlay (optional) — produced by match-pel-to-eprel.mjs
+const eprelPath = resolve(ROOT, `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-eprel-matches.json`);
+const eprelFile = existsSync(eprelPath) ? JSON.parse(readFileSync(eprelPath, 'utf8')) : null;
+const eprelByKey = new Map((eprelFile?.matches ?? []).map(m => [m.match_key, m]));
+console.log(eprelFile
+  ? `EPREL overlay: ${eprelByKey.size} matches (EPREL snapshot ${eprelFile._meta.eprel_snapshot})`
+  : 'EPREL overlay: none');
 
 const generatedAt = new Date().toISOString();
 
@@ -143,8 +156,14 @@ function uniqueSourceId(mcsNumber) {
 
 function buildItem(r) {
   const installationType = deriveInstallationType(r);
-  const m = matchByKey.get(`${r.mcs_number}||${r.model}`) ?? null;
+  const key = `${r.mcs_number}||${r.model}`;
+  const m = matchByKey.get(key) ?? null;
   const sp = m?.specs ?? {};
+  const e = eprelByKey.get(key) ?? null;
+  // EPREL label values fill performance fields ONLY without a BAFA match —
+  // one performance source per record, no mixed provenance.
+  const ev = (!m && e) ? e.values : {};
+  const eprelFilledPerf = Object.values(ev).some(v => v != null);
   return {
     // ── Identity ────────────────────────────────────────────────────────────
     bafa_id: null,                       // GB records have no BAFA identity
@@ -165,11 +184,11 @@ function buildItem(r) {
 
     // ── Heating performance (PEL: none; BAFA_REFERENCE when matched) ────────
     power_35C_kw: sp.power_35C_kw ?? null,
-    efficiency_35C_percent: sp.efficiency_35C_percent ?? null,
-    power_design_35C_kw: sp.power_design_35C_kw ?? null,
+    efficiency_35C_percent: sp.efficiency_35C_percent ?? ev.efficiency_35C_percent ?? null,
+    power_design_35C_kw: sp.power_design_35C_kw ?? ev.power_design_35C_kw ?? null,
     power_55C_kw: sp.power_55C_kw ?? null,
-    efficiency_55C_percent: sp.efficiency_55C_percent ?? null,
-    power_design_55C_kw: sp.power_design_55C_kw ?? null,
+    efficiency_55C_percent: sp.efficiency_55C_percent ?? ev.efficiency_55C_percent ?? null,
+    power_design_55C_kw: sp.power_design_55C_kw ?? ev.power_design_55C_kw ?? null,
 
     // ── COP / SCOP / SEER (PEL: none; BAFA_REFERENCE when matched) ──────────
     cop_A7W35: sp.cop_A7W35 ?? null,
@@ -184,8 +203,8 @@ function buildItem(r) {
     cooling_capacity_kw: sp.cooling_capacity_kw ?? null,
 
     // ── Noise & electrical ──────────────────────────────────────────────────
-    noise_outdoor_dB: sp.noise_outdoor_dB ?? null,
-    noise_indoor_dB: sp.noise_indoor_dB ?? null,
+    noise_outdoor_dB: sp.noise_outdoor_dB ?? ev.noise_outdoor_dB ?? null,
+    noise_indoor_dB: sp.noise_indoor_dB ?? ev.noise_indoor_dB ?? null,
     max_electric_power_kw: sp.max_electric_power_kw ?? null,
 
     // ── System ──────────────────────────────────────────────────────────────
@@ -252,11 +271,14 @@ function buildItem(r) {
     pel_source_url: r.source_url ?? null,
     pel_snapshot_fetched_at: PEL_FETCHED_AT,
 
-    // ── BAFA_REFERENCE enrichment provenance ────────────────────────────────
-    performance_source: m ? 'BAFA_REFERENCE' : null,
+    // ── Enrichment provenance (one performance source per record) ───────────
+    performance_source: m ? 'BAFA_REFERENCE' : eprelFilledPerf ? 'EPREL' : null,
     bafa_reference_id: m?.bafa_id ?? null,
     bafa_reference_model: m?.bafa_model ?? null,
     bafa_reference_match_type: m?.match_type ?? null,
+    eprel_registration_number: e?.eprel_registration_number ?? null,
+    eprel_model: e?.eprel_model ?? null,
+    eprel_match_type: e?.match_type ?? null,
 
     // ── Component / outdoor-side fields (no GB classification yet) ──────────
     outdoor_unit_model: null,
@@ -318,7 +340,13 @@ if (items.length !== records.length - biomassCount) {
 
 const enrichedCount = items.filter(i => i.performance_source === 'BAFA_REFERENCE').length;
 if (matchFile && enrichedCount === 0) {
-  console.error('FAIL: overlay present but zero items enriched — match_key join broken?');
+  console.error('FAIL: BAFA overlay present but zero items enriched — match_key join broken?');
+  process.exit(1);
+}
+const eprelLinkedCount = items.filter(i => i.eprel_registration_number !== null).length;
+const eprelPerfCount = items.filter(i => i.performance_source === 'EPREL').length;
+if (eprelFile && eprelLinkedCount === 0) {
+  console.error('FAIL: EPREL overlay present but zero items linked — match_key join broken?');
   process.exit(1);
 }
 
@@ -333,7 +361,7 @@ function writeOutput(relPath, outItems, dataset, segmentsIncluded) {
   const payload = {
     _meta: {
       generated: generatedAt,
-      generator: 'build-app-products-gb.mjs v1.1',
+      generator: 'build-app-products-gb.mjs v1.2',
       dataset,
       country: 'GB',
       primary_source: 'OFGEM_PEL',
@@ -348,6 +376,10 @@ function writeOutput(relPath, outItems, dataset, segmentsIncluded) {
       overlay_source: matchFile ? `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-bafa-matches.json` : null,
       bafa_reference_seed_snapshot: matchFile?._meta.bafa_seed_snapshot ?? null,
       bafa_reference_enriched_total: enrichedCount,
+      eprel_overlay_source: eprelFile ? `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-eprel-matches.json` : null,
+      eprel_snapshot: eprelFile?._meta.eprel_snapshot ?? null,
+      eprel_linked_total: eprelLinkedCount,
+      eprel_performance_source_total: eprelPerfCount,
       segments_included: segmentsIncluded,
       segmentation_policy: 'capacity_v2 on BAFA_REFERENCE kW: ≤20.99=residential_core, 21-45=light_commercial, >45=commercial_project; unmatched (null kW) → residential dataset, market_segment null',
       pel_snapshot: SNAPSHOT,
@@ -384,6 +416,7 @@ console.log(`  technology:         ${JSON.stringify(techDist)}`);
 console.log(`  certification:      ${JSON.stringify(statusDist)}`);
 console.log(`  segments:           ${JSON.stringify(segDist)}`);
 console.log(`  BAFA_REFERENCE enriched: ${enrichedCount}/${items.length}`);
+console.log(`  EPREL linked (reg no.):  ${eprelLinkedCount}/${items.length}  (perf source EPREL: ${eprelPerfCount})`);
 console.log(`  manufacturer_short: ${withShort}/${items.length}`);
 console.log(`  installation_type (name keyword): ${withInstall}`);
 console.log(`  duplicate-variant source_ids suffixed: ${suffixed.length}`);

@@ -60,10 +60,17 @@ export interface HeatPump {
   // performance_source: 'BAFA_REFERENCE' when technical specs were copied from
   //   the same hardware's German BAFA listing — a cross-reference, NOT UK
   //   certification data. Null when performance fields are unenriched.
-  performance_source?: string | null;
+  performance_source?: string | null;         // 'BAFA_REFERENCE' | 'EPREL' | null
   bafa_reference_id?: string | null;
   bafa_reference_model?: string | null;
   bafa_reference_match_type?: string | null;  // 'exact_model' | 'token_subsequence'
+
+  // ── EPREL enrichment (GB, set by match-pel-to-eprel.mjs) ───────────────────
+  // eprel_registration_number (declared above) links the official EU label
+  // registration; label values (ηs, design output, sound power) fill
+  // performance fields only when there is no BAFA_REFERENCE match.
+  eprel_model?: string | null;
+  eprel_match_type?: string | null;           // 'exact_model' | 'token_subsequence'
 
   // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
   // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source

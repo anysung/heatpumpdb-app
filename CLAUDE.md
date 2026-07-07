@@ -46,16 +46,19 @@
 - EPREL matching is **not yet implemented** (0 matches); energy-label classes are derived
   from BAFA ηs per EU 811/2013 and the data sheet says so — keep that honesty.
 - **UK pipeline** (`scripts/ofgem/`): `fetch-pel-xlsx` → `parse-pel-xlsx` →
-  `match-pel-to-bafa` (optional overlay) → `build-app-products-gb` (auto-selects newest
-  `data_sources/ofgem_pel/parsed/YYYY-MM/`) → `public/data/products-gb.json` +
-  `products-commercial-gb.json`. PEL publishes no performance data; matched records carry
-  BAFA specs as a cross-reference (`performance_source='BAFA_REFERENCE'` — say so in UI,
-  it is not UK certification data), unmatched records keep null performance fields and
-  stay residential with `market_segment` null. Biomass is excluded. Matching is
+  `match-pel-to-bafa` + `match-pel-to-eprel` (optional overlays) → `build-app-products-gb`
+  (auto-selects newest `data_sources/ofgem_pel/parsed/YYYY-MM/`) →
+  `public/data/products-gb.json` + `products-commercial-gb.json`. PEL publishes no
+  performance data; one performance source per record, never mixed:
+  `performance_source='BAFA_REFERENCE'` (German registry cross-reference — say so in UI)
+  takes precedence, else `'EPREL'` (official EU label data: ηs, design output, sound
+  power; SCOP/COP are NOT on EPREL and must not be derived). `eprel_registration_number`
+  is set on every EPREL match regardless. Unmatched records keep null performance fields
+  and stay residential with `market_segment` null. Biomass is excluded. Matching is
   conservative: brand-gated token-sequence matching only, never plain substring
-  (false variant matches like "WPL 25 AS" vs "WPL 25 A"). PEL listing ≠ full BUS
-  eligibility — keep the caveat. Brand short names:
-  `scripts/ofgem/manufacturer-short-names-gb.json` (curated).
+  (false variant matches like "WPL 25 AS" vs "WPL 25 A"); multi-candidate accepted only
+  with identical copied values. PEL listing ≠ full BUS eligibility — keep the caveat.
+  Brand short names: `scripts/ofgem/manufacturer-short-names-gb.json` (curated).
 - Cloud Function (`google_cloud_function/index.js`) is deployed separately via its own
   `deploy.sh`; it owns the news pipeline. News/policies are market-parameterized
   (`MARKETS`: DE + GB → `countries/<code>/news|policies`); a manual run can be narrowed

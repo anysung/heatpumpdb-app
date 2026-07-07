@@ -142,5 +142,22 @@
     "policy": "Brand-gated (short-name equality) + exact token sequence or contiguous token subsequence; multi-candidate accepted only with identical specs; NO plain substring matching (false variant matches like 'WPL 25 AS' vs 'WPL 25 A' were observed and rejected in design).",
     "semantics": "Match = same hardware listed on German BAFA registry. Copied specs are a technical cross-reference (performance_source='BAFA_REFERENCE'), not UK certification data. Matched records are capacity-segmented (53 → products-commercial-gb.json); unmatched stay residential with market_segment null."
   },
-  "next_recommended_step": "Phase A + BAFA_REFERENCE matching complete. Next: GB UI adaptation (MCS Number label via sourceIdLabel, BAFA-column handling, data-sheet provenance note for BAFA_REFERENCE specs, VITE_COUNTRY_CODE=GB build/deploy target); later EPREL matching for GB (enabledEnrichmentLayers includes EPREL)."
+  "eprel_matching": {
+    "match_completed": true,
+    "match_date": "2026-07-07",
+    "matcher": "scripts/ofgem/match-pel-to-eprel.mjs v1.0",
+    "output": "data_sources/ofgem_pel/matching/2026-06/pel-eprel-matches.json (gitignored)",
+    "eprel_snapshot": "2026-07 (45,623 heat-pump spaceheater registrations)",
+    "results": {
+      "matched": 1428,
+      "exact_model": 801,
+      "token_subsequence": 627,
+      "ambiguous_rejected": 98,
+      "no_model_match": 2419,
+      "brand_not_in_eprel": 477
+    },
+    "policy": "Brand-gated (GB short-name token sequence in EPREL supplier/organisation tokens) + exact/contiguous token-sequence matching; multi-candidate accepted only with identical label values (latest registration kept); no plain substring.",
+    "semantics": "Copied values are official EU label data per EU 811/2013 (ηs 35/55, design heat output, sound power). SCOP/COP are not on EPREL and are NOT derived. One performance source per record: BAFA_REFERENCE takes precedence; EPREL fills performance only on records without a BAFA match (performance_source='EPREL', 1,093 records); eprel_registration_number set on every match (1,428). Total records with performance data: 1,677/4,422 (38%)."
+  },
+  "next_recommended_step": "GB dataset pipeline complete (PEL + BAFA_REFERENCE + EPREL). Next candidates: DE EPREL matching (reuse the same matcher family against BAFA master seed); monthly GB refresh run order: fetch-pel-xlsx → parse-pel-xlsx → match-pel-to-bafa → match-pel-to-eprel → build-app-products-gb → deploy:uk."
 }
