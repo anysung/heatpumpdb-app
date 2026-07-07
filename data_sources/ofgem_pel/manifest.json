@@ -98,5 +98,30 @@
     "No authentication required for public file download.",
     "Monthly refresh obligation: PEL is updated by Ofgem when new products are certified or existing products expire."
   ],
-  "next_recommended_step": "PEL workflow complete. Commit scripts, manifest, and fetch-log. Next: design PEL↔BAFA/EPREL matching using brand normalization + model string matching. Join key: mcs_number (from PEL) ↔ mcs_number field to be added to HeatPump type for UK products."
+  "app_build": {
+    "build_completed": true,
+    "build_date": "2026-07-07",
+    "builder": "scripts/ofgem/build-app-products-gb.mjs v1.0",
+    "short_names": "scripts/ofgem/manufacturer-short-names-gb.json (137 heat pump brands, curated overrides + suffix-strip heuristic)",
+    "outputs": {
+      "residential": "public/data/products-gb.json (4422 items, gitignored)",
+      "commercial": "public/data/products-commercial-gb.json (0 items — intentionally empty, see policy)"
+    },
+    "policies": {
+      "biomass": "174 Biomass records excluded (heat pump app)",
+      "segmentation": "PEL has no capacity/SCOP data → capacity segmentation impossible; all heat pumps exported to residential dataset with market_segment null; commercial dataset empty",
+      "duplicates": "Duplicate MCS numbers are real model variants sharing one cert number; kept, with source_id suffixed '#n' (15 records across 4 groups). mcs_number stays raw for display.",
+      "installation_type": "Derived only from explicit Monobloc/Split keywords in product_name/model (installation_type_derived='name_keyword', 140 records); else null",
+      "field_shape": "92 fields = DE 75-key parity (DE-only values null) + 17 GB/PEL provenance keys. Loader/view model handle nulls as '—'."
+    },
+    "validation": {
+      "recordCount": "PASS (4422 = 4596 − 174 biomass)",
+      "fieldCount": "PASS (92)",
+      "noPriceKeys": "PASS",
+      "provenanceComplete": "PASS",
+      "sourceIdUnique": "PASS",
+      "noBiomassLeak": "PASS"
+    }
+  },
+  "next_recommended_step": "Phase A complete (fetch → parse → app dataset build). Next (Phase B candidates): PEL↔BAFA/EPREL matching using brand normalization + model string matching to fill performance fields (join key: mcs_number); GB UI adaptation (MCS Number label, hide BAFA-specific columns, English type labels)."
 }

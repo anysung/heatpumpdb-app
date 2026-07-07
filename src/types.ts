@@ -33,6 +33,29 @@ export interface HeatPump {
   mcs_number?: string;
   eprel_registration_number?: string;
 
+  // ── Ofgem PEL provenance (GB only, set by build-app-products-gb.mjs) ────────
+  // pel_certification_status: 'listed_no_expiry_date' | 'active_with_expiry' |
+  //   'expiry_imminent' | 'expired_confirmed' — cert-body expiry semantics, NOT
+  //   a BUS-eligibility claim. PEL listing does not guarantee full BUS eligibility.
+  // installation_type_derived: 'name_keyword' when installation_type was derived
+  //   from explicit Monobloc/Split keywords in the product name; null otherwise.
+  mcs_number_base?: string | null;
+  mcs_model_suffix?: string | null;
+  product_name?: string | null;
+  technology_type?: string | null;      // 'ASHP' | 'WSHP' | 'EAHP'
+  technology_type_raw?: string | null;
+  pel_certification_status?: string | null;
+  mcs_cert_date?: string | null;        // ISO date (YYYY-MM-DD)
+  expiry_date?: string | null;          // ISO date (YYYY-MM-DD)
+  pel_eligibility_interpretation?: string | null;
+  pel_eligibility_caveat?: string | null;
+  pel_snapshot?: string | null;
+  pel_source_period?: string | null;
+  pel_source_last_modified?: string | null;
+  pel_source_url?: string | null;
+  pel_snapshot_fetched_at?: string | null;
+  installation_type_derived?: string | null;
+
   // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
   // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source
   //   snapshot used to generate this dataset — NOT a claim of current eligibility.

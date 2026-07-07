@@ -40,6 +40,12 @@
 - Diff reference baseline snapshot: `2026-03` (keep `data_sources/bafa/raw/2026-03` + `parsed/2026-03`).
 - EPREL matching is **not yet implemented** (0 matches); energy-label classes are derived
   from BAFA ηs per EU 811/2013 and the data sheet says so — keep that honesty.
+- **UK pipeline** (`scripts/ofgem/`): `fetch-pel-xlsx` → `parse-pel-xlsx` →
+  `build-app-products-gb` (auto-selects newest `data_sources/ofgem_pel/parsed/YYYY-MM/`) →
+  `public/data/products-gb.json`. PEL publishes no performance data (kW/COP/SCOP stay null
+  until enrichment), Biomass is excluded, capacity segmentation is impossible → the GB
+  commercial dataset is intentionally empty. PEL listing ≠ full BUS eligibility — keep the
+  caveat. Brand short names: `scripts/ofgem/manufacturer-short-names-gb.json` (curated).
 - Cloud Function (`google_cloud_function/index.js`) is deployed separately via its own
   `deploy.sh`; it owns the news pipeline.
 
