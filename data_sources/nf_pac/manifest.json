@@ -1,0 +1,16 @@
+{
+  "source_name": "NF PAC certified product directory (marque NF, Certita)",
+  "purpose": "Attach French NF PAC certification references to the FR catalogue (derived from the German BAFA registry). User policy 2026-07-07: references are shown ONLY on confident matches — uncertain matches are never displayed; no eligibility claims (MaPrimeRenov'/CEE are criteria-based).",
+  "status": "acquisition_deferred",
+  "probe_2026_07_07": {
+    "marque-nf.com": "HTTP 200 (WordPress front; robots.txt allows / , disallows /en/). Certified-product search UI location and any export/API not yet identified.",
+    "certita.fr": "connection failed from this network (HTTP 000) — retry needed",
+    "conclusion": "Feasibility investigation (search UI structure, export format, terms of use) is a manual follow-up before any fetch script is written. Do not scrape without a terms review."
+  },
+  "integration_ready": {
+    "builder": "scripts/fr/build-app-products-fr.mjs consumes data_sources/nf_pac/matching/YYYY-MM/fr-nfpac-matches.json when present ({ matches: [{ bafa_id, nf_pac_reference }] })",
+    "ui": "Data sheet renders 'Reference NF PAC' field only when nf_pac_reference is set",
+    "matching_policy": "When data exists, reuse the conservative brand-gated token-sequence matcher family (scripts/ofgem/, scripts/bafa/) — multi-candidate only with identical values, never plain substring."
+  },
+  "next_recommended_step": "Manual (post-work backlog): locate the NF PAC certified-product search/export on marque-nf.com or certita.fr, review terms of use, then write fetch/parse/match scripts mirroring the ofgem pipeline discipline."
+}

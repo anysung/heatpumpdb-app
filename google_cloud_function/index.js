@@ -29,6 +29,19 @@ const MARKETS = [
     policyScope: 'BAFA/KfW programs with amounts, GEG requirements, efficiency standards',
   },
   {
+    code: 'FR',
+    marketName: 'French',
+    includeGermanTranslation: false,
+    frenchTranslation: true,
+    researchScope: `- MaPrimeRénov' (ANAH) conditions, income bands and processing for heat pumps
+- CEE (certificats d'économies d'énergie) / Coup de pouce chauffage offers
+- French heat pump market trends and installation statistics (AFPAC, Uniclima, ADEME)
+- Technology developments (R290/natural refrigerants, sound power, RE2020 context)
+- French policy developments (France Rénov', RGE requirements, RE2020)`,
+    reputableSources: 'france-renov.gouv.fr, anah.gouv.fr, ademe.fr, ecologie.gouv.fr, afpac.org, manufacturer newsrooms, established trade press',
+    policyScope: "MaPrimeRénov' conditions, CEE / Coup de pouce chauffage, RGE requirement, RE2020",
+  },
+  {
     code: 'GB',
     marketName: 'UK',
     includeGermanTranslation: false,
@@ -229,8 +242,8 @@ const NEWS_IMAGES = {
 };
 
 const NEWS_IMAGE_RULES = [
-  { key: 'subsidy',      keywords: ['bafa', 'beg', 'subsidy', 'funding', 'grant', 'zuschuss', 'kfw', 'förder', 'förderung', 'ofgem', 'boiler upgrade', 'voucher'] },
-  { key: 'government',   keywords: ['parliament', 'bundestag', 'bundesrat', 'minister', 'government', 'geg', 'regulation', 'gesetz', 'policy', 'law', 'legislation', 'desnz', 'future homes', 'clean heat'] },
+  { key: 'subsidy',      keywords: ['bafa', 'beg', 'subsidy', 'funding', 'grant', 'zuschuss', 'kfw', 'förder', 'förderung', 'ofgem', 'boiler upgrade', 'voucher', 'maprimerénov', 'maprimerenov', 'coup de pouce', 'anah', 'aides'] },
+  { key: 'government',   keywords: ['parliament', 'bundestag', 'bundesrat', 'minister', 'government', 'geg', 'regulation', 'gesetz', 'policy', 'law', 'legislation', 'desnz', 'future homes', 'clean heat', 're2020', 'france rénov'] },
   { key: 'solar',        keywords: ['solar', 'photovoltaic', 'pv', 'renewable', 'wind', 'erneuerbar', 'green energy'] },
   { key: 'technology',   keywords: ['r290', 'r32', 'refrigerant', 'cop', 'scop', 'efficiency', 'innovation', 'technology', 'inverter', 'compressor'] },
   { key: 'installation', keywords: ['install', 'installer', 'montage', 'handwerk', 'technician', 'fachmann', 'workforce'] },
@@ -327,14 +340,25 @@ async function researchNewsAndPolicies(ai, budget, market) {
   German for professional installers (correct Fachbegriffe: Wärmepumpe,
   Förderung, Schallleistung, Kältemittel…), not a literal word-by-word
   translation. Same paragraph structure as "body".`
-    : `- Do NOT include any translated fields — this market edition is English-only.`;
+    : market.frenchTranslation
+      ? `- For EACH article ALSO provide a professional French version of the same
+  content in "title_fr", "summary_fr", and "body_fr": natural, journalistic
+  French for professional installers (correct terminology: pompe à chaleur,
+  aides, puissance acoustique, fluide frigorigène…), not a literal
+  word-by-word translation. Same paragraph structure as "body".`
+      : `- Do NOT include any translated fields — this market edition is English-only.`;
 
   const germanJsonFields = market.includeGermanTranslation
     ? `
       "title_de": "Prägnante redaktionelle Überschrift (Deutsch)",
       "summary_de": "2-3 Sätze Vorspann (Deutsch)",
       "body_de": "Erster Absatz...\\n\\nZweiter Absatz...\\n\\nDritter Absatz...",`
-    : '';
+    : market.frenchTranslation
+      ? `
+      "title_fr": "Titre éditorial concis (français)",
+      "summary_fr": "Chapeau de 2-3 phrases (français)",
+      "body_fr": "Premier paragraphe...\\n\\nDeuxième paragraphe...\\n\\nTroisième paragraphe...",`
+      : '';
 
   const prompt = `You are the editorial engine of "HeatPump DB", a ${market.marketName} heat pump market intelligence app.
 
