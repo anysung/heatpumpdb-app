@@ -1,20 +1,25 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# HeatPump DB — multi-country heat pump database app
 
-# Run and deploy your AI Studio app
+One codebase, one deployment per country. The active market is selected at
+build time via `VITE_COUNTRY_CODE` (profiles in `src/config/countryProfiles.ts`).
 
-This contains everything you need to run your app locally.
+| Country | Domain | Registry | Dataset |
+|---|---|---|---|
+| DE (live) | heatpumpdb.de | BAFA | `public/data/products*.json` |
+| GB (in progress) | heatpumpdb.uk | Ofgem PEL / MCS | `public/data/products-gb*.json` |
+| FR (planned) | — | — | — |
 
-View your app in AI Studio: https://ai.studio/apps/drive/1ryctUQj8cAA-B6RxrfRkLCwpdrQ-iKor
+- App code: `src/` (auth surface, `src/hpiq/` main UI, `src/components/admin/` unified console)
+- Data pipelines: `scripts/bafa/` (DE), `scripts/ofgem/` (GB), sources in `data_sources/`
+- News pipeline: `google_cloud_function/` (deployed separately via its own `deploy.sh`)
+- Project rules: see `CLAUDE.md`
 
-## Run Locally
+## Build & deploy
 
-**Prerequisites:**  Node.js
+```bash
+npm install
+npm run build              # DE build (default country)
+firebase deploy --only hosting
+```
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Firebase project: `gen-lang-client-0324244302` (linked via `.firebaserc`).
