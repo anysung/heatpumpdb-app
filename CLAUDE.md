@@ -63,10 +63,19 @@
   (false variant matches like "WPL 25 AS" vs "WPL 25 A"); multi-candidate accepted only
   with identical copied values. PEL listing ≠ full BUS eligibility — keep the caveat.
   Brand short names: `scripts/ofgem/manufacturer-short-names-gb.json` (curated).
+- **FR pipeline** (`scripts/fr/`): `build-app-products-fr.mjs` derives the France
+  catalogue from the **built DE datasets** (same hardware sold in both markets — run the
+  DE builder first) → `public/data/products-fr*.json`. German type strings are localised
+  (Luft/Wasser → Air/Eau); specs are framed as `performance_source='BAFA_REFERENCE'`.
+  MaPrimeRénov'/CEE are **criteria-based** — the app never claims eligibility. NF PAC
+  references come from an optional overlay (`data_sources/nf_pac/matching/`) and are
+  shown ONLY on confident matches — never guessed. FR UI is bilingual FR|EN
+  (FR_FR/FR_EN dictionaries in `src/hpiq/i18n.ts`).
 - Cloud Function (`google_cloud_function/index.js`) is deployed separately via its own
   `deploy.sh`; it owns the news pipeline. News/policies are market-parameterized
-  (`MARKETS`: DE + GB → `countries/<code>/news|policies`); a manual run can be narrowed
-  with `?newsOnly=true&countries=GB`. GB articles are English-only (no `_de` fields).
+  (`MARKETS`: DE + FR + GB → `countries/<code>/news|policies`); a manual run can be
+  narrowed with `?newsOnly=true&countries=GB`. GB articles are English-only (no `_de`
+  fields); FR articles carry `_fr` fields.
   Redeploying with plain `gcloud functions deploy` (no env flags) preserves the
   function's env vars; `deploy.sh` overwrites them — only run it with real secrets exported.
 

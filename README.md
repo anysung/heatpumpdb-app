@@ -6,8 +6,8 @@ build time via `VITE_COUNTRY_CODE` (profiles in `src/config/countryProfiles.ts`)
 | Country | Domain | Registry | Dataset |
 |---|---|---|---|
 | DE (live) | heatpumpdb.de | BAFA | `public/data/products*.json` |
-| GB (in progress) | heatpumpdb.uk | Ofgem PEL / MCS | `public/data/products-gb*.json` |
-| FR (planned) | — | — | — |
+| GB (live) | heatpumpdb.uk (DNS pending) | Ofgem PEL / MCS | `public/data/products-gb*.json` |
+| FR (live) | heatpumpdb.fr (DNS pending) | BAFA-derived + NF PAC refs | `public/data/products-fr*.json` |
 
 - App code: `src/` (auth surface, `src/hpiq/` main UI, `src/components/admin/` unified console)
 - Data pipelines: `scripts/bafa/` (DE), `scripts/ofgem/` (GB), sources in `data_sources/`
@@ -28,6 +28,9 @@ npm run deploy:de          # = build:de (dist/) + firebase deploy --only hosting
 
 # United Kingdom — https://heatpumpdb-uk.web.app (heatpumpdb.uk pending DNS)
 npm run deploy:uk          # = build:uk (VITE_COUNTRY_CODE=GB → dist-uk/) + firebase deploy --only hosting:uk
+
+# France — https://heatpumpdb-fr.web.app (heatpumpdb.fr pending DNS)
+npm run deploy:fr          # = build:fr (VITE_COUNTRY_CODE=FR → dist-fr/) + firebase deploy --only hosting:fr
 ```
 
 - **Always deploy a named target** (`hosting:de` / `hosting:uk`) — a bare
