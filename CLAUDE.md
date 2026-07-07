@@ -18,7 +18,12 @@
 - Entry: `src/index.tsx` → `src/App.tsx`. Views: auth surface (`src/components/auth/AuthShell.tsx`),
   main app (`src/hpiq/HpiqApp.tsx`), admin (`src/components/AdminDashboard.tsx`).
 - Two parallel i18n systems, both live: `src/translations.ts` (auth + admin) and
-  `src/hpiq/i18n.ts` (main app, EN/DE dictionaries). Add strings to the matching one.
+  `src/hpiq/i18n.ts` (main app, EN/DE dictionaries + a GB market dictionary). Add
+  strings to the matching one. The GB edition is English-only and always serves the
+  GB dictionary — the DE dictionary is Germany-market *content*, not a translation.
+- Country-specific UI semantics in hpiq go through `src/hpiq/market.ts` (derived from
+  `ACTIVE_COUNTRY`): registry id prefix (BAFA/MCS), verify URLs, funding source links,
+  UI languages. Do not scatter `code === 'GB'` checks across pages.
 - Country config is centralized in `src/config/countryProfiles.ts` (`ACTIVE_COUNTRY`,
   resolved from `VITE_COUNTRY_CODE`). New-country work goes there — flag, dataset paths,
   subsidy labels all derive from it. Do not scatter country logic.
