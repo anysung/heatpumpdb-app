@@ -26,6 +26,8 @@ export interface HpVM {
   ref: string;
   refKg: string;
   bafaId: string;
+  /** Registry id for display: MCS number (GB) or BAFA id (DE). */
+  sourceId: string;
   installType: string;
   eprel: boolean;
   eprelId: string;
@@ -85,6 +87,9 @@ export function toVM(p: HeatPump): HpVM {
     ref: p.refrigerant || '—',
     refKg: fmt(p.refrigerant_amount_kg, 1),
     bafaId: p.bafa_id,
+    // Prefer the raw MCS number (GB duplicates carry a '#n' suffix on source_id
+    // for key uniqueness — the suffix must not print on sheets).
+    sourceId: p.mcs_number ?? p.source_id ?? p.bafa_id ?? '—',
     installType: p.installation_type || '—',
     eprel,
     eprelId: eprel ? `EPREL-${p.eprel_registration_number}` : '—',

@@ -8,6 +8,7 @@
  * `EN` defines the shape; `DE: HpStrings` is type-checked to cover every key.
  */
 import { Language } from '../types';
+import { IS_GB } from './market';
 
 const EN = {
   locale: 'en-GB',
@@ -186,6 +187,7 @@ const EN = {
     },
     stat: { kw: 'kW · 55°C', scop: 'SCOP', cop: 'COP A7/W35', cls: 'Class · W35' },
     bafaRef: 'BAFA-Ref',
+    perfCrossRefNote: (id: string) => `Technical specifications are cross-referenced from the German BAFA registry listing of the same hardware (BAFA ${id}) — reference data, not a national certification value.`,
     labelDerivation: 'Energy classes on this sheet are derived from the seasonal space-heating efficiency (ηs) recorded in the BAFA registry, per Regulation (EU) 811/2013. The BAFA ID identifies the underlying BAFA registration — it is not an EPREL label registration. Once an EPREL match is established for this model, the official EPREL ID is shown above.',
     sourceText: 'Data compiled from the BAFA list of eligible heat pumps and EPREL-style records. This sheet is generated documentation, not an official certificate. Verify current BAFA eligibility and the official EU energy label before contractual use.',
     techExplanations: 'TECHNICAL EXPLANATIONS',
@@ -594,6 +596,7 @@ const DE: HpStrings = {
     },
     stat: { kw: 'kW · 55°C', scop: 'SCOP', cop: 'COP A7/W35', cls: 'Klasse · W35' },
     bafaRef: 'BAFA-Ref',
+    perfCrossRefNote: (id: string) => `Technische Daten sind als Querverweis aus dem deutschen BAFA-Verzeichnis derselben Hardware übernommen (BAFA ${id}) — Referenzdaten, kein nationaler Zertifizierungswert.`,
     labelDerivation: 'Die Energieklassen auf diesem Blatt sind aus der im BAFA-Verzeichnis hinterlegten saisonalen Raumheizungs-Effizienz (ηs) gemäß Verordnung (EU) 811/2013 abgeleitet. Die BAFA-ID bezeichnet die zugrunde liegende BAFA-Registrierung — sie ist keine EPREL-Label-Registrierung. Sobald für dieses Modell eine EPREL-Zuordnung vorliegt, wird oben die offizielle EPREL-ID angezeigt.',
     sourceText: 'Daten zusammengestellt aus der BAFA-Liste der förderfähigen Wärmepumpen und Einträgen im EPREL-Stil. Dieses Datenblatt ist generierte Dokumentation, kein offizielles Zertifikat. Prüfen Sie die aktuelle BAFA-Förderfähigkeit und das offizielle EU-Energielabel vor vertraglicher Nutzung.',
     techExplanations: 'TECHNISCHE ERLÄUTERUNGEN',
@@ -823,5 +826,186 @@ const DE: HpStrings = {
   },
 };
 
-/** Resolve the stored dictionary for the active language (instant switch). */
-export const tr = (lang: Language): HpStrings => (lang === 'de' ? DE : EN);
+// ─────────────────────────────────────────────────────────────────────────────
+// GB (United Kingdom) market edition — English-only.
+// EN with UK market facts (Ofgem PEL, MCS, Boiler Upgrade Scheme) replacing the
+// German registry context (BAFA, KfW, BEG EM). The DE dictionary is Germany-
+// market CONTENT, not just a translation, so the GB build never serves it.
+// Honesty rules: PEL listing ≠ full BUS eligibility; technical specs shown on
+// GB records are BAFA cross-reference data and are labelled as such.
+// ─────────────────────────────────────────────────────────────────────────────
+const GB: HpStrings = {
+  ...EN,
+
+  nav: { ...EN.nav, bafa: 'BUS / MCS' },
+
+  footer: {
+    edition: 'United Kingdom edition',
+    note: 'Product data is informational — verify Ofgem, MCS and manufacturer sources before contractual use.',
+  },
+
+  find: {
+    ...EN.find,
+    heroSub: (total: string) => `Fast model lookup across ${total} PEL-listed heat pumps.`,
+    hint: 'Search by model name, MCS certification number or manufacturer — e.g. "Ecodan", "Aerona", "24.01.".',
+    bafaListed: 'On Ofgem PEL',
+  },
+
+  products: {
+    ...EN.products,
+    funding: 'BUS · FUNDING',
+    bafaListedOnly: 'On current PEL only',
+    begNote: 'Units on the Ofgem BUS Product Eligibility List.',
+    bafaUpdated: 'PEL updated:',
+    chipBafa: 'PEL',
+    cmpRows: [...EN.products.cmpRows.slice(0, 7), 'MCS Number'],
+    inspFunding: 'BUS · FUNDING',
+    inspListed: 'Listed on the current Ofgem PEL snapshot. Potentially relevant for the Boiler Upgrade Scheme — PEL listing alone does not guarantee full BUS eligibility.',
+    inspDelisted: 'Not on the current Ofgem PEL snapshot (previously listed — data retained for reference). Verify eligibility before quoting.',
+    inspVerify: 'Verify current BUS eligibility with an MCS-certified installer before quoting.',
+    openBafa: 'Open Ofgem PEL ›',
+  },
+
+  ds: {
+    ...EN.ds,
+    sections: { ...EN.ds.sections, bafa: 'BUS / MCS status' },
+    headBafa: 'BUS / MCS STATUS',
+    f: {
+      ...EN.ds.f,
+      bafaId: 'MCS Number',
+      bafaStatus: 'Ofgem PEL status',
+      begRel: 'BUS relevance',
+      listed: 'On current PEL',
+      notListed: 'Not on current PEL',
+      begVerify: 'Potentially eligible — verify',
+      yes: 'Yes',
+      no: 'No',
+      eprelNone: 'Not yet matched',
+    },
+    bafaRef: 'MCS-Ref',
+    labelDerivation: 'Energy classes on this sheet are derived from the seasonal space-heating efficiency (ηs) per Regulation (EU) 811/2013, using technical data cross-referenced from the German BAFA registry listing of the same hardware where such a match exists. The MCS number identifies the certification on the Ofgem Product Eligibility List — it is not an EPREL label registration. Once an EPREL match is established for this model, the official EPREL ID is shown above.',
+    sourceText: 'Data compiled from the Ofgem Boiler Upgrade Scheme Product Eligibility List (PEL). Technical specifications, where shown, are cross-referenced from the German BAFA registry listing of the same hardware and are marked accordingly. This sheet is generated documentation, not an official certificate. Verify PEL presence and full BUS eligibility with an MCS-certified installer before contractual use.',
+    notes: {
+      ...EN.ds.notes,
+      manufacturer: 'Equipment manufacturer as published on the Ofgem Product Eligibility List.',
+      model: 'Specific product model designation as listed on the Ofgem PEL.',
+      odu: 'Outdoor unit model as identified from the product name or manufacturer documentation.',
+      bafaId: 'MCS certification number as published on the Ofgem Boiler Upgrade Scheme Product Eligibility List (PEL).',
+      bafaStatus: 'Presence of the model on the Ofgem PEL as of the most recent data update. PEL listing does not guarantee full BUS eligibility.',
+      begRel: 'Indicative relevance for the Boiler Upgrade Scheme derived from the PEL listing. Not a funding decision or commitment.',
+    } as Record<string, string>,
+    disclaimerTitle: 'DISCLAIMER',
+    disclaimer: 'This document is generated automatically by HeatPump DB from publicly accessible sources, including the Ofgem Boiler Upgrade Scheme Product Eligibility List (PEL) and technical cross-reference data from the German BAFA registry, and is provided for general information purposes only. It is not an official document of any manufacturer or public authority, does not constitute technical, legal, or funding advice, and does not constitute a guarantee, assurance, or agreed specification of any product characteristic. All information is provided “as is” and “as available” without representation or warranty of any kind, whether express or implied, including but not limited to warranties of accuracy, completeness, timeliness, merchantability, or fitness for a particular purpose. Product specifications are subject to change by the manufacturer without notice. The user bears sole responsibility for verifying all values shown in this document against the manufacturer’s current official documentation and the official publications of the competent authorities (in particular Ofgem and MCS) before making any purchase, installation, contractual, or funding decision. To the maximum extent permitted by applicable law, HeatPump DB and its operators accept no liability for any direct, indirect, incidental, or consequential loss or damage arising out of or in connection with the use of, or reliance on, this document. Nothing in this disclaimer excludes or limits liability that cannot be excluded or limited under applicable law. All product names, logos, and trademarks are the property of their respective owners and are used for identification purposes only.',
+  },
+
+  bafa: {
+    heroTitle: 'BUS / MCS.',
+    heroSub: 'Curated UK funding updates for heat pumps. Confirmed changes, clearly separated from guidance.',
+    card1Title: 'BOILER UPGRADE SCHEME',
+    card1Head: '£7,500',
+    card1Text: 'Grant toward an air- or ground-source heat pump in England and Wales — applied for by your MCS-certified installer and deducted from the quote.',
+    card2Title: 'HOW TO APPLY',
+    card2Head: 'Via installer',
+    card2Text: 'Your MCS-certified installer applies to Ofgem for the voucher before installation; you confirm consent when Ofgem asks.',
+    card3Title: 'PEL LIST COVERAGE',
+    card3Head: (n: string) => `${n} heat pumps`,
+    card3Text: 'PEL-listed units in this app — refreshed with every regular data update.',
+    recentChanges: 'Recent changes.',
+    confirmed: 'CONFIRMED',
+    guidance: 'GUIDANCE',
+    timeline: [
+      { date: '7 Jul 2026', badge: 'CONFIRMED', strong: 'BAFA cross-reference enrichment', rest: ' — 584 units also listed on the German BAFA registry now show technical specifications (kW, COP, SCOP, sound power, refrigerant), marked as cross-reference data.' },
+      { date: '18 Jun 2026', badge: 'CONFIRMED', strong: 'Ofgem PEL snapshot loaded (May 2026 file)', rest: ' — 4,422 heat pumps: 3,651 air-source, 761 ground/water-source and 10 exhaust-air units.' },
+      { date: '18 Jun 2026', badge: 'GUIDANCE', strong: 'PEL listing is not full BUS eligibility', rest: ' — the PEL is an administrative reference tool. Your MCS-certified installer and Ofgem confirm the remaining eligibility criteria.' },
+    ] as { date: string; badge: 'CONFIRMED' | 'GUIDANCE'; strong: string; rest: string }[],
+    installerTitle: 'WHAT INSTALLERS SHOULD KNOW',
+    installerText: "The BUS voucher must be issued before commissioning. Use the app's data sheet with the MCS number as the technical annex, and re-verify PEL status on the day of the application.",
+    installerLink: 'Installer checklist ›',
+    homeownerTitle: 'WHAT HOMEOWNERS SHOULD KNOW',
+    homeownerText: 'You do not apply yourself — your MCS-certified installer applies to Ofgem and deducts the grant from the quote. Ask for the MCS certification number of the offered unit and check it in this app.',
+    homeownerLink: 'Read the funding guide ›',
+    sourcesTitle: 'Official sources.',
+    sources: [
+      { title: 'Ofgem — Boiler Upgrade Scheme', sub: 'Scheme administration & Product Eligibility List' },
+      { title: 'MCS — Microgeneration Certification Scheme', sub: 'Installer & product certification' },
+      { title: 'GOV.UK — Apply for the Boiler Upgrade Scheme', sub: 'Official guidance for property owners' },
+    ],
+    sourcesNote: 'Summaries above are editorial guidance, not legal or funding advice. Official sources prevail.',
+  },
+
+  guide: {
+    ...EN.guide,
+    heroSub: 'Prepare a Boiler Upgrade Scheme (BUS) project with confidence — whether you install heat pumps or own the home.',
+    stepsPro: [
+      ['1', 'Qualify the building', 'Heat loss calculation to MCS standards, radiator temperatures, existing system.'],
+      ['2', 'Select a PEL-listed unit', 'Pick from the Ofgem PEL — capture the MCS certification number in your quote.'],
+      ['3', 'Apply to Ofgem for the voucher', "As the MCS-certified installer, you apply for the BUS grant on the owner's behalf — before installation."],
+      ['4', 'Install & commission', 'MCS commissioning certificate, DNO notification, handover documentation.'],
+      ['5', 'Redeem the voucher', 'Ofgem pays the grant after commissioning evidence is accepted; the discount was already passed on in the quote.'],
+    ] as [string, string, string][],
+    stepsHome: [
+      ['1', 'Check your starting point', 'Building type, current heating, a valid EPC for the property.'],
+      ['2', 'Get MCS installer quotes', 'Ask for the MCS certification number of each offered heat pump.'],
+      ['3', 'Your installer applies', 'The BUS grant is applied for by your MCS-certified installer at Ofgem — the discount appears in your quote.'],
+      ['4', 'Installation', 'Your installer handles commissioning and the MCS certificate.'],
+      ['5', 'Keep the documentation', 'MCS certificate, invoices and handover pack — needed for warranty and any later sale.'],
+    ] as [string, string, string][],
+    checkPro: [
+      'Heat loss calculation to MCS standards (room by room)',
+      'MCS certification number confirmed on the current Ofgem PEL',
+      'BUS voucher application submitted before commissioning',
+      'Sound assessment for the outdoor unit location',
+      'Customer informed: the grant is deducted from the quote, not paid to them',
+    ],
+    checkHome: [
+      'Check the property has a valid EPC',
+      'Collect two comparable quotes from MCS-certified installers, with MCS numbers',
+      'Check the unit appears on the current Ofgem PEL',
+      'Confirm the BUS discount is shown in the quote before signing',
+      'Keep every invoice and the MCS commissioning certificate',
+    ],
+    checklistNote: 'A preparation aid, not legal advice. Verify each item against the official Ofgem / MCS conditions.',
+    pdfTitlePro: 'BUS preparation checklist — installers',
+    pdfTitleHome: 'BUS preparation checklist — homeowners',
+    pdfFooter: 'A preparation aid, not legal advice. Verify each item against the official Ofgem / MCS conditions. heatpumpdb.de',
+    explainerText: 'How the Boiler Upgrade Scheme works — the 5 decisions that matter before you sign anything.',
+    goodToKnowText: 'Natural-refrigerant units (R290) are increasingly common on the PEL. Filter Products by R290 to see them.',
+    faqs: [
+      ['Do I apply for the BUS grant myself?', 'No. Your MCS-certified installer applies to Ofgem on your behalf and deducts the grant from your quote. You confirm your consent to Ofgem when asked.'],
+      ['Which heat pumps qualify?', 'The product must be MCS-certified and appear on the Ofgem Product Eligibility List (PEL) — this app shows the PEL status of every product. PEL listing alone does not guarantee full BUS eligibility; the installer confirms the remaining criteria.'],
+      ['When exactly must the application happen?', 'The voucher must be issued before the installation is commissioned. Your installer manages the timing — make sure the BUS discount is written into the quote before you sign.'],
+      ['Is this page legal advice?', 'No. It is an editorial preparation guide based on public Ofgem and MCS information. Conditions change; the official scheme documents always prevail.'],
+    ] as [string, string][],
+  },
+
+  news: {
+    ...EN.news,
+    fallbackFeatured: {
+      badge: 'MARKET',
+      kicker: 'July 2026 briefing',
+      title: 'UK heat pump installations keep climbing as Boiler Upgrade Scheme uptake grows.',
+      dek: 'What rising voucher volumes mean for installer capacity planning — and which product segments are gaining PEL share.',
+    },
+    fallbackCards: [
+      { badge: 'FUNDING', title: 'BUS voucher timing, from survey to commissioning', dek: 'How the voucher window shapes project scheduling — and the step installers most often start too late.', meta: '28 Jun 2026 · 4 min' },
+      { badge: 'TECHNOLOGY', title: 'Sound power is the new spec battleground', dek: 'Quieter units are reshaping siting options under permitted development limits.', meta: '19 Jun 2026 · 6 min' },
+      { badge: 'INSTALLER INSIGHT', title: 'Heat loss surveys, done right', dek: 'The calculation most often challenged in handover packs — and how to document it cleanly.', meta: '7 Jun 2026 · 5 min' },
+    ],
+  },
+
+  account: {
+    ...EN.account,
+    planText: 'Your plan renews monthly at the price shown in the store where the subscription was started. A 7-day free trial starts when a plan is first selected after installing the app.',
+    included: ['Full product database access', 'Unlimited comparisons', (n: number) => `${n} data sheet prints / month`, 'BUS / MCS & label updates'] as (string | ((n: number) => string))[],
+    languageNote: 'English is the default for the United Kingdom edition.',
+    emailSubject: 'HeatPump DB on the web',
+  },
+};
+
+/**
+ * Resolve the stored dictionary for the active language (instant switch).
+ * The GB market build is English-only and always serves the GB market
+ * dictionary — the DE dictionary is Germany-market content.
+ */
+export const tr = (lang: Language): HpStrings =>
+  IS_GB ? GB : lang === 'de' ? DE : EN;

@@ -1,15 +1,12 @@
-/** BAFA / KfW — curated German funding updates. */
+/** Funding page — curated market funding updates (BAFA/KfW for DE, BUS/MCS for GB). */
 import React from 'react';
 import { HpApp } from '../appState';
 import { tr } from '../i18n';
+import { FUNDING_SOURCE_LINKS } from '../market';
 import { FD, sectionLabel } from '../ui';
 
 // Official source links — titles/subs come from the i18n dictionary (zipped by index).
-const SOURCES = [
-  { link: 'bafa.de ›', href: 'https://www.bafa.de' },
-  { link: 'kfw.de ›', href: 'https://www.kfw.de' },
-  { link: 'bmwk.de ›', href: 'https://www.bmwk.de' },
-];
+const SOURCES = FUNDING_SOURCE_LINKS;
 
 export const BafaPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);

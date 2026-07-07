@@ -66,10 +66,12 @@ export class ProductStore {
 
     // Latest (max) timestamps across records — mixed dates are expected now
     // that delisted products keep the fetched_at of their last snapshot.
+    // GB records carry pel_snapshot_fetched_at instead of the BAFA field.
     let maxFetched: string | null = null;
     let maxGenerated: string | null = null;
     for (const p of products) {
-      if (p.bafa_snapshot_fetched_at && (!maxFetched || p.bafa_snapshot_fetched_at > maxFetched)) maxFetched = p.bafa_snapshot_fetched_at;
+      const fetched = p.bafa_snapshot_fetched_at ?? p.pel_snapshot_fetched_at ?? null;
+      if (fetched && (!maxFetched || fetched > maxFetched)) maxFetched = fetched;
       if (p.source_snapshot_generated_at && (!maxGenerated || p.source_snapshot_generated_at > maxGenerated)) maxGenerated = p.source_snapshot_generated_at;
     }
     this.bafaSnapshotDate = maxFetched;
@@ -139,14 +141,14 @@ export class ProductStore {
     };
   }
 
-  /** Live substring search over model / manufacturer / ODU / BAFA id. */
+  /** Live substring search over model / manufacturer / ODU / registry id. */
   search(q: string, max = 60): { items: HpVM[]; total: number } {
     const needle = q.trim().toLowerCase();
     if (needle.length < 2) return { items: [], total: 0 };
     const items: HpVM[] = [];
     let total = 0;
     for (const v of this.all) {
-      if (`${v.model} ${v.mfr} ${v.odu} ${v.bafaId}`.toLowerCase().includes(needle)) {
+      if (`${v.model} ${v.mfr} ${v.odu} ${v.sourceId}`.toLowerCase().includes(needle)) {
         total++;
         if (items.length < max) items.push(v);
       }

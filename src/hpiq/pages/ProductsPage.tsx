@@ -4,6 +4,7 @@ import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
+import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, ChevronDown, KwRangeSlider, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
 const GRID = '34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr';
@@ -292,7 +293,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <CheckBox on={inCmp} size={16} radius={4} onClick={e => { e.stopPropagation(); app.toggleCompare(r.id); }} />
                     <span style={{ minWidth: 0 }}>
                       <span style={{ fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.model}</span>
-                      <span style={{ fontSize: 11, color: '#7a7a7a' }}>BAFA {r.bafaId}</span>
+                      <span style={{ fontSize: 11, color: '#7a7a7a' }}>{SOURCE_ID_ABBR} {r.sourceId}</span>
                     </span>
                     <span>{r.mfr}</span>
                     <span>{r.kw}</span>
@@ -357,7 +358,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div style={{ flex: '0 0 400px', display: 'flex', flexDirection: 'column', background: '#f5f5f7', minWidth: 0, overflow: 'auto' }}>
               <div style={{ padding: '20px 24px 0', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 12, color: '#7a7a7a' }}>{sel.mfr} · BAFA {sel.bafaId}</span>
+                  <span style={{ fontSize: 12, color: '#7a7a7a' }}>{sel.mfr} · {SOURCE_ID_ABBR} {sel.sourceId}</span>
                   <span onClick={() => app.setSelectedId(null)} style={{ fontSize: 13, color: '#7a7a7a', cursor: 'pointer' }}>×</span>
                 </div>
                 <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.18 }}>{sel.model}</span>
@@ -390,7 +391,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   </span>
                   <span style={{ fontSize: 12, color: '#7a7a7a' }}>
                     {t.products.inspVerify}{' '}
-                    <span onClick={() => window.open('https://www.bafa.de', '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.openBafa}</span>
+                    <span onClick={() => window.open(REGISTRY_VERIFY_URL, '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.openBafa}</span>
                   </span>
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 9 }}>
@@ -460,7 +461,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.noise === '—' ? '—' : `${c.noise} dB(A)`}</span>
                     <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.refKg === '—' ? c.ref : `${c.ref} · ${c.refKg} kg`}</span>
                     <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0' }}>{c.label}</span>
-                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0', fontSize: 12, color: '#7a7a7a' }}>{c.bafaId}</span>
+                    <span style={{ padding: '9px 0', borderTop: '1px solid #f0f0f0', fontSize: 12, color: '#7a7a7a' }}>{c.sourceId}</span>
                   </div>
                 ))}
               </div>

@@ -4,6 +4,7 @@ import { HpApp, DsSectionKey } from '../appState';
 import { longDate } from '../model';
 import { FD, SearchIcon, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
+import { IS_GB, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 
 const PICKER_LIMIT = 60;
@@ -88,7 +89,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
     if (!store) return [];
     const q = pickerQuery.trim().toLowerCase();
     const list = q.length >= 2
-      ? store.all.filter(p => `${p.model} ${p.mfr} ${p.bafaId}`.toLowerCase().includes(q))
+      ? store.all.filter(p => `${p.model} ${p.mfr} ${p.sourceId}`.toLowerCase().includes(q))
       : store.all;
     return list.slice(0, PICKER_LIMIT);
   }, [store, pickerQuery]);
@@ -203,14 +204,14 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 2, textAlign: 'right', fontSize: 11.5, color: '#7a7a7a' }}>
                   <span>{t.ds.generated} {longDate(new Date().toISOString())}</span>
-                  <span>{isLabelMode ? t.ds.bafaRef : 'BAFA'} {dsp.bafaId}{dsp.eprel ? ` · ${dsp.eprelId}` : ''}</span>
+                  <span>{isLabelMode ? t.ds.bafaRef : SOURCE_ID_ABBR} {dsp.sourceId}{dsp.eprel ? ` · ${dsp.eprelId}` : ''}</span>
                 </div>
               </div>
 
               {/* title card + key stats */}
               <div style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <span style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}</span>
-                <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
+                <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
                 {([
@@ -233,7 +234,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <FieldCell label={t.ds.f.manufacturer} value={dsp.mfr} note={n('manufacturer')} />
                     <FieldCell label={t.ds.f.odu} value={dsp.odu} note={n('odu')} />
                     <FieldCell label={t.ds.f.type} value={typeLine} note={n('type')} />
-                    <FieldCell label={t.ds.f.bafaId} value={dsp.bafaId} note={n('bafaId')} />
+                    <FieldCell label={t.ds.f.bafaId} value={dsp.sourceId} note={n('bafaId')} />
                   </SectionGrid>
                 </div>
               )}
@@ -271,6 +272,11 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <FieldCell label={t.ds.f.cop2} value={dsp.cop2} note={n('cop2')} />
                     <FieldCell label={t.ds.f.copm7} value={dsp.copm7} note={n('copm7')} />
                   </SectionGrid>
+                  {dsp.raw.performance_source === 'BAFA_REFERENCE' && (
+                    <span style={{ fontSize: 10.5, color: '#7a7a7a', lineHeight: 1.55, paddingTop: 10 }}>
+                      {t.ds.perfCrossRefNote(dsp.raw.bafa_reference_id ?? '—')}
+                    </span>
+                  )}
                 </div>
               )}
 
@@ -281,7 +287,8 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <FieldCell label={t.ds.f.ref} value={dsp.ref} note={n('ref')} />
                     <FieldCell label={t.ds.f.refKg} value={dsp.refKg === '—' ? '—' : `${dsp.refKg} kg`} note={n('refKg')} />
                     <FieldCell label={t.ds.f.noise} value={dsp.noise === '—' ? '—' : `${dsp.noise} dB(A)`} note={n('noise')} />
-                    <FieldCell label={t.ds.f.grid} value={dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
+                    {/* GB: SG-Ready is not recorded on the PEL — unknown, not "No". */}
+                    <FieldCell label={t.ds.f.grid} value={IS_GB ? '—' : dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
                   </SectionGrid>
                 </div>
               )}

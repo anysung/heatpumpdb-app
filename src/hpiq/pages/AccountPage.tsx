@@ -5,6 +5,7 @@ import { auth } from '../../firebase';
 import { requestDeletion } from '../../services/adminService';
 import { createTicket, getMyTickets, userReply } from '../../services/supportService';
 import { HpApp } from '../appState';
+import { UI_LANGUAGES } from '../market';
 import { tr } from '../i18n';
 import { Language, SupportTicket, TicketCategory } from '../../types';
 import { FD, sectionLabel } from '../ui';
@@ -248,7 +249,8 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <Card style={{ gap: 12 }}>
               <CardTitle>{t.account.language}</CardTitle>
               <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
-                {([['de', 'Deutsch'], ['en', 'English']] as [Language, string][]).map(([id, label]) => (
+                {(([['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
+                  .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
                   <span
                     key={id}
                     onClick={() => app.setLang(id)}

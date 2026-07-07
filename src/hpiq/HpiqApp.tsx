@@ -10,6 +10,7 @@ import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
+import { UI_LANGUAGES } from './market';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
 import { FindPage } from './pages/FindPage';
@@ -213,20 +214,22 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
           })}
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14, fontSize: 13, color: 'rgba(255,255,255,.75)' }}>
-          <div style={{ display: 'flex', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
-            {(['de', 'en'] as Language[]).map(l => (
-              <span
-                key={l}
-                onClick={() => setLanguage(l)}
-                style={{
-                  padding: '6px 12px', cursor: 'pointer',
-                  ...(language === l ? { background: '#fff', color: '#1d1d1f', fontWeight: 600 } : { color: 'rgba(255,255,255,.75)' }),
-                }}
-              >
-                {l.toUpperCase()}
-              </span>
-            ))}
-          </div>
+          {UI_LANGUAGES.length > 1 && (
+            <div style={{ display: 'flex', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
+              {UI_LANGUAGES.map(l => (
+                <span
+                  key={l}
+                  onClick={() => setLanguage(l)}
+                  style={{
+                    padding: '6px 12px', cursor: 'pointer',
+                    ...(language === l ? { background: '#fff', color: '#1d1d1f', fontWeight: 600 } : { color: 'rgba(255,255,255,.75)' }),
+                  }}
+                >
+                  {l.toUpperCase()}
+                </span>
+              ))}
+            </div>
+          )}
           <span
             onClick={() => setPage('account')}
             title="Account"
