@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:de": "vite build",
+    "build:uk": "VITE_COUNTRY_CODE=GB vite build --outDir dist-uk",
+    "deploy:de": "npm run build:de && firebase deploy --only hosting:de",
+    "deploy:uk": "npm run build:uk && firebase deploy --only hosting:uk",
     "preview": "vite preview",
     "start": "node server.js"
   },

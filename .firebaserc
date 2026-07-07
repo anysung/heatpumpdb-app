@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "gen-lang-client-0324244302"
-  }
+  },
+  "targets": {
+    "gen-lang-client-0324244302": {
+      "hosting": {
+        "de": [
+          "gen-lang-client-0324244302"
+        ],
+        "uk": [
+          "heatpumpdb-uk"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

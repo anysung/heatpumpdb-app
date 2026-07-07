@@ -74,5 +74,10 @@
 - Auth flow is approval-gated: registration (email or Google/Apple social) creates a
   `pending` profile; only admin approval activates it. Social sign-in must never bypass
   this gate.
-- Build: `export PATH="/Users/christophersung/.nvm/versions/node/v20.19.6/bin:$PATH" && npm run build`
-- Deploy: `firebase deploy --only hosting`
+- Build: `export PATH="/Users/christophersung/.nvm/versions/node/v20.19.6/bin:$PATH" && npm run build:de` (DE, `dist/`)
+  or `npm run build:uk` (GB, `VITE_COUNTRY_CODE=GB` → `dist-uk/`).
+- Deploy: multi-site hosting — **always use a named target**, never bare
+  `firebase deploy --only hosting` (it deploys every target).
+  `npm run deploy:de` → site `gen-lang-client-0324244302` (heatpumpdb.de);
+  `npm run deploy:uk` → site `heatpumpdb-uk` (heatpumpdb-uk.web.app / heatpumpdb.uk).
+  Targets are mapped in `.firebaserc`; per-target config in `firebase.json`.
