@@ -32,3 +32,4 @@ Confirmed latest file (via HEAD probe):
 - 2026-06-18T20:23:10.503Z parse start: snapshot=2026-06, sheets=[Instructions, PEL]
 - 2026-06-18T20:23:10.554Z parse complete: snapshot=2026-06 records=4596 listed_no_expiry=2294 active_with_expiry=2145 expiry_imminent=157 expired=0 duplicates=5 malformed=0 keyLeak=false
 - 2026-07-07T00:53:40.822Z app build: snapshot=2026-06 → public/data/products-gb.json (4422 items; biomass excluded=174; suffixed variant ids=15; commercial dataset empty by policy). Validations: fieldCount=92 PASS, provenance PASS, source_id unique PASS, no price keys PASS.
+- 2026-07-07 match: PEL 2026-06 ↔ BAFA seed 2026-07 → matching/2026-06/pel-bafa-matches.json (matched=584: exact=419, token_subsequence=165; ambiguous rejected=45; brand overlap 42/137). Rebuilt app datasets with BAFA_REFERENCE overlay: products-gb.json=4369, products-commercial-gb.json=53 (capacity-segmented), enriched=584, fieldCount=96, all validations PASS.

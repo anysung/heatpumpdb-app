@@ -7,17 +7,26 @@
  * Primary source:  data_sources/ofgem_pel/parsed/YYYY-MM/pel-normalized.json
  *                  (newest snapshot auto-selected; --snapshot=YYYY-MM overrides)
  * Short names:     scripts/ofgem/manufacturer-short-names-gb.json (curated, committed)
+ * Overlay source:  data_sources/ofgem_pel/matching/YYYY-MM/pel-bafa-matches.json
+ *                  (optional; produced by match-pel-to-bafa.mjs — BAFA_REFERENCE
+ *                  technical specs for PEL models also listed on the German
+ *                  BAFA registry; performance_source is stamped 'BAFA_REFERENCE')
  *
  * Output shape mirrors the DE builder (build-app-products-from-master-seed.mjs):
- * same 75 base keys (DE-only values null) + 17 GB/PEL provenance keys = 92 fields.
+ * same 75 base keys (DE-only values null) + 17 GB/PEL provenance keys
+ * + 4 BAFA_REFERENCE keys = 96 fields.
  * The app loader reads `data.items`; the view model renders nulls as '—'.
  *
  * Policies:
  *   - Biomass records are excluded (heat pump app).
- *   - PEL has no capacity/SCOP data → capacity segmentation is impossible.
- *     ALL heat pump records go to products-gb.json (market_segment: null);
- *     products-commercial-gb.json is written with an empty items array so the
- *     commercial view stays functional.
+ *   - PEL publishes no performance data. Records matched to BAFA get technical
+ *     specs copied as a cross-reference (performance_source='BAFA_REFERENCE');
+ *     unmatched records keep null performance fields.
+ *   - Segmentation: matched records are capacity-classified like DE
+ *     (≤20.99 kW residential_core, 21–45 light_commercial, >45 commercial_project);
+ *     light_commercial/commercial_project go to products-commercial-gb.json.
+ *     Unmatched records (no capacity data) stay in products-gb.json with
+ *     market_segment null.
  *   - Duplicate MCS numbers are real model variants sharing one certification
  *     number (e.g. Ares MB5 ×9). They are KEPT; source_id gets a '#n' suffix
  *     (n ≥ 2) for uniqueness. mcs_number stays raw for display.
@@ -34,7 +43,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const EXPECTED_FIELD_COUNT = 92;
+const EXPECTED_FIELD_COUNT = 96;
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
 function loadJSON(relPath) {
@@ -66,7 +75,24 @@ function snapshotFetchedAt(id) {
 }
 const PEL_FETCHED_AT = snapshotFetchedAt(SNAPSHOT);
 
+// BAFA_REFERENCE overlay (optional) — produced by match-pel-to-bafa.mjs
+const matchPath = resolve(ROOT, `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-bafa-matches.json`);
+const matchFile = existsSync(matchPath) ? JSON.parse(readFileSync(matchPath, 'utf8')) : null;
+const matchByKey = new Map((matchFile?.matches ?? []).map(m => [m.match_key, m]));
+console.log(matchFile
+  ? `BAFA_REFERENCE overlay: ${matchByKey.size} matches (seed ${matchFile._meta.bafa_seed_snapshot})`
+  : 'BAFA_REFERENCE overlay: none (building without enrichment)');
+
 const generatedAt = new Date().toISOString();
+
+// ── Capacity-based segmentation (same policy as DE builder v2.0) ─────────────
+function classifySegment(power_kw) {
+  if (power_kw === null || power_kw === undefined || !Number.isFinite(Number(power_kw))) return null;
+  const p = Number(power_kw);
+  if (p <= 20.99) return 'residential_core';
+  if (p <= 45) return 'light_commercial';
+  return 'commercial_project';
+}
 
 // ── Filters & helpers ─────────────────────────────────────────────────────────
 
@@ -117,6 +143,8 @@ function uniqueSourceId(mcsNumber) {
 
 function buildItem(r) {
   const installationType = deriveInstallationType(r);
+  const m = matchByKey.get(`${r.mcs_number}||${r.model}`) ?? null;
+  const sp = m?.specs ?? {};
   return {
     // ── Identity ────────────────────────────────────────────────────────────
     bafa_id: null,                       // GB records have no BAFA identity
@@ -129,53 +157,53 @@ function buildItem(r) {
     model: r.model ?? r.product_name ?? null,
     type: TYPE_LABEL[r.technology_type] ?? null,
 
-    // ── Refrigerant (not published on PEL) ──────────────────────────────────
-    refrigerant: null,
-    refrigerant_2: null,
-    refrigerant_amount_kg: null,
-    refrigerant_2_amount_kg: null,
+    // ── Refrigerant (PEL: none; filled from BAFA_REFERENCE when matched) ────
+    refrigerant: sp.refrigerant ?? null,
+    refrigerant_2: sp.refrigerant_2 ?? null,
+    refrigerant_amount_kg: sp.refrigerant_amount_kg ?? null,
+    refrigerant_2_amount_kg: sp.refrigerant_2_amount_kg ?? null,
 
-    // ── Heating performance (not published on PEL) ──────────────────────────
-    power_35C_kw: null,
-    efficiency_35C_percent: null,
-    power_design_35C_kw: null,
-    power_55C_kw: null,
-    efficiency_55C_percent: null,
-    power_design_55C_kw: null,
+    // ── Heating performance (PEL: none; BAFA_REFERENCE when matched) ────────
+    power_35C_kw: sp.power_35C_kw ?? null,
+    efficiency_35C_percent: sp.efficiency_35C_percent ?? null,
+    power_design_35C_kw: sp.power_design_35C_kw ?? null,
+    power_55C_kw: sp.power_55C_kw ?? null,
+    efficiency_55C_percent: sp.efficiency_55C_percent ?? null,
+    power_design_55C_kw: sp.power_design_55C_kw ?? null,
 
-    // ── COP / SCOP / SEER (not published on PEL) ────────────────────────────
-    cop_A7W35: null,
-    cop_A2W35: null,
-    cop_AMinus7W35: null,
-    cop_A10W35: null,
-    scop: r.scop ?? null,
-    seer: null,
+    // ── COP / SCOP / SEER (PEL: none; BAFA_REFERENCE when matched) ──────────
+    cop_A7W35: sp.cop_A7W35 ?? null,
+    cop_A2W35: sp.cop_A2W35 ?? null,
+    cop_AMinus7W35: sp.cop_AMinus7W35 ?? null,
+    cop_A10W35: sp.cop_A10W35 ?? null,
+    scop: r.scop ?? sp.scop ?? null,
+    seer: sp.seer ?? null,
 
     // ── Cooling ─────────────────────────────────────────────────────────────
-    cooling_efficiency: null,
-    cooling_capacity_kw: null,
+    cooling_efficiency: sp.cooling_efficiency ?? null,
+    cooling_capacity_kw: sp.cooling_capacity_kw ?? null,
 
     // ── Noise & electrical ──────────────────────────────────────────────────
-    noise_outdoor_dB: null,
-    noise_indoor_dB: null,
-    max_electric_power_kw: null,
+    noise_outdoor_dB: sp.noise_outdoor_dB ?? null,
+    noise_indoor_dB: sp.noise_indoor_dB ?? null,
+    max_electric_power_kw: sp.max_electric_power_kw ?? null,
 
     // ── System ──────────────────────────────────────────────────────────────
-    drive_type: null,
-    power_control: null,
-    num_compressors: null,
-    grid_ready: false,
+    drive_type: sp.drive_type ?? null,
+    power_control: sp.power_control ?? null,
+    num_compressors: sp.num_compressors ?? null,
+    grid_ready: false,                  // German SG-Ready attestation — not copied
     grid_ready_type: null,
     ee_display: null,
     ee_display_type: null,
     heat_meter: null,
-    defrost_tested: null,
-    defrost_type: null,
-    temp_diff: null,
+    defrost_tested: sp.defrost_tested ?? null,
+    defrost_type: sp.defrost_type ?? null,
+    temp_diff: sp.temp_diff ?? null,
     website: null,
 
-    // ── Segmentation ─────────────────────────────────────────────────────────
-    market_segment: null,               // PEL has no capacity data
+    // ── Segmentation (capacity from BAFA_REFERENCE when matched) ─────────────
+    market_segment: classifySegment(sp.power_35C_kw),
     installation_type: installationType,
     installation_type_derived: installationType ? 'name_keyword' : null,
 
@@ -223,6 +251,12 @@ function buildItem(r) {
     pel_source_last_modified: r.source_last_modified ?? null,
     pel_source_url: r.source_url ?? null,
     pel_snapshot_fetched_at: PEL_FETCHED_AT,
+
+    // ── BAFA_REFERENCE enrichment provenance ────────────────────────────────
+    performance_source: m ? 'BAFA_REFERENCE' : null,
+    bafa_reference_id: m?.bafa_id ?? null,
+    bafa_reference_model: m?.bafa_model ?? null,
+    bafa_reference_match_type: m?.match_type ?? null,
 
     // ── Component / outdoor-side fields (no GB classification yet) ──────────
     outdoor_unit_model: null,
@@ -282,24 +316,40 @@ if (items.length !== records.length - biomassCount) {
   process.exit(1);
 }
 
+const enrichedCount = items.filter(i => i.performance_source === 'BAFA_REFERENCE').length;
+if (matchFile && enrichedCount === 0) {
+  console.error('FAIL: overlay present but zero items enriched — match_key join broken?');
+  process.exit(1);
+}
+
+// ── Split by capacity segment (unmatched = no capacity → residential file) ────
+
+const residential = items.filter(i => i.market_segment === null || i.market_segment === 'residential_core');
+const commercial = items.filter(i => i.market_segment === 'light_commercial' || i.market_segment === 'commercial_project');
+
 // ── Write output ──────────────────────────────────────────────────────────────
 
-function writeOutput(relPath, outItems, dataset) {
+function writeOutput(relPath, outItems, dataset, segmentsIncluded) {
   const payload = {
     _meta: {
       generated: generatedAt,
-      generator: 'build-app-products-gb.mjs v1.0',
+      generator: 'build-app-products-gb.mjs v1.1',
       dataset,
       country: 'GB',
       primary_source: 'OFGEM_PEL',
       description: 'UK heat pump dataset built from the Ofgem BUS Product Eligibility List (PEL). '
-        + 'PEL publishes identity/certification fields only — performance fields (kW, COP, SCOP, noise, refrigerant) '
-        + 'are null pending enrichment (BAFA_REFERENCE / EPREL matching). '
-        + 'Capacity segmentation is not possible without kW data: all heat pump records are in the residential dataset '
-        + '(market_segment null); the commercial dataset is intentionally empty. '
+        + 'PEL publishes identity/certification fields only. Records matched to the German BAFA registry '
+        + '(match-pel-to-bafa.mjs) carry technical specs as a cross-reference (performance_source=BAFA_REFERENCE); '
+        + 'unmatched records have null performance fields. Matched records are capacity-segmented like DE; '
+        + 'unmatched records stay in the residential dataset with market_segment null. '
         + 'PEL listing is an administrative eligibility reference only and does not guarantee full BUS eligibility.',
       total_items: outItems.length,
       primary_source_file: `data_sources/ofgem_pel/parsed/${SNAPSHOT}/pel-normalized.json`,
+      overlay_source: matchFile ? `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-bafa-matches.json` : null,
+      bafa_reference_seed_snapshot: matchFile?._meta.bafa_seed_snapshot ?? null,
+      bafa_reference_enriched_total: enrichedCount,
+      segments_included: segmentsIncluded,
+      segmentation_policy: 'capacity_v2 on BAFA_REFERENCE kW: ≤20.99=residential_core, 21-45=light_commercial, >45=commercial_project; unmatched (null kW) → residential dataset, market_segment null',
       pel_snapshot: SNAPSHOT,
       pel_snapshot_fetched_at: PEL_FETCHED_AT,
       pel_records_total: records.length,
@@ -315,22 +365,25 @@ function writeOutput(relPath, outItems, dataset) {
   console.log(`Wrote ${outItems.length} items → ${relPath}`);
 }
 
-writeOutput('public/data/products-gb.json', items, 'residential');
-writeOutput('public/data/products-commercial-gb.json', [], 'commercial');
+writeOutput('public/data/products-gb.json', residential, 'residential', ['residential_core', null]);
+writeOutput('public/data/products-commercial-gb.json', commercial, 'commercial', ['light_commercial', 'commercial_project']);
 
 // ── Summary ───────────────────────────────────────────────────────────────────
 
 const statusDist = items.reduce((a, i) => { a[i.pel_certification_status] = (a[i.pel_certification_status] ?? 0) + 1; return a; }, {});
 const techDist = items.reduce((a, i) => { a[i.technology_type] = (a[i.technology_type] ?? 0) + 1; return a; }, {});
+const segDist = items.reduce((a, i) => { a[i.market_segment ?? 'null'] = (a[i.market_segment ?? 'null'] ?? 0) + 1; return a; }, {});
 const withShort = items.filter(i => i.manufacturer_short !== null).length;
 const withInstall = items.filter(i => i.installation_type !== null).length;
 
 console.log('');
 console.log('── Build summary (GB) ─────────────────────────────────────');
 console.log(`PEL records:          ${records.length}  (biomass excluded: ${biomassCount})`);
-console.log(`Exported heat pumps:  ${items.length}`);
+console.log(`Exported heat pumps:  ${items.length}  (residential file: ${residential.length}, commercial file: ${commercial.length})`);
 console.log(`  technology:         ${JSON.stringify(techDist)}`);
 console.log(`  certification:      ${JSON.stringify(statusDist)}`);
+console.log(`  segments:           ${JSON.stringify(segDist)}`);
+console.log(`  BAFA_REFERENCE enriched: ${enrichedCount}/${items.length}`);
 console.log(`  manufacturer_short: ${withShort}/${items.length}`);
 console.log(`  installation_type (name keyword): ${withInstall}`);
 console.log(`  duplicate-variant source_ids suffixed: ${suffixed.length}`);

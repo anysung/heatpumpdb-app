@@ -56,6 +56,15 @@ export interface HeatPump {
   pel_snapshot_fetched_at?: string | null;
   installation_type_derived?: string | null;
 
+  // ── BAFA_REFERENCE enrichment (GB only, set by match-pel-to-bafa.mjs) ──────
+  // performance_source: 'BAFA_REFERENCE' when technical specs were copied from
+  //   the same hardware's German BAFA listing — a cross-reference, NOT UK
+  //   certification data. Null when performance fields are unenriched.
+  performance_source?: string | null;
+  bafa_reference_id?: string | null;
+  bafa_reference_model?: string | null;
+  bafa_reference_match_type?: string | null;  // 'exact_model' | 'token_subsequence'
+
   // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
   // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source
   //   snapshot used to generate this dataset — NOT a claim of current eligibility.

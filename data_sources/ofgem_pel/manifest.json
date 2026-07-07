@@ -123,5 +123,24 @@
       "noBiomassLeak": "PASS"
     }
   },
-  "next_recommended_step": "Phase A complete (fetch → parse → app dataset build). Next (Phase B candidates): PEL↔BAFA/EPREL matching using brand normalization + model string matching to fill performance fields (join key: mcs_number); GB UI adaptation (MCS Number label, hide BAFA-specific columns, English type labels)."
+  "bafa_reference_matching": {
+    "match_completed": true,
+    "match_date": "2026-07-07",
+    "matcher": "scripts/ofgem/match-pel-to-bafa.mjs v1.0",
+    "output": "data_sources/ofgem_pel/matching/2026-06/pel-bafa-matches.json (gitignored)",
+    "bafa_seed_snapshot": "2026-07",
+    "results": {
+      "pel_heat_pump_records": 4422,
+      "matched": 584,
+      "exact_model": 419,
+      "token_subsequence": 165,
+      "ambiguous_rejected": 45,
+      "no_model_match": 2527,
+      "brand_not_in_bafa": 1266,
+      "brand_overlap": "42 of 137 PEL brands also on BAFA"
+    },
+    "policy": "Brand-gated (short-name equality) + exact token sequence or contiguous token subsequence; multi-candidate accepted only with identical specs; NO plain substring matching (false variant matches like 'WPL 25 AS' vs 'WPL 25 A' were observed and rejected in design).",
+    "semantics": "Match = same hardware listed on German BAFA registry. Copied specs are a technical cross-reference (performance_source='BAFA_REFERENCE'), not UK certification data. Matched records are capacity-segmented (53 → products-commercial-gb.json); unmatched stay residential with market_segment null."
+  },
+  "next_recommended_step": "Phase A + BAFA_REFERENCE matching complete. Next: GB UI adaptation (MCS Number label via sourceIdLabel, BAFA-column handling, data-sheet provenance note for BAFA_REFERENCE specs, VITE_COUNTRY_CODE=GB build/deploy target); later EPREL matching for GB (enabledEnrichmentLayers includes EPREL)."
 }
