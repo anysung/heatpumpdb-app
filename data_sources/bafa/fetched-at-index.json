@@ -1,0 +1,8 @@
+{
+  "description": "Accumulated BAFA raw snapshot fetch timestamps (snapshot -> fetched_at). Raw snapshot folders may be cleaned from disk to save space, but every product's bafa_snapshot_fetched_at (keyed by last_seen_snapshot) must stay resolvable. The app builder merges live raw/_meta.json values over this index and writes the merged result back, so this file maintains itself on every build. Committed on purpose — do not gitignore.",
+  "fetched_at": {
+    "2026-03": "2026-03-19T12:07:14.787Z",
+    "2026-06": "2026-06-19T05:17:14.627Z",
+    "2026-07": "2026-07-06T02:50:41.194Z"
+  }
+}

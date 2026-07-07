@@ -16,7 +16,13 @@
  *   > 45 kW                  → commercial_project → products-commercial.json
  *   null / invalid           → excluded; written to segmentation-pending report
  *
- * Output field count: 75 (72 base + 3 outdoor-side display fields)
+ * EPREL overlay (optional): data_sources/bafa/matching/YYYY-MM/bafa-eprel-matches.json
+ *   – Produced by match-bafa-to-eprel.mjs. Registration LINK ONLY
+ *     (eprel_registration_number/model/match_type) — no performance values are
+ *     copied; BAFA stays the authoritative DE performance source and label
+ *     classes stay derived from BAFA ηs per EU 811/2013.
+ *
+ * Output field count: 78 (72 base + 3 outdoor-side display + 3 EPREL link fields)
  * BAFA List Yes filter: bafa_list_current === true (default export only)
  */
 
@@ -27,7 +33,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const EXPECTED_FIELD_COUNT = 75;
+const EXPECTED_FIELD_COUNT = 78;
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
 function loadJSON(relPath) {
@@ -60,25 +66,43 @@ const SNAPSHOT = snapArg ?? readdirSync(SEED_DIR).filter(d => /^\d{4}-\d{2}$/.te
 if (!SNAPSHOT) { console.error('No master seed snapshot found.'); process.exit(1); }
 console.log(`Master seed snapshot: ${SNAPSHOT}`);
 
-// Per-snapshot fetch timestamps from raw/_meta.json — bafa_snapshot_fetched_at
-// follows each product's last_seen_snapshot, so the app's "BAFA list updated"
-// date moves automatically with every regular data update.
+// Per-snapshot fetch timestamps — bafa_snapshot_fetched_at follows each
+// product's last_seen_snapshot, so the app's "BAFA list updated" date moves
+// automatically with every regular data update.
+// Raw snapshot folders may be cleaned from disk (e.g. 2026-06 was removed),
+// so timestamps are accumulated in the committed fetched-at-index.json:
+// live raw/_meta.json values are merged over the index, and the merged map is
+// written back so the index maintains itself on every build.
 function snapshotFetchedAt(id) {
   const p = resolve(ROOT, `data_sources/bafa/raw/${id}/_meta.json`);
   if (!existsSync(p)) return null;
   try { return JSON.parse(readFileSync(p, 'utf8')).fetched_at ?? null; } catch { return null; }
 }
-const FETCHED_AT_BY_SNAPSHOT = new Map(
-  readdirSync(resolve(ROOT, 'data_sources/bafa/raw'))
-    .filter(d => /^\d{4}-\d{2}$/.test(d))
-    .map(id => [id, snapshotFetchedAt(id)])
-);
+const FETCHED_AT_INDEX_PATH = resolve(ROOT, 'data_sources/bafa/fetched-at-index.json');
+const fetchedAtIndex = existsSync(FETCHED_AT_INDEX_PATH)
+  ? JSON.parse(readFileSync(FETCHED_AT_INDEX_PATH, 'utf8'))
+  : { description: 'Accumulated BAFA raw snapshot fetch timestamps (snapshot -> fetched_at).', fetched_at: {} };
+const FETCHED_AT_BY_SNAPSHOT = new Map(Object.entries(fetchedAtIndex.fetched_at));
+for (const id of readdirSync(resolve(ROOT, 'data_sources/bafa/raw')).filter(d => /^\d{4}-\d{2}$/.test(d))) {
+  const ts = snapshotFetchedAt(id);
+  if (ts) FETCHED_AT_BY_SNAPSHOT.set(id, ts);
+}
+fetchedAtIndex.fetched_at = Object.fromEntries([...FETCHED_AT_BY_SNAPSHOT.entries()].sort());
+writeFileSync(FETCHED_AT_INDEX_PATH, JSON.stringify(fetchedAtIndex, null, 2) + '\n');
 
 const seed = loadJSON(`data_sources/bafa/master_seed/${SNAPSHOT}/bafa-master-seed.json`);
 const enriched = loadJSON('scraper/pricing/output/dataset-enriched-full.json');
 const shortNamesFile = loadJSON('scraper/pricing/manufacturer-short-names.json');
 const shortNameMap = new Map(Object.entries(shortNamesFile.mapping));
 const iduOduMapping = loadJSON('data_sources/bafa/idu_odu_mapping/2026-06/idu-odu-mapping.json');
+
+// EPREL registration-link overlay (optional) — match-bafa-to-eprel.mjs output.
+const eprelMatchPath = resolve(ROOT, `data_sources/bafa/matching/${SNAPSHOT}/bafa-eprel-matches.json`);
+const eprelFile = existsSync(eprelMatchPath) ? JSON.parse(readFileSync(eprelMatchPath, 'utf8')) : null;
+const eprelByBafaId = new Map((eprelFile?.matches ?? []).map(m => [String(m.bafa_id), m]));
+console.log(eprelFile
+  ? `EPREL link overlay: ${eprelByBafaId.size} matches (EPREL snapshot ${eprelFile._meta.eprel_snapshot})`
+  : 'EPREL link overlay: none');
 
 // ── Build enriched-dataset lookup keyed by bafa_id ───────────────────────────
 
@@ -330,6 +354,11 @@ function buildItem(s) {
     bafa_snapshot_fetched_at: FETCHED_AT_BY_SNAPSHOT.get(s.last_seen_snapshot) ?? null,
     source_snapshot_generated_at: generatedAt,
 
+    // ── EPREL registration link (overlay; no performance values copied) ─────
+    eprel_registration_number: eprelByBafaId.get(String(s.bafa_id))?.eprel_registration_number ?? null,
+    eprel_model: eprelByBafaId.get(String(s.bafa_id))?.eprel_model ?? null,
+    eprel_match_type: eprelByBafaId.get(String(s.bafa_id))?.match_type ?? null,
+
     // ── Component fields (from IDU/ODU mapping, display-only) ───────────────
     outdoor_unit_model: comp.outdoor_unit_model ?? null,
     idu_model: comp.idu_model ?? null,
@@ -387,7 +416,10 @@ function writeOutput(relPath, items, dataset, segmentsIncluded) {
   const payload = {
     _meta: {
       generated: generatedAt,
-      generator: 'build-app-products-from-master-seed.mjs v2.0',
+      generator: 'build-app-products-from-master-seed.mjs v2.1',
+      eprel_overlay_source: eprelFile ? `data_sources/bafa/matching/${SNAPSHOT}/bafa-eprel-matches.json` : null,
+      eprel_snapshot: eprelFile?._meta.eprel_snapshot ?? null,
+      eprel_linked_total: eprelFile ? allItems.filter(i => i.eprel_registration_number !== null).length : 0,
       dataset,
       description: 'BAFA master seed v2 export. Segmentation: capacity-based (power_35C_kw). Overlay source: dataset-enriched-full.json for installation_type, physical specs, uuid.',
       total_items: items.length,
@@ -461,6 +493,7 @@ console.log(`  Pending (null capacity):   ${pending.length}  → segmentation-pe
 console.log(`Component fields joined from IDU/ODU mapping:`);
 console.log(`  outdoor_unit_model:  ${withODU}`);
 console.log(`  idu_model:           ${withIDU}`);
+console.log(`EPREL linked (reg no.):  ${allItems.filter(i => i.eprel_registration_number !== null).length}`);
 console.log(`Outdoor-side display (all exported records):`);
 console.log(`  outdoor_side_identified=true: ${outdoorIdentified}`);
 console.log(`  outdoor_side_display_model:   ${outdoorDisplayModel}`);

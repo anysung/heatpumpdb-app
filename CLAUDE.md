@@ -43,8 +43,12 @@
 - Overlay source: `scraper/pricing/output/dataset-enriched-full.json` (installation_type,
   uuid — price fields are gone and guarded against; do not reintroduce).
 - Diff reference baseline snapshot: `2026-03` (keep `data_sources/bafa/raw/2026-03` + `parsed/2026-03`).
-- EPREL matching is **not yet implemented** (0 matches); energy-label classes are derived
+- EPREL matching (DE): `match-bafa-to-eprel` attaches `eprel_registration_number` as a
+  **link only** — no performance values are copied; energy-label classes stay derived
   from BAFA ηs per EU 811/2013 and the data sheet says so — keep that honesty.
+- Raw snapshot folders may be cleaned from disk; per-snapshot fetch timestamps are
+  accumulated in the committed `data_sources/bafa/fetched-at-index.json` (the builder
+  merges live `raw/_meta.json` values over it and writes it back — do not gitignore it).
 - **UK pipeline** (`scripts/ofgem/`): `fetch-pel-xlsx` → `parse-pel-xlsx` →
   `match-pel-to-bafa` + `match-pel-to-eprel` (optional overlays) → `build-app-products-gb`
   (auto-selects newest `data_sources/ofgem_pel/parsed/YYYY-MM/`) →
