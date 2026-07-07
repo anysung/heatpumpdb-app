@@ -13,6 +13,7 @@
 import React from 'react';
 import { Language } from '../../types';
 import { ACTIVE_COUNTRY } from '../../config/countryProfiles';
+import { UI_LANGUAGES } from '../../hpiq/market';
 import { BrandLogo, WavingFlag } from '../BrandLogo';
 
 /** ISO 3166-1 alpha-2 → regional-indicator flag emoji. */
@@ -361,7 +362,7 @@ const gridOverlayStyle: React.CSSProperties = {
 
 /* ── Chrome ──────────────────────────────────────────────────────────────── */
 
-/** Dynamic brand lockup + waving German flag — instantly reads as the German-market build. */
+/** Dynamic brand lockup + waving market flag — instantly reads as this country's build. */
 const Wordmark: React.FC = () => (
   <span className="inline-flex items-center gap-4 select-none">
     <BrandLogo height={40} theme="dark" />
@@ -381,8 +382,10 @@ const LanguagePill: React.FC<{ language: Language; setLanguage: (l: Language) =>
   language,
   setLanguage,
 }) => (
+  // Single-language editions (e.g. GB) render no pill at all.
+  UI_LANGUAGES.length < 2 ? null : (
   <div className="flex items-center rounded-full border border-white/15 bg-white/5 backdrop-blur p-1 text-xs font-semibold">
-    {(['de', 'en'] as Language[]).map(l => (
+    {UI_LANGUAGES.map(l => (
       <button
         key={l}
         onClick={() => setLanguage(l)}
@@ -394,6 +397,7 @@ const LanguagePill: React.FC<{ language: Language; setLanguage: (l: Language) =>
       </button>
     ))}
   </div>
+  )
 );
 
 /* ── Shell ───────────────────────────────────────────────────────────────── */

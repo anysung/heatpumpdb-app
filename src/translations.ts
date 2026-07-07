@@ -1,5 +1,12 @@
 
 import { Language } from './types';
+import { ACTIVE_COUNTRY } from './config/countryProfiles';
+
+// Auth marketing chip for the market's funding scheme — the auth surface is
+// shared across editions; only this chip names the national scheme.
+const FUNDING_CHIP = ACTIVE_COUNTRY.code === 'GB'
+  ? { en: 'BUS / MCS eligibility', de: 'BUS / MCS eligibility' }
+  : { en: 'BAFA / KfW eligibility', de: 'BAFA-/KfW-Förderfähigkeit' };
 
 export const translations = {
   en: {
@@ -36,7 +43,7 @@ export const translations = {
     authMarketLabel: "Market",
     authResidentialDesc: "Single- & multi-family homes",
     authCommercialDesc: "Commercial & large-scale systems",
-    authChipBafa: "BAFA / KfW eligibility",
+    authChipBafa: FUNDING_CHIP.en,
     authChipRefrigerant: "R290 & refrigerant data",
     authChipScop: "SCOP, noise & capacity compare",
     authEcoLine: "Data for a climate-neutral building stock",
@@ -187,7 +194,7 @@ export const translations = {
     authMarketLabel: "Markt",
     authResidentialDesc: "Ein- & Mehrfamilienhäuser",
     authCommercialDesc: "Gewerbe & Großanlagen",
-    authChipBafa: "BAFA-/KfW-Förderfähigkeit",
+    authChipBafa: FUNDING_CHIP.de,
     authChipRefrigerant: "R290- & Kältemitteldaten",
     authChipScop: "SCOP-, Schall- & Leistungsvergleich",
     authEcoLine: "Daten für einen klimaneutralen Gebäudebestand",
