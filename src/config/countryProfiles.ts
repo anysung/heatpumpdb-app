@@ -25,13 +25,13 @@ import { PUBLIC_ENV } from './env';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type CountryCode = 'DE' | 'GB';
+export type CountryCode = 'DE' | 'GB' | 'FR';
 
 /** Identifies the primary eligibility/registry data source for a country. */
 export type PrimaryRegistry = 'BAFA' | 'OFGEM_PEL';
 
 /** Enrichment sources that may be layered on top of the primary registry. */
-export type EnrichmentLayer = 'EPREL' | 'BAFA_REFERENCE';
+export type EnrichmentLayer = 'EPREL' | 'BAFA_REFERENCE' | 'NF_PAC';
 
 export interface CountryProfile {
   /** ISO 3166-1 alpha-2. */
@@ -118,6 +118,31 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     datasetPaths: {
       products: '/data/products.json',
       commercialProducts: '/data/products-commercial.json',
+    },
+  },
+
+  FR: {
+    code: 'FR',
+    name: 'France',
+    marketName: 'French market',
+    currency: 'EUR',
+    currencySymbol: '€',
+    locale: 'fr-FR',
+    firestoreRoot: 'countries/FR',
+    // FR catalogue is derived from the German BAFA registry (same hardware sold
+    // in both markets — user decision 2026-07-07). BAFA is the data source;
+    // NF PAC references are attached as an enrichment layer only where a
+    // confident match exists (uncertain → no reference shown, never guessed).
+    primaryRegistry: 'BAFA',
+    primaryRegistryIdField: 'bafa_id',
+    subsidyAuthorityLabel: "MaPrimeRénov' (ANAH) / CEE",
+    subsidyTabLabel: "MaPrimeRénov' / CEE",
+    aiMarketContext: 'French market',
+    sourceIdLabel: { en: 'BAFA ID (reference)' },
+    enabledEnrichmentLayers: ['EPREL', 'NF_PAC'],
+    datasetPaths: {
+      products: '/data/products-fr.json',
+      commercialProducts: '/data/products-commercial-fr.json',
     },
   },
 

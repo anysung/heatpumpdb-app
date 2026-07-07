@@ -72,6 +72,11 @@ export interface HeatPump {
   eprel_model?: string | null;
   eprel_match_type?: string | null;           // 'exact_model' | 'token_subsequence'
 
+  // ── NF PAC enrichment (FR only, optional overlay) ──────────────────────────
+  // French NF PAC (Certita) certification reference. Attached ONLY when a
+  // confident match exists — uncertain matches are never shown (user policy).
+  nf_pac_reference?: string | null;
+
   // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
   // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source
   //   snapshot used to generate this dataset — NOT a claim of current eligibility.
@@ -157,6 +162,10 @@ export interface NewsItem {
   title_de?: string;
   summary_de?: string;
   body_de?: string;
+  /** Stored French translations of the article (FR market edition). */
+  title_fr?: string;
+  summary_fr?: string;
+  body_fr?: string;
 }
 
 export interface PolicyItem {
@@ -212,7 +221,7 @@ export enum InstallationType {
 }
 
 export type FetchState = 'idle' | 'loading' | 'success' | 'error';
-export type Language = 'en' | 'de';
+export type Language = 'en' | 'de' | 'fr';
 
 // --- Auth Types ---
 export type CompanyType = 'Manufacturer' | 'Distributor' | 'Installer' | 'Private Individual';

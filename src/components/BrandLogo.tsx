@@ -111,6 +111,12 @@ export const WavingFlag: React.FC<{
                   <path d="M48 0 V66 M0 33 H96" stroke="#fff" strokeWidth="20" />
                   <path d="M48 0 V66 M0 33 H96" stroke="#C8102E" strokeWidth="11" />
                 </>
+              ) : country === 'FR' ? (
+                <>
+                  <rect x="0" y="0" width="32" height="66" fill="#000091" />
+                  <rect x="32" y="0" width="32" height="66" fill="#ffffff" />
+                  <rect x="64" y="0" width="32" height="66" fill="#E1000F" />
+                </>
               ) : (
                 <rect x="0" y="0" width="96" height="66" fill="#7a7a7a" />
               )}
