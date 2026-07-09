@@ -971,7 +971,7 @@ const GB: HpStrings = {
     checklistNote: 'A preparation aid, not legal advice. Verify each item against the official Ofgem / MCS conditions.',
     pdfTitlePro: 'BUS preparation checklist — installers',
     pdfTitleHome: 'BUS preparation checklist — homeowners',
-    pdfFooter: 'A preparation aid, not legal advice. Verify each item against the official Ofgem / MCS conditions. heatpumpdb.de',
+    pdfFooter: 'A preparation aid, not legal advice. Verify each item against the official Ofgem / MCS conditions. heatpumpdb.uk',
     explainerText: 'How the Boiler Upgrade Scheme works — the 5 decisions that matter before you sign anything.',
     goodToKnowText: 'Natural-refrigerant units (R290) are increasingly common on the PEL. Filter Products by R290 to see them.',
     faqs: [
@@ -1003,6 +1003,7 @@ const GB: HpStrings = {
     included: ['Full product database access', 'Unlimited comparisons', (n: number) => `${n} data sheet prints / month`, 'BUS / MCS & label updates'] as (string | ((n: number) => string))[],
     languageNote: 'English is the default for the United Kingdom edition.',
     emailSubject: 'HeatPump DB on the web',
+    emailBody: 'Open HeatPump DB in any browser and sign in with your account:\n\nwww.heatpumpdb.uk/enter',
   },
 };
 

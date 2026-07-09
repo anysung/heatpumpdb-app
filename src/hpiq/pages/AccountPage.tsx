@@ -5,7 +5,7 @@ import { auth } from '../../firebase';
 import { requestDeletion } from '../../services/adminService';
 import { createTicket, getMyTickets, userReply } from '../../services/supportService';
 import { HpApp } from '../appState';
-import { UI_LANGUAGES } from '../market';
+import { UI_LANGUAGES, MARKET_ENTER_URL } from '../market';
 import { tr } from '../i18n';
 import { Language, SupportTicket, TicketCategory } from '../../types';
 import { FD, sectionLabel } from '../ui';
@@ -272,12 +272,12 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>
                 {t.account.webText}
               </span>
-              <span style={{ border: '1px solid #e0e0e0', borderRadius: 8, padding: '9px 14px', fontSize: 13, fontFamily: 'ui-monospace,Menlo,monospace', background: '#f5f5f7', width: 'fit-content' }}>www.heatpumpdb.de/enter</span>
+              <span style={{ border: '1px solid #e0e0e0', borderRadius: 8, padding: '9px 14px', fontSize: 13, fontFamily: 'ui-monospace,Menlo,monospace', background: '#f5f5f7', width: 'fit-content' }}>{MARKET_ENTER_URL}</span>
               <div style={{ display: 'flex', gap: 10, marginTop: 2 }}>
                 <span
                   className="hp-press"
                   onClick={() =>
-                    navigator.clipboard?.writeText('www.heatpumpdb.de/enter')
+                    navigator.clipboard?.writeText(MARKET_ENTER_URL)
                       .then(() => app.notify(t.account.copied))
                       .catch(() => app.notify(t.account.copyFailed))
                   }

@@ -53,3 +53,12 @@ export const UI_LANGUAGES: Language[] = IS_GB ? ['en'] : IS_FR ? ['fr', 'en'] : 
 
 /** Language the app starts in for this edition. */
 export const DEFAULT_LANGUAGE: Language = IS_FR ? 'fr' : 'en';
+
+/**
+ * This edition's public web domain (owned: heatpumpdb.de / .uk / .fr;
+ * heatpumpdb.click is the market-neutral hub/short-link domain).
+ */
+export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heatpumpdb.fr' : 'www.heatpumpdb.de';
+
+/** Sign-in entry URL shown on the Account page ("use on the web"). */
+export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
