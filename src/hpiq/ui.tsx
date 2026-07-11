@@ -15,7 +15,7 @@ export const FD = 'var(--hp-font-display)';
  */
 export const Watermark: React.FC<{ print?: boolean }> = ({ print }) => (
   <div className={print ? 'hpiq-print-watermark' : 'hpiq-watermark'} aria-hidden="true">
-    <BrandLogo height={72} theme="light" />
+    <BrandLogo height={96} theme="light" />
   </div>
 );
 

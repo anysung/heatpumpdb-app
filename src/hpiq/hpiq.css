@@ -62,7 +62,6 @@
   justify-content: center;
   pointer-events: none;
   opacity: 0.05;
-  transform: rotate(-18deg);
 }
 .hpiq-print-watermark { display: none; }
 
@@ -78,7 +77,6 @@
     justify-content: center;
     pointer-events: none;
     opacity: 0.06;
-    transform: rotate(-18deg);
     z-index: 9999;
   }
 }
