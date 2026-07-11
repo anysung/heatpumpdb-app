@@ -9,10 +9,13 @@ import { resolve } from 'node:path'
 // (Google was rewriting titles from hostnames: "HeatPump DB_UK" etc.).
 // Descriptions carry the market keywords (BAFA-Liste / Ofgem BUS PEL / MCS /
 // comparateur pompe à chaleur) that match how each market actually searches.
-const MARKET_HTML: Record<string, { lang: string; hreflang: string; title: string; desc: string; canonical: string }> = {
+const MARKET_HTML: Record<string, { lang: string; hreflang: string; title: string; desc: string; canonical: string; iconCode: string; appName: string; themeColor: string }> = {
   DE: {
     lang: 'de',
     hreflang: 'de-DE',
+    iconCode: 'de',
+    appName: 'HeatPump DB Germany',
+    themeColor: '#0a1712',
     title: 'HeatPump DB Germany — Heat Pump Database',
     desc: 'Wärmepumpen-Datenbank & Vergleich für den deutschen Markt: BAFA-Liste förderfähiger Wärmepumpen (BEG), SCOP, COP, Schallleistung, Kältemittel (R290) und EU-Energielabel — Datenblätter für Fachhandwerk und Eigentümer.',
     canonical: 'https://www.heatpumpdb.de/',
@@ -20,6 +23,9 @@ const MARKET_HTML: Record<string, { lang: string; hreflang: string; title: strin
   GB: {
     lang: 'en',
     hreflang: 'en-GB',
+    iconCode: 'uk',
+    appName: 'HeatPump DB UK',
+    themeColor: '#081322',
     title: 'HeatPump DB UK — Heat Pump Database',
     desc: 'UK heat pump database & comparison: Ofgem Boiler Upgrade Scheme (BUS) product eligibility list, MCS-certified air source heat pumps, SCOP, sound power and refrigerant data — data sheets for installers and homeowners.',
     canonical: 'https://www.heatpumpdb.uk/',
@@ -27,6 +33,9 @@ const MARKET_HTML: Record<string, { lang: string; hreflang: string; title: strin
   FR: {
     lang: 'fr',
     hreflang: 'fr-FR',
+    iconCode: 'fr',
+    appName: 'HeatPump DB France',
+    themeColor: '#0b1128',
     title: 'HeatPump DB France — Base de données de pompes à chaleur',
     desc: "Base de données et comparateur de pompes à chaleur air/eau pour le marché français : SCOP, COP, puissance acoustique, fluides frigorigènes (R290) et étiquette énergie UE — fiches techniques pour installateurs et particuliers.",
     canonical: 'https://www.heatpumpdb.fr/',
@@ -89,6 +98,13 @@ export default defineConfig(({ mode }) => {
               + `    <meta property="og:description" content="${m.desc}" />\n`
               + `    <meta property="og:url" content="${m.canonical}" />\n`
               + `    <meta property="og:type" content="website" />\n`
+              // PWA: installable per market with its own icon set (public/icons/)
+              + `    <link rel="manifest" href="/manifest.webmanifest" />\n`
+              + `    <meta name="theme-color" content="${m.themeColor}" />\n`
+              + `    <meta name="mobile-web-app-capable" content="yes" />\n`
+              + `    <meta name="apple-mobile-web-app-title" content="HeatPump DB" />\n`
+              + `    <link rel="icon" type="image/png" sizes="32x32" href="/icons/${m.iconCode}-32.png" />\n`
+              + `    <link rel="apple-touch-icon" sizes="180x180" href="/icons/${m.iconCode}-180.png" />\n`
               + jsonLd(m),
             );
         },
@@ -103,6 +119,23 @@ export default defineConfig(({ mode }) => {
             + `</urlset>\n`);
           writeFileSync(resolve(outDir, 'robots.txt'),
             `User-agent: *\nAllow: /\n\nSitemap: ${m.canonical}sitemap.xml\n`);
+          // PWA manifest — per-market identity so each installed edition
+          // carries its own name, icon and theme color.
+          writeFileSync(resolve(outDir, 'manifest.webmanifest'), JSON.stringify({
+            name: m.appName,
+            short_name: 'HeatPump DB',
+            description: m.desc,
+            lang: m.lang,
+            start_url: '/',
+            scope: '/',
+            display: 'standalone',
+            background_color: m.themeColor,
+            theme_color: m.themeColor,
+            icons: [
+              { src: `/icons/${m.iconCode}-192.png`, sizes: '192x192', type: 'image/png' },
+              { src: `/icons/${m.iconCode}-512.png`, sizes: '512x512', type: 'image/png' },
+            ],
+          }, null, 2));
         },
       },
     ],
