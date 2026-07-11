@@ -93,6 +93,10 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   (`MARKETS`: DE + FR + GB → `countries/<code>/news|policies`); a manual run can be
   narrowed with `?newsOnly=true&countries=GB`. GB articles are English-only (no `_de`
   fields); FR articles carry `_fr` fields.
+  News is **append-only** (press-agency format, byline "HeatPump DataBase (Europe)",
+  date-based ids `news-YYYYMMDD-<cc>-NNN`) — never reintroduce collection deletion for
+  news; policies are still replaced each run. The app shows a searchable archive of all
+  past articles and `/?article=<id>` share deep links.
   Redeploying with plain `gcloud functions deploy` (no env flags) preserves the
   function's env vars; `deploy.sh` overwrites them — only run it with real secrets exported.
 
