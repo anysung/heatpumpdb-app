@@ -27,11 +27,17 @@
  *   - PEL publishes no performance data. Records matched to BAFA get technical
  *     specs copied as a cross-reference (performance_source='BAFA_REFERENCE');
  *     unmatched records keep null performance fields.
- *   - Segmentation: matched records are capacity-classified like DE
- *     (≤20.99 kW residential_core, 21–45 light_commercial, >45 commercial_project);
- *     light_commercial/commercial_project go to products-commercial-gb.json.
- *     Unmatched records (no capacity data) stay in products-gb.json with
- *     market_segment null.
+ *   - v2.0 UNION CATALOGUE (user decision 2026-07-12): the GB edition shows
+ *     everything we have — all PEL records (bafa_listing_status
+ *     'listed_in_snapshot' → "On Ofgem PEL") PLUS the European (DE-derived)
+ *     catalogue for hardware not on the PEL (bafa_listing_status
+ *     'not_in_latest_snapshot' → "Not on PEL"). DE products whose bafa_id is
+ *     already PEL-matched are excluded to avoid duplicate hardware. Derived
+ *     records carry full specs as BAFA_REFERENCE and English type labels.
+ *   - Segmentation: capacity-classified like DE (≤20.99 kW residential_core,
+ *     21–45 light_commercial, >45 commercial_project); light_commercial/
+ *     commercial_project go to products-commercial-gb.json. Records with no
+ *     capacity data stay in products-gb.json with market_segment null.
  *   - Duplicate MCS numbers are real model variants sharing one certification
  *     number (e.g. Ares MB5 ×9). They are KEPT; source_id gets a '#n' suffix
  *     (n ≥ 2) for uniqueness. mcs_number stays raw for display.
@@ -247,7 +253,8 @@ function buildItem(r) {
     source_id: uniqueSourceId(r.mcs_number),
     country: 'GB',
     primary_source: 'OFGEM_PEL',
-    bafa_listing_status: null,
+    // Listing flag drives the app's "On current PEL only" filter and chips.
+    bafa_listing_status: 'listed_in_snapshot',
     bafa_foerderung_von: null,
     bafa_foerderung_bis: null,
     bafa_snapshot_fetched_at: null,
@@ -294,14 +301,75 @@ function buildItem(r) {
   };
 }
 
-const items = hp.map(buildItem);
+const pelItems = hp.map(buildItem);
+
+// ── Union with the European (DE-derived) catalogue ────────────────────────────
+// Everything we have that is NOT on the PEL is added as a "Not on PEL"
+// reference record with full specs (same approach as the FR edition).
+const deResidential = loadJSON('public/data/products.json');
+const deCommercial = loadJSON('public/data/products-commercial.json');
+const matchedBafaIds = new Set((matchFile?.matches ?? []).map(m => String(m.bafa_id)));
+
+/** German BAFA type strings → English display strings for the GB edition. */
+const TYPE_EN = {
+  'Luft / Wasser': 'Air / Water',
+  'Sole / Wasser': 'Ground / Water',
+  'Wasser / Wasser': 'Water / Water',
+  'Luft / Luft': 'Air / Air',
+};
+
+function deItemToGb(p) {
+  return {
+    ...p,
+    type: TYPE_EN[p.type] ?? p.type,
+    country: 'GB',
+    source_id: String(p.bafa_id),
+    primary_source: 'BAFA_REFERENCE',
+    bafa_listing_status: 'not_in_latest_snapshot',   // = Not on the Ofgem PEL
+    installation_type_derived: null,
+    // European-reference provenance (specs are the same hardware's registry values)
+    performance_source: 'BAFA_REFERENCE',
+    bafa_reference_id: String(p.bafa_id),
+    bafa_reference_model: p.model ?? null,
+    bafa_reference_match_type: 'same_record',
+    // PEL identity fields — not on the PEL
+    mcs_number: null,
+    mcs_number_base: null,
+    mcs_model_suffix: null,
+    product_name: null,
+    technology_type: null,
+    technology_type_raw: null,
+    pel_certification_status: null,
+    mcs_cert_date: null,
+    expiry_date: null,
+    pel_eligibility_interpretation: null,
+    pel_eligibility_caveat: null,
+    pel_snapshot: SNAPSHOT,
+    pel_source_period: null,
+    pel_source_last_modified: null,
+    pel_source_url: null,
+    pel_snapshot_fetched_at: PEL_FETCHED_AT,
+  };
+}
+
+const derivedItems = [...deResidential.items, ...deCommercial.items]
+  .filter(p => !matchedBafaIds.has(String(p.bafa_id)))
+  .map(deItemToGb);
+
+const items = [...pelItems, ...derivedItems];
 
 // ── Validate ──────────────────────────────────────────────────────────────────
 
-const fieldCount = Object.keys(items[0]).length;
-if (fieldCount !== EXPECTED_FIELD_COUNT) {
-  console.error(`FAIL: field count mismatch: expected ${EXPECTED_FIELD_COUNT}, got ${fieldCount}`);
-  console.error('Fields:', Object.keys(items[0]).join(', '));
+const fieldCount = Object.keys(pelItems[0]).length;
+const derivedFieldCount = derivedItems.length ? Object.keys(derivedItems[0]).length : EXPECTED_FIELD_COUNT;
+if (fieldCount !== EXPECTED_FIELD_COUNT || derivedFieldCount !== EXPECTED_FIELD_COUNT) {
+  console.error(`FAIL: field count mismatch: expected ${EXPECTED_FIELD_COUNT}, got PEL=${fieldCount}, derived=${derivedFieldCount}`);
+  process.exit(1);
+}
+const keySetPel = Object.keys(pelItems[0]).sort().join(',');
+const keySetDerived = derivedItems.length ? Object.keys(derivedItems[0]).sort().join(',') : keySetPel;
+if (keySetPel !== keySetDerived) {
+  console.error('FAIL: PEL and derived record shapes differ');
   process.exit(1);
 }
 
@@ -313,10 +381,15 @@ if (priceKeysFound.length > 0) {
   process.exit(1);
 }
 
-const missingProvenance = items.filter(i =>
-  !i.source_id || !i.mcs_number || i.country !== 'GB' ||
-  i.primary_source !== 'OFGEM_PEL' || !i.pel_snapshot_fetched_at || !i.pel_certification_status
-);
+const missingProvenance = items.filter(i => {
+  if (!i.source_id || i.country !== 'GB' || !i.pel_snapshot_fetched_at) return true;
+  if (i.primary_source === 'OFGEM_PEL') {
+    return !i.mcs_number || !i.pel_certification_status || i.bafa_listing_status !== 'listed_in_snapshot';
+  }
+  // European-reference (DE-derived) records
+  return i.primary_source !== 'BAFA_REFERENCE' || !i.bafa_id
+    || i.bafa_listing_status !== 'not_in_latest_snapshot' || i.performance_source !== 'BAFA_REFERENCE';
+});
 if (missingProvenance.length > 0) {
   console.error(`FAIL: ${missingProvenance.length} items missing required provenance`);
   process.exit(1);
@@ -333,8 +406,8 @@ if (items.some(i => i.technology_type === 'Biomass')) {
   process.exit(1);
 }
 
-if (items.length !== records.length - biomassCount) {
-  console.error(`FAIL: record count mismatch: ${items.length} !== ${records.length} - ${biomassCount}`);
+if (pelItems.length !== records.length - biomassCount) {
+  console.error(`FAIL: PEL record count mismatch: ${pelItems.length} !== ${records.length} - ${biomassCount}`);
   process.exit(1);
 }
 
@@ -361,7 +434,13 @@ function writeOutput(relPath, outItems, dataset, segmentsIncluded) {
   const payload = {
     _meta: {
       generated: generatedAt,
-      generator: 'build-app-products-gb.mjs v1.2',
+      generator: 'build-app-products-gb.mjs v2.0',
+      union_catalogue: {
+        pel_records: pelItems.length,
+        european_reference_records: derivedItems.length,
+        pel_matched_bafa_ids_excluded: matchedBafaIds.size,
+        policy: "GB shows the full catalogue: PEL records (bafa_listing_status='listed_in_snapshot', shown as 'On Ofgem PEL') plus the European (DE-derived) reference catalogue for hardware not on the PEL ('not_in_latest_snapshot', shown as 'Not on PEL'). BUS funding requires a PEL-listed product — the caveat stands.",
+      },
       dataset,
       country: 'GB',
       primary_source: 'OFGEM_PEL',
@@ -409,8 +488,9 @@ const withShort = items.filter(i => i.manufacturer_short !== null).length;
 const withInstall = items.filter(i => i.installation_type !== null).length;
 
 console.log('');
-console.log('── Build summary (GB) ─────────────────────────────────────');
-console.log(`PEL records:          ${records.length}  (biomass excluded: ${biomassCount})`);
+console.log('── Build summary (GB, union catalogue) ────────────────────');
+console.log(`PEL records:          ${records.length}  (biomass excluded: ${biomassCount}) → ${pelItems.length} on PEL`);
+console.log(`European reference:   ${derivedItems.length}  (DE-derived, not on PEL; ${matchedBafaIds.size} matched bafa_ids excluded)`);
 console.log(`Exported heat pumps:  ${items.length}  (residential file: ${residential.length}, commercial file: ${commercial.length})`);
 console.log(`  technology:         ${JSON.stringify(techDist)}`);
 console.log(`  certification:      ${JSON.stringify(statusDist)}`);

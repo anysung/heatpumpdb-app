@@ -883,7 +883,7 @@ const GB: HpStrings = {
 
   find: {
     ...EN.find,
-    heroSub: (total: string) => `Fast model lookup across ${total} PEL-listed heat pumps.`,
+    heroSub: (total: string) => `Fast model lookup across ${total} heat pumps for the UK market.`,
     hint: 'Search by model name, MCS certification number or manufacturer — e.g. "Ecodan", "Aerona", "24.01.".',
     bafaListed: 'On Ofgem PEL',
   },
@@ -895,10 +895,11 @@ const GB: HpStrings = {
     begNote: 'Units on the Ofgem BUS Product Eligibility List.',
     bafaUpdated: 'PEL updated:',
     chipBafa: 'PEL',
+    chipDelisted: 'Not on PEL',
     cmpRows: [...EN.products.cmpRows.slice(0, 7), 'MCS Number'],
     inspFunding: 'BUS · FUNDING',
     inspListed: 'Listed on the current Ofgem PEL snapshot. Potentially relevant for the Boiler Upgrade Scheme — PEL listing alone does not guarantee full BUS eligibility.',
-    inspDelisted: 'Not on the current Ofgem PEL snapshot (previously listed — data retained for reference). Verify eligibility before quoting.',
+    inspDelisted: 'Not on the Ofgem PEL — European reference catalogue entry (same hardware sold across European markets). BUS funding requires a PEL-listed product.',
     inspVerify: 'Verify current BUS eligibility with an MCS-certified installer before quoting.',
     openBafa: 'Open Ofgem PEL ›',
   },
@@ -921,7 +922,7 @@ const GB: HpStrings = {
     },
     bafaRef: 'MCS-Ref',
     labelDerivation: 'Energy classes on this sheet are derived from the seasonal space-heating efficiency (ηs) per Regulation (EU) 811/2013, using technical data cross-referenced from the German BAFA registry listing of the same hardware where such a match exists. The MCS number identifies the certification on the Ofgem Product Eligibility List — it is not an EPREL label registration. Once an EPREL match is established for this model, the official EPREL ID is shown above.',
-    sourceText: 'Data compiled from the Ofgem Boiler Upgrade Scheme Product Eligibility List (PEL). Technical specifications, where shown, are cross-referenced from the German BAFA registry listing of the same hardware and are marked accordingly. This sheet is generated documentation, not an official certificate. Verify PEL presence and full BUS eligibility with an MCS-certified installer before contractual use.',
+    sourceText: 'Data compiled from the Ofgem Boiler Upgrade Scheme Product Eligibility List (PEL) and the European reference catalogue (BAFA) for hardware not on the PEL. Technical specifications, where shown, are cross-referenced from the German BAFA registry listing of the same hardware and are marked accordingly. This sheet is generated documentation, not an official certificate. Verify PEL presence and full BUS eligibility with an MCS-certified installer before contractual use.',
     notes: {
       ...EN.ds.notes,
       manufacturer: 'Equipment manufacturer as published on the Ofgem Product Eligibility List.',
