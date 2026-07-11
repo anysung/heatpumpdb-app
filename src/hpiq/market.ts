@@ -72,4 +72,4 @@ export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
  * embed (youtube-nocookie.com), so no YouTube cookies load before the user
  * presses play.
  */
-export const GUIDE_VIDEO_ID: string | null = IS_GB ? null : IS_FR ? null : null;
+export const GUIDE_VIDEO_ID: string | null = IS_GB ? '5zkU-KQjzvo' : IS_FR ? 'L8FDkPmjd14' : 'JSkbYarh_iA';
