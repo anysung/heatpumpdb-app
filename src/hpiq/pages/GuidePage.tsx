@@ -2,7 +2,8 @@
 import React from 'react';
 import { HpApp } from '../appState';
 import { tr } from '../i18n';
-import { FD, Check, PlayIcon, sectionLabel } from '../ui';
+import { FD, Check, VideoExplainer, sectionLabel } from '../ui';
+import { GUIDE_VIDEO_ID } from '../market';
 
 export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
@@ -107,14 +108,7 @@ export const GuidePage: React.FC<{ app: HpApp }> = ({ app }) => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ background: '#f5f5f7', borderRadius: 18, padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
               <span style={sectionLabel}>{t.guide.explainer}</span>
-              <div
-                onClick={() => app.notify(t.guide.videoSoon)}
-                style={{ aspectRatio: '16/9', background: '#272729', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-              >
-                <span style={{ width: 52, height: 52, borderRadius: '50%', background: 'rgba(255,255,255,.14)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <PlayIcon />
-                </span>
-              </div>
+              <VideoExplainer videoId={GUIDE_VIDEO_ID} onUnavailable={() => app.notify(t.guide.videoSoon)} />
               <span style={{ fontSize: 13.5, lineHeight: 1.5 }}>{t.guide.explainerText}</span>
             </div>
             <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 7 }}>

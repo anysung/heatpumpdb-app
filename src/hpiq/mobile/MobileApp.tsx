@@ -13,7 +13,8 @@ import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS, MARKET_ENTER_URL } from '../market';
-import { FD, SignOutIcon, sectionLabel } from '../ui';
+import { FD, SignOutIcon, VideoExplainer, sectionLabel } from '../ui';
+import { GUIDE_VIDEO_ID } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 import { NewsItem, Language } from '../../types';
 import type { Viewport } from '../useViewport';
@@ -145,6 +146,12 @@ const MobileGuide: React.FC<{ app: HpApp }> = ({ app }) => {
         })}
       </div>
       <span style={{ fontSize: 11, color: '#b6b6bc' }}>{t.guide.checklistNote}</span>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <span style={sectionLabel}>{t.guide.explainer}</span>
+        <VideoExplainer videoId={GUIDE_VIDEO_ID} onUnavailable={() => app.notify(t.guide.videoSoon)} />
+        <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.guide.explainerText}</span>
+      </div>
 
       <div style={{ background: '#f0f6ff', borderRadius: 14, padding: '13px 16px', display: 'flex', flexDirection: 'column', gap: 5 }}>
         <span style={sectionLabel}>{t.guide.goodToKnow}</span>

@@ -62,3 +62,13 @@ export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heat
 
 /** Sign-in entry URL shown on the Account page ("use on the web"). */
 export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
+
+/**
+ * Funding-guide explainer video per market — YouTube video ID (the 11-char
+ * code from youtube.com/watch?v=XXXXXXXXXXX). null = the "coming soon" slot.
+ * Upload per-market videos (Unlisted is fine — embeds still play), paste the
+ * IDs here and redeploy; the player is a click-to-load privacy-enhanced
+ * embed (youtube-nocookie.com), so no YouTube cookies load before the user
+ * presses play.
+ */
+export const GUIDE_VIDEO_ID: string | null = IS_GB ? null : IS_FR ? null : null;

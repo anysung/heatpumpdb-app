@@ -13,6 +13,50 @@ export const FD = 'var(--hp-font-display)';
  * (position:relative) container; the print variant is position:fixed so it
  * repeats centered on EVERY printed/PDF page (rules in hpiq.css).
  */
+/**
+ * Click-to-load YouTube explainer (facade pattern): only a thumbnail image is
+ * loaded up front — the privacy-enhanced iframe (youtube-nocookie.com, no
+ * cookies/tracking before consent-by-click) is injected when the user presses
+ * play. videoId null renders the "coming soon" placeholder.
+ */
+export const VideoExplainer: React.FC<{ videoId: string | null; onUnavailable: () => void }> = ({ videoId, onUnavailable }) => {
+  const [playing, setPlaying] = React.useState(false);
+  if (videoId && playing) {
+    return (
+      <div style={{ aspectRatio: '16/9', borderRadius: 8, overflow: 'hidden', background: '#000' }}>
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`}
+          title="Explainer video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+        />
+      </div>
+    );
+  }
+  return (
+    <div
+      onClick={() => (videoId ? setPlaying(true) : onUnavailable())}
+      style={{
+        aspectRatio: '16/9', background: '#272729', borderRadius: 8, position: 'relative',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', overflow: 'hidden',
+      }}
+    >
+      {videoId && (
+        <img
+          src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
+          alt=""
+          loading="lazy"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
+        />
+      )}
+      <span style={{ position: 'relative', width: 52, height: 52, borderRadius: '50%', background: 'rgba(0,0,0,.45)', border: '1px solid rgba(255,255,255,.35)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+        <PlayIcon />
+      </span>
+    </div>
+  );
+};
+
 export const Watermark: React.FC<{ print?: boolean }> = ({ print }) => (
   <div className={print ? 'hpiq-print-watermark' : 'hpiq-watermark'} aria-hidden="true">
     <BrandLogo height={96} theme="light" />
