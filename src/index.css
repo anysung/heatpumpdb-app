@@ -78,12 +78,13 @@
 .hp-hoist { animation: hp-hoist 11s ease-in-out infinite; }
 
 /* Brand logo (4a dynamic): hold → half-turn spin, " DB" red↔blue crossfade */
+/* Continuous slow rotation — no holds: the arrow ring never rests. The
+   red/blue arcs swap position naturally every half turn (3s). */
 @keyframes hp-logo-spin {
-  0%, 42%  { transform: rotate(0deg); }
-  50%, 92% { transform: rotate(180deg); }
-  100%     { transform: rotate(360deg); }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
-.hp-logo-spin { transform-box: fill-box; transform-origin: center; animation: hp-logo-spin 3.5s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.hp-logo-spin { transform-box: fill-box; transform-origin: center; animation: hp-logo-spin 6s linear infinite; }
 
 @keyframes hp-logo-db {
   0%, 46%  { fill: var(--hp-db-a); }
