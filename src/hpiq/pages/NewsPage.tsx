@@ -49,7 +49,38 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const feed = app.news;
   const featured = feed[0] ?? null;
   const cards = feed.slice(1, 4);
+  const archive = feed.slice(4);
   const [reader, setReader] = useState<NewsItem | null>(null);
+  const [query, setQuery] = useState('');
+
+  // ?article=<id> deep link (shared article URLs) — open once data is ready.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('article');
+    if (!id || !feed.length) return;
+    const item = feed.find(n => n.id === id);
+    if (item?.body) setReader(item);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feed.length]);
+
+  const shareArticle = (item: NewsItem) => {
+    const url = `${window.location.origin}/?article=${encodeURIComponent(item.id)}`;
+    const title = localized(item, app.lang).title;
+    if (navigator.share) {
+      navigator.share({ title, url }).catch(() => {});
+    } else {
+      navigator.clipboard?.writeText(url)
+        .then(() => app.notify(t.news.linkCopied))
+        .catch(() => app.notify(t.account.copyFailed));
+    }
+  };
+
+  const q = query.trim().toLowerCase();
+  const archiveFiltered = (q
+    ? feed.filter(n => {
+        const loc = localized(n, app.lang);
+        return `${loc.title} ${loc.summary}`.toLowerCase().includes(q);
+      })
+    : archive);
 
   useEffect(() => {
     if (!reader) return;
@@ -119,6 +150,37 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           ))}
         </div>
 
+        {/* ── Archive: every past article stays searchable ── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.news.archiveTitle}</span>
+            <input
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder={t.news.searchPlaceholder}
+              style={{ marginLeft: 'auto', border: '1px solid #d2d2d7', borderRadius: 999, padding: '8px 16px', fontSize: 13, fontFamily: 'inherit', width: 260, outline: 'none' }}
+            />
+          </div>
+          {archiveFiltered.length === 0 ? (
+            <span style={{ fontSize: 13, color: '#7a7a7a', padding: '6px 2px' }}>{q ? t.news.noArchiveMatch : '—'}</span>
+          ) : (
+            <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden', background: '#fff' }}>
+              {archiveFiltered.map((item, i) => (
+                <div
+                  key={item.id}
+                  onClick={() => openArticle(item)}
+                  className="hp-row"
+                  style={{ display: 'flex', alignItems: 'baseline', gap: 14, padding: '13px 20px', borderBottom: i < archiveFiltered.length - 1 ? '1px solid #f0f0f0' : undefined, cursor: 'pointer' }}
+                >
+                  <span style={{ flex: 'none', fontSize: 12, color: '#7a7a7a', width: 92 }}>{shortDate(item.date, t.locale)}</span>
+                  <span style={{ flex: 'none', fontSize: 10, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', color: '#7a7a7a' }}>{t.news.categories[categoryOf(item)] ?? categoryOf(item)}</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.35, minWidth: 0 }}>{localized(item, app.lang).title}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* subscribe */}
         <div style={{ background: '#f5f5f7', borderRadius: 18, padding: '26px 30px', display: 'flex', alignItems: 'center', gap: 20 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -147,11 +209,18 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 22px', borderBottom: '1px solid #e0e0e0', flex: 'none' }}>
               <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px' }}>{t.news.categories[categoryOf(reader)] ?? categoryOf(reader)}</span>
-              <span style={{ fontSize: 12, color: '#7a7a7a' }}>{shortDate(reader.date, t.locale)} · {reader.author ?? 'HeatPump DB Editorial'}</span>
+              <span style={{ fontSize: 12, color: '#7a7a7a' }}>{shortDate(reader.date, t.locale)} · {reader.author ?? 'HeatPump DataBase (Europe)'}</span>
+              <span
+                className="hp-press"
+                onClick={() => shareArticle(reader)}
+                style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 18px', fontSize: 13.5, cursor: 'pointer', background: '#fff' }}
+              >
+                {t.news.share} ↗
+              </span>
               <span
                 className="hp-press"
                 onClick={() => setReader(null)}
-                style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '9px 20px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '9px 20px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
               >
                 {t.news.close}
               </span>

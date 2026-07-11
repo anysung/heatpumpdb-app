@@ -38,7 +38,9 @@ const NAV_IDS: Exclude<HpPage, 'account'>[] = ['find', 'products', 'label', 'dat
 export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
   const t = tr(language);
   const viewport = useViewport();
-  const [page, setPage] = useState<HpPage>('find');
+  // Shared-article deep links (?article=<id>) land on the news page directly.
+  const [page, setPage] = useState<HpPage>(() =>
+    new URLSearchParams(window.location.search).has('article') ? 'news' : 'find');
   const [query, setQuery] = useState('');
   const [compare, setCompare] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);

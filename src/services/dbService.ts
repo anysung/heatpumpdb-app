@@ -47,7 +47,7 @@ export const getNewsFor = async (countryCode: string): Promise<NewsItem[]> => {
 export const getNews = async (): Promise<NewsItem[]> => {
   try {
     const newsCollection = collection(db, NEWS_REF);
-    const q = query(newsCollection, limit(20)); 
+    const q = query(newsCollection, limit(200)); 
     const snapshot = await getDocs(q);
     
     const news = snapshot.docs.map(doc => doc.data() as NewsItem);

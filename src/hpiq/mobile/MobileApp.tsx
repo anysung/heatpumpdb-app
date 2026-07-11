@@ -187,14 +187,38 @@ function localized(item: NewsItem, lang: Language): { title: string; summary: st
 const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
   const [openId, setOpenId] = useState<string | null>(null);
-  const items = app.news;
-  const open = items.find(n => n.id === openId) ?? null;
+  const [query, setQuery] = useState('');
+  const q = query.trim().toLowerCase();
+  const items = q
+    ? app.news.filter(n => {
+        const loc = localized(n, app.lang);
+        return `${loc.title} ${loc.summary}`.toLowerCase().includes(q);
+      })
+    : app.news;
+  const open = app.news.find(n => n.id === openId) ?? null;
+
+  // ?article=<id> deep link from shared URLs.
+  React.useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('article');
+    if (id && app.news.some(n => n.id === id)) setOpenId(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [app.news.length]);
+
+  const shareArticle = (item: NewsItem) => {
+    const url = `${window.location.origin}/?article=${encodeURIComponent(item.id)}`;
+    const title = localized(item, app.lang).title;
+    if (navigator.share) navigator.share({ title, url }).catch(() => {});
+    else navigator.clipboard?.writeText(url).then(() => app.notify(t.news.linkCopied)).catch(() => {});
+  };
 
   if (open) {
     const loc = localized(open, app.lang);
     return (
       <div style={{ padding: '18px 16px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <span onClick={() => setOpenId(null)} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>‹ {t.nav.news}</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span onClick={() => setOpenId(null)} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>‹ {t.nav.news}</span>
+          <span onClick={() => shareArticle(open)} style={{ fontSize: 12.5, border: '1px solid #d2d2d7', borderRadius: 999, padding: '6px 14px', background: '#fff', cursor: 'pointer' }}>{t.news.share} ↗</span>
+        </div>
         <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.06em', color: '#7a7a7a' }}>{t.news.categories[open.category ?? 'MARKET'] ?? open.category}</span>
         <span style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, lineHeight: 1.25, letterSpacing: '-0.24px' }}>{loc.title}</span>
         <span style={{ fontSize: 13.5, color: '#555', lineHeight: 1.55 }}>{loc.summary}</span>
@@ -219,6 +243,12 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
     <div style={{ padding: '20px 16px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
       <span style={{ fontFamily: FD, fontSize: 25, fontWeight: 600, letterSpacing: '-0.3px' }}>{t.news.title}</span>
       <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{t.news.pill}</span>
+      <input
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        placeholder={t.news.searchPlaceholder}
+        style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 16px', fontSize: 13.5, fontFamily: 'inherit', background: '#fff', outline: 'none' }}
+      />
       {items.length === 0 && (
         <div style={{ border: '1px solid #e0e0e0', borderRadius: 14, padding: '15px 17px', background: '#fff', display: 'flex', flexDirection: 'column', gap: 5 }}>
           <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.06em', color: '#7a7a7a' }}>{t.news.fallbackFeatured.kicker}</span>

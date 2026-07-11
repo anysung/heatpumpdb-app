@@ -331,8 +331,7 @@ async function researchNewsAndPolicies(ai, budget, market) {
   if (budget.isOverBudget) return { news: [], policies: [] };
 
   const today = new Date().toISOString().split('T')[0];
-  const yearMonth = today.slice(0, 7).replace('-', '');
-  const idPrefix = `news-${yearMonth}-${market.code.toLowerCase()}`;
+  const idPrefix = `news-${today.replace(/-/g, '')}-${market.code.toLowerCase()}`;
 
   const germanBlock = market.includeGermanTranslation
     ? `- For EACH article ALSO provide a professional German version of the same
@@ -365,15 +364,27 @@ async function researchNewsAndPolicies(ai, budget, market) {
 STEP 1 — RESEARCH. Search for current (as of ${today}) information about heat pumps in the ${market.marketName} market:
 ${market.researchScope}
 
-STEP 2 — WRITE. Compose exactly 3 ORIGINAL editorial articles in English for HeatPump DB:
-- Each article must be an ORIGINAL synthesis written in your own words for HeatPump DB.
-  Do NOT copy or closely paraphrase any single source.
+STEP 2 — WRITE. Compose exactly 3 ORIGINAL NEWS ARTICLES in English, written
+exactly as a professional news agency would publish them (publisher:
+"HeatPump DataBase (Europe)"):
+- NEWS REGISTER, not blog/editorial: inverted pyramid — the lede paragraph
+  answers who/what/when/where/why in 1-2 sentences; each following paragraph
+  adds detail in decreasing importance.
+- ATTRIBUTE INLINE: name the information source inside the sentences wherever
+  a fact is stated ("according to …", "data published by … shows", "… said in
+  a statement"). Every substantive claim must be traceable to a named source.
+- NEVER invent quotes, figures or statements. Only quote wording that actually
+  appears in the researched pages; otherwise paraphrase with attribution.
+- Each article must be an ORIGINAL synthesis in your own words — do NOT copy
+  or closely paraphrase any single source.
 - The three articles must cover three DIFFERENT topics, one each from:
   (a) funding/policy, (b) market/statistics, (c) technology or installer practice.
-- Write for professional installers and informed homeowners: factual, concrete, no hype.
-- "body": 4-6 short paragraphs of plain text, paragraphs separated by a blank line.
-- "sources": 2-4 of the real web pages found in STEP 1 that informed the article
-  (official or reputable pages only — ${market.reputableSources}). Never invent URLs.
+- "title": a factual news headline (no clickbait, no colon-hype).
+- "summary": a 2-3 sentence standfirst in news style.
+- "body": 5-7 short news paragraphs of plain text, separated by blank lines.
+- "sources": 2-4 of the real web pages found in STEP 1 that informed the
+  article (official or reputable pages only — ${market.reputableSources}).
+  Never invent URLs. These are printed under the article as "References".
 - "category": exactly one of FUNDING | MARKET | TECHNOLOGY | INSTALLER INSIGHT.
 ${germanBlock}
 
@@ -444,7 +455,7 @@ Return ONLY the JSON object, no other text:`;
             ...item,
             category,
             sources,
-            author: 'HeatPump DB Editorial',
+            author: 'HeatPump DataBase (Europe)',
             original: true,
             // Original articles open in-app; keep first source as fallback link.
             sourceUrl: sources[0]?.url ?? '',
@@ -487,7 +498,7 @@ async function deleteCollection(path, batchSize = 400) {
 // -------------------------------------------------------------------
 async function publishNewsAndPolicies(marketCode, news, policies) {
   if (news.length > 0) {
-    await deleteCollection(`countries/${marketCode}/news`);
+    // APPEND — past articles are never deleted; the app shows an archive.
     const newsRef = firestoreDb.collection(`countries/${marketCode}/news`);
     const newsBatch = firestoreDb.batch();
     news.forEach((item, i) => {
@@ -510,9 +521,10 @@ async function publishNewsAndPolicies(marketCode, news, policies) {
     console.log(`[${marketCode}] Policies published.`);
   }
 
+  const totalNews = (await firestoreDb.collection(`countries/${marketCode}/news`).count().get()).data().count;
   await firestoreDb.collection('countries').doc(marketCode).set({
     lastUpdated: new Date().toISOString(),
-    newsCount: news.length,
+    newsCount: totalNews,
     policyCount: policies.length,
   }, { merge: true });
 }
