@@ -58,7 +58,14 @@
   takes precedence, else `'EPREL'` (official EU label data: ηs, design output, sound
   power; SCOP/COP are NOT on EPREL and must not be derived). `eprel_registration_number`
   is set on every EPREL match regardless. Unmatched records keep null performance fields
-  and stay residential with `market_segment` null. Biomass is excluded. Matching is
+  and stay residential with `market_segment` null. Biomass is excluded.
+  **GB union catalogue (v2.0)**: the UK edition shows PEL records
+  (`bafa_listing_status='listed_in_snapshot'` → "On Ofgem PEL") PLUS the European
+  (DE-derived) catalogue for hardware not on the PEL (`'not_in_latest_snapshot'` →
+  "Not on PEL", full specs as BAFA_REFERENCE, English type labels); PEL-matched
+  bafa_ids are excluded from the derived set to avoid duplicate hardware. Run the DE
+  builder before the GB builder. BUS funding requires a PEL-listed product — keep that
+  caveat. Matching is
   conservative: brand-gated token-sequence matching only, never plain substring
   (false variant matches like "WPL 25 AS" vs "WPL 25 A"); multi-candidate accepted only
   with identical copied values. PEL listing ≠ full BUS eligibility — keep the caveat.
