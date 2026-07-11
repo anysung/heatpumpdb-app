@@ -10,6 +10,13 @@
 import { Language } from '../types';
 import { IS_GB, IS_FR } from './market';
 
+/**
+ * Ultimate rights holder named in the Account legal notice. The public-facing
+ * brand on the footer stays "HeatPump DataBase (Europe)"; replace this single
+ * constant once the final legal entity name is fixed.
+ */
+export const RIGHTS_HOLDER = 'A Company';
+
 const EN = {
   locale: 'en-GB',
 
@@ -28,6 +35,7 @@ const EN = {
   footer: {
     edition: 'Germany edition',
     note: 'Product data is informational — verify BAFA, KfW and EPREL sources before contractual use.',
+    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · All rights reserved.`,
   },
 
   /** Compact-device (phone/tablet) shell strings. */
@@ -426,6 +434,8 @@ const EN = {
     delDone: 'Deletion requested — your account is now deactivated.',
     delFailed: 'Could not request deletion — please contact support.',
     previewOnly: 'Not available in preview mode.',
+    legalNoticeTitle: 'Legal notice',
+    legalNotice: `The database provided in this application, “HeatPump DataBase (Europe)”, is a protected database within the meaning of applicable European database-protection law (including Directive 96/9/EC and its national implementations). Individual raw data points originate from publicly accessible sources; the content provided here, however, is the result of substantial independent investment in the selection, verification, cross-referencing, enrichment and presentation of that data, and constitutes an original database in its own right. Irrespective of the outcome of any future dispute concerning the copyright status of individual data elements, use of the reprocessed data provided here is permitted solely in the presentation forms offered by this application (in particular generated data sheets and product comparison views) and for the user’s own professional or private purposes. Any extraction, scraping, reproduction, redistribution or commercial re-use of the database or any substantial part of it, in any form or state other than as provided by this application, is prohibited without prior written consent. All rights, title and interest in HeatPump DataBase vest exclusively in ‘${RIGHTS_HOLDER}’.`,
   },
 };
 
@@ -456,6 +466,7 @@ const DE: HpStrings = {
   },
 
   footer: {
+    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · Alle Rechte vorbehalten.`,
     edition: 'Deutschland-Ausgabe',
     note: 'Produktdaten dienen der Information — prüfen Sie BAFA-, KfW- und EPREL-Quellen vor vertraglicher Nutzung.',
   },
@@ -846,6 +857,8 @@ const DE: HpStrings = {
     delDone: 'Löschung beantragt — Ihr Konto ist jetzt deaktiviert.',
     delFailed: 'Löschung konnte nicht beantragt werden — bitte den Support kontaktieren.',
     previewOnly: 'Im Vorschaumodus nicht verfügbar.',
+    legalNoticeTitle: 'Rechtlicher Hinweis',
+    legalNotice: `Die in dieser Anwendung bereitgestellte Datenbank „HeatPump DataBase (Europe)“ ist eine geschützte Datenbank im Sinne der §§ 87a ff. UrhG (Datenbankherstellerrecht) sowie der Richtlinie 96/9/EG. Einzelne Rohdaten stammen aus öffentlich zugänglichen Quellen; die hier bereitgestellten Inhalte sind jedoch das Ergebnis wesentlicher eigenständiger Investitionen in Auswahl, Prüfung, Verknüpfung, Anreicherung und Darstellung dieser Daten und bilden damit eine eigenständige Datenbank. Unabhängig vom Ausgang etwaiger künftiger Auseinandersetzungen über die urheberrechtliche Einordnung einzelner Datenelemente ist die Nutzung der hier bereitgestellten, aufbereiteten Daten ausschließlich in den von dieser Anwendung angebotenen Darstellungsformen (insbesondere generierte Datenblätter und Produktvergleiche) und für eigene berufliche oder private Zwecke gestattet. Jede Entnahme, Extraktion (Scraping), Vervielfältigung, Weiterverbreitung oder kommerzielle Weiterverwendung der Datenbank oder wesentlicher Teile davon in anderer Form oder anderem Zustand als hier bereitgestellt ist ohne vorherige schriftliche Zustimmung untersagt. Sämtliche Rechte an HeatPump DataBase stehen ausschließlich ‚${RIGHTS_HOLDER}‘ zu.`,
   },
 };
 
@@ -865,6 +878,7 @@ const GB: HpStrings = {
   footer: {
     edition: 'United Kingdom edition',
     note: 'Product data is informational — verify Ofgem, MCS and manufacturer sources before contractual use.',
+    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · All rights reserved.`,
   },
 
   find: {
@@ -1023,6 +1037,7 @@ const GB: HpStrings = {
     languageNote: 'English is the default for the United Kingdom edition.',
     emailSubject: 'HeatPump DB on the web',
     emailBody: 'Open HeatPump DB in any browser and sign in with your account:\n\nwww.heatpumpdb.uk/enter',
+    legalNotice: `The database provided in this application, “HeatPump DataBase (Europe)”, is a protected database within the meaning of the Copyright and Rights in Databases Regulations 1997 and, where applicable, Directive 96/9/EC. Individual raw data points originate from publicly accessible sources; the content provided here, however, is the result of substantial independent investment in the selection, verification, cross-referencing, enrichment and presentation of that data, and constitutes an original database in its own right. Irrespective of the outcome of any future dispute concerning the copyright status of individual data elements, use of the reprocessed data provided here is permitted solely in the presentation forms offered by this application (in particular generated data sheets and product comparison views) and for the user’s own professional or private purposes. Any extraction, scraping, reproduction, redistribution or commercial re-use of the database or any substantial part of it, in any form or state other than as provided by this application, is prohibited without prior written consent. All rights, title and interest in HeatPump DataBase vest exclusively in ‘${RIGHTS_HOLDER}’.`,
   },
 };
 
@@ -1042,6 +1057,7 @@ const FR_EN: HpStrings = {
   footer: {
     edition: 'France edition',
     note: "Product data is informational — verify France Rénov', ANAH and manufacturer sources before contractual use.",
+    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · All rights reserved.`,
   },
 
   find: {
@@ -1220,6 +1236,7 @@ const FR_FR: HpStrings = {
   footer: {
     edition: 'Édition France',
     note: 'Données produits à titre informatif — vérifiez France Rénov’, l’ANAH et les sources fabricants avant tout usage contractuel.',
+    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · Tous droits réservés.`,
   },
 
   find: {
@@ -1607,6 +1624,8 @@ const FR_FR: HpStrings = {
     delDone: 'Suppression demandée — votre compte est désormais désactivé.',
     delFailed: 'La demande de suppression a échoué — contactez le support.',
     previewOnly: 'Indisponible en mode aperçu.',
+    legalNoticeTitle: 'Mention légale',
+    legalNotice: `La base de données fournie dans cette application, « HeatPump DataBase (Europe) », est une base de données protégée au sens des articles L. 341-1 et suivants du Code de la propriété intellectuelle et de la directive 96/9/CE. Les données brutes individuelles proviennent de sources accessibles au public ; les contenus fournis ici sont toutefois le résultat d’investissements substantiels et indépendants dans la sélection, la vérification, le croisement, l’enrichissement et la présentation de ces données, et constituent à ce titre une base de données originale à part entière. Indépendamment de l’issue de tout litige futur relatif au statut des éléments de données individuels au regard du droit d’auteur, l’utilisation des données retraitées fournies ici n’est autorisée que dans les formes de présentation offertes par cette application (notamment les fiches techniques générées et les comparatifs de produits) et pour les besoins professionnels ou privés propres de l’utilisateur. Toute extraction, réutilisation, reproduction, rediffusion ou exploitation commerciale de la base de données ou d’une partie substantielle de celle-ci, sous une forme ou dans un état autres que ceux fournis par cette application, est interdite sans accord écrit préalable. L’ensemble des droits sur HeatPump DataBase appartient exclusivement à ‘${RIGHTS_HOLDER}’.`,
   },
 };
 

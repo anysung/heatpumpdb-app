@@ -338,6 +338,15 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
             </span>
           </Card>
         </div>
+
+        {/* ── Database rights / legal notice ── */}
+        <div style={{ gridColumn: '1 / -1', borderTop: '1px solid #e0e0e0', marginTop: 26, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', textTransform: 'uppercase' }}>{t.account.legalNoticeTitle}</span>
+          <p style={{ fontSize: 11, color: '#9a9aa0', lineHeight: 1.65, textAlign: 'justify', margin: 0, maxWidth: 980 }}>
+            {t.account.legalNotice}
+          </p>
+          <span style={{ fontSize: 11, color: '#9a9aa0' }}>{t.footer.copyright(new Date().getFullYear())}</span>
+        </div>
       </div>
     </div>
   );

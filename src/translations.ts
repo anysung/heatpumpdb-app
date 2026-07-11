@@ -385,4 +385,10 @@ const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
 (DE_T as any).authSeoLine = SEO_LINE.de || SEO_LINE.en;
 (FR_T as any).authSeoLine = SEO_LINE.fr || SEO_LINE.en;
 
+// Simple declarative copyright line (public brand: HeatPump DataBase (Europe)).
+const YEAR = new Date().getFullYear();
+(EN_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · All rights reserved.`;
+(DE_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Alle Rechte vorbehalten.`;
+(FR_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Tous droits réservés.`;
+
 export const translations = { en: EN_T, de: DE_T, fr: FR_T };

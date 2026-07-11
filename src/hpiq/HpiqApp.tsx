@@ -291,9 +291,10 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
       )}
 
       {/* ============ Footer ============ */}
-      <div style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 18, fontSize: 11.5, color: '#7a7a7a', flex: 'none' }}>
+      <div style={{ borderTop: '1px solid rgba(0,0,0,.08)', background: '#f5f5f7', padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 18, fontSize: 11.5, color: '#7a7a7a', flex: 'none', flexWrap: 'wrap' }}>
         <span style={{ fontWeight: 600, color: '#1d1d1f' }}>HeatPump DB</span>
         <span>{t.footer.edition}</span>
+        <span>{t.footer.copyright(new Date().getFullYear())}</span>
         <span style={{ marginLeft: 'auto' }}>{t.footer.note}</span>
       </div>
     </div>

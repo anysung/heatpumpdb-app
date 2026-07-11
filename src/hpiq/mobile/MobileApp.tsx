@@ -294,6 +294,13 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
         <SignOutIcon />
         {t.nav.signOut}
       </span>
+
+      {/* ── Database rights / legal notice ── */}
+      <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 7 }}>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', textTransform: 'uppercase' }}>{t.account.legalNoticeTitle}</span>
+        <p style={{ fontSize: 10.5, color: '#9a9aa0', lineHeight: 1.6, margin: 0 }}>{t.account.legalNotice}</p>
+        <span style={{ fontSize: 10.5, color: '#9a9aa0' }}>{t.footer.copyright(new Date().getFullYear())}</span>
+      </div>
     </div>
   );
 };

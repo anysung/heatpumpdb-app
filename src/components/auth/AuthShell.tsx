@@ -446,6 +446,9 @@ export const AuthShell: React.FC<{
         <LeafIcon className="w-3.5 h-3.5 text-emerald-400/70" />
         {t.authEcoLine}
       </p>
+      {t.authCopyright && (
+        <p className="text-[10.5px] text-white/30 text-center">{t.authCopyright}</p>
+      )}
     </footer>
   </div>
 );
