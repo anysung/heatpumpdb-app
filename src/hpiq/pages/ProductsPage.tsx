@@ -406,10 +406,10 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   )}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span className="hp-press" onClick={() => app.openDataSheet(sel.id, 'product')} style={pillPrimary}>{t.products.dataSheetBtn}</span>
                   <span className="hp-press" onClick={() => app.toggleCompare(sel.id)} style={pillSecondary}>
                     {app.compare.includes(sel.id) ? t.products.removeCompare : t.products.addCompare}
                   </span>
+                  <span className="hp-press" onClick={() => app.openDataSheet(sel.id, 'product')} style={pillPrimary}>{t.products.dataSheetBtn}</span>
                 </div>
               </div>
             </div>
