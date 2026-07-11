@@ -245,9 +245,18 @@ export interface User {
   role?: 'user' | 'owner' | 'admin' | 'support' | 'ops';
   // Plan & entitlement fields
   plan?: 'standard' | 'premium';
-  billingChannel?: 'apple' | 'google' | 'direct' | 'admin_grant' | 'trial';
+  /** 'paddle' is the web-billing channel (no app-store distribution). */
+  billingChannel?: 'paddle' | 'direct' | 'admin_grant' | 'trial' | 'apple' | 'google';
   extraPrintQuota?: number;
   industryInsightOverride?: boolean;
+  // ── Paddle web billing (written server-side by the billing webhook) ────────
+  paddleCustomerId?: string;
+  paddleSubscriptionId?: string;
+  /** Hosted customer-portal URL (payment method / invoices / cancel). */
+  paddlePortalUrl?: string;
+  subscriptionStatus?: 'active' | 'trialing' | 'past_due' | 'paused' | 'canceled';
+  /** ISO timestamp of the next scheduled charge. */
+  nextBilledAt?: string;
   // Compliance
   deletionRequestedAt?: string;
   deletionNote?: string;

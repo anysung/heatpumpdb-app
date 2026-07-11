@@ -24,4 +24,18 @@ export const PUBLIC_ENV = {
    * Set VITE_COUNTRY_CODE=GB for a UK build.
    */
   COUNTRY_CODE: (import.meta.env.VITE_COUNTRY_CODE as string | undefined) ?? 'DE',
+
+  /**
+   * 'admin' builds the unified operations console (all markets, admin-only,
+   * served on its own hosting site). Anything else = the normal country app.
+   */
+  APP_MODE: (import.meta.env.VITE_APP_MODE as string | undefined) ?? 'app',
+
+  /**
+   * Paddle Billing (web checkout — the app is NOT distributed via app stores).
+   * Client tokens are publishable by design; 'test_…' selects the sandbox.
+   * Unset = billing UI shows a "coming soon" notice instead of a checkout.
+   */
+  PADDLE_CLIENT_TOKEN: (import.meta.env.VITE_PADDLE_CLIENT_TOKEN as string | undefined) ?? '',
+  PADDLE_PRICE_ID: (import.meta.env.VITE_PADDLE_PRICE_ID as string | undefined) ?? '',
 } as const;

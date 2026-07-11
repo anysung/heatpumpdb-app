@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { requestDeletion } from '../../services/adminService';
+import { openCheckout, portalUrlFor, paddleConfigured } from '../../services/paddleService';
 import { createTicket, getMyTickets, userReply } from '../../services/supportService';
 import { HpApp } from '../appState';
 import { UI_LANGUAGES, MARKET_ENTER_URL } from '../market';
@@ -164,6 +165,21 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const displayName = [user.firstName, user.lastName].filter(Boolean).join(' ') || '—';
   const role = user.companyType === 'Private Individual' ? t.account.roleHome : t.account.rolePro;
   const isPreview = user.id === 'preview';
+  const isPro = user.plan === 'premium';
+
+  // Web billing (Paddle) — overlay checkout for upgrades; hosted portal for
+  // payment method / invoices / cancellation once a subscription exists.
+  const startCheckout = () => {
+    if (isPreview) { app.notify(t.account.previewOnly); return; }
+    if (!paddleConfigured) { app.notify(t.account.checkoutSoon); return; }
+    openCheckout(user).catch(() => app.notify(t.account.checkoutSoon));
+  };
+  const openBillingPortal = () => {
+    if (isPreview) { app.notify(t.account.previewOnly); return; }
+    const url = portalUrlFor(user);
+    if (url) window.open(url, '_blank', 'noopener');
+    else app.notify(t.account.managePlanSoon);
+  };
 
   const sendSetupLink = () => {
     if (isPreview) { app.notify(t.account.previewOnly); return; }
@@ -197,28 +213,34 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <CardTitle style={{ fontSize: 21 }}>{t.account.subscription}</CardTitle>
-              <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 12px', fontSize: 11.5, fontWeight: 600 }}>{t.account.planBadge}</span>
+              <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 12px', fontSize: 11.5, fontWeight: 600, ...(isPro ? { background: '#e7f6ee', borderColor: '#bfe6d0', color: '#0a7a43' } : {}) }}>
+                {isPro ? t.account.planBadge : t.account.planBadgeFree}
+              </span>
             </div>
             <span style={{ fontSize: 14, color: '#333', lineHeight: 1.55, maxWidth: 520 }}>
               {t.account.planText}
             </span>
-            <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>
+            <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.55, maxWidth: 520 }}>
               {t.account.planStoreNote}
             </span>
             <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+              {!isPro && (
+                <span
+                  className="hp-press"
+                  onClick={startCheckout}
+                  style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, cursor: 'pointer' }}
+                >
+                  {t.account.upgradeBtn}
+                </span>
+              )}
               <span
                 className="hp-press"
-                onClick={() => app.notify(t.account.managePlanSoon)}
-                style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, cursor: 'pointer' }}
+                onClick={openBillingPortal}
+                style={isPro
+                  ? { background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, cursor: 'pointer' }
+                  : { border: '1px solid #d2d2d7', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, background: '#fff', cursor: 'pointer' }}
               >
                 {t.account.managePlan}
-              </span>
-              <span
-                className="hp-press"
-                onClick={() => app.notify(t.account.restoreSoon)}
-                style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '10px 22px', fontSize: 13.5, background: '#fff', cursor: 'pointer' }}
-              >
-                {t.account.restore}
               </span>
             </div>
           </div>

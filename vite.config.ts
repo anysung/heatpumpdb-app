@@ -100,6 +100,8 @@ export default defineConfig(({ mode }) => {
   // Cast process to any to avoid TypeScript error: Property 'cwd' does not exist on type 'Process'
   const env = loadEnv(mode, (process as any).cwd(), '');
   const country = (process as any).env.VITE_COUNTRY_CODE || env.VITE_COUNTRY_CODE || 'DE';
+  const appMode = (process as any).env.VITE_APP_MODE || env.VITE_APP_MODE || 'app';
+  const isAdminBuild = appMode === 'admin';
   const m = MARKET_HTML[country] ?? MARKET_HTML.DE;
   let outDir = 'dist';
 
@@ -110,6 +112,15 @@ export default defineConfig(({ mode }) => {
         name: 'market-html',
         configResolved(config: any) { outDir = config.build.outDir; },
         transformIndexHtml(html: string) {
+          if (isAdminBuild) {
+            // Operations console: never indexed, no market SEO head.
+            return html.replace(
+              /<title>.*?<\/title>/,
+              '<title>HeatPump DB — Operations Console</title>\n'
+              + '    <meta name="robots" content="noindex, nofollow" />\n'
+              + `    <link rel="icon" type="image/png" sizes="32x32" href="/icons/de-32.png" />`,
+            );
+          }
           return html
             .replace(/<html lang="[^"]*">/, `<html lang="${m.lang}">`)
             .replace(
@@ -134,6 +145,11 @@ export default defineConfig(({ mode }) => {
             );
         },
         closeBundle() {
+          if (isAdminBuild) {
+            // Admin console: block all crawling; no sitemap/manifest.
+            writeFileSync(resolve(outDir, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+            return;
+          }
           // Per-market sitemap + robots (the shared public/ dir cannot carry
           // market-specific Sitemap URLs).
           const today = new Date().toISOString().slice(0, 10);
@@ -173,6 +189,7 @@ export default defineConfig(({ mode }) => {
       // CRITICAL FIX: Added || "" to prevent build failure if API_KEY is undefined in Cloud Build env
       'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY || ""),
       '__MARKET_STATS__': JSON.stringify(marketStats(country)),
+      '__ALL_MARKET_STATS__': JSON.stringify({ DE: marketStats('DE'), GB: marketStats('GB'), FR: marketStats('FR') }),
     }
   }
 })

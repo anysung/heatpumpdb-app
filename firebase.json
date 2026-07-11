@@ -47,6 +47,21 @@
           "destination": "/index.html"
         }
       ]
+    },
+    {
+      "target": "hub",
+      "public": "dist-admin",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ]
 }

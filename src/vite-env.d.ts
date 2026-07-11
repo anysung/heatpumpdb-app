@@ -2,3 +2,6 @@
 
 /** Build-time market catalogue stats (vite.config define) — shown on the auth landing. */
 declare const __MARKET_STATS__: { res: number; com: number; mfr: number };
+
+/** Build-time stats for every market (vite.config define) — unified admin console. */
+declare const __ALL_MARKET_STATS__: Record<string, { res: number; com: number; mfr: number }>;

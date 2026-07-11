@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS, MARKET_ENTER_URL } from '../market';
+import { openCheckout, portalUrlFor, paddleConfigured } from '../../services/paddleService';
 import { FD, SignOutIcon, VideoExplainer, sectionLabel } from '../ui';
 import { GUIDE_VIDEO_ID } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
@@ -249,6 +250,16 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
 const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
   const card: React.CSSProperties = { background: '#fff', border: '1px solid #e0e0e0', borderRadius: 14, padding: '15px 17px', display: 'flex', flexDirection: 'column', gap: 8 };
+  const isPro = app.user.plan === 'premium';
+  const startCheckout = () => {
+    if (!paddleConfigured) { app.notify(t.account.checkoutSoon); return; }
+    openCheckout(app.user).catch(() => app.notify(t.account.checkoutSoon));
+  };
+  const openBillingPortal = () => {
+    const url = portalUrlFor(app.user);
+    if (url) window.open(url, '_blank', 'noopener');
+    else app.notify(t.account.managePlanSoon);
+  };
   return (
     <div style={{ padding: '20px 16px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
       <span style={{ fontFamily: FD, fontSize: 25, fontWeight: 600, letterSpacing: '-0.3px' }}>{t.account.heroTitle}</span>
@@ -256,8 +267,20 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
       <div style={card}>
         <span style={{ fontSize: 15, fontWeight: 600 }}>{app.user.firstName} {app.user.lastName}</span>
         <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{app.user.email}</span>
-        <span style={{ fontSize: 11.5, color: '#0a7a43', background: '#e7f6ee', borderRadius: 999, padding: '4px 12px', width: 'fit-content', fontWeight: 600 }}>{t.account.planBadge}</span>
+        <span style={{ fontSize: 11.5, borderRadius: 999, padding: '4px 12px', width: 'fit-content', fontWeight: 600, ...(isPro ? { color: '#0a7a43', background: '#e7f6ee' } : { color: '#555', background: '#f0f0f2' }) }}>
+          {isPro ? t.account.planBadge : t.account.planBadgeFree}
+        </span>
         <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.account.planStoreNote}</span>
+        <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
+          {!isPro && (
+            <span className="hp-press" onClick={startCheckout} style={{ flex: 1, textAlign: 'center', background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 0', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+              {t.account.upgradeBtn}
+            </span>
+          )}
+          <span className="hp-press" onClick={openBillingPortal} style={{ flex: 1, textAlign: 'center', border: '1px solid #d2d2d7', borderRadius: 999, padding: '10px 0', fontSize: 13, background: '#fff', cursor: 'pointer' }}>
+            {t.account.managePlan}
+          </span>
+        </div>
       </div>
 
       {UI_LANGUAGES.length > 1 && (

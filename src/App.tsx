@@ -9,13 +9,17 @@ import {
 import { HeatPumpDatabase, HeatPump, User, AppMode, Language } from './types';
 import { translations } from './translations';
 import { DEFAULT_LANGUAGE } from './hpiq/market';
+import { PUBLIC_ENV } from './config/env';
+
+// Unified operations console build (own hosting site, all markets, admin-only).
+const IS_ADMIN_BUILD = PUBLIC_ENV.APP_MODE === 'admin';
 // Use Firestore Service
 import { getProducts, getCommercialProducts, getNews, getPolicies, getBAFA } from './services/dbService';
 
 type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'APP' | 'ADMIN_DASHBOARD';
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<ViewState>('LANDING');
+  const [currentView, setCurrentView] = useState<ViewState>(IS_ADMIN_BUILD ? 'LOGIN' : 'LANDING');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,11 +57,22 @@ const App: React.FC = () => {
             currentView === 'SIGNUP' ||
             currentView === 'PENDING_APPROVAL';
           if (needsRouting) {
-            setCurrentView('APP');
+            if (IS_ADMIN_BUILD) {
+              if (isAdminRole(user.role)) {
+                setCurrentView('ADMIN_DASHBOARD');
+              } else {
+                alert('This console requires an administrator account.');
+                logoutUser();
+              }
+            } else {
+              setCurrentView('APP');
+            }
           }
         }
       } else {
-        if (currentView === 'APP' || currentView === 'PENDING_APPROVAL') {
+        if (IS_ADMIN_BUILD) {
+          if (currentView !== 'LOGIN') setCurrentView('LOGIN');
+        } else if (currentView === 'APP' || currentView === 'PENDING_APPROVAL') {
           setCurrentView('LANDING');
         }
       }
@@ -381,7 +396,10 @@ const App: React.FC = () => {
       <div className="relative">
          <LanguageSwitcher />
          <AdminDashboard
-          onLogout={() => setCurrentView(currentUser ? 'APP' : 'LANDING')}
+          onLogout={() => {
+            if (IS_ADMIN_BUILD) { logoutUser(); setCurrentView('LOGIN'); }
+            else setCurrentView(currentUser ? 'APP' : 'LANDING');
+          }}
           cachedDatabase={fullDatabase ? [...fullDatabase.products, ...(fullDatabase.commercialProducts ?? [])] : null}
           lastUpdated={fullDatabase?.generatedAt || null}
           language={language}

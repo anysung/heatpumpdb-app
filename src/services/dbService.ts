@@ -33,6 +33,17 @@ export const getProducts = (): Promise<HeatPump[]> =>
 export const getCommercialProducts = (): Promise<HeatPump[]> =>
   loadProductsFromJson(ACTIVE_COUNTRY.datasetPaths.commercialProducts);
 
+/** News for an arbitrary market — used by the unified admin console. */
+export const getNewsFor = async (countryCode: string): Promise<NewsItem[]> => {
+  try {
+    const snapshot = await getDocs(query(collection(db, `countries/${countryCode}/news`), limit(20)));
+    return snapshot.docs.map(d => d.data() as NewsItem)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  } catch {
+    return [];
+  }
+};
+
 export const getNews = async (): Promise<NewsItem[]> => {
   try {
     const newsCollection = collection(db, NEWS_REF);
