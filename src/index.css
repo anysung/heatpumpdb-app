@@ -86,12 +86,15 @@
 }
 .hp-logo-spin { transform-box: fill-box; transform-origin: center; animation: hp-logo-spin 6s linear infinite; }
 
+/* Synced to hp-logo-spin (6s): the DB text always shows the ASCENDING arc
+   color. At 0deg the blue arrowhead (left) climbs -> blue; after the half
+   turn (50%) red climbs -> red. Short 4% windows keep the swap crisp. */
 @keyframes hp-logo-db {
-  0%, 46%  { fill: var(--hp-db-a); }
-  54%, 96% { fill: var(--hp-db-b); }
-  100%     { fill: var(--hp-db-a); }
+  0%, 46%  { fill: var(--hp-db-b); }
+  50%, 96% { fill: var(--hp-db-a); }
+  100%     { fill: var(--hp-db-b); }
 }
-.hp-logo-db { fill: var(--hp-db-a); animation: hp-logo-db 3.5s linear infinite; }
+.hp-logo-db { fill: var(--hp-db-b); animation: hp-logo-db 6s linear infinite; }
 
 /* Waving flag: gentle cloth sway anchored at the hoist (left edge) */
 @keyframes hp-flag-sway {
