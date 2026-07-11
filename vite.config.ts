@@ -5,21 +5,24 @@ import react from '@vitejs/plugin-react'
 // country). Titles are the canonical brand naming — "HeatPump DB <Market>",
 // no underscores — so search engines stop generating their own variants
 // (Google was rewriting titles from hostnames: "HeatPump DB_UK" etc.).
-const MARKET_HTML: Record<string, { lang: string; title: string; desc: string }> = {
+const MARKET_HTML: Record<string, { lang: string; title: string; desc: string; canonical: string }> = {
   DE: {
     lang: 'de',
     title: 'HeatPump DB Germany — Heat Pump Database',
     desc: 'Wärmepumpen-Datenbank für den deutschen Markt: BAFA-Liste, SCOP, Schallleistung, Kältemittel und EU-Energielabel — Vergleich und Datenblätter für Fachhandwerk und Eigentümer.',
+    canonical: 'https://www.heatpumpdb.de/',
   },
   GB: {
     lang: 'en',
     title: 'HeatPump DB UK — Heat Pump Database',
     desc: 'Heat pump database for the UK market: Ofgem PEL listing, MCS references, SCOP, sound power and refrigerant data — comparison and data sheets for installers and homeowners.',
+    canonical: 'https://www.heatpumpdb.uk/',
   },
   FR: {
     lang: 'fr',
     title: 'HeatPump DB France — Base de données de pompes à chaleur',
     desc: "Base de données de pompes à chaleur pour le marché français : références techniques, SCOP, puissance acoustique, fluides frigorigènes et étiquette énergie UE — comparaison et fiches techniques.",
+    canonical: 'https://www.heatpumpdb.fr/',
   },
 };
 
@@ -44,9 +47,11 @@ export default defineConfig(({ mode }) => {
               /<title>.*?<\/title>/,
               `<title>${m.title}</title>\n`
               + `    <meta name="description" content="${m.desc}" />\n`
+              + `    <link rel="canonical" href="${m.canonical}" />\n`
               + `    <meta property="og:site_name" content="HeatPump DB" />\n`
               + `    <meta property="og:title" content="${m.title}" />\n`
               + `    <meta property="og:description" content="${m.desc}" />\n`
+              + `    <meta property="og:url" content="${m.canonical}" />\n`
               + `    <meta property="og:type" content="website" />`,
             );
         },
