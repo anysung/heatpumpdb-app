@@ -434,21 +434,10 @@ export const AuthShell: React.FC<{
       {children}
     </main>
 
-    <footer className="relative z-20 px-6 pb-6 flex flex-col items-center gap-3">
-      {/* Indexable market description — the auth landing is the only public
-          page, so this paragraph carries the market keywords for search. */}
-      {t.authSeoLine && (
-        <p className="text-[11px] leading-relaxed text-white/35 text-center max-w-2xl">
-          {t.authSeoLine}
-        </p>
-      )}
-      <p className="text-xs text-white/40 flex items-center justify-center gap-1.5">
-        <LeafIcon className="w-3.5 h-3.5 text-emerald-400/70" />
-        {t.authEcoLine}
-      </p>
-      {t.authCopyright && (
-        <p className="text-[10.5px] text-white/30 text-center">{t.authCopyright}</p>
-      )}
+    <footer className="relative z-20 px-6 pb-6 flex flex-col items-center">
+      {/* Copyright only — market keywords for search live in the meta
+          description and JSON-LD (vite market-html plugin), not on screen. */}
+      <p className="text-xs text-white/35 text-center">{t.authCopyright}</p>
     </footer>
   </div>
 );
