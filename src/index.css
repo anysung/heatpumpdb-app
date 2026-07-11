@@ -83,14 +83,14 @@
   50%, 92% { transform: rotate(180deg); }
   100%     { transform: rotate(360deg); }
 }
-.hp-logo-spin { transform-box: fill-box; transform-origin: center; animation: hp-logo-spin 7s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.hp-logo-spin { transform-box: fill-box; transform-origin: center; animation: hp-logo-spin 3.5s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
 
 @keyframes hp-logo-db {
   0%, 46%  { fill: var(--hp-db-a); }
   54%, 96% { fill: var(--hp-db-b); }
   100%     { fill: var(--hp-db-a); }
 }
-.hp-logo-db { fill: var(--hp-db-a); animation: hp-logo-db 7s linear infinite; }
+.hp-logo-db { fill: var(--hp-db-a); animation: hp-logo-db 3.5s linear infinite; }
 
 /* Waving flag: gentle cloth sway anchored at the hoist (left edge) */
 @keyframes hp-flag-sway {
