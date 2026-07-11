@@ -27,17 +27,15 @@
  *   - PEL publishes no performance data. Records matched to BAFA get technical
  *     specs copied as a cross-reference (performance_source='BAFA_REFERENCE');
  *     unmatched records keep null performance fields.
- *   - v2.0 UNION CATALOGUE (user decision 2026-07-12): the GB edition shows
- *     everything we have — all PEL records (bafa_listing_status
- *     'listed_in_snapshot' → "On Ofgem PEL") PLUS the European (DE-derived)
- *     catalogue for hardware not on the PEL (bafa_listing_status
- *     'not_in_latest_snapshot' → "Not on PEL"). DE products whose bafa_id is
- *     already PEL-matched are excluded to avoid duplicate hardware. Derived
- *     records carry full specs as BAFA_REFERENCE and English type labels.
- *   - Segmentation: capacity-classified like DE (≤20.99 kW residential_core,
- *     21–45 light_commercial, >45 commercial_project); light_commercial/
- *     commercial_project go to products-commercial-gb.json. Records with no
- *     capacity data stay in products-gb.json with market_segment null.
+ *   - v2.1 SPLIT CATALOGUE (user decision 2026-07-12): unmatched PEL and
+ *     European records can be the SAME hardware (matching only proves 508 of
+ *     them), so mixing both in one segment double-counts. Therefore:
+ *       residential  = ALL PEL records (4,4xx, "On Ofgem PEL")
+ *       commercial   = European (DE-derived) commercial catalogue only
+ *                      ("Not on PEL", full specs as BAFA_REFERENCE, English
+ *                      type labels); PEL-matched bafa_ids excluded to avoid
+ *                      duplicate hardware. Derived residential records are
+ *                      NOT exported (overlap risk with unmatched PEL).
  *   - Duplicate MCS numbers are real model variants sharing one certification
  *     number (e.g. Ares MB5 ×9). They are KEPT; source_id gets a '#n' suffix
  *     (n ≥ 2) for uniqueness. mcs_number stays raw for display.
@@ -306,7 +304,6 @@ const pelItems = hp.map(buildItem);
 // ── Union with the European (DE-derived) catalogue ────────────────────────────
 // Everything we have that is NOT on the PEL is added as a "Not on PEL"
 // reference record with full specs (same approach as the FR edition).
-const deResidential = loadJSON('public/data/products.json');
 const deCommercial = loadJSON('public/data/products-commercial.json');
 const matchedBafaIds = new Set((matchFile?.matches ?? []).map(m => String(m.bafa_id)));
 
@@ -352,7 +349,8 @@ function deItemToGb(p) {
   };
 }
 
-const derivedItems = [...deResidential.items, ...deCommercial.items]
+// Commercial only — derived residential overlaps unmatched PEL hardware.
+const derivedItems = deCommercial.items
   .filter(p => !matchedBafaIds.has(String(p.bafa_id)))
   .map(deItemToGb);
 
@@ -423,10 +421,10 @@ if (eprelFile && eprelLinkedCount === 0) {
   process.exit(1);
 }
 
-// ── Split by capacity segment (unmatched = no capacity → residential file) ────
+// ── Split by record class (v2.1): PEL → residential, European → commercial ──
 
-const residential = items.filter(i => i.market_segment === null || i.market_segment === 'residential_core');
-const commercial = items.filter(i => i.market_segment === 'light_commercial' || i.market_segment === 'commercial_project');
+const residential = pelItems;
+const commercial = derivedItems;
 
 // ── Write output ──────────────────────────────────────────────────────────────
 
@@ -434,12 +432,12 @@ function writeOutput(relPath, outItems, dataset, segmentsIncluded) {
   const payload = {
     _meta: {
       generated: generatedAt,
-      generator: 'build-app-products-gb.mjs v2.0',
+      generator: 'build-app-products-gb.mjs v2.1',
       union_catalogue: {
         pel_records: pelItems.length,
         european_reference_records: derivedItems.length,
         pel_matched_bafa_ids_excluded: matchedBafaIds.size,
-        policy: "GB shows the full catalogue: PEL records (bafa_listing_status='listed_in_snapshot', shown as 'On Ofgem PEL') plus the European (DE-derived) reference catalogue for hardware not on the PEL ('not_in_latest_snapshot', shown as 'Not on PEL'). BUS funding requires a PEL-listed product — the caveat stands.",
+        policy: "GB split catalogue v2.1: residential = ALL PEL records ('On Ofgem PEL'); commercial = European (DE-derived) commercial catalogue only ('Not on PEL'; PEL-matched bafa_ids excluded as duplicate hardware). Derived residential records are not exported — unmatched PEL and European records can be the same hardware. BUS funding requires a PEL-listed product — the caveat stands.",
       },
       dataset,
       country: 'GB',
@@ -488,7 +486,7 @@ const withShort = items.filter(i => i.manufacturer_short !== null).length;
 const withInstall = items.filter(i => i.installation_type !== null).length;
 
 console.log('');
-console.log('── Build summary (GB, union catalogue) ────────────────────');
+console.log('── Build summary (GB, split catalogue v2.1) ───────────────');
 console.log(`PEL records:          ${records.length}  (biomass excluded: ${biomassCount}) → ${pelItems.length} on PEL`);
 console.log(`European reference:   ${derivedItems.length}  (DE-derived, not on PEL; ${matchedBafaIds.size} matched bafa_ids excluded)`);
 console.log(`Exported heat pumps:  ${items.length}  (residential file: ${residential.length}, commercial file: ${commercial.length})`);

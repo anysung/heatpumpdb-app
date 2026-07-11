@@ -19,7 +19,9 @@ function marketStats(country: string): { res: number; com: number; mfr: number }
     if (!existsSync(resPath) || !existsSync(comPath)) return { res: 0, com: 0, mfr: 0 };
     const a = JSON.parse(readFileSync(resPath, 'utf8')).items ?? [];
     const b = JSON.parse(readFileSync(comPath, 'utf8')).items ?? [];
-    const mfr = new Set([...a, ...b].map((p: any) => p.manufacturer_normalized ?? p.manufacturer)).size;
+    // Manufacturer count deduped by curated short name — raw registry names
+    // carry per-market legal-entity variants of the same maker.
+    const mfr = new Set([...a, ...b].map((p: any) => p.manufacturer_short ?? p.manufacturer_normalized ?? p.manufacturer)).size;
     return { res: a.length, com: b.length, mfr };
   } catch {
     return { res: 0, com: 0, mfr: 0 };

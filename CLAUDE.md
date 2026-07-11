@@ -59,11 +59,12 @@
   power; SCOP/COP are NOT on EPREL and must not be derived). `eprel_registration_number`
   is set on every EPREL match regardless. Unmatched records keep null performance fields
   and stay residential with `market_segment` null. Biomass is excluded.
-  **GB union catalogue (v2.0)**: the UK edition shows PEL records
-  (`bafa_listing_status='listed_in_snapshot'` → "On Ofgem PEL") PLUS the European
-  (DE-derived) catalogue for hardware not on the PEL (`'not_in_latest_snapshot'` →
-  "Not on PEL", full specs as BAFA_REFERENCE, English type labels); PEL-matched
-  bafa_ids are excluded from the derived set to avoid duplicate hardware. Run the DE
+  **GB split catalogue (v2.1)**: residential = ALL PEL records
+  (`bafa_listing_status='listed_in_snapshot'` → "On Ofgem PEL"); commercial = the
+  European (DE-derived) COMMERCIAL catalogue only (`'not_in_latest_snapshot'` →
+  "Not on PEL", full specs as BAFA_REFERENCE, English type labels; PEL-matched
+  bafa_ids excluded). Derived RESIDENTIAL records are never exported — unmatched PEL
+  and European records can be the same hardware and would double-count. Run the DE
   builder before the GB builder. BUS funding requires a PEL-listed product — keep that
   caveat. Matching is
   conservative: brand-gated token-sequence matching only, never plain substring
