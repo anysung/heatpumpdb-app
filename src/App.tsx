@@ -225,16 +225,22 @@ const App: React.FC = () => {
               </span>
             </h1>
             <p className="mt-4 text-white/60 text-base md:text-lg">{t.subTitle}</p>
-            <div className="mt-8">
+            <div className="mt-5">
               <SegmentTiles t={t} />
             </div>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-1.5">
               {[t.authChipBafa, t.authChipRefrigerant, t.authChipScop].map((chip: string) => (
-                <span key={chip} className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/70">
+                <span key={chip} className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-white/70 whitespace-nowrap">
                   {chip}
                 </span>
               ))}
             </div>
+            {/* Indexable market keywords — compact two-line copy (search visibility). */}
+            {(t as any).authSeoLine && (
+              <p className="mt-4 text-[11px] leading-relaxed text-white/40 max-w-lg">
+                {(t as any).authSeoLine}
+              </p>
+            )}
           </div>
 
           {/* Entry card */}

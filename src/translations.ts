@@ -348,8 +348,10 @@ const FR_T = {
     authResidentialDesc: "Maisons individuelles & petits collectifs",
     authCommercialDesc: "Tertiaire & grandes installations",
     authChipBafa: FUNDING_CHIP.fr,
-    authChipRefrigerant: "Données R290 & fluides frigorigènes",
-    authChipScop: "Comparaison SCOP, acoustique & puissance",
+    authChipRefrigerant: "R290 & fluides frigorigènes",
+    authChipScop: "SCOP, acoustique & puissance",
+    tabResidential: "Résidentiel",
+    tabCommercial: "Tertiaire",
     authEcoLine: "Des données pour un parc immobilier neutre en carbone",
     authNoAccount: "Pas encore de compte ?",
     authHaveAccount: "Déjà inscrit ?",
@@ -366,18 +368,18 @@ const FR_T = {
 // GB = Ofgem BUS PEL/MCS/air source, FR = comparateur/MaPrimeRénov'/air-eau.
 const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
   ? {
-      en: 'HeatPump DB is the UK heat pump database: the Ofgem Boiler Upgrade Scheme (BUS) product eligibility list and MCS-certified air source heat pumps, with SCOP, sound power and refrigerant data — comparison and installer-ready data sheets.',
+      en: 'UK heat pump database & comparison — Ofgem Boiler Upgrade Scheme (BUS) eligibility list, MCS-certified air source heat pumps, SCOP, sound power and refrigerant data.',
       de: '', fr: '',
     }
   : ACTIVE_COUNTRY.code === 'FR'
     ? {
-        en: 'HeatPump DB is the heat pump database for the French market: an air-to-water heat pump comparison tool with SCOP, COP, sound power, refrigerant (R290) and EU energy label data — data sheets for installers and homeowners (MaPrimeRénov’, CEE).',
+        en: 'Heat pump database & comparison for the French market — air-to-water models, SCOP & COP, sound power, R290 refrigerant, EU energy label, MaPrimeRénov’ & CEE guidance.',
         de: '',
-        fr: 'HeatPump DB est la base de données de pompes à chaleur pour le marché français : comparateur de pompes à chaleur air/eau avec SCOP, COP, puissance acoustique, fluides frigorigènes (R290) et étiquette énergie UE — fiches techniques pour installateurs et particuliers (MaPrimeRénov’, CEE).',
+        fr: 'Base de données et comparateur de pompes à chaleur air/eau — SCOP & COP, puissance acoustique, fluide R290, étiquette énergie UE, repères MaPrimeRénov’ & CEE.',
       }
     : {
-        en: 'HeatPump DB is the heat pump database for the German market: the BAFA list of eligible heat pumps (BEG funding) with SCOP, COP, sound power, refrigerant (R290) and EU energy label data — comparison and installer-ready data sheets for air-to-water heat pumps.',
-        de: 'HeatPump DB ist die Wärmepumpen-Datenbank für den deutschen Markt: BAFA-Liste förderfähiger Wärmepumpen (BEG-Förderung) mit SCOP, COP, Schallleistung, Kältemittel (R290) und EU-Energielabel — Vergleich und Datenblätter für Luft-Wasser-Wärmepumpen.',
+        en: 'Heat pump database & comparison for the German market — BAFA list of eligible heat pumps, SCOP & COP data, sound power, R290 refrigerant and EU energy label classes.',
+        de: 'Wärmepumpen-Datenbank & Vergleich für Deutschland — BAFA-Liste förderfähiger Wärmepumpen, SCOP- & COP-Daten, Schallleistung, R290-Kältemittel und EU-Energielabel.',
         fr: '',
       };
 

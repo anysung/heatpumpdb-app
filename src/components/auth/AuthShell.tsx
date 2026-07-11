@@ -99,9 +99,9 @@ const SegmentTile: React.FC<{
   desc: string;
   accent: 'emerald' | 'cyan';
 }> = ({ icon, title, desc, accent }) => (
-  <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-white/[0.05] border border-white/10 backdrop-blur">
+  <div className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 backdrop-blur">
     <span
-      className={`shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl border ${
+      className={`shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-lg border ${
         accent === 'emerald'
           ? 'bg-emerald-400/15 border-emerald-400/25 text-emerald-300'
           : 'bg-cyan-400/15 border-cyan-400/25 text-cyan-300'
@@ -110,8 +110,8 @@ const SegmentTile: React.FC<{
       {icon}
     </span>
     <div>
-      <p className="font-semibold text-white text-sm">{title}</p>
-      <p className="text-white/50 text-xs mt-0.5 leading-relaxed">{desc}</p>
+      <p className="font-semibold text-white text-[13px]">{title}</p>
+      <p className="text-white/50 text-[11px] mt-0.5 leading-snug">{desc}</p>
     </div>
   </div>
 );
