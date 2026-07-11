@@ -389,12 +389,12 @@ const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
 
 // Simple declarative copyright line (public brand: HeatPump DataBase (Europe)).
 const YEAR = new Date().getFullYear();
-(EN_T as any).authStatsLine = (total: string, res: string, com: string) =>
-  `Registered Heat Pump Models: Total ${total} (Residential ${res} / Commercial ${com})`;
-(DE_T as any).authStatsLine = (total: string, res: string, com: string) =>
-  `Registrierte Wärmepumpen-Modelle: Gesamt ${total} (Wohngebäude ${res} / Gewerbe ${com})`;
-(FR_T as any).authStatsLine = (total: string, res: string, com: string) =>
-  `Modèles de pompes à chaleur référencés : Total ${total} (Résidentiel ${res} / Tertiaire ${com})`;
+(EN_T as any).authStatsTitle = 'Registered Heat Pump Models';
+(DE_T as any).authStatsTitle = 'Registrierte Wärmepumpen-Modelle';
+(FR_T as any).authStatsTitle = 'Modèles de pompes à chaleur référencés';
+(EN_T as any).authStatsTotal = 'Total';
+(DE_T as any).authStatsTotal = 'Gesamt';
+(FR_T as any).authStatsTotal = 'Total';
 (EN_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · All rights reserved.`;
 (DE_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Alle Rechte vorbehalten.`;
 (FR_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Tous droits réservés.`;

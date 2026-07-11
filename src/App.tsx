@@ -245,15 +245,20 @@ const App: React.FC = () => {
 
           {/* Entry card */}
           <div className="w-full max-w-md justify-self-center lg:justify-self-end flex flex-col gap-3 hp-fade-up-delay">
-            {/* Live catalogue stats (build-time counts) — above the entry card. */}
+            {/* Live catalogue stats (build-time counts) — the app's USP,
+                presented as a three-line lockup above the entry card. */}
             {__MARKET_STATS__.res > 0 && (
-              <p className="text-[12px] text-white/55 text-center leading-relaxed">
-                {(t as any).authStatsLine(
-                  (__MARKET_STATS__.res + __MARKET_STATS__.com).toLocaleString(),
-                  __MARKET_STATS__.res.toLocaleString(),
-                  __MARKET_STATS__.com.toLocaleString(),
-                )}
-              </p>
+              <div className="text-center flex flex-col gap-1.5 mb-1">
+                <p className="text-[11px] tracking-[0.16em] uppercase text-white/50">{(t as any).authStatsTitle}</p>
+                <p className="text-3xl font-bold leading-none text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300">
+                  {(t as any).authStatsTotal} {(__MARKET_STATS__.res + __MARKET_STATS__.com).toLocaleString()}
+                </p>
+                <p className="text-[12.5px] text-white/60">
+                  {t.tabResidential} <span className="font-semibold text-white/85">{__MARKET_STATS__.res.toLocaleString()}</span>
+                  <span className="mx-2 text-white/30">·</span>
+                  {t.tabCommercial} <span className="font-semibold text-white/85">{__MARKET_STATS__.com.toLocaleString()}</span>
+                </p>
+              </div>
             )}
           <GlassCard className="w-full p-8">
             <h2 className="text-xl font-semibold text-white mb-6 text-center">{t.welcomeTitle}</h2>
