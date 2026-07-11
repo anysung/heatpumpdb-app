@@ -352,13 +352,70 @@ const CommercialInstallScene: React.FC = () => (
   </svg>
 );
 
-const gridOverlayStyle: React.CSSProperties = {
-  backgroundImage:
-    'linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)',
-  backgroundSize: '48px 48px',
-  maskImage: 'radial-gradient(ellipse 90% 70% at 50% 40%, black 30%, transparent 100%)',
-  WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 40%, black 30%, transparent 100%)',
+/* ── Market background palettes ──────────────────────────────────────────────
+   Each edition gets its own hue family so the three landings read differently
+   at a glance: DE emerald, GB blue, FR indigo with a warm highlight.
+   (Rollback: git tag auth-bg-v1 holds the previous grid-overlay design.) */
+const MARKET_BG: Record<string, {
+  baseMid: string; base: string; baseDeep: string;
+  glowA: string; glowB: string; lineA: string; lineB: string;
+}> = {
+  DE: { baseMid: '#0e2019', base: '#0a1712', baseDeep: '#071009', glowA: '#34d399', glowB: '#22d3ee', lineA: '#34d399', lineB: '#38bdf8' },
+  GB: { baseMid: '#0c1a2e', base: '#081322', baseDeep: '#050c18', glowA: '#38bdf8', glowB: '#818cf8', lineA: '#38bdf8', lineB: '#818cf8' },
+  FR: { baseMid: '#111a38', base: '#0b1128', baseDeep: '#070b1c', glowA: '#60a5fa', glowB: '#fb7185', lineA: '#60a5fa', lineB: '#22d3ee' },
 };
+const BG = MARKET_BG[ACTIVE_COUNTRY.code] ?? MARKET_BG.DE;
+
+/**
+ * SpacetimeField — the circulation background: streamlines flowing across the
+ * page bend around two invisible "masses" (one behind the entry card, one in
+ * the lower hero), ringed by faint elliptical lens distortions. The dash
+ * drift keeps everything in slow, continuous motion (air/water circulation
+ * feel without literal imagery). Dash cycles are 480 units and the keyframe
+ * travels −960, so every line loops seamlessly at any duration.
+ */
+const SpacetimeField: React.FC = () => (
+  <svg
+    className="absolute inset-0 w-full h-full"
+    viewBox="0 0 1440 900"
+    preserveAspectRatio="xMidYMid slice"
+    fill="none"
+    aria-hidden="true"
+  >
+    <defs>
+      <linearGradient id="hpFieldLine" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor={BG.lineA} stopOpacity="0" />
+        <stop offset="0.22" stopColor={BG.lineA} stopOpacity="0.55" />
+        <stop offset="0.62" stopColor={BG.lineB} stopOpacity="0.55" />
+        <stop offset="1" stopColor={BG.lineB} stopOpacity="0" />
+      </linearGradient>
+    </defs>
+
+    {/* streamlines — curvature increases near the two foci */}
+    <g stroke="url(#hpFieldLine)" strokeWidth="1.2" opacity="0.34">
+      <path className="hp-field-line" style={{ animationDuration: '34s' }} strokeDasharray="330 150" d="M-40 70 C 500 40, 900 95, 1480 60" />
+      <path className="hp-field-line" style={{ animationDuration: '27s', animationDelay: '-9s' }} strokeDasharray="300 180" d="M-40 165 C 320 135, 720 185, 1480 140" />
+      <path className="hp-field-line" style={{ animationDuration: '30s', animationDelay: '-4s' }} strokeDasharray="360 120" d="M-40 275 C 420 255, 820 245, 1035 205 S 1310 185, 1480 210" />
+      <path className="hp-field-line" style={{ animationDuration: '24s', animationDelay: '-14s' }} strokeDasharray="280 200" d="M-40 390 C 380 380, 760 400, 980 435 S 1250 470, 1480 420" />
+      <path className="hp-field-line" style={{ animationDuration: '31s', animationDelay: '-6s' }} strokeDasharray="320 160" d="M-40 520 C 260 500, 430 468, 645 498 S 1110 560, 1480 520" />
+      <path className="hp-field-line" style={{ animationDuration: '26s', animationDelay: '-18s' }} strokeDasharray="340 140" d="M-40 655 C 210 636, 330 598, 485 610 S 770 685, 1480 640" />
+      <path className="hp-field-line" style={{ animationDuration: '36s', animationDelay: '-11s' }} strokeDasharray="300 180" d="M-40 775 C 420 752, 920 792, 1480 750" />
+    </g>
+
+    {/* lens distortions — faint elliptical rings around the two masses */}
+    <g className="hp-lens-a" fill="none" stroke={BG.lineB}>
+      <ellipse cx="1050" cy="320" rx="62" ry="54" strokeOpacity="0.11" />
+      <ellipse cx="1050" cy="320" rx="98" ry="86" strokeOpacity="0.085" />
+      <ellipse cx="1050" cy="320" rx="140" ry="122" strokeOpacity="0.06" />
+      <ellipse cx="1050" cy="320" rx="188" ry="164" strokeOpacity="0.04" />
+    </g>
+    <g className="hp-lens-b" fill="none" stroke={BG.lineA}>
+      <ellipse cx="385" cy="645" rx="52" ry="45" strokeOpacity="0.10" />
+      <ellipse cx="385" cy="645" rx="88" ry="76" strokeOpacity="0.07" />
+      <ellipse cx="385" cy="645" rx="128" ry="110" strokeOpacity="0.045" />
+    </g>
+  </svg>
+);
 
 /* ── Chrome ──────────────────────────────────────────────────────────────── */
 
@@ -408,13 +465,16 @@ export const AuthShell: React.FC<{
   setLanguage: (l: Language) => void;
   children: React.ReactNode;
 }> = ({ t, language, setLanguage, children }) => (
-  <div className="min-h-screen relative overflow-hidden bg-[#060f0d] text-white font-sans flex flex-col">
-    {/* Energy-field background */}
+  <div
+    className="min-h-screen relative overflow-hidden text-white font-sans flex flex-col"
+    style={{ background: `radial-gradient(120% 100% at 30% 20%, ${BG.baseMid} 0%, ${BG.base} 55%, ${BG.baseDeep} 100%)` }}
+  >
+    {/* Circulation-field background (market-tinted; rollback tag: auth-bg-v1) */}
     <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div className="hp-aurora-a absolute -top-40 -left-40 w-[42rem] h-[42rem] rounded-full bg-emerald-500/20 blur-[120px]" />
-      <div className="hp-aurora-b absolute top-1/3 -right-52 w-[40rem] h-[40rem] rounded-full bg-cyan-400/15 blur-[120px]" />
-      <div className="absolute -bottom-52 left-1/4 w-[36rem] h-[36rem] rounded-full bg-amber-400/[0.07] blur-[130px]" />
-      <div className="absolute inset-0" style={gridOverlayStyle} />
+      <div className="hp-aurora-a absolute -top-40 -left-40 w-[42rem] h-[42rem] rounded-full blur-[120px]" style={{ background: `${BG.glowA}2e` }} />
+      <div className="hp-aurora-b absolute top-1/3 -right-52 w-[40rem] h-[40rem] rounded-full blur-[120px]" style={{ background: `${BG.glowB}24` }} />
+      <div className="absolute -bottom-52 left-1/4 w-[36rem] h-[36rem] rounded-full blur-[130px]" style={{ background: `${BG.glowA}14` }} />
+      <SpacetimeField />
       <FlowWave />
       <ResidentialInstallScene />
       <CommercialInstallScene />

@@ -97,6 +97,21 @@
 .hp-logo-db { fill: var(--hp-db-b); animation: hp-logo-db 6s linear infinite; }
 
 /* Waving flag: gentle cloth sway anchored at the hoist (left edge) */
+/* Circulation field (auth landing): streamlines drift along their curves;
+   lens rings breathe slowly around the two focal masses. */
+@keyframes hp-field-flow { to { stroke-dashoffset: -960; } }
+.hp-field-line { animation: hp-field-flow linear infinite; }
+@keyframes hp-lens-drift-a {
+  from { transform: translate(0px, 0px) scale(1); }
+  to   { transform: translate(-22px, 14px) scale(1.06); }
+}
+@keyframes hp-lens-drift-b {
+  from { transform: translate(0px, 0px) scale(1.05); }
+  to   { transform: translate(18px, -12px) scale(1); }
+}
+.hp-lens-a { transform-box: fill-box; transform-origin: center; animation: hp-lens-drift-a 26s ease-in-out infinite alternate; }
+.hp-lens-b { transform-box: fill-box; transform-origin: center; animation: hp-lens-drift-b 32s ease-in-out infinite alternate; }
+
 @keyframes hp-flag-sway {
   from { transform: skewY(-1.4deg) translateY(0); }
   to   { transform: skewY(1.4deg) translateY(1px); }
@@ -106,7 +121,8 @@
 @media (prefers-reduced-motion: reduce) {
   .hp-fade-up, .hp-fade-up-delay, .hp-aurora-a, .hp-aurora-b, .hp-flow-line,
   .hp-fan, .hp-fan-slow, .hp-wrench-arm, .hp-wave-arms, .hp-bob, .hp-carry, .hp-hoist,
-  .hp-logo-spin, .hp-logo-db, .hp-flag-sway {
+  .hp-logo-spin, .hp-logo-db, .hp-flag-sway,
+  .hp-field-line, .hp-lens-a, .hp-lens-b {
     animation: none;
   }
 }
