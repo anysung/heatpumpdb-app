@@ -107,5 +107,12 @@
 - Deploy: multi-site hosting — **always use a named target**, never bare
   `firebase deploy --only hosting` (it deploys every target).
   `npm run deploy:de` → site `gen-lang-client-0324244302` (heatpumpdb.de);
-  `npm run deploy:uk` → site `heatpumpdb-uk` (heatpumpdb-uk.web.app / heatpumpdb.uk).
+  `npm run deploy:uk` → site `heatpumpdb-uk`; `npm run deploy:fr` → `heatpumpdb-fr`;
+  `npm run deploy:admin` → `heatpumpdb-hub` (unified ops console, noindex,
+  VITE_APP_MODE=admin, admin-role gate — heatpumpdb.click attachable later).
   Targets are mapped in `.firebaserc`; per-target config in `firebase.json`.
+- Billing is web-only via Paddle (merchant of record) — no app-store
+  distribution. `src/services/paddleService.ts`; config via
+  VITE_PADDLE_CLIENT_TOKEN/VITE_PADDLE_PRICE_ID (unset = 'coming soon' UI).
+  Entitlements (`plan`, `paddle*` fields on the user) are written ONLY by the
+  server-side billing webhook — never from the client.
