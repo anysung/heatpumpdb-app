@@ -37,6 +37,15 @@
 
 ## 2. Data Pipeline (BAFA → app)
 
+**Regular updates run through `node scripts/update-all.mjs`** (dependency-graph
+orchestrator: DE first, then FR/GB derive from the built DE datasets; optional
+matcher overlays; freshness + shrink-guard verification; `--deploy` ships all
+sites in one atomic call). Never hand-run builders for production updates —
+see `docs/UPDATE_PIPELINE.md` for the graph, schedule (monthly, 2nd, 03:00
+Europe/Berlin, attended) and the country-expansion checklist.
+`build-master-seed` is SELF-ACCUMULATING: it unions previous master seeds so
+cleaning parsed/raw folders never drops products (regression 2026-07-12).
+
 `scripts/bafa/`: `fetch-bafa-raw` → `parse-bafa-raw` → `build-master-seed` →
 `build-app-products-from-master-seed` (auto-selects newest `data_sources/bafa/master_seed/YYYY-MM/`).
 - `bafa_id` comes from BAFA raw (`anlagennummer`) and flows through automatically.

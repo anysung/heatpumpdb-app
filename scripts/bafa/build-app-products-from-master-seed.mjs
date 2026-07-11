@@ -94,7 +94,18 @@ const seed = loadJSON(`data_sources/bafa/master_seed/${SNAPSHOT}/bafa-master-see
 const enriched = loadJSON('scraper/pricing/output/dataset-enriched-full.json');
 const shortNamesFile = loadJSON('scraper/pricing/manufacturer-short-names.json');
 const shortNameMap = new Map(Object.entries(shortNamesFile.mapping));
-const iduOduMapping = loadJSON('data_sources/bafa/idu_odu_mapping/2026-06/idu-odu-mapping.json');
+// IDU/ODU component mapping — newest snapshot dir (regenerated rarely by
+// scripts/analysis/apply-idu-odu-manufacturer-rules.mjs; gitignored, must
+// exist on the build machine).
+const IDU_ODU_DIR = resolve(ROOT, 'data_sources/bafa/idu_odu_mapping');
+const IDU_ODU_SNAPSHOT = existsSync(IDU_ODU_DIR)
+  ? readdirSync(IDU_ODU_DIR).filter(d => /^\d{4}-\d{2}$/.test(d)).sort().reverse()[0]
+  : null;
+if (!IDU_ODU_SNAPSHOT) {
+  console.error('Missing data_sources/bafa/idu_odu_mapping/<YYYY-MM>/ — regenerate with scripts/analysis/apply-idu-odu-manufacturer-rules.mjs');
+  process.exit(1);
+}
+const iduOduMapping = loadJSON(`data_sources/bafa/idu_odu_mapping/${IDU_ODU_SNAPSHOT}/idu-odu-mapping.json`);
 
 // EPREL registration-link overlay (optional) — match-bafa-to-eprel.mjs output.
 const eprelMatchPath = resolve(ROOT, `data_sources/bafa/matching/${SNAPSHOT}/bafa-eprel-matches.json`);

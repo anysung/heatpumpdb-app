@@ -270,6 +270,38 @@ async function main() {
   }
 
   // Sort stable: manufacturer → model
+  // ── Self-accumulation guard (added 2026-07-12 after a real regression) ────
+  // Parsed/raw snapshot folders MAY be cleaned from disk (2026-06 was), which
+  // would silently drop every product observed only in the removed snapshots
+  // — violating the delisted-preservation rule. Union in the PREVIOUS master
+  // seed: any product it contains that the snapshot union no longer covers is
+  // carried over verbatim, flagged delisted. Nothing ever observed is lost,
+  // regardless of what remains on disk.
+  const seedDirsPrev = fs.existsSync(SEED_DIR)
+    ? fs.readdirSync(SEED_DIR).filter(d => /^\d{4}-\d{2}$/.test(d)).sort()
+    : [];
+  let carriedOver = 0;
+  for (const prevId of seedDirsPrev) {
+    const prevPath = path.join(SEED_DIR, prevId, 'bafa-master-seed.json');
+    if (!fs.existsSync(prevPath)) continue;
+    let prevItems = [];
+    try { prevItems = JSON.parse(fs.readFileSync(prevPath, 'utf8')).items ?? []; } catch { continue; }
+    for (const prev of prevItems) {
+      if (seenIds.has(prev.source_id)) continue;
+      seenIds.add(prev.source_id);
+      seedItems.push({
+        ...prev,
+        bafa_list_current: false,
+        bafa_list_status: 'no',
+        bafa_list_current_as_of: LATEST,
+      });
+      carriedOver++;
+    }
+  }
+  if (carriedOver > 0) {
+    console.log(`Self-accumulation: carried over ${carriedOver} products from previous master seed(s) no longer covered by on-disk snapshots.`);
+  }
+
   seedItems.sort((a, b) => {
     const m = (a.manufacturer_normalized ?? '').localeCompare(b.manufacturer_normalized ?? '');
     return m !== 0 ? m : (a.model ?? '').localeCompare(b.model ?? '');

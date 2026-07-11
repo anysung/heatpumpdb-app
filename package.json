@@ -15,7 +15,9 @@
     "deploy:fr": "npm run build:fr && firebase deploy --only hosting:fr",
     "deploy:admin": "npm run build:admin && firebase deploy --only hosting:hub",
     "preview": "vite preview",
-    "start": "node server.js"
+    "start": "node server.js",
+    "update:all": "node scripts/update-all.mjs",
+    "update:all:deploy": "node scripts/update-all.mjs --fetch --fetch-eprel --deploy"
   },
   "dependencies": {
     "@google/genai": "*",

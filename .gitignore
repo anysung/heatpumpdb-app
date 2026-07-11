@@ -67,3 +67,4 @@ docs/.pdca-snapshots/
 .firebase/
 data_sources/ofgem_pel/matching/20*/
 data_sources/bafa/matching/20*/
+data_sources/bafa/recovery/
