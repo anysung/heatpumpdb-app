@@ -12,7 +12,7 @@ const FUNDING_CHIP = ACTIVE_COUNTRY.code === 'GB'
 
 const EN_T = {
     // General / Auth
-    subTitle: "The most comprehensive heat pump database",
+    subTitle: "The most comprehensive heat pump database — with regular updates",
     welcomeTitle: "Welcome to Heat Pump World",
     signup: "Sign Up",
     login: "Log In",
@@ -164,7 +164,7 @@ const EN_T = {
 
 const DE_T = {
     // General / Auth
-    subTitle: "Die umfassendste Wärmepumpen-Datenbank",
+    subTitle: "Die umfassendste Wärmepumpen-Datenbank — regelmäßig aktualisiert",
     welcomeTitle: "Willkommen",
     signup: "Registrieren",
     login: "Anmelden",
@@ -318,7 +318,7 @@ const DE_T = {
 // French; admin-console strings intentionally stay English (operator-facing).
 const FR_T = {
     ...EN_T,
-    subTitle: "La base de données de pompes à chaleur la plus complète",
+    subTitle: "La base de données de pompes à chaleur la plus complète — mise à jour régulièrement",
     welcomeTitle: "Bienvenue dans l'univers des pompes à chaleur",
     signup: "Créer un compte",
     login: "Se connecter",
@@ -389,6 +389,9 @@ const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
 
 // Simple declarative copyright line (public brand: HeatPump DataBase (Europe)).
 const YEAR = new Date().getFullYear();
+(EN_T as any).authStatMfr = 'Manufacturers';
+(DE_T as any).authStatMfr = 'Hersteller';
+(FR_T as any).authStatMfr = 'Fabricants';
 (EN_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · All rights reserved.`;
 (DE_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Alle Rechte vorbehalten.`;
 (FR_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Tous droits réservés.`;

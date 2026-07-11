@@ -1,7 +1,30 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
-import { writeFileSync } from 'node:fs'
+import { writeFileSync, readFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
+
+/**
+ * Build-time catalogue stats for the auth landing (model counts per segment +
+ * manufacturer count). Read from the built datasets so no runtime download is
+ * needed on the login page. Falls back to zeros if the pipeline has not run.
+ */
+function marketStats(country: string): { res: number; com: number; mfr: number } {
+  const files: Record<string, [string, string]> = {
+    DE: ['public/data/products.json', 'public/data/products-commercial.json'],
+    GB: ['public/data/products-gb.json', 'public/data/products-commercial-gb.json'],
+    FR: ['public/data/products-fr.json', 'public/data/products-commercial-fr.json'],
+  };
+  const [resPath, comPath] = files[country] ?? files.DE;
+  try {
+    if (!existsSync(resPath) || !existsSync(comPath)) return { res: 0, com: 0, mfr: 0 };
+    const a = JSON.parse(readFileSync(resPath, 'utf8')).items ?? [];
+    const b = JSON.parse(readFileSync(comPath, 'utf8')).items ?? [];
+    const mfr = new Set([...a, ...b].map((p: any) => p.manufacturer_normalized ?? p.manufacturer)).size;
+    return { res: a.length, com: b.length, mfr };
+  } catch {
+    return { res: 0, com: 0, mfr: 0 };
+  }
+}
 
 // Per-market <head> metadata, injected at build time (one deployment = one
 // country). Titles are the canonical brand naming — "HeatPump DB <Market>",
@@ -146,7 +169,8 @@ export default defineConfig(({ mode }) => {
     define: {
       // Polyfill process.env.API_KEY so it works in the browser
       // CRITICAL FIX: Added || "" to prevent build failure if API_KEY is undefined in Cloud Build env
-      'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY || "")
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY || ""),
+      '__MARKET_STATS__': JSON.stringify(marketStats(country)),
     }
   }
 })

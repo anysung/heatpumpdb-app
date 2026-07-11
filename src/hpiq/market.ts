@@ -12,11 +12,12 @@ export const IS_FR = ACTIVE_COUNTRY.code === 'FR';
 
 /**
  * Short prefix shown next to the registry product id
- * (e.g. "BAFA 16010266" / "MCS 24.01.020"). The FR catalogue is derived from
- * the German BAFA registry, so its reference prefix stays BAFA — truth in
- * labelling; NF PAC references are shown separately when confidently matched.
+ * (e.g. "BAFA 16010266" / "MCS 24.01.020"). The FR edition presents the id
+ * as a neutral European reference ("Réf. 16010266") — non-national sources
+ * are labelled as European per market policy; the data sheet fine print
+ * still names BAFA for traceability.
  */
-export const SOURCE_ID_ABBR = IS_GB ? 'MCS' : 'BAFA';
+export const SOURCE_ID_ABBR = IS_GB ? 'MCS' : IS_FR ? 'Réf.' : 'BAFA';
 
 /** Where "verify eligibility" links point on the products inspector. */
 export const REGISTRY_VERIFY_URL = IS_GB

@@ -245,6 +245,21 @@ const App: React.FC = () => {
 
           {/* Entry card */}
           <GlassCard className="w-full max-w-md justify-self-center lg:justify-self-end p-8 hp-fade-up-delay">
+            {/* Live catalogue stats (build-time counts) — first-visit hook. */}
+            {__MARKET_STATS__.res > 0 && (
+              <div className="grid grid-cols-3 gap-2 mb-6">
+                {[
+                  [__MARKET_STATS__.res, t.tabResidential],
+                  [__MARKET_STATS__.com, t.tabCommercial],
+                  [__MARKET_STATS__.mfr, (t as any).authStatMfr],
+                ].map(([n, label]) => (
+                  <div key={String(label)} className="rounded-xl bg-white/[0.06] border border-white/10 px-2 py-2.5 text-center">
+                    <p className="text-lg font-bold text-white leading-none">{Number(n).toLocaleString()}</p>
+                    <p className="text-[10px] text-white/50 mt-1.5 uppercase tracking-wide">{String(label)}</p>
+                  </div>
+                ))}
+              </div>
+            )}
             <h2 className="text-xl font-semibold text-white mb-6 text-center">{t.welcomeTitle}</h2>
             <div className="flex flex-col gap-3">
               <button onClick={() => setCurrentView('SIGNUP')} className={primaryBtn}>{t.signup}</button>
