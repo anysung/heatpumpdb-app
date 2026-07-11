@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from 'react';
 import { HpApp, DsSectionKey } from '../appState';
 import { longDate } from '../model';
-import { FD, SearchIcon, pillPrimary, pillSecondary, sectionLabel } from '../ui';
+import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
 import { IS_GB, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
@@ -191,7 +191,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
         {/* preview */}
         <div style={{ flex: 1, background: '#f5f5f7', padding: 28, display: 'flex', justifyContent: 'center', overflow: 'auto' }}>
           {dsp && (
-            <div className="hpiq-print-doc" style={{ width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
+            <div className="hpiq-print-doc" style={{ position: 'relative', width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 20 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -340,6 +340,10 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   {t.ds.disclaimer}
                 </span>
               </div>
+
+              {/* ── Copyright watermark: screen (preview) + per-page on print ── */}
+              <Watermark />
+              <Watermark print />
             </div>
           )}
         </div>

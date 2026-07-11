@@ -50,3 +50,35 @@
   }
   @page { size: A4; margin: 15mm 12mm; }
 }
+
+/* ── Copyright watermark (data sheet + comparison) ─────────────────────────
+   Screen: faint centered brand mark inside a position:relative container.
+   Print: the fixed variant repeats centered on every printed/PDF page. */
+.hpiq-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.05;
+  transform: rotate(-18deg);
+}
+.hpiq-print-watermark { display: none; }
+
+@media print {
+  body.hpiq-printing .hpiq-watermark { display: none; }
+  body.hpiq-printing .hpiq-print-watermark,
+  body.hpiq-printing .hpiq-print-watermark * { visibility: visible; }
+  body.hpiq-printing .hpiq-print-watermark {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0.06;
+    transform: rotate(-18deg);
+    z-index: 9999;
+  }
+}

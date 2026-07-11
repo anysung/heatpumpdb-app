@@ -3,8 +3,21 @@
  * Values are the literal ones from the approved prototype markup.
  */
 import React from 'react';
+import { BrandLogo } from '../components/BrandLogo';
 
 export const FD = 'var(--hp-font-display)';
+
+/**
+ * Copyright watermark — faint centered brand mark for rights protection on
+ * the data sheet and the comparison view. Screen variant sits inside its
+ * (position:relative) container; the print variant is position:fixed so it
+ * repeats centered on EVERY printed/PDF page (rules in hpiq.css).
+ */
+export const Watermark: React.FC<{ print?: boolean }> = ({ print }) => (
+  <div className={print ? 'hpiq-print-watermark' : 'hpiq-watermark'} aria-hidden="true">
+    <BrandLogo height={72} theme="light" />
+  </div>
+);
 
 export const C = {
   primary: '#0066cc',

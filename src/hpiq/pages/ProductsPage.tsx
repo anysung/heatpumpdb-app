@@ -5,7 +5,7 @@ import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
-import { FD, CheckBox, ChevronDown, KwRangeSlider, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
+import { FD, CheckBox, ChevronDown, KwRangeSlider, Watermark, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
 const GRID = '34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr';
 const PAGE_SIZE = 100;
@@ -425,8 +425,9 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
         >
           <div
             onClick={e => e.stopPropagation()}
-            style={{ background: '#fff', borderRadius: 18, width: 'min(1040px, 100%)', maxHeight: '86vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 24px 64px rgba(0,0,0,.28)' }}
+            style={{ position: 'relative', background: '#fff', borderRadius: 18, width: 'min(1040px, 100%)', maxHeight: '86vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 24px 64px rgba(0,0,0,.28)' }}
           >
+            <Watermark />
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 24px', borderBottom: '1px solid #e0e0e0', flex: 'none' }}>
               <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px' }}>{t.products.comparison}</span>
               <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{t.products.comparisonCount(compareCount)}</span>
