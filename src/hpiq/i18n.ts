@@ -30,6 +30,16 @@ const EN = {
     note: 'Product data is informational — verify BAFA, KfW and EPREL sources before contractual use.',
   },
 
+  /** Compact-device (phone/tablet) shell strings. */
+  m: {
+    tabSearch: 'Search',
+    tabFunding: 'Funding',
+    filters: 'Filters',
+    apply: 'Apply',
+    all: 'All',
+    desktopNote: 'Data sheet printing, EU energy label records and the full 4-way comparison are available in the desktop version.',
+  },
+
   find: {
     heroTitle: 'Find a product.',
     heroSub: (total: string) => `Fast model lookup across ${total} BAFA-listed heat pumps.`,
@@ -434,6 +444,15 @@ const DE: HpStrings = {
     news: 'News',
     account: 'Konto',
     signOut: 'Abmelden',
+  },
+
+  m: {
+    tabSearch: 'Suche',
+    tabFunding: 'Förderung',
+    filters: 'Filter',
+    apply: 'Übernehmen',
+    all: 'Alle',
+    desktopNote: 'Datenblatt-Druck, EU-Label-Einträge und der vollständige 4-fach-Vergleich stehen in der Desktop-Version zur Verfügung.',
   },
 
   footer: {
@@ -1176,6 +1195,15 @@ const FR_EN: HpStrings = {
 const FR_FR: HpStrings = {
   ...FR_EN,
   locale: 'fr-FR',
+
+  m: {
+    tabSearch: 'Recherche',
+    tabFunding: 'Aides',
+    filters: 'Filtres',
+    apply: 'Appliquer',
+    all: 'Tous',
+    desktopNote: 'L’impression des fiches techniques, les fiches étiquette UE et la comparaison complète sont disponibles dans la version bureau.',
+  },
 
   nav: {
     find: 'Rechercher',

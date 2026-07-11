@@ -13,6 +13,8 @@ import { tr } from './i18n';
 import { UI_LANGUAGES } from './market';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
+import { useViewport } from './useViewport';
+import { MobileApp } from './mobile/MobileApp';
 import { FindPage } from './pages/FindPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { LabelPage } from './pages/LabelPage';
@@ -35,6 +37,7 @@ const NAV_IDS: Exclude<HpPage, 'account'>[] = ['find', 'products', 'label', 'dat
 
 export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
   const t = tr(language);
+  const viewport = useViewport();
   const [page, setPage] = useState<HpPage>('find');
   const [query, setQuery] = useState('');
   const [compare, setCompare] = useState<string[]>([]);
@@ -180,6 +183,21 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   const initials = (
     ((user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')) || user.email?.[0] || 'U'
   ).toUpperCase();
+
+  // Compact devices get the curated mobile/tablet shell; the dense desktop UI
+  // below stays authoritative and unchanged (design_handoff spec).
+  if (viewport !== 'desktop') {
+    return (
+      <>
+        <MobileApp app={app} viewport={viewport} />
+        {notice && (
+          <div style={{ position: 'fixed', bottom: 84, left: '50%', transform: 'translateX(-50%)', zIndex: 100, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '11px 22px', fontSize: 13.5, boxShadow: '0 8px 24px rgba(0,0,0,.22)', maxWidth: '86vw' }}>
+            {notice}
+          </div>
+        )}
+      </>
+    );
+  }
 
   return (
     <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
