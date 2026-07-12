@@ -46,14 +46,19 @@ const DEPLOY = has('--deploy');
 // treated as a pipeline regression unless explicitly acknowledged.
 const ALLOW_SHRINK = has('--allow-shrink');
 
-const LIVE_URLS = {
-  'public/data/products.json': 'https://www.heatpumpdb.de/data/products.json',
-  'public/data/products-commercial.json': 'https://www.heatpumpdb.de/data/products-commercial.json',
-  'public/data/products-gb.json': 'https://www.heatpumpdb.uk/data/products-gb.json',
-  'public/data/products-commercial-gb.json': 'https://www.heatpumpdb.uk/data/products-commercial-gb.json',
-  'public/data/products-fr.json': 'https://www.heatpumpdb.fr/data/products-fr.json',
-  'public/data/products-commercial-fr.json': 'https://www.heatpumpdb.fr/data/products-commercial-fr.json',
+// Live datasets moved to the auth-protected Storage bucket (anti-scraping,
+// 2026-07-12) — the shrink guard reads them with the operator's gcloud
+// credentials. Served copies carry ONE canary record per file
+// (scripts/upload-datasets.mjs), which the guard subtracts before comparing.
+const LIVE_GCS = {
+  'public/data/products.json':               'gs://heatpumpdb-datasets/datasets/DE/products.json',
+  'public/data/products-commercial.json':    'gs://heatpumpdb-datasets/datasets/DE/products-commercial.json',
+  'public/data/products-gb.json':            'gs://heatpumpdb-datasets/datasets/GB/products-gb.json',
+  'public/data/products-commercial-gb.json': 'gs://heatpumpdb-datasets/datasets/GB/products-commercial-gb.json',
+  'public/data/products-fr.json':            'gs://heatpumpdb-datasets/datasets/FR/products-fr.json',
+  'public/data/products-commercial-fr.json': 'gs://heatpumpdb-datasets/datasets/FR/products-commercial-fr.json',
 };
+const CANARIES_PER_FILE = 1;
 
 /* ── Pipeline registry ──────────────────────────────────────────────────────
    step: { name, cmd, when?: 'fetch'|'always', optional?: true }
@@ -200,15 +205,14 @@ if (verifyFail) { console.error('ABORT: dataset verification failed — nothing 
 
 /* ── Shrink guard: new counts must be >= currently-live counts ────────────── */
 
-console.log('\n════ Shrink guard (vs live sites) ════');
+console.log('\n════ Shrink guard (vs live Storage datasets) ════');
 for (const code of order) {
   for (const rel of PIPELINES[code].datasets ?? []) {
-    const url = LIVE_URLS[rel];
-    if (!url) continue;
+    const gcs = LIVE_GCS[rel];
+    if (!gcs) continue;
     try {
-      const live = await fetch(url).then(r => r.ok ? r.json() : null);
-      const liveN = live?.items?.length ?? null;
-      if (liveN === null) { console.log(`  [${code}] ${rel}: live unavailable — skipped`); continue; }
+      const raw = execSync(`gcloud storage cat ${gcs}`, { cwd: ROOT, maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] });
+      const liveN = (JSON.parse(raw.toString()).items?.length ?? 0) - CANARIES_PER_FILE;
       const newN = JSON.parse(readFileSync(resolve(ROOT, rel), 'utf8')).items?.length ?? 0;
       const shrink = newN < liveN;
       console.log(`  [${code}] ${rel}: live ${liveN.toLocaleString()} → new ${newN.toLocaleString()} ${shrink ? '(SHRINK ✗)' : '✓'}`);
@@ -224,6 +228,8 @@ for (const code of order) {
 /* ── Deploy (opt-in): all editions in one atomic hosting release ──────────── */
 
 if (DEPLOY) {
+  console.log('\n════ Upload datasets (auth-protected Storage, + canaries) ════');
+  execSync('node scripts/upload-datasets.mjs', { cwd: ROOT, stdio: 'inherit' });
   console.log('\n════ Build & deploy all editions ════');
   for (const cmd of ['npm run build:de', 'npm run build:uk', 'npm run build:fr', 'npm run build:admin']) {
     execSync(cmd, { cwd: ROOT, stdio: 'inherit' });

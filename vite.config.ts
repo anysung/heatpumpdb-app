@@ -158,8 +158,19 @@ export default defineConfig(({ mode }) => {
             + `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
             + `  <url><loc>${m.canonical}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq></url>\n`
             + `</urlset>\n`);
+          // robots: normal indexing stays open, but the dataset path is
+          // disallowed (defense in depth — hosting no longer serves it) and
+          // AI-training crawlers are opted out (the catalogue is a protected
+          // database; see the in-app legal notice).
+          const AI_CRAWLERS = [
+            'GPTBot', 'ChatGPT-User', 'OAI-SearchBot', 'ClaudeBot', 'Claude-Web',
+            'anthropic-ai', 'CCBot', 'Google-Extended', 'Applebot-Extended',
+            'PerplexityBot', 'Bytespider', 'meta-externalagent', 'cohere-ai',
+          ];
           writeFileSync(resolve(outDir, 'robots.txt'),
-            `User-agent: *\nAllow: /\n\nSitemap: ${m.canonical}sitemap.xml\n`);
+            `User-agent: *\nAllow: /\nDisallow: /data/\n\n`
+            + AI_CRAWLERS.map(ua => `User-agent: ${ua}\nDisallow: /\n`).join('\n')
+            + `\nSitemap: ${m.canonical}sitemap.xml\n`);
           // PWA manifest — per-market identity so each installed edition
           // carries its own name, icon and theme color.
           writeFileSync(resolve(outDir, 'manifest.webmanifest'), JSON.stringify({

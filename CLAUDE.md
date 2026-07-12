@@ -27,8 +27,16 @@
 - Country config is centralized in `src/config/countryProfiles.ts` (`ACTIVE_COUNTRY`,
   resolved from `VITE_COUNTRY_CODE`). New-country work goes there — flag, dataset paths,
   subsidy labels all derive from it. Do not scatter country logic.
-- Product data is loaded from static JSON: `public/data/products.json` and
-  `public/data/products-commercial.json` (gitignored; rebuilt by pipeline before deploy).
+- Product data is built to `public/data/*.json` (gitignored) but is **NOT served
+  publicly** (anti-scraping, Jul 2026): hosting deploys exclude `data/**`
+  (firebase.json) and the app downloads datasets through the Firebase Storage
+  SDK from the auth-protected bucket `gs://heatpumpdb-datasets`
+  (`storage.rules`: approved accounts only; dev server still reads the local
+  files). Ship datasets with `node scripts/upload-datasets.mjs` — it appends
+  ONE fictitious CANARY record per file (`scripts/canary/canary-records.json`,
+  honeytokens proving extraction; keep ids stable, never mention them publicly).
+  The shrink guard reads live counts from the bucket via gcloud and subtracts
+  the canary. robots.txt disallows `/data/` and opts out AI-training crawlers.
 - hpiq global nav is **60px** tall; pages size themselves with `calc(100vh - 60px)` —
   keep in sync if the header changes.
 - Printing: hpiq data sheet uses `body.hpiq-printing` + `.hpiq-print-doc` visibility

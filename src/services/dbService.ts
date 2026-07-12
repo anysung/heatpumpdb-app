@@ -1,5 +1,6 @@
-import { collection, getDocs, getDoc, doc, query, limit, orderBy } from 'firebase/firestore';
-import { db } from '../firebase';
+import { collection, getDocs, getDoc, doc, query, limit } from 'firebase/firestore';
+import { ref, getBlob } from 'firebase/storage';
+import { db, datasetStorage } from '../firebase';
 import { HeatPump, NewsItem, PolicyItem, BAFAItem } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 
@@ -10,14 +11,28 @@ const POLICY_REF = `${ACTIVE_COUNTRY.firestoreRoot}/policies`;
 const BAFA_REF   = `${ACTIVE_COUNTRY.firestoreRoot}/bafa`;
 
 /**
- * Load products from a static JSON dataset.
- * Accepts a path so both residential and commercial datasets use the same loader.
+ * Load a product dataset.
+ *
+ * Production: downloaded through the Firebase Storage SDK from the
+ * auth-protected datasets bucket (gs://heatpumpdb-datasets/datasets/<CC>/…) —
+ * storage.rules only admit approved accounts, so the catalogue is no longer
+ * one anonymous HTTP GET away (anti-scraping, 2026-07-12).
+ *
+ * Dev server: reads the local file from public/data (vite serves it), so the
+ * pipeline/preview workflow keeps working without a Storage round-trip.
  */
 const loadProductsFromJson = async (path: string): Promise<HeatPump[]> => {
   try {
-    const resp = await fetch(path);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
+    let data: any;
+    if (import.meta.env.DEV) {
+      const resp = await fetch(path);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      data = await resp.json();
+    } else {
+      const file = path.split('/').pop()!;
+      const blob = await getBlob(ref(datasetStorage, `datasets/${ACTIVE_COUNTRY.code}/${file}`));
+      data = JSON.parse(await blob.text());
+    }
     return (data.items || []) as HeatPump[];
   } catch (error) {
     console.error(`Error fetching products from ${path}:`, error);

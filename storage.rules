@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// heatpumpdb-datasets bucket — the product catalogues (per-market JSON).
+// Served ONLY to signed-in, admin-approved accounts via the Firebase SDK.
+// This replaced public /data/*.json hosting files (anti-scraping, 2026-07-12):
+// the datasets are the product; anonymous HTTP access is closed.
+//
+// Cross-service lookups require two one-time grants (done 2026-07-12):
+//   service-<num>@firebase-rules.iam.gserviceaccount.com
+//     → roles/firebaserules.firestoreServiceAgent  (project)
+//   service-<num>@gcp-sa-firebasestorage.iam.gserviceaccount.com
+//     → roles/storage.admin on gs://heatpumpdb-datasets (imported bucket)
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Same approval semantics as firestore.rules isApproved():
+    // status == 'active', or legacy accounts with isActive == true.
+    function me() {
+      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data;
+    }
+    function isApproved() {
+      return request.auth != null &&
+             firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+             (me().status == 'active' ||
+              (!('status' in me()) && me().isActive == true));
+    }
+    function isAdmin() {
+      return request.auth != null &&
+             firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+             me().get('role', 'user') in ['owner', 'admin', 'support', 'ops'];
+    }
+
+    match /datasets/{country}/{file} {
+      allow read: if isApproved() || isAdmin();
+      allow write: if false;  // uploads go through gcloud (pipeline), never clients
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

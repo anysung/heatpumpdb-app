@@ -7,6 +7,7 @@ import {
   authInput, authSelect, authLabel, primaryBtn, ghostBtn, socialBtn,
 } from './components/auth/AuthShell';
 import { HeatPumpDatabase, HeatPump, User, AppMode, Language } from './types';
+import { auth } from './firebase';
 import { translations } from './translations';
 import { DEFAULT_LANGUAGE } from './hpiq/market';
 import { PUBLIC_ENV } from './config/env';
@@ -101,14 +102,18 @@ const App: React.FC = () => {
             bafaListLinks: bafa
         };
         setFullDatabase(dbData);
-      } catch (err) { 
-          console.error("Failed to load Firestore data", err); 
+      } catch (err) {
+          console.error("Failed to load Firestore data", err);
       }
     };
-    loadData();
+    // Datasets + Firestore content are auth-protected (anti-scraping):
+    // loading before sign-in would only produce permission errors, so wait
+    // for a session. The effect re-runs on the post-login view change.
+    // Dev server reads local files and may load immediately (previews).
+    if (import.meta.env.DEV || auth.currentUser) loadData();
 
     return () => unsubscribe();
-  }, [currentView]); 
+  }, [currentView]);
 
   // ... (Keep all Handlers: handleLogin, handleSignup, etc. EXACTLY AS THEY WERE) ...
   const handleLogin = async (e: React.FormEvent) => {

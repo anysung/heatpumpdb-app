@@ -32,8 +32,9 @@
 | fetched-at index | `data_sources/bafa/fetched-at-index.json` | Cleaned raw folders breaking `bafa_snapshot_fetched_at` provenance |
 | Builder validations | every `build-app-products-*` | Field-shape drift, price-key reintroduction, provenance gaps, duplicate ids |
 | Freshness check | orchestrator | Deploying stale datasets after a silently skipped step |
-| **Shrink guard** | orchestrator | Any catalogue count dropping below the live site (delisted preservation means counts only grow); intentional reductions need `--allow-shrink` |
+| **Shrink guard** | orchestrator | Any catalogue count dropping below the live datasets (read from `gs://heatpumpdb-datasets` via gcloud, minus 1 canary/file); intentional reductions need `--allow-shrink` |
 | Fail-fast + atomic deploy | orchestrator | Partial cross-country deploys — nothing ships unless every dataset verifies |
+| Auth-protected datasets + canaries | `scripts/upload-datasets.mjs` + `storage.rules` | Anonymous bulk scraping of the catalogue; canary (honeytoken) records prove extraction if our data surfaces elsewhere |
 
 ## 3. Monthly run — commands
 
@@ -75,7 +76,10 @@ npm aliases: `npm run update:all` / `npm run update:all:deploy`.
 4. `vite.config.ts`: `marketStats` files map + `MARKET_HTML` + `__ALL_MARKET_STATS__`.
 5. Hosting: `firebase hosting:sites:create`, target in `firebase.json`/`.firebaserc`,
    `build:xx`/`deploy:xx` scripts; add the target to the orchestrator deploy list
-   and its datasets to `LIVE_URLS` (shrink guard).
+   and its datasets to `LIVE_GCS` (shrink guard). Add the market to
+   `scripts/upload-datasets.mjs` DATASETS + a canary pair in
+   `scripts/canary/canary-records.json` (datasets are served from the
+   auth-protected Storage bucket, not hosting).
 6. Cloud Function `MARKETS` entry for news.
 The admin console picks the new market up automatically from COUNTRY_PROFILES.
 

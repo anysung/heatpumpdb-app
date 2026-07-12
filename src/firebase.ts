@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { initializeFirestore, persistentLocalCache } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -18,3 +19,7 @@ export const auth = getAuth(app);
 export const db = initializeFirestore(app, {
     localCache: persistentLocalCache()
 });
+// Product datasets live in a dedicated auth-protected bucket (anti-scraping,
+// 2026-07-12): storage.rules only admits approved accounts; the hosting
+// sites no longer serve /data/*.json publicly.
+export const datasetStorage = getStorage(app, 'gs://heatpumpdb-datasets');
