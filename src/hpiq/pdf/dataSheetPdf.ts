@@ -144,6 +144,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   y += 15;
 
   /* ── Title card (dark) ────────────────────────────────────────────────── */
+  setFont(15, true, [255, 255, 255]);   // measure at the size it is drawn in
   const titleLines = doc.splitTextToSize(ascii(v.model), CW - 12) as string[];
   const cardH = 11 + titleLines.length * 6.4;
   need(cardH + 2);
@@ -196,6 +197,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     for (let i = 0; i < cells.length; i += 2) {
       const row = cells.slice(i, i + 2);
       // measure the tallest cell in this row (values can wrap)
+      setFont(10, true, INK);   // measure with the font the values are drawn in
       const wrapped = row.map(([, val]) => doc.splitTextToSize(ascii(val), COL_W - 2) as string[]);
       const rowH = 5 + Math.max(...wrapped.map(w => w.length)) * 5 + 3;
       need(rowH);
@@ -216,10 +218,18 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   };
 
   const paragraph = (text: string, size = 7.5, color: [number, number, number] = MUTED) => {
-    const lines = doc.splitTextToSize(ascii(text), CW) as string[];
-    need(lines.length * (size * 0.42) + 3);
+    // setFont FIRST: splitTextToSize measures with the CURRENT font, so measuring
+    // before setting it wraps the text against the previous (larger) size and the
+    // paragraph never reaches the right margin.
     setFont(size, false, color);
-    lines.forEach(ln => { need(size * 0.5); doc.text(ln, M_X, y); y += size * 0.48; });
+    const lines = doc.splitTextToSize(ascii(text), CW) as string[];
+    const lh = size * 0.48;
+    need(lines.length * lh + 3);
+    lines.forEach(ln => {
+      if (y + lh > PH - M_BOT) { newPage(); setFont(size, false, color); }
+      doc.text(ln, M_X, y);
+      y += lh;
+    });
     y += 3;
   };
 
@@ -283,10 +293,8 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     ]);
   }
 
-  if (sections.source) {
-    sectionHead(t.ds.headSource, true);
-    paragraph(t.ds.sourceText, 8);
-  }
+  // (SOURCE & VERIFICATION removed 2026-07-12 — the disclaimer below already
+  //  covers provenance; it was duplicate wording.)
 
   /* ── Technical explanations (footnotes, in the order they were used) ───── */
   if (noteOrder.length) {
@@ -301,6 +309,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     y += 4.5;
     noteOrder.forEach((key, i) => {
       const note = (t.ds.notes as Record<string, string>)[key] ?? '';
+      setFont(6.5, false, MUTED);
       const lines = doc.splitTextToSize(ascii(note), CW - 7) as string[];
       need(lines.length * 3.4 + 1.5);
       setFont(6.5, false, FAINT);

@@ -53,7 +53,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   const [dsMode, setDsMode] = useState<DsMode>('product');
   const [dsId, setDsId] = useState<string | null>(null);
   const [dsSections, setDsSections] = useState<Record<DsSectionKey, boolean>>({
-    identity: true, performance: true, env: true, bafa: true, source: true,
+    identity: true, performance: true, env: true, bafa: true,
   });
   const [segment, setSegment] = useState<HpSegment>('residential');
   const [bafaOnly, setBafaOnly] = useState(true);

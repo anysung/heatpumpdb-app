@@ -219,14 +219,8 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
               )}
 
-              {app.dsSections.source && (
-                <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
-                  <SectionHead title={t.ds.headSource} muted />
-                  <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.65, paddingTop: 10 }}>
-                    {t.ds.sourceText}
-                  </span>
-                </div>
-              )}
+              {/* (SOURCE & VERIFICATION removed 2026-07-12 — the legal disclaimer
+                  below already covers provenance; it was duplicate wording.) */}
 
               {/* ── Technical explanations — always printed ── */}
               <div style={{ borderTop: '1px solid #e0e0e0', marginTop: 24, paddingTop: 20, display: 'flex', gap: 28, alignItems: 'flex-start' }}>
@@ -274,8 +268,8 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
   }, [store, pickerQuery]);
 
   const sectionDefs: [DsSectionKey, string][] = isLabelMode
-    ? [['identity', t.ds.sections.identityL], ['performance', t.ds.sections.perfL], ['env', t.ds.sections.envL], ['source', t.ds.sections.source]]
-    : [['identity', t.ds.sections.identityP], ['performance', t.ds.sections.perfP], ['env', t.ds.sections.envP], ['bafa', t.ds.sections.bafa], ['source', t.ds.sections.source]];
+    ? [['identity', t.ds.sections.identityL], ['performance', t.ds.sections.perfL], ['env', t.ds.sections.envL]]
+    : [['identity', t.ds.sections.identityP], ['performance', t.ds.sections.perfP], ['env', t.ds.sections.envP], ['bafa', t.ds.sections.bafa]];
 
   // (Footnote numbering + the printable document now live in <DataSheetDoc>.)
   const segStyle = (on: boolean): React.CSSProperties => ({
@@ -346,9 +340,11 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
           </div>
           <div style={{ padding: '14px 20px 22px', display: 'flex', flexDirection: 'column', gap: 10, borderTop: '1px solid rgba(0,0,0,.08)' }}>
             <span style={sectionLabel}>{t.ds.step3}</span>
+            {/* Equal-width buttons: flex:1 so they size to the row, not to their
+                labels; border-box so the outlined one isn't 2px wider. */}
             <div style={{ display: 'flex', gap: 9 }}>
-              <span className="hp-press" onClick={app.printSheet} style={pillPrimary}>{t.ds.printBtn}</span>
-              <span className="hp-press" onClick={app.downloadSheetPdf} style={pillSecondary}>{t.ds.pdfBtn}</span>
+              <span className="hp-press" onClick={app.printSheet} style={{ ...pillPrimary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box', border: '1px solid transparent' }}>{t.ds.printBtn}</span>
+              <span className="hp-press" onClick={app.downloadSheetPdf} style={{ ...pillSecondary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box' }}>{t.ds.pdfBtn}</span>
             </div>
             <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.ds.exportNote}</span>
           </div>
