@@ -12,7 +12,6 @@ import { tr } from './i18n';
 import { UI_LANGUAGES } from './market';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
-import { isIos } from './pwaInstall';
 import { useViewport } from './useViewport';
 import { MobileApp } from './mobile/MobileApp';
 import { FindPage } from './pages/FindPage';
@@ -126,21 +125,24 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   };
 
   const printSheet = () => {
-    document.body.classList.add('hpiq-printing');
-    if (isIos()) {
-      // iPad/iOS Safari ONLY: window.print() returns immediately (non-blocking),
-      // so removing the class synchronously strips the print layout before the
-      // PDF is snapshotted (blank output). Defer cleanup to afterprint.
-      const cleanup = () => document.body.classList.remove('hpiq-printing');
-      window.addEventListener('afterprint', cleanup, { once: true });
-      setTimeout(cleanup, 60_000);
-      window.print();
-    } else {
-      // Desktop (original, proven flow): print() blocks until the preview
-      // closes, so the class is safely removed right after it returns.
-      window.print();
+    // Two rules, both load-bearing on ALL platforms:
+    //  1. window.print() MUST run synchronously inside this click handler.
+    //     Calling it later (rAF/timeout/await) puts it outside the user
+    //     gesture, so Chrome flags the site as an "automatic printer" and
+    //     shows "blocked from automatically printing" (and remembers it).
+    //  2. The .hpiq-printing layout class must stay applied until the dialog
+    //     closes. Modern Chrome (desktop AND mobile) renders the print PREVIEW
+    //     asynchronously, so removing the class synchronously right after
+    //     print() strips the layout before the preview snapshots → blank
+    //     preview. afterprint fires on close; the timeout is a safety net.
+    const cleanup = () => {
       document.body.classList.remove('hpiq-printing');
-    }
+      window.removeEventListener('afterprint', cleanup);
+    };
+    document.body.classList.add('hpiq-printing');
+    window.addEventListener('afterprint', cleanup);
+    setTimeout(cleanup, 120_000);
+    window.print();
   };
 
   const app: HpApp = {
