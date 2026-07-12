@@ -49,9 +49,17 @@
   either without owner sign-off.
 - hpiq global nav is **60px** tall; pages size themselves with `calc(100vh - 60px)` —
   keep in sync if the header changes.
-- Printing: hpiq data sheet uses `body.hpiq-printing` + `.hpiq-print-doc` visibility
-  rules in `src/hpiq/hpiq.css`. The legacy print block in `src/index.css` is scoped to
-  `body:not(.hpiq-printing)` — do not unscope it (it blanks hpiq print/PDF output).
+- **Print / PDF: we GENERATE a real PDF — never print the DOM.** Both the Print and
+  PDF buttons go through `src/hpiq/pdf/dataSheetPdf.ts` (jsPDF: exact A4, own
+  margins/pagination/watermark) + `deliverPdf.ts` (mobile → OS share sheet, which is
+  the only way to get a PDF on iOS; desktop → PDF opens with its print dialog, or
+  downloads). DOM printing was tried every way and CANNOT work cross-device: WebKit
+  (iOS Safari, iPhone *and* iPad) lays print out against the meta-viewport width, not
+  the paper, and ignores `@page { margin }` → clipped, edge-to-edge sheets; a web page
+  cannot force the print dialog's margins/scale and iOS has no margin controls. Do not
+  reintroduce `window.print()` on the document.
+  jsPDF's standard font is WinAnsi — keep `ascii()` in dataSheetPdf.ts (folds `η`→
+  `eta-s` and U+2212 `−`→`-`, etc.), or DE/FR sheets get mojibake.
 
 ## 2. Data Pipeline (BAFA → app)
 
