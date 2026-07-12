@@ -125,17 +125,19 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   };
 
   const printSheet = () => {
-    // iPad/iOS Safari returns from window.print() IMMEDIATELY (non-blocking),
-    // so removing the class synchronously strips the print layout before the
-    // snapshot is taken (blank/screen-layout PDFs on tablets). Keep the class
-    // until afterprint fires; double-rAF ensures the print layout is painted
-    // before the dialog snapshots the page. Desktop Chrome blocks inside
-    // print(), so the same path works there too.
+    // print() MUST be called synchronously in the click handler — deferring it
+    // (e.g. inside rAF/timeout) drops it out of the user-gesture stack and the
+    // desktop print preview never opens. The only tablet-specific tweak needed
+    // is to NOT remove the .hpiq-printing class synchronously: iPad/iOS Safari
+    // returns from print() immediately (non-blocking), so a synchronous removal
+    // strips the print layout before the PDF is snapshotted. Defer the cleanup
+    // to afterprint instead (desktop Chrome blocks inside print(), then fires
+    // afterprint on close — same code path, correct on both).
     const cleanup = () => document.body.classList.remove('hpiq-printing');
     document.body.classList.add('hpiq-printing');
     window.addEventListener('afterprint', cleanup, { once: true });
     setTimeout(cleanup, 60_000);  // safety net if afterprint never fires
-    requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
+    window.print();
   };
 
   const app: HpApp = {
