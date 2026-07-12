@@ -12,7 +12,8 @@ import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
 import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
-import { deliverPdf, PdfIntent } from './pdf/deliverPdf';
+import { downloadPdf, printPdfViaShareSheet } from './pdf/deliverPdf';
+import { isIos } from './pwaInstall';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
 import { useViewport } from './useViewport';
@@ -128,35 +129,46 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     });
   };
 
-  /**
-   * Print / PDF — both go through a PDF we generate ourselves.
-   *
-   * We deliberately do NOT print the DOM any more. Browser print engines
-   * disagree on the two things that decide whether a sheet is usable: WebKit
-   * (iOS Safari — iPhone AND iPad) lays print out against the meta-viewport
-   * width rather than the paper, and ignores `@page { margin }`, so the sheet
-   * came out edge-to-edge and clipped. A web page cannot force the print
-   * dialog's margins or scale, and iOS exposes no margin controls at all, so
-   * DOM printing can never be made device-proof. Owning the PDF geometry can.
-   *
-   * Delivery: mobile → OS share sheet (Print / Save to Files — the only way to
-   * get a PDF on iOS); desktop → the PDF opens with its print dialog already
-   * up (print) or downloads (pdf).
-   */
-  const exportSheet = (intent: PdfIntent) => {
+  /** The generated A4 PDF for the currently selected model (null if no data). */
+  const makePdf = () => {
     const v = (dsId && store ? store.byId.get(dsId) : null) ?? store?.all[0] ?? null;
-    if (!v) return;
-    const doc = buildDataSheetPdf({
-      v, t,
-      sections: dsSections,
-      isLabelMode: dsMode === 'label',
-      sourceAbbr: SOURCE_ID_ABBR,
-      isGb: IS_GB,
-    });
-    deliverPdf(doc, pdfFileName(v), intent).catch(() => notify(t.ds.pdfFailed));
+    if (!v) return null;
+    return {
+      doc: buildDataSheetPdf({
+        v, t,
+        sections: dsSections,
+        isLabelMode: dsMode === 'label',
+        sourceAbbr: SOURCE_ID_ABBR,
+        isGb: IS_GB,
+      }),
+      filename: pdfFileName(v),
+    };
   };
-  const printSheet = () => exportSheet('print');
-  const downloadSheetPdf = () => exportSheet('download');
+
+  /**
+   * PRINT.
+   * Chrome (desktop + Android) and macOS Safari print the DOM correctly and give
+   * a real print dialog — keep that, it is what users expect and it works.
+   * ONLY iOS (iPhone/iPad) is broken there (WebKit lays print out against the
+   * meta-viewport and ignores @page margins → clipped, edge-to-edge sheets, and
+   * a web page cannot override the print dialog). For iOS we hand our own,
+   * correctly-sized A4 PDF to the system share sheet, whose actions include
+   * "Print" — the only reliable way to reach a printer with the right geometry.
+   */
+  const printSheet = () => {
+    if (!isIos()) { window.print(); return; }
+    const made = makePdf();
+    if (!made) return;
+    printPdfViaShareSheet(made.doc, made.filename).catch(() => notify(t.ds.pdfFailed));
+  };
+
+  /** PDF DOWNLOAD: always just saves the generated file. Never a share sheet. */
+  const downloadSheetPdf = () => {
+    const made = makePdf();
+    if (!made) return;
+    try { downloadPdf(made.doc, made.filename); }
+    catch { notify(t.ds.pdfFailed); }
+  };
 
   const app: HpApp = {
     store, allStore, user,
