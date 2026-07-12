@@ -13,6 +13,7 @@ import { tr } from './i18n';
 import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
+import { preloadBrandArtwork } from './pdf/brandArtwork';
 import { downloadPdf, printPdfViaShareSheet } from './pdf/deliverPdf';
 import { isIos } from './pwaInstall';
 import { FD, SignOutIcon } from './ui';
@@ -106,6 +107,11 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     setMfrFilter([]);
   };
 
+  // The PDF header draws the app's own logo + flag SVGs; rasterize them up front
+  // so buildDataSheetPdf() can stay synchronous (iOS needs navigator.share to be
+  // reached inside the click gesture — an await in between loses it).
+  useEffect(() => { void preloadBrandArtwork(ACTIVE_COUNTRY.code); }, []);
+
   // Default selections once data arrives (inspector patterns are always-on).
   useEffect(() => {
     if (!store) return;
@@ -141,7 +147,6 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
         isLabelMode: dsMode === 'label',
         sourceAbbr: SOURCE_ID_ABBR,
         isGb: IS_GB,
-        country: ACTIVE_COUNTRY.code,
       }),
       filename: pdfFileName(v),
     };

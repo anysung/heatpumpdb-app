@@ -21,6 +21,8 @@ import { jsPDF } from 'jspdf';
 import { HpVM } from '../model';
 import { HpStrings } from '../i18n';
 import { DsSectionKey } from '../appState';
+import { FLAG_ASPECT, LOGO_ASPECT } from '../../components/brandSvg';
+import { getBrandArtwork } from './brandArtwork';
 
 /* ── Page geometry (mm) ──────────────────────────────────────────────────── */
 const PW = 210;          // A4 width
@@ -68,130 +70,6 @@ const ascii = (s: string): string =>
     .filter(ch => ch.codePointAt(0) <= 0xFF || WINANSI_EXTRA.includes(ch))
     .join('');
 
-/* ── Brand artwork, redrawn as PDF vectors ───────────────────────────────────
-   The app's logo and flag are SVGs (src/components/BrandLogo.tsx). Rasterising
-   them would blur in print, so they are reproduced here with PDF vector
-   primitives — same geometry, same brand colours, crisp at any zoom. ───────── */
-
-const LOGO_RED: [number, number, number] = [224, 69, 44];    // #e0452c (light theme)
-const LOGO_BLUE: [number, number, number] = [0, 102, 204];   // #0066cc
-
-/** Polyline arc of `r` around (cx,cy), from a0 to a1 degrees (y-down, as in the SVG). */
-function arc(
-  doc: jsPDF, cx: number, cy: number, r: number,
-  a0: number, a1: number, color: [number, number, number], lw: number,
-): void {
-  const steps = 40;
-  doc.setDrawColor(color[0], color[1], color[2]);
-  doc.setLineWidth(lw);
-  doc.setLineCap('round');
-  doc.setLineJoin('round');
-  let px = cx + r * Math.cos((a0 * Math.PI) / 180);
-  let py = cy + r * Math.sin((a0 * Math.PI) / 180);
-  for (let i = 1; i <= steps; i++) {
-    const a = a0 + ((a1 - a0) * i) / steps;
-    const nx = cx + r * Math.cos((a * Math.PI) / 180);
-    const ny = cy + r * Math.sin((a * Math.PI) / 180);
-    doc.line(px, py, nx, ny);
-    px = nx; py = ny;
-  }
-}
-
-/**
- * The circular HeatPump DB mark (BrandLogo symbol, viewBox 0 0 64 64):
- * a red top arc and a blue bottom arc with the two chevrons, and the white hub.
- * `size` is the drawn box in mm; (ox,oy) is its top-left corner.
- */
-function drawLogoMark(doc: jsPDF, ox: number, oy: number, size: number): void {
-  const s = size / 64;                       // SVG unit -> mm
-  const X = (u: number) => ox + u * s;
-  const Y = (u: number) => oy + u * s;
-  const lw = 5.5 * s;
-
-  // Rotating ring: red over the top (theta 180 -> 360), blue under (0 -> 180).
-  arc(doc, X(32), Y(32), 22 * s, 180, 360, LOGO_RED, lw);
-  arc(doc, X(32), Y(32), 22 * s, 0, 180, LOGO_BLUE, lw);
-
-  // Arrow heads that make the ring read as a cycle.
-  doc.setLineCap('round');
-  doc.setLineJoin('round');
-  doc.setLineWidth(lw);
-  doc.setDrawColor(LOGO_RED[0], LOGO_RED[1], LOGO_RED[2]);
-  doc.line(X(49), Y(31), X(54), Y(38));
-  doc.line(X(54), Y(38), X(59), Y(31));
-  doc.setDrawColor(LOGO_BLUE[0], LOGO_BLUE[1], LOGO_BLUE[2]);
-  doc.line(X(5), Y(33), X(10), Y(26));
-  doc.line(X(10), Y(26), X(15), Y(33));
-
-  // White hub punched through the middle.
-  doc.setFillColor(255, 255, 255);
-  doc.circle(X(32), Y(32), 6.5 * s, 'F');
-
-  doc.setLineCap('butt');
-  doc.setLineJoin('miter');
-}
-
-/**
- * Clip everything drawn by `paint` to the rect. jsPDF has no public clip API, so
- * we emit the PDF operators directly: `re W n` = build the rect path, intersect
- * the clip with it, paint nothing. PDF space is y-up, hence the flip.
- * (`internal.out` exists at runtime but isn't in jsPDF's typings.)
- */
-function clipped(doc: jsPDF, x: number, y: number, w: number, h: number, paint: () => void): void {
-  const internal = doc.internal as unknown as { scaleFactor: number; out: (s: string) => void };
-  const k = internal.scaleFactor;
-  const pageH = doc.internal.pageSize.getHeight();
-  doc.saveGraphicsState();
-  internal.out(
-    `${(x * k).toFixed(2)} ${((pageH - y - h) * k).toFixed(2)} ${(w * k).toFixed(2)} ${(h * k).toFixed(2)} re W n`,
-  );
-  paint();
-  doc.restoreGraphicsState();
-}
-
-/** Market flag (flat face + hairline), `h` mm tall, at (x,y). Aspect 96:66. */
-function drawFlag(doc: jsPDF, x: number, y: number, h: number, country: string): void {
-  const w = h * (96 / 66);
-  if (country === 'DE') {
-    const band = h / 3;
-    doc.setFillColor(26, 26, 26);   doc.rect(x, y, w, band, 'F');
-    doc.setFillColor(221, 0, 0);    doc.rect(x, y + band, w, band, 'F');
-    doc.setFillColor(255, 204, 0);  doc.rect(x, y + 2 * band, w, band, 'F');
-  } else if (country === 'FR') {
-    const band = w / 3;
-    doc.setFillColor(0, 0, 145);    doc.rect(x, y, band, h, 'F');
-    doc.setFillColor(255, 255, 255); doc.rect(x + band, y, band, h, 'F');
-    doc.setFillColor(225, 0, 15);   doc.rect(x + 2 * band, y, band, h, 'F');
-  } else if (country === 'GB') {
-    const u = h / 66;   // SVG unit -> mm
-    doc.setFillColor(1, 33, 105);
-    doc.rect(x, y, w, h, 'F');
-    clipped(doc, x, y, w, h, () => {
-      doc.setLineCap('butt');
-      // white saltire, then the red saltire on top
-      doc.setDrawColor(255, 255, 255); doc.setLineWidth(13 * u);
-      doc.line(x, y, x + w, y + h);
-      doc.line(x + w, y, x, y + h);
-      doc.setDrawColor(200, 16, 46); doc.setLineWidth(5 * u);
-      doc.line(x, y, x + w, y + h);
-      doc.line(x + w, y, x, y + h);
-      // white cross, then the red cross on top
-      doc.setDrawColor(255, 255, 255); doc.setLineWidth(20 * u);
-      doc.line(x + w / 2, y, x + w / 2, y + h);
-      doc.line(x, y + h / 2, x + w, y + h / 2);
-      doc.setDrawColor(200, 16, 46); doc.setLineWidth(11 * u);
-      doc.line(x + w / 2, y, x + w / 2, y + h);
-      doc.line(x, y + h / 2, x + w, y + h / 2);
-    });
-  } else {
-    doc.setFillColor(122, 122, 122);
-    doc.rect(x, y, w, h, 'F');
-  }
-  doc.setDrawColor(0, 0, 0);
-  doc.setLineWidth(0.2);
-  doc.rect(x, y, w, h, 'S');
-}
-
 export interface DataSheetPdfInput {
   v: HpVM;
   t: HpStrings;
@@ -200,11 +78,9 @@ export interface DataSheetPdfInput {
   /** Registry abbreviation for this market (BAFA / MCS). */
   sourceAbbr: string;
   isGb: boolean;
-  /** ISO country code of the active market — selects the flag. */
-  country: string;
 }
 
-export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb, country }: DataSheetPdfInput): jsPDF {
+export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb }: DataSheetPdfInput): jsPDF {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   let y = M_TOP;
 
@@ -251,30 +127,32 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
 
   watermark();
 
-  /* ── Header: circular mark + enlarged wordmark + market flag ───────────── */
-  const MARK = 11;                      // logo mark box (mm)
-  const FLAG_H = 7.4;                   // flag height (mm)
-  const baseline = y + MARK * 0.72;     // wordmark sits optically centred on the mark
+  /* ── Header: the real brand lockup + the real waving flag ────────────────
+     Both are the app's own SVG artwork (src/components/brandSvg.ts), rasterized
+     at print resolution by brandArtwork.ts — NOT redrawn here. Redrawing them is
+     what once put a different circle and a square flag on the sheet. ───────── */
+  const LOGO_H = 10;                          // lockup height (mm)
+  const LOGO_W = LOGO_H * LOGO_ASPECT;        // 348:64
+  const FLAG_H = 8.4;
+  const FLAG_W = FLAG_H * FLAG_ASPECT;        // 96:66
+  const art = getBrandArtwork();
 
-  drawLogoMark(doc, M_X, y, MARK);
-
-  setFont(18, true, INK);
-  const textX = M_X + MARK + 3.5;
-  doc.text('HeatPump', textX, baseline);
-  const wHp = doc.getTextWidth('HeatPump ');
-  setFont(18, true, BLUE);
-  doc.text('DB', textX + wHp, baseline);
-  const wDb = doc.getTextWidth('DB');
-
-  drawFlag(doc, textX + wHp + wDb + 3.5, y + (MARK - FLAG_H) / 2, FLAG_H, country);
+  if (art) {
+    doc.addImage(art.logo.dataUrl, 'PNG', M_X, y, LOGO_W, LOGO_H, undefined, 'MEDIUM');
+    doc.addImage(art.flag.dataUrl, 'PNG', M_X + LOGO_W + 4, y + (LOGO_H - FLAG_H) / 2, FLAG_W, FLAG_H, undefined, 'MEDIUM');
+  } else {
+    // Preload not finished (a click within the first frames) — keep the sheet usable.
+    setFont(18, true, INK);
+    doc.text('HeatPump', M_X, y + LOGO_H * 0.75);
+    setFont(18, true, BLUE);
+    doc.text('DB', M_X + doc.getTextWidth('HeatPump '), y + LOGO_H * 0.75);
+  }
 
   setFont(8, false, MUTED);
-  doc.text(ascii(isLabelMode ? t.ds.docKindLabel : t.ds.docKindProduct), M_X, y + MARK + 4);
-
-  setFont(8, false, MUTED);
+  doc.text(ascii(isLabelMode ? t.ds.docKindLabel : t.ds.docKindProduct), M_X, y + LOGO_H + 4);
   doc.text(ascii(`${t.ds.generated} ${new Date().toLocaleDateString(t.locale, { day: 'numeric', month: 'long', year: 'numeric' })}`), PW - M_X, y + 4, { align: 'right' });
   doc.text(ascii(`${isLabelMode ? t.ds.bafaRef : sourceAbbr} ${v.sourceId}${v.eprel ? ` · ${v.eprelId}` : ''}`), PW - M_X, y + 8.5, { align: 'right' });
-  y += MARK + 8;
+  y += LOGO_H + 8;
 
   /* ── Title card (dark) ────────────────────────────────────────────────── */
   setFont(15, true, [255, 255, 255]);   // measure at the size it is drawn in
