@@ -4,6 +4,12 @@
 > Never introduce the old "HeatpumpIQ" name in UI text. Logo: use `BrandLogo` /
 > `WavingFlag` from `src/components/BrandLogo.tsx` (brand assets in `brand-assets/`,
 > colors documented in `brand-assets/README.md`).
+> **The artwork has ONE source: `src/components/brandSvg.ts`.** The React
+> components and the PDF data sheet (`hpiq/pdf/brandArtwork.ts` rasterizes the
+> same SVGs at print resolution) both read from it. NEVER redraw the mark or the
+> flag by hand for a new surface — that is exactly how the PDF ended up with a
+> different circle and a square flag (Jul 2026). The flag is a **waving cloth**,
+> never a rectangle. Documents render it with `animated={false}`.
 
 > **UI (Jul 2026):** The user-facing app is the **hpiq** design (`src/hpiq/`, spec in
 > `design_handoff_heatpumpiq/README.md` — authoritative UI spec). The legacy components
