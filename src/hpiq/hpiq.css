@@ -32,21 +32,25 @@
 .hp-row { content-visibility: auto; contain-intrinsic-size: auto 55px; }
 
 /* Print: only the data sheet document */
+/* ── Printing (data sheet) ─────────────────────────────────────────────────
+   The printable document is rendered by React into #hpiq-print-mount — a
+   direct child of <body>, OUTSIDE #root (see HpiqApp `printPortal`). On screen
+   it is hidden; when printing we hide the whole app (#root) and show the mount.
+   This clean display toggle — no visibility/height/overflow tricks, no
+   absolute positioning, no iframe — prints identically in Chrome/Android and
+   Safari/WebKit (Mac + iOS), so window.print() is all the JS needed. */
+#hpiq-print-mount { display: none; }
+
 @media print {
-  /* height:0 collapses the hidden app layout — visibility alone keeps its
-     height and appends blank trailing pages to every print/PDF. The print
-     doc itself is position:absolute against the page, so it is unaffected. */
-  body.hpiq-printing #root { visibility: hidden; height: 0 !important; overflow: hidden !important; }
-  body.hpiq-printing .hpiq-print-doc,
-  body.hpiq-printing .hpiq-print-doc * { visibility: visible; }
-  body.hpiq-printing .hpiq-print-doc {
-    position: absolute !important;
-    top: 0; left: 0;
+  #root { display: none !important; }
+  #hpiq-print-mount { display: block !important; }
+  #hpiq-print-mount .hpiq-print-doc {
     width: 100% !important;
     max-width: 100% !important;
     border: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
+    box-sizing: border-box !important;
   }
   @page { size: A4; margin: 15mm 12mm; }
 }
@@ -66,11 +70,10 @@
 .hpiq-print-watermark { display: none; }
 
 @media print {
-  body.hpiq-printing .hpiq-watermark { display: none; }
-  body.hpiq-printing .hpiq-print-watermark,
-  body.hpiq-printing .hpiq-print-watermark * { visibility: visible; }
-  body.hpiq-printing .hpiq-print-watermark {
-    display: flex;
+  /* Inside the print mount only: hide the screen watermark, show the per-page one. */
+  #hpiq-print-mount .hpiq-watermark { display: none !important; }
+  #hpiq-print-mount .hpiq-print-watermark {
+    display: flex !important;
     position: fixed;
     inset: 0;
     align-items: center;
@@ -114,10 +117,3 @@
 }
 .hp-sheet-in { animation: hp-sheet-in .22s ease-out; }
 
-/* Phone data-sheet preview scales the printable doc to fit the screen. That
-   transform must NOT apply in print — a transformed ancestor becomes the
-   containing block for the position:absolute .hpiq-print-doc and would shrink
-   / mis-place the printed page. Reset it for print. */
-@media print {
-  .hpiq-ds-scale { transform: none !important; }
-}

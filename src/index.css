@@ -127,23 +127,6 @@
   }
 }
 
-/* ── Print Styles for Data Sheet (legacy modal) ───────────── */
-/* Scoped to body:not(.hpiq-printing): the HeatPump DB data sheet uses the
-   visibility-based print rules in hpiq.css, which display:none here would
-   override and produce blank print/PDF output. */
-@media print {
-  /* Hide all app chrome */
-  body:not(.hpiq-printing) > #root > * { display: none !important; }
-  /* Show only the data sheet modal */
-  body:not(.hpiq-printing) .fixed.z-50 { display: flex !important; position: static !important; }
-  .print\:hidden { display: none !important; }
-  .datasheet-template {
-    font-size: 11pt;
-    line-height: 1.4;
-    color: #000;
-  }
-  @page {
-    size: A4;
-    margin: 15mm 12mm;
-  }
-}
+/* (The legacy print block for the removed HeatPumpApp modal was deleted
+   2026-07-12. Data-sheet printing now lives entirely in hpiq.css via the
+   #hpiq-print-mount portal + a clean #root display toggle.) */

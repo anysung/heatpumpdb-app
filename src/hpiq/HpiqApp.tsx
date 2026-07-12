@@ -3,13 +3,13 @@
  * Implements the approved design in design_handoff_heatpumpiq/ pixel-faithfully.
  */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import './hpiq.css';
 import { HeatPumpDatabase, Language, User } from '../types';
 import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
-import { printDataSheet } from './printDoc';
 import { UI_LANGUAGES } from './market';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
@@ -18,7 +18,7 @@ import { MobileApp } from './mobile/MobileApp';
 import { FindPage } from './pages/FindPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { LabelPage } from './pages/LabelPage';
-import { DataSheetPage } from './pages/DataSheetPage';
+import { DataSheetPage, DataSheetDoc } from './pages/DataSheetPage';
 import { BafaPage } from './pages/BafaPage';
 import { GuidePage } from './pages/GuidePage';
 import { NewsPage } from './pages/NewsPage';
@@ -125,11 +125,12 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     });
   };
 
-  // Print/PDF via an isolated iframe containing only the data sheet — reliable
-  // in Chrome/Android AND Safari/WebKit (Mac + iOS), where the old whole-page
-  // hide-#root approach produced blank previews. Must stay a direct, synchronous
-  // call from the click gesture (printDataSheet handles the rest). See printDoc.ts.
-  const printSheet = () => printDataSheet();
+  // Print/PDF: dead-simple, synchronous window.print(). The printable data
+  // sheet is portaled OUTSIDE #root (see printPortal below); `@media print`
+  // hides #root and shows only that document. No iframe, no class toggling, no
+  // visibility hacks — works identically in Chrome/Android and Safari/WebKit
+  // (Mac + iOS), and `page.pdf()` faithfully reproduces the output for testing.
+  const printSheet = () => window.print();
 
   const app: HpApp = {
     store, allStore, user,
@@ -171,12 +172,22 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     ((user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')) || user.email?.[0] || 'U'
   ).toUpperCase();
 
+  // The one printable document, mounted at <body> level (outside #root) so that
+  // `@media print { #root { display:none } }` can't clip or blank it. It is
+  // display:none on screen and shown only during printing. Rendered for both
+  // the phone and desktop shells.
+  const printPortal = createPortal(
+    <div id="hpiq-print-mount"><DataSheetDoc app={app} /></div>,
+    document.body,
+  );
+
   // Phones get the curated mobile shell. Tablets get the FULL desktop UI
   // (owner decision 2026-07-12 — no curated subset on tablets); the <1100px
   // nav/typography tolerances live in hpiq.css (@media max-width:1099px).
   if (viewport === 'phone') {
     return (
       <>
+        {printPortal}
         <MobileApp app={app} viewport={viewport} />
         {notice && (
           <div style={{ position: 'fixed', bottom: 84, left: '50%', transform: 'translateX(-50%)', zIndex: 100, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '11px 22px', fontSize: 13.5, boxShadow: '0 8px 24px rgba(0,0,0,.22)', maxWidth: '86vw' }}>
@@ -189,6 +200,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
 
   return (
     <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
+      {printPortal}
 
       {/* ============ Global nav ============ */}
       <div className="hp-gnav" style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 28, padding: '0 28px', height: 60, position: 'sticky', top: 0, zIndex: 50, flex: 'none' }}>
