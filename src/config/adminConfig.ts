@@ -1,6 +1,7 @@
 /**
- * Admin Configuration — centralized plan definitions, entitlement rules,
- * quota policies, and admin constants.
+ * Admin Configuration — centralized plan definitions, entitlement rules
+ * and admin constants. (Print quotas were removed 2026-07-12 — data-sheet
+ * printing is unlimited for all members.)
  *
  * All plan/entitlement business logic lives here.
  * UI and services import from this single source of truth.
@@ -13,7 +14,6 @@ export type PlanCode = 'standard' | 'premium';
 export interface PlanDefinition {
   code: PlanCode;
   displayName: string;
-  dataSheetMonthlyLimit: number;
   industryInsightAccess: boolean;
   active: boolean;
   sortOrder: number;
@@ -23,7 +23,6 @@ export const PLANS: Record<PlanCode, PlanDefinition> = {
   standard: {
     code: 'standard',
     displayName: 'Standard',
-    dataSheetMonthlyLimit: 20,
     industryInsightAccess: false,
     active: true,
     sortOrder: 1,
@@ -31,17 +30,11 @@ export const PLANS: Record<PlanCode, PlanDefinition> = {
   premium: {
     code: 'premium',
     displayName: 'Premium',
-    dataSheetMonthlyLimit: 100,
     industryInsightAccess: true,
     active: true,
     sortOrder: 2,
   },
 };
-
-/** Get the base monthly quota for a plan */
-export function getBaseQuotaForPlan(plan: PlanCode): number {
-  return PLANS[plan]?.dataSheetMonthlyLimit ?? PLANS.standard.dataSheetMonthlyLimit;
-}
 
 /** Check if a plan grants Industry Insight access */
 export function hasIndustryInsightAccess(plan: PlanCode): boolean {
@@ -143,7 +136,6 @@ export type AdminPage =
   | 'billing'
   | 'inbox'
   | 'members'
-  | 'usage'
   | 'data'
   | 'audit';
 
@@ -151,7 +143,7 @@ export interface AdminMenuItem {
   key: AdminPage;
   icon: string;
   /** adminI18n key for the label. */
-  labelKey: 'menuOverview' | 'menuBilling' | 'menuInbox' | 'menuMembers' | 'menuUsage' | 'menuData' | 'menuAudit';
+  labelKey: 'menuOverview' | 'menuBilling' | 'menuInbox' | 'menuMembers' | 'menuData' | 'menuAudit';
   /** Show notification badge count (e.g. pending approvals) */
   getBadge?: (ctx: { pendingUsers: number; deletionRequests: number; openTickets: number; billingAlerts: number }) => number;
 }
@@ -165,7 +157,6 @@ export const ADMIN_MENU: AdminMenuItem[] = [
     getBadge: ctx => ctx.openTickets },
   { key: 'members',    icon: '👥', labelKey: 'menuMembers',
     getBadge: ctx => ctx.pendingUsers + ctx.deletionRequests },
-  { key: 'usage',      icon: '📈', labelKey: 'menuUsage' },
   { key: 'data',       icon: '🗄️', labelKey: 'menuData' },
   { key: 'audit',      icon: '📋', labelKey: 'menuAudit' },
 ];

@@ -5,7 +5,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './hpiq.css';
 import { HeatPumpDatabase, Language, User } from '../types';
-import { getQuotaStatus, consumePrintQuota } from '../services/quotaService';
 import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
@@ -59,7 +58,6 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   const [guideTab, setGuideTab] = useState<'home' | 'pro'>('home');
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [faqOpen, setFaqOpen] = useState(0);
-  const [quota, setQuota] = useState({ used: 0, limit: 20 });
   const [notice, setNotice] = useState<string | null>(null);
   const noticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -110,14 +108,6 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     setDsId(prev => prev ?? store.all[0]?.id ?? null);
   }, [store]);
 
-  useEffect(() => {
-    let alive = true;
-    getQuotaStatus(user.id)
-      .then(q => { if (alive) setQuota({ used: q.used, limit: q.limit }); })
-      .catch(() => {});
-    return () => { alive = false; };
-  }, [user.id]);
-
   const dataStatusDate = shortDate(dbData?.generatedAt ?? new Date().toISOString(), t.locale);
   // Derived from the data files themselves (bafa_snapshot_fetched_at /
   // source_snapshot_generated_at) — they move automatically with each
@@ -135,11 +125,6 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   };
 
   const printSheet = () => {
-    consumePrintQuota(user.id)
-      .then(ok => {
-        if (ok) setQuota(q => ({ ...q, used: q.used + 1 }));
-      })
-      .catch(() => {});
     document.body.classList.add('hpiq-printing');
     window.print();
     document.body.classList.remove('hpiq-printing');
@@ -149,7 +134,6 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     store, allStore, user,
     news: dbData?.newsFeed ?? [],
     dataStatusDate, bafaSnapshotDate, eprelSyncDate, totalListed,
-    quota,
     page, go: setPage,
     query, setQuery,
     compare, toggleCompare,

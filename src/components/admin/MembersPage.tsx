@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { getUsers, approveUser, rejectUser, suspendUser, reactivateUser, disableUser, deleteUser } from '../../services/authService';
-import { grantBonusQuota, requestDeletion, updateAdminNotes, getEffectiveEntitlements } from '../../services/adminService';
+import { requestDeletion, updateAdminNotes } from '../../services/adminService';
 import { adminAssignSubscription, adminClearSubscription } from '../../services/subscriptionService';
-import { getAdminQuotaInfo } from '../../services/quotaService';
 import { User } from '../../types';
 import {
   SubPlanCode, BillingTerm, SUB_PLAN_CODES, BILLING_TERMS, SUB_PLAN_NAMES, TERM_NAMES, SUB_PLANS,
@@ -31,8 +30,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
   const [planFilter, setPlanFilter] = useState('all');
   const [companyTypeFilter, setCompanyTypeFilter] = useState('all');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [detailTab, setDetailTab] = useState<'profile' | 'subscription' | 'usage' | 'notes'>('profile');
-  const [quotaInfo, setQuotaInfo] = useState<any>(null);
+  const [detailTab, setDetailTab] = useState<'profile' | 'subscription' | 'notes'>('profile');
   const [adminNotes, setAdminNotes] = useState('');
   const [notesSaved, setNotesSaved] = useState(false);
 
@@ -66,33 +64,25 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
 
   const pendingCount = users.filter(u => u.status === 'pending').length;
 
-  const openDetail = async (user: User) => {
+  const openDetail = (user: User) => {
     setSelectedUser(user);
     setDetailTab('profile');
     setAdminNotes(user.adminNotes || '');
     setNotesSaved(false);
-    try {
-      const qi = await getAdminQuotaInfo(user.id);
-      setQuotaInfo(qi);
-    } catch { setQuotaInfo(null); }
   };
 
   const handleExport = () => {
-    const rows = users.map(u => {
-      const ent = getEffectiveEntitlements(u);
-      return {
-        'First Name': u.firstName, 'Last Name': u.lastName,
-        'Email': u.email, 'Country': u.country || 'DE',
-        'Company Type': u.companyType, 'Job Role': u.jobRole,
-        'Company': u.companyName || '', 'City': u.companyCity || '',
-        'Subscription': u.subscription ? `${SUB_PLAN_NAMES[u.subscription.planCode]} (${u.subscription.status})` : '-',
-        'Term': u.subscription?.billingTerm ? TERM_NAMES[u.subscription.billingTerm] : '-',
-        'Period End': u.subscription?.currentPeriodEndsAt?.slice(0, 10) || '-',
-        'Quota': `${ent.effectiveQuota}`,
-        'Status': u.status || (u.isActive ? 'active' : 'disabled'),
-        'Registered': u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : '',
-      };
-    });
+    const rows = users.map(u => ({
+      'First Name': u.firstName, 'Last Name': u.lastName,
+      'Email': u.email, 'Country': u.country || 'DE',
+      'Company Type': u.companyType, 'Job Role': u.jobRole,
+      'Company': u.companyName || '', 'City': u.companyCity || '',
+      'Subscription': u.subscription ? `${SUB_PLAN_NAMES[u.subscription.planCode]} (${u.subscription.status})` : '-',
+      'Term': u.subscription?.billingTerm ? TERM_NAMES[u.subscription.billingTerm] : '-',
+      'Period End': u.subscription?.currentPeriodEndsAt?.slice(0, 10) || '-',
+      'Status': u.status || (u.isActive ? 'active' : 'disabled'),
+      'Registered': u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : '',
+    }));
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Members');
@@ -252,7 +242,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
 
             {/* Detail Tabs */}
             <div className="flex border-b border-gray-100">
-              {(['profile', 'subscription', 'usage', 'notes'] as const).map(tab => (
+              {(['profile', 'subscription', 'notes'] as const).map(tab => (
                 <button key={tab} onClick={() => setDetailTab(tab)}
                   className={`flex-1 text-xs font-medium py-2.5 ${detailTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400 hover:text-gray-600'}`}>
                   {A.mbTabs[tab]}
@@ -306,36 +296,6 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
                     if (fresh) setSelectedUser(fresh);
                   }}
                 />
-              )}
-
-              {/* Usage Tab */}
-              {detailTab === 'usage' && quotaInfo && (
-                <div className="space-y-3 text-sm">
-                  <DetailRow label="Month" value={quotaInfo.month} />
-                  <DetailRow label="Base Limit" value={quotaInfo.defaultLimit} />
-                  <DetailRow label="Extra Quota" value={quotaInfo.extraQuota} />
-                  <DetailRow label="Total Limit" value={quotaInfo.totalLimit} />
-                  <DetailRow label="Used" value={quotaInfo.used} />
-                  <DetailRow label="Remaining" value={
-                    <span className={quotaInfo.remaining > 0 ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
-                      {quotaInfo.remaining}
-                    </span>
-                  } />
-
-                  {/* Quick quota grant */}
-                  <div className="pt-3 border-t border-gray-100 space-y-2">
-                    <div className="text-xs font-bold text-gray-500 uppercase">Grant Bonus Quota</div>
-                    <QuickQuotaGrant
-                      al={al}
-                      userId={selectedUser.id}
-                      currentExtra={quotaInfo.extraQuota}
-                      onSaved={async () => {
-                        const qi = await getAdminQuotaInfo(selectedUser.id);
-                        setQuotaInfo(qi);
-                      }}
-                    />
-                  </div>
-                </div>
               )}
 
               {/* Notes Tab */}
@@ -458,25 +418,3 @@ const DetailRow: React.FC<{ label: string; value: React.ReactNode }> = ({ label,
   </div>
 );
 
-const QuickQuotaGrant: React.FC<{ al: AdminLang; userId: string; currentExtra: number; onSaved: () => void }> = ({ al, userId, currentExtra, onSaved }) => {
-  const A = ADMIN_I18N[al];
-  const [val, setVal] = useState(String(currentExtra));
-  const [saved, setSaved] = useState(false);
-
-  return (
-    <div className="flex items-center gap-2">
-      <input type="number" min="0" value={val} onChange={e => { setVal(e.target.value); setSaved(false); }}
-        className="flex-grow px-3 py-1.5 border rounded-lg text-sm focus:ring-blue-500 outline-none" />
-      <button className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-lg"
-        onClick={async () => {
-          await grantBonusQuota(userId, Math.max(0, parseInt(val) || 0));
-          setSaved(true);
-          onSaved();
-          setTimeout(() => setSaved(false), 2000);
-        }}
-      >
-        {saved ? '✓' : A.cSave}
-      </button>
-    </div>
-  );
-};

@@ -247,7 +247,6 @@ export interface User {
   plan?: 'standard' | 'premium';
   /** 'paddle' is the web-billing channel (no app-store distribution). */
   billingChannel?: 'paddle' | 'direct' | 'admin_grant' | 'trial' | 'apple' | 'google';
-  extraPrintQuota?: number;
   industryInsightOverride?: boolean;
   // ── Paddle web billing (written server-side by the billing webhook) ────────
   paddleCustomerId?: string;

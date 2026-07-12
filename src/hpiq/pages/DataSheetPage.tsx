@@ -124,7 +124,6 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
           <span onClick={() => app.setDsMode('product')} style={segStyle(!isLabelMode)}>{t.ds.modeProduct}</span>
           <span onClick={() => app.setDsMode('label')} style={segStyle(isLabelMode)}>{t.ds.modeLabel}</span>
         </div>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: '#7a7a7a' }}>{t.ds.prints(app.quota.used, app.quota.limit)}</span>
       </div>
       <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
 

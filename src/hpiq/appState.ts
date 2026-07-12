@@ -26,7 +26,6 @@ export interface HpApp {
   /** Total BAFA-listed heat pumps in the app (residential + commercial). */
   totalListed: number;
 
-  quota: { used: number; limit: number };
 
   page: HpPage;
   go: (p: HpPage) => void;
@@ -80,7 +79,7 @@ export interface HpApp {
   setLang: (l: Language) => void;
 
   onLogout: () => void;
-  /** Consumes one print quota unit then opens the browser print dialog. */
+  /** Opens the browser print dialog for the current data sheet (unlimited). */
   printSheet: () => void;
   /** Show a transient toast message (bottom center, ~2.5s). */
   notify: (msg: string) => void;

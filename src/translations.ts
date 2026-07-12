@@ -143,23 +143,9 @@ const EN_T = {
     dataSheetSelected: "Selected for Data Sheet",
     dataSheetPreview: "Preview",
     dataSheetSelectPrompt: "Select a model from the list below to generate a data sheet.",
-    dataSheetQuotaExhausted: "Monthly print limit reached. Contact administrator for additional quota.",
     dataSheetPrint: "Print",
     dataSheetClose: "Close",
     dataSheetPrinting: "Printing...",
-    dataSheetQuotaLabel: "Prints",
-    dataSheetQuotaMonth: "this month",
-
-    // Admin Quota
-    adminQuotaTitle: "Print Quota Management",
-    adminQuotaSearch: "Search user for quota...",
-    adminQuotaDefault: "Default Monthly",
-    adminQuotaExtra: "Extra Quota",
-    adminQuotaTotal: "Total Limit",
-    adminQuotaUsed: "Used",
-    adminQuotaRemaining: "Remaining",
-    adminQuotaSave: "Save",
-    adminQuotaSaved: "Saved!",
 };
 
 const DE_T = {
@@ -295,23 +281,9 @@ const DE_T = {
     dataSheetSelected: "Für Datenblatt ausgewählt",
     dataSheetPreview: "Vorschau",
     dataSheetSelectPrompt: "Wählen Sie ein Modell aus der Liste, um ein Datenblatt zu erstellen.",
-    dataSheetQuotaExhausted: "Monatliches Drucklimit erreicht. Kontaktieren Sie den Administrator.",
     dataSheetPrint: "Drucken",
     dataSheetClose: "Schließen",
     dataSheetPrinting: "Wird gedruckt...",
-    dataSheetQuotaLabel: "Drucke",
-    dataSheetQuotaMonth: "diesen Monat",
-
-    // Admin Quota
-    adminQuotaTitle: "Druckkontingent-Verwaltung",
-    adminQuotaSearch: "Benutzer für Kontingent suchen...",
-    adminQuotaDefault: "Standard monatlich",
-    adminQuotaExtra: "Zusatzkontingent",
-    adminQuotaTotal: "Gesamtlimit",
-    adminQuotaUsed: "Verwendet",
-    adminQuotaRemaining: "Verbleibend",
-    adminQuotaSave: "Speichern",
-    adminQuotaSaved: "Gespeichert!",
 };
 
 // French auth surface (FR edition) — user-facing auth/footer strings in

@@ -170,14 +170,8 @@ service cloud.firestore {
       allow read: if isAdmin();
     }
 
-    // ── Print quotas ──────────────────────────────────────────────────────
-    // Approved users may read/write their own monthly quota doc (ID: {uid}_{YYYY-MM}).
-    // Admins may access all quota docs.
-    match /printQuotas/{quotaId} {
-      allow read, write: if isApproved() &&
-                           quotaId.matches(request.auth.uid + '_[0-9]{4}-[0-9]{2}');
-      allow read, write: if isAdmin();
-    }
+    // (printQuotas collection removed 2026-07-12 — data-sheet printing is
+    //  unlimited for all members; tiering runs on the subscription program.)
 
     // ── Country data (news, policies, BAFA, metadata) ─────────────────────
     // Approved users and admins can read. Writes go through the Cloud Function

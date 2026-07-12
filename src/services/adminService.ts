@@ -2,15 +2,17 @@
  * Admin Service — centralized admin operations for plan management,
  * compliance, and enhanced audit logging.
  *
- * Extends authService (user CRUD) and quotaService (quota tracking)
- * with plan-aware operations and richer audit trails.
+ * Extends authService (user CRUD) with plan-aware operations and richer
+ * audit trails. Data-sheet printing is UNLIMITED for all members — the
+ * former print-quota system was removed 2026-07-12 (tier management now
+ * runs on the subscription program, see subscriptionPlans.ts).
  */
 
-import { doc, updateDoc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { logActivity } from './authService';
 import { User } from '../types';
-import { PlanCode, getBaseQuotaForPlan, hasIndustryInsightAccess } from '../config/adminConfig';
+import { PlanCode } from '../config/adminConfig';
 
 // ── Plan Management ───────────────────────────────────────────────────
 
@@ -33,32 +35,6 @@ export async function changeUserPlan(
     `Plan changed: ${oldPlan} → ${newPlan} for user ${userId}`,
     '', adminName
   );
-}
-
-/** Get effective entitlements for a user based on plan + overrides */
-export function getEffectiveEntitlements(user: User): {
-  plan: PlanCode;
-  dataSheetMonthlyLimit: number;
-  industryInsightAccess: boolean;
-  extraQuota: number;
-  effectiveQuota: number;
-  entitlementSource: string;
-} {
-  const plan: PlanCode = (user.plan as PlanCode) || 'standard';
-  const baseQuota = getBaseQuotaForPlan(plan);
-  const extraQuota = user.extraPrintQuota || 0;
-  const industryInsight = user.industryInsightOverride !== undefined
-    ? user.industryInsightOverride
-    : hasIndustryInsightAccess(plan);
-
-  return {
-    plan,
-    dataSheetMonthlyLimit: baseQuota,
-    industryInsightAccess: industryInsight,
-    extraQuota,
-    effectiveQuota: baseQuota + extraQuota,
-    entitlementSource: user.industryInsightOverride !== undefined ? 'admin_override' : 'plan',
-  };
 }
 
 // ── Compliance Operations ─────────────────────────────────────────────
@@ -159,29 +135,6 @@ export async function setIndustryInsightOverride(
   await logActivity(
     'ADMIN', 'ENTITLEMENT_OVERRIDE',
     `Industry Insight override set to ${enabled === undefined ? 'plan default' : enabled} for user ${userId}`,
-    '', adminName
-  );
-}
-
-// ── Quota Grant with Audit ────────────────────────────────────────────
-
-/** Grant bonus quota with audit logging */
-export async function grantBonusQuota(
-  userId: string,
-  extraQuota: number,
-  adminName = 'Admin'
-): Promise<void> {
-  const userRef = doc(db, 'users', userId);
-  const userDoc = await getDoc(userRef);
-  const oldExtra = userDoc.exists() ? (userDoc.data().extraPrintQuota || 0) : 0;
-
-  await updateDoc(userRef, {
-    extraPrintQuota: Math.max(0, Math.floor(extraQuota)),
-  });
-
-  await logActivity(
-    'ADMIN', 'QUOTA_GRANT',
-    `Extra quota changed: ${oldExtra} → ${extraQuota} for user ${userId}`,
     '', adminName
   );
 }
