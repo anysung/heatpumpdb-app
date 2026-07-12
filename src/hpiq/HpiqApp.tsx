@@ -10,7 +10,9 @@ import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
-import { UI_LANGUAGES } from './market';
+import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
+import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
+import { deliverPdf, PdfIntent } from './pdf/deliverPdf';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
 import { useViewport } from './useViewport';
@@ -35,8 +37,6 @@ interface Props {
 
 const NAV_IDS: Exclude<HpPage, 'account'>[] = ['find', 'products', 'label', 'datasheet', 'bafa', 'guide', 'news'];
 
-/** A4 content width in CSS px: (210mm − 2×12mm @page margin) at 96dpi ≈ 703px. */
-const A4_CONTENT_PX = 703;
 
 export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
   const t = tr(language);
@@ -128,31 +128,35 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     });
   };
 
-  // Print/PDF. The printable data sheet is portaled OUTSIDE #root (printPortal
-  // below); `@media print` hides #root and shows only that document.
-  //
-  // The one browser quirk we must handle: WebKit (Safari, incl. iOS) lays the
-  // PRINT out against the meta-viewport width, not the paper width. On a phone
-  // (viewport 390px) the sheet therefore prints at 390px, pinned to the top-left
-  // of the A4 page (~50-60% of it). Desktop/Android Chrome use the page width and
-  // are unaffected, as is the iPad (its ~820px viewport happens to match A4).
-  // Fix: while printing, widen the layout viewport to the A4 content width, then
-  // restore it. window.print() itself stays synchronous inside the click gesture.
-  const printSheet = () => {
-    const vp = document.querySelector<HTMLMetaElement>('meta[name="viewport"]');
-    const original = vp?.getAttribute('content') ?? null;
-    const needsWiden = !!vp && !!original && window.innerWidth < A4_CONTENT_PX;
-    if (needsWiden) vp!.setAttribute('content', `width=${A4_CONTENT_PX}`);
-
-    const restore = () => {
-      if (needsWiden && original) vp!.setAttribute('content', original);
-      window.removeEventListener('afterprint', restore);
-    };
-    window.addEventListener('afterprint', restore);
-    setTimeout(restore, 60_000);   // safety net for engines that never fire afterprint
-
-    window.print();
+  /**
+   * Print / PDF — both go through a PDF we generate ourselves.
+   *
+   * We deliberately do NOT print the DOM any more. Browser print engines
+   * disagree on the two things that decide whether a sheet is usable: WebKit
+   * (iOS Safari — iPhone AND iPad) lays print out against the meta-viewport
+   * width rather than the paper, and ignores `@page { margin }`, so the sheet
+   * came out edge-to-edge and clipped. A web page cannot force the print
+   * dialog's margins or scale, and iOS exposes no margin controls at all, so
+   * DOM printing can never be made device-proof. Owning the PDF geometry can.
+   *
+   * Delivery: mobile → OS share sheet (Print / Save to Files — the only way to
+   * get a PDF on iOS); desktop → the PDF opens with its print dialog already
+   * up (print) or downloads (pdf).
+   */
+  const exportSheet = (intent: PdfIntent) => {
+    const v = (dsId && store ? store.byId.get(dsId) : null) ?? store?.all[0] ?? null;
+    if (!v) return;
+    const doc = buildDataSheetPdf({
+      v, t,
+      sections: dsSections,
+      isLabelMode: dsMode === 'label',
+      sourceAbbr: SOURCE_ID_ABBR,
+      isGb: IS_GB,
+    });
+    deliverPdf(doc, pdfFileName(v), intent).catch(() => notify(t.ds.pdfFailed));
   };
+  const printSheet = () => exportSheet('print');
+  const downloadSheetPdf = () => exportSheet('download');
 
   const app: HpApp = {
     store, allStore, user,
@@ -173,7 +177,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     checked, toggleChecked: (k) => setChecked(c => ({ ...c, [k]: !c[k] })),
     faqOpen, setFaqOpen,
     lang: language, setLang: setLanguage,
-    onLogout, printSheet, notify,
+    onLogout, printSheet, downloadSheetPdf, notify,
     // Label records span both segments — switch to the id's segment first
     // (switchSegment clears selection; the setters below win within the batch).
     openProduct: (id) => {

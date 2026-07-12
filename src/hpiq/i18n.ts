@@ -186,6 +186,7 @@ const EN = {
     step3: '3 · EXPORT',
     printBtn: 'Print ›',
     pdfBtn: 'Download PDF',
+    pdfFailed: 'Could not create the PDF — please try again.',
     exportNote: 'Sheets carry source references and the generation date — installer-ready documentation.',
     sections: {
       identityP: 'Product identification', identityL: 'Product identity',
@@ -696,6 +697,7 @@ const DE: HpStrings = {
     step3: '3 · EXPORT',
     printBtn: 'Drucken ›',
     pdfBtn: 'Als PDF speichern',
+    pdfFailed: 'PDF konnte nicht erstellt werden — bitte erneut versuchen.',
     exportNote: 'Datenblätter enthalten Quellenangaben und das Erstellungsdatum — installateursgerechte Dokumentation.',
     sections: {
       identityP: 'Produktidentifikation', identityL: 'Produktidentität',
@@ -1549,6 +1551,7 @@ const FR_FR: HpStrings = {
     step3: '3 · EXPORT',
     printBtn: 'Imprimer ›',
     pdfBtn: 'Télécharger le PDF',
+    pdfFailed: 'Le PDF n’a pas pu être créé — veuillez réessayer.',
     exportNote: 'Les fiches portent les références sources et la date de génération — documentation prête pour l’installateur.',
     sections: {
       identityP: 'Identification du produit', identityL: 'Identité du produit',

@@ -208,7 +208,7 @@ const MobileDataSheet: React.FC<{ app: HpApp }> = ({ app }) => {
         </div>
         {dsp ? (
           <div style={{ display: 'flex', gap: 9 }}>
-            <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPdf, true)}>⬇ {t.m.mdsPdf}</span>
+            <span className="hp-press" onClick={app.downloadSheetPdf} style={actionBtn(t.m.mdsPdf, true)}>⬇ {t.m.mdsPdf}</span>
             <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPrint, false)}>🖨 {t.m.mdsPrint}</span>
           </div>
         ) : (

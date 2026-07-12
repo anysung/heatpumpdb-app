@@ -348,7 +348,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <span style={sectionLabel}>{t.ds.step3}</span>
             <div style={{ display: 'flex', gap: 9 }}>
               <span className="hp-press" onClick={app.printSheet} style={pillPrimary}>{t.ds.printBtn}</span>
-              <span className="hp-press" onClick={app.printSheet} style={pillSecondary}>{t.ds.pdfBtn}</span>
+              <span className="hp-press" onClick={app.downloadSheetPdf} style={pillSecondary}>{t.ds.pdfBtn}</span>
             </div>
             <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.ds.exportNote}</span>
           </div>

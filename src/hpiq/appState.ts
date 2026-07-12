@@ -79,8 +79,10 @@ export interface HpApp {
   setLang: (l: Language) => void;
 
   onLogout: () => void;
-  /** Opens the browser print dialog for the current data sheet (unlimited). */
+  /** Generates the data-sheet PDF and sends it to print (share sheet / PDF viewer). */
   printSheet: () => void;
+  /** Generates the data-sheet PDF and hands it over for saving (share sheet / download). */
+  downloadSheetPdf: () => void;
   /** Show a transient toast message (bottom center, ~2.5s). */
   notify: (msg: string) => void;
 
