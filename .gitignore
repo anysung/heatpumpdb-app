@@ -68,3 +68,4 @@ docs/.pdca-snapshots/
 data_sources/ofgem_pel/matching/20*/
 data_sources/bafa/matching/20*/
 data_sources/bafa/recovery/
+*.tmp.mjs
