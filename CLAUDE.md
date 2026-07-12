@@ -125,7 +125,22 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   VITE_APP_MODE=admin, admin-role gate — heatpumpdb.click attachable later).
   Targets are mapped in `.firebaserc`; per-target config in `firebase.json`.
 - Billing is web-only via Paddle (merchant of record) — no app-store
-  distribution. `src/services/paddleService.ts`; config via
-  VITE_PADDLE_CLIENT_TOKEN/VITE_PADDLE_PRICE_ID (unset = 'coming soon' UI).
-  Entitlements (`plan`, `paddle*` fields on the user) are written ONLY by the
-  server-side billing webhook — never from the client.
+  distribution. **Subscription program (Jul 2026): Professional / Team 3 /
+  Team 5 × monthly / 6 months / annual** — single source of truth is
+  `src/config/subscriptionPlans.ts` (prices VAT-excl, 7-day trial on every
+  Paddle price, per-term price ids via `VITE_PADDLE_PRICE_*`; unset =
+  'coming soon'). Operating rules: plan/term/seats are FIXED during a paid
+  period — changes apply at the NEXT RENEWAL only (`subscriptionChangeRequests`,
+  applied from the admin Billing page); team member replacement is always
+  allowed and never touches Paddle; team trials are anchored to the admin's
+  checkout (one end date per org). Entitlements (`user.subscription`) are
+  written ONLY by the billing webhook, an admin, or the rules-validated
+  free-grant redemption — never plain client code. Teams live in
+  `organizations` (owner manages seats, never plan/seatLimit); free
+  promotions in `freeAccessGrants` (admin Billing page registers email +
+  plan + period → account auto-approves and gets the plan at registration
+  or immediately if it exists).
+- Admin console: unified Overview = live per-market status + action alerts;
+  the actual work (approvals, support, subscriptions) happens in per-market
+  workspaces and the Billing page. Admin UI languages are **EN | KO only**
+  (adminI18n.ts, sidebar text buttons) — never reintroduce German there.
