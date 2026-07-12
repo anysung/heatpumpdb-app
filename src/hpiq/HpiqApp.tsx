@@ -12,6 +12,7 @@ import { tr } from './i18n';
 import { UI_LANGUAGES } from './market';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
+import { isIos } from './pwaInstall';
 import { useViewport } from './useViewport';
 import { MobileApp } from './mobile/MobileApp';
 import { FindPage } from './pages/FindPage';
@@ -125,19 +126,21 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   };
 
   const printSheet = () => {
-    // print() MUST be called synchronously in the click handler — deferring it
-    // (e.g. inside rAF/timeout) drops it out of the user-gesture stack and the
-    // desktop print preview never opens. The only tablet-specific tweak needed
-    // is to NOT remove the .hpiq-printing class synchronously: iPad/iOS Safari
-    // returns from print() immediately (non-blocking), so a synchronous removal
-    // strips the print layout before the PDF is snapshotted. Defer the cleanup
-    // to afterprint instead (desktop Chrome blocks inside print(), then fires
-    // afterprint on close — same code path, correct on both).
-    const cleanup = () => document.body.classList.remove('hpiq-printing');
     document.body.classList.add('hpiq-printing');
-    window.addEventListener('afterprint', cleanup, { once: true });
-    setTimeout(cleanup, 60_000);  // safety net if afterprint never fires
-    window.print();
+    if (isIos()) {
+      // iPad/iOS Safari ONLY: window.print() returns immediately (non-blocking),
+      // so removing the class synchronously strips the print layout before the
+      // PDF is snapshotted (blank output). Defer cleanup to afterprint.
+      const cleanup = () => document.body.classList.remove('hpiq-printing');
+      window.addEventListener('afterprint', cleanup, { once: true });
+      setTimeout(cleanup, 60_000);
+      window.print();
+    } else {
+      // Desktop (original, proven flow): print() blocks until the preview
+      // closes, so the class is safely removed right after it returns.
+      window.print();
+      document.body.classList.remove('hpiq-printing');
+    }
   };
 
   const app: HpApp = {
