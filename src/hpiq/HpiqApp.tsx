@@ -9,6 +9,7 @@ import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
+import { printDataSheet } from './printDoc';
 import { UI_LANGUAGES } from './market';
 import { FD, SignOutIcon } from './ui';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
@@ -124,26 +125,11 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     });
   };
 
-  const printSheet = () => {
-    // Two rules, both load-bearing on ALL platforms:
-    //  1. window.print() MUST run synchronously inside this click handler.
-    //     Calling it later (rAF/timeout/await) puts it outside the user
-    //     gesture, so Chrome flags the site as an "automatic printer" and
-    //     shows "blocked from automatically printing" (and remembers it).
-    //  2. The .hpiq-printing layout class must stay applied until the dialog
-    //     closes. Modern Chrome (desktop AND mobile) renders the print PREVIEW
-    //     asynchronously, so removing the class synchronously right after
-    //     print() strips the layout before the preview snapshots → blank
-    //     preview. afterprint fires on close; the timeout is a safety net.
-    const cleanup = () => {
-      document.body.classList.remove('hpiq-printing');
-      window.removeEventListener('afterprint', cleanup);
-    };
-    document.body.classList.add('hpiq-printing');
-    window.addEventListener('afterprint', cleanup);
-    setTimeout(cleanup, 120_000);
-    window.print();
-  };
+  // Print/PDF via an isolated iframe containing only the data sheet — reliable
+  // in Chrome/Android AND Safari/WebKit (Mac + iOS), where the old whole-page
+  // hide-#root approach produced blank previews. Must stay a direct, synchronous
+  // call from the click gesture (printDataSheet handles the rest). See printDoc.ts.
+  const printSheet = () => printDataSheet();
 
   const app: HpApp = {
     store, allStore, user,
