@@ -50,8 +50,8 @@ const ProductCard: React.FC<{ v: HpVM; t: ReturnType<typeof tr>; onOpen: () => v
       <span style={{ fontWeight: 600, fontSize: 14.5, lineHeight: 1.25, minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>{v.model}</span>
       <span style={{ fontSize: 12, color: '#7a7a7a', flex: 'none', maxWidth: '38%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.mfr}</span>
     </div>
-    <div style={{ display: 'flex', gap: 14, fontSize: 12.5, color: '#333' }}>
-      <span><strong style={{ fontWeight: 600 }}>{v.kw}</strong> {v.kw === '—' ? '' : 'kW'}</span>
+    <div style={{ display: 'flex', gap: '6px 14px', fontSize: 12.5, color: '#333', flexWrap: 'wrap' }}>
+      <span style={{ whiteSpace: 'nowrap' }}><strong style={{ fontWeight: 600 }}>{v.kw}</strong> {v.kw === '—' ? '' : 'kW'}</span>
       <span>COP A2 <strong style={{ fontWeight: 600 }}>{v.cop2}</strong></span>
       <span>SCOP <strong style={{ fontWeight: 600 }}>{v.scop}</strong></span>
     </div>
@@ -95,7 +95,7 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
         {v.raw.nf_pac_reference && <span style={chipStyle}>NF PAC {v.raw.nf_pac_reference}</span>}
       </div>
 
-      <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 14, padding: '15px 16px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '13px 10px' }}>
+      <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 14, padding: '15px 16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(96px, 1fr))', gap: '13px 10px' }}>
         {specs.map(([label, value]) => (
           <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
             <span style={{ fontSize: 10, color: '#7a7a7a' }}>{label}</span>
@@ -126,10 +126,14 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
   if (viewport === 'tablet') {
     return <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>{body}</div>;
   }
-  // Phone: full-screen sheet over the shell (under the header, over the tab bar).
+  // Phone: full-screen sheet with its own app bar (back affordance beats a tiny ✕).
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 80, background: '#f5f5f7', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, overflowY: 'auto', padding: '18px 16px calc(24px + env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div className="hp-sheet-in" style={{ position: 'fixed', inset: 0, zIndex: 80, background: '#f5f5f7', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 'none', display: 'flex', alignItems: 'center', gap: 10, padding: 'calc(8px + env(safe-area-inset-top)) 12px 8px', background: 'rgba(245,245,247,.94)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,.07)' }}>
+        <span onClick={onClose} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 14.5, color: '#0066cc', cursor: 'pointer', padding: '6px 8px 6px 2px' }}>‹ {t.products.title}</span>
+        <span style={{ marginLeft: 'auto', fontSize: 11.5, color: '#9a9aa0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '48%' }}>{v.mfr}</span>
+      </div>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 16px calc(24px + env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 12 }}>
         {body}
       </div>
     </div>
@@ -146,9 +150,10 @@ export const MobileFind: React.FC<{ app: HpApp; viewport: Viewport; onOpen: (id:
   const cols = viewport === 'tablet' ? '1fr 1fr' : '1fr';
 
   return (
-    <div style={{ padding: '20px 16px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-      <span style={{ fontFamily: FD, fontSize: 26, fontWeight: 600, letterSpacing: '-0.3px' }}>{t.find.heroTitle}</span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9, border: '1px solid #d2d2d7', background: '#fff', borderRadius: 999, padding: '11px 16px' }}>
+    <div style={{ padding: '18px 16px 24px', display: 'flex', flexDirection: 'column', gap: 13 }}>
+      <span style={{ fontFamily: FD, fontSize: 'clamp(22px, 6.5vw, 26px)', fontWeight: 600, letterSpacing: '-0.3px' }}>{t.find.heroTitle}</span>
+      <div style={{ position: 'sticky', top: 0, zIndex: 20, margin: '0 -16px', padding: '6px 16px 8px', background: 'rgba(245,245,247,.94)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9, border: '1px solid #d2d2d7', background: '#fff', borderRadius: 999, padding: '12px 16px', boxShadow: '0 1px 4px rgba(0,0,0,.05)' }}>
         <SearchIcon size={15} />
         <input
           value={q}
@@ -156,7 +161,8 @@ export const MobileFind: React.FC<{ app: HpApp; viewport: Viewport; onOpen: (id:
           placeholder={t.find.placeholder}
           style={{ flex: 1, border: 'none', background: 'transparent', fontSize: 15, fontFamily: 'inherit', color: '#1d1d1f', padding: 0, outline: 'none' }}
         />
-        {q && <span onClick={() => app.setQuery('')} style={{ color: '#b6b6bc', cursor: 'pointer', fontSize: 13 }}>✕</span>}
+        {q && <span onClick={() => app.setQuery('')} style={{ color: '#b6b6bc', cursor: 'pointer', fontSize: 15, padding: '2px 4px' }}>✕</span>}
+      </div>
       </div>
 
       {!res && (
@@ -248,8 +254,8 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
   return (
     <div style={{ display: 'flex', minHeight: 0, flex: 1 }}>
       <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-        {/* toolbar */}
-        <div style={{ padding: '14px 16px 10px', display: 'flex', flexDirection: 'column', gap: 10, flex: 'none' }}>
+        {/* toolbar (sticky while the card list scrolls) */}
+        <div style={{ padding: '12px 16px 10px', display: 'flex', flexDirection: 'column', gap: 10, flex: 'none', background: 'rgba(245,245,247,.94)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,.05)' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
             <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600 }}>{t.products.title}</span>
             <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{t.products.countLine(fmtInt(filteredTotal), fmtInt(store?.total ?? 0), app.segment)}</span>

@@ -40,6 +40,14 @@ const EN = {
 
   /** Compact-device (phone/tablet) shell strings. */
   m: {
+    installTitle: 'Install the app',
+    installText: 'Add HeatPump DB to your home screen — full-screen, one tap away.',
+    installBtn: 'Install ›',
+    installIosTitle: 'Install on iPhone / iPad',
+    installIos1: '1. Tap the Share button in Safari (square with an arrow).',
+    installIos2: '2. Choose “Add to Home Screen”, then “Add”.',
+    installLater: 'Not now',
+    installDone: 'Installed — launch HeatPump DB from your home screen.',
     tabSearch: 'Search',
     tabFunding: 'Funding',
     filters: 'Filters',
@@ -530,6 +538,14 @@ const DE: HpStrings = {
   },
 
   m: {
+    installTitle: 'App installieren',
+    installText: 'HeatPump DB zum Startbildschirm hinzufügen — Vollbild, mit einem Tipp erreichbar.',
+    installBtn: 'Installieren ›',
+    installIosTitle: 'Auf iPhone / iPad installieren',
+    installIos1: '1. Tippen Sie in Safari auf „Teilen“ (Quadrat mit Pfeil).',
+    installIos2: '2. Wählen Sie „Zum Home-Bildschirm“, dann „Hinzufügen“.',
+    installLater: 'Später',
+    installDone: 'Installiert — starten Sie HeatPump DB vom Startbildschirm.',
     tabSearch: 'Suche',
     tabFunding: 'Förderung',
     filters: 'Filter',
@@ -1357,6 +1373,14 @@ const FR_FR: HpStrings = {
   locale: 'fr-FR',
 
   m: {
+    installTitle: 'Installer l’application',
+    installText: 'Ajoutez HeatPump DB à votre écran d’accueil — plein écran, accessible en un geste.',
+    installBtn: 'Installer ›',
+    installIosTitle: 'Installer sur iPhone / iPad',
+    installIos1: '1. Touchez « Partager » dans Safari (carré avec une flèche).',
+    installIos2: '2. Choisissez « Sur l’écran d’accueil », puis « Ajouter ».',
+    installLater: 'Plus tard',
+    installDone: 'Installée — lancez HeatPump DB depuis votre écran d’accueil.',
     tabSearch: 'Recherche',
     tabFunding: 'Aides',
     filters: 'Filtres',

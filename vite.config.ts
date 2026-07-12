@@ -174,6 +174,7 @@ export default defineConfig(({ mode }) => {
           // PWA manifest — per-market identity so each installed edition
           // carries its own name, icon and theme color.
           writeFileSync(resolve(outDir, 'manifest.webmanifest'), JSON.stringify({
+            id: '/',
             name: m.appName,
             short_name: 'HeatPump DB',
             description: m.desc,

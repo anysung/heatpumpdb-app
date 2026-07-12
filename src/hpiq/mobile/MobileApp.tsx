@@ -21,6 +21,7 @@ import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 import { NewsItem, Language } from '../../types';
 import type { Viewport } from '../useViewport';
 import { MobileFind, MobileProducts, MobileDetail } from './MobileCatalog';
+import { showInstallUi, canPromptInstall, isIos, promptInstall, onInstallStateChange } from '../pwaInstall';
 
 type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'news' | 'account'> | 'guide';
 
@@ -38,6 +39,64 @@ const ICONS: Record<MTab, string> = {
   news: 'M4 4h13v16H4zM17 8h3v12H6M7.5 8h6M7.5 12h6M7.5 16h6',
   guide: 'M4 5h16M4 12h16M4 19h10',
   account: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-6 8-6s8 2 8 6',
+};
+
+/* ── PWA install (mobile browsers never volunteer the prompt themselves) ── */
+
+const INSTALL_DISMISS_KEY = 'hpdb-install-dismissed';
+
+const useInstallState = () => {
+  const [, force] = useState(0);
+  React.useEffect(() => onInstallStateChange(() => force(x => x + 1)), []);
+};
+
+/** Dismissible banner under the header — Android triggers the native prompt,
+ *  iOS opens step-by-step "Add to Home Screen" instructions. */
+const InstallBanner: React.FC<{ app: HpApp; onIosGuide: () => void }> = ({ app, onIosGuide }) => {
+  const t = tr(app.lang);
+  useInstallState();
+  const [dismissed, setDismissed] = useState(() => {
+    try { return localStorage.getItem(INSTALL_DISMISS_KEY) === '1'; } catch { return false; }
+  });
+  if (dismissed || !showInstallUi()) return null;
+  const dismiss = () => { setDismissed(true); try { localStorage.setItem(INSTALL_DISMISS_KEY, '1'); } catch { /* ignore */ } };
+  const install = async () => {
+    if (canPromptInstall()) {
+      const ok = await promptInstall();
+      if (ok) { app.notify(t.m.installDone); dismiss(); }
+    } else if (isIos()) {
+      onIosGuide();
+    }
+  };
+  return (
+    <div style={{ flex: 'none', display: 'flex', alignItems: 'center', gap: 10, padding: '9px 14px', background: '#eef4fc', borderBottom: '1px solid #d9e6f7' }}>
+      <span style={{ fontSize: 16 }}>📲</span>
+      <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, flex: 1 }}>
+        <span style={{ fontSize: 12.5, fontWeight: 600 }}>{t.m.installTitle}</span>
+        <span style={{ fontSize: 11, color: '#5a6b80', lineHeight: 1.35 }}>{t.m.installText}</span>
+      </div>
+      <span className="hp-press" onClick={install} style={{ flex: 'none', background: '#0066cc', color: '#fff', borderRadius: 999, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+        {t.m.installBtn}
+      </span>
+      <span onClick={dismiss} style={{ flex: 'none', color: '#9aa8ba', cursor: 'pointer', fontSize: 14, padding: '2px 4px' }}>✕</span>
+    </div>
+  );
+};
+
+const IosInstallGuide: React.FC<{ app: HpApp; onClose: () => void }> = ({ app, onClose }) => {
+  const t = tr(app.lang);
+  return (
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 120, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: '#fff', borderRadius: '18px 18px 0 0', width: 'min(560px, 100%)', padding: '22px 22px calc(26px + env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <span style={{ fontFamily: FD, fontSize: 18, fontWeight: 600 }}>{t.m.installIosTitle}</span>
+        <span style={{ fontSize: 14, lineHeight: 1.6 }}>{t.m.installIos1}</span>
+        <span style={{ fontSize: 14, lineHeight: 1.6 }}>{t.m.installIos2}</span>
+        <span className="hp-press" onClick={onClose} style={{ marginTop: 6, textAlign: 'center', border: '1px solid #d2d2d7', borderRadius: 999, padding: '11px 0', fontSize: 14, cursor: 'pointer' }}>
+          {t.m.installLater}
+        </span>
+      </div>
+    </div>
+  );
 };
 
 /* ── Funding page (t.bafa content, stacked) ──────────────────────────────── */
@@ -338,7 +397,7 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
             ))}
           </div>
           {SUB_PLAN_CODES.map(code => (
-            <div key={code} style={{ border: code === 'team_3' && term === 'annual' ? '2px solid #0066cc' : '1px solid #e0e0e0', borderRadius: 12, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div key={code} style={{ border: code === 'team_3' && term === 'annual' ? '2px solid #0066cc' : '1px solid #e0e0e0', borderRadius: 12, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
                 <span style={{ fontSize: 14, fontWeight: 600 }}>{s.planNames[code]}</span>
                 <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{s.planUsers[code]} · {isTeamPlan(code) ? s.teamTrialBadge : s.trialBadge}</span>
@@ -353,6 +412,23 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
             </div>
           ))}
           <span style={{ fontSize: 10.5, color: '#9a9aa0', lineHeight: 1.5 }}>{s.trialNote} {s.vatNote}</span>
+        </div>
+      )}
+
+      {showInstallUi() && (
+        <div style={card}>
+          <span style={sectionLabel}>{t.m.installTitle}</span>
+          <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.m.installText}</span>
+          <span
+            className="hp-press"
+            onClick={async () => {
+              if (canPromptInstall()) { const ok = await promptInstall(); if (ok) app.notify(t.m.installDone); }
+              else window.dispatchEvent(new CustomEvent('hpdb-ios-guide'));
+            }}
+            style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '9px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', width: 'fit-content' }}
+          >
+            {t.m.installBtn}
+          </span>
         </div>
       )}
 
@@ -429,11 +505,17 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
   const sel = app.selectedId && app.store ? app.store.byId.get(app.selectedId) ?? null : null;
 
   const isTablet = viewport === 'tablet';
+  const [iosGuide, setIosGuide] = useState(false);
+  React.useEffect(() => {
+    const open = () => setIosGuide(true);
+    window.addEventListener('hpdb-ios-guide', open);
+    return () => window.removeEventListener('hpdb-ios-guide', open);
+  }, []);
 
   return (
-    <div className="hpiq-root" style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f5f5f7' }}>
+    <div className="hpiq-root" style={{ height: '100dvh', display: 'flex', flexDirection: 'column', background: '#f5f5f7', width: '100%', maxWidth: '100vw', overflowX: 'hidden' }}>
       {/* header */}
-      <div style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 12, padding: '0 16px', height: 52, flex: 'none' }}>
+      <div style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 12, padding: 'env(safe-area-inset-top) 16px 0', height: 'calc(52px + env(safe-area-inset-top))', flex: 'none' }}>
         <BrandLogo height={24} theme="dark" />
         <WavingFlag height={20} />
         {isTablet && (
@@ -463,6 +545,10 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
         </div>
       </div>
 
+      {/* PWA install (mobile browsers show no automatic prompt) */}
+      <InstallBanner app={app} onIosGuide={() => setIosGuide(true)} />
+      {iosGuide && <IosInstallGuide app={app} onClose={() => setIosGuide(false)} />}
+
       {/* content */}
       <div style={{ flex: 1, minHeight: 0, overflowY: page === 'products' ? 'hidden' : 'auto', display: 'flex', flexDirection: 'column', maxWidth: isTablet ? 1100 : undefined, width: '100%', margin: '0 auto' }}>
         {page === 'find' && <MobileFind app={app} viewport={viewport} onOpen={openProduct} />}
@@ -480,7 +566,7 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
 
       {/* phone: bottom tab bar */}
       {viewport === 'phone' && (
-        <div style={{ flex: 'none', display: 'flex', background: 'rgba(255,255,255,.96)', borderTop: '1px solid rgba(0,0,0,.1)', paddingBottom: 'env(safe-area-inset-bottom)', zIndex: 85, position: 'relative' }}>
+        <div style={{ flex: 'none', display: 'flex', background: 'rgba(255,255,255,.92)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', borderTop: '1px solid rgba(0,0,0,.1)', paddingBottom: 'env(safe-area-inset-bottom)', zIndex: 85, position: 'relative' }}>
           {(['find', 'products', 'bafa', 'news', 'account'] as MTab[]).map(id => {
             const active = page === id || (id === 'bafa' && page === 'guide');
             return (

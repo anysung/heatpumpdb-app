@@ -80,3 +80,34 @@
     z-index: 9999;
   }
 }
+
+
+/* ── Tablet tolerance (700–1099px): the FULL desktop UI runs here — compress
+   the global nav and let wide content pan instead of clipping. ─────────── */
+@media (max-width: 1099px) {
+  .hp-gnav { gap: 12px !important; padding: 0 14px !important; }
+  /* Nav links take the remaining width and scroll internally (never clip a label). */
+  .hp-gnav-links {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hp-gnav-links::-webkit-scrollbar { display: none; }
+  .hp-gnav-links > span { white-space: nowrap; padding: 8px 11px !important; font-size: 13px; }
+  /* Wide tables / studio panes: pan, never clip. */
+  .hpiq-root { overflow-x: auto; }
+}
+/* Narrow tablets / large phones in desktop UI: drop the waving flag so the
+   global nav keeps its labels. */
+@media (max-width: 900px) {
+  .hp-gnav .waving-flag { display: none; }
+}
+
+/* ── Phone detail sheet entrance ─────────────────────────────────────────── */
+@keyframes hp-sheet-in {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.hp-sheet-in { animation: hp-sheet-in .22s ease-out; }

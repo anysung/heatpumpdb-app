@@ -170,9 +170,10 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     ((user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')) || user.email?.[0] || 'U'
   ).toUpperCase();
 
-  // Compact devices get the curated mobile/tablet shell; the dense desktop UI
-  // below stays authoritative and unchanged (design_handoff spec).
-  if (viewport !== 'desktop') {
+  // Phones get the curated mobile shell. Tablets get the FULL desktop UI
+  // (owner decision 2026-07-12 — no curated subset on tablets); the <1100px
+  // nav/typography tolerances live in hpiq.css (@media max-width:1099px).
+  if (viewport === 'phone') {
     return (
       <>
         <MobileApp app={app} viewport={viewport} />
@@ -189,15 +190,15 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
 
       {/* ============ Global nav ============ */}
-      <div style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 28, padding: '0 28px', height: 60, position: 'sticky', top: 0, zIndex: 50, flex: 'none' }}>
+      <div className="hp-gnav" style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 28, padding: '0 28px', height: 60, position: 'sticky', top: 0, zIndex: 50, flex: 'none' }}>
         <span
           onDoubleClick={onAdminAccess}
           style={{ display: 'flex', alignItems: 'center', gap: 12 }}
         >
           <BrandLogo height={30} theme="dark" />
-          <WavingFlag height={26} />
+          <WavingFlag height={26} className="waving-flag" />
         </span>
-        <div style={{ display: 'flex', gap: 5, fontSize: 14 }}>
+        <div className="hp-gnav-links" style={{ display: 'flex', gap: 5, fontSize: 14 }}>
           {NAV_IDS.map(id => {
             const active = page === id;
             return (
@@ -217,7 +218,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
             );
           })}
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14, fontSize: 13, color: 'rgba(255,255,255,.75)' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14, fontSize: 13, color: 'rgba(255,255,255,.75)', flex: 'none' }}>
           {UI_LANGUAGES.length > 1 && (
             <div style={{ display: 'flex', border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
               {UI_LANGUAGES.map(l => (
@@ -251,7 +252,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
             className="hp-press"
             onClick={onLogout}
             title="Sign out"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '6px 14px', fontSize: 12.5, color: 'rgba(255,255,255,.85)', cursor: 'pointer' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '6px 14px', fontSize: 12.5, color: 'rgba(255,255,255,.85)', cursor: 'pointer', whiteSpace: 'nowrap', flex: 'none' }}
           >
             <SignOutIcon />
             {t.nav.signOut}
