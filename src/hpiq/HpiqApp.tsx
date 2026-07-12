@@ -35,6 +35,9 @@ interface Props {
 
 const NAV_IDS: Exclude<HpPage, 'account'>[] = ['find', 'products', 'label', 'datasheet', 'bafa', 'guide', 'news'];
 
+/** A4 content width in CSS px: (210mm − 2×12mm @page margin) at 96dpi ≈ 703px. */
+const A4_CONTENT_PX = 703;
+
 export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
   const t = tr(language);
   const viewport = useViewport();
@@ -125,12 +128,31 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
     });
   };
 
-  // Print/PDF: dead-simple, synchronous window.print(). The printable data
-  // sheet is portaled OUTSIDE #root (see printPortal below); `@media print`
-  // hides #root and shows only that document. No iframe, no class toggling, no
-  // visibility hacks — works identically in Chrome/Android and Safari/WebKit
-  // (Mac + iOS), and `page.pdf()` faithfully reproduces the output for testing.
-  const printSheet = () => window.print();
+  // Print/PDF. The printable data sheet is portaled OUTSIDE #root (printPortal
+  // below); `@media print` hides #root and shows only that document.
+  //
+  // The one browser quirk we must handle: WebKit (Safari, incl. iOS) lays the
+  // PRINT out against the meta-viewport width, not the paper width. On a phone
+  // (viewport 390px) the sheet therefore prints at 390px, pinned to the top-left
+  // of the A4 page (~50-60% of it). Desktop/Android Chrome use the page width and
+  // are unaffected, as is the iPad (its ~820px viewport happens to match A4).
+  // Fix: while printing, widen the layout viewport to the A4 content width, then
+  // restore it. window.print() itself stays synchronous inside the click gesture.
+  const printSheet = () => {
+    const vp = document.querySelector<HTMLMetaElement>('meta[name="viewport"]');
+    const original = vp?.getAttribute('content') ?? null;
+    const needsWiden = !!vp && !!original && window.innerWidth < A4_CONTENT_PX;
+    if (needsWiden) vp!.setAttribute('content', `width=${A4_CONTENT_PX}`);
+
+    const restore = () => {
+      if (needsWiden && original) vp!.setAttribute('content', original);
+      window.removeEventListener('afterprint', restore);
+    };
+    window.addEventListener('afterprint', restore);
+    setTimeout(restore, 60_000);   // safety net for engines that never fire afterprint
+
+    window.print();
+  };
 
   const app: HpApp = {
     store, allStore, user,
