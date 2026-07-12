@@ -13,8 +13,12 @@
 import React from 'react';
 import { Language } from '../../types';
 import { ACTIVE_COUNTRY } from '../../config/countryProfiles';
+import { PUBLIC_ENV } from '../../config/env';
 import { UI_LANGUAGES } from '../../hpiq/market';
 import { BrandLogo, WavingFlag } from '../BrandLogo';
+
+/** The unified ops console (hub) is cross-market — no single-country identity. */
+const IS_ADMIN_BUILD = PUBLIC_ENV.APP_MODE === 'admin';
 
 /** ISO 3166-1 alpha-2 → regional-indicator flag emoji. */
 const flagEmoji = (code: string) =>
@@ -419,16 +423,24 @@ const SpacetimeField: React.FC = () => (
 
 /* ── Chrome ──────────────────────────────────────────────────────────────── */
 
-/** Dynamic brand lockup + waving market flag — instantly reads as this country's build. */
+/** Dynamic brand lockup + waving market flag — instantly reads as this country's build.
+ *  Admin build shows no flag: the ops console spans every market. */
 const Wordmark: React.FC = () => (
   <span className="inline-flex items-center gap-4 select-none">
     <BrandLogo height={40} theme="dark" />
-    <WavingFlag height={36} />
+    {!IS_ADMIN_BUILD && <WavingFlag height={36} />}
   </span>
 );
 
-/** Country-profile-driven market identity — swaps automatically per deployment. */
-const MarketBadge: React.FC<{ t: any }> = ({ t }) => (
+/** Country-profile-driven market identity — swaps automatically per deployment.
+ *  Admin build gets a cross-market ops-console badge instead. */
+const MarketBadge: React.FC<{ t: any }> = ({ t }) =>
+  IS_ADMIN_BUILD ? (
+    <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur text-xs font-medium text-white/80">
+      <span className="text-sm leading-none">🛠️</span>
+      Ops Console · All markets
+    </span>
+  ) : (
   <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur text-xs font-medium text-white/80">
     <span className="text-sm leading-none">{flagEmoji(ACTIVE_COUNTRY.code)}</span>
     {t.authMarketLabel}: {ACTIVE_COUNTRY.name} · {ACTIVE_COUNTRY.subsidyTabLabel}
