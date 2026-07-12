@@ -104,6 +104,16 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
         ))}
       </div>
 
+      {/* Primary CTA — the mobile journey's endpoint: open the printable /
+          downloadable data sheet for this product. */}
+      <span
+        className="hp-press"
+        onClick={() => { app.openDataSheet(v.id, 'product'); onClose(); }}
+        style={{ background: '#0066cc', color: '#fff', borderRadius: 12, padding: '13px 0', fontSize: 14.5, fontWeight: 600, textAlign: 'center', cursor: 'pointer' }}
+      >
+        {t.products.dataSheetBtn}
+      </span>
+
       <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 14, padding: '13px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         <span style={{ ...sectionLabel, fontSize: 10 }}>{t.products.inspFunding}</span>
         <span style={{ fontSize: 12.5, lineHeight: 1.5 }}>{listed ? t.products.inspListed : t.products.inspDelisted}</span>
@@ -119,7 +129,7 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
         </span>
       )}
 
-      <span style={{ fontSize: 10.5, color: '#b6b6bc', lineHeight: 1.5, padding: '0 2px' }}>{t.m.desktopNote}</span>
+      <span style={{ fontSize: 10.5, color: '#b6b6bc', lineHeight: 1.5, padding: '0 2px' }}>{t.m.mDetailNote}</span>
     </>
   );
 

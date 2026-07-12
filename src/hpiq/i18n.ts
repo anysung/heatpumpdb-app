@@ -40,6 +40,11 @@ const EN = {
 
   /** Compact-device (phone/tablet) shell strings. */
   m: {
+    mdsTitle: 'Data sheet',
+    mdsPrint: 'Print',
+    mdsPdf: 'PDF download',
+    mdsPick: 'Choose a model ›',
+    mdsSpecs: 'Specifications',
     installTitle: 'Install the app',
     installText: 'Add HeatPump DB to your home screen — full-screen, one tap away.',
     installBtn: 'Install ›',
@@ -54,6 +59,7 @@ const EN = {
     apply: 'Apply',
     all: 'All',
     desktopNote: 'Data sheet printing, EU energy label records and the full 4-way comparison are available in the desktop version.',
+    mDetailNote: 'EU energy label records and the full 4-way comparison are available in the desktop version.',
   },
 
   find: {
@@ -538,6 +544,11 @@ const DE: HpStrings = {
   },
 
   m: {
+    mdsTitle: 'Datenblatt',
+    mdsPrint: 'Drucken',
+    mdsPdf: 'PDF herunterladen',
+    mdsPick: 'Modell wählen ›',
+    mdsSpecs: 'Spezifikationen',
     installTitle: 'App installieren',
     installText: 'HeatPump DB zum Startbildschirm hinzufügen — Vollbild, mit einem Tipp erreichbar.',
     installBtn: 'Installieren ›',
@@ -552,6 +563,7 @@ const DE: HpStrings = {
     apply: 'Übernehmen',
     all: 'Alle',
     desktopNote: 'Datenblatt-Druck, EU-Label-Einträge und der vollständige 4-fach-Vergleich stehen in der Desktop-Version zur Verfügung.',
+    mDetailNote: 'EU-Label-Einträge und der vollständige 4-fach-Vergleich stehen in der Desktop-Version zur Verfügung.',
   },
 
   footer: {
@@ -1373,6 +1385,11 @@ const FR_FR: HpStrings = {
   locale: 'fr-FR',
 
   m: {
+    mdsTitle: 'Fiche technique',
+    mdsPrint: 'Imprimer',
+    mdsPdf: 'Télécharger le PDF',
+    mdsPick: 'Choisir un modèle ›',
+    mdsSpecs: 'Spécifications',
     installTitle: 'Installer l’application',
     installText: 'Ajoutez HeatPump DB à votre écran d’accueil — plein écran, accessible en un geste.',
     installBtn: 'Installer ›',
@@ -1387,6 +1404,7 @@ const FR_FR: HpStrings = {
     apply: 'Appliquer',
     all: 'Tous',
     desktopNote: 'L’impression des fiches techniques, les fiches étiquette UE et la comparaison complète sont disponibles dans la version bureau.',
+    mDetailNote: 'Les fiches étiquette UE et la comparaison complète sont disponibles dans la version bureau.',
   },
 
   nav: {

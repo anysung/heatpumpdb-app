@@ -77,120 +77,29 @@ const SectionHead: React.FC<{ title: string; muted?: boolean }> = ({ title, mute
   <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.08em', color: muted ? '#7a7a7a' : '#0066cc', borderBottom: '2px solid #1d1d1f', paddingBottom: 8 }}>{title}</span>
 );
 
-export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
+/**
+ * The printable data-sheet document (`.hpiq-print-doc`) — single source of
+ * truth for the desktop studio preview AND the mobile data-sheet screen, and
+ * the exact DOM `@media print` targets. Self-contained: derives the selected
+ * product + footnote numbering from `app`.
+ */
+export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
   const { store } = app;
-  const [pickerQuery, setPickerQuery] = useState('');
-
   const isLabelMode = app.dsMode === 'label';
   const dsp = (app.dsId && store ? store.byId.get(app.dsId) : null) ?? store?.all[0] ?? null;
+  if (!dsp) return null;
 
-  const pickerRows = useMemo(() => {
-    if (!store) return [];
-    const q = pickerQuery.trim().toLowerCase();
-    const list = q.length >= 2
-      ? store.all.filter(p => `${p.model} ${p.mfr} ${p.sourceId}`.toLowerCase().includes(q))
-      : store.all;
-    return list.slice(0, PICKER_LIMIT);
-  }, [store, pickerQuery]);
-
-  const sectionDefs: [DsSectionKey, string][] = isLabelMode
-    ? [['identity', t.ds.sections.identityL], ['performance', t.ds.sections.perfL], ['env', t.ds.sections.envL], ['source', t.ds.sections.source]]
-    : [['identity', t.ds.sections.identityP], ['performance', t.ds.sections.perfP], ['env', t.ds.sections.envP], ['bafa', t.ds.sections.bafa], ['source', t.ds.sections.source]];
-
-  // Footnote numbering — assigned in render order, so only sections that are
-  // actually shown contribute entries to TECHNICAL EXPLANATIONS below.
   const noteOrder: string[] = [];
   const n = (key: string): number => {
     let i = noteOrder.indexOf(key);
     if (i === -1) { noteOrder.push(key); i = noteOrder.length - 1; }
     return i + 1;
   };
-
-  const segStyle = (on: boolean): React.CSSProperties => ({
-    padding: '6px 16px', fontSize: 12.5, cursor: 'pointer',
-    ...(on ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
-  });
-
-  const typeLine = dsp
-    ? `${dsp.raw.type ?? 'Luft / Wasser'}${dsp.installType !== '—' ? ` · ${dsp.installType}` : ''}`
-    : '';
+  const typeLine = `${dsp.raw.type ?? 'Luft / Wasser'}${dsp.installType !== '—' ? ` · ${dsp.installType}` : ''}`;
 
   return (
-    <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 60px)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '13px 28px', borderBottom: '1px solid rgba(0,0,0,.08)', flex: 'none' }}>
-        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.ds.title}</span>
-        <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
-          <span onClick={() => app.setDsMode('product')} style={segStyle(!isLabelMode)}>{t.ds.modeProduct}</span>
-          <span onClick={() => app.setDsMode('label')} style={segStyle(isLabelMode)}>{t.ds.modeLabel}</span>
-        </div>
-      </div>
-      <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
-
-        {/* picker + sections */}
-        <div style={{ flex: '0 0 348px', borderRight: '1px solid rgba(0,0,0,.08)', display: 'flex', flexDirection: 'column', gap: 0, overflow: 'auto' }}>
-          <div style={{ padding: '18px 20px 12px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <span style={sectionLabel}>{t.ds.step1}</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #e0e0e0', borderRadius: 999, padding: '7px 14px', color: '#7a7a7a', fontSize: 12.5 }}>
-              <SearchIcon size={12} stroke="currentColor" />
-              <input
-                value={pickerQuery}
-                onChange={e => setPickerQuery(e.target.value)}
-                placeholder={t.ds.searchPlaceholder}
-                style={{ flex: 1, border: 'none', background: 'transparent', fontSize: 12.5, fontFamily: 'inherit', color: '#1d1d1f', padding: 0 }}
-              />
-            </div>
-          </div>
-          {/* Real catalog is 5,000+ models — the picker list scrolls in place so
-              steps 2 · SECTIONS and 3 · EXPORT stay visible (3-step flow). */}
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 'none', maxHeight: 336, overflowY: 'auto' }}>
-            {pickerRows.map(d => {
-              const on = dsp?.id === d.id;
-              return (
-                <span
-                  key={d.id}
-                  onClick={() => app.setDsId(d.id)}
-                  style={{
-                    display: 'flex', alignItems: 'center', padding: '10px 20px', borderBottom: '1px solid #f0f0f0', cursor: 'pointer',
-                    ...(on ? { background: '#f5f5f7', boxShadow: 'inset 2px 0 0 #0066cc' } : {}),
-                  }}
-                >
-                  <span style={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 0 }}>
-                    <span style={{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{d.model}</span>
-                    <span style={{ fontSize: 11, color: '#7a7a7a' }}>{d.mfr} · {d.kw} kW · {d.label}</span>
-                  </span>
-                </span>
-              );
-            })}
-          </div>
-          <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 11, borderTop: '1px solid rgba(0,0,0,.08)', marginTop: 8 }}>
-            <span style={sectionLabel}>{t.ds.step2}</span>
-            {sectionDefs.map(([key, label]) => {
-              const on = app.dsSections[key];
-              return (
-                <span key={key} onClick={() => app.toggleDsSection(key)} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, cursor: 'pointer' }}>
-                  <span style={{ flex: 'none', width: 32, height: 19, borderRadius: 999, position: 'relative', display: 'inline-block', transition: 'background .18s', background: on ? '#0066cc' : '#d2d2d7' }}>
-                    <span style={{ position: 'absolute', top: 2, width: 15, height: 15, borderRadius: '50%', background: '#fff', transition: 'left .18s', left: on ? 15 : 2 }} />
-                  </span>
-                  {label}
-                </span>
-              );
-            })}
-          </div>
-          <div style={{ padding: '14px 20px 22px', display: 'flex', flexDirection: 'column', gap: 10, borderTop: '1px solid rgba(0,0,0,.08)' }}>
-            <span style={sectionLabel}>{t.ds.step3}</span>
-            <div style={{ display: 'flex', gap: 9 }}>
-              <span className="hp-press" onClick={app.printSheet} style={pillPrimary}>{t.ds.printBtn}</span>
-              <span className="hp-press" onClick={app.printSheet} style={pillSecondary}>{t.ds.pdfBtn}</span>
-            </div>
-            <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.ds.exportNote}</span>
-          </div>
-        </div>
-
-        {/* preview */}
-        <div style={{ flex: 1, background: '#f5f5f7', padding: 28, display: 'flex', justifyContent: 'center', overflow: 'auto' }}>
-          {dsp && (
-            <div className="hpiq-print-doc" style={{ position: 'relative', width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
+    <div className="hpiq-print-doc" style={{ position: 'relative', width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 20 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -344,7 +253,110 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <Watermark />
               <Watermark print />
             </div>
-          )}
+  );
+};
+
+export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
+  const { store } = app;
+  const [pickerQuery, setPickerQuery] = useState('');
+
+  const isLabelMode = app.dsMode === 'label';
+  const dsp = (app.dsId && store ? store.byId.get(app.dsId) : null) ?? store?.all[0] ?? null;
+
+  const pickerRows = useMemo(() => {
+    if (!store) return [];
+    const q = pickerQuery.trim().toLowerCase();
+    const list = q.length >= 2
+      ? store.all.filter(p => `${p.model} ${p.mfr} ${p.sourceId}`.toLowerCase().includes(q))
+      : store.all;
+    return list.slice(0, PICKER_LIMIT);
+  }, [store, pickerQuery]);
+
+  const sectionDefs: [DsSectionKey, string][] = isLabelMode
+    ? [['identity', t.ds.sections.identityL], ['performance', t.ds.sections.perfL], ['env', t.ds.sections.envL], ['source', t.ds.sections.source]]
+    : [['identity', t.ds.sections.identityP], ['performance', t.ds.sections.perfP], ['env', t.ds.sections.envP], ['bafa', t.ds.sections.bafa], ['source', t.ds.sections.source]];
+
+  // (Footnote numbering + the printable document now live in <DataSheetDoc>.)
+  const segStyle = (on: boolean): React.CSSProperties => ({
+    padding: '6px 16px', fontSize: 12.5, cursor: 'pointer',
+    ...(on ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
+  });
+
+  return (
+    <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', minHeight: 0, height: 'calc(100vh - 60px)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '13px 28px', borderBottom: '1px solid rgba(0,0,0,.08)', flex: 'none' }}>
+        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{t.ds.title}</span>
+        <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 12.5 }}>
+          <span onClick={() => app.setDsMode('product')} style={segStyle(!isLabelMode)}>{t.ds.modeProduct}</span>
+          <span onClick={() => app.setDsMode('label')} style={segStyle(isLabelMode)}>{t.ds.modeLabel}</span>
+        </div>
+      </div>
+      <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
+
+        {/* picker + sections */}
+        <div style={{ flex: '0 0 348px', borderRight: '1px solid rgba(0,0,0,.08)', display: 'flex', flexDirection: 'column', gap: 0, overflow: 'auto' }}>
+          <div style={{ padding: '18px 20px 12px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <span style={sectionLabel}>{t.ds.step1}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #e0e0e0', borderRadius: 999, padding: '7px 14px', color: '#7a7a7a', fontSize: 12.5 }}>
+              <SearchIcon size={12} stroke="currentColor" />
+              <input
+                value={pickerQuery}
+                onChange={e => setPickerQuery(e.target.value)}
+                placeholder={t.ds.searchPlaceholder}
+                style={{ flex: 1, border: 'none', background: 'transparent', fontSize: 12.5, fontFamily: 'inherit', color: '#1d1d1f', padding: 0 }}
+              />
+            </div>
+          </div>
+          {/* Real catalog is 5,000+ models — the picker list scrolls in place so
+              steps 2 · SECTIONS and 3 · EXPORT stay visible (3-step flow). */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 'none', maxHeight: 336, overflowY: 'auto' }}>
+            {pickerRows.map(d => {
+              const on = dsp?.id === d.id;
+              return (
+                <span
+                  key={d.id}
+                  onClick={() => app.setDsId(d.id)}
+                  style={{
+                    display: 'flex', alignItems: 'center', padding: '10px 20px', borderBottom: '1px solid #f0f0f0', cursor: 'pointer',
+                    ...(on ? { background: '#f5f5f7', boxShadow: 'inset 2px 0 0 #0066cc' } : {}),
+                  }}
+                >
+                  <span style={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 0 }}>
+                    <span style={{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{d.model}</span>
+                    <span style={{ fontSize: 11, color: '#7a7a7a' }}>{d.mfr} · {d.kw} kW · {d.label}</span>
+                  </span>
+                </span>
+              );
+            })}
+          </div>
+          <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 11, borderTop: '1px solid rgba(0,0,0,.08)', marginTop: 8 }}>
+            <span style={sectionLabel}>{t.ds.step2}</span>
+            {sectionDefs.map(([key, label]) => {
+              const on = app.dsSections[key];
+              return (
+                <span key={key} onClick={() => app.toggleDsSection(key)} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, cursor: 'pointer' }}>
+                  <span style={{ flex: 'none', width: 32, height: 19, borderRadius: 999, position: 'relative', display: 'inline-block', transition: 'background .18s', background: on ? '#0066cc' : '#d2d2d7' }}>
+                    <span style={{ position: 'absolute', top: 2, width: 15, height: 15, borderRadius: '50%', background: '#fff', transition: 'left .18s', left: on ? 15 : 2 }} />
+                  </span>
+                  {label}
+                </span>
+              );
+            })}
+          </div>
+          <div style={{ padding: '14px 20px 22px', display: 'flex', flexDirection: 'column', gap: 10, borderTop: '1px solid rgba(0,0,0,.08)' }}>
+            <span style={sectionLabel}>{t.ds.step3}</span>
+            <div style={{ display: 'flex', gap: 9 }}>
+              <span className="hp-press" onClick={app.printSheet} style={pillPrimary}>{t.ds.printBtn}</span>
+              <span className="hp-press" onClick={app.printSheet} style={pillSecondary}>{t.ds.pdfBtn}</span>
+            </div>
+            <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.ds.exportNote}</span>
+          </div>
+        </div>
+
+        {/* preview */}
+        <div style={{ flex: 1, background: '#f5f5f7', padding: 28, display: 'flex', justifyContent: 'center', overflow: 'auto' }}>
+          {dsp && <DataSheetDoc app={app} />}
         </div>
       </div>
     </div>

@@ -113,3 +113,11 @@
   to   { transform: translateY(0);    opacity: 1; }
 }
 .hp-sheet-in { animation: hp-sheet-in .22s ease-out; }
+
+/* Phone data-sheet preview scales the printable doc to fit the screen. That
+   transform must NOT apply in print — a transformed ancestor becomes the
+   containing block for the position:absolute .hpiq-print-doc and would shrink
+   / mis-place the printed page. Reset it for print. */
+@media print {
+  .hpiq-ds-scale { transform: none !important; }
+}

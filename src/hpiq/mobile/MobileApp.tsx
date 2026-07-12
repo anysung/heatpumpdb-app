@@ -21,9 +21,10 @@ import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 import { NewsItem, Language } from '../../types';
 import type { Viewport } from '../useViewport';
 import { MobileFind, MobileProducts, MobileDetail } from './MobileCatalog';
+import { DataSheetDoc } from '../pages/DataSheetPage';
 import { showInstallUi, canPromptInstall, isIos, promptInstall, onInstallStateChange } from '../pwaInstall';
 
-type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'news' | 'account'> | 'guide';
+type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account'> | 'guide';
 
 /* ── Tiny tab icons (stroke style matching the desktop icon set) ─────────── */
 
@@ -39,6 +40,7 @@ const ICONS: Record<MTab, string> = {
   news: 'M4 4h13v16H4zM17 8h3v12H6M7.5 8h6M7.5 12h6M7.5 16h6',
   guide: 'M4 5h16M4 12h16M4 19h10',
   account: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-6 8-6s8 2 8 6',
+  datasheet: 'M6 2h9l5 5v15H6zM15 2v5h5M9 12h8M9 16h8M9 8h3',
 };
 
 /* ── PWA install (mobile browsers never volunteer the prompt themselves) ── */
@@ -159,6 +161,73 @@ const MobileFunding: React.FC<{ app: HpApp; goGuide: (tab: 'home' | 'pro') => vo
         </div>
       ))}
       <span style={{ fontSize: 11, color: '#b6b6bc' }}>{t.bafa.sourcesNote}</span>
+    </div>
+  );
+};
+
+/* ── Data sheet (phone): fit-to-width preview of the SAME printable document
+   the desktop studio produces, with Print / PDF actions on top. The core of
+   the mobile journey: Find → product info → PDF/Print. ────────────────────── */
+
+const MobileDataSheet: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
+  const wrapRef = React.useRef<HTMLDivElement>(null);
+  const docRef = React.useRef<HTMLDivElement>(null);
+  const [box, setBox] = useState({ scale: 1, h: 0 });
+  const dsp = app.dsId && app.store ? app.store.byId.get(app.dsId) ?? null : app.store?.all[0] ?? null;
+
+  // Fit the fixed-width (776px total) print document to the phone width by
+  // scaling the whole node down; height follows so nothing overlaps.
+  React.useEffect(() => {
+    const measure = () => {
+      const wrap = wrapRef.current, doc = docRef.current;
+      if (!wrap || !doc) return;
+      const avail = wrap.clientWidth - 20;
+      const natural = doc.offsetWidth || 776;
+      const scale = Math.min(1, avail / natural);
+      setBox({ scale, h: doc.offsetHeight * scale });
+    };
+    measure();
+    const id = setTimeout(measure, 350);   // re-measure after fonts/layout settle
+    window.addEventListener('resize', measure);
+    return () => { clearTimeout(id); window.removeEventListener('resize', measure); };
+  }, [app.dsId, app.dsMode, app.lang, dsp]);
+
+  const actionBtn = (label: string, primary: boolean): React.CSSProperties => ({
+    flex: 1, textAlign: 'center', borderRadius: 999, padding: '11px 0', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+    ...(primary ? { background: '#0066cc', color: '#fff' } : { border: '1px solid #d2d2d7', background: '#fff', color: '#1d1d1f' }),
+  });
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+      {/* action bar */}
+      <div style={{ flex: 'none', padding: '12px 16px 10px', display: 'flex', flexDirection: 'column', gap: 8, background: 'rgba(245,245,247,.96)', borderBottom: '1px solid rgba(0,0,0,.06)' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+          <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600 }}>{t.m.mdsTitle}</span>
+          {dsp && <span style={{ fontSize: 12, color: '#7a7a7a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>{dsp.model}</span>}
+        </div>
+        {dsp ? (
+          <div style={{ display: 'flex', gap: 9 }}>
+            <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPdf, true)}>⬇ {t.m.mdsPdf}</span>
+            <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPrint, false)}>🖨 {t.m.mdsPrint}</span>
+          </div>
+        ) : (
+          <span className="hp-press" onClick={() => app.go('products')} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>{t.m.mdsPick}</span>
+        )}
+      </div>
+
+      {/* fit-to-width preview */}
+      <div ref={wrapRef} style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', padding: '14px 10px calc(20px + env(safe-area-inset-bottom))' }}>
+        {dsp ? (
+          <div style={{ height: box.h, display: 'flex', justifyContent: 'center' }}>
+            <div ref={docRef} className="hpiq-ds-scale" style={{ width: 776, transform: `scale(${box.scale})`, transformOrigin: 'top center', flex: 'none' }}>
+              <DataSheetDoc app={app} />
+            </div>
+          </div>
+        ) : (
+          <div style={{ padding: '40px 16px', textAlign: 'center', color: '#7a7a7a', fontSize: 13.5 }}>{t.find.emptySub}</div>
+        )}
+      </div>
     </div>
   );
 };
@@ -490,11 +559,15 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
   const t = tr(app.lang);
   const [detailOpen, setDetailOpen] = useState(false);
 
-  // Map any desktop-only page state onto the mobile tab set.
-  const MOBILE_TABS: MTab[] = ['find', 'products', 'bafa', 'news', 'account'];
-  const page: MTab = (MOBILE_TABS as string[]).includes(app.page) || app.page === 'guide' ? (app.page as MTab) : 'find';
+  // Footer tab set (owner decision 2026-07-12): Data sheet replaces Funding,
+  // Funding guide replaces News. Funding (bafa) + News stay reachable via
+  // deep links / in-page links, so they're still valid page states.
+  const MOBILE_TABS: MTab[] = ['find', 'products', 'datasheet', 'guide', 'account'];
+  const VALID_PAGES = ['find', 'products', 'datasheet', 'guide', 'bafa', 'news', 'account'];
+  const page: MTab = VALID_PAGES.includes(app.page) ? (app.page as MTab) : 'find';
   const tabLabel: Record<MTab, string> = {
-    find: t.m.tabSearch, products: t.products.title, bafa: t.m.tabFunding, news: t.nav.news, guide: t.nav.guide, account: t.nav.account,
+    find: t.m.tabSearch, products: t.products.title, datasheet: t.m.mdsTitle,
+    bafa: t.m.tabFunding, news: t.nav.news, guide: t.nav.guide, account: t.nav.account,
   };
 
   const openProduct = (id: string) => {
@@ -550,9 +623,10 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
       {iosGuide && <IosInstallGuide app={app} onClose={() => setIosGuide(false)} />}
 
       {/* content */}
-      <div style={{ flex: 1, minHeight: 0, overflowY: page === 'products' ? 'hidden' : 'auto', display: 'flex', flexDirection: 'column', maxWidth: isTablet ? 1100 : undefined, width: '100%', margin: '0 auto' }}>
+      <div style={{ flex: 1, minHeight: 0, overflowY: (page === 'products' || page === 'datasheet') ? 'hidden' : 'auto', display: 'flex', flexDirection: 'column', maxWidth: isTablet ? 1100 : undefined, width: '100%', margin: '0 auto' }}>
         {page === 'find' && <MobileFind app={app} viewport={viewport} onOpen={openProduct} />}
         {page === 'products' && <MobileProducts app={app} viewport={viewport} onOpen={openProduct} />}
+        {page === 'datasheet' && <MobileDataSheet app={app} />}
         {page === 'bafa' && <MobileFunding app={app} goGuide={tab => { app.setGuideTab(tab); app.go('guide'); }} />}
         {page === 'guide' && <MobileGuide app={app} />}
         {page === 'news' && <MobileNews app={app} />}
@@ -567,8 +641,8 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
       {/* phone: bottom tab bar */}
       {viewport === 'phone' && (
         <div style={{ flex: 'none', display: 'flex', background: 'rgba(255,255,255,.92)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', borderTop: '1px solid rgba(0,0,0,.1)', paddingBottom: 'env(safe-area-inset-bottom)', zIndex: 85, position: 'relative' }}>
-          {(['find', 'products', 'bafa', 'news', 'account'] as MTab[]).map(id => {
-            const active = page === id || (id === 'bafa' && page === 'guide');
+          {MOBILE_TABS.map(id => {
+            const active = page === id || (id === 'guide' && page === 'bafa');
             return (
               <span key={id} onClick={() => { setDetailOpen(false); app.go(id as HpPage); }} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, padding: '8px 0 7px', cursor: 'pointer' }}>
                 <Ic d={ICONS[id]} active={active} />
