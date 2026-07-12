@@ -17,9 +17,14 @@ import { INTER_600_WORDMARK_WOFF2 } from './interWordmarkFont';
 
 export type BrandTheme = 'dark' | 'light';
 
+/**
+ * The hub is a SOLID dot in the ink of the theme — it must read against the
+ * background (a white hub on white paper is invisible), exactly as the shipped
+ * assets have it: brand-assets/svg/heatpumpdb-symbol-3a-{light,dark}.svg.
+ */
 export const BRAND_COLORS: Record<BrandTheme, { red: string; blue: string; ink: string; hub: string }> = {
   dark: { red: '#ff6b52', blue: '#2997ff', ink: '#f5f5f7', hub: '#f5f5f7' },
-  light: { red: '#e0452c', blue: '#0066cc', ink: '#1d1d1f', hub: '#fff' },
+  light: { red: '#e0452c', blue: '#0066cc', ink: '#1d1d1f', hub: '#1d1d1f' },
 };
 
 /** Aspect ratios of the artwork boxes (width / height). */
@@ -36,11 +41,16 @@ const CLOTH = 'M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 
  * Inner markup of the logo. `animated` adds the classes the index.css keyframes
  * hook into (half-turn spin, alternating DB color) — off for documents, where
  * the logo must sit in its canonical orientation.
+ *
+ * " DB" tracks the arc that is currently on TOP: the canonical (unrotated) frame
+ * has the RED arc over the top, so the static logo's DB is RED — that is the
+ * frame the shipped assets ship (brand-assets/svg/heatpumpdb-4a-animated-*.svg).
+ * The animation then swaps it to blue on the half turn.
  */
 export function logoInner(opts: { theme: BrandTheme; symbolOnly?: boolean; animated?: boolean }): string {
   const c = BRAND_COLORS[opts.theme];
   const spin = opts.animated ? ' class="hp-logo-spin"' : '';
-  const db = opts.animated ? ' class="hp-logo-db"' : ` fill="${c.blue}"`;
+  const db = opts.animated ? ' class="hp-logo-db"' : ` fill="${c.red}"`;
   const wordmark = opts.symbolOnly
     ? ''
     : `<text x="82" y="46" font-family="${WORDMARK_FONT}" font-weight="600" font-size="40" letter-spacing="-0.7" fill="${c.ink}">HeatPump<tspan${db}> DB</tspan></text>`;
