@@ -21,10 +21,45 @@ import {
   limit,
 } from 'firebase/firestore';
 import { auth, db } from '../firebase';
-import { User, ActivityLog } from '../types';
+import { User, ActivityLog, UserSubscription } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
+import { getValidGrant, joinOrgIfInvited, emailKey } from './subscriptionService';
+import { SUB_PLANS } from '../config/subscriptionPlans';
 
 const OWNER_EMAIL = 'sungyongsoo1976@gmail.com';
+
+/**
+ * Free-access grants (admin promotions): if an admin registered this email in
+ * freeAccessGrants with a currently-valid window, self-activate the account
+ * with the granted plan — no manual approval step. Rules bind the entitlement
+ * to the grant's own plan + end date. Returns the updated user or null.
+ */
+async function redeemFreeGrantIfAny(user: User): Promise<User | null> {
+  try {
+    const grant = await getValidGrant(user.email);
+    if (!grant) return null;
+    const sub: UserSubscription = {
+      provider: 'free_grant',
+      planCode: grant.planCode,
+      status: 'active',
+      seatLimit: SUB_PLANS[grant.planCode].seatLimit,
+      paidPeriodStartsAt: grant.startsAt,
+      currentPeriodEndsAt: grant.endsAt,   // must equal the grant's endsAt (rules)
+      cancelAtPeriodEnd: true,
+    };
+    await updateDoc(doc(db, 'users', user.id), {
+      status: 'active', isActive: true,
+      subscription: sub, billingChannel: 'admin_grant',
+    });
+    await updateDoc(doc(db, 'freeAccessGrants', emailKey(user.email)), {
+      redeemedByUid: user.id, redeemedAt: new Date().toISOString(),
+    }).catch(() => {});
+    await logActivity(user.id, 'APPROVE_USER', `Free-access grant redeemed (${grant.planCode}, until ${grant.endsAt.slice(0, 10)})`, user.email, `${user.firstName} ${user.lastName}`);
+    return { ...user, status: 'active', isActive: true, subscription: sub, billingChannel: 'admin_grant' };
+  } catch {
+    return null;
+  }
+}
 
 /** Roles allowed into the admin console — mirrors isAdmin() in firestore.rules. */
 export const isAdminRole = (role?: string): boolean =>
@@ -60,7 +95,9 @@ export const getLogs = async (fromDate?: string, toDate?: string): Promise<Activ
 };
 
 // --- Registration (status: pending, auto sign-out) ---
-export const registerUser = async (userData: any): Promise<void> => {
+// Returns the activated user when a free-access grant applied (no approval
+// wait, stays signed in), or null for the normal pending flow.
+export const registerUser = async (userData: any): Promise<User | null> => {
   const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
   const uid = userCredential.user?.uid;
   if (!uid) throw new Error('User ID missing');
@@ -84,9 +121,15 @@ export const registerUser = async (userData: any): Promise<void> => {
   };
 
   await setDoc(doc(db, 'users', uid), newUser);
+
+  // Free-access grant (admin promotion): activate immediately, stay signed in.
+  const redeemed = await redeemFreeGrantIfAny(newUser);
+  if (redeemed) return redeemed;
+
   // Sign out immediately — must wait for admin approval
   await signOut(auth);
   await logActivity(uid, 'REGISTER_PENDING', `Registration pending: ${userData.email}`, userData.email, `${userData.firstName} ${userData.lastName}`);
+  return null;
 };
 
 // --- Login (blocks pending/suspended) ---
@@ -128,8 +171,14 @@ export const loginUser = async (email: string, pass: string): Promise<User> => {
     };
 
     if (userData.status === 'pending') {
-      await signOut(auth);
-      throw new Error('Your registration is pending admin approval. You will be notified once approved.');
+      // A valid free-access grant activates the account without manual approval.
+      const redeemed = await redeemFreeGrantIfAny(userData);
+      if (redeemed) {
+        userData = { ...userData, ...redeemed };
+      } else {
+        await signOut(auth);
+        throw new Error('Your registration is pending admin approval. You will be notified once approved.');
+      }
     }
     if (userData.status === 'suspended') {
       await signOut(auth);
@@ -222,6 +271,9 @@ export const loginWithProvider = async (
       role: 'user', plan: 'standard',
     };
     await setDoc(userDocRef, newUser);
+    // Free-access grant (admin promotion): activate immediately, stay signed in.
+    const redeemedNew = await redeemFreeGrantIfAny(newUser);
+    if (redeemedNew) return 'active';
     await signOut(auth);
     await logActivity(uid, 'REGISTER_PENDING', `Social registration pending (${providerLabel}): ${email}`, email, display);
     return 'pending-created';
@@ -233,8 +285,14 @@ export const loginWithProvider = async (
   };
 
   if (userData.status === 'pending') {
-    await signOut(auth);
-    throw new Error('Your registration is pending admin approval. You will be notified once approved.');
+    // A valid free-access grant activates the account without manual approval.
+    const redeemed = await redeemFreeGrantIfAny(userData);
+    if (redeemed) {
+      userData = { ...userData, ...redeemed };
+    } else {
+      await signOut(auth);
+      throw new Error('Your registration is pending admin approval. You will be notified once approved.');
+    }
   }
   if (userData.status === 'suspended') {
     await signOut(auth);
@@ -276,10 +334,22 @@ export const onUserChange = (callback: (user: User | null) => void) => {
     if (firebaseUser) {
       try {
         const userDocRef = doc(db, 'users', firebaseUser.uid);
-        const userDoc = await getDoc(userDocRef);
+        let userDoc = await getDoc(userDocRef);
+        // Registration race: this listener fires the moment the Auth account
+        // exists, which can be BEFORE registerUser/loginWithProvider has
+        // written the Firestore profile. Signing out on a missing doc here
+        // would abort the registration mid-flight (it broke free-grant
+        // auto-activation), so give the profile write a moment to land.
+        if (!userDoc.exists() && firebaseUser.email !== OWNER_EMAIL) {
+          for (let i = 0; i < 6 && !userDoc.exists(); i++) {
+            await new Promise(r => setTimeout(r, 800));
+            if (!auth.currentUser) { callback(null); return; }  // signed out meanwhile (normal pending flow)
+            userDoc = await getDoc(userDocRef);
+          }
+        }
         if (userDoc.exists()) {
           const userData = userDoc.data() as User;
-          const enriched = {
+          let enriched = {
             ...userData,
             role: firebaseUser.email === OWNER_EMAIL ? 'owner' as const : userData.role || 'user' as const,
           };
@@ -288,6 +358,14 @@ export const onUserChange = (callback: (user: User | null) => void) => {
           // every admin query (inbox, members, logs) permission-denied.
           if (firebaseUser.email === OWNER_EMAIL && userData.role !== 'owner') {
             updateDoc(userDocRef, { role: 'owner' }).catch(() => {});
+          }
+          // Team invitation: claim the seat on the first session after the
+          // team admin invited this email (covers social login + restores).
+          if (enriched.status === 'active' && !enriched.orgId) {
+            try {
+              const joined = await joinOrgIfInvited(enriched);
+              if (joined) enriched = { ...enriched, orgId: joined.id, orgRole: 'member' };
+            } catch { /* non-blocking */ }
           }
           callback(enriched);
         } else {

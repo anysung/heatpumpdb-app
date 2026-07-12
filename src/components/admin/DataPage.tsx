@@ -6,9 +6,10 @@
  */
 import React, { useEffect, useState } from 'react';
 import { getNews, getNewsFor } from '../../services/dbService';
-import { Language, HeatPump, NewsItem } from '../../types';
+import { HeatPump, NewsItem } from '../../types';
 import { ACTIVE_COUNTRY, COUNTRY_PROFILES } from '../../config/countryProfiles';
 import { StatCard, SectionCard, PageHeader } from './shared';
+import { AdminLang } from './adminI18n';
 
 const SITE_URLS: Record<string, string> = {
   DE: 'https://www.heatpumpdb.de',
@@ -22,7 +23,7 @@ const SITE_URLS: Record<string, string> = {
  * New countries appear automatically once added to COUNTRY_PROFILES +
  * the vite stats map.
  */
-const MarketsGrid: React.FC<{ de: boolean; locale: string }> = ({ de, locale }) => {
+const MarketsGrid: React.FC<{ ko: boolean; locale: string }> = ({ ko, locale }) => {
   const [newsByCode, setNewsByCode] = useState<Record<string, NewsItem[]>>({});
   useEffect(() => {
     Object.keys(COUNTRY_PROFILES).forEach(code => {
@@ -46,11 +47,11 @@ const MarketsGrid: React.FC<{ de: boolean; locale: string }> = ({ de, locale }) 
               <span className="text-[10px] font-semibold tracking-wide text-gray-400 uppercase">{p.primaryRegistry}</span>
             </div>
             <div className="text-sm text-gray-600 space-y-1">
-              <div className="flex justify-between"><span>{de ? 'Modelle' : 'Models'}</span><span className="font-medium text-gray-900">{(stats.res + stats.com).toLocaleString()}</span></div>
-              <div className="flex justify-between"><span>{de ? 'Wohngebäude / Gewerbe' : 'Residential / Commercial'}</span><span className="font-medium text-gray-900">{stats.res.toLocaleString()} / {stats.com.toLocaleString()}</span></div>
-              <div className="flex justify-between"><span>{de ? 'Hersteller' : 'Manufacturers'}</span><span className="font-medium text-gray-900">{stats.mfr}</span></div>
-              <div className="flex justify-between"><span>{de ? 'News-Artikel' : 'News articles'}</span><span className="font-medium text-gray-900">{news ? news.length : '…'}</span></div>
-              <div className="flex justify-between"><span>{de ? 'Neuester Artikel' : 'Latest article'}</span><span className="font-medium text-gray-900">{news ? fmtD(latest) : '…'}</span></div>
+              <div className="flex justify-between"><span>{ko ? '모델 수' : 'Models'}</span><span className="font-medium text-gray-900">{(stats.res + stats.com).toLocaleString()}</span></div>
+              <div className="flex justify-between"><span>{ko ? '주거용 / 상업용' : 'Residential / Commercial'}</span><span className="font-medium text-gray-900">{stats.res.toLocaleString()} / {stats.com.toLocaleString()}</span></div>
+              <div className="flex justify-between"><span>{ko ? '제조사' : 'Manufacturers'}</span><span className="font-medium text-gray-900">{stats.mfr}</span></div>
+              <div className="flex justify-between"><span>{ko ? '뉴스 기사' : 'News articles'}</span><span className="font-medium text-gray-900">{news ? news.length : '…'}</span></div>
+              <div className="flex justify-between"><span>{ko ? '최신 기사' : 'Latest article'}</span><span className="font-medium text-gray-900">{news ? fmtD(latest) : '…'}</span></div>
             </div>
             <a href={SITE_URLS[p.code] ?? '#'} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-blue-600 hover:underline pt-1">
               {SITE_URLS[p.code]?.replace('https://', '') ?? '—'} ↗
@@ -63,7 +64,7 @@ const MarketsGrid: React.FC<{ de: boolean; locale: string }> = ({ de, locale }) 
 };
 
 interface DataPageProps {
-  language: Language;
+  al: AdminLang;
   /** Combined residential + commercial items loaded by the app shell. */
   products: HeatPump[] | null;
   lastUpdated?: string | null;
@@ -78,9 +79,9 @@ const maxDate = (items: HeatPump[], key: 'bafa_snapshot_fetched_at' | 'source_sn
 const fmt = (iso: string | null | undefined, locale: string) =>
   iso ? new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
 
-export const DataPage: React.FC<DataPageProps> = ({ language, products, lastUpdated }) => {
-  const de = language === 'de';
-  const locale = de ? 'de-DE' : 'en-GB';
+export const DataPage: React.FC<DataPageProps> = ({ al, products, lastUpdated }) => {
+  const ko = al === 'ko';
+  const locale = ko ? 'ko-KR' : 'en-GB';
   const [news, setNews] = useState<NewsItem[] | null>(null);
 
   useEffect(() => { getNews().then(setNews).catch(() => setNews([])); }, []);
@@ -97,69 +98,69 @@ export const DataPage: React.FC<DataPageProps> = ({ language, products, lastUpda
   return (
     <div>
       <PageHeader
-        title={de ? 'Daten' : 'Data'}
-        subtitle={de
-          ? 'Datensatz-Status aller Märkte · Detailansicht für den aktiven Markt unten'
+        title={ko ? '데이터' : 'Data'}
+        subtitle={ko
+          ? '전체 마켓 데이터셋 현황 · 아래는 활성 마켓 상세'
           : 'Dataset status across all markets · active-market detail below'}
       />
 
       {/* All markets — unified console view */}
-      <MarketsGrid de={de} locale={locale} />
+      <MarketsGrid ko={ko} locale={locale} />
 
       <div className="mb-2 text-xs font-semibold tracking-wide text-gray-400 uppercase">
-        {de ? `Aktiver Markt: ${ACTIVE_COUNTRY.name}` : `Active market: ${ACTIVE_COUNTRY.name}`}
+        {ko ? `활성 마켓: ${ACTIVE_COUNTRY.name}` : `Active market: ${ACTIVE_COUNTRY.name}`}
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard label={de ? 'Produkte gesamt' : 'Total products'} value={items.length.toLocaleString()} color="blue" icon="🗄️" />
-        <StatCard label={de ? 'Wohngebäude' : 'Residential'} value={residential.toLocaleString()} color="green" icon="🏠" />
-        <StatCard label={de ? 'Gewerbe' : 'Commercial'} value={commercial.toLocaleString()} color="yellow" icon="🏢" />
-        <StatCard label={de ? 'Nachrichten' : 'News items'} value={news === null ? '…' : news.length} color="gray" icon="📰" />
+        <StatCard label={ko ? '전체 제품' : 'Total products'} value={items.length.toLocaleString()} color="blue" icon="🗄️" />
+        <StatCard label={ko ? '주거용' : 'Residential'} value={residential.toLocaleString()} color="green" icon="🏠" />
+        <StatCard label={ko ? '상업용' : 'Commercial'} value={commercial.toLocaleString()} color="yellow" icon="🏢" />
+        <StatCard label={ko ? '뉴스' : 'News items'} value={news === null ? '…' : news.length} color="gray" icon="📰" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <SectionCard title={de ? 'Produktdatensatz' : 'Product dataset'} icon="🔧">
+        <SectionCard title={ko ? '제품 데이터셋' : 'Product dataset'} icon="🔧">
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">{de ? 'Markt' : 'Market'}</span>
+              <span className="text-gray-600">{ko ? '마켓' : 'Market'}</span>
               <span className="font-medium">{ACTIVE_COUNTRY.name} ({ACTIVE_COUNTRY.code}) · {ACTIVE_COUNTRY.primaryRegistry}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{de ? 'BAFA-Quellstand' : 'Registry snapshot'}</span>
+              <span className="text-gray-600">{ko ? '레지스트리 스냅샷' : 'Registry snapshot'}</span>
               <span className="font-medium">{fmt(bafaSnapshot, locale)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{de ? 'Datensatz erzeugt' : 'Dataset generated'}</span>
+              <span className="text-gray-600">{ko ? '데이터셋 생성일' : 'Dataset generated'}</span>
               <span className="font-medium">{fmt(generatedAt, locale)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{de ? 'In App geladen' : 'Loaded in app'}</span>
+              <span className="text-gray-600">{ko ? '앱 로드 시각' : 'Loaded in app'}</span>
               <span className="font-medium">{fmt(lastUpdated, locale)}</span>
             </div>
             <p className="text-xs text-gray-400 pt-2 border-t border-gray-100 leading-relaxed">
-              {de
-                ? 'Der Produktdatensatz wird von der lokalen Pipeline (scripts/bafa) erzeugt und mit jedem Hosting-Deploy als statisches JSON ausgeliefert. Änderungen erscheinen hier nach Pipeline-Lauf + Deploy.'
+              {ko
+                ? '제품 데이터셋은 로컬 파이프라인(scripts/bafa)이 생성해 호스팅 배포 시 정적 JSON으로 함께 배포됩니다. 파이프라인 실행 + 배포 후에 여기 반영됩니다.'
                 : 'The product dataset is produced by the local pipeline (scripts/bafa) and shipped as static JSON with each hosting deploy. Changes appear here after a pipeline run + deploy.'}
             </p>
           </div>
         </SectionCard>
 
-        <SectionCard title={de ? 'News-Pipeline' : 'News pipeline'} icon="📰">
+        <SectionCard title={ko ? '뉴스 파이프라인' : 'News pipeline'} icon="📰">
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">{de ? 'Artikel gesamt' : 'Total articles'}</span>
+              <span className="text-gray-600">{ko ? '전체 기사' : 'Total articles'}</span>
               <span className="font-medium">{news === null ? '…' : news.length}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{de ? 'Neuester Artikel' : 'Latest article'}</span>
+              <span className="text-gray-600">{ko ? '최신 기사' : 'Latest article'}</span>
               <span className="font-medium">{fmt(latestNews, locale)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{de ? 'Quelle' : 'Source'}</span>
-              <span className="font-medium">Cloud Function ({de ? 'monatlich' : 'monthly'})</span>
+              <span className="text-gray-600">{ko ? '출처' : 'Source'}</span>
+              <span className="font-medium">Cloud Function ({ko ? '매월' : 'monthly'})</span>
             </div>
             <p className="text-xs text-gray-400 pt-2 border-t border-gray-100 leading-relaxed">
-              {de
-                ? 'Marktnachrichten werden von der separat bereitgestellten Cloud Function erzeugt (google_cloud_function/, eigenes deploy.sh) und nach countries/' + ACTIVE_COUNTRY.code + ' geschrieben.'
+              {ko
+                ? '마켓 뉴스는 별도로 배포되는 Cloud Function(google_cloud_function/, 자체 deploy.sh)이 생성해 countries/' + ACTIVE_COUNTRY.code + '에 기록합니다.'
                 : 'Market news is generated by the separately deployed Cloud Function (google_cloud_function/, its own deploy.sh) and written to countries/' + ACTIVE_COUNTRY.code + '.'}
             </p>
           </div>

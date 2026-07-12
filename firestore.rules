@@ -46,6 +46,11 @@ service cloud.firestore {
         (request.resource.data.status == 'pending' &&
          request.resource.data.isActive == false &&
          request.resource.data.get('role', 'user') == 'user') ||
+        // Free-access grant registration: created directly active with the
+        // granted plan (see grantRedemptionValid below).
+        (grantRedemptionValid() &&
+         request.resource.data.status == 'active' &&
+         request.resource.data.get('role', 'user') == 'user') ||
         // Owner bootstrap profile (matched by the authenticated email).
         request.auth.token.email == 'sungyongsoo1976@gmail.com'
       );
@@ -62,10 +67,91 @@ service cloud.firestore {
             // Heartbeat-only update
             request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastActiveAt'])
           )
+        ) ||
+        // Free-access grant redemption: an admin-issued grant for this email
+        // may self-activate the account with exactly the granted plan/window.
+        (
+          grantRedemptionValid() &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['status', 'isActive', 'subscription', 'billingChannel']) &&
+          request.resource.data.status == 'active'
+        ) ||
+        // Team invite acceptance: point own profile at the org (membership
+        // itself is validated on the organizations doc update).
+        (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['orgId', 'orgRole']) &&
+          request.resource.data.orgRole == 'member'
         )
       );
 
       allow read, write: if isAdmin();
+    }
+
+    // ── Subscription program ───────────────────────────────────────────────
+
+    // Free-access grant for the caller's email (admin promotions).
+    // Rules cannot parse ISO date strings, so the window is enforced by
+    // binding the granted entitlement to the grant's own dates: a redeemed
+    // subscription must copy planCode + endsAt from the grant doc, so an
+    // expired grant can only ever yield an already-expired entitlement.
+    function hasGrant() {
+      return request.auth.token.email != null &&
+             exists(/databases/$(database)/documents/freeAccessGrants/$(request.auth.token.email));
+    }
+    function grantData() {
+      return get(/databases/$(database)/documents/freeAccessGrants/$(request.auth.token.email)).data;
+    }
+    function grantRedemptionValid() {
+      return hasGrant() &&
+             !('revokedAt' in grantData()) &&
+             request.resource.data.subscription.provider == 'free_grant' &&
+             request.resource.data.subscription.planCode == grantData().planCode &&
+             request.resource.data.subscription.currentPeriodEndsAt == grantData().endsAt;
+    }
+
+    // Free-use registrations (email as doc id, lowercase). Admin writes;
+    // the matching user may read + stamp redemption on their own grant.
+    match /freeAccessGrants/{email} {
+      allow read: if isAdmin() || (isSignedIn() && request.auth.token.email == email);
+      allow update: if isSignedIn() && request.auth.token.email == email &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['redeemedByUid', 'redeemedAt']) &&
+        request.resource.data.redeemedByUid == request.auth.uid;
+      allow read, write: if isAdmin();
+    }
+
+    // Team 3 / Team 5 organizations. Created by admin (or billing webhook —
+    // Admin SDK bypasses rules). The owner manages seats but never the plan;
+    // an invited user may claim a seat for themselves. Org docs are readable
+    // by any signed-in account (invite lookup queries need it; contents are
+    // seat emails only — all accounts are admin-approved professionals).
+    match /organizations/{orgId} {
+      allow read: if isSignedIn() || isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() ||
+        (
+          // Owner seat management: members / invites / keep-list / name only.
+          isSignedIn() && request.auth.uid == resource.data.ownerUid &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['members', 'invitedEmails', 'keepMemberUids', 'name']) &&
+          request.resource.data.members.size() <= resource.data.seatLimit
+        ) ||
+        (
+          // Invited user claims their seat: join members, clear own invite.
+          isSignedIn() && request.auth.token.email in resource.data.invitedEmails &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['members', 'invitedEmails']) &&
+          request.resource.data.members.size() <= resource.data.seatLimit &&
+          request.resource.data.members.size() == resource.data.members.size() + 1
+        );
+    }
+
+    // Renewal-time plan/term change requests (never applied mid-term).
+    // Doc id == subscriber uid; user manages their own, admin sees all.
+    match /subscriptionChangeRequests/{uid} {
+      allow read, write: if isAdmin();
+      allow read, create, update, delete: if isSignedIn() && request.auth.uid == uid;
     }
 
     // ── Support tickets (in-app inquiries ↔ admin inbox) ──────────────────

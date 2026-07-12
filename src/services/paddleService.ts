@@ -7,12 +7,13 @@
  * billing identifiers kept on the user profile are the Paddle customer /
  * subscription ids (written by the payment webhook, server-side).
  *
- * Configuration (public, per environment):
- *   VITE_PADDLE_CLIENT_TOKEN — publishable client token ('test_…' = sandbox)
- *   VITE_PADDLE_PRICE_ID     — the Pro subscription price id for this market
- * Unconfigured builds keep the UI functional with a "coming soon" outcome.
+ * Catalogue: 3 products (Professional / Team 3 / Team 5) × 3 recurring prices
+ * (monthly / 6 months / annual), each with a 7-day €0 trial configured in
+ * Paddle. Price ids come from VITE_PADDLE_PRICE_* (see env.ts +
+ * subscriptionPlans.ts); unset ids keep that option in "coming soon" mode.
  */
 import { PUBLIC_ENV } from '../config/env';
+import { SubPlanCode, BillingTerm, paddlePriceId, checkoutConfigured } from '../config/subscriptionPlans';
 import { User } from '../types';
 
 declare global {
@@ -20,14 +21,18 @@ declare global {
   interface Window { Paddle?: any }
 }
 
+/** True once ANY checkout can open (token + at least one price id). */
 export const paddleConfigured =
-  !!(PUBLIC_ENV.PADDLE_CLIENT_TOKEN && PUBLIC_ENV.PADDLE_PRICE_ID);
+  !!PUBLIC_ENV.PADDLE_CLIENT_TOKEN &&
+  Object.values(PUBLIC_ENV.PADDLE_PRICES).some(Boolean);
+
+export { checkoutConfigured };
 
 let loader: Promise<any> | null = null;
 
 /** Load + initialize Paddle.js v2 once. Rejects if unconfigured or blocked. */
 function loadPaddle(): Promise<any> {
-  if (!paddleConfigured) return Promise.reject(new Error('paddle-not-configured'));
+  if (!PUBLIC_ENV.PADDLE_CLIENT_TOKEN) return Promise.reject(new Error('paddle-not-configured'));
   if (window.Paddle) return Promise.resolve(window.Paddle);
   if (loader) return loader;
   loader = new Promise((resolve, reject) => {
@@ -50,16 +55,18 @@ function loadPaddle(): Promise<any> {
 }
 
 /**
- * Open the Paddle overlay checkout for the Pro subscription.
- * customData.userId lets the payment webhook attach the subscription to the
- * Firebase account regardless of the email used at checkout.
+ * Open the Paddle overlay checkout for a plan/term (7-day trial is configured
+ * on the Paddle price itself). customData lets the billing webhook attach the
+ * subscription to the Firebase account and pick the right plan regardless of
+ * the email used at checkout.
  */
-export async function openCheckout(user: User): Promise<void> {
+export async function openCheckout(user: User, plan: SubPlanCode, term: BillingTerm): Promise<void> {
+  if (!checkoutConfigured(plan, term)) throw new Error('paddle-not-configured');
   const paddle = await loadPaddle();
   paddle.Checkout.open({
-    items: [{ priceId: PUBLIC_ENV.PADDLE_PRICE_ID, quantity: 1 }],
+    items: [{ priceId: paddlePriceId(plan, term), quantity: 1 }],
     customer: user.email ? { email: user.email } : undefined,
-    customData: { userId: user.id, country: user.country ?? '' },
+    customData: { userId: user.id, planCode: plan, billingTerm: term, country: user.country ?? '' },
     settings: { displayMode: 'overlay', theme: 'dark' },
   });
 }

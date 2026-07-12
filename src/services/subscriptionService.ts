@@ -1,0 +1,288 @@
+/**
+ * subscriptionService — organizations (Team 3/5 seats), free-access grants
+ * (admin promotions) and renewal-time change requests.
+ *
+ * Ownership of writes (mirrors firestore.rules):
+ *   - user.subscription entitlement: billing webhook / admin / free-grant
+ *     redemption only — never plain client code.
+ *   - organizations: created by admin (or webhook later). The org OWNER may
+ *     manage seats (members / invitedEmails / keepMemberUids / name) but can
+ *     never touch planCode / seatLimit / status. An INVITED user may join
+ *     (add self to members, remove own email from invitedEmails).
+ *   - freeAccessGrants: admin-only writes; the matching user may redeem
+ *     (rules validate the grant window server-side).
+ *   - subscriptionChangeRequests: the subscriber schedules/cancels their own;
+ *     applied at renewal by ops/webhook — never mid-term.
+ */
+import {
+  collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc,
+  query, where, arrayUnion, arrayRemove,
+} from 'firebase/firestore';
+import { db } from '../firebase';
+import {
+  User, Organization, FreeAccessGrant, SubscriptionChangeRequest, UserSubscription,
+} from '../types';
+import {
+  SubPlanCode, BillingTerm, SUB_PLANS, TERM_MONTHS, isTeamPlan,
+} from '../config/subscriptionPlans';
+
+const ORGS = 'organizations';
+const GRANTS = 'freeAccessGrants';
+const CHANGES = 'subscriptionChangeRequests';
+
+const nowIso = () => new Date().toISOString();
+export const emailKey = (email: string) => email.trim().toLowerCase();
+
+// ── Organizations (Team 3 / Team 5) ─────────────────────────────────────────
+
+export async function getOrg(orgId: string): Promise<Organization | null> {
+  const snap = await getDoc(doc(db, ORGS, orgId));
+  return snap.exists() ? ({ id: snap.id, ...snap.data() } as Organization) : null;
+}
+
+export async function getMyOrg(user: User): Promise<Organization | null> {
+  if (!user.orgId) return null;
+  const org = await getOrg(user.orgId);
+  // Stale pointer (removed member): treat as no team.
+  if (org && !org.members.some(m => m.uid === user.id)) return null;
+  return org;
+}
+
+/** Seats currently occupied or reserved by an open invitation. */
+export const seatsUsed = (org: Organization): number =>
+  org.members.length + (org.invitedEmails?.length ?? 0);
+
+/** Team admin: invite a member into a free seat (replacement is allowed anytime). */
+export async function inviteMember(org: Organization, email: string): Promise<void> {
+  const key = emailKey(email);
+  if (org.members.some(m => emailKey(m.email) === key)) throw new Error('already-member');
+  if ((org.invitedEmails ?? []).includes(key)) throw new Error('already-invited');
+  if (seatsUsed(org) >= org.seatLimit) throw new Error('no-seats');
+  await updateDoc(doc(db, ORGS, org.id), { invitedEmails: arrayUnion(key) });
+}
+
+export async function cancelInvite(org: Organization, email: string): Promise<void> {
+  await updateDoc(doc(db, ORGS, org.id), { invitedEmails: arrayRemove(emailKey(email)) });
+}
+
+/** Team admin: free a seat. Never touches the Paddle subscription. */
+export async function removeMember(org: Organization, uid: string): Promise<void> {
+  if (uid === org.ownerUid) throw new Error('cannot-remove-owner');
+  const member = org.members.find(m => m.uid === uid);
+  if (!member) return;
+  await updateDoc(doc(db, ORGS, org.id), {
+    members: arrayRemove(member),
+    keepMemberUids: arrayRemove(uid),
+  });
+}
+
+/** Choose which members keep seats on a scheduled downgrade. */
+export async function setKeepMembers(org: Organization, keepUids: string[]): Promise<void> {
+  await updateDoc(doc(db, ORGS, org.id), { keepMemberUids: keepUids });
+}
+
+/**
+ * Invited user: claim the seat (called after login). Adds self to members,
+ * removes the invitation, then points the own profile at the org.
+ */
+export async function joinOrgIfInvited(user: User): Promise<Organization | null> {
+  const key = emailKey(user.email);
+  const q = query(collection(db, ORGS), where('invitedEmails', 'array-contains', key));
+  const snap = await getDocs(q);
+  if (snap.empty) return null;
+  const orgDoc = snap.docs[0];
+  const org = { id: orgDoc.id, ...orgDoc.data() } as Organization;
+  if (org.members.length >= org.seatLimit) return null; // seat was refilled meanwhile
+  const name = [user.firstName, user.lastName].filter(Boolean).join(' ');
+  await updateDoc(orgDoc.ref, {
+    members: arrayUnion({ uid: user.id, email: key, ...(name ? { name } : {}) }),
+    invitedEmails: arrayRemove(key),
+  });
+  await updateDoc(doc(db, 'users', user.id), { orgId: org.id, orgRole: 'member' });
+  return { ...org, members: [...org.members, { uid: user.id, email: key, name }] };
+}
+
+// ── Admin: assign / clear subscriptions (ops backstop + admin_grant channel) ──
+
+/**
+ * Admin: put a user on a plan (creates the org for team plans). Used both as
+ * the ops backstop before/alongside the Paddle webhook and for manual deals.
+ */
+export async function adminAssignSubscription(
+  target: User,
+  plan: SubPlanCode,
+  term: BillingTerm,
+  opts: { provider?: 'paddle' | 'free_grant'; status?: UserSubscription['status']; periodEndsAt?: string; adminName?: string } = {},
+): Promise<void> {
+  const periodEnd = opts.periodEndsAt
+    ?? new Date(Date.now() + TERM_MONTHS[term] * 30.44 * 86400_000).toISOString();
+  const sub: UserSubscription = {
+    provider: opts.provider ?? 'paddle',
+    planCode: plan,
+    billingTerm: term,
+    status: opts.status ?? 'active',
+    seatLimit: SUB_PLANS[plan].seatLimit,
+    paidPeriodStartsAt: nowIso(),
+    currentPeriodEndsAt: periodEnd,
+    cancelAtPeriodEnd: false,
+  };
+  const update: Record<string, any> = {
+    subscription: sub,
+    billingChannel: opts.provider === 'free_grant' ? 'admin_grant' : 'paddle',
+  };
+
+  if (isTeamPlan(plan) && (plan === 'team_3' || plan === 'team_5')) {
+    // One org per owner; reuse if it exists so member seats survive plan renewals.
+    let orgId = target.orgId;
+    const existing = orgId ? await getOrg(orgId) : null;
+    if (existing && existing.ownerUid === target.id) {
+      await updateDoc(doc(db, ORGS, existing.id), {
+        planCode: plan,
+        seatLimit: SUB_PLANS[plan].seatLimit,
+        subscriptionStatus: sub.status,
+        currentPeriodEndsAt: periodEnd,
+      });
+    } else {
+      const ref = doc(collection(db, ORGS));
+      orgId = ref.id;
+      const org: Omit<Organization, 'id'> = {
+        name: target.companyName || '',
+        ownerUid: target.id,
+        ownerEmail: emailKey(target.email),
+        planCode: plan,
+        seatLimit: SUB_PLANS[plan].seatLimit,
+        subscriptionStatus: sub.status,
+        trialEndsAt: sub.trialEndsAt ?? null,
+        currentPeriodEndsAt: periodEnd,
+        members: [{ uid: target.id, email: emailKey(target.email), name: [target.firstName, target.lastName].filter(Boolean).join(' ') }],
+        invitedEmails: [],
+        createdAt: nowIso(),
+      };
+      await setDoc(ref, org);
+    }
+    update.orgId = orgId;
+    update.orgRole = 'team_admin';
+  }
+
+  await updateDoc(doc(db, 'users', target.id), update);
+}
+
+/** Admin: end a subscription immediately (refund handling stays in Paddle). */
+export async function adminClearSubscription(target: User): Promise<void> {
+  const update: Record<string, any> = {};
+  if (target.subscription) update['subscription.status'] = 'expired';
+  await updateDoc(doc(db, 'users', target.id), update);
+  if (target.orgId && target.orgRole === 'team_admin') {
+    await updateDoc(doc(db, ORGS, target.orgId), { subscriptionStatus: 'expired' });
+  }
+}
+
+// ── Free-access grants (admin promotions) ───────────────────────────────────
+
+export async function listGrants(): Promise<FreeAccessGrant[]> {
+  const snap = await getDocs(collection(db, GRANTS));
+  return snap.docs.map(d => d.data() as FreeAccessGrant)
+    .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));
+}
+
+/**
+ * Admin: register a free-use email. If the account already exists it is
+ * approved + entitled immediately; otherwise the grant auto-activates the
+ * account at registration/login (authService.redeemFreeGrant).
+ */
+export async function createGrant(
+  email: string,
+  plan: SubPlanCode,
+  startsAt: string,
+  endsAt: string,
+  note: string,
+  grantedBy: string,
+  existingUser: User | null,
+): Promise<void> {
+  const key = emailKey(email);
+  const grant: FreeAccessGrant = {
+    email: key, planCode: plan, startsAt, endsAt,
+    note: note || '', grantedBy, createdAt: nowIso(),
+    ...(existingUser ? { redeemedByUid: existingUser.id, redeemedAt: nowIso() } : {}),
+  };
+  await setDoc(doc(db, GRANTS, key), grant);
+
+  if (existingUser) {
+    const sub: UserSubscription = {
+      provider: 'free_grant', planCode: plan, status: 'active',
+      seatLimit: SUB_PLANS[plan].seatLimit,
+      paidPeriodStartsAt: startsAt, currentPeriodEndsAt: endsAt,
+      cancelAtPeriodEnd: true,
+    };
+    await updateDoc(doc(db, 'users', existingUser.id), {
+      status: 'active', isActive: true,
+      subscription: sub, billingChannel: 'admin_grant',
+    });
+  }
+}
+
+export async function revokeGrant(email: string): Promise<void> {
+  const key = emailKey(email);
+  const snap = await getDoc(doc(db, GRANTS, key));
+  if (!snap.exists()) return;
+  const grant = snap.data() as FreeAccessGrant;
+  await updateDoc(doc(db, GRANTS, key), { revokedAt: nowIso(), endsAt: nowIso() });
+  if (grant.redeemedByUid) {
+    await updateDoc(doc(db, 'users', grant.redeemedByUid), { 'subscription.status': 'expired' });
+  }
+}
+
+/** Valid (started, not ended, not revoked) grant for an email, or null. */
+export async function getValidGrant(email: string): Promise<FreeAccessGrant | null> {
+  try {
+    const snap = await getDoc(doc(db, GRANTS, emailKey(email)));
+    if (!snap.exists()) return null;
+    const g = snap.data() as FreeAccessGrant;
+    const now = Date.now();
+    if (g.revokedAt) return null;
+    if (new Date(g.startsAt).getTime() > now) return null;
+    if (new Date(g.endsAt).getTime() < now) return null;
+    return g;
+  } catch { return null; }
+}
+
+// ── Renewal-time change requests ────────────────────────────────────────────
+
+export async function getMyChangeRequest(uid: string): Promise<SubscriptionChangeRequest | null> {
+  const snap = await getDoc(doc(db, CHANGES, uid));
+  if (!snap.exists()) return null;
+  const req = { id: snap.id, ...snap.data() } as SubscriptionChangeRequest;
+  return req.status === 'scheduled' ? req : null;
+}
+
+export async function scheduleChange(
+  user: User,
+  requestedPlan: SubPlanCode,
+  requestedTerm: BillingTerm,
+  keepMemberUids?: string[],
+): Promise<void> {
+  const req: Omit<SubscriptionChangeRequest, 'id'> = {
+    userId: user.id,
+    userEmail: emailKey(user.email),
+    currentPlanCode: user.subscription?.planCode ?? '',
+    currentBillingTerm: user.subscription?.billingTerm,
+    requestedPlanCode: requestedPlan,
+    requestedBillingTerm: requestedTerm,
+    ...(keepMemberUids ? { keepMemberUids } : {}),
+    effectiveAt: user.subscription?.currentPeriodEndsAt ?? null,
+    status: 'scheduled',
+    createdAt: nowIso(),
+  };
+  await setDoc(doc(db, CHANGES, user.id), req);
+}
+
+export async function cancelChange(uid: string): Promise<void> {
+  await deleteDoc(doc(db, CHANGES, uid));
+}
+
+export async function listChangeRequests(): Promise<SubscriptionChangeRequest[]> {
+  const snap = await getDocs(collection(db, CHANGES));
+  return snap.docs.map(d => ({ id: d.id, ...d.data() } as SubscriptionChangeRequest))
+    .filter(r => r.status === 'scheduled')
+    .sort((a, b) => (a.effectiveAt ?? '').localeCompare(b.effectiveAt ?? ''));
+}

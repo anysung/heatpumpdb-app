@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { getLogs } from '../../services/authService';
-import { ActivityLog, Language } from '../../types';
-import { AUDIT_ACTIONS } from '../../config/adminConfig';
+import { ActivityLog } from '../../types';
 import { ActionBadge, PageHeader, EmptyState } from './shared';
+import { AdminLang } from './adminI18n';
 
 interface AuditPageProps {
-  language: Language;
+  al: AdminLang;
 }
 
-export const AuditPage: React.FC<AuditPageProps> = ({ language }) => {
+export const AuditPage: React.FC<AuditPageProps> = ({ al }) => {
+  const ko = al === 'ko';
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [loading, setLoading] = useState(false);
   const [fromDate, setFromDate] = useState('');
@@ -73,25 +74,25 @@ export const AuditPage: React.FC<AuditPageProps> = ({ language }) => {
   return (
     <div className="flex flex-col h-full">
       <PageHeader
-        title={language === 'de' ? 'Audit-Protokolle' : 'Audit Logs'}
-        subtitle={`${filtered.length} ${language === 'de' ? 'Einträge' : 'records'}`}
+        title={ko ? '감사 로그' : 'Audit Logs'}
+        subtitle={`${filtered.length} ${ko ? '건' : 'records'}`}
       />
 
       {/* Filters */}
       <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-4 flex flex-wrap gap-3 items-end">
         <div className="relative flex-grow min-w-[180px]">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
-          <input type="text" placeholder={language === 'de' ? 'Suchen...' : 'Search...'}
+          <input type="text" placeholder={ko ? '검색…' : 'Search...'}
             className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
             value={search} onChange={e => setSearch(e.target.value)} />
         </div>
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">{language === 'de' ? 'Von' : 'From'}</label>
+          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">{ko ? '시작일' : 'From'}</label>
           <input type="date" value={fromDate} onChange={e => setFromDate(e.target.value)}
             className="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">{language === 'de' ? 'Bis' : 'To'}</label>
+          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">{ko ? '종료일' : 'To'}</label>
           <input type="date" value={toDate} onChange={e => setToDate(e.target.value)}
             className="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
@@ -99,15 +100,15 @@ export const AuditPage: React.FC<AuditPageProps> = ({ language }) => {
           <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Action</label>
           <select value={actionFilter} onChange={e => setActionFilter(e.target.value)}
             className="px-3 py-2 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="all">{language === 'de' ? 'Alle Aktionen' : 'All Actions'}</option>
+            <option value="all">{ko ? '모든 액션' : 'All Actions'}</option>
             {uniqueActions.map(a => <option key={a} value={a}>{a}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">{language === 'de' ? 'Quelle' : 'Source'}</label>
+          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">{ko ? '소스' : 'Source'}</label>
           <select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}
             className="px-3 py-2 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="all">{language === 'de' ? 'Alle Quellen' : 'All Sources'}</option>
+            <option value="all">{ko ? '모든 소스' : 'All Sources'}</option>
             <option value="admin_ui">Admin UI</option>
             <option value="system">System</option>
             <option value="webhook">Webhook</option>
@@ -116,11 +117,11 @@ export const AuditPage: React.FC<AuditPageProps> = ({ language }) => {
         </div>
         <button onClick={() => loadLogs(fromDate, toDate)}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg">
-          🔍 {language === 'de' ? 'Suchen' : 'Search'}
+          🔍 {ko ? '검색' : 'Search'}
         </button>
         <button onClick={() => { setFromDate(''); setToDate(''); setActionFilter('all'); setSourceFilter('all'); setSearch(''); loadLogs('', ''); }}
           className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg">
-          {language === 'de' ? 'Zurücksetzen' : 'Reset'}
+          {ko ? '초기화' : 'Reset'}
         </button>
       </div>
 
@@ -171,7 +172,7 @@ export const AuditPage: React.FC<AuditPageProps> = ({ language }) => {
                 ))}
               </tbody>
             </table>
-            {filtered.length === 0 && <EmptyState message={language === 'de' ? 'Keine Protokolle gefunden.' : 'No logs found.'} icon="📋" />}
+            {filtered.length === 0 && <EmptyState message={ko ? '로그가 없습니다.' : 'No logs found.'} icon="📋" />}
           </div>
         )}
       </div>
@@ -179,7 +180,7 @@ export const AuditPage: React.FC<AuditPageProps> = ({ language }) => {
       {/* Export */}
       <div className="mt-4 flex items-center justify-between bg-white rounded-lg border border-gray-200 shadow-sm px-4 py-3">
         <div className="text-sm text-gray-600">
-          <span className="font-medium">{language === 'de' ? 'Rohdaten exportieren' : 'Export raw log data'}</span>
+          <span className="font-medium">{ko ? '원본 로그 내보내기' : 'Export raw log data'}</span>
           {(fromDate || toDate) && (
             <span className="text-gray-400 ml-2">{fromDate || '—'} → {toDate || 'now'}</span>
           )}

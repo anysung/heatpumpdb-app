@@ -13,7 +13,6 @@ export type PlanCode = 'standard' | 'premium';
 export interface PlanDefinition {
   code: PlanCode;
   displayName: string;
-  displayNameDe: string;
   dataSheetMonthlyLimit: number;
   industryInsightAccess: boolean;
   active: boolean;
@@ -24,7 +23,6 @@ export const PLANS: Record<PlanCode, PlanDefinition> = {
   standard: {
     code: 'standard',
     displayName: 'Standard',
-    displayNameDe: 'Standard',
     dataSheetMonthlyLimit: 20,
     industryInsightAccess: false,
     active: true,
@@ -33,7 +31,6 @@ export const PLANS: Record<PlanCode, PlanDefinition> = {
   premium: {
     code: 'premium',
     displayName: 'Premium',
-    displayNameDe: 'Premium',
     dataSheetMonthlyLimit: 100,
     industryInsightAccess: true,
     active: true,
@@ -55,15 +52,15 @@ export function hasIndustryInsightAccess(plan: PlanCode): boolean {
 
 export type UserStatus = 'pending' | 'active' | 'rejected' | 'suspended' | 'disabled' | 'deletion_requested' | 'deleted' | 'archived';
 
-export const USER_STATUS_OPTIONS: { value: UserStatus; label: string; labelDe: string; color: string }[] = [
-  { value: 'pending',            label: 'Pending',            labelDe: 'Ausstehend',        color: 'yellow' },
-  { value: 'active',             label: 'Active',             labelDe: 'Aktiv',             color: 'green' },
-  { value: 'rejected',           label: 'Rejected',           labelDe: 'Abgelehnt',         color: 'red' },
-  { value: 'suspended',          label: 'Suspended',          labelDe: 'Gesperrt',          color: 'orange' },
-  { value: 'disabled',           label: 'Disabled',           labelDe: 'Deaktiviert',       color: 'red' },
-  { value: 'deletion_requested', label: 'Deletion Requested', labelDe: 'Löschung angefragt', color: 'red' },
-  { value: 'deleted',            label: 'Deleted',            labelDe: 'Gelöscht',          color: 'gray' },
-  { value: 'archived',           label: 'Archived',           labelDe: 'Archiviert',        color: 'slate' },
+export const USER_STATUS_OPTIONS: { value: UserStatus; label: string; color: string }[] = [
+  { value: 'pending',            label: 'Pending',                   color: 'yellow' },
+  { value: 'active',             label: 'Active',                         color: 'green' },
+  { value: 'rejected',           label: 'Rejected',                   color: 'red' },
+  { value: 'suspended',          label: 'Suspended',                   color: 'orange' },
+  { value: 'disabled',           label: 'Disabled',                 color: 'red' },
+  { value: 'deletion_requested', label: 'Deletion Requested', color: 'red' },
+  { value: 'deleted',            label: 'Deleted',                     color: 'gray' },
+  { value: 'archived',           label: 'Archived',                  color: 'slate' },
 ];
 
 // ── User Roles ────────────────────────────────────────────────────────
@@ -136,8 +133,14 @@ export interface PipelineStatus {
 
 // ── Admin Menu Structure ──────────────────────────────────────────────
 
+// Console layout (2026-07): the unified dashboard ('overview') shows all
+// markets + action alerts; the actual member/support WORK happens in the
+// per-market workspaces ('market:<CC>'). Global cross-market pages remain
+// for billing, usage, data and audit. Labels live in adminI18n (EN/KO).
 export type AdminPage =
   | 'overview'
+  | `market:${string}`
+  | 'billing'
   | 'inbox'
   | 'members'
   | 'usage'
@@ -147,22 +150,23 @@ export type AdminPage =
 export interface AdminMenuItem {
   key: AdminPage;
   icon: string;
-  labelEn: string;
-  labelDe: string;
+  /** adminI18n key for the label. */
+  labelKey: 'menuOverview' | 'menuBilling' | 'menuInbox' | 'menuMembers' | 'menuUsage' | 'menuData' | 'menuAudit';
   /** Show notification badge count (e.g. pending approvals) */
-  getBadge?: (ctx: { pendingUsers: number; deletionRequests: number; openTickets: number }) => number;
+  getBadge?: (ctx: { pendingUsers: number; deletionRequests: number; openTickets: number; billingAlerts: number }) => number;
 }
 
-// Essentials-only console (store compliance + operations); every page works
-// per-country once more markets ship — no scaffold/mock pages.
+/** Global (cross-market) menu — the market workspaces are rendered as their own section. */
 export const ADMIN_MENU: AdminMenuItem[] = [
-  { key: 'overview',   icon: '📊', labelEn: 'Overview',        labelDe: 'Übersicht' },
-  { key: 'inbox',      icon: '📬', labelEn: 'Support Inbox',   labelDe: 'Support-Posteingang',
+  { key: 'overview',   icon: '📊', labelKey: 'menuOverview' },
+  { key: 'billing',    icon: '💳', labelKey: 'menuBilling',
+    getBadge: ctx => ctx.billingAlerts },
+  { key: 'inbox',      icon: '📬', labelKey: 'menuInbox',
     getBadge: ctx => ctx.openTickets },
-  { key: 'members',    icon: '👥', labelEn: 'Members',         labelDe: 'Mitglieder',
+  { key: 'members',    icon: '👥', labelKey: 'menuMembers',
     getBadge: ctx => ctx.pendingUsers + ctx.deletionRequests },
-  { key: 'usage',      icon: '📈', labelEn: 'Usage & Quotas',  labelDe: 'Nutzung & Kontingente' },
-  { key: 'data',       icon: '🗄️', labelEn: 'Data',            labelDe: 'Daten' },
-  { key: 'audit',      icon: '📋', labelEn: 'Audit Logs',      labelDe: 'Audit-Protokolle' },
+  { key: 'usage',      icon: '📈', labelKey: 'menuUsage' },
+  { key: 'data',       icon: '🗄️', labelKey: 'menuData' },
+  { key: 'audit',      icon: '📋', labelKey: 'menuAudit' },
 ];
 

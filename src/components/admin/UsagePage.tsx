@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { getUsers } from '../../services/authService';
 import { getAdminQuotaInfo } from '../../services/quotaService';
 import { grantBonusQuota, getEffectiveEntitlements } from '../../services/adminService';
-import { User, Language } from '../../types';
-import { PlanCode, PLANS, getBaseQuotaForPlan } from '../../config/adminConfig';
-import { PlanBadge, PageHeader, SectionCard, StatCard, EmptyState } from './shared';
-import { translations } from '../../translations';
+import { User } from '../../types';
+import { PlanCode, getBaseQuotaForPlan } from '../../config/adminConfig';
+import { PlanBadge, PageHeader, StatCard, EmptyState } from './shared';
+import { AdminLang } from './adminI18n';
 
 interface UsagePageProps {
-  language: Language;
+  al: AdminLang;
 }
 
 interface UserQuotaRow {
@@ -22,7 +22,8 @@ interface UserQuotaRow {
   month: string;
 }
 
-export const UsagePage: React.FC<UsagePageProps> = ({ language }) => {
+export const UsagePage: React.FC<UsagePageProps> = ({ al }) => {
+  const ko = al === 'ko';
   const [rows, setRows] = useState<UserQuotaRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -91,32 +92,32 @@ export const UsagePage: React.FC<UsagePageProps> = ({ language }) => {
   return (
     <div>
       <PageHeader
-        title={language === 'de' ? 'Nutzung & Kontingente' : 'Usage & Quotas'}
-        subtitle={language === 'de' ? 'Monatliche Data-Sheet-Nutzung und Kontingente' : 'Monthly Data Sheet usage and quota management'}
+        title={ko ? '사용량 · 쿼터' : 'Usage & Quotas'}
+        subtitle={ko ? '월간 데이터시트 사용량 및 쿼터 관리' : 'Monthly Data Sheet usage and quota management'}
       />
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard label={language === 'de' ? 'Drucke diesen Monat' : 'Prints This Month'} value={totalPrints} color="blue" icon="🖨️" />
-        <StatCard label={language === 'de' ? 'Aktive Nutzer' : 'Active Users'} value={rows.length} color="green" icon="👥" />
-        <StatCard label={language === 'de' ? 'Kontingent erschöpft' : 'Quota Exhausted'} value={exhaustedCount} color="red" icon="🚫" />
-        <StatCard label={language === 'de' ? 'Hohe Nutzung (>80%)' : 'High Usage (>80%)'} value={highUsageCount} color="orange" icon="⚠️" />
+        <StatCard label={ko ? '이번 달 발행' : 'Prints This Month'} value={totalPrints} color="blue" icon="🖨️" />
+        <StatCard label={ko ? '활성 사용자' : 'Active Users'} value={rows.length} color="green" icon="👥" />
+        <StatCard label={ko ? '쿼터 소진' : 'Quota Exhausted'} value={exhaustedCount} color="red" icon="🚫" />
+        <StatCard label={ko ? '높은 사용량 (>80%)' : 'High Usage (>80%)'} value={highUsageCount} color="orange" icon="⚠️" />
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-4">
         <div className="relative flex-grow min-w-[200px]">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
-          <input type="text" placeholder={language === 'de' ? 'Benutzer suchen...' : 'Search users...'}
+          <input type="text" placeholder={ko ? '사용자 검색…' : 'Search users...'}
             className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
             value={search} onChange={e => setSearch(e.target.value)} />
         </div>
         <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
           <input type="checkbox" checked={filterExhausted} onChange={e => setFilterExhausted(e.target.checked)} className="form-checkbox text-red-600 rounded" />
-          {language === 'de' ? 'Nur erschöpfte' : 'Exhausted only'}
+          {ko ? '소진된 사용자만' : 'Exhausted only'}
         </label>
         <button onClick={loadAll} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg">
-          🔄 {language === 'de' ? 'Aktualisieren' : 'Refresh'}
+          🔄 {ko ? '새로고침' : 'Refresh'}
         </button>
       </div>
 
@@ -194,7 +195,7 @@ export const UsagePage: React.FC<UsagePageProps> = ({ language }) => {
               <div className="flex justify-between"><span className="text-gray-500">Remaining</span><span className={`font-bold ${selectedRow.remaining > 0 ? 'text-green-600' : 'text-red-600'}`}>{selectedRow.remaining}</span></div>
 
               <div className="pt-3 border-t border-gray-100">
-                <div className="text-xs font-bold text-gray-500 uppercase mb-2">{language === 'de' ? 'Bonus-Kontingent anpassen' : 'Adjust Bonus Quota'}</div>
+                <div className="text-xs font-bold text-gray-500 uppercase mb-2">{ko ? '보너스 쿼터 조정' : 'Adjust Bonus Quota'}</div>
                 <div className="flex items-center gap-2">
                   <input type="number" min="0" value={extraInput} onChange={e => { setExtraInput(e.target.value); setSaved(false); }}
                     className="flex-grow px-3 py-1.5 border rounded-lg text-sm focus:ring-blue-500 outline-none" />

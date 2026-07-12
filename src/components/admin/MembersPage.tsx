@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { getUsers, approveUser, rejectUser, suspendUser, reactivateUser, disableUser, deleteUser } from '../../services/authService';
-import { changeUserPlan, grantBonusQuota, requestDeletion, updateAdminNotes, getEffectiveEntitlements } from '../../services/adminService';
+import { grantBonusQuota, requestDeletion, updateAdminNotes, getEffectiveEntitlements } from '../../services/adminService';
+import { adminAssignSubscription, adminClearSubscription } from '../../services/subscriptionService';
 import { getAdminQuotaInfo } from '../../services/quotaService';
-import { User, Language } from '../../types';
-import { PlanCode, PLANS } from '../../config/adminConfig';
-import { StatusBadge, PlanBadge, PageHeader, EmptyState } from './shared';
-import { translations } from '../../translations';
+import { User } from '../../types';
+import {
+  SubPlanCode, BillingTerm, SUB_PLAN_CODES, BILLING_TERMS, SUB_PLAN_NAMES, TERM_NAMES, SUB_PLANS,
+} from '../../config/subscriptionPlans';
+import { StatusBadge, SubBadge, PageHeader, EmptyState } from './shared';
+import { AdminLang, ADMIN_I18N } from './adminI18n';
 
 interface MembersPageProps {
-  language: Language;
+  al: AdminLang;
+  /** Restrict to one market (per-market workspace); omit for the global page. */
+  country?: string;
+  /** Rendered inside a market workspace — its own header is suppressed. */
+  embedded?: boolean;
 }
 
-export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
+const matchesCountry = (u: User, cc?: string): boolean =>
+  !cc || (u.country || 'DE') === cc;
+
+export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded }) => {
+  const A = ADMIN_I18N[al];
   const [users, setUsers] = useState<User[]>([]);
   const [filtered, setFiltered] = useState<User[]>([]);
   const [search, setSearch] = useState('');
@@ -24,10 +35,9 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
   const [quotaInfo, setQuotaInfo] = useState<any>(null);
   const [adminNotes, setAdminNotes] = useState('');
   const [notesSaved, setNotesSaved] = useState(false);
-  const t = translations[language];
 
-  const load = () => getUsers().then(u => setUsers(u));
-  useEffect(() => { load(); }, []);
+  const load = () => getUsers().then(u => setUsers(u.filter(x => matchesCountry(x, country))));
+  useEffect(() => { load(); setSelectedUser(null); }, [country]);
 
   // Filtering
   useEffect(() => {
@@ -36,7 +46,8 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
       result = result.filter(u => (u.status || (u.isActive ? 'active' : 'suspended')) === statusFilter);
     }
     if (planFilter !== 'all') {
-      result = result.filter(u => (u.plan || 'standard') === planFilter);
+      if (planFilter === 'none') result = result.filter(u => !u.subscription);
+      else result = result.filter(u => u.subscription?.planCode === planFilter);
     }
     if (companyTypeFilter !== 'all') {
       result = result.filter(u => u.companyType === companyTypeFilter);
@@ -71,10 +82,13 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
       const ent = getEffectiveEntitlements(u);
       return {
         'First Name': u.firstName, 'Last Name': u.lastName,
-        'Email': u.email, 'Company Type': u.companyType, 'Job Role': u.jobRole,
+        'Email': u.email, 'Country': u.country || 'DE',
+        'Company Type': u.companyType, 'Job Role': u.jobRole,
         'Company': u.companyName || '', 'City': u.companyCity || '',
-        'Plan': ent.plan, 'Quota': `${ent.effectiveQuota}`,
-        'Industry Insight': ent.industryInsightAccess ? 'Yes' : 'No',
+        'Subscription': u.subscription ? `${SUB_PLAN_NAMES[u.subscription.planCode]} (${u.subscription.status})` : '-',
+        'Term': u.subscription?.billingTerm ? TERM_NAMES[u.subscription.billingTerm] : '-',
+        'Period End': u.subscription?.currentPeriodEndsAt?.slice(0, 10) || '-',
+        'Quota': `${ent.effectiveQuota}`,
         'Status': u.status || (u.isActive ? 'active' : 'disabled'),
         'Registered': u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : '',
       };
@@ -82,7 +96,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Members');
-    XLSX.writeFile(wb, `members_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    XLSX.writeFile(wb, `members_${country ?? 'all'}_${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
 
   const handleAction = async (action: string, user: User) => {
@@ -101,21 +115,23 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
 
   return (
     <div className="flex flex-col h-full">
-      <PageHeader
-        title={language === 'de' ? 'Mitglieder' : 'Members'}
-        subtitle={`${filtered.length} ${language === 'de' ? 'von' : 'of'} ${users.length}`}
-        action={
-          <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow-sm text-sm font-bold flex items-center gap-2">
-            📥 Export Excel
-          </button>
-        }
-      />
+      {!embedded && (
+        <PageHeader
+          title={A.mbTitle}
+          subtitle={`${filtered.length} ${A.mbOf} ${users.length}`}
+          action={
+            <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow-sm text-sm font-bold flex items-center gap-2">
+              📥 {A.mbExport}
+            </button>
+          }
+        />
+      )}
 
       {/* Pending notice */}
       {pendingCount > 0 && (
         <div className="mb-4 flex items-center gap-3 bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
           <span className="text-xl">⚠️</span>
-          <span><strong>{pendingCount} pending application{pendingCount > 1 ? 's' : ''}</strong> awaiting approval.</span>
+          <span><strong>{A.mbPendingNotice(pendingCount)}</strong></span>
         </div>
       )}
 
@@ -124,35 +140,37 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
         <div className="relative flex-grow min-w-[200px]">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
           <input
-            type="text" placeholder={language === 'de' ? 'Name, E-Mail, Firma...' : 'Name, email, company...'}
+            type="text" placeholder={A.mbSearch}
             className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
             value={search} onChange={e => setSearch(e.target.value)}
           />
         </div>
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
           className="px-3 py-2 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="all">{language === 'de' ? 'Alle Status' : 'All Status'}</option>
-          <option value="pending">{language === 'de' ? 'Ausstehend' : 'Pending'}</option>
-          <option value="active">{language === 'de' ? 'Aktiv' : 'Active'}</option>
-          <option value="suspended">{language === 'de' ? 'Gesperrt' : 'Suspended'}</option>
-          <option value="rejected">{language === 'de' ? 'Abgelehnt' : 'Rejected'}</option>
-          <option value="disabled">{language === 'de' ? 'Deaktiviert' : 'Disabled'}</option>
-          <option value="deletion_requested">{language === 'de' ? 'Löschung angefragt' : 'Deletion Requested'}</option>
+          <option value="all">{A.mbAllStatus}</option>
+          {['pending', 'active', 'suspended', 'rejected', 'disabled', 'deletion_requested'].map(s => (
+            <option key={s} value={s}>{s}</option>
+          ))}
         </select>
         <select value={planFilter} onChange={e => setPlanFilter(e.target.value)}
           className="px-3 py-2 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="all">{language === 'de' ? 'Alle Pläne' : 'All Plans'}</option>
-          <option value="standard">Standard</option>
-          <option value="premium">Premium</option>
+          <option value="all">{A.mbAllPlans}</option>
+          {SUB_PLAN_CODES.map(p => <option key={p} value={p}>{SUB_PLAN_NAMES[p]}</option>)}
+          <option value="none">{A.sbNone}</option>
         </select>
         <select value={companyTypeFilter} onChange={e => setCompanyTypeFilter(e.target.value)}
           className="px-3 py-2 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="all">{language === 'de' ? 'Alle Typen' : 'All Types'}</option>
-          <option value="Manufacturer">{language === 'de' ? 'Hersteller' : 'Manufacturer'}</option>
-          <option value="Distributor">{language === 'de' ? 'Distributor' : 'Distributor'}</option>
-          <option value="Installer">{language === 'de' ? 'Installateur' : 'Installer'}</option>
-          <option value="Private Individual">{language === 'de' ? 'Privatperson' : 'Private Individual'}</option>
+          <option value="all">{A.mbAllTypes}</option>
+          <option value="Manufacturer">Manufacturer</option>
+          <option value="Distributor">Distributor</option>
+          <option value="Installer">Installer</option>
+          <option value="Private Individual">Private Individual</option>
         </select>
+        {embedded && (
+          <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded shadow-sm text-sm font-bold">
+            📥 {A.mbExport}
+          </button>
+        )}
       </div>
 
       <div className="flex gap-4 flex-grow min-h-0">
@@ -162,7 +180,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 sticky top-0 z-10">
                 <tr>
-                  {['User', 'Company', 'Plan', 'Status', 'Registered', 'Actions'].map(h => (
+                  {['User', country ? '' : 'Market', 'Company', 'Subscription', 'Status', 'Registered', 'Actions'].filter(Boolean).map(h => (
                     <th key={h} className={`px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap ${h === 'Actions' ? 'text-right' : ''}`}>{h}</th>
                   ))}
                 </tr>
@@ -179,12 +197,15 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
                         <div className="text-sm font-bold text-gray-900">{u.firstName} {u.lastName}</div>
                         <div className="text-xs text-gray-500">{u.email}</div>
                       </td>
+                      {!country && (
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{u.country || 'DE'}</td>
+                      )}
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="text-sm text-gray-700">{u.companyName || '-'}</div>
                         <div className="text-xs text-gray-400">{u.companyType}</div>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <PlanBadge plan={(u.plan as PlanCode) || 'standard'} />
+                        <SubBadge user={u} />
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <StatusBadge status={userStatus} />
@@ -195,18 +216,18 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
                       <td className="px-4 py-3 whitespace-nowrap text-right space-x-1.5" onClick={e => e.stopPropagation()}>
                         {userStatus === 'pending' && (
                           <>
-                            <button onClick={() => handleAction('approve', u)} className="text-xs px-3 py-1 rounded border border-green-400 text-green-700 hover:bg-green-50 font-bold">✓ Approve</button>
-                            <button onClick={() => handleAction('reject', u)} className="text-xs px-3 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50">✗ Reject</button>
+                            <button onClick={() => handleAction('approve', u)} className="text-xs px-3 py-1 rounded border border-green-400 text-green-700 hover:bg-green-50 font-bold">{A.mbApprove}</button>
+                            <button onClick={() => handleAction('reject', u)} className="text-xs px-3 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50">{A.mbReject}</button>
                           </>
                         )}
                         {userStatus === 'active' && (
                           <>
-                            <button onClick={() => handleAction('suspend', u)} className="text-xs px-3 py-1 rounded border border-orange-300 text-orange-600 hover:bg-orange-50">Suspend</button>
-                            <button onClick={() => handleAction('disable', u)} className="text-xs px-3 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50">Disable</button>
+                            <button onClick={() => handleAction('suspend', u)} className="text-xs px-3 py-1 rounded border border-orange-300 text-orange-600 hover:bg-orange-50">{A.mbSuspend}</button>
+                            <button onClick={() => handleAction('disable', u)} className="text-xs px-3 py-1 rounded border border-red-300 text-red-600 hover:bg-red-50">{A.mbDisable}</button>
                           </>
                         )}
                         {(userStatus === 'suspended' || userStatus === 'rejected' || userStatus === 'disabled') && (
-                          <button onClick={() => handleAction('reactivate', u)} className="text-xs px-3 py-1 rounded border border-teal-300 text-teal-600 hover:bg-teal-50">Reactivate</button>
+                          <button onClick={() => handleAction('reactivate', u)} className="text-xs px-3 py-1 rounded border border-teal-300 text-teal-600 hover:bg-teal-50">{A.mbReactivate}</button>
                         )}
                       </td>
                     </tr>
@@ -214,7 +235,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
                 })}
               </tbody>
             </table>
-            {filtered.length === 0 && <EmptyState message="No members found." icon="👥" />}
+            {filtered.length === 0 && <EmptyState message={A.mbNoMembers} icon="👥" />}
           </div>
         </div>
 
@@ -233,8 +254,8 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
             <div className="flex border-b border-gray-100">
               {(['profile', 'subscription', 'usage', 'notes'] as const).map(tab => (
                 <button key={tab} onClick={() => setDetailTab(tab)}
-                  className={`flex-1 text-xs font-medium py-2.5 capitalize ${detailTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400 hover:text-gray-600'}`}>
-                  {tab}
+                  className={`flex-1 text-xs font-medium py-2.5 ${detailTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400 hover:text-gray-600'}`}>
+                  {A.mbTabs[tab]}
                 </button>
               ))}
             </div>
@@ -254,70 +275,43 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
                   <DetailRow label="Registered" value={selectedUser.registeredAt ? new Date(selectedUser.registeredAt).toLocaleDateString() : '-'} />
 
                   <div className="pt-3 border-t border-gray-100 space-y-2">
-                    <div className="text-xs font-bold text-gray-500 uppercase">Actions</div>
+                    <div className="text-xs font-bold text-gray-500 uppercase">{A.mbActions}</div>
                     <div className="flex flex-wrap gap-2">
                       {(selectedUser.status === 'active') && (
                         <>
-                          <button onClick={() => handleAction('suspend', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-orange-300 text-orange-600 hover:bg-orange-50">Suspend</button>
-                          <button onClick={() => handleAction('disable', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-red-300 text-red-600 hover:bg-red-50">Disable</button>
+                          <button onClick={() => handleAction('suspend', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-orange-300 text-orange-600 hover:bg-orange-50">{A.mbSuspend}</button>
+                          <button onClick={() => handleAction('disable', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-red-300 text-red-600 hover:bg-red-50">{A.mbDisable}</button>
                         </>
                       )}
                       {(selectedUser.status === 'suspended' || selectedUser.status === 'rejected' || selectedUser.status === 'disabled') && (
-                        <button onClick={() => handleAction('reactivate', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-teal-300 text-teal-600 hover:bg-teal-50">Reactivate</button>
+                        <button onClick={() => handleAction('reactivate', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-teal-300 text-teal-600 hover:bg-teal-50">{A.mbReactivate}</button>
                       )}
                       {selectedUser.status !== 'deletion_requested' && selectedUser.status !== 'deleted' && (
-                        <button onClick={() => handleAction('request_deletion', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-red-300 text-red-600 hover:bg-red-50">Request Deletion</button>
+                        <button onClick={() => handleAction('request_deletion', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-red-300 text-red-600 hover:bg-red-50">{A.mbReqDeletion}</button>
                       )}
-                      <button onClick={() => handleAction('delete', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-red-600">Delete Permanently</button>
+                      <button onClick={() => handleAction('delete', selectedUser)} className="text-xs px-3 py-1.5 rounded border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-red-600">{A.mbDelete}</button>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* Subscription Tab */}
-              {detailTab === 'subscription' && (() => {
-                const ent = getEffectiveEntitlements(selectedUser);
-                return (
-                  <div className="space-y-3 text-sm">
-                    <DetailRow label="Plan" value={<PlanBadge plan={ent.plan} />} />
-                    <DetailRow label="Base Quota" value={`${ent.dataSheetMonthlyLimit}/mo`} />
-                    <DetailRow label="Extra Quota" value={`+${ent.extraQuota}`} />
-                    <DetailRow label="Effective Quota" value={`${ent.effectiveQuota}/mo`} />
-                    <DetailRow label="Industry Insight" value={ent.industryInsightAccess ? '✅ Yes' : '❌ No'} />
-                    <DetailRow label="Source" value={ent.entitlementSource} />
-                    <DetailRow label="Billing Channel" value={selectedUser.billingChannel || '-'} />
-
-                    <div className="pt-3 border-t border-gray-100 space-y-2">
-                      <div className="text-xs font-bold text-gray-500 uppercase">Change Plan</div>
-                      <div className="flex gap-2">
-                        {(['standard', 'premium'] as PlanCode[]).map(p => (
-                          <button key={p} onClick={async () => {
-                            await changeUserPlan(selectedUser.id, p);
-                            load();
-                            const updated = { ...selectedUser, plan: p };
-                            setSelectedUser(updated);
-                          }}
-                            className={`text-xs px-3 py-1.5 rounded border font-medium ${
-                              ent.plan === p
-                                ? 'bg-blue-100 border-blue-300 text-blue-700 cursor-default'
-                                : 'border-gray-300 text-gray-600 hover:bg-gray-50'
-                            }`}
-                            disabled={ent.plan === p}
-                          >
-                            {p === 'premium' ? '💎 ' : ''}{PLANS[p].displayName}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })()}
+              {detailTab === 'subscription' && (
+                <SubscriptionAdminPanel
+                  al={al}
+                  user={selectedUser}
+                  onChanged={async () => {
+                    await load();
+                    const fresh = (await getUsers()).find(u => u.id === selectedUser.id);
+                    if (fresh) setSelectedUser(fresh);
+                  }}
+                />
+              )}
 
               {/* Usage Tab */}
               {detailTab === 'usage' && quotaInfo && (
                 <div className="space-y-3 text-sm">
                   <DetailRow label="Month" value={quotaInfo.month} />
-                  <DetailRow label="Plan" value={quotaInfo.plan} />
                   <DetailRow label="Base Limit" value={quotaInfo.defaultLimit} />
                   <DetailRow label="Extra Quota" value={quotaInfo.extraQuota} />
                   <DetailRow label="Total Limit" value={quotaInfo.totalLimit} />
@@ -332,6 +326,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
                   <div className="pt-3 border-t border-gray-100 space-y-2">
                     <div className="text-xs font-bold text-gray-500 uppercase">Grant Bonus Quota</div>
                     <QuickQuotaGrant
+                      al={al}
                       userId={selectedUser.id}
                       currentExtra={quotaInfo.extraQuota}
                       onSaved={async () => {
@@ -360,13 +355,95 @@ export const MembersPage: React.FC<MembersPageProps> = ({ language }) => {
                       setTimeout(() => setNotesSaved(false), 2000);
                     }}
                   >
-                    {notesSaved ? 'Saved!' : 'Save Notes'}
+                    {notesSaved ? A.cSaved : A.cSave}
                   </button>
                 </div>
               )}
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+};
+
+// ── Subscription admin panel (assign / end plans; ops backstop for Paddle) ──
+
+const SubscriptionAdminPanel: React.FC<{ al: AdminLang; user: User; onChanged: () => void }> = ({ al, user, onChanged }) => {
+  const A = ADMIN_I18N[al];
+  const sub = user.subscription;
+  const [plan, setPlan] = useState<SubPlanCode>(sub?.planCode ?? 'professional');
+  const [term, setTerm] = useState<BillingTerm>(sub?.billingTerm ?? 'annual');
+  const [status, setStatus] = useState<'active' | 'trialing'>('active');
+  const [periodEnd, setPeriodEnd] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  const assign = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await adminAssignSubscription(user, plan, term, {
+        status,
+        ...(periodEnd ? { periodEndsAt: new Date(periodEnd + 'T23:59:59Z').toISOString() } : {}),
+      });
+      setMsg(A.sbAssigned);
+      onChanged();
+    } catch (e: any) { setMsg(String(e?.message ?? e)); }
+    finally { setBusy(false); setTimeout(() => setMsg(''), 2500); }
+  };
+
+  const clear = async () => {
+    if (!confirm(A.sbClearConfirm)) return;
+    await adminClearSubscription(user);
+    setMsg(A.sbCleared);
+    onChanged();
+  };
+
+  const sel = 'w-full px-2.5 py-1.5 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500';
+
+  return (
+    <div className="space-y-3 text-sm">
+      {sub ? (
+        <>
+          <DetailRow label={A.sbPlan} value={`${SUB_PLAN_NAMES[sub.planCode]} (${SUB_PLANS[sub.planCode].seatLimit} ${A.sbSeats.toLowerCase()})`} />
+          <DetailRow label={A.sbTerm} value={sub.billingTerm ? TERM_NAMES[sub.billingTerm] : '-'} />
+          <DetailRow label={A.sbStatus} value={<SubBadge user={user} />} />
+          <DetailRow label={A.sbProvider} value={sub.provider} />
+          <DetailRow label={A.sbPeriodEnd} value={sub.currentPeriodEndsAt?.slice(0, 10) || '-'} />
+          {user.orgId && <DetailRow label="Org" value={`${user.orgRole ?? '-'} · ${user.orgId.slice(0, 8)}…`} />}
+        </>
+      ) : (
+        <div className="text-gray-500">{A.sbNone}</div>
+      )}
+
+      <div className="pt-3 border-t border-gray-100 space-y-2">
+        <div className="text-xs font-bold text-gray-500 uppercase">{A.sbAssignTitle}</div>
+        <div className="grid grid-cols-2 gap-2">
+          <select value={plan} onChange={e => setPlan(e.target.value as SubPlanCode)} className={sel}>
+            {SUB_PLAN_CODES.map(p => <option key={p} value={p}>{SUB_PLAN_NAMES[p]}</option>)}
+          </select>
+          <select value={term} onChange={e => setTerm(e.target.value as BillingTerm)} className={sel}>
+            {BILLING_TERMS.map(tm => <option key={tm} value={tm}>{TERM_NAMES[tm]}</option>)}
+          </select>
+          <select value={status} onChange={e => setStatus(e.target.value as 'active' | 'trialing')} className={sel}>
+            <option value="active">active</option>
+            <option value="trialing">trialing</option>
+          </select>
+          <input type="date" value={periodEnd} onChange={e => setPeriodEnd(e.target.value)} className={sel} title={A.sbPeriodEnd} />
+        </div>
+        <div className="text-[11px] text-gray-400 leading-snug">{A.sbTeamNote}</div>
+        <div className="flex gap-2">
+          <button onClick={assign} disabled={busy} className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-lg">
+            {A.sbAssign}
+          </button>
+          {sub && (
+            <button onClick={clear} className="px-4 py-1.5 border border-red-300 text-red-600 hover:bg-red-50 text-sm rounded-lg">
+              {A.sbClear}
+            </button>
+          )}
+        </div>
+        {msg && <div className="text-xs text-green-700 font-medium">{msg}</div>}
       </div>
     </div>
   );
@@ -381,7 +458,8 @@ const DetailRow: React.FC<{ label: string; value: React.ReactNode }> = ({ label,
   </div>
 );
 
-const QuickQuotaGrant: React.FC<{ userId: string; currentExtra: number; onSaved: () => void }> = ({ userId, currentExtra, onSaved }) => {
+const QuickQuotaGrant: React.FC<{ al: AdminLang; userId: string; currentExtra: number; onSaved: () => void }> = ({ al, userId, currentExtra, onSaved }) => {
+  const A = ADMIN_I18N[al];
   const [val, setVal] = useState(String(currentExtra));
   const [saved, setSaved] = useState(false);
 
@@ -397,7 +475,7 @@ const QuickQuotaGrant: React.FC<{ userId: string; currentExtra: number; onSaved:
           setTimeout(() => setSaved(false), 2000);
         }}
       >
-        {saved ? '✓' : 'Save'}
+        {saved ? '✓' : A.cSave}
       </button>
     </div>
   );

@@ -128,8 +128,14 @@ const App: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await registerUser(signupData);
-      setCurrentView('PENDING_APPROVAL');
+      const activated = await registerUser(signupData);
+      if (activated) {
+        // Free-access grant applied — the account is live, go straight in.
+        setCurrentUser(activated);
+        setCurrentView('APP');
+      } else {
+        setCurrentView('PENDING_APPROVAL');
+      }
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -175,14 +181,6 @@ const App: React.FC = () => {
       setCurrentView('LOGIN');
     }
   };
-
-  // ... (Language Switcher Component - Keep same) ...
-  const LanguageSwitcher = () => (
-    <div className="fixed top-6 right-6 z-50 flex gap-6">
-      <button onClick={() => setLanguage('en')} className={`text-5xl transition-transform hover:scale-110 drop-shadow-md ${language === 'en' ? 'opacity-100 scale-110' : 'opacity-60'}`}>🇬🇧</button>
-      <button onClick={() => setLanguage('de')} className={`text-5xl transition-transform hover:scale-110 drop-shadow-md ${language === 'de' ? 'opacity-100 scale-110' : 'opacity-60'}`}>🇩🇪</button>
-    </div>
-  );
 
   // Dev-only admin console preview (no auth, layout only — Firestore reads
   // still require a real admin account): vite dev server + ?preview=admin
@@ -392,19 +390,17 @@ const App: React.FC = () => {
       setTimeout(() => setCurrentView(currentUser ? 'APP' : 'LANDING'), 0);
       return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-400">Redirecting…</div>;
     }
+    // The console owns its own EN/KO language toggle (sidebar buttons) — no
+    // floating flag switcher overlaying the content.
     return (
-      <div className="relative">
-         <LanguageSwitcher />
-         <AdminDashboard
-          onLogout={() => {
-            if (IS_ADMIN_BUILD) { logoutUser(); setCurrentView('LOGIN'); }
-            else setCurrentView(currentUser ? 'APP' : 'LANDING');
-          }}
-          cachedDatabase={fullDatabase ? [...fullDatabase.products, ...(fullDatabase.commercialProducts ?? [])] : null}
-          lastUpdated={fullDatabase?.generatedAt || null}
-          language={language}
-        />
-      </div>
+      <AdminDashboard
+        onLogout={() => {
+          if (IS_ADMIN_BUILD) { logoutUser(); setCurrentView('LOGIN'); }
+          else setCurrentView(currentUser ? 'APP' : 'LANDING');
+        }}
+        cachedDatabase={fullDatabase ? [...fullDatabase.products, ...(fullDatabase.commercialProducts ?? [])] : null}
+        lastUpdated={fullDatabase?.generatedAt || null}
+      />
     );
   }
   if (currentView === 'APP' && currentUser) {

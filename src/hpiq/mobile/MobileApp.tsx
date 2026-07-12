@@ -13,7 +13,8 @@ import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS, MARKET_ENTER_URL } from '../market';
-import { openCheckout, portalUrlFor, paddleConfigured } from '../../services/paddleService';
+import { openCheckout, portalUrlFor, checkoutConfigured } from '../../services/paddleService';
+import { SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, formatEur, isTeamPlan, subscriptionUnlocked } from '../../config/subscriptionPlans';
 import { FD, SignOutIcon, VideoExplainer, sectionLabel } from '../ui';
 import { GUIDE_VIDEO_ID } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
@@ -279,17 +280,30 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
 
 const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
+  const s = t.sub;
   const card: React.CSSProperties = { background: '#fff', border: '1px solid #e0e0e0', borderRadius: 14, padding: '15px 17px', display: 'flex', flexDirection: 'column', gap: 8 };
-  const isPro = app.user.plan === 'premium';
-  const startCheckout = () => {
-    if (!paddleConfigured) { app.notify(t.account.checkoutSoon); return; }
-    openCheckout(app.user).catch(() => app.notify(t.account.checkoutSoon));
+  const sub = app.user.subscription;
+  const unlocked = !!sub && subscriptionUnlocked(sub.status, sub.currentPeriodEndsAt);
+  const isPro = unlocked || app.user.plan === 'premium';
+  const isTeamMember = app.user.orgRole === 'member';
+  const [term, setTerm] = useState<BillingTerm>('annual');
+  const startCheckout = (plan: SubPlanCode) => {
+    if (!checkoutConfigured(plan, term)) { app.notify(s.notConfigured); return; }
+    openCheckout(app.user, plan, term).catch(() => app.notify(s.notConfigured));
   };
   const openBillingPortal = () => {
     const url = portalUrlFor(app.user);
     if (url) window.open(url, '_blank', 'noopener');
     else app.notify(t.account.managePlanSoon);
   };
+  const fmtDate = (d?: string | null) => (d ? new Date(d).toLocaleDateString(t.locale, { day: 'numeric', month: 'short', year: 'numeric' }) : '—');
+  const planLabel = sub ? `${s.planNames[sub.planCode]}${sub.billingTerm ? ` · ${s.termNames[sub.billingTerm]}` : ''}` : t.account.planBadge;
+  const statusLine = !sub ? '' :
+    sub.provider === 'free_grant' ? s.freeGrantBadge(fmtDate(sub.currentPeriodEndsAt))
+    : sub.status === 'trialing' ? s.statusTrialing(fmtDate(sub.trialEndsAt ?? sub.currentPeriodEndsAt))
+    : sub.status === 'past_due' ? s.statusPastDue
+    : sub.cancelAtPeriodEnd || sub.status === 'canceled' ? s.statusCanceled(fmtDate(sub.currentPeriodEndsAt))
+    : s.statusActive(fmtDate(sub.currentPeriodEndsAt));
   return (
     <div style={{ padding: '20px 16px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
       <span style={{ fontFamily: FD, fontSize: 25, fontWeight: 600, letterSpacing: '-0.3px' }}>{t.account.heroTitle}</span>
@@ -298,20 +312,49 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontSize: 15, fontWeight: 600 }}>{app.user.firstName} {app.user.lastName}</span>
         <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{app.user.email}</span>
         <span style={{ fontSize: 11.5, borderRadius: 999, padding: '4px 12px', width: 'fit-content', fontWeight: 600, ...(isPro ? { color: '#0a7a43', background: '#e7f6ee' } : { color: '#555', background: '#f0f0f2' }) }}>
-          {isPro ? t.account.planBadge : t.account.planBadgeFree}
+          {isTeamMember && sub ? `${s.memberViewBadge} · ${s.planNames[sub.planCode]}` : isPro ? planLabel : t.account.planBadgeFree}
         </span>
+        {statusLine && <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{statusLine}</span>}
         <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.account.planStoreNote}</span>
-        <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
-          {!isPro && (
-            <span className="hp-press" onClick={startCheckout} style={{ flex: 1, textAlign: 'center', background: '#0066cc', color: '#fff', borderRadius: 999, padding: '10px 0', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-              {t.account.upgradeBtn}
+        {!isTeamMember && (
+          <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
+            <span className="hp-press" onClick={openBillingPortal} style={{ flex: 1, textAlign: 'center', border: '1px solid #d2d2d7', borderRadius: 999, padding: '10px 0', fontSize: 13, background: '#fff', cursor: 'pointer' }}>
+              {t.account.managePlan}
             </span>
-          )}
-          <span className="hp-press" onClick={openBillingPortal} style={{ flex: 1, textAlign: 'center', border: '1px solid #d2d2d7', borderRadius: 999, padding: '10px 0', fontSize: 13, background: '#fff', cursor: 'pointer' }}>
-            {t.account.managePlan}
-          </span>
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Plan picker (no subscription yet) — team seats are managed on desktop */}
+      {!isPro && !isTeamMember && (
+        <div style={card}>
+          <span style={sectionLabel}>{s.pickTitle}</span>
+          <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.5 }}>{s.pickSub}</span>
+          <div style={{ display: 'flex', border: '1px solid #d2d2d7', borderRadius: 999, overflow: 'hidden', fontSize: 12.5, width: 'fit-content' }}>
+            {(['monthly', 'six_months', 'annual'] as BillingTerm[]).map(tm => (
+              <span key={tm} onClick={() => setTerm(tm)} style={{ padding: '7px 13px', cursor: 'pointer', ...(term === tm ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}>
+                {s.termNames[tm]}
+              </span>
+            ))}
+          </div>
+          {SUB_PLAN_CODES.map(code => (
+            <div key={code} style={{ border: code === 'team_3' && term === 'annual' ? '2px solid #0066cc' : '1px solid #e0e0e0', borderRadius: 12, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
+                <span style={{ fontSize: 14, fontWeight: 600 }}>{s.planNames[code]}</span>
+                <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{s.planUsers[code]} · {isTeamPlan(code) ? s.teamTrialBadge : s.trialBadge}</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+                <span style={{ fontFamily: FD, fontSize: 16, fontWeight: 700 }}>{formatEur(SUB_PLANS[code].prices[term])}</span>
+                <span style={{ fontSize: 10.5, color: '#7a7a7a' }}>{s.perTerm[term]}</span>
+              </div>
+              <span className="hp-press" onClick={() => startCheckout(code)} style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                {s.startTrial.replace(' ›', '')}
+              </span>
+            </div>
+          ))}
+          <span style={{ fontSize: 10.5, color: '#9a9aa0', lineHeight: 1.5 }}>{s.trialNote} {s.vatNote}</span>
+        </div>
+      )}
 
       {UI_LANGUAGES.length > 1 && (
         <div style={card}>

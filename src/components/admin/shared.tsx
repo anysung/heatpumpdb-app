@@ -3,8 +3,8 @@
  * reused across all admin pages.
  */
 import React from 'react';
-import { PlanCode, PLANS, UserStatus, USER_STATUS_OPTIONS } from '../../config/adminConfig';
-import { Language } from '../../types';
+import { PlanCode, USER_STATUS_OPTIONS } from '../../config/adminConfig';
+import { SUB_PLAN_NAMES } from '../../config/subscriptionPlans';
 
 // ── Status Badge ──────────────────────────────────────────────────────
 
@@ -44,6 +44,32 @@ export const PlanBadge: React.FC<{ plan?: PlanCode }> = ({ plan }) => {
     </span>
   );
 };
+
+// ── Subscription Badge (Professional / Team 3 / Team 5 program) ──────
+
+const SUB_STATUS_COLORS: Record<string, string> = {
+  active:   'bg-green-100 text-green-800 border-green-200',
+  trialing: 'bg-blue-100 text-blue-800 border-blue-200',
+  past_due: 'bg-orange-100 text-orange-800 border-orange-200',
+  canceled: 'bg-gray-100 text-gray-600 border-gray-200',
+  expired:  'bg-gray-100 text-gray-500 border-gray-200',
+};
+
+export const SubBadge: React.FC<{ user: UserLike }> = ({ user }) => {
+  const sub = user.subscription;
+  if (!sub) {
+    return <span className="px-2 py-0.5 text-xs font-medium rounded-full whitespace-nowrap border bg-gray-50 text-gray-400 border-gray-200">—</span>;
+  }
+  const cls = SUB_STATUS_COLORS[sub.status] ?? SUB_STATUS_COLORS.expired;
+  const name = SUB_PLAN_NAMES[sub.planCode] ?? sub.planCode;
+  return (
+    <span className={`px-2 py-0.5 text-xs font-bold rounded-full whitespace-nowrap border ${cls}`}>
+      {name} · {sub.status}{sub.provider === 'free_grant' ? ' · free' : ''}
+    </span>
+  );
+};
+
+interface UserLike { subscription?: { planCode: string; status: string; provider?: string } }
 
 // ── Action Badge (for logs) ───────────────────────────────────────────
 

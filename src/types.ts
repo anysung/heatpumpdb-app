@@ -257,11 +257,93 @@ export interface User {
   subscriptionStatus?: 'active' | 'trialing' | 'past_due' | 'paused' | 'canceled';
   /** ISO timestamp of the next scheduled charge. */
   nextBilledAt?: string;
+  // ── Subscription program (Professional / Team 3 / Team 5) ─────────────────
+  /** Written by the billing webhook, an admin, or free-grant redemption — never by plain client code. */
+  subscription?: UserSubscription;
+  /** Organization membership (Team 3 / Team 5). */
+  orgId?: string;
+  orgRole?: 'team_admin' | 'member';
   // Compliance
   deletionRequestedAt?: string;
   deletionNote?: string;
   // Internal notes
   adminNotes?: string;
+}
+
+// --- Subscription program (Professional / Team 3 / Team 5) ---
+// Plan/term/price definitions live in src/config/subscriptionPlans.ts.
+
+export interface UserSubscription {
+  /** 'paddle' = paid via Paddle; 'free_grant' = admin promotion (freeAccessGrants). */
+  provider: 'paddle' | 'free_grant';
+  planCode: 'professional' | 'team_3' | 'team_5';
+  billingTerm?: 'monthly' | 'six_months' | 'annual';
+  status: 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired';
+  seatLimit: number;
+  trialStartedAt?: string;
+  trialEndsAt?: string;
+  paidPeriodStartsAt?: string | null;
+  /** End of the current paid (or granted) period; renewal/expiry anchor. */
+  currentPeriodEndsAt?: string | null;
+  cancelAtPeriodEnd?: boolean;
+  /** Renewal-time change scheduled via subscriptionChangeRequests. */
+  scheduledPlanCode?: 'professional' | 'team_3' | 'team_5' | null;
+  scheduledBillingTerm?: 'monthly' | 'six_months' | 'annual' | null;
+  paddleCustomerId?: string;
+  paddleSubscriptionId?: string;
+  paddlePriceId?: string;
+}
+
+/** A Team 3 / Team 5 organization. One Paddle subscription per org (owner pays). */
+export interface Organization {
+  id: string;
+  name?: string;
+  ownerUid: string;
+  ownerEmail: string;
+  planCode: 'team_3' | 'team_5';
+  seatLimit: number;
+  subscriptionStatus: 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired';
+  /** Team trial is anchored to the admin's checkout — one date for everyone. */
+  trialEndsAt?: string | null;
+  currentPeriodEndsAt?: string | null;
+  /** Occupied seats (includes the owner). Length must stay <= seatLimit. */
+  members: { uid: string; email: string; name?: string }[];
+  /** Open invitations (count against seats). Invitee joins on next login. */
+  invitedEmails: string[];
+  /** Members to keep on a scheduled downgrade (chosen at scheduling time). */
+  keepMemberUids?: string[];
+  createdAt: string;
+}
+
+/** Renewal-time plan/term change request (applied by ops/webhook at renewal, never mid-term). */
+export interface SubscriptionChangeRequest {
+  id: string;           // == uid of the requesting subscriber
+  userId: string;
+  userEmail: string;
+  currentPlanCode: string;
+  currentBillingTerm?: string;
+  requestedPlanCode: 'professional' | 'team_3' | 'team_5';
+  requestedBillingTerm: 'monthly' | 'six_months' | 'annual';
+  /** For team downgrades: the members that keep their seats. */
+  keepMemberUids?: string[];
+  effectiveAt?: string | null;  // renewal date at scheduling time
+  status: 'scheduled' | 'applied' | 'cancelled';
+  createdAt: string;
+}
+
+/** Admin-issued free access (promotions). Doc id = lowercased email. */
+export interface FreeAccessGrant {
+  email: string;
+  planCode: 'professional' | 'team_3' | 'team_5';
+  startsAt: string;
+  endsAt: string;
+  note?: string;
+  grantedBy: string;
+  createdAt: string;
+  /** Set when a registering/logging-in user redeems the grant. */
+  redeemedByUid?: string;
+  redeemedAt?: string;
+  revokedAt?: string;
 }
 
 // --- Support Tickets (in-app inquiries, store-required support channel) ---

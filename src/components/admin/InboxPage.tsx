@@ -5,10 +5,17 @@
  */
 import React, { useEffect, useMemo, useState } from 'react';
 import { getAllTickets, adminReply, setTicketStatus } from '../../services/supportService';
-import { SupportTicket, TicketStatus, Language } from '../../types';
+import { SupportTicket, TicketStatus } from '../../types';
 import { StatCard, SectionCard, EmptyState, PageHeader } from './shared';
+import { AdminLang, ADMIN_I18N } from './adminI18n';
 
-interface InboxPageProps { language: Language; }
+interface InboxPageProps {
+  al: AdminLang;
+  /** Restrict to one market (per-market workspace); omit for the global inbox. */
+  country?: string;
+  /** Rendered inside a market workspace — its own header is suppressed. */
+  embedded?: boolean;
+}
 
 const STATUS_BADGE: Record<TicketStatus, string> = {
   open: 'bg-yellow-100 text-yellow-700',
@@ -16,8 +23,9 @@ const STATUS_BADGE: Record<TicketStatus, string> = {
   closed: 'bg-gray-100 text-gray-600',
 };
 
-export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
-  const de = language === 'de';
+export const InboxPage: React.FC<InboxPageProps> = ({ al, country, embedded }) => {
+  const ko = al === 'ko';
+  const A = ADMIN_I18N[al];
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('open');
@@ -32,15 +40,18 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
   };
   useEffect(refresh, []);
 
-  const countries = useMemo(() => Array.from(new Set(tickets.map(t => t.country))).sort(), [tickets]);
-  const filtered = tickets.filter(t =>
+  const scoped = useMemo(
+    () => country ? tickets.filter(t => (t.country || 'DE') === country) : tickets,
+    [tickets, country]);
+  const countries = useMemo(() => Array.from(new Set(scoped.map(t => t.country))).sort(), [scoped]);
+  const filtered = scoped.filter(t =>
     (statusFilter === 'all' || t.status === statusFilter) &&
     (countryFilter === 'all' || t.country === countryFilter),
   );
   const selected = tickets.find(t => t.id === selectedId) ?? null;
 
   const statusLabel = (s: TicketStatus) =>
-    de ? ({ open: 'Offen', answered: 'Beantwortet', closed: 'Geschlossen' }[s]) : ({ open: 'Open', answered: 'Answered', closed: 'Closed' }[s]);
+    ko ? ({ open: '미답변', answered: '답변 완료', closed: '종결' }[s]) : ({ open: 'Open', answered: 'Answered', closed: 'Closed' }[s]);
 
   const sendReply = () => {
     if (!selected || !reply.trim() || busy) return;
@@ -56,8 +67,8 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
     setTicketStatus(selected.id, status).then(refresh).catch(e => alert(e.message));
   };
 
-  const openCount = tickets.filter(t => t.status === 'open').length;
-  const answeredCount = tickets.filter(t => t.status === 'answered').length;
+  const openCount = scoped.filter(t => t.status === 'open').length;
+  const answeredCount = scoped.filter(t => t.status === 'answered').length;
 
   if (loading) {
     return <div className="flex items-center justify-center h-64 text-gray-400 animate-pulse">Loading inbox...</div>;
@@ -65,16 +76,18 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
 
   return (
     <div>
-      <PageHeader
-        title={de ? 'Support-Posteingang' : 'Support Inbox'}
-        subtitle={de ? 'Anfragen aus der App empfangen und beantworten' : 'Receive and answer in-app inquiries'}
-      />
+      {!embedded && (
+        <PageHeader
+          title={A.ibTitle}
+          subtitle={ko ? '앱에서 접수된 문의를 확인하고 답변합니다' : 'Receive and answer in-app inquiries'}
+        />
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard label={de ? 'Offen' : 'Open'} value={openCount} color="yellow" icon="📬" />
-        <StatCard label={de ? 'Beantwortet' : 'Answered'} value={answeredCount} color="green" icon="✅" />
-        <StatCard label={de ? 'Gesamt' : 'Total'} value={tickets.length} color="blue" icon="🗂️" />
-        <StatCard label={de ? 'Länder' : 'Countries'} value={countries.length} color="gray" icon="🌍" />
+        <StatCard label={A.ibOpen} value={openCount} color="yellow" icon="📬" />
+        <StatCard label={A.ibAnswered} value={answeredCount} color="green" icon="✅" />
+        <StatCard label={ko ? '전체' : 'Total'} value={scoped.length} color="blue" icon="🗂️" />
+        <StatCard label={ko ? '마켓' : 'Markets'} value={countries.length} color="gray" icon="🌍" />
       </div>
 
       {/* Filters */}
@@ -87,29 +100,29 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
               statusFilter === s ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
             }`}
           >
-            {s === 'all' ? (de ? 'Alle' : 'All') : statusLabel(s)}
+            {s === 'all' ? (ko ? '전체' : 'All') : statusLabel(s)}
           </button>
         ))}
-        {countries.length > 1 && (
+        {!country && countries.length > 1 && (
           <select
             value={countryFilter}
             onChange={e => setCountryFilter(e.target.value)}
             className="ml-2 px-3 py-1.5 rounded-full text-xs font-semibold border border-gray-300 bg-white"
           >
-            <option value="all">{de ? 'Alle Länder' : 'All countries'}</option>
+            <option value="all">{ko ? '모든 마켓' : 'All countries'}</option>
             {countries.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         )}
         <button onClick={refresh} className="ml-auto px-3 py-1.5 rounded-full text-xs border border-gray-300 bg-white text-gray-600 hover:bg-gray-50">
-          ↻ {de ? 'Aktualisieren' : 'Refresh'}
+          ↻ {ko ? '새로고침' : 'Refresh'}
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-4 items-start">
         {/* Ticket list */}
-        <SectionCard title={de ? 'Anfragen' : 'Inquiries'}>
+        <SectionCard title={ko ? '문의 목록' : 'Inquiries'}>
           {filtered.length === 0 ? (
-            <EmptyState message={de ? 'Keine Anfragen in dieser Ansicht' : 'No inquiries in this view'} icon="📭" />
+            <EmptyState message={ko ? '이 조건에 해당하는 문의가 없습니다' : 'No inquiries in this view'} icon="📭" />
           ) : (
             <div className="divide-y divide-gray-100 -mx-2">
               {filtered.map(t => (
@@ -136,24 +149,24 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
         </SectionCard>
 
         {/* Thread + reply */}
-        <SectionCard title={selected ? selected.subject : (de ? 'Anfrage auswählen' : 'Select an inquiry')}>
+        <SectionCard title={selected ? selected.subject : (ko ? '문의를 선택하세요' : 'Select an inquiry')}>
           {!selected ? (
-            <EmptyState message={de ? 'Wählen Sie links eine Anfrage aus.' : 'Choose an inquiry from the list.'} icon="💬" />
+            <EmptyState message={ko ? '왼쪽 목록에서 문의를 선택하세요.' : 'Choose an inquiry from the list.'} icon="💬" />
           ) : (
             <div className="flex flex-col gap-3">
               <div className="text-xs text-gray-500 flex flex-wrap items-center gap-2">
                 <span className="font-mono border border-gray-200 rounded px-1">{selected.country}</span>
                 <span>{selected.userName} &lt;{selected.userEmail}&gt;</span>
-                <span>· {de ? 'Kategorie' : 'Category'}: {selected.category}</span>
+                <span>· {ko ? '분류' : 'Category'}: {selected.category}</span>
                 <span>· {new Date(selected.createdAt).toLocaleString()}</span>
                 <span className="ml-auto flex gap-2">
                   {selected.status !== 'closed' ? (
                     <button onClick={() => changeStatus('closed')} className="px-2 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 text-xs">
-                      {de ? 'Schließen' : 'Close'}
+                      {ko ? '종결' : 'Close'}
                     </button>
                   ) : (
                     <button onClick={() => changeStatus('open')} className="px-2 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 text-xs">
-                      {de ? 'Wieder öffnen' : 'Reopen'}
+                      {ko ? '다시 열기' : 'Reopen'}
                     </button>
                   )}
                 </span>
@@ -163,7 +176,7 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
                 {selected.messages.map((m, i) => (
                   <div key={i} className={`flex flex-col ${m.from === 'admin' ? 'items-end' : 'items-start'}`}>
                     <span className="text-[10px] text-gray-400">
-                      {m.from === 'admin' ? (de ? 'Support-Team' : 'Support team') : m.authorName} · {new Date(m.at).toLocaleString()}
+                      {m.from === 'admin' ? (ko ? '지원팀' : 'Support team') : m.authorName} · {new Date(m.at).toLocaleString()}
                     </span>
                     <span className={`text-sm rounded-xl px-3 py-2 max-w-[85%] whitespace-pre-wrap ${
                       m.from === 'admin' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'
@@ -178,7 +191,7 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
                     value={reply}
                     onChange={e => setReply(e.target.value)}
                     rows={2}
-                    placeholder={de ? 'Antwort schreiben…' : 'Write a reply…'}
+                    placeholder={ko ? '답변을 입력하세요…' : 'Write a reply…'}
                     className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 resize-y"
                     maxLength={4000}
                   />
@@ -187,7 +200,7 @@ export const InboxPage: React.FC<InboxPageProps> = ({ language }) => {
                     disabled={busy || !reply.trim()}
                     className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg self-end disabled:opacity-50"
                   >
-                    {de ? 'Senden' : 'Send'}
+                    {ko ? '보내기' : 'Send'}
                   </button>
                 </div>
               )}
