@@ -103,8 +103,8 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 20 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <BrandLogo height={26} theme="light" />
-                    <WavingFlag height={22} onLight />
+                    <BrandLogo height={34} theme="light" />
+                    <WavingFlag height={29} onLight />
                   </span>
                   <span style={{ fontSize: 11.5, letterSpacing: '.08em', color: '#7a7a7a' }}>
                     {isLabelMode ? t.ds.docKindLabel : t.ds.docKindProduct}

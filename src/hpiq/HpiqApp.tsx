@@ -11,6 +11,7 @@ import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
 import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
+import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
 import { downloadPdf, printPdfViaShareSheet } from './pdf/deliverPdf';
 import { isIos } from './pwaInstall';
@@ -140,6 +141,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
         isLabelMode: dsMode === 'label',
         sourceAbbr: SOURCE_ID_ABBR,
         isGb: IS_GB,
+        country: ACTIVE_COUNTRY.code,
       }),
       filename: pdfFileName(v),
     };
