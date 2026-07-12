@@ -125,9 +125,17 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   };
 
   const printSheet = () => {
+    // iPad/iOS Safari returns from window.print() IMMEDIATELY (non-blocking),
+    // so removing the class synchronously strips the print layout before the
+    // snapshot is taken (blank/screen-layout PDFs on tablets). Keep the class
+    // until afterprint fires; double-rAF ensures the print layout is painted
+    // before the dialog snapshots the page. Desktop Chrome blocks inside
+    // print(), so the same path works there too.
+    const cleanup = () => document.body.classList.remove('hpiq-printing');
     document.body.classList.add('hpiq-printing');
-    window.print();
-    document.body.classList.remove('hpiq-printing');
+    window.addEventListener('afterprint', cleanup, { once: true });
+    setTimeout(cleanup, 60_000);  // safety net if afterprint never fires
+    requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
   };
 
   const app: HpApp = {

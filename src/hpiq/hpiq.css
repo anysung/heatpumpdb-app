@@ -82,9 +82,11 @@
 }
 
 
-/* ── Tablet tolerance (700–1099px): the FULL desktop UI runs here — compress
-   the global nav and let wide content pan instead of clipping. ─────────── */
-@media (max-width: 1099px) {
+/* ── Tablet tolerance (700–1099px, SCREEN ONLY): the FULL desktop UI runs
+   here — compress the global nav and let wide content pan instead of
+   clipping. `screen` is load-bearing: print pages are ~794px wide (A4), so an
+   unqualified max-width query would clip the printed data sheet. ────────── */
+@media screen and (max-width: 1099px) {
   .hp-gnav { gap: 12px !important; padding: 0 14px !important; }
   /* Nav links take the remaining width and scroll internally (never clip a label). */
   .hp-gnav-links {
@@ -101,7 +103,7 @@
 }
 /* Narrow tablets / large phones in desktop UI: drop the waving flag so the
    global nav keeps its labels. */
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .hp-gnav .waving-flag { display: none; }
 }
 
