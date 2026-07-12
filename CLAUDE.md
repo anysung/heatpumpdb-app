@@ -37,6 +37,16 @@
   honeytokens proving extraction; keep ids stable, never mention them publicly).
   The shrink guard reads live counts from the bucket via gcloud and subtracts
   the canary. robots.txt disallows `/data/` and opts out AI-training crawlers.
+  **App Check** (reCAPTCHA Enterprise, `VITE_RECAPTCHA_SITE_KEY`) is initialized
+  in `src/firebase.ts` and ENFORCED on Cloud Storage — raw scripts cannot read
+  the datasets even with a stolen user token. Firestore is intentionally
+  UNENFORCED (login safety); e2e tests use a registered debug token via
+  `window.FIREBASE_APPCHECK_DEBUG_TOKEN` (dev server auto-generates one).
+- Registration consent: every signup path (form + first-time social) must pass
+  the account/data-use terms popup (one account per person; no data
+  extraction) — `termsAcceptedAt` is stamped on the profile. The same terms
+  are displayed on the Account page above the legal notice. Do not remove
+  either without owner sign-off.
 - hpiq global nav is **60px** tall; pages size themselves with `calc(100vh - 60px)` —
   keep in sync if the header changes.
 - Printing: hpiq data sheet uses `body.hpiq-printing` + `.hpiq-print-doc` visibility

@@ -116,6 +116,7 @@ export const registerUser = async (userData: any): Promise<User | null> => {
     isActive: false,
     status: 'pending',
     registeredAt: new Date().toISOString(),
+    termsAcceptedAt: userData.termsAcceptedAt || new Date().toISOString(),
     role: 'user',
     plan: 'standard',
   };
@@ -220,6 +221,9 @@ export const loginUser = async (email: string, pass: string): Promise<User> => {
 // the same status checks as loginUser.
 export const loginWithProvider = async (
   providerName: 'google' | 'apple',
+  /** First-time social sign-ins are registrations: the caller shows the
+   *  account/data-use terms popup and resolves on consent (rejects on cancel). */
+  confirmTerms?: () => Promise<void>,
 ): Promise<'active' | 'pending-created'> => {
   const provider =
     providerName === 'google'
@@ -254,7 +258,12 @@ export const loginWithProvider = async (
       await logActivity(uid, 'LOGIN', `Owner logged in via ${providerLabel} (profile created)`, email, 'Christopher Sung');
       return 'active';
     }
-    // New social user → pending registration, then sign out (admin approval flow)
+    // New social user → registration. Consent to the account/data-use terms
+    // is required before the profile is created (same gate as the signup form).
+    if (confirmTerms) {
+      try { await confirmTerms(); }
+      catch { await signOut(auth); throw new Error('terms-declined'); }
+    }
     const display = fbUser.displayName || email.split('@')[0] || 'New User';
     const [firstName, ...rest] = display.split(' ');
     const newUser: User = {
@@ -268,6 +277,7 @@ export const loginWithProvider = async (
       referralSource: `${providerLabel} Sign-In`,
       isActive: false, status: 'pending',
       registeredAt: new Date().toISOString(),
+      termsAcceptedAt: new Date().toISOString(),
       role: 'user', plan: 'standard',
     };
     await setDoc(userDocRef, newUser);

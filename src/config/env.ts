@@ -32,6 +32,13 @@ export const PUBLIC_ENV = {
   APP_MODE: (import.meta.env.VITE_APP_MODE as string | undefined) ?? 'app',
 
   /**
+   * Firebase App Check — reCAPTCHA Enterprise site key (public by design).
+   * Blocks non-app clients (scripts/bots) from Firebase backends once a
+   * service is set to ENFORCED. Unset = App Check is not initialized.
+   */
+  RECAPTCHA_SITE_KEY: (import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined) ?? '',
+
+  /**
    * Paddle Billing (web checkout — the app is NOT distributed via app stores).
    * Client tokens are publishable by design; 'test_…' selects the sandbox.
    * Unset = billing UI shows a "coming soon" notice instead of a checkout.

@@ -707,8 +707,15 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
           </Card>
         </div>
 
+        {/* ── Fair use: one-person accounts + no data extraction ── */}
+        <div style={{ border: '1px solid #e8d9b5', background: '#fdf8ec', borderRadius: 14, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 7 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#8a6d1f', textTransform: 'uppercase' }}>{t.account.fairUseTitle}</span>
+          <span style={{ fontSize: 12.5, color: '#5c4d1e', lineHeight: 1.6 }}>{t.account.fairUseAccount}</span>
+          <span style={{ fontSize: 12.5, color: '#5c4d1e', lineHeight: 1.6 }}>{t.account.fairUseData}</span>
+        </div>
+
         {/* ── Database rights / legal notice ── */}
-        <div style={{ gridColumn: '1 / -1', borderTop: '1px solid #e0e0e0', marginTop: 26, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ gridColumn: '1 / -1', borderTop: '1px solid #e0e0e0', marginTop: 6, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', textTransform: 'uppercase' }}>{t.account.legalNoticeTitle}</span>
           <p style={{ fontSize: 11, color: '#9a9aa0', lineHeight: 1.65, textAlign: 'justify', margin: 0, maxWidth: 980 }}>
             {t.account.legalNotice}

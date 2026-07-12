@@ -31,6 +31,10 @@ const App: React.FC = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
   const [signupData, setSignupData] = useState<any>({});
+  // Account/data-use consent popup (signup gate) — resolves on agree.
+  const [termsPrompt, setTermsPrompt] = useState<{ resolve: () => void; reject: () => void } | null>(null);
+  const requestTermsConsent = () =>
+    new Promise<void>((resolve, reject) => setTermsPrompt({ resolve, reject }));
 
   const t = translations[language];
 
@@ -133,7 +137,11 @@ const App: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const activated = await registerUser(signupData);
+      // Consent to the one-account-per-person + no-data-extraction terms
+      // is required before the account is created.
+      try { await requestTermsConsent(); }
+      catch { alert(t.termsDeclined); return; }
+      const activated = await registerUser({ ...signupData, termsAcceptedAt: new Date().toISOString() });
       if (activated) {
         // Free-access grant applied — the account is live, go straight in.
         setCurrentUser(activated);
@@ -151,12 +159,13 @@ const App: React.FC = () => {
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     setIsLoading(true);
     try {
-      const result = await loginWithProvider(provider);
+      const result = await loginWithProvider(provider, requestTermsConsent);
       // 'active' → onUserChange routes into the app automatically.
       if (result === 'pending-created') setCurrentView('PENDING_APPROVAL');
     } catch (err: any) {
       // User closed/cancelled the popup — not an error worth alerting.
       if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return;
+      if (err?.message === 'terms-declined') { alert(t.termsDeclined); return; }
       alert(err.message);
     } finally {
       setIsLoading(false);
@@ -224,6 +233,35 @@ const App: React.FC = () => {
   // I am omitting the full JSX here for brevity as it hasn't changed, just the data loading logic above.
   // Please ensure you keep the full JSX for LANDING, LOGIN, SIGNUP, APP, ADMIN_DASHBOARD.
   
+  // Account/data-use consent popup — gates every registration path
+  // (signup form + first-time social sign-in). Fixed overlay above the auth UI.
+  const termsModal = termsPrompt ? (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div className="w-full max-w-lg rounded-2xl border border-white/15 bg-[#101b16] p-7 shadow-2xl">
+        <h3 className="text-lg font-bold text-white mb-1">{t.termsTitle}</h3>
+        <p className="text-white/50 text-sm mb-4">{t.termsIntro}</p>
+        <div className="space-y-3 mb-6">
+          <p className="text-[13px] leading-relaxed text-white/80 bg-white/5 border border-white/10 rounded-xl p-3.5">{t.termsAccount}</p>
+          <p className="text-[13px] leading-relaxed text-white/80 bg-white/5 border border-white/10 rounded-xl p-3.5">{t.termsData}</p>
+        </div>
+        <div className="flex gap-3">
+          <button
+            onClick={() => { termsPrompt.resolve(); setTermsPrompt(null); }}
+            className="flex-1 py-3 rounded-xl font-semibold text-gray-900 bg-gradient-to-r from-emerald-400 to-cyan-400 hover:opacity-90 transition-opacity"
+          >
+            {t.termsAgree}
+          </button>
+          <button
+            onClick={() => { termsPrompt.reject(); setTermsPrompt(null); }}
+            className="px-5 py-3 rounded-xl font-medium text-white/70 border border-white/20 hover:bg-white/5 transition-colors"
+          >
+            {t.termsCancel}
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   // ... (Previous JSX code) ...
   if (currentView === 'LANDING') {
     return (
@@ -298,6 +336,7 @@ const App: React.FC = () => {
   if (currentView === 'LOGIN') {
     return (
       <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        {termsModal}
         <GlassCard className="w-full max-w-md p-8 hp-fade-up">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
           <h2 className="text-2xl font-bold text-white mb-1">{t.loginTitle}</h2>
@@ -340,6 +379,7 @@ const App: React.FC = () => {
   if (currentView === 'SIGNUP') {
     return (
       <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        {termsModal}
         <GlassCard className="w-full max-w-2xl p-8 hp-fade-up">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
           <h2 className="text-2xl font-bold text-white mb-6">{t.createAccount}</h2>

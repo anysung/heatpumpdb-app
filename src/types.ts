@@ -241,6 +241,8 @@ export interface User {
   isActive: boolean;
   status?: 'pending' | 'active' | 'suspended' | 'rejected' | 'disabled' | 'deletion_requested' | 'deleted' | 'archived';
   registeredAt: string;
+  /** ISO timestamp of consent to the account/data-use terms (signup popup). */
+  termsAcceptedAt?: string;
   lastActiveAt?: string;
   role?: 'user' | 'owner' | 'admin' | 'support' | 'ops';
   // Plan & entitlement fields
