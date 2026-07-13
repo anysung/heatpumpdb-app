@@ -45,20 +45,6 @@ export const PUBLIC_ENV = {
    */
   PADDLE_CLIENT_TOKEN: (import.meta.env.VITE_PADDLE_CLIENT_TOKEN as string | undefined) ?? '',
 
-  /**
-   * Paddle recurring-price ids for the subscription catalogue
-   * (3 products × 3 terms, each configured in Paddle with a 7-day €0 trial).
-   * Key format '<planCode>:<term>'; an unset id keeps that option "coming soon".
-   */
-  PADDLE_PRICES: {
-    'professional:monthly':    (import.meta.env.VITE_PADDLE_PRICE_PRO_MONTHLY as string | undefined) ?? '',
-    'professional:six_months': (import.meta.env.VITE_PADDLE_PRICE_PRO_6M as string | undefined) ?? '',
-    'professional:annual':     (import.meta.env.VITE_PADDLE_PRICE_PRO_ANNUAL as string | undefined) ?? '',
-    'team_3:monthly':          (import.meta.env.VITE_PADDLE_PRICE_TEAM3_MONTHLY as string | undefined) ?? '',
-    'team_3:six_months':       (import.meta.env.VITE_PADDLE_PRICE_TEAM3_6M as string | undefined) ?? '',
-    'team_3:annual':           (import.meta.env.VITE_PADDLE_PRICE_TEAM3_ANNUAL as string | undefined) ?? '',
-    'team_5:monthly':          (import.meta.env.VITE_PADDLE_PRICE_TEAM5_MONTHLY as string | undefined) ?? '',
-    'team_5:six_months':       (import.meta.env.VITE_PADDLE_PRICE_TEAM5_6M as string | undefined) ?? '',
-    'team_5:annual':           (import.meta.env.VITE_PADDLE_PRICE_TEAM5_ANNUAL as string | undefined) ?? '',
-  } as Record<string, string>,
+  // Paddle price ids are NOT env vars — they live in config/paddlePrices.ts,
+  // keyed by currency so every EUR market shares one catalogue.
 } as const;

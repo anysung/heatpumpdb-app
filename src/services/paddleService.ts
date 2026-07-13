@@ -8,12 +8,13 @@
  * subscription ids (written by the payment webhook, server-side).
  *
  * Catalogue: 3 products (Professional / Team 3 / Team 5) × 3 recurring prices
- * (monthly / 6 months / annual), each with a 7-day €0 trial configured in
- * Paddle. Price ids come from VITE_PADDLE_PRICE_* (see env.ts +
- * subscriptionPlans.ts); unset ids keep that option in "coming soon" mode.
+ * (monthly / 6 months / annual), each with a 7-day trial configured on the price
+ * in Paddle. The ids live in config/paddlePrices.ts, keyed by currency; a market
+ * whose currency has no catalogue keeps that option in "coming soon" mode.
  */
 import { PUBLIC_ENV } from '../config/env';
 import { SubPlanCode, BillingTerm, paddlePriceId, checkoutConfigured } from '../config/subscriptionPlans';
+import { hasPriceCatalogue } from '../config/paddlePrices';
 import { User } from '../types';
 
 declare global {
@@ -21,10 +22,8 @@ declare global {
   interface Window { Paddle?: any }
 }
 
-/** True once ANY checkout can open (token + at least one price id). */
-export const paddleConfigured =
-  !!PUBLIC_ENV.PADDLE_CLIENT_TOKEN &&
-  Object.values(PUBLIC_ENV.PADDLE_PRICES).some(Boolean);
+/** True once ANY checkout can open (client token + a price catalogue for this market's currency). */
+export const paddleConfigured = !!PUBLIC_ENV.PADDLE_CLIENT_TOKEN && hasPriceCatalogue;
 
 export { checkoutConfigured };
 

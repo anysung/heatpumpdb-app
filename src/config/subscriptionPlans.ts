@@ -20,11 +20,12 @@
  *   - Cancelling stops the next renewal only; access runs to period end.
  *
  * Prices are VAT-exclusive; Paddle computes VAT at checkout per country.
- * Paddle catalogue: 3 products × 3 recurring prices, each with a 7-day €0 trial.
- * Price ids are wired via VITE_PADDLE_PRICE_* (see env.ts); an unset id keeps
- * that plan/term in "coming soon" mode.
+ * Paddle catalogue: 3 products × 3 recurring prices, each with a 7-day trial.
+ * The price ids live in paddlePrices.ts, keyed by currency (EUR today); a market
+ * whose currency has no catalogue stays in "coming soon" mode.
  */
 import { PUBLIC_ENV } from './env';
+import { priceIdFor } from './paddlePrices';
 
 export type SubPlanCode = 'professional' | 'team_3' | 'team_5';
 export type BillingTerm = 'monthly' | 'six_months' | 'annual';
@@ -91,9 +92,13 @@ export const perMonth = (plan: SubPlanCode, term: BillingTerm): number =>
 export const perUserMonth = (plan: SubPlanCode, term: BillingTerm): number =>
   perMonth(plan, term) / SUB_PLANS[plan].seatLimit;
 
-/** Paddle recurring-price id for a plan/term ('' = not configured yet). */
+/**
+ * Paddle recurring-price id for a plan/term ('' = not configured yet).
+ * The ids live in paddlePrices.ts, keyed by currency — DE and FR share the EUR
+ * catalogue, and a market whose currency has no catalogue yet resolves to ''.
+ */
 export function paddlePriceId(plan: SubPlanCode, term: BillingTerm): string {
-  return PUBLIC_ENV.PADDLE_PRICES[`${plan}:${term}`] ?? '';
+  return priceIdFor(plan, term);
 }
 
 /** True when checkout can actually open for this plan/term. */
