@@ -22,7 +22,25 @@ const app = initializeApp(firebaseConfig);
 // window.FIREBASE_APPCHECK_DEBUG_TOKEN (set before this module loads).
 declare global { interface Window { FIREBASE_APPCHECK_DEBUG_TOKEN?: string | boolean } }
 if (import.meta.env.DEV && window.FIREBASE_APPCHECK_DEBUG_TOKEN === undefined) {
-  window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;  // auto debug token, printed to console
+  // reCAPTCHA can't attest localhost, so dev exchanges a debug token instead.
+  // Setting the flag to `true` works, but the token it mints is per browser
+  // profile (the SDK keeps it in IndexedDB) and must be REGISTERED in the
+  // console — an unregistered one is rejected with HTTP 403
+  // (appCheck/fetch-status-error), which is what dev was hitting. Take the token
+  // from VITE_APPCHECK_DEBUG_TOKEN so the project's already-registered one can be
+  // shared across browser profiles and machines; fall back to a per-browser token
+  // kept in localStorage. Either way it is printed below, ready to register.
+  const KEY = 'hpdb.appcheck-debug-token';
+  const token =
+    (import.meta.env.VITE_APPCHECK_DEBUG_TOKEN as string | undefined) ||
+    localStorage.getItem(KEY) ||
+    crypto.randomUUID();
+  localStorage.setItem(KEY, token);
+  window.FIREBASE_APPCHECK_DEBUG_TOKEN = token;
+  console.info(
+    `[App Check] dev debug token: ${token}\n` +
+    'Register it once: Firebase Console → App Check → Apps tab → the web app → ⋮ → Manage debug tokens → Add debug token.',
+  );
 }
 if (import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   initializeAppCheck(app, {
