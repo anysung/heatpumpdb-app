@@ -8,17 +8,6 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // ── Registration pause (system expansion review, Jul 2026) ───────────
-    // Server-side half of the switch in src/config/registration.ts (rules
-    // cannot import TS, so the flag is mirrored here — flip BOTH to reopen).
-    // While false, NO new user profile may be created by a client, whatever the
-    // UI does. Admins keep full write access, so accounts can still be created
-    // by an administrator. Nothing here reads the clock: reopening requires an
-    // explicit edit + `firebase deploy --only firestore:rules`.
-    function registrationOpen() {
-      return false;
-    }
-
     // Fetch the current authenticated user's Firestore profile.
     // Firestore caches the result within a single rule evaluation.
     function me() {
@@ -54,22 +43,15 @@ service cloud.firestore {
 
       allow create: if isSignedIn() && request.auth.uid == userId && (
         // Normal self-registration: pending, inactive, non-privileged.
-        // Blocked outright while registration is paused.
-        (registrationOpen() &&
-         request.resource.data.status == 'pending' &&
+        (request.resource.data.status == 'pending' &&
          request.resource.data.isActive == false &&
          request.resource.data.get('role', 'user') == 'user') ||
         // Free-access grant registration: created directly active with the
-        // granted plan (see grantRedemptionValid below). This is still a NEW
-        // account, so the pause applies to it too — an admin-granted email can
-        // register once registration reopens, and grant holders who already
-        // have an account keep redeeming through the update rule below.
-        (registrationOpen() &&
-         grantRedemptionValid() &&
+        // granted plan (see grantRedemptionValid below).
+        (grantRedemptionValid() &&
          request.resource.data.status == 'active' &&
          request.resource.data.get('role', 'user') == 'user') ||
-        // Owner bootstrap profile (matched by the authenticated email) — an
-        // existing, securely-identified account, not a new registration.
+        // Owner bootstrap profile (matched by the authenticated email).
         request.auth.token.email == 'sungyongsoo1976@gmail.com'
       );
 

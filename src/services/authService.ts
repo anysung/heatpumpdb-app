@@ -4,8 +4,6 @@ import {
   signOut,
   onAuthStateChanged,
   signInWithPopup,
-  getAdditionalUserInfo,
-  deleteUser as deleteAuthAccount,
   GoogleAuthProvider,
   OAuthProvider,
 } from 'firebase/auth';
@@ -27,7 +25,6 @@ import { User, ActivityLog, UserSubscription } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { getValidGrant, joinOrgIfInvited, emailKey } from './subscriptionService';
 import { SUB_PLANS } from '../config/subscriptionPlans';
-import { REGISTRATION_OPEN, REGISTRATION_CLOSED_ERROR } from '../config/registration';
 
 const OWNER_EMAIL = 'sungyongsoo1976@gmail.com';
 
@@ -101,12 +98,6 @@ export const getLogs = async (fromDate?: string, toDate?: string): Promise<Activ
 // Returns the activated user when a free-access grant applied (no approval
 // wait, stays signed in), or null for the normal pending flow.
 export const registerUser = async (userData: any): Promise<User | null> => {
-  // Registration pause: refuse BEFORE createUserWithEmailAndPassword, so no
-  // Firebase Auth account is created at all (and therefore no orphaned Auth
-  // user without a Firestore profile). Firestore rules deny the profile write
-  // independently — this guard is the UX half, not the enforcement.
-  if (!REGISTRATION_OPEN) throw new Error(REGISTRATION_CLOSED_ERROR);
-
   const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
   const uid = userCredential.user?.uid;
   if (!uid) throw new Error('User ID missing');
@@ -250,26 +241,6 @@ export const loginWithProvider = async (
   const email = fbUser.email || '';
   const providerLabel = providerName === 'google' ? 'Google' : 'Apple';
 
-  // Registration pause — social sign-in is the one path that can create a
-  // Firebase Auth account before we know whether the person is a new user: the
-  // popup completes first, and only then do we look for a profile. So if the
-  // popup just MINTED the account and registration is closed, delete it again
-  // right here. Without this, a blocked social signup would leave exactly the
-  // partial account we must not create: an Auth user with no Firestore profile.
-  // Existing users are untouched (isNewUser is false for them), and the owner
-  // bootstrap below still works.
-  if (!REGISTRATION_OPEN && email !== OWNER_EMAIL && getAdditionalUserInfo(cred)?.isNewUser) {
-    try {
-      await deleteAuthAccount(fbUser);
-    } catch {
-      // Deletion needs a recent login; the popup we just completed IS recent, so
-      // this should not happen. If it ever does, sign out so the half-made
-      // account cannot be used — it has no profile, so login rejects it anyway.
-      await signOut(auth);
-    }
-    throw new Error(REGISTRATION_CLOSED_ERROR);
-  }
-
   const userDocRef = doc(db, 'users', uid);
   const userDoc = await getDoc(userDocRef);
 
@@ -286,12 +257,6 @@ export const loginWithProvider = async (
       await setDoc(userDocRef, fallbackUser);
       await logActivity(uid, 'LOGIN', `Owner logged in via ${providerLabel} (profile created)`, email, 'Christopher Sung');
       return 'active';
-    }
-    // A pre-existing Auth account with no profile (isNewUser was false, so it
-    // was not minted just now) would otherwise register here — also blocked.
-    if (!REGISTRATION_OPEN) {
-      await signOut(auth);
-      throw new Error(REGISTRATION_CLOSED_ERROR);
     }
     // New social user → registration. Consent to the account/data-use terms
     // is required before the profile is created (same gate as the signup form).

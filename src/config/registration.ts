@@ -1,33 +1,23 @@
 /**
- * Registration availability — the ONE switch for every country edition.
+ * Registration availability — one shared flag for every country edition.
  *
- * New-user registration is PAUSED (Jul 2026) while the European market
- * expansion / system review runs. This module is shared by DE, GB and FR: the
- * builds differ only by VITE_COUNTRY_CODE, so there is deliberately no
- * per-country flag to keep in sync.
+ * New-user registration is PAUSED (Jul 2026) while the European expansion review
+ * runs. DE, GB and FR are the same build with a different VITE_COUNTRY_CODE, so
+ * this single flag covers all three; there is deliberately no per-country switch.
  *
- * HOW TO REOPEN — an explicit change by an admin/developer is required in BOTH
- * places; nothing reopens on a date, and REOPEN_DATE below is display copy only:
- *   1. Set REGISTRATION_OPEN = true here, rebuild and deploy the four sites.
- *   2. Set registrationOpen() = true in firestore.rules and deploy the rules
- *      (`firebase deploy --only firestore:rules`) — the rules are the server-side
- *      half and cannot import this file.
- *   3. Re-enable "Enable create (sign-up)" in Firebase Auth → Settings → User
- *      actions (this is what actually blocks Firebase Auth account creation for
- *      callers who bypass our UI).
- * Flipping only one of the three leaves registration blocked — that is the safe
- * failure direction and is intentional.
+ * SCOPE — this is a UI pause, and only that. While it is closed, the Sign Up
+ * entry stays visible but opens a maintenance notice instead of the form, so a
+ * normal user cannot complete registration through the app. It is not a security
+ * control: Firebase Auth and the Firestore rules are untouched, so registration
+ * remains technically possible for anyone calling the APIs directly.
+ *
+ * TO REOPEN: set REGISTRATION_OPEN = true here, rebuild, deploy. Nothing reopens
+ * on its own — REOPEN_DATE below is display copy that no code compares against
+ * the clock.
  */
 
-/** Master switch. false = no new accounts, anywhere. */
+/** The one switch. false = the signup form is not offered, in any edition. */
 export const REGISTRATION_OPEN = false;
 
-/**
- * Expected reopening date, shown to visitors. PURELY INFORMATIONAL — no code
- * compares it against the clock, so registration will NOT reopen by itself when
- * this date passes.
- */
+/** Expected reopening date, shown to visitors. Informational only. */
 export const REGISTRATION_REOPEN_DATE = '2026-07-24';
-
-/** Thrown/checked identifier so callers can show the localized notice. */
-export const REGISTRATION_CLOSED_ERROR = 'registration-closed';

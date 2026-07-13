@@ -15,9 +15,7 @@
     "deploy:fr": "npm run build:fr && firebase deploy --only hosting:fr",
     "deploy:admin": "npm run build:admin && firebase deploy --only hosting:hub",
     "preview": "vite preview",
-    "test:registration:rules": "firebase emulators:exec --only firestore --project heatpumpdb-rules-test \"node tests/registration-pause.rules.mjs\"",
-    "test:registration:e2e": "bash tests/run-registration-e2e.sh",
-    "test:registration": "npm run test:registration:rules && npm run test:registration:e2e",
+    "test:registration": "bash tests/run-registration-e2e.sh",
     "start": "node server.js",
     "update:all": "node scripts/update-all.mjs",
     "update:all:deploy": "node scripts/update-all.mjs --fetch --fetch-eprel --deploy"
@@ -39,7 +37,6 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^5.0.1",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17"
   }

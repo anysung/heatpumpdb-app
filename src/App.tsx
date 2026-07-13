@@ -11,7 +11,7 @@ import { auth } from './firebase';
 import { translations } from './translations';
 import { DEFAULT_LANGUAGE } from './hpiq/market';
 import { PUBLIC_ENV } from './config/env';
-import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE, REGISTRATION_CLOSED_ERROR } from './config/registration';
+import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE } from './config/registration';
 
 // Unified operations console build (own hosting site, all markets, admin-only).
 const IS_ADMIN_BUILD = PUBLIC_ENV.APP_MODE === 'admin';
@@ -136,9 +136,6 @@ const App: React.FC = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Registration pause: the form is not rendered while closed, so this is a
-    // belt-and-braces guard (the real enforcement is authService + Firestore rules).
-    if (!REGISTRATION_OPEN) { setCurrentView('SIGNUP'); return; }
     setIsLoading(true);
     try {
       // Consent to the one-account-per-person + no-data-extraction terms
@@ -170,10 +167,6 @@ const App: React.FC = () => {
       // User closed/cancelled the popup — not an error worth alerting.
       if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return;
       if (err?.message === 'terms-declined') { alert(t.termsDeclined); return; }
-      // A first-time social sign-in IS a registration — send them to the same
-      // notice the Sign Up entry shows (authService has already removed the
-      // Auth account the popup minted, so nothing partial is left behind).
-      if (err?.message === REGISTRATION_CLOSED_ERROR) { setCurrentView('SIGNUP'); return; }
       alert(err.message);
     } finally {
       setIsLoading(false);
