@@ -224,25 +224,44 @@ export type FetchState = 'idle' | 'loading' | 'success' | 'error';
 export type Language = 'en' | 'de' | 'fr';
 
 // --- Auth Types ---
-export type CompanyType = 'Manufacturer' | 'Distributor' | 'Installer' | 'Private Individual';
-export type JobRole = 'C-Level' | 'Director' | 'Sales Manager' | 'Technician' | 'Service' | 'Product Management' | 'General Public' | 'Other';
+/**
+ * Company type is stored as a CODE from config/companyTypes.ts ('installer', …).
+ * Typed as string because profiles created before Jul 2026 hold an English label
+ * ('Installer', 'Private Individual'); normalizeCompanyType() maps those on read.
+ */
+export type CompanyType = string;
+/** @deprecated Job role is no longer collected. Legacy documents may still carry it. */
+export type JobRole = string;
 
 export interface User {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
+  /** Company type CODE (config/companyTypes.ts). Legacy docs hold an English label. */
   companyType: CompanyType;
-  jobRole: JobRole;
+  /** Free text, only when companyType === 'other'. */
+  companyTypeOther?: string;
+  /** @deprecated No longer collected at signup; kept so legacy documents still load. */
+  jobRole?: JobRole;
   companyName?: string;
   companyCity?: string;
+  /** Optional; stored normalized as a bare domain/URL without a scheme. */
+  companyWebsite?: string;
+  /** Registration country — taken from the country edition, never asked for. */
   country?: string;
+  /** @deprecated No longer collected at signup; kept so legacy documents still load. */
   referralSource?: string;
   isActive: boolean;
   status?: 'pending' | 'active' | 'suspended' | 'rejected' | 'disabled' | 'deletion_requested' | 'deleted' | 'archived';
   registeredAt: string;
-  /** ISO timestamp of consent to the account/data-use terms (signup popup). */
+  /** ISO timestamp of consent to the Terms of Use + Privacy Policy at signup. */
   termsAcceptedAt?: string;
+  /** Versions consented to (config/legal.ts). Minimal consent record — no history log. */
+  termsVersion?: string;
+  privacyVersion?: string;
+  /** Optional, opt-in, never bundled with the required Terms acceptance. */
+  marketingConsent?: boolean;
   lastActiveAt?: string;
   role?: 'user' | 'owner' | 'admin' | 'support' | 'ops';
   // Plan & entitlement fields
@@ -309,10 +328,24 @@ export interface Organization {
   currentPeriodEndsAt?: string | null;
   /** Occupied seats (includes the owner). Length must stay <= seatLimit. */
   members: { uid: string; email: string; name?: string }[];
+  /**
+   * The uids in `members`, kept in step with it. Security rules cannot look
+   * inside the member maps, so this flat list is what lets them prove that a
+   * join adds the CALLER and a leave removes the CALLER — nobody else.
+   */
+  memberUids?: string[];
   /** Open invitations (count against seats). Invitee joins on next login. */
   invitedEmails: string[];
+  /** email → ISO timestamp of the (re)invitation, for the pending-invite list. */
+  invitedAt?: Record<string, string>;
   /** Members to keep on a scheduled downgrade (chosen at scheduling time). */
   keepMemberUids?: string[];
+  // ── Company profile — owned by the org, inherited by every member ──────────
+  companyName?: string;
+  companyType?: CompanyType;
+  companyTypeOther?: string;
+  companyCity?: string;
+  companyWebsite?: string;
   createdAt: string;
 }
 

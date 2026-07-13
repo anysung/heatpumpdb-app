@@ -5,12 +5,11 @@ import { auth } from '../../firebase';
 import { requestDeletion } from '../../services/adminService';
 import { openCheckout, portalUrlFor, checkoutConfigured } from '../../services/paddleService';
 import {
-  getMyOrg, seatsUsed, inviteMember, cancelInvite, removeMember,
-  getMyChangeRequest, scheduleChange, cancelChange,
+  getMyOrg, seatsUsed, getMyChangeRequest, scheduleChange, cancelChange, leaveTeam,
 } from '../../services/subscriptionService';
 import { createTicket, getMyTickets, userReply } from '../../services/supportService';
 import { HpApp } from '../appState';
-import { UI_LANGUAGES, MARKET_ENTER_URL } from '../market';
+import { UI_LANGUAGES } from '../market';
 import { tr } from '../i18n';
 import { Language, SupportTicket, TicketCategory, Organization, SubscriptionChangeRequest } from '../../types';
 import {
@@ -19,20 +18,11 @@ import {
 } from '../../config/subscriptionPlans';
 import { FD, sectionLabel } from '../ui';
 import { shortDate } from '../model';
-
-const Card: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
-  <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '24px 26px', display: 'flex', flexDirection: 'column', ...style }}>{children}</div>
-);
-
-const CardTitle: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
-  <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', ...style }}>{children}</span>
-);
-
-const ProfileRow: React.FC<{ label: string; value: string; last?: boolean }> = ({ label, value, last }) => (
-  <span style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13.5, padding: '10px 0', borderBottom: last ? undefined : '1px solid #f0f0f0' }}>
-    <span style={{ color: '#7a7a7a' }}>{label}</span><span style={{ fontWeight: 600 }}>{value}</span>
-  </span>
-);
+import {
+  Card, CardTitle, CompanyProfileCard, PersonalProfileCard,
+  TeamSummaryCard, YourTeamCard, TeamManagementView, PoliciesCard,
+} from './accountParts';
+import { previewOrg } from '../devPreview';
 
 const statusChip = (status: string, label: string) => (
   <span style={{
@@ -331,94 +321,8 @@ const PlanPicker: React.FC<{
   );
 };
 
-/** Team seats (Team 3 / Team 5 administrators): members, invitations, replacement. */
-const TeamCard: React.FC<{ app: HpApp; org: Organization; onChanged: (o: Organization) => void }> = ({ app, org, onChanged }) => {
-  const t = tr(app.lang);
-  const s = t.sub;
-  const [invite, setInvite] = useState('');
-  const [busy, setBusy] = useState(false);
-  const free = org.seatLimit - seatsUsed(org);
-
-  const doInvite = async () => {
-    const email = invite.trim().toLowerCase();
-    if (!email || busy) return;
-    setBusy(true);
-    try {
-      await inviteMember(org, email);
-      onChanged({ ...org, invitedEmails: [...(org.invitedEmails ?? []), email] });
-      setInvite('');
-      app.notify(s.inviteSent(email));
-    } catch (e: any) {
-      app.notify(e?.message === 'no-seats' ? s.inviteFailSeats : e?.message?.startsWith('already') ? s.inviteFailDup : s.inviteFailed);
-    } finally { setBusy(false); }
-  };
-
-  const doRemove = async (uid: string, email: string) => {
-    if (!window.confirm(s.removeConfirm(email))) return;
-    await removeMember(org, uid);
-    onChanged({ ...org, members: org.members.filter(m => m.uid !== uid) });
-    app.notify(s.removedOk);
-  };
-
-  const doCancelInvite = async (email: string) => {
-    await cancelInvite(org, email);
-    onChanged({ ...org, invitedEmails: (org.invitedEmails ?? []).filter(e => e !== email) });
-  };
-
-  const row: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 10, padding: '9px 0', borderBottom: '1px solid #f0f0f0', fontSize: 13 };
-
-  return (
-    <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '24px 26px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px' }}>{s.teamTitle}</span>
-        <span style={pill('#f0f0f0', '#1d1d1f')}>{s.seatsUsed(seatsUsed(org), org.seatLimit)}</span>
-      </div>
-      {org.subscriptionStatus === 'trialing' && (
-        <span style={{ fontSize: 12, color: '#9a6b00', background: '#fff4e0', borderRadius: 10, padding: '8px 12px', lineHeight: 1.5 }}>{s.teamTrialNote}</span>
-      )}
-      <div>
-        {org.members.map(m => (
-          <div key={m.uid} style={row}>
-            <span style={{ fontWeight: 600, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.email}</span>
-            <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{m.uid === org.ownerUid ? s.teamAdminLabel : s.memberLabel}</span>
-            {m.uid !== org.ownerUid && (
-              <span className="hp-press" onClick={() => doRemove(m.uid, m.email)} style={{ fontSize: 11.5, color: '#c0392b', border: '1px solid #e8c5be', borderRadius: 999, padding: '4px 12px', cursor: 'pointer' }}>
-                {s.removeBtn}
-              </span>
-            )}
-          </div>
-        ))}
-        {(org.invitedEmails ?? []).map(e => (
-          <div key={e} style={row}>
-            <span style={{ flex: 1, color: '#7a7a7a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e}</span>
-            <span style={{ fontSize: 11.5, color: '#9a6b00' }}>{s.invitedLabel}</span>
-            <span className="hp-press" onClick={() => doCancelInvite(e)} style={{ fontSize: 11.5, color: '#7a7a7a', border: '1px solid #d2d2d7', borderRadius: 999, padding: '4px 12px', cursor: 'pointer' }}>
-              {s.cancelInviteBtn}
-            </span>
-          </div>
-        ))}
-      </div>
-      {free > 0 && (
-        <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
-          <input
-            value={invite}
-            onChange={e => setInvite(e.target.value)}
-            placeholder={s.invitePlaceholder}
-            type="email"
-            style={{ border: '1px solid #d2d2d7', borderRadius: 10, padding: '9px 12px', fontSize: 13, fontFamily: 'inherit', background: '#fff', outline: 'none', flex: 1 }}
-            onKeyDown={e => { if (e.key === 'Enter') doInvite(); }}
-          />
-          <span className="hp-press" onClick={doInvite} style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '9px 20px', fontSize: 13, cursor: 'pointer', opacity: busy ? 0.6 : 1 }}>
-            {s.inviteBtn}
-          </span>
-        </div>
-      )}
-    </div>
-  );
-};
-
 /** The whole subscription area: member view / active-subscription view / plan picker. */
-const SubscriptionSection: React.FC<{ app: HpApp }> = ({ app }) => {
+const SubscriptionSection: React.FC<{ app: HpApp; org: Organization | null; onBilling: () => void }> = ({ app, org, onBilling }) => {
   const t = tr(app.lang);
   const s = t.sub;
   const { user } = app;
@@ -426,23 +330,16 @@ const SubscriptionSection: React.FC<{ app: HpApp }> = ({ app }) => {
   const sub = user.subscription;
   const unlocked = !!sub && subscriptionUnlocked(sub.status, sub.currentPeriodEndsAt);
   const legacyPro = !sub && user.plan === 'premium';
-  const [org, setOrg] = useState<Organization | null>(null);
   const [changeReq, setChangeReq] = useState<SubscriptionChangeRequest | null>(null);
   const [scheduling, setScheduling] = useState(false);
 
   useEffect(() => {
     if (isPreview) return;
-    if (user.orgId) getMyOrg(user).then(setOrg).catch(() => {});
     if (sub) getMyChangeRequest(user.id).then(setChangeReq).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.id, user.orgId]);
+  }, [user.id]);
 
-  const openBillingPortal = () => {
-    if (isPreview) { app.notify(t.account.previewOnly); return; }
-    const url = portalUrlFor(user);
-    if (url) window.open(url, '_blank', 'noopener');
-    else app.notify(t.account.managePlanSoon);
-  };
+  const openBillingPortal = onBilling;
 
   const doSchedule = (plan: SubPlanCode, term: BillingTerm, keepUids?: string[]) => {
     scheduleChange(user, plan, term, keepUids)
@@ -461,7 +358,7 @@ const SubscriptionSection: React.FC<{ app: HpApp }> = ({ app }) => {
   const fmt = (d?: string | null) => (d ? shortDate(d, t.locale) : '—');
 
   // ── Team member: access managed by the team admin — no billing controls ──
-  if (user.orgRole === 'member' && org && sub) {
+  if (user.orgRole === 'member' && org) {
     return (
       <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '26px 28px', display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -471,7 +368,7 @@ const SubscriptionSection: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontSize: 13.5, color: '#333', lineHeight: 1.6, maxWidth: 640 }}>
           {s.memberViewText(s.planNames[org.planCode], org.ownerEmail)}
         </span>
-        <span style={{ fontSize: 12, color: '#7a7a7a' }}>{s.teamTrialNote}</span>
+        <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.team.memberNoBilling}</span>
       </div>
     );
   }
@@ -542,9 +439,6 @@ const SubscriptionSection: React.FC<{ app: HpApp }> = ({ app }) => {
             </div>
           )}
         </div>
-        {user.orgRole === 'team_admin' && org && (
-          <TeamCard app={app} org={org} onChanged={setOrg} />
-        )}
       </>
     );
   }
@@ -565,8 +459,29 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
   const { user } = app;
   const displayName = [user.firstName, user.lastName].filter(Boolean).join(' ') || '—';
-  const role = user.companyType === 'Private Individual' ? t.account.roleHome : t.account.rolePro;
   const isPreview = user.id === 'preview';
+
+  // The organization is fetched once here: the subscription section, the team
+  // cards and the Team management subview all read the same copy.
+  const [org, setOrg] = useState<Organization | null>(null);
+  const [view, setView] = useState<'account' | 'team'>('account');
+
+  useEffect(() => {
+    if (isPreview) { setOrg(previewOrg(user)); return; }
+    if (user.orgId) getMyOrg(user).then(setOrg).catch(() => {});
+    else setOrg(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.id, user.orgId]);
+
+  const isOwner = user.orgRole === 'team_admin' && !!org;
+  const isMember = user.orgRole === 'member' && !!org;
+
+  const openBillingPortal = () => {
+    if (isPreview) { app.notify(t.account.previewOnly); return; }
+    const url = portalUrlFor(user);
+    if (url) window.open(url, '_blank', 'noopener');
+    else app.notify(t.account.managePlanSoon);
+  };
 
   const sendSetupLink = () => {
     if (isPreview) { app.notify(t.account.previewOnly); return; }
@@ -575,154 +490,139 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
       .catch(() => app.notify(t.account.linkFailed));
   };
 
-  const deleteAccount = () => {
+  const deleteAccount = async () => {
     if (isPreview) { app.notify(t.account.previewOnly); return; }
-    const ok = window.confirm(t.account.delConfirm);
-    if (!ok) return;
-    requestDeletion(user.id, 'Self-service request from Account page', displayName)
-      .then(() => {
-        app.notify(t.account.delDone);
-        setTimeout(app.onLogout, 1800);
-      })
-      .catch(() => app.notify(t.account.delFailed));
+    // A team owner cannot walk away and strand their members — ownership
+    // transfer goes through Support (New inquiry).
+    if (isOwner && org && org.members.length > 1) {
+      app.notify(t.account.delOwnerBlocked);
+      return;
+    }
+    if (!window.confirm(t.account.delConfirm)) return;
+    try {
+      // A member leaves the team first, so the seat is freed rather than left
+      // pointing at a deleted account. Billing is never touched here.
+      if (isMember && org) await leaveTeam(org, user).catch(() => {});
+      await requestDeletion(user.id, 'Self-service request from Account page', displayName);
+      app.notify(t.account.delDone);
+      setTimeout(app.onLogout, 1800);
+    } catch {
+      app.notify(t.account.delFailed);
+    }
   };
 
-  return (
+  const shell = (children: React.ReactNode) => (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <div style={{ background: '#f5f5f7', padding: '40px 48px 32px', display: 'flex', flexDirection: 'column', gap: 6 }}>
         <span style={{ fontFamily: FD, fontSize: 34, fontWeight: 600, letterSpacing: '-0.374px' }}>{t.account.heroTitle}</span>
         <span style={{ fontSize: 17, color: '#7a7a7a', letterSpacing: '-0.374px' }}>{t.account.heroSub}</span>
       </div>
       <div style={{ maxWidth: 1160, width: '100%', margin: '0 auto', padding: '28px 48px 48px', display: 'flex', flexDirection: 'column', gap: 20, boxSizing: 'border-box' }}>
-
-        {/* Subscription program (Professional / Team 3 / Team 5) */}
-        <SubscriptionSection app={app} />
-
-        {/* Profile + Language */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          <Card style={{ gap: 4 }}>
-            <CardTitle style={{ marginBottom: 8 }}>{t.account.profile}</CardTitle>
-            <ProfileRow label={t.account.email} value={user.email} />
-            <ProfileRow label={t.account.displayName} value={displayName} />
-            <ProfileRow label={t.account.company} value={user.companyName || '—'} />
-            <ProfileRow label={t.account.role} value={role} last />
-            <span
-              onClick={() => app.notify(t.account.editProfileSoon)}
-              style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer', marginTop: 4 }}
-            >
-              {t.account.editProfile}
-            </span>
-          </Card>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <Card style={{ gap: 12 }}>
-              <CardTitle>{t.account.language}</CardTitle>
-              <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
-                {(([['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
-                  .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
-                  <span
-                    key={id}
-                    onClick={() => app.setLang(id)}
-                    style={{
-                      padding: '7px 18px', cursor: 'pointer',
-                      ...(app.lang === id ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
-                    }}
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
-              <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>
-                {t.account.languageNote}
-              </span>
-            </Card>
-            <Card style={{ gap: 9 }}>
-              <CardTitle>{t.account.web}</CardTitle>
-              <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>
-                {t.account.webText}
-              </span>
-              <span style={{ border: '1px solid #e0e0e0', borderRadius: 8, padding: '9px 14px', fontSize: 13, fontFamily: 'ui-monospace,Menlo,monospace', background: '#f5f5f7', width: 'fit-content' }}>{MARKET_ENTER_URL}</span>
-              <div style={{ display: 'flex', gap: 10, marginTop: 2 }}>
-                <span
-                  className="hp-press"
-                  onClick={() =>
-                    navigator.clipboard?.writeText(MARKET_ENTER_URL)
-                      .then(() => app.notify(t.account.copied))
-                      .catch(() => app.notify(t.account.copyFailed))
-                  }
-                  style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '8px 18px', fontSize: 13, background: '#fff', cursor: 'pointer' }}
-                >
-                  {t.account.copyLink}
-                </span>
-                <span
-                  className="hp-press"
-                  onClick={() => {
-                    window.location.href = `mailto:${user.email}?subject=${encodeURIComponent(t.account.emailSubject)}&body=${encodeURIComponent(t.account.emailBody)}`;
-                  }}
-                  style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '8px 18px', fontSize: 13, background: '#fff', cursor: 'pointer' }}
-                >
-                  {t.account.emailLink}
-                </span>
-              </div>
-            </Card>
-          </div>
-        </div>
-
-        {/* Security + Support */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          <Card style={{ gap: 9 }}>
-            <CardTitle>{t.account.security}</CardTitle>
-            <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.securityText}</span>
-            <span onClick={sendSetupLink} style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>{t.account.sendLink(user.email)}</span>
-          </Card>
-          <SupportCard app={app} />
-        </div>
-
-        {/* Legal + Delete */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          <Card style={{ gap: 9 }}>
-            <CardTitle>{t.account.legal}</CardTitle>
-            {t.account.legalDocs.map(doc => (
-              <span
-                key={doc}
-                onClick={() => app.notify(t.account.legalSoon(doc))}
-                style={{ color: '#0066cc', fontSize: 13.5, cursor: 'pointer' }}
-              >
-                {doc} ›
-              </span>
-            ))}
-          </Card>
-          <Card style={{ gap: 10 }}>
-            <CardTitle>{t.account.del}</CardTitle>
-            <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.delText}</span>
-            <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.55, border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', background: '#f5f5f7' }}>
-              {t.account.delStoreNote}
-            </span>
-            <span
-              className="hp-press"
-              onClick={deleteAccount}
-              style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 20px', fontSize: 13, background: '#fff', cursor: 'pointer', width: 'fit-content', color: '#c0392b' }}
-            >
-              {t.account.delBtn}
-            </span>
-          </Card>
-        </div>
-
-        {/* ── Fair use: one-person accounts + no data extraction ── */}
-        <div style={{ border: '1px solid #e8d9b5', background: '#fdf8ec', borderRadius: 14, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 7 }}>
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#8a6d1f', textTransform: 'uppercase' }}>{t.account.fairUseTitle}</span>
-          <span style={{ fontSize: 12.5, color: '#5c4d1e', lineHeight: 1.6 }}>{t.account.fairUseAccount}</span>
-          <span style={{ fontSize: 12.5, color: '#5c4d1e', lineHeight: 1.6 }}>{t.account.fairUseData}</span>
-        </div>
-
-        {/* ── Database rights / legal notice ── */}
-        <div style={{ gridColumn: '1 / -1', borderTop: '1px solid #e0e0e0', marginTop: 6, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', textTransform: 'uppercase' }}>{t.account.legalNoticeTitle}</span>
-          <p style={{ fontSize: 11, color: '#9a9aa0', lineHeight: 1.65, textAlign: 'justify', margin: 0, maxWidth: 980 }}>
-            {t.account.legalNotice}
-          </p>
-          <span style={{ fontSize: 11, color: '#9a9aa0' }}>{t.footer.copyright(new Date().getFullYear())}</span>
-        </div>
+        {children}
       </div>
     </div>
+  );
+
+  // ── Account → Team management (a subview, never a separate app) ──────────
+  if (view === 'team' && org && isOwner) {
+    return shell(
+      <TeamManagementView
+        app={app}
+        org={org}
+        onBack={() => setView('account')}
+        onChanged={setOrg}
+        onManageBilling={openBillingPortal}
+      />,
+    );
+  }
+
+  return shell(
+    <>
+      {/* 1. Subscription & billing (a member sees their company's plan, read-only) */}
+      <SubscriptionSection app={app} org={org} onBilling={openBillingPortal} />
+
+      {/* 2. Profile — company (professional / owner) or personal (team member) */}
+      <div className="hpiq-acc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        {isMember
+          ? <PersonalProfileCard app={app} org={org} />
+          : <CompanyProfileCard app={app} org={org} isOwner={isOwner} onOrgChanged={setOrg} />}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {/* 3. Team — management for the owner, read-only for a member */}
+          {isOwner && org && <TeamSummaryCard app={app} org={org} onManage={() => setView('team')} />}
+          {isMember && org && <YourTeamCard app={app} org={org} onLeft={() => setOrg(null)} />}
+
+          {/* 4. App language */}
+          <Card style={{ gap: 12 }}>
+            <CardTitle>{t.account.language}</CardTitle>
+            <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
+              {(([['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
+                .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
+                <span
+                  key={id}
+                  onClick={() => app.setLang(id)}
+                  style={{
+                    padding: '7px 18px', cursor: 'pointer',
+                    ...(app.lang === id ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
+                  }}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+            <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.account.languageNote}</span>
+          </Card>
+        </div>
+      </div>
+
+      {/* 5. Email & password + 6. Support */}
+      <div className="hpiq-acc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <Card style={{ gap: 9 }}>
+          <CardTitle>{t.account.security}</CardTitle>
+          <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.securityText}</span>
+          <span onClick={sendSetupLink} style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>{t.account.sendLink(user.email)}</span>
+        </Card>
+        <SupportCard app={app} />
+      </div>
+
+      {/* 7. Terms & policies + 8. Delete account */}
+      <div className="hpiq-acc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <PoliciesCard app={app} />
+        <Card style={{ gap: 10 }}>
+          <CardTitle>{t.account.del}</CardTitle>
+          <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.delText}</span>
+          <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.55, border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', background: '#f5f5f7' }}>
+            {t.account.delStoreNote}
+          </span>
+          {isOwner && org && org.members.length > 1 && (
+            <span style={{ fontSize: 12, color: '#9a6b00', lineHeight: 1.55, border: '1px solid #e8d9b5', borderRadius: 8, padding: '10px 14px', background: '#fdf8ec' }} data-testid="owner-delete-blocked">
+              {t.account.delOwnerBlocked}
+            </span>
+          )}
+          <span
+            className="hp-press"
+            onClick={deleteAccount}
+            style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 20px', fontSize: 13, background: '#fff', cursor: 'pointer', width: 'fit-content', color: '#c0392b' }}
+            data-testid="delete-account"
+          >
+            {t.account.delBtn}
+          </span>
+        </Card>
+      </div>
+
+      {/* Fair use: one-person accounts + no data extraction */}
+      <div style={{ border: '1px solid #e8d9b5', background: '#fdf8ec', borderRadius: 14, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 7 }}>
+        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.06em', color: '#8a6d1f', textTransform: 'uppercase' }}>{t.account.fairUseTitle}</span>
+        <span style={{ fontSize: 12.5, color: '#5c4d1e', lineHeight: 1.6 }}>{t.account.fairUseAccount}</span>
+        <span style={{ fontSize: 12.5, color: '#5c4d1e', lineHeight: 1.6 }}>{t.account.fairUseData}</span>
+      </div>
+
+      {/* Database rights / legal notice */}
+      <div style={{ borderTop: '1px solid #e0e0e0', marginTop: 6, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', textTransform: 'uppercase' }}>{t.account.legalNoticeTitle}</span>
+        <p style={{ fontSize: 11, color: '#9a9aa0', lineHeight: 1.65, textAlign: 'justify', margin: 0, maxWidth: 980 }}>{t.account.legalNotice}</p>
+        <span style={{ fontSize: 11, color: '#9a9aa0' }}>{t.footer.copyright(new Date().getFullYear())}</span>
+      </div>
+    </>,
   );
 };

@@ -18,7 +18,10 @@
     "test:registration": "bash tests/run-registration-e2e.sh",
     "start": "node server.js",
     "update:all": "node scripts/update-all.mjs",
-    "update:all:deploy": "node scripts/update-all.mjs --fetch --fetch-eprel --deploy"
+    "update:all:deploy": "node scripts/update-all.mjs --fetch --fetch-eprel --deploy",
+    "test:rules": "firebase emulators:exec --only firestore --project heatpumpdb-rules-test \"node tests/profile-team.rules.mjs\"",
+    "test:signup": "bash tests/run-signup-account-e2e.sh",
+    "test": "npm run test:rules && npm run test:registration && npm run test:signup"
   },
   "dependencies": {
     "@google/genai": "*",
@@ -37,6 +40,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.1",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17"
   }

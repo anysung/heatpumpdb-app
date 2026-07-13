@@ -15,6 +15,8 @@ export interface HpApp {
   /** Full downloaded catalog (residential + commercial) — used by the EU energy label page. */
   allStore: ProductStore | null;
   user: User;
+  /** Reflect a self-service profile edit locally (Firestore is the source of truth). */
+  patchUser: (patch: Partial<User>) => void;
   news: NewsItem[];
 
   /** "Data status" / footer snapshot date. */

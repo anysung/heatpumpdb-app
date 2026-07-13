@@ -117,3 +117,9 @@
 }
 .hp-sheet-in { animation: hp-sheet-in .22s ease-out; }
 
+
+/* Account cards: two columns on desktop, one on narrow screens (the "Use on the
+   web" card is gone, so the grid must not leave a hole on small viewports). */
+@media screen and (max-width: 860px) {
+  .hpiq-acc-grid { grid-template-columns: 1fr !important; }
+}

@@ -17,7 +17,16 @@
  */
 
 /** The one switch. false = the signup form is not offered, in any edition. */
-export const REGISTRATION_OPEN = false;
+const REGISTRATION_FLAG = false;
+
+/**
+ * Dev/e2e may open the form to exercise the reopened flow (VITE_REGISTRATION_OPEN=true).
+ * Production builds never see that variable, so the flag above is the only switch
+ * that matters there.
+ */
+export const REGISTRATION_OPEN =
+  REGISTRATION_FLAG ||
+  (import.meta.env.DEV && import.meta.env.VITE_REGISTRATION_OPEN === 'true');
 
 /** Expected reopening date, shown to visitors. Informational only. */
 export const REGISTRATION_REOPEN_DATE = '2026-07-24';

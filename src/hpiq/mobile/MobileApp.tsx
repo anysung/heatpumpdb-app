@@ -12,7 +12,9 @@
 import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
-import { UI_LANGUAGES, FUNDING_SOURCE_LINKS, MARKET_ENTER_URL } from '../market';
+import { UI_LANGUAGES, FUNDING_SOURCE_LINKS } from '../market';
+import { LEGAL_ROUTES, LegalDoc } from '../../config/legal';
+import { LEGAL_NAV } from '../../legal/LegalPage';
 import { openCheckout, portalUrlFor, checkoutConfigured } from '../../services/paddleService';
 import { SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, formatEur, isTeamPlan, subscriptionUnlocked } from '../../config/subscriptionPlans';
 import { FD, SignOutIcon, VideoExplainer, sectionLabel } from '../ui';
@@ -517,13 +519,6 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
       )}
 
       <div style={card}>
-        <span style={sectionLabel}>{t.account.web}</span>
-        <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.account.webText}</span>
-        <span style={{ fontFamily: 'ui-monospace,Menlo,monospace', fontSize: 12.5, background: '#f5f5f7', borderRadius: 8, padding: '8px 12px', width: 'fit-content' }}>{MARKET_ENTER_URL}</span>
-        <span style={{ fontSize: 11.5, color: '#b6b6bc', lineHeight: 1.5 }}>{t.m.desktopNote}</span>
-      </div>
-
-      <div style={card}>
         <span style={sectionLabel}>{t.account.support}</span>
         <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.account.supportText}</span>
         <span
@@ -532,6 +527,15 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
         >
           {t.account.contactSupport}
         </span>
+      </div>
+
+      <div style={card}>
+        <span style={sectionLabel}>{t.account.legal}</span>
+        {(Object.keys(LEGAL_ROUTES) as LegalDoc[]).map(d => (
+          <a key={d} href={LEGAL_ROUTES[d]} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: '#0066cc', textDecoration: 'none' }} data-testid={`policy-${d}`}>
+            {LEGAL_NAV[app.lang][d]} ›
+          </a>
+        ))}
       </div>
 
       <span

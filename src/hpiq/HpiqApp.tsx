@@ -41,7 +41,12 @@ interface Props {
 const NAV_IDS: Exclude<HpPage, 'account'>[] = ['find', 'products', 'label', 'datasheet', 'bafa', 'guide', 'news'];
 
 
-export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
+export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
+  // Profile edits are written to Firestore; this overlay reflects them at once
+  // (the auth listener would only refresh the profile on the next sign-in).
+  const [userPatch, setUserPatch] = useState<Partial<User>>({});
+  const user = { ...userProp, ...userPatch };
+  const patchUser = (patch: Partial<User>) => setUserPatch(prev => ({ ...prev, ...patch }));
   const t = tr(language);
   const viewport = useViewport();
   // Shared-article deep links (?article=<id>) land on the news page directly.
@@ -178,7 +183,7 @@ export const HpiqApp: React.FC<Props> = ({ user, onLogout, onAdminAccess, dbData
   };
 
   const app: HpApp = {
-    store, allStore, user,
+    store, allStore, user, patchUser,
     news: dbData?.newsFeed ?? [],
     dataStatusDate, bafaSnapshotDate, eprelSyncDate, totalListed,
     page, go: setPage,

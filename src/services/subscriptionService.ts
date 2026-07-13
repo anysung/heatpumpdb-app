@@ -15,7 +15,7 @@
  *     applied at renewal by ops/webhook — never mid-term.
  */
 import {
-  collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc,
+  collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, deleteField,
   query, where, arrayUnion, arrayRemove,
 } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -52,28 +52,78 @@ export async function getMyOrg(user: User): Promise<Organization | null> {
 export const seatsUsed = (org: Organization): number =>
   org.members.length + (org.invitedEmails?.length ?? 0);
 
-/** Team admin: invite a member into a free seat (replacement is allowed anytime). */
+/** The uids occupying seats — `memberUids` when present, else derived (legacy orgs). */
+export const orgMemberUids = (org: Organization): string[] =>
+  org.memberUids ?? org.members.map(m => m.uid);
+
+/** Team owner: invite a member into a free seat (replacement is allowed anytime). */
 export async function inviteMember(org: Organization, email: string): Promise<void> {
   const key = emailKey(email);
   if (org.members.some(m => emailKey(m.email) === key)) throw new Error('already-member');
   if ((org.invitedEmails ?? []).includes(key)) throw new Error('already-invited');
   if (seatsUsed(org) >= org.seatLimit) throw new Error('no-seats');
-  await updateDoc(doc(db, ORGS, org.id), { invitedEmails: arrayUnion(key) });
+  await updateDoc(doc(db, ORGS, org.id), {
+    invitedEmails: arrayUnion(key),
+    invitedAt: { ...(org.invitedAt ?? {}), [key]: nowIso() },
+  });
+}
+
+/** Re-issue an open invitation (refreshes its date; the link itself is unchanged). */
+export async function resendInvite(org: Organization, email: string): Promise<void> {
+  const key = emailKey(email);
+  if (!(org.invitedEmails ?? []).includes(key)) throw new Error('not-invited');
+  await updateDoc(doc(db, ORGS, org.id), { invitedAt: { ...(org.invitedAt ?? {}), [key]: nowIso() } });
 }
 
 export async function cancelInvite(org: Organization, email: string): Promise<void> {
-  await updateDoc(doc(db, ORGS, org.id), { invitedEmails: arrayRemove(emailKey(email)) });
+  const key = emailKey(email);
+  const rest = { ...(org.invitedAt ?? {}) };
+  delete rest[key];
+  await updateDoc(doc(db, ORGS, org.id), { invitedEmails: arrayRemove(key), invitedAt: rest });
 }
 
-/** Team admin: free a seat. Never touches the Paddle subscription. */
+/** Team owner: free a seat. Never touches the Paddle subscription. */
 export async function removeMember(org: Organization, uid: string): Promise<void> {
   if (uid === org.ownerUid) throw new Error('cannot-remove-owner');
   const member = org.members.find(m => m.uid === uid);
   if (!member) return;
   await updateDoc(doc(db, ORGS, org.id), {
     members: arrayRemove(member),
+    memberUids: arrayRemove(uid),
     keepMemberUids: arrayRemove(uid),
   });
+  // The removed person keeps their personal account — only the team link goes.
+  await updateDoc(doc(db, 'users', uid), { orgId: deleteField(), orgRole: deleteField() }).catch(() => {});
+}
+
+/**
+ * Team member: leave the team. Frees the seat, keeps the personal account, and
+ * never touches the team subscription. The owner cannot use this (they would
+ * strand the team — ownership transfer goes through Support).
+ */
+export async function leaveTeam(org: Organization, user: User): Promise<void> {
+  if (user.id === org.ownerUid) throw new Error('owner-cannot-leave');
+  const me = org.members.find(m => m.uid === user.id);
+  if (me) {
+    await updateDoc(doc(db, ORGS, org.id), {
+      members: arrayRemove(me),
+      memberUids: arrayRemove(user.id),
+      keepMemberUids: arrayRemove(user.id),
+    });
+  }
+  await updateDoc(doc(db, 'users', user.id), { orgId: deleteField(), orgRole: deleteField() });
+}
+
+/** Team owner: the company profile the whole team inherits. */
+export async function updateOrgCompany(
+  org: Organization,
+  company: Pick<Organization, 'companyName' | 'companyType' | 'companyTypeOther' | 'companyCity' | 'companyWebsite'>,
+): Promise<void> {
+  const patch: Record<string, any> = {};
+  for (const [k, v] of Object.entries(company)) if (v !== undefined) patch[k] = v;
+  // `name` is the legacy display field — keep it in step so admin views agree.
+  if (company.companyName !== undefined) patch.name = company.companyName;
+  await updateDoc(doc(db, ORGS, org.id), patch);
 }
 
 /** Choose which members keep seats on a scheduled downgrade. */
@@ -94,12 +144,16 @@ export async function joinOrgIfInvited(user: User): Promise<Organization | null>
   const org = { id: orgDoc.id, ...orgDoc.data() } as Organization;
   if (org.members.length >= org.seatLimit) return null; // seat was refilled meanwhile
   const name = [user.firstName, user.lastName].filter(Boolean).join(' ');
+  const invitedAt = { ...(org.invitedAt ?? {}) };
+  delete invitedAt[key];
   await updateDoc(orgDoc.ref, {
     members: arrayUnion({ uid: user.id, email: key, ...(name ? { name } : {}) }),
+    memberUids: arrayUnion(user.id),
     invitedEmails: arrayRemove(key),
+    invitedAt,
   });
   await updateDoc(doc(db, 'users', user.id), { orgId: org.id, orgRole: 'member' });
-  return { ...org, members: [...org.members, { uid: user.id, email: key, name }] };
+  return { ...org, members: [...org.members, { uid: user.id, email: key, name }], memberUids: [...orgMemberUids(org), user.id] };
 }
 
 // ── Admin: assign / clear subscriptions (ops backstop + admin_grant channel) ──
@@ -155,7 +209,15 @@ export async function adminAssignSubscription(
         trialEndsAt: sub.trialEndsAt ?? null,
         currentPeriodEndsAt: periodEnd,
         members: [{ uid: target.id, email: emailKey(target.email), name: [target.firstName, target.lastName].filter(Boolean).join(' ') }],
+        memberUids: [target.id],
         invitedEmails: [],
+        invitedAt: {},
+        // The team inherits the buyer's company profile; the owner can edit it later.
+        companyName: target.companyName || '',
+        companyType: target.companyType || '',
+        ...(target.companyTypeOther ? { companyTypeOther: target.companyTypeOther } : {}),
+        ...(target.companyCity ? { companyCity: target.companyCity } : {}),
+        ...(target.companyWebsite ? { companyWebsite: target.companyWebsite } : {}),
         createdAt: nowIso(),
       };
       await setDoc(ref, org);

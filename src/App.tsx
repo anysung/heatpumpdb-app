@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { loginUser, registerUser, logoutUser, onUserChange, loginWithProvider, isAdminRole } from './services/authService';
+import { loginUser, registerUser, registerInvitedMember, logoutUser, onUserChange, loginWithProvider, isAdminRole } from './services/authService';
 import { HpiqApp } from './hpiq/HpiqApp';
 import { AdminDashboard } from './components/AdminDashboard';
 import {
@@ -12,6 +12,10 @@ import { translations } from './translations';
 import { DEFAULT_LANGUAGE } from './hpiq/market';
 import { PUBLIC_ENV } from './config/env';
 import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE } from './config/registration';
+import { legalDocForPath } from './config/legal';
+import { LegalPage, LegalFooter } from './legal/LegalPage';
+import { SignupForm, SignupFormValues } from './components/auth/SignupForm';
+import { previewUserPatch } from './hpiq/devPreview';
 
 // Unified operations console build (own hosting site, all markets, admin-only).
 const IS_ADMIN_BUILD = PUBLIC_ENV.APP_MODE === 'admin';
@@ -31,7 +35,11 @@ const App: React.FC = () => {
   
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
-  const [signupData, setSignupData] = useState<any>({});
+  // Team invitation link produced by the Team Owner in Account → Team management.
+  const inviteParams = new URLSearchParams(window.location.search);
+  const inviteOrgId = inviteParams.get('invite') ?? '';
+  const invitedEmail = (inviteParams.get('email') ?? '').trim().toLowerCase();
+  const isInvite = !!inviteOrgId && !!invitedEmail;
   // Account/data-use consent popup (signup gate) — resolves on agree.
   const [termsPrompt, setTermsPrompt] = useState<{ resolve: () => void; reject: () => void } | null>(null);
   const requestTermsConsent = () =>
@@ -134,15 +142,11 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignup = async (values: SignupFormValues) => {
     setIsLoading(true);
     try {
-      // Consent to the one-account-per-person + no-data-extraction terms
-      // is required before the account is created.
-      try { await requestTermsConsent(); }
-      catch { alert(t.termsDeclined); return; }
-      const activated = await registerUser({ ...signupData, termsAcceptedAt: new Date().toISOString() });
+      const { consent, ...data } = values;   // consent is recorded as termsAcceptedAt/version
+      const activated = await registerUser(data);
       if (activated) {
         // Free-access grant applied — the account is live, go straight in.
         setCurrentUser(activated);
@@ -152,6 +156,30 @@ const App: React.FC = () => {
       }
     } catch (err: any) {
       alert(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /**
+   * Invited team member: the seat is already paid for by the Team Owner, so this
+   * is not a public registration — no plan choice, no checkout, no approval
+   * queue. The profile is created active and the seat is claimed at once.
+   */
+  const handleInvitedSignup = async (values: SignupFormValues) => {
+    setIsLoading(true);
+    try {
+      const user = await registerInvitedMember(inviteOrgId, {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: invitedEmail,
+        password: values.password,
+        marketingConsent: values.marketingConsent,
+      });
+      setCurrentUser(user);
+      setCurrentView('APP');
+    } catch (err: any) {
+      alert(err?.code === 'auth/email-already-in-use' ? err.message : t.invFailed);
     } finally {
       setIsLoading(false);
     }
@@ -197,6 +225,14 @@ const App: React.FC = () => {
     }
   };
 
+  // ── Public policy pages (/privacy, /terms, /refund-policy, /imprint) ──────
+  // Rendered before the auth gate: no login, no redirect, shareable link. Hosting
+  // rewrites every path to index.html, so this is all the routing they need.
+  const legalDoc = legalDocForPath(window.location.pathname);
+  if (legalDoc) {
+    return <LegalPage doc={legalDoc} language={language} setLanguage={setLanguage} />;
+  }
+
   // Dev-only admin console preview (no auth, layout only — Firestore reads
   // still require a real admin account): vite dev server + ?preview=admin
   if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === 'admin') {
@@ -214,7 +250,10 @@ const App: React.FC = () => {
   if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === 'hpiq') {
     const previewUser: User = {
       id: 'preview', email: 'c.sung@example.de', firstName: 'Christopher', lastName: 'Sung',
-      companyType: 'Installer', jobRole: 'Technician', isActive: true, registeredAt: new Date().toISOString(),
+      companyType: 'installer', companyName: 'Sung Haustechnik', companyCity: 'Hamburg',
+      companyWebsite: 'sung-haustechnik.example',
+      isActive: true, registeredAt: new Date().toISOString(),
+      ...previewUserPatch(),        // ?as=owner | member → team account shapes
     };
     return (
       <HpiqApp
@@ -373,10 +412,24 @@ const App: React.FC = () => {
             {t.authNoAccount}{' '}
             <button onClick={() => setCurrentView('SIGNUP')} className="text-emerald-300 font-semibold hover:text-emerald-200 transition-colors">{t.signup}</button>
           </p>
+          <LegalFooter language={language} dark />
         </GlassCard>
       </AuthShell>
     );
   }
+  if (isInvite && !currentUser) {
+    return (
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <GlassCard className="w-full max-w-xl p-8 hp-fade-up" >
+          <h2 className="text-2xl font-bold text-white mb-1" data-testid="invite-title">{t.invTitle}</h2>
+          <p className="text-white/50 text-sm mb-6">{t.invSub}</p>
+          <SignupForm t={t} language={language} isLoading={isLoading} invitedEmail={invitedEmail} onSubmit={handleInvitedSignup} />
+          <LegalFooter language={language} dark />
+        </GlassCard>
+      </AuthShell>
+    );
+  }
+
   // Registration pause — the Sign Up entry stays visible everywhere; choosing it
   // explains why it is closed instead of showing a form that cannot succeed.
   // Same copy in every country edition (DE/GB/FR), localized by the active UI
@@ -400,6 +453,7 @@ const App: React.FC = () => {
           <p className="text-white/45 text-sm mb-4">{(t as any).regPausedExisting}</p>
           <button onClick={() => setCurrentView('LOGIN')} className={primaryBtn}>{t.login}</button>
           </div>
+          <LegalFooter language={language} dark />
         </GlassCard>
       </AuthShell>
     );
@@ -408,26 +462,15 @@ const App: React.FC = () => {
   if (currentView === 'SIGNUP') {
     return (
       <AuthShell t={t} language={language} setLanguage={setLanguage}>
-        {termsModal}
         <GlassCard className="w-full max-w-2xl p-8 hp-fade-up">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
-          <h2 className="text-2xl font-bold text-white mb-6">{t.createAccount}</h2>
-          <form onSubmit={handleSignup} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div className="col-span-1"><label className={authLabel}>{t.firstName} *</label><input type="text" required className={authInput} onChange={e => setSignupData({...signupData, firstName: e.target.value})} /></div>
-             <div className="col-span-1"><label className={authLabel}>{t.lastName} *</label><input type="text" required className={authInput} onChange={e => setSignupData({...signupData, lastName: e.target.value})} /></div>
-             <div className="md:col-span-2"><label className={authLabel}>{t.email} *</label><input type="email" required autoComplete="email" className={authInput} onChange={e => setSignupData({...signupData, email: e.target.value})} /></div>
-             <div className="md:col-span-2"><label className={authLabel}>{t.password} *</label><input type="password" required autoComplete="new-password" className={authInput} onChange={e => setSignupData({...signupData, password: e.target.value})} /></div>
-             <div className="col-span-1"><label className={authLabel}>{t.companyType} *</label><select required className={authSelect} onChange={e => setSignupData({...signupData, companyType: e.target.value})}><option value="">{t.select}</option><option value="Manufacturer">Manufacturer</option><option value="Distributor">Distributor</option><option value="Installer">Installer</option><option value="Private Individual">Private Individual</option></select></div>
-             <div className="col-span-1"><label className={authLabel}>{t.jobRole} *</label><select required className={authSelect} onChange={e => setSignupData({...signupData, jobRole: e.target.value})}><option value="">{t.select}</option><option value="C-Level">C-Level</option><option value="Director">Director</option><option value="Sales Manager">Sales Manager</option><option value="Technician">Technician</option><option value="Service">Service</option><option value="Product Management">Product Management</option><option value="General Public">General Public</option><option value="Other">Other</option></select></div>
-             <div className="col-span-1"><label className={authLabel}>{t.companyName}</label><input type="text" className={authInput} onChange={e => setSignupData({...signupData, companyName: e.target.value})} /></div>
-             <div className="col-span-1"><label className={authLabel}>{t.city}</label><input type="text" className={authInput} onChange={e => setSignupData({...signupData, companyCity: e.target.value})} /></div>
-             <div className="md:col-span-2"><label className={authLabel}>{t.referralSource}</label><select className={authSelect} onChange={e => setSignupData({...signupData, referralSource: e.target.value})}><option value="">{t.select}</option><option value="Google">Google Search</option><option value="Friend">Friend/Colleague</option><option value="Ad">Online Ad</option><option value="Other">Other</option></select></div>
-             <div className="md:col-span-2 mt-4"><button type="submit" disabled={isLoading} className={primaryBtn}>{isLoading ? t.registering : t.completeSignup}</button></div>
-          </form>
+          <h2 className="text-2xl font-bold text-white mb-1">{t.createAccount}</h2>
+          <SignupForm t={t} language={language} isLoading={isLoading} onSubmit={handleSignup} />
           <p className="mt-6 text-center text-sm text-white/45">
             {t.authHaveAccount}{' '}
             <button onClick={() => setCurrentView('LOGIN')} className="text-emerald-300 font-semibold hover:text-emerald-200 transition-colors">{t.login}</button>
           </p>
+          <LegalFooter language={language} dark />
         </GlassCard>
       </AuthShell>
     );

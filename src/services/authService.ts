@@ -25,6 +25,8 @@ import { User, ActivityLog, UserSubscription } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { getValidGrant, joinOrgIfInvited, emailKey } from './subscriptionService';
 import { SUB_PLANS } from '../config/subscriptionPlans';
+import { TERMS_VERSION, PRIVACY_VERSION } from '../config/legal';
+import { compact } from '../utils/profile';
 
 const OWNER_EMAIL = 'sungyongsoo1976@gmail.com';
 
@@ -94,32 +96,58 @@ export const getLogs = async (fromDate?: string, toDate?: string): Promise<Activ
   }
 };
 
+/** What the Sign Up form collects (config/companyTypes.ts for the type codes). */
+export interface SignupData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  companyName: string;
+  companyType: string;
+  companyTypeOther?: string;
+  companyCity?: string;
+  companyWebsite?: string;
+  marketingConsent?: boolean;
+}
+
+/** The consent record stamped on every new profile — minimal, no history log. */
+const consentFields = () => ({
+  termsAcceptedAt: new Date().toISOString(),
+  termsVersion: TERMS_VERSION,
+  privacyVersion: PRIVACY_VERSION,
+});
+
 // --- Registration (status: pending, auto sign-out) ---
 // Returns the activated user when a free-access grant applied (no approval
 // wait, stays signed in), or null for the normal pending flow.
-export const registerUser = async (userData: any): Promise<User | null> => {
-  const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
+export const registerUser = async (data: SignupData): Promise<User | null> => {
+  const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
   const uid = userCredential.user?.uid;
   if (!uid) throw new Error('User ID missing');
 
   const newUser: User = {
     id: uid,
-    email: userData.email,
-    firstName: userData.firstName,
-    lastName: userData.lastName,
-    companyType: userData.companyType,
-    jobRole: userData.jobRole,
-    companyName: userData.companyName || '',
-    companyCity: userData.companyCity || '',
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    companyName: data.companyName,
+    companyType: data.companyType,
+    // Country comes from the edition the user signed up on — never asked for.
     country: ACTIVE_COUNTRY.code,
-    referralSource: userData.referralSource || '',
     isActive: false,
     status: 'pending',
     registeredAt: new Date().toISOString(),
-    termsAcceptedAt: userData.termsAcceptedAt || new Date().toISOString(),
+    ...consentFields(),
     role: 'user',
     plan: 'standard',
-  };
+    // Optional fields are omitted when empty (Firestore rejects `undefined`).
+    ...compact({
+      companyTypeOther: data.companyTypeOther,
+      companyCity: data.companyCity,
+      companyWebsite: data.companyWebsite,
+    }),
+    ...(data.marketingConsent ? { marketingConsent: true } : {}),
+  } as User;
 
   await setDoc(doc(db, 'users', uid), newUser);
 
@@ -129,8 +157,62 @@ export const registerUser = async (userData: any): Promise<User | null> => {
 
   // Sign out immediately — must wait for admin approval
   await signOut(auth);
-  await logActivity(uid, 'REGISTER_PENDING', `Registration pending: ${userData.email}`, userData.email, `${userData.firstName} ${userData.lastName}`);
+  await logActivity(uid, 'REGISTER_PENDING', `Registration pending: ${data.email}`, data.email, `${data.firstName} ${data.lastName}`);
   return null;
+};
+
+/**
+ * Invited team member: the Team Owner already bought the seat, so this is not a
+ * public registration. The member supplies only their name, password and
+ * consent — company details are inherited from the organization and never
+ * duplicated onto the member's profile.
+ *
+ * The profile is created ACTIVE (no approval queue: the owner vouched for them
+ * by inviting them), and the seat is claimed straight away. Security rules only
+ * permit this when the org really does list this email under invitedEmails.
+ */
+export const registerInvitedMember = async (
+  orgId: string,
+  data: { firstName: string; lastName: string; email: string; password: string; marketingConsent?: boolean },
+): Promise<User> => {
+  const cred = await createUserWithEmailAndPassword(auth, data.email, data.password);
+  const uid = cred.user?.uid;
+  if (!uid) throw new Error('User ID missing');
+
+  const member: User = {
+    id: uid,
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    companyName: '',
+    companyType: '',
+    country: ACTIVE_COUNTRY.code,
+    isActive: true,
+    status: 'active',
+    registeredAt: new Date().toISOString(),
+    ...consentFields(),
+    role: 'user',
+    plan: 'standard',
+    orgId,
+    orgRole: 'member',
+    ...(data.marketingConsent ? { marketingConsent: true } : {}),
+  } as User;
+
+  await setDoc(doc(db, 'users', uid), member);
+  await joinOrgIfInvited(member).catch(() => null);
+  await logActivity(uid, 'REGISTER_PENDING', `Team member joined org ${orgId}`, data.email, `${data.firstName} ${data.lastName}`);
+  return member;
+};
+
+/** Self-service profile edit (own document, whitelisted fields only). */
+export const updateMyProfile = async (
+  uid: string,
+  patch: Partial<Pick<User, 'firstName' | 'lastName' | 'companyName' | 'companyType' | 'companyTypeOther' | 'companyCity' | 'companyWebsite'>>,
+): Promise<void> => {
+  // Send '' rather than dropping cleared optional fields, so the user can empty them.
+  const clean: Record<string, any> = {};
+  for (const [k, v] of Object.entries(patch)) if (v !== undefined) clean[k] = v;
+  await updateDoc(doc(db, 'users', uid), clean);
 };
 
 // --- Login (blocks pending/suspended) ---
@@ -155,7 +237,7 @@ export const loginUser = async (email: string, pass: string): Promise<User> => {
         id: uid, email,
         firstName: 'Christopher',
         lastName: 'Sung',
-        companyType: 'Private Individual', jobRole: 'General Public',
+        companyType: 'individual',
         isActive: true, status: 'active',
         registeredAt: new Date().toISOString(),
         role: 'owner',
@@ -249,7 +331,7 @@ export const loginWithProvider = async (
       const fallbackUser: User = {
         id: uid, email,
         firstName: 'Christopher', lastName: 'Sung',
-        companyType: 'Private Individual', jobRole: 'General Public',
+        companyType: 'individual',
         isActive: true, status: 'active',
         registeredAt: new Date().toISOString(),
         role: 'owner', plan: 'standard',
@@ -270,14 +352,12 @@ export const loginWithProvider = async (
       id: uid, email,
       firstName: firstName || 'New',
       lastName: rest.join(' ') || '—',
-      companyType: 'Private Individual',
-      jobRole: 'General Public',
-      companyName: '', companyCity: '',
+      companyType: 'individual',
+      companyName: '',
       country: ACTIVE_COUNTRY.code,
-      referralSource: `${providerLabel} Sign-In`,
       isActive: false, status: 'pending',
       registeredAt: new Date().toISOString(),
-      termsAcceptedAt: new Date().toISOString(),
+      ...consentFields(),
       role: 'user', plan: 'standard',
     };
     await setDoc(userDocRef, newUser);
@@ -391,7 +471,7 @@ export const onUserChange = (callback: (user: User | null) => void) => {
             email: firebaseUser.email || '',
             firstName: 'Christopher',
             lastName: 'Sung',
-            companyType: 'Private Individual', jobRole: 'General Public',
+            companyType: 'individual',
             isActive: true, status: 'active',
             registeredAt: new Date().toISOString(),
             role: 'owner',

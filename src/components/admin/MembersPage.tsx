@@ -8,7 +8,22 @@ import {
   SubPlanCode, BillingTerm, SUB_PLAN_CODES, BILLING_TERMS, SUB_PLAN_NAMES, TERM_NAMES, SUB_PLANS,
 } from '../../config/subscriptionPlans';
 import { StatusBadge, SubBadge, PageHeader, EmptyState } from './shared';
+import { COMPANY_TYPES, normalizeCompanyType } from '../../config/companyTypes';
 import { AdminLang, ADMIN_I18N } from './adminI18n';
+
+/** English labels for the company-type codes (the admin console is EN | KO). */
+const COMPANY_TYPE_LABELS: Record<string, string> = {
+  manufacturer: 'Manufacturer',
+  wholesaler: 'Wholesaler / Distributor',
+  installer: 'Installer / HVAC Contractor',
+  engineering: 'Engineering / Design / Consultancy',
+  construction: 'Construction / Property Developer',
+  esco_utility: 'Energy Service Company / Utility',
+  housing: 'Housing Association / Property Management',
+  public_research: 'Public Sector / Research / Industry Association',
+  individual: 'Individual / Sole Trader',
+  other: 'Other',
+};
 
 interface MembersPageProps {
   al: AdminLang;
@@ -48,7 +63,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
       else result = result.filter(u => u.subscription?.planCode === planFilter);
     }
     if (companyTypeFilter !== 'all') {
-      result = result.filter(u => u.companyType === companyTypeFilter);
+      result = result.filter(u => normalizeCompanyType(u.companyType) === companyTypeFilter);
     }
     if (search) {
       const q = search.toLowerCase();
@@ -75,7 +90,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
     const rows = users.map(u => ({
       'First Name': u.firstName, 'Last Name': u.lastName,
       'Email': u.email, 'Country': u.country || 'DE',
-      'Company Type': u.companyType, 'Job Role': u.jobRole,
+      'Company Type': u.companyType, 'Type detail': u.companyTypeOther ?? '', 'Website': u.companyWebsite ?? '',
       'Company': u.companyName || '', 'City': u.companyCity || '',
       'Subscription': u.subscription ? `${SUB_PLAN_NAMES[u.subscription.planCode]} (${u.subscription.status})` : '-',
       'Term': u.subscription?.billingTerm ? TERM_NAMES[u.subscription.billingTerm] : '-',
@@ -151,10 +166,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
         <select value={companyTypeFilter} onChange={e => setCompanyTypeFilter(e.target.value)}
           className="px-3 py-2 border rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
           <option value="all">{A.mbAllTypes}</option>
-          <option value="Manufacturer">Manufacturer</option>
-          <option value="Distributor">Distributor</option>
-          <option value="Installer">Installer</option>
-          <option value="Private Individual">Private Individual</option>
+          {COMPANY_TYPES.map(c => <option key={c} value={c}>{COMPANY_TYPE_LABELS[c]}</option>)}
         </select>
         {embedded && (
           <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded shadow-sm text-sm font-bold">
@@ -255,11 +267,14 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
               {detailTab === 'profile' && (
                 <div className="space-y-3 text-sm">
                   <DetailRow label="Company" value={selectedUser.companyName || '-'} />
-                  <DetailRow label="Company Type" value={selectedUser.companyType} />
-                  <DetailRow label="Job Role" value={selectedUser.jobRole} />
+                  <DetailRow label="Company Type" value={(() => { const c = normalizeCompanyType(selectedUser.companyType); return c ? COMPANY_TYPE_LABELS[c] : '-'; })()} />
+                  {selectedUser.companyTypeOther && <DetailRow label="Type detail" value={selectedUser.companyTypeOther} />}
                   <DetailRow label="City" value={selectedUser.companyCity || '-'} />
+                  {selectedUser.companyWebsite && <DetailRow label="Website" value={selectedUser.companyWebsite} />}
                   <DetailRow label="Country" value={selectedUser.country || '-'} />
-                  <DetailRow label="Referral" value={selectedUser.referralSource || '-'} />
+                  {/* Legacy fields — no longer collected, shown only where a document still has them. */}
+                  {selectedUser.jobRole && <DetailRow label="Job Role (legacy)" value={selectedUser.jobRole} />}
+                  {selectedUser.referralSource && <DetailRow label="Referral (legacy)" value={selectedUser.referralSource} />}
                   <DetailRow label="Status" value={<StatusBadge status={selectedUser.status} isActive={selectedUser.isActive} />} />
                   <DetailRow label="Role" value={selectedUser.role || 'user'} />
                   <DetailRow label="Registered" value={selectedUser.registeredAt ? new Date(selectedUser.registeredAt).toLocaleDateString() : '-'} />
