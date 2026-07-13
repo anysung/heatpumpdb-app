@@ -24,6 +24,13 @@ const EN_T = {
     termsAgree: "I agree — create account",
     termsCancel: "Cancel",
     termsDeclined: "Registration cancelled — the terms must be accepted to create an account.",
+
+    // Registration pause (see src/config/registration.ts)
+    regPausedTitle: "Registration is temporarily unavailable",
+    regPausedBody: "We are currently carrying out a system review as we prepare to expand the HeatPump Database across Europe. While the review is running, no new accounts can be created.",
+    regPausedReopen: "Expected reopening",
+    regPausedExisting: "Already have an account? Existing members can sign in as usual.",
+    regPausedNotice: "New registrations are paused during our European expansion review. Existing accounts are unaffected.",
     back: "Back",
     loginTitle: "Log In",
     loginSub: "Enter your credentials to access the database.",
@@ -169,6 +176,13 @@ const DE_T = {
     termsAgree: "Ich stimme zu — Konto erstellen",
     termsCancel: "Abbrechen",
     termsDeclined: "Registrierung abgebrochen — die Bedingungen müssen akzeptiert werden.",
+
+    // Registrierungspause (siehe src/config/registration.ts)
+    regPausedTitle: "Registrierung vorübergehend nicht möglich",
+    regPausedBody: "Wir führen derzeit eine Systemprüfung durch, während wir die HeatPump DB auf weitere europäische Märkte ausweiten. Während der Prüfung können keine neuen Konten angelegt werden.",
+    regPausedReopen: "Voraussichtliche Wiedereröffnung",
+    regPausedExisting: "Sie haben bereits ein Konto? Bestehende Mitglieder können sich wie gewohnt anmelden.",
+    regPausedNotice: "Neuregistrierungen sind während unserer Europa-Erweiterungsprüfung pausiert. Bestehende Konten sind nicht betroffen.",
     back: "Zurück",
     loginTitle: "Anmelden",
     loginSub: "Geben Sie Ihre Zugangsdaten ein.",
@@ -311,6 +325,13 @@ const FR_T = {
     termsAgree: "J’accepte — créer le compte",
     termsCancel: "Annuler",
     termsDeclined: "Inscription annulée — les conditions doivent être acceptées.",
+
+    // Pause des inscriptions (voir src/config/registration.ts)
+    regPausedTitle: "Les inscriptions sont temporairement suspendues",
+    regPausedBody: "Nous procédons actuellement à une révision du système dans le cadre de l'expansion de HeatPump DB en Europe. Pendant cette révision, aucun nouveau compte ne peut être créé.",
+    regPausedReopen: "Réouverture prévue",
+    regPausedExisting: "Vous avez déjà un compte ? Les membres existants peuvent se connecter comme d'habitude.",
+    regPausedNotice: "Les nouvelles inscriptions sont suspendues pendant notre révision liée à l'expansion européenne. Les comptes existants ne sont pas affectés.",
     subTitle: "La base de données de pompes à chaleur la plus complète — mise à jour régulièrement",
     welcomeTitle: "Bienvenue dans l'univers des pompes à chaleur",
     signup: "Créer un compte",

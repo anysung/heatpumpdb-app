@@ -11,6 +11,7 @@ import { auth } from './firebase';
 import { translations } from './translations';
 import { DEFAULT_LANGUAGE } from './hpiq/market';
 import { PUBLIC_ENV } from './config/env';
+import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE, REGISTRATION_CLOSED_ERROR } from './config/registration';
 
 // Unified operations console build (own hosting site, all markets, admin-only).
 const IS_ADMIN_BUILD = PUBLIC_ENV.APP_MODE === 'admin';
@@ -135,6 +136,9 @@ const App: React.FC = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Registration pause: the form is not rendered while closed, so this is a
+    // belt-and-braces guard (the real enforcement is authService + Firestore rules).
+    if (!REGISTRATION_OPEN) { setCurrentView('SIGNUP'); return; }
     setIsLoading(true);
     try {
       // Consent to the one-account-per-person + no-data-extraction terms
@@ -166,6 +170,10 @@ const App: React.FC = () => {
       // User closed/cancelled the popup — not an error worth alerting.
       if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return;
       if (err?.message === 'terms-declined') { alert(t.termsDeclined); return; }
+      // A first-time social sign-in IS a registration — send them to the same
+      // notice the Sign Up entry shows (authService has already removed the
+      // Auth account the popup minted, so nothing partial is left behind).
+      if (err?.message === REGISTRATION_CLOSED_ERROR) { setCurrentView('SIGNUP'); return; }
       alert(err.message);
     } finally {
       setIsLoading(false);
@@ -376,6 +384,34 @@ const App: React.FC = () => {
       </AuthShell>
     );
   }
+  // Registration pause — the Sign Up entry stays visible everywhere; choosing it
+  // explains why it is closed instead of showing a form that cannot succeed.
+  // Same copy in every country edition (DE/GB/FR), localized by the active UI
+  // language. The date is display only — see src/config/registration.ts.
+  if (currentView === 'SIGNUP' && !REGISTRATION_OPEN) {
+    const reopen = new Date(`${REGISTRATION_REOPEN_DATE}T00:00:00Z`).toLocaleDateString(
+      language === 'de' ? 'de-DE' : language === 'fr' ? 'fr-FR' : 'en-GB',
+      { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
+    );
+    return (
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <GlassCard className="w-full max-w-md p-10 text-center hp-fade-up">
+          <div data-testid="registration-paused">
+          <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
+          <h2 className="text-2xl font-bold text-white mb-4">{(t as any).regPausedTitle}</h2>
+          <p className="text-white/70 text-sm leading-relaxed mb-6">{(t as any).regPausedBody}</p>
+          <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4 mb-7">
+            <p className="text-[11px] uppercase tracking-[0.16em] text-white/45 mb-1">{(t as any).regPausedReopen}</p>
+            <p className="text-lg font-semibold text-emerald-300" data-testid="registration-reopen-date">{reopen}</p>
+          </div>
+          <p className="text-white/45 text-sm mb-4">{(t as any).regPausedExisting}</p>
+          <button onClick={() => setCurrentView('LOGIN')} className={primaryBtn}>{t.login}</button>
+          </div>
+        </GlassCard>
+      </AuthShell>
+    );
+  }
+
   if (currentView === 'SIGNUP') {
     return (
       <AuthShell t={t} language={language} setLanguage={setLanguage}>
