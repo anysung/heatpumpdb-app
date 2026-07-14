@@ -99,17 +99,39 @@ check('Privacy link on signup', (await page.locator('[data-testid="su-privacy-li
 check('CTA reads "continue to plan selection"',
   /plan selection|Tarifauswahl|choix de la formule/i.test(await page.locator('[data-testid="su-submit"]').innerText()));
 
-/* ── 2. PUBLIC POLICY ROUTES (no login) ─────────────────────────────────── */
+/* ── 2. PUBLIC POLICY PAGES (no login, service identity, no omitted fields) ── */
+// Wording that must never appear: omitted legal fields, or any hint that they
+// are missing. `A Company` belongs only in the database Disclaimer (Account page).
+const FORBIDDEN = [
+  [/to be completed|zu ergänzen|à compléter|\[.*?\]/i, 'placeholder'],
+  [/registered address|Anschrift|Adresse du siège|Sitz der Gesellschaft/i, 'address'],
+  [/registration number|Registernummer|Registergericht|numéro d.immatriculation|Handelsregister/i, 'registration number'],
+  [/VAT (identification )?number|VAT ID|USt-IdNr|Umsatzsteuer-Identifikationsnummer|tax number|Steuernummer|numéro de TVA|TVA intracommunautaire/i, 'VAT/tax number'],
+  [/responsible for content|Inhaltlich verantwortlich|Responsable de la publication|legal representative|gesetzlicher Vertreter/i, 'responsible person'],
+  [/app store|App Store|App-Store|Google Play|in-app purchase|boutique d.applications/i, 'app-store wording'],
+  [/A Company/, '"A Company" (belongs only in the Disclaimer)'],
+];
+
 for (const [path, id] of [['/privacy', 'legal-privacy'], ['/terms', 'legal-terms'], ['/refund-policy', 'legal-refund'], ['/imprint', 'legal-imprint']]) {
   const p2 = await ctx.newPage();
   await p2.goto(`${BASE.replace(/\/$/, '')}${path}`, { waitUntil: 'domcontentloaded' });
   await p2.waitForTimeout(900);
-  const shown = await p2.locator(`[data-testid="${id}"]`).isVisible().catch(() => false);
+  check(`${path} opens without a login`, await p2.locator(`[data-testid="${id}"]`).isVisible().catch(() => false));
   const text = await p2.locator('body').innerText();
-  check(`${path} opens without a login`, shown);
-  check(`${path} has no app-store wording`, !/app store|App Store|Google Play|in-app purchase/i.test(text));
+  check(`${path} shows "HeatPump DataBase (Europe)"`, text.includes('HeatPump DataBase (Europe)'));
+  check(`${path} shows support@heatpumpdb.eu`, text.includes('support@heatpumpdb.eu'));
+  for (const [re, label] of FORBIDDEN) {
+    check(`${path} has no ${label}`, !re.test(text), re.test(text) ? `matched: ${(text.match(re) || [])[0]}` : '');
+  }
   await p2.close();
 }
+
+// The Imprint stays minimal: service name + contact, nothing else.
+const imp = await ctx.newPage();
+await imp.goto(`${BASE.replace(/\/$/, '')}/imprint`, { waitUntil: 'domcontentloaded' });
+await imp.waitForTimeout(700);
+check('/imprint is minimal (2 sections only)', (await imp.locator('[data-testid="legal-imprint"] section').count()) === 2);
+await imp.close();
 
 /* ── 3. ACCOUNT (professional) — real signed-in user ────────────────────── */
 await page.goto(BASE, { waitUntil: 'domcontentloaded' });
@@ -131,6 +153,8 @@ check('Company profile card shown', /Company profile|Unternehmensprofil|Profil d
 check('Job Role row removed from Account', !/Job Role|Funktion:/i.test(acc));
 check('policy links on Account', (await page.locator('[data-testid="policy-privacy"]').count()) > 0);
 check('New inquiry still available', /New inquiry|Neue Anfrage|Nouvelle demande/i.test(acc));
+check('support@heatpumpdb.eu shown on Account', (await page.locator('[data-testid="support-email"]').innerText()) === 'support@heatpumpdb.eu');
+check('"A Company" appears on Account only in the Disclaimer', (acc.match(/A Company/g) || []).length === 1 && /protected database|geschützte Datenbank|base de données protégée/i.test(acc));
 check('Email & password card still there', /Email & password|E-Mail & Passwort|E-mail & mot de passe/i.test(acc));
 check('App language card still there', /App language|App-Sprache|Langue de l’application/i.test(acc));
 check('Delete account still there', (await page.locator('[data-testid="delete-account"]').count()) > 0);

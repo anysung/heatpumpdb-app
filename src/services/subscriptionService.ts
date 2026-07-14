@@ -56,6 +56,21 @@ export const seatsUsed = (org: Organization): number =>
 export const orgMemberUids = (org: Organization): string[] =>
   org.memberUids ?? org.members.map(m => m.uid);
 
+/**
+ * The ONLY way to write org membership.
+ *
+ * `memberUids` is what the security rules read (they cannot look inside the
+ * member maps), so the two must never diverge. Deriving the uid list from the
+ * member list right here makes that structural rather than a convention: there
+ * is no code path that can update one without the other, and both land in a
+ * single document write, which Firestore applies atomically.
+ */
+type OrgMember = Organization['members'][number];
+const membersPatch = (members: OrgMember[]) => ({
+  members,
+  memberUids: members.map(m => m.uid),
+});
+
 /** Team owner: invite a member into a free seat (replacement is allowed anytime). */
 export async function inviteMember(org: Organization, email: string): Promise<void> {
   const key = emailKey(email);
@@ -85,11 +100,9 @@ export async function cancelInvite(org: Organization, email: string): Promise<vo
 /** Team owner: free a seat. Never touches the Paddle subscription. */
 export async function removeMember(org: Organization, uid: string): Promise<void> {
   if (uid === org.ownerUid) throw new Error('cannot-remove-owner');
-  const member = org.members.find(m => m.uid === uid);
-  if (!member) return;
+  if (!org.members.some(m => m.uid === uid)) return;
   await updateDoc(doc(db, ORGS, org.id), {
-    members: arrayRemove(member),
-    memberUids: arrayRemove(uid),
+    ...membersPatch(org.members.filter(m => m.uid !== uid)),
     keepMemberUids: arrayRemove(uid),
   });
   // The removed person keeps their personal account — only the team link goes.
@@ -103,11 +116,9 @@ export async function removeMember(org: Organization, uid: string): Promise<void
  */
 export async function leaveTeam(org: Organization, user: User): Promise<void> {
   if (user.id === org.ownerUid) throw new Error('owner-cannot-leave');
-  const me = org.members.find(m => m.uid === user.id);
-  if (me) {
+  if (org.members.some(m => m.uid === user.id)) {
     await updateDoc(doc(db, ORGS, org.id), {
-      members: arrayRemove(me),
-      memberUids: arrayRemove(user.id),
+      ...membersPatch(org.members.filter(m => m.uid !== user.id)),
       keepMemberUids: arrayRemove(user.id),
     });
   }
@@ -132,28 +143,49 @@ export async function setKeepMembers(org: Organization, keepUids: string[]): Pro
 }
 
 /**
- * Invited user: claim the seat (called after login). Adds self to members,
- * removes the invitation, then points the own profile at the org.
+ * Claim a seat in a SPECIFIC organization. The invitation link names the org, so
+ * we join that one — never "whichever org happens to list this email first",
+ * which could otherwise put the profile pointer and the membership in different
+ * organizations when someone is invited to two teams.
+ *
+ * Every check here is mirrored server-side by firestore.rules: the caller's email
+ * must be in the org's invitedEmails, the added seat must be the caller's own,
+ * and the seat limit must still hold. Passing a foreign orgId or a foreign email
+ * therefore fails at the database, not just here.
+ */
+export async function joinOrg(orgId: string, user: User): Promise<Organization | null> {
+  const key = emailKey(user.email);
+  const org = await getOrg(orgId);
+  if (!org) return null;                                        // unknown organization
+  if (!(org.invitedEmails ?? []).includes(key)) return null;    // not invited / invitation withdrawn or already used
+  if (org.members.some(m => m.uid === user.id)) return org;     // already joined — invitation cannot be reused
+  if (org.members.length >= org.seatLimit) return null;         // seat refilled meanwhile
+
+  const name = [user.firstName, user.lastName].filter(Boolean).join(' ');
+  const members = [...org.members, { uid: user.id, email: key, ...(name ? { name } : {}) }];
+  const invitedAt = { ...(org.invitedAt ?? {}) };
+  delete invitedAt[key];
+
+  await updateDoc(doc(db, ORGS, org.id), {
+    ...membersPatch(members),
+    invitedEmails: (org.invitedEmails ?? []).filter(e => e !== key),
+    invitedAt,
+  });
+  await updateDoc(doc(db, 'users', user.id), { orgId: org.id, orgRole: 'member' });
+  return { ...org, ...membersPatch(members) };
+}
+
+/**
+ * Invited user with no invitation link to hand (they simply signed in): find the
+ * org that invited this email and join it. Same guarantees as joinOrg — this only
+ * resolves the org id.
  */
 export async function joinOrgIfInvited(user: User): Promise<Organization | null> {
   const key = emailKey(user.email);
   const q = query(collection(db, ORGS), where('invitedEmails', 'array-contains', key));
   const snap = await getDocs(q);
   if (snap.empty) return null;
-  const orgDoc = snap.docs[0];
-  const org = { id: orgDoc.id, ...orgDoc.data() } as Organization;
-  if (org.members.length >= org.seatLimit) return null; // seat was refilled meanwhile
-  const name = [user.firstName, user.lastName].filter(Boolean).join(' ');
-  const invitedAt = { ...(org.invitedAt ?? {}) };
-  delete invitedAt[key];
-  await updateDoc(orgDoc.ref, {
-    members: arrayUnion({ uid: user.id, email: key, ...(name ? { name } : {}) }),
-    memberUids: arrayUnion(user.id),
-    invitedEmails: arrayRemove(key),
-    invitedAt,
-  });
-  await updateDoc(doc(db, 'users', user.id), { orgId: org.id, orgRole: 'member' });
-  return { ...org, members: [...org.members, { uid: user.id, email: key, name }], memberUids: [...orgMemberUids(org), user.id] };
+  return joinOrg(snap.docs[0].id, user);
 }
 
 // ── Admin: assign / clear subscriptions (ops backstop + admin_grant channel) ──
@@ -195,6 +227,9 @@ export async function adminAssignSubscription(
         seatLimit: SUB_PLANS[plan].seatLimit,
         subscriptionStatus: sub.status,
         currentPeriodEndsAt: periodEnd,
+        // Backfill for organizations created before memberUids existed — the
+        // security rules read that list, so a missing one would break join/leave.
+        ...(existing.memberUids ? {} : membersPatch(existing.members)),
       });
     } else {
       const ref = doc(collection(db, ORGS));
@@ -208,8 +243,7 @@ export async function adminAssignSubscription(
         subscriptionStatus: sub.status,
         trialEndsAt: sub.trialEndsAt ?? null,
         currentPeriodEndsAt: periodEnd,
-        members: [{ uid: target.id, email: emailKey(target.email), name: [target.firstName, target.lastName].filter(Boolean).join(' ') }],
-        memberUids: [target.id],
+        ...membersPatch([{ uid: target.id, email: emailKey(target.email), name: [target.firstName, target.lastName].filter(Boolean).join(' ') }]),
         invitedEmails: [],
         invitedAt: {},
         // The team inherits the buyer's company profile; the owner can edit it later.

@@ -200,6 +200,125 @@ await check('member may clear their own org pointer when leaving (null)', async 
   await assertSucceeds(updateDoc(doc(as(MEMBER), 'users', MEMBER.uid), { orgId: null, orgRole: null }));
 });
 
+
+/* ── §8 Invitation security: URL tampering must never grant access ───────── */
+await seed();
+await testEnv.withSecurityRulesDisabled(async ctx => {
+  // A second organization that has NOT invited anyone we test with.
+  await setDoc(doc(ctx.firestore(), 'organizations', 'org-2'), {
+    ownerUid: 'other-owner', ownerEmail: 'other@x.example',
+    planCode: 'team_5', seatLimit: 5, subscriptionStatus: 'active',
+    members: [{ uid: 'other-owner', email: 'other@x.example' }],
+    memberUids: ['other-owner'],
+    invitedEmails: [], invitedAt: {},
+    createdAt: new Date().toISOString(),
+  });
+});
+
+await check('[invite] modified organization ID is rejected (org did not invite me)', async () => {
+  await assertFails(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, { orgId: 'org-2', orgRole: 'member' })));
+});
+await check('[invite] non-existent organization ID is rejected', async () => {
+  await assertFails(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, { orgId: 'org-does-not-exist', orgRole: 'member' })));
+});
+await check('[invite] empty organization ID is rejected', async () => {
+  await assertFails(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, { orgId: '', orgRole: 'member' })));
+});
+await check('[invite] mismatched email is rejected (signed in as someone not invited)', async () => {
+  await assertFails(setDoc(doc(as(STRANGER), 'users', 'fresh-uid'),
+    profile('fresh-uid', STRANGER.email, { orgId: ORG, orgRole: 'member' })));
+});
+await check('[invite] invited user cannot claim a seat in an org that did not invite them', async () => {
+  await assertFails(updateDoc(doc(as(INVITED), 'organizations', 'org-2'), {
+    members: [{ uid: 'other-owner', email: 'other@x.example' }, { uid: INVITED.uid, email: INVITED.email }],
+    memberUids: ['other-owner', INVITED.uid],
+  }));
+});
+
+// Canceled invitation → the email is no longer in invitedEmails.
+await seed();
+await testEnv.withSecurityRulesDisabled(async ctx => {
+  await updateDoc(doc(ctx.firestore(), 'organizations', ORG), { invitedEmails: [], invitedAt: {} });
+});
+await check('[invite] CANCELED invitation cannot be used to register', async () => {
+  await assertFails(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, { orgId: ORG, orgRole: 'member' })));
+});
+await check('[invite] CANCELED invitation cannot be used to claim a seat', async () => {
+  await assertFails(updateDoc(orgRef(as(INVITED)), {
+    members: [
+      { uid: OWNER.uid, email: OWNER.email, name: 'Owner' },
+      { uid: MEMBER.uid, email: MEMBER.email, name: 'Member' },
+      { uid: INVITED.uid, email: INVITED.email },
+    ],
+    memberUids: [OWNER.uid, MEMBER.uid, INVITED.uid],
+  }));
+});
+
+// Accepted invitation → the email is consumed (removed from invitedEmails).
+await seed();
+await testEnv.withSecurityRulesDisabled(async ctx => {
+  const db = ctx.firestore();
+  await updateDoc(doc(db, 'organizations', ORG), {
+    members: [
+      { uid: OWNER.uid, email: OWNER.email, name: 'Owner' },
+      { uid: MEMBER.uid, email: MEMBER.email, name: 'Member' },
+      { uid: INVITED.uid, email: INVITED.email },
+    ],
+    memberUids: [OWNER.uid, MEMBER.uid, INVITED.uid],
+    invitedEmails: [], invitedAt: {},
+  });
+});
+await check('[invite] an ACCEPTED invitation cannot be reused by another account', async () => {
+  const impostor = testEnv.authenticatedContext('impostor-uid', { email: INVITED.email }).firestore();
+  await assertFails(setDoc(doc(impostor, 'users', 'impostor-uid'),
+    profile('impostor-uid', INVITED.email, { orgId: ORG, orgRole: 'member' })));
+});
+
+await seed();
+await check('[invite] invited user cannot self-grant OWNER status', async () => {
+  await assertFails(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, { orgId: ORG, orgRole: 'team_admin' })));
+  await assertFails(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, { orgId: ORG, orgRole: 'member', role: 'admin' })));
+});
+await check('[invite] invited user cannot self-grant a subscription', async () => {
+  await assertFails(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, {
+      orgId: ORG, orgRole: 'member',
+      subscription: { provider: 'paddle', planCode: 'team_5', status: 'active', seatLimit: 5 },
+    })));
+});
+await check('[invite] invited user cannot take over ownership of the org', async () => {
+  await assertFails(updateDoc(orgRef(as(INVITED)), { ownerUid: INVITED.uid }));
+});
+await check('[invite] invited user joins ONLY as a normal member', async () => {
+  await assertSucceeds(setDoc(doc(as(INVITED), 'users', INVITED.uid),
+    profile(INVITED.uid, INVITED.email, { orgId: ORG, orgRole: 'member' })));
+  const me = (await getDoc(doc(as(INVITED), 'users', INVITED.uid))).data();
+  if (me.orgRole !== 'member' || me.role !== 'user' || me.subscription) throw new Error('joined with more than member rights');
+});
+
+/* ── §9 members / memberUids are always written together ─────────────────── */
+await seed();
+await check('[consistency] members without memberUids is rejected', async () => {
+  await assertFails(updateDoc(orgRef(as(OWNER)), {
+    members: [{ uid: OWNER.uid, email: OWNER.email, name: 'Owner' }],   // memberUids left stale
+  }));
+});
+await check('[consistency] memberUids without members is rejected', async () => {
+  await assertFails(updateDoc(orgRef(as(OWNER)), { memberUids: [OWNER.uid] }));
+});
+await check('[consistency] a leave that keeps the caller in memberUids is rejected', async () => {
+  await assertFails(updateDoc(orgRef(as(MEMBER)), {
+    members: [{ uid: OWNER.uid, email: OWNER.email, name: 'Owner' }],
+    memberUids: [OWNER.uid, MEMBER.uid],
+  }));
+});
+
 await testEnv.cleanup();
 console.log(`\n${passed} passed, ${failed} failed\n`);
 process.exit(failed === 0 ? 0 : 1);

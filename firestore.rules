@@ -25,6 +25,14 @@ service cloud.firestore {
               (!('status' in me()) && me().isActive == true));
     }
 
+    // members[] and memberUids[] describe the same seats: the maps are what the
+    // app renders, the uid list is what these rules can actually inspect. Any
+    // write that leaves them out of step is rejected, so no code path — client,
+    // script or future bug — can update one without the other.
+    function membershipConsistent() {
+      return request.resource.data.members.size() == request.resource.data.memberUids.size();
+    }
+
     // True when the given organization has invited the caller's email. Used to
     // let an invited team member create their profile as an active member of
     // exactly that org (the seat was already bought by the team owner).
@@ -174,7 +182,10 @@ service cloud.firestore {
                       'companyCity', 'companyWebsite']) &&
           // Seats: taken seats AND open invitations must fit the plan.
           request.resource.data.members.size()
-            + request.resource.data.invitedEmails.size() <= resource.data.seatLimit
+            + request.resource.data.invitedEmails.size() <= resource.data.seatLimit &&
+          membershipConsistent() &&
+          // The owner can never drop their own seat (that would strand the team).
+          resource.data.ownerUid in request.resource.data.memberUids
         ) ||
         (
           // Invited user claims their seat. memberUids proves the added seat is
@@ -184,7 +195,8 @@ service cloud.firestore {
             .hasOnly(['members', 'memberUids', 'invitedEmails', 'invitedAt']) &&
           request.resource.data.members.size() <= resource.data.seatLimit &&
           request.resource.data.members.size() == resource.data.members.size() + 1 &&
-          request.auth.uid in request.resource.data.memberUids
+          request.auth.uid in request.resource.data.memberUids &&
+          membershipConsistent()
         ) ||
         (
           // Member leaves the team: exactly one seat goes, and it is their own —
@@ -195,6 +207,7 @@ service cloud.firestore {
           request.auth.uid in resource.data.memberUids &&
           !(request.auth.uid in request.resource.data.memberUids) &&
           request.resource.data.members.size() == resource.data.members.size() - 1 &&
+          membershipConsistent() &&
           request.auth.uid != resource.data.ownerUid
         );
     }

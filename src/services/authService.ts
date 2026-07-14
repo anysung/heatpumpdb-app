@@ -23,7 +23,7 @@ import {
 import { auth, db } from '../firebase';
 import { User, ActivityLog, UserSubscription } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
-import { getValidGrant, joinOrgIfInvited, emailKey } from './subscriptionService';
+import { getValidGrant, joinOrg, joinOrgIfInvited, emailKey } from './subscriptionService';
 import { SUB_PLANS } from '../config/subscriptionPlans';
 import { TERMS_VERSION, PRIVACY_VERSION } from '../config/legal';
 import { compact } from '../utils/profile';
@@ -199,7 +199,8 @@ export const registerInvitedMember = async (
   } as User;
 
   await setDoc(doc(db, 'users', uid), member);
-  await joinOrgIfInvited(member).catch(() => null);
+  // Join the org the invitation names — not "whichever org invited this email".
+  await joinOrg(orgId, member);
   await logActivity(uid, 'REGISTER_PENDING', `Team member joined org ${orgId}`, data.email, `${data.firstName} ${data.lastName}`);
   return member;
 };

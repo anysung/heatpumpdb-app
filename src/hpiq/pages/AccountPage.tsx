@@ -23,6 +23,7 @@ import {
   TeamSummaryCard, YourTeamCard, TeamManagementView, PoliciesCard,
 } from './accountParts';
 import { previewOrg } from '../devPreview';
+import { SUPPORT_EMAIL } from '../../config/legal';
 
 const statusChip = (status: string, label: string) => (
   <span style={{
@@ -95,6 +96,7 @@ const SupportCard: React.FC<{ app: HpApp }> = ({ app }) => {
         </span>
       </div>
       <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.supportText}</span>
+      <a href={`mailto:${SUPPORT_EMAIL}`} style={{ fontSize: 12.5, color: '#0066cc', textDecoration: 'none' }} data-testid="support-email">{SUPPORT_EMAIL}</a>
 
       {showForm && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, border: '1px solid #e0e0e0', borderRadius: 12, padding: 14, background: '#fafafa' }}>

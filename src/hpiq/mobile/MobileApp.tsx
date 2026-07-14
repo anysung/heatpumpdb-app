@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS } from '../market';
-import { LEGAL_ROUTES, LegalDoc } from '../../config/legal';
+import { LEGAL_ROUTES, LegalDoc, SUPPORT_EMAIL } from '../../config/legal';
 import { LEGAL_NAV } from '../../legal/LegalPage';
 import { openCheckout, portalUrlFor, checkoutConfigured } from '../../services/paddleService';
 import { SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, formatEur, isTeamPlan, subscriptionUnlocked } from '../../config/subscriptionPlans';
@@ -521,8 +521,9 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
       <div style={card}>
         <span style={sectionLabel}>{t.account.support}</span>
         <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.account.supportText}</span>
+        <a href={`mailto:${SUPPORT_EMAIL}`} style={{ fontSize: 12.5, color: '#0066cc', textDecoration: 'none' }} data-testid="support-email">{SUPPORT_EMAIL}</a>
         <span
-          onClick={() => { window.location.href = `mailto:?subject=${encodeURIComponent(t.account.supportSubject)}&body=${encodeURIComponent(t.account.supportBody(app.user.email))}`; }}
+          onClick={() => { window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(t.account.supportSubject)}&body=${encodeURIComponent(t.account.supportBody(app.user.email))}`; }}
           style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}
         >
           {t.account.contactSupport}

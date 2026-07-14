@@ -1,8 +1,8 @@
 /**
  * supportService — in-app support tickets (user inquiries ↔ admin replies).
  *
- * Store compliance: both app stores require a working support contact
- * channel. Tickets live in the `supportTickets` Firestore collection so the
+ * The support channel for this web-based B2B service. Tickets live in the
+ * `supportTickets` Firestore collection so the
  * admin console can receive, answer, and close them; users see the full
  * thread on their Account page. Every ticket carries the market country
  * code so the unified admin can filter per country after expansion.

@@ -5,14 +5,19 @@
  * domain (hosting rewrites every path to index.html; App.tsx renders the policy
  * before the auth gate). One shared set of routes for every country edition.
  *
- * NOTE — the business identity below is the only verified value in this
- * repository. Registered address, company register number, VAT ID and a support
- * email address do not exist anywhere in the project, so they are NOT invented
- * here: the Impressum renders a visible "to be completed" marker for them.
+ * IDENTITY: the policies address customers as the SERVICE, with support email as
+ * the single contact. Registered address, register number, VAT/tax number and a
+ * responsible-person name are deliberately NOT shown — and not hinted at either:
+ * there are no "missing information" placeholders anywhere in the documents.
+ * (`RIGHTS_HOLDER` stays where it always was, in the database Disclaimer — see
+ * hpiq/i18n.ts. It is not used on the policy pages.)
  */
 
-/** Rights holder / operator. Placeholder already used across the app. */
-export const RIGHTS_HOLDER = 'A Company';
+/** Customer-facing service identity used across all four policy pages. */
+export const SERVICE_NAME = 'HeatPump DataBase (Europe)';
+
+/** The single customer-facing support address (policies, Imprint, Account). */
+export const SUPPORT_EMAIL = 'support@heatpumpdb.eu';
 
 /** Bump when the wording changes materially; stamped on the profile at signup. */
 export const TERMS_VERSION = '2026-07-14';

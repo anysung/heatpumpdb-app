@@ -2,25 +2,19 @@
  * The four public policies, in the three UI languages.
  *
  * Plain data, no country branches: DE/GB/FR (and any market added later) render
- * the same documents from the same keys. Only facts that genuinely exist in this
- * repository are stated — where a legal detail is missing (registered address,
- * company register number, VAT ID, support email) the Impressum shows the
- * TO_BE_COMPLETED marker instead of an invented value.
+ * the same documents from the same keys.
+ *
+ * The documents address customers as the SERVICE (SERVICE_NAME) and give one
+ * contact (SUPPORT_EMAIL). Registered address, register number, VAT/tax number
+ * and a responsible-person name are intentionally not shown — and the wording
+ * never draws attention to their absence: there are no "to be completed"
+ * placeholders. Nothing here is invented.
  */
 import { Language } from '../types';
-import { RIGHTS_HOLDER, PRIVACY_VERSION, TERMS_VERSION } from '../config/legal';
+import { PRIVACY_VERSION, SERVICE_NAME, SUPPORT_EMAIL, TERMS_VERSION } from '../config/legal';
 
 export type LegalSection = { h: string; p: string[] };
 export type LegalDocContent = { title: string; updated: string; intro?: string; sections: LegalSection[] };
-
-/** Shown wherever a required legal detail is not yet available in the project. */
-export const TO_BE_COMPLETED = {
-  en: '[to be completed before public launch]',
-  de: '[vor dem öffentlichen Start zu ergänzen]',
-  fr: '[à compléter avant le lancement public]',
-};
-
-const TBD = (l: Language) => TO_BE_COMPLETED[l];
 
 const ver = { terms: TERMS_VERSION, privacy: PRIVACY_VERSION };
 
@@ -33,7 +27,7 @@ const EN = {
     intro:
       'HeatPump DataBase is a web-based professional database service for the European heat-pump industry. This policy explains what we process when you use the service, and why. We collect the minimum needed to run a professional account.',
     sections: [
-      { h: 'Data controller', p: [`${RIGHTS_HOLDER}, operator of HeatPump DataBase (Europe). Contact details: ${TBD('en')}.`] },
+      { h: 'Who we are', p: [`${SERVICE_NAME} is a professional, web-based database service for the European heat-pump industry, and is the controller for the personal data described here. You can reach us at ${SUPPORT_EMAIL}.`] },
       {
         h: 'Account information we collect',
         p: [
@@ -112,15 +106,15 @@ const EN = {
           'Our providers may process data outside the EEA. Where that happens, transfers rely on the safeguards those providers offer (including EU Standard Contractual Clauses).',
         ],
       },
-      { h: 'Contact', p: [`Use New inquiry on the Account page, or write to us: ${TBD('en')}.`] },
+      { h: 'Contact', p: [`Use New inquiry on the Account page, or email ${SUPPORT_EMAIL}.`] },
     ],
   },
   terms: {
     title: 'Terms of Use',
     updated: ver.terms,
-    intro: 'These terms govern your use of HeatPump DataBase, a professional web-based B2B database service. Please read them before you register.',
+    intro: `These terms govern your use of ${SERVICE_NAME}, a professional web-based B2B database service. Please read them before you register.`,
     sections: [
-      { h: 'The service', p: ['HeatPump DataBase is a professional, web-based subscription service for the European heat-pump industry. Subscriptions are purchased on the web and billed by Paddle.'] },
+      { h: 'The service', p: [`${SERVICE_NAME} is a professional, web-based subscription service for the European heat-pump industry. Subscriptions are purchased on the web and billed by Paddle.`] },
       { h: 'Account eligibility', p: ['Accounts are intended for professional use (manufacturers, wholesalers, installers, engineers, consultancies, housing, public sector, sole traders and comparable roles). New accounts are reviewed before activation.'] },
       { h: 'Account responsibility', p: ['You are responsible for your credentials and for everything done under your account. Keep your password confidential.'] },
       {
@@ -171,13 +165,13 @@ const EN = {
       },
       { h: 'Liability', p: ['To the extent permitted by law, we are not liable for indirect or consequential loss, or for decisions taken on the basis of the data provided. Nothing in these terms excludes liability that cannot be excluded by law.'] },
       { h: 'Termination and suspension', p: ['We may suspend or close accounts that breach these terms, in particular account sharing and unauthorised data extraction. You may stop using the service at any time and request deletion of your account.'] },
-      { h: 'Operator', p: [`${RIGHTS_HOLDER}. Full business details: see the Imprint.`] },
+      { h: 'Contact', p: [`Questions about these terms: ${SUPPORT_EMAIL}, or New inquiry on the Account page.`] },
     ],
   },
   refund: {
     title: 'Refund and Cancellation Policy',
     updated: ver.terms,
-    intro: 'This policy explains what happens when you cancel, and when a refund is or is not due. Paddle is our merchant of record and handles all payments.',
+    intro: `This policy explains what happens when you cancel your ${SERVICE_NAME} subscription, and when a refund is or is not due. Paddle is our merchant of record and handles all payments.`,
     sections: [
       { h: 'During the free trial', p: ['Every subscription begins with a 7-day free trial. Nothing is charged during the trial. Cancel before the trial ends and no payment is taken.'] },
       { h: 'After the trial', p: ['If you do not cancel before the trial ends, the first payment is taken and the paid period begins.'] },
@@ -196,7 +190,7 @@ const EN = {
           'Deleting your HeatPump DataBase account does NOT cancel your subscription. Billing is handled separately and must be cancelled through Manage billing.',
         ],
       },
-      { h: 'Exceptional refunds', p: ['If you believe your case is exceptional (for example a duplicate charge), send a New inquiry from the Account page and we will review it with Paddle.'] },
+      { h: 'Exceptional refunds', p: [`If you believe your case is exceptional (for example a duplicate charge), send a New inquiry from the Account page or email ${SUPPORT_EMAIL}, and we will review it with Paddle.`] },
       { h: 'Merchant of record', p: ['Paddle is the merchant of record for all subscriptions. Invoices and VAT receipts are issued by Paddle.'] },
     ],
   },
@@ -204,14 +198,8 @@ const EN = {
     title: 'Imprint',
     updated: ver.terms,
     sections: [
-      { h: 'Operator', p: [`${RIGHTS_HOLDER}, operator of HeatPump DataBase (Europe).`] },
-      { h: 'Registered address', p: [TBD('en')] },
-      { h: 'Company register / registration number', p: [TBD('en')] },
-      { h: 'VAT identification number', p: [TBD('en')] },
-      { h: 'Responsible for content', p: [TBD('en')] },
-      { h: 'Contact', p: [`Support inquiries: use New inquiry on the Account page. Email: ${TBD('en')}.`] },
-      { h: 'Payments', p: ['Subscriptions are sold through Paddle, which acts as merchant of record and issues all invoices.'] },
-      { h: 'Database rights', p: [`All rights, title and interest in HeatPump DataBase vest exclusively in ${RIGHTS_HOLDER}.`] },
+      { h: 'Service', p: [SERVICE_NAME] },
+      { h: 'Contact', p: [SUPPORT_EMAIL] },
     ],
   },
 };
@@ -225,7 +213,7 @@ const DE = {
     intro:
       'HeatPump DataBase ist ein webbasierter, professioneller Datenbankdienst für die europäische Wärmepumpenbranche. Diese Erklärung beschreibt, welche Daten wir bei der Nutzung verarbeiten und warum. Wir erheben nur das Minimum, das für ein professionelles Konto erforderlich ist.',
     sections: [
-      { h: 'Verantwortlicher', p: [`${RIGHTS_HOLDER}, Betreiber von HeatPump DataBase (Europe). Kontaktdaten: ${TBD('de')}.`] },
+      { h: 'Wer wir sind', p: [`${SERVICE_NAME} ist ein professioneller, webbasierter Datenbankdienst für die europäische Wärmepumpenbranche und Verantwortlicher für die hier beschriebenen personenbezogenen Daten. Sie erreichen uns unter ${SUPPORT_EMAIL}.`] },
       {
         h: 'Kontodaten',
         p: [
@@ -289,15 +277,15 @@ const DE = {
         h: 'Internationale Verarbeitung',
         p: ['Unsere Dienstleister können Daten außerhalb des EWR verarbeiten. Übermittlungen stützen sich in diesem Fall auf die Garantien dieser Anbieter (u. a. EU-Standardvertragsklauseln).'],
       },
-      { h: 'Kontakt', p: [`Nutzen Sie „Neue Anfrage“ auf der Kontoseite, oder schreiben Sie uns: ${TBD('de')}.`] },
+      { h: 'Kontakt', p: [`Nutzen Sie „Neue Anfrage“ auf der Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL}.`] },
     ],
   },
   terms: {
     title: 'Nutzungsbedingungen',
     updated: ver.terms,
-    intro: 'Diese Bedingungen regeln die Nutzung von HeatPump DataBase, einem professionellen, webbasierten B2B-Datenbankdienst. Bitte lesen Sie sie vor der Registrierung.',
+    intro: `Diese Bedingungen regeln die Nutzung von ${SERVICE_NAME}, einem professionellen, webbasierten B2B-Datenbankdienst. Bitte lesen Sie sie vor der Registrierung.`,
     sections: [
-      { h: 'Der Dienst', p: ['HeatPump DataBase ist ein professioneller, webbasierter Abonnementdienst für die europäische Wärmepumpenbranche. Abonnements werden im Web erworben und über Paddle abgerechnet.'] },
+      { h: 'Der Dienst', p: [`${SERVICE_NAME} ist ein professioneller, webbasierter Abonnementdienst für die europäische Wärmepumpenbranche. Abonnements werden im Web erworben und über Paddle abgerechnet.`] },
       { h: 'Zulässige Nutzer', p: ['Konten sind für die professionelle Nutzung bestimmt (Hersteller, Großhandel, Installateure, Planung/Ingenieurbüros, Wohnungswirtschaft, öffentliche Hand, Einzelunternehmer und vergleichbare Rollen). Neue Konten werden vor der Freischaltung geprüft.'] },
       { h: 'Verantwortung für das Konto', p: ['Sie sind für Ihre Zugangsdaten und für alle unter Ihrem Konto vorgenommenen Handlungen verantwortlich. Halten Sie Ihr Passwort geheim.'] },
       {
@@ -346,13 +334,13 @@ const DE = {
       },
       { h: 'Haftung', p: ['Soweit gesetzlich zulässig, haften wir nicht für mittelbare Schäden oder Folgeschäden oder für Entscheidungen, die auf Grundlage der bereitgestellten Daten getroffen werden. Gesetzlich zwingende Haftung bleibt unberührt.'] },
       { h: 'Kündigung und Sperrung', p: ['Wir können Konten sperren oder schließen, die gegen diese Bedingungen verstoßen — insbesondere bei Kontoteilung und unbefugter Datenentnahme. Sie können die Nutzung jederzeit beenden und die Löschung Ihres Kontos beantragen.'] },
-      { h: 'Betreiber', p: [`${RIGHTS_HOLDER}. Vollständige Angaben: siehe Impressum.`] },
+      { h: 'Kontakt', p: [`Fragen zu diesen Bedingungen: ${SUPPORT_EMAIL} oder „Neue Anfrage“ auf der Kontoseite.`] },
     ],
   },
   refund: {
     title: 'Widerrufs- und Kündigungsregelung',
     updated: ver.terms,
-    intro: 'Diese Regelung erläutert, was bei einer Kündigung geschieht und wann eine Erstattung erfolgt bzw. nicht erfolgt. Paddle ist unser Merchant of Record und wickelt alle Zahlungen ab.',
+    intro: `Diese Regelung erläutert, was bei der Kündigung Ihres ${SERVICE_NAME}-Abonnements geschieht und wann eine Erstattung erfolgt bzw. nicht erfolgt. Paddle ist unser Merchant of Record und wickelt alle Zahlungen ab.`,
     sections: [
       { h: 'Während der Testphase', p: ['Jedes Abonnement beginnt mit einer 7-tägigen kostenlosen Testphase. Während der Testphase erfolgt keine Abbuchung. Bei Kündigung vor Ablauf der Testphase wird nichts berechnet.'] },
       { h: 'Nach der Testphase', p: ['Wird nicht vor Ablauf der Testphase gekündigt, erfolgt die erste Zahlung und die bezahlte Periode beginnt.'] },
@@ -371,7 +359,7 @@ const DE = {
           'Das Löschen Ihres HeatPump-DataBase-Kontos kündigt das Abonnement NICHT. Die Abrechnung wird separat geführt und muss über „Abrechnung verwalten“ gekündigt werden.',
         ],
       },
-      { h: 'Ausnahmefälle', p: ['Wenn Sie Ihren Fall für außergewöhnlich halten (z. B. Doppelbuchung), senden Sie eine „Neue Anfrage“ über die Kontoseite — wir prüfen sie gemeinsam mit Paddle.'] },
+      { h: 'Ausnahmefälle', p: [`Wenn Sie Ihren Fall für außergewöhnlich halten (z. B. Doppelbuchung), senden Sie eine „Neue Anfrage“ über die Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL} — wir prüfen den Fall gemeinsam mit Paddle.`] },
       { h: 'Merchant of Record', p: ['Paddle ist Merchant of Record für alle Abonnements. Rechnungen und Umsatzsteuerbelege werden von Paddle ausgestellt.'] },
     ],
   },
@@ -379,14 +367,8 @@ const DE = {
     title: 'Impressum',
     updated: ver.terms,
     sections: [
-      { h: 'Betreiber', p: [`${RIGHTS_HOLDER}, Betreiber von HeatPump DataBase (Europe).`] },
-      { h: 'Anschrift', p: [TBD('de')] },
-      { h: 'Registergericht / Registernummer', p: [TBD('de')] },
-      { h: 'Umsatzsteuer-Identifikationsnummer', p: [TBD('de')] },
-      { h: 'Inhaltlich verantwortlich', p: [TBD('de')] },
-      { h: 'Kontakt', p: [`Supportanfragen: „Neue Anfrage“ auf der Kontoseite. E-Mail: ${TBD('de')}.`] },
-      { h: 'Zahlungen', p: ['Abonnements werden über Paddle verkauft. Paddle ist Merchant of Record und stellt sämtliche Rechnungen aus.'] },
-      { h: 'Datenbankrechte', p: [`Sämtliche Rechte an HeatPump DataBase stehen ausschließlich ${RIGHTS_HOLDER} zu.`] },
+      { h: 'Dienst', p: [SERVICE_NAME] },
+      { h: 'Kontakt', p: [SUPPORT_EMAIL] },
     ],
   },
 };
@@ -400,7 +382,7 @@ const FR = {
     intro:
       "HeatPump DataBase est un service de base de données professionnel sur le web, destiné à la filière européenne des pompes à chaleur. Cette politique explique quelles données nous traitons et pourquoi. Nous ne collectons que le minimum nécessaire au fonctionnement d'un compte professionnel.",
     sections: [
-      { h: 'Responsable du traitement', p: [`${RIGHTS_HOLDER}, exploitant de HeatPump DataBase (Europe). Coordonnées : ${TBD('fr')}.`] },
+      { h: 'Qui sommes-nous', p: [`${SERVICE_NAME} est un service de base de données professionnel sur le web destiné à la filière européenne des pompes à chaleur, et le responsable du traitement des données décrites ici. Vous pouvez nous joindre à ${SUPPORT_EMAIL}.`] },
       {
         h: 'Données de compte',
         p: [
@@ -464,15 +446,15 @@ const FR = {
         h: 'Traitements internationaux',
         p: ["Nos prestataires peuvent traiter des données en dehors de l'EEE. Le cas échéant, les transferts s'appuient sur les garanties offertes par ces prestataires (notamment les clauses contractuelles types de l'UE)."],
       },
-      { h: 'Contact', p: [`Utilisez « Nouvelle demande » sur la page Compte, ou écrivez-nous : ${TBD('fr')}.`] },
+      { h: 'Contact', p: [`Utilisez « Nouvelle demande » sur la page Compte, ou écrivez à ${SUPPORT_EMAIL}.`] },
     ],
   },
   terms: {
     title: "Conditions d'utilisation",
     updated: ver.terms,
-    intro: "Ces conditions régissent l'utilisation de HeatPump DataBase, service professionnel de base de données B2B sur le web. Merci de les lire avant de vous inscrire.",
+    intro: `Ces conditions régissent l'utilisation de ${SERVICE_NAME}, service professionnel de base de données B2B sur le web. Merci de les lire avant de vous inscrire.`,
     sections: [
-      { h: 'Le service', p: ["HeatPump DataBase est un service d'abonnement professionnel sur le web pour la filière européenne des pompes à chaleur. Les abonnements sont souscrits sur le web et facturés par Paddle."] },
+      { h: 'Le service', p: [`${SERVICE_NAME} est un service d'abonnement professionnel sur le web pour la filière européenne des pompes à chaleur. Les abonnements sont souscrits sur le web et facturés par Paddle.`] },
       { h: 'Éligibilité des comptes', p: ["Les comptes sont destinés à un usage professionnel (fabricants, grossistes, installateurs, bureaux d'études, promoteurs, bailleurs, secteur public, indépendants et fonctions comparables). Les nouveaux comptes sont vérifiés avant activation."] },
       { h: 'Responsabilité du compte', p: ['Vous êtes responsable de vos identifiants et de tout ce qui est fait depuis votre compte. Gardez votre mot de passe confidentiel.'] },
       {
@@ -521,13 +503,13 @@ const FR = {
       },
       { h: 'Responsabilité', p: ["Dans la limite permise par la loi, nous ne sommes pas responsables des dommages indirects ou consécutifs, ni des décisions prises sur la base des données fournies. Les responsabilités que la loi interdit d'exclure demeurent."] },
       { h: 'Résiliation et suspension', p: ["Nous pouvons suspendre ou fermer les comptes qui violent ces conditions, en particulier le partage de compte et l'extraction non autorisée. Vous pouvez cesser d'utiliser le service à tout moment et demander la suppression de votre compte."] },
-      { h: 'Exploitant', p: [`${RIGHTS_HOLDER}. Informations complètes : voir les mentions légales.`] },
+      { h: 'Contact', p: [`Questions sur ces conditions : ${SUPPORT_EMAIL}, ou « Nouvelle demande » sur la page Compte.`] },
     ],
   },
   refund: {
     title: 'Politique de remboursement et de résiliation',
     updated: ver.terms,
-    intro: "Cette politique explique ce qui se passe lorsque vous résiliez, et quand un remboursement est dû ou non. Paddle est notre marchand officiel et gère tous les paiements.",
+    intro: `Cette politique explique ce qui se passe lorsque vous résiliez votre abonnement ${SERVICE_NAME}, et quand un remboursement est dû ou non. Paddle est notre marchand officiel et gère tous les paiements.`,
     sections: [
       { h: "Pendant l'essai gratuit", p: ["Chaque abonnement commence par un essai gratuit de 7 jours. Aucun débit n'a lieu pendant l'essai. Résiliez avant la fin de l'essai et aucun paiement n'est prélevé."] },
       { h: "Après l'essai", p: ["Sans résiliation avant la fin de l'essai, le premier paiement est prélevé et la période payée commence."] },
@@ -546,7 +528,7 @@ const FR = {
           "La suppression de votre compte HeatPump DataBase N'ANNULE PAS votre abonnement. La facturation est gérée séparément et doit être résiliée via « Gérer la facturation ».",
         ],
       },
-      { h: 'Cas exceptionnels', p: ["Si votre situation est exceptionnelle (par exemple un double débit), envoyez une « Nouvelle demande » depuis la page Compte ; nous l'examinerons avec Paddle."] },
+      { h: 'Cas exceptionnels', p: [`Si votre situation est exceptionnelle (par exemple un double débit), envoyez une « Nouvelle demande » depuis la page Compte ou écrivez à ${SUPPORT_EMAIL} ; nous l'examinerons avec Paddle.`] },
       { h: 'Marchand officiel', p: ["Paddle est le marchand officiel de tous les abonnements. Les factures et justificatifs de TVA sont émis par Paddle."] },
     ],
   },
@@ -554,14 +536,8 @@ const FR = {
     title: 'Mentions légales',
     updated: ver.terms,
     sections: [
-      { h: 'Exploitant', p: [`${RIGHTS_HOLDER}, exploitant de HeatPump DataBase (Europe).`] },
-      { h: 'Adresse du siège', p: [TBD('fr')] },
-      { h: "Registre du commerce / numéro d'immatriculation", p: [TBD('fr')] },
-      { h: 'Numéro de TVA intracommunautaire', p: [TBD('fr')] },
-      { h: 'Responsable de la publication', p: [TBD('fr')] },
-      { h: 'Contact', p: [`Assistance : « Nouvelle demande » sur la page Compte. E-mail : ${TBD('fr')}.`] },
-      { h: 'Paiements', p: ["Les abonnements sont vendus via Paddle, marchand officiel, qui émet toutes les factures."] },
-      { h: 'Droits sur la base de données', p: [`Tous les droits sur HeatPump DataBase appartiennent exclusivement à ${RIGHTS_HOLDER}.`] },
+      { h: 'Service', p: [SERVICE_NAME] },
+      { h: 'Contact', p: [SUPPORT_EMAIL] },
     ],
   },
 };
