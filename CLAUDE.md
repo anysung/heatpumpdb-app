@@ -91,7 +91,10 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   accumulated in the committed `data_sources/bafa/fetched-at-index.json` (the builder
   merges live `raw/_meta.json` values over it and writes it back — do not gitignore it).
 - **UK pipeline** (`scripts/ofgem/`): `fetch-pel-xlsx` → `parse-pel-xlsx` →
-  `match-pel-to-bafa` + `match-pel-to-eprel` (optional overlays) → `build-app-products-gb`
+  `match-pel-to-bafa` + `match-pel-to-eprel` → `match-pel-recovery` (optional overlays;
+  recovery runs LAST and only on what the first two left unresolved — rules in
+  `pel-match-lib.mjs`, tested by `tests/pel-matching.unit.mjs`, see
+  `docs/GB_PEL_CAPACITY_RECOVERY.md`) → `build-app-products-gb`
   (auto-selects newest `data_sources/ofgem_pel/parsed/YYYY-MM/`) →
   `public/data/products-gb.json` + `products-commercial-gb.json`. PEL publishes no
   performance data; one performance source per record, never mixed:
@@ -100,8 +103,9 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   `docs/EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md`)
   takes precedence, else `'EPREL'` (official EU label data: ηs, design output, sound
   power; SCOP/COP are NOT on EPREL and must not be derived). `eprel_registration_number`
-  is set on every EPREL match regardless. Unmatched records keep null performance fields
-  and stay residential with `market_segment` null. Biomass is excluded.
+  is set on every EPREL match regardless. A record that matches NOTHING keeps null
+  performance fields — it has no rated capacity from any source and the app therefore
+  leaves it **unclassified** (never residential-by-default). Biomass is excluded.
   **GB split catalogue (v2.1)**: residential = ALL PEL records
   (`bafa_listing_status='listed_in_snapshot'` → "On Ofgem PEL"); commercial = the
   European (DE-derived) COMMERCIAL catalogue only (`'not_in_latest_snapshot'` →

@@ -95,6 +95,11 @@ const PIPELINES = {
       { name: 'parse Ofgem PEL', cmd: 'node scripts/ofgem/parse-pel-xlsx.mjs', when: 'fetch' },
       { name: 'match PEL ↔ BAFA (specs)', cmd: 'node scripts/ofgem/match-pel-to-bafa.mjs', optional: true },
       { name: 'match PEL ↔ EPREL (label data)', cmd: 'node scripts/ofgem/match-pel-to-eprel.mjs', optional: true },
+      // Recovers a rated capacity for PEL records the two matchers above miss
+      // (component pairs in the other order, package prefixes, market suffixes,
+      // one outdoor unit in several packages). Must run AFTER both — it only
+      // looks at what they left unresolved, and never overrides them.
+      { name: 'recover PEL rated capacity', cmd: 'node scripts/ofgem/match-pel-recovery.mjs', optional: true },
       { name: 'build GB app datasets', cmd: 'node scripts/ofgem/build-app-products-gb.mjs' },
     ],
     requires: ['data_sources/ofgem_pel/parsed', 'scripts/ofgem/manufacturer-short-names-gb.json'],

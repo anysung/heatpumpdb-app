@@ -100,15 +100,16 @@ else. Fields explicitly labelled "55 °C" keep the 55 °C value; nothing else do
 | Market | Residential | Commercial | Unclassified |
 |---|---|---|---|
 | DE | 5,208 | 1,947 | 0 |
-| GB | 1,609 | 2,013 | **2,745** |
+| GB | 2,216 | 2,016 | **2,134** |
 | FR | 5,208 | 1,947 | 0 |
 
-The GB unclassified block is real, not a bug: 2,745 Ofgem PEL records matched
-neither a European registry nor EPREL, and the PEL itself publishes no performance
-data — so those products have **no rated capacity from any source**. They cannot be
-placed in a segment without inventing one, so they appear in neither, and the count
-is disclosed on the page. Matching more of them (EPREL GB) is what shrinks this
-number — quietly calling them residential is not.
+The GB unclassified block is real, not a bug: those Ofgem PEL records match no
+European product record, and the PEL itself publishes no performance data — so they
+have **no rated capacity from any source**. They cannot be placed in a segment
+without inventing one, so they appear in neither, and the count is disclosed on the
+page. The way to shrink it is better MATCHING (see
+`docs/GB_PEL_CAPACITY_RECOVERY.md`, which recovered 611 of the original 2,745 in
+July 2026) — never quietly calling them residential.
 
 ---
 

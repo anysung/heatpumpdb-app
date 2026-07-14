@@ -100,6 +100,17 @@ console.log(eprelFile
   ? `EPREL overlay: ${eprelByKey.size} matches (EPREL snapshot ${eprelFile._meta.eprel_snapshot})`
   : 'EPREL overlay: none');
 
+// Rated-capacity recovery overlay (optional) — produced by match-pel-recovery.mjs.
+// Tier A/B product-identity matches for PEL records the first two matchers missed
+// (component pairs in the other order, package prefixes, market suffixes, one ODU
+// in several packages). Tier C review candidates are NEVER loaded here.
+const recoveryPath = resolve(ROOT, `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-recovery-matches.json`);
+const recoveryFile = existsSync(recoveryPath) ? JSON.parse(readFileSync(recoveryPath, 'utf8')) : null;
+const recoveryByKey = new Map((recoveryFile?.matches ?? []).map(m => [m.match_key, m]));
+console.log(recoveryFile
+  ? `Recovery overlay: ${recoveryByKey.size} matches (Tier A/B only; ${recoveryFile._meta.review_queue} in the review queue)`
+  : 'Recovery overlay: none');
+
 const generatedAt = new Date().toISOString();
 
 // ── Capacity-based segmentation (same policy as DE builder v2.0) ─────────────
@@ -162,12 +173,17 @@ function buildItem(r) {
   const installationType = deriveInstallationType(r);
   const key = `${r.mcs_number}||${r.model}`;
   const m = matchByKey.get(key) ?? null;
-  const sp = m?.specs ?? {};
   const e = eprelByKey.get(key) ?? null;
   // EPREL label values fill performance fields ONLY without a BAFA match —
   // one performance source per record, no mixed provenance.
   const ev = (!m && e) ? e.values : {};
   const eprelFilledPerf = Object.values(ev).some(v => v != null);
+  // Last resort: a recovered product-identity match. Only reached when neither of
+  // the two primary matchers resolved this record, so it can never override them.
+  const rc = (!m && !eprelFilledPerf) ? recoveryByKey.get(key) ?? null : null;
+  const rcRegistry = rc?.source === 'EU_REGISTRY';
+  // Same shape either way, so the spec fields below read from one object.
+  const sp = m?.specs ?? rc?.specs ?? {};
   return {
     // ── Identity ────────────────────────────────────────────────────────────
     bafa_id: null,                       // GB records have no BAFA identity
@@ -277,13 +293,22 @@ function buildItem(r) {
     pel_snapshot_fetched_at: PEL_FETCHED_AT,
 
     // ── Enrichment provenance (one performance source per record) ───────────
-    performance_source: m ? 'BAFA_REFERENCE' : eprelFilledPerf ? 'EPREL' : null,
-    bafa_reference_id: m?.bafa_id ?? null,
-    bafa_reference_model: m?.bafa_model ?? null,
-    bafa_reference_match_type: m?.match_type ?? null,
-    eprel_registration_number: e?.eprel_registration_number ?? null,
-    eprel_model: e?.eprel_model ?? null,
-    eprel_match_type: e?.match_type ?? null,
+    // A recovered match carries the source it came from, so the record still has
+    // exactly ONE performance source. The match method and confidence tier ride in
+    // the match_type field ("shared_component:B") — internal provenance, never UI text.
+    performance_source: m ? 'BAFA_REFERENCE'
+      : eprelFilledPerf ? 'EPREL'
+        : rc ? (rcRegistry ? 'BAFA_REFERENCE' : 'EPREL')
+          : null,
+    bafa_reference_id: m?.bafa_id ?? (rcRegistry ? rc.candidate_id : null),
+    bafa_reference_model: m?.bafa_model ?? (rcRegistry ? rc.candidate_model : null),
+    bafa_reference_match_type: m?.match_type
+      ?? (rcRegistry ? `${rc.match_method}:${rc.confidence_tier}` : null),
+    eprel_registration_number: e?.eprel_registration_number
+      ?? (rc && !rcRegistry ? rc.candidate_id : null),
+    eprel_model: e?.eprel_model ?? (rc && !rcRegistry ? rc.candidate_model : null),
+    eprel_match_type: e?.match_type
+      ?? (rc && !rcRegistry ? `${rc.match_method}:${rc.confidence_tier}` : null),
 
     // ── Component / outdoor-side fields (no GB classification yet) ──────────
     outdoor_unit_model: null,
@@ -305,7 +330,15 @@ const pelItems = hp.map(buildItem);
 // Everything we have that is NOT on the PEL is added as a "Not on PEL"
 // reference record with full specs (same approach as the FR edition).
 const deCommercial = loadJSON('public/data/products-commercial.json');
-const matchedBafaIds = new Set((matchFile?.matches ?? []).map(m => String(m.bafa_id)));
+// Every registry record we have now tied to a PEL product — including the ones the
+// recovery pass tied — is the SAME hardware as a PEL row. It must not also appear as
+// a separate "Not on PEL" European record, or the catalogue would count it twice.
+const matchedBafaIds = new Set([
+  ...(matchFile?.matches ?? []).map(m => String(m.bafa_id)),
+  ...(recoveryFile?.matches ?? [])
+    .filter(m => m.source === 'EU_REGISTRY')
+    .flatMap(m => (m.candidate_ids ?? [m.candidate_id]).map(String)),
+]);
 
 /** German BAFA type strings → English display strings for the GB edition. */
 const TYPE_EN = {
