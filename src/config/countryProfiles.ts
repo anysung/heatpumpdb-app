@@ -97,34 +97,33 @@ export interface CountryProfile {
   };
 
   /**
-   * How this market's product catalogue is composed, and what it may say about
-   * local listing.
-   *
-   * `marketScope: 'EUROPE'` means the catalogue is supplemented with Europe-market
-   * product information (the same hardware, cross-referenced from another European
-   * registry). Those records are presented as European-market information —
-   * NEVER as the originating country's products, and never with that country's
-   * national terminology (see docs/EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md).
-   * Exact provenance is kept in the record for audit; it is not UI wording.
-   *
-   * `localListingSource` is the ONLY national list this market may talk about.
-   * null = this market has no national list, so no listing status is shown at all
-   * (a foreign registry's listing is never relabelled as a local one).
+   * EVERY market publishes the same canonical technical products — the same
+   * identity, specs, capacity and 23 kW segmentation. This field exists to make
+   * that explicit and to refuse a future country that tries to publish a local
+   * registry as its technical catalogue (that is what broke the UK: see
+   * docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md).
    */
-  commercialCatalog: {
-    marketScope: 'NATIONAL' | 'EUROPE';
-    displayCountry: CountryCode;
-    localListingSource: 'BAFA' | 'PEL' | null;
-  };
+  technicalBaseline: 'canonical';
 
   /**
-   * Which search controls are worth offering here. A filter that returns nearly
-   * everything, nearly nothing, or zero is not discovery — it is a trap. Keep this
-   * as configuration; do not compute it from field presence.
+   * What this market may say about LOCAL LISTING — and nothing else. The overlay
+   * never creates a product, never supplies a spec, and never removes a product
+   * when a match fails.
+   *
+   * `source: null` = this market has no national product list (France:
+   * MaPrimeRénov'/CEE are criteria-based). Then nothing is shown — a foreign
+   * registry's listing is never relabelled as a local one.
+   *
+   * `filterEnabled` — offer the "listed only" search filter? A filter that returns
+   * nearly everything, nearly nothing or zero is not discovery, it is a trap. This
+   * is a decision, not something to compute from field presence.
+   *
+   * The two label keys point into the market dictionary (hpiq/i18n.ts) so the
+   * wording stays translatable and no English leaks into a non-English site.
    */
-  searchCapabilities: {
-    /** Offer the "on the national list only" filter? */
-    localListingFilter: boolean;
+  localListingOverlay: {
+    source: 'BAFA' | 'PEL' | null;
+    filterEnabled: boolean;
   };
 }
 
@@ -150,14 +149,12 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
       products: '/data/products.json',
       commercialProducts: '/data/products-commercial.json',
     },
-    // Germany IS the registry it lists against, and the BAFA listing meaningfully
-    // divides the catalogue — so the filter earns its place here.
-    commercialCatalog: {
-      marketScope: 'NATIONAL',
-      displayCountry: 'DE',
-      localListingSource: 'BAFA',
-    },
-    searchCapabilities: { localListingFilter: true },
+    technicalBaseline: 'canonical',
+    // Germany IS the registry it lists against: a delisting there is a verified
+    // fact, not a failed match — so Germany is the one market that may say a
+    // product is NOT listed. The listing also meaningfully divides the catalogue,
+    // so the filter earns its place here.
+    localListingOverlay: { source: 'BAFA', filterEnabled: true },
   },
 
   FR: {
@@ -184,16 +181,11 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
       products: '/data/products-fr.json',
       commercialProducts: '/data/products-commercial-fr.json',
     },
-    // France has NO national heat-pump list of its own here (MaPrimeRénov'/CEE are
-    // criteria-based, not a product list). A foreign registry's listing must never
-    // be relabelled as a French one, so France shows no local listing status and
-    // offers no listing filter.
-    commercialCatalog: {
-      marketScope: 'EUROPE',
-      displayCountry: 'FR',
-      localListingSource: null,
-    },
-    searchCapabilities: { localListingFilter: false },
+    technicalBaseline: 'canonical',
+    // France has NO national heat-pump list (MaPrimeRénov'/CEE are criteria-based,
+    // not a product list). A foreign registry's listing must never be relabelled as
+    // a French one, so France shows no local listing status at all.
+    localListingOverlay: { source: null, filterEnabled: false },
   },
 
   GB: {
@@ -209,22 +201,23 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     subsidyAuthorityLabel: 'Ofgem BUS (Boiler Upgrade Scheme)',
     subsidyTabLabel: 'BUS / MCS',
     aiMarketContext: 'UK market',
-    sourceIdLabel: { en: 'MCS Number' },
+    // Products come from the canonical baseline, so the id shown on a row/sheet is
+    // the European reference. The PEL id (MCS number) is shown separately, and only
+    // where the listing is confirmed.
+    sourceIdLabel: { en: 'European reference' },
     enabledEnrichmentLayers: ['BAFA_REFERENCE', 'EPREL'],
     datasetPaths: {
       products: '/data/products-gb.json',
       commercialProducts: '/data/products-commercial-gb.json',
     },
-    // The PEL publishes no performance data, so the catalogue is supplemented with
-    // Europe-market product information. PEL listing stays an independent layer and
-    // is shown on the product detail / data sheet — but NOT as a search filter:
-    // it splits the catalogue far too unevenly to help discovery.
-    commercialCatalog: {
-      marketScope: 'EUROPE',
-      displayCountry: 'GB',
-      localListingSource: 'PEL',
-    },
-    searchCapabilities: { localListingFilter: false },
+    technicalBaseline: 'canonical',
+    // The PEL publishes no performance data at all, so it can never be a technical
+    // catalogue — it is purely a listing overlay on the canonical products. Only a
+    // CONFIRMED match says "PEL Listed"; everything else says "verification
+    // required", because a failed match is a fact about our matching, not about the
+    // PEL. No search filter: the status divides the catalogue far too unevenly to
+    // help discovery, and a default-on filter once emptied the whole page.
+    localListingOverlay: { source: 'PEL', filterEnabled: false },
   },
 };
 

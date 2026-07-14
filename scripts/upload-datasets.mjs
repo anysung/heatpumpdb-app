@@ -25,6 +25,8 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BUCKET = 'gs://heatpumpdb-datasets';
 const DRY = process.argv.includes('--dry-run');
+// Set only after the gate was run with an explicit, recorded --override.
+const GATE_PASSED = process.argv.includes('--gate-passed');
 
 const CANARIES = JSON.parse(readFileSync(join(ROOT, 'scripts/canary/canary-records.json'), 'utf8'));
 
@@ -62,6 +64,30 @@ function makeCanary(items, overrides) {
   if ('outdoor_side_identified' in skeleton) skeleton.outdoor_side_identified = false;
   if ('outdoor_side_display_kind' in skeleton) skeleton.outdoor_side_display_kind = null;
   return { ...skeleton, ...overrides };
+}
+
+/**
+ * PUBLICATION GATE — generate → validate → review → publish.
+ *
+ * Uploading is the ONLY step that touches production, so it is the one step that
+ * must not be reachable by accident. The gate re-validates the candidate datasets
+ * against the last approved manifest (counts, duplicates, segment integrity, local
+ * matching, source-country leakage) and exits non-zero on anything alarming. A
+ * failed or half-finished update therefore leaves the live datasets untouched,
+ * because we never get here.
+ *
+ * Override lives in the gate itself (--override --reason="…"), where it is recorded.
+ */
+if (!DRY && !GATE_PASSED) {
+  console.log('Running the dataset gate before publishing…\n');
+  try {
+    execFileSync(process.execPath, [join(ROOT, 'scripts/dataset-gate.mjs')], { stdio: 'inherit' });
+  } catch {
+    console.error('\n✗ Dataset gate FAILED — nothing was uploaded. Production is unchanged.');
+    console.error('  Fix the cause, or record an override:');
+    console.error('  node scripts/dataset-gate.mjs --override --reason="…"  &&  node scripts/upload-datasets.mjs --gate-passed');
+    process.exit(1);
+  }
 }
 
 const tmp = mkdtempSync(join(tmpdir(), 'hpdb-datasets-'));

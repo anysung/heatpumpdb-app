@@ -90,34 +90,26 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
 - Raw snapshot folders may be cleaned from disk; per-snapshot fetch timestamps are
   accumulated in the committed `data_sources/bafa/fetched-at-index.json` (the builder
   merges live `raw/_meta.json` values over it and writes it back — do not gitignore it).
-- **UK pipeline** (`scripts/ofgem/`): `fetch-pel-xlsx` → `parse-pel-xlsx` →
-  `match-pel-to-bafa` + `match-pel-to-eprel` → `match-pel-recovery` (optional overlays;
-  recovery runs LAST and only on what the first two left unresolved — rules in
-  `pel-match-lib.mjs`, tested by `tests/pel-matching.unit.mjs`, see
-  `docs/GB_PEL_CAPACITY_RECOVERY.md`) → `build-app-products-gb`
-  (auto-selects newest `data_sources/ofgem_pel/parsed/YYYY-MM/`) →
-  `public/data/products-gb.json` + `products-commercial-gb.json`. PEL publishes no
-  performance data; one performance source per record, never mixed:
-  `performance_source='BAFA_REFERENCE'` (cross-reference from the European registry —
-  internal provenance ONLY: the UK/FR UI must never name BAFA or Germany, see
-  `docs/EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md`)
-  takes precedence, else `'EPREL'` (official EU label data: ηs, design output, sound
-  power; SCOP/COP are NOT on EPREL and must not be derived). `eprel_registration_number`
-  is set on every EPREL match regardless. A record that matches NOTHING keeps null
-  performance fields — it has no rated capacity from any source and the app therefore
-  leaves it **unclassified** (never residential-by-default). Biomass is excluded.
-  **GB split catalogue (v2.1)**: residential = ALL PEL records
-  (`bafa_listing_status='listed_in_snapshot'` → "On Ofgem PEL"); commercial = the
-  European (DE-derived) COMMERCIAL catalogue only (`'not_in_latest_snapshot'` →
-  "Not on PEL", full specs as BAFA_REFERENCE, English type labels; PEL-matched
-  bafa_ids excluded). Derived RESIDENTIAL records are never exported — unmatched PEL
-  and European records can be the same hardware and would double-count. Run the DE
-  builder before the GB builder. BUS funding requires a PEL-listed product — keep that
-  caveat. Matching is
-  conservative: brand-gated token-sequence matching only, never plain substring
-  (false variant matches like "WPL 25 AS" vs "WPL 25 A"); multi-candidate accepted only
-  with identical copied values. PEL listing ≠ full BUS eligibility — keep the caveat.
-  Brand short names: `scripts/ofgem/manufacturer-short-names-gb.json` (curated).
+- **UK pipeline** (`scripts/ofgem/`) — **canonical baseline + PEL listing overlay
+  (v3.0, Jul 2026; `docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md`)**:
+  `fetch-pel-xlsx` → `parse-pel-xlsx` → `match-canonical-to-pel` → `build-app-products-gb`.
+  The UK catalogue IS the canonical (DE-derived) catalogue — run the DE builder first.
+  The Ofgem PEL is an **overlay only**: it confirms listing, and never creates a
+  product, supplies a spec, changes a capacity/segment, or removes a product when a
+  match fails. The PEL publishes NO performance data, which is exactly why it can
+  never be a technical source: the old PEL-first build (v2.1) published 4,422 PEL rows
+  and left 2,134 of them with no capacity, no segment and a blank data sheet.
+  Listing states: `confirmed` → "PEL Listed" + PEL id; `review_required` (was
+  confirmed, stopped matching — a matcher regression is likelier than a delisting) and
+  everything else → **"PEL verification required"**. **Never "Not on PEL"** — a failed
+  match is a fact about our matching, not about the list. Only a market that OWNS its
+  registry (DE) may say "not listed". Confirming evidence: exact model, approved alias,
+  exact component identity — never fuzzy, never an ODU-only overlap (those go to a
+  review queue). Confirmed mappings persist in the committed
+  `data_sources/ofgem_pel/pel-match-history.json`. Official manufacturer mappings enter
+  via `data_sources/manufacturer_cross_reference/canonical-to-pel.json` (no code change).
+  The old PEL-first matchers live in `scripts/ofgem/internal/` — audit only, never wire
+  them back into a builder.
 - **FR pipeline** (`scripts/fr/`): `build-app-products-fr.mjs` derives the France
   catalogue from the **built DE datasets** (same hardware sold in both markets — run the
   DE builder first) → `public/data/products-fr*.json`. German type strings are localised
@@ -148,6 +140,21 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
 
 ## 4. General Rules
 
+- **Canonical baseline + local overlay (permanent — `docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md`).**
+  Every country publishes the SAME canonical technical products (the German dataset,
+  presented neutrally). A local registry is only ever a listing OVERLAY:
+  canonical → match → attach status. Never local-registry-first with specs
+  reconstructed afterwards. Public products must pass ONE shared Data Sheet
+  eligibility rule (`scripts/lib/data-sheet-eligibility.mjs`: manufacturer, model,
+  canonical id, type, ηs, a rated capacity, a segment, and ≥2 of 5 measured fields) —
+  applied in the DE canonical builder, inherited by every market.
+- **Datasets are generated, then GATED, then published.** `node scripts/dataset-gate.mjs`
+  compares the candidate with the committed `data_manifests/production.json` and blocks
+  a bad update (zero/truncated parse, count or eligibility collapse, duplicate ids,
+  local-match collapse, segment shift, German status fields outside Germany).
+  `upload-datasets.mjs` runs it and refuses to publish if it fails; override needs
+  `--override --reason="…"` and is recorded. After a successful upload:
+  `node scripts/dataset-gate.mjs --approve`.
 - **Segmentation + European presentation (permanent — `docs/EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md`).**
   The residential/commercial split is the app's OWN rule, identical in every country:
   rated capacity **≤ 23 kW residential, > 23 kW commercial** (never `>=`), missing

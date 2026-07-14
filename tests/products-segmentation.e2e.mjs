@@ -92,6 +92,10 @@ const comMinKw = await sortAndReadTopKw(/low to high|niedrig|croissante|bas/i);
 check(`[segment] every commercial product is above ${THRESHOLD} kW`,
   Number.isFinite(comMinKw) && comMinKw > THRESHOLD, `smallest commercial = ${comMinKw} kW`);
 
+/* ── Every published product is classifiable (canonical baseline) ────────── */
+check('[architecture] no unclassified public products are disclosed',
+  (await page.locator('[data-testid="unclassified-note"]').count()) === 0);
+
 /* ── The 23 kW rule is disclosed, in the page's own language ───────────── */
 const note = page.locator('[data-testid="segment-note"]');
 check('[disclosure] the 23 kW rule is stated next to the segment control', (await note.count()) >= 1);
@@ -133,6 +137,12 @@ if (COUNTRY === 'GB') {
   check('[GB] the PEL "listed only" filter is NOT offered (it does not divide the catalogue)',
     (await page.locator('[data-testid="listed-only-toggle"]').count()) === 0);
   check('[GB] PEL status is still shown on the list', /\bPEL\b/i.test(comBody));
+  // The architecture change: a failed match is OUR failure, not evidence that the
+  // product is absent from the Ofgem list.
+  check('[GB] "Not on PEL" is GONE — absence of a match is not absence from the list',
+    !/not on (the )?(current )?PEL/i.test(comBody), around(comBody, 'Not on'));
+  check('[GB] unconfirmed products say "verification required"',
+    /verification required/i.test(comBody));
   check('[GB] no BUS eligibility is claimed', !/eligible for BUS|BUS eligible/i.test(comBody));
 } else if (COUNTRY === 'FR') {
   check('[FR] no listing filter is offered (France has no national list)',
@@ -213,7 +223,8 @@ await page.waitForTimeout(900);
 const detail = await bodyText();
 check('[commercial] product detail opens', /Manufacturer|Hersteller|Fabricant/i.test(detail));
 if (COUNTRY === 'GB') {
-  check('[GB] product detail keeps PEL status', /\bPEL\b/i.test(detail));
+  check('[GB] product detail keeps PEL status', /\bPEL Listed|verification required/i.test(detail));
+  check('[GB] product detail never says "Not on PEL"', !/not on (the )?(current )?PEL/i.test(detail));
   check('[GB] product detail never says BAFA', !/BAFA/i.test(detail), around(detail, 'BAFA'));
 }
 if (COUNTRY === 'FR') {
@@ -234,7 +245,8 @@ check('[commercial] Data Sheet opens for a commercial record',
   (await page.locator('.hpiq-print-doc').count()) >= 1);
 const sheet = await page.locator('.hpiq-print-doc').first().innerText();
 if (COUNTRY === 'GB') {
-  check('[GB] the Data Sheet keeps PEL status', /On current PEL|Not on current PEL/i.test(sheet));
+  check('[GB] the Data Sheet keeps PEL status', /PEL Listed|PEL verification required/i.test(sheet));
+  check('[GB] the Data Sheet never says "Not on PEL"', !/not on (the )?(current )?PEL/i.test(sheet));
   check('[GB] the Data Sheet never says BAFA', !/BAFA/i.test(sheet), around(sheet, 'BAFA'));
   check('[GB] the Data Sheet does not name the source country',
     !namesSourceCountry(sheet), around(stripCompanyNames(sheet), 'German'));

@@ -1,346 +1,50 @@
+#!/usr/bin/env node
 /**
- * build-app-products-gb.mjs  v1.0  (UK dataset builder — Phase A)
+ * build-app-products-gb.mjs  v3.0 — canonical technical baseline + PEL listing overlay.
  *
- * Generates public/data/products-gb.json and public/data/products-commercial-gb.json
- * from the parsed Ofgem BUS Product Eligibility List (PEL).
+ * ARCHITECTURE (docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md)
  *
- * Primary source:  data_sources/ofgem_pel/parsed/YYYY-MM/pel-normalized.json
- *                  (newest snapshot auto-selected; --snapshot=YYYY-MM overrides)
- * Short names:     scripts/ofgem/manufacturer-short-names-gb.json (curated, committed)
- * Overlay sources (both optional, from data_sources/ofgem_pel/matching/YYYY-MM/):
- *   pel-bafa-matches.json   (match-pel-to-bafa.mjs)  — BAFA_REFERENCE technical
- *     specs for PEL models also listed on the German BAFA registry.
- *   pel-eprel-matches.json  (match-pel-to-eprel.mjs) — official EPREL label data
- *     (registration number, ηs, design output, sound power).
- *   Precedence: BAFA_REFERENCE fills performance fields first; EPREL label
- *     values fill performance fields ONLY on records without a BAFA match
- *     (performance_source='EPREL'); eprel_registration_number is set on every
- *     EPREL-matched record regardless.
+ *   canonical technical products → Data Sheet eligibility → UK public catalogue
+ *                                → PEL overlay (listing status only)
  *
- * Output shape mirrors the DE builder (build-app-products-from-master-seed.mjs):
- * same 75 base keys (DE-only values null) + 17 GB/PEL provenance keys
- * + 4 BAFA_REFERENCE keys + 3 EPREL keys = 99 fields.
- * The app loader reads `data.items`; the view model renders nulls as '—'.
+ * The UK catalogue IS the canonical catalogue. The Ofgem PEL adds one thing: has
+ * the UK listed this product. It never creates a product, never supplies a spec,
+ * never changes a capacity or a segment, and a failed match never removes a product.
  *
- * Policies:
- *   - Biomass records are excluded (heat pump app).
- *   - PEL publishes no performance data. Records matched to BAFA get technical
- *     specs copied as a cross-reference (performance_source='BAFA_REFERENCE');
- *     unmatched records keep null performance fields.
- *   - v2.1 SPLIT CATALOGUE (user decision 2026-07-12): unmatched PEL and
- *     European records can be the SAME hardware (matching only proves 508 of
- *     them), so mixing both in one segment double-counts. Therefore:
- *       residential  = ALL PEL records (4,4xx, "On Ofgem PEL")
- *       commercial   = European (DE-derived) commercial catalogue only
- *                      ("Not on PEL", full specs as BAFA_REFERENCE, English
- *                      type labels); PEL-matched bafa_ids excluded to avoid
- *                      duplicate hardware. Derived residential records are
- *                      NOT exported (overlap risk with unmatched PEL).
- *   - Duplicate MCS numbers are real model variants sharing one certification
- *     number (e.g. Ares MB5 ×9). They are KEPT; source_id gets a '#n' suffix
- *     (n ≥ 2) for uniqueness. mcs_number stays raw for display.
- *   - installation_type is derived only from explicit Monobloc/Split keywords
- *     in product_name/model (installation_type_derived = 'name_keyword'), else null.
- *   - Eligibility honesty: PEL listing ≠ full BUS eligibility. certification
- *     status + caveat fields are passed through unchanged.
+ * WHAT THIS REPLACES (v2.1 — PEL-first, removed):
+ *   The old build published all 4,422 PEL rows as technical products and then
+ *   tried to reconstruct their missing specifications from EPREL, a registry
+ *   cross-reference and a component-recovery matcher. The PEL publishes no
+ *   performance data at all, so 2,134 of those "products" ended up with no
+ *   capacity, no segment and a blank data sheet — and every unmatched record was
+ *   labelled "Not on PEL", which asserts far more than a failed match proves.
+ *
+ * Inputs
+ *   public/data/products.json / products-commercial.json  (canonical, from the DE build)
+ *   data_sources/ofgem_pel/matching/<snap>/canonical-pel-overlay.json   (optional)
+ * Output
+ *   public/data/products-gb.json + products-commercial-gb.json
+ *
+ * The full PEL source stays on disk for matching, audit and manufacturer
+ * follow-up — it is simply no longer a public product source.
  */
-
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { applyEligibility, segmentOf, ratedCapacityKw } from '../lib/data-sheet-eligibility.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, '../..');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+const loadJSON = p => JSON.parse(readFileSync(resolve(ROOT, p), 'utf8'));
+const newest = d => readdirSync(resolve(ROOT, d)).filter(x => /^\d{4}-\d{2}$/.test(x)).sort().reverse()[0] ?? null;
 
-const EXPECTED_FIELD_COUNT = 99;
-const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
+const PRICE_KEY_FRAGMENTS = ['price', 'preis', 'cost', 'brand_tier', 'price_confidence'];
 
-function loadJSON(relPath) {
-  const abs = resolve(ROOT, relPath);
-  try {
-    return JSON.parse(readFileSync(abs, 'utf8'));
-  } catch (err) {
-    console.error(`Failed to load ${relPath}: ${err.message}`);
-    process.exit(1);
-  }
-}
+/** German registry status / funding fields — German facts. They do not travel. */
+const GERMAN_ONLY_FIELDS = [
+  'bafa_listing_status', 'bafa_foerderung_von', 'bafa_foerderung_bis', 'bafa_snapshot_fetched_at',
+];
 
-// ── Snapshot selection ────────────────────────────────────────────────────────
-const snapArg = process.argv.find(a => a.startsWith('--snapshot='))?.split('=')[1] ?? null;
-const PARSED_DIR = resolve(ROOT, 'data_sources/ofgem_pel/parsed');
-const SNAPSHOT = snapArg ?? readdirSync(PARSED_DIR).filter(d => /^\d{4}-\d{2}$/.test(d)).sort().reverse()[0];
-if (!SNAPSHOT) { console.error('No parsed PEL snapshot found.'); process.exit(1); }
-console.log(`PEL parsed snapshot: ${SNAPSHOT}`);
-
-const records = loadJSON(`data_sources/ofgem_pel/parsed/${SNAPSHOT}/pel-normalized.json`);
-const shortNamesFile = loadJSON('scripts/ofgem/manufacturer-short-names-gb.json');
-const shortNameMap = new Map(Object.entries(shortNamesFile.mapping));
-
-// Raw snapshot download timestamp → pel_snapshot_fetched_at
-function snapshotFetchedAt(id) {
-  const p = resolve(ROOT, `data_sources/ofgem_pel/raw/${id}/_meta.json`);
-  if (!existsSync(p)) return null;
-  try { return JSON.parse(readFileSync(p, 'utf8')).downloadedAt ?? null; } catch { return null; }
-}
-const PEL_FETCHED_AT = snapshotFetchedAt(SNAPSHOT);
-
-// BAFA_REFERENCE overlay (optional) — produced by match-pel-to-bafa.mjs
-const matchPath = resolve(ROOT, `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-bafa-matches.json`);
-const matchFile = existsSync(matchPath) ? JSON.parse(readFileSync(matchPath, 'utf8')) : null;
-const matchByKey = new Map((matchFile?.matches ?? []).map(m => [m.match_key, m]));
-console.log(matchFile
-  ? `BAFA_REFERENCE overlay: ${matchByKey.size} matches (seed ${matchFile._meta.bafa_seed_snapshot})`
-  : 'BAFA_REFERENCE overlay: none (building without enrichment)');
-
-// EPREL overlay (optional) — produced by match-pel-to-eprel.mjs
-const eprelPath = resolve(ROOT, `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-eprel-matches.json`);
-const eprelFile = existsSync(eprelPath) ? JSON.parse(readFileSync(eprelPath, 'utf8')) : null;
-const eprelByKey = new Map((eprelFile?.matches ?? []).map(m => [m.match_key, m]));
-console.log(eprelFile
-  ? `EPREL overlay: ${eprelByKey.size} matches (EPREL snapshot ${eprelFile._meta.eprel_snapshot})`
-  : 'EPREL overlay: none');
-
-// Rated-capacity recovery overlay (optional) — produced by match-pel-recovery.mjs.
-// Tier A/B product-identity matches for PEL records the first two matchers missed
-// (component pairs in the other order, package prefixes, market suffixes, one ODU
-// in several packages). Tier C review candidates are NEVER loaded here.
-const recoveryPath = resolve(ROOT, `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-recovery-matches.json`);
-const recoveryFile = existsSync(recoveryPath) ? JSON.parse(readFileSync(recoveryPath, 'utf8')) : null;
-const recoveryByKey = new Map((recoveryFile?.matches ?? []).map(m => [m.match_key, m]));
-console.log(recoveryFile
-  ? `Recovery overlay: ${recoveryByKey.size} matches (Tier A/B only; ${recoveryFile._meta.review_queue} in the review queue)`
-  : 'Recovery overlay: none');
-
-const generatedAt = new Date().toISOString();
-
-// ── Capacity-based segmentation (same policy as DE builder v2.0) ─────────────
-function classifySegment(power_kw) {
-  if (power_kw === null || power_kw === undefined || !Number.isFinite(Number(power_kw))) return null;
-  const p = Number(power_kw);
-  if (p <= 20.99) return 'residential_core';
-  if (p <= 45) return 'light_commercial';
-  return 'commercial_project';
-}
-
-// ── Filters & helpers ─────────────────────────────────────────────────────────
-
-const HEAT_PUMP_TECH = new Set(['ASHP', 'WSHP', 'EAHP']);
-
-/** UI type label per technology (English; GB build has no German type strings). */
-const TYPE_LABEL = {
-  ASHP: 'Air / Water',
-  WSHP: 'Ground / Water',
-  EAHP: 'Exhaust Air / Water',
-};
-
-/** 'Tue Jan 23 2024 00:00:00 GMT+0100 (…)' → '2024-01-23' (null-safe). */
-function toISODate(s) {
-  if (!s) return null;
-  const d = new Date(s);
-  if (isNaN(d.getTime())) return null;
-  // Use UTC-noon shift-free date parts from the parsed local date to avoid TZ drift.
-  const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-/** Derive Monoblock/Split only from explicit name keywords; else null. */
-function deriveInstallationType(r) {
-  const s = `${r.product_name ?? ''} ${r.model ?? ''}`;
-  if (/mono\s?blo[ck]k?/i.test(s)) return 'Monoblock';
-  if (/\bsplit\b/i.test(s)) return 'Split';
-  return null;
-}
-
-// ── Select heat pump records & assign unique source_id ───────────────────────
-
-const biomassCount = records.filter(r => r.technology_type === 'Biomass').length;
-const hp = records.filter(r => HEAT_PUMP_TECH.has(r.technology_type));
-
-const seen = new Map(); // mcs_number → occurrences so far
-const suffixed = [];
-function uniqueSourceId(mcsNumber) {
-  const n = (seen.get(mcsNumber) ?? 0) + 1;
-  seen.set(mcsNumber, n);
-  if (n === 1) return mcsNumber;
-  const id = `${mcsNumber}#${n}`;
-  suffixed.push(id);
-  return id;
-}
-
-// ── Build one output item (92 fields) ─────────────────────────────────────────
-
-function buildItem(r) {
-  const installationType = deriveInstallationType(r);
-  const key = `${r.mcs_number}||${r.model}`;
-  const m = matchByKey.get(key) ?? null;
-  const e = eprelByKey.get(key) ?? null;
-  // EPREL label values fill performance fields ONLY without a BAFA match —
-  // one performance source per record, no mixed provenance.
-  const ev = (!m && e) ? e.values : {};
-  const eprelFilledPerf = Object.values(ev).some(v => v != null);
-  // Last resort: a recovered product-identity match. Only reached when neither of
-  // the two primary matchers resolved this record, so it can never override them.
-  const rc = (!m && !eprelFilledPerf) ? recoveryByKey.get(key) ?? null : null;
-  const rcRegistry = rc?.source === 'EU_REGISTRY';
-  // Same shape either way, so the spec fields below read from one object.
-  const sp = m?.specs ?? rc?.specs ?? {};
-  return {
-    // ── Identity ────────────────────────────────────────────────────────────
-    bafa_id: null,                       // GB records have no BAFA identity
-    uuid: null,
-
-    // ── Product info ────────────────────────────────────────────────────────
-    manufacturer: r.brand ?? null,
-    manufacturer_normalized: (r.brand ?? '').trim().toUpperCase() || null,
-    manufacturer_short: shortNameMap.get(r.brand) ?? null,
-    model: r.model ?? r.product_name ?? null,
-    type: TYPE_LABEL[r.technology_type] ?? null,
-
-    // ── Refrigerant (PEL: none; filled from BAFA_REFERENCE when matched) ────
-    refrigerant: sp.refrigerant ?? null,
-    refrigerant_2: sp.refrigerant_2 ?? null,
-    refrigerant_amount_kg: sp.refrigerant_amount_kg ?? null,
-    refrigerant_2_amount_kg: sp.refrigerant_2_amount_kg ?? null,
-
-    // ── Heating performance (PEL: none; BAFA_REFERENCE when matched) ────────
-    power_35C_kw: sp.power_35C_kw ?? null,
-    efficiency_35C_percent: sp.efficiency_35C_percent ?? ev.efficiency_35C_percent ?? null,
-    power_design_35C_kw: sp.power_design_35C_kw ?? ev.power_design_35C_kw ?? null,
-    power_55C_kw: sp.power_55C_kw ?? null,
-    efficiency_55C_percent: sp.efficiency_55C_percent ?? ev.efficiency_55C_percent ?? null,
-    power_design_55C_kw: sp.power_design_55C_kw ?? ev.power_design_55C_kw ?? null,
-
-    // ── COP / SCOP / SEER (PEL: none; BAFA_REFERENCE when matched) ──────────
-    cop_A7W35: sp.cop_A7W35 ?? null,
-    cop_A2W35: sp.cop_A2W35 ?? null,
-    cop_AMinus7W35: sp.cop_AMinus7W35 ?? null,
-    cop_A10W35: sp.cop_A10W35 ?? null,
-    scop: r.scop ?? sp.scop ?? null,
-    seer: sp.seer ?? null,
-
-    // ── Cooling ─────────────────────────────────────────────────────────────
-    cooling_efficiency: sp.cooling_efficiency ?? null,
-    cooling_capacity_kw: sp.cooling_capacity_kw ?? null,
-
-    // ── Noise & electrical ──────────────────────────────────────────────────
-    noise_outdoor_dB: sp.noise_outdoor_dB ?? ev.noise_outdoor_dB ?? null,
-    noise_indoor_dB: sp.noise_indoor_dB ?? ev.noise_indoor_dB ?? null,
-    max_electric_power_kw: sp.max_electric_power_kw ?? null,
-
-    // ── System ──────────────────────────────────────────────────────────────
-    drive_type: sp.drive_type ?? null,
-    power_control: sp.power_control ?? null,
-    num_compressors: sp.num_compressors ?? null,
-    grid_ready: false,                  // German SG-Ready attestation — not copied
-    grid_ready_type: null,
-    ee_display: null,
-    ee_display_type: null,
-    heat_meter: null,
-    defrost_tested: sp.defrost_tested ?? null,
-    defrost_type: sp.defrost_type ?? null,
-    temp_diff: sp.temp_diff ?? null,
-    website: null,
-
-    // ── Segmentation (capacity from BAFA_REFERENCE when matched) ─────────────
-    market_segment: classifySegment(sp.power_35C_kw),
-    installation_type: installationType,
-    installation_type_derived: installationType ? 'name_keyword' : null,
-
-    // ── Physical specs (no GB overlay yet) ──────────────────────────────────
-    width_mm: null,
-    height_mm: null,
-    depth_mm: null,
-    weight_kg: null,
-    dimensions_raw: null,
-    weight_raw: null,
-    physical_specs_confidence: null,
-    physical_specs_estimated: null,
-    physical_specs_source_type: null,
-    physical_specs_source_note: null,
-    physical_specs_match_type: null,
-    physical_specs_family: null,
-    physical_specs_quarantined: null,
-    physical_specs_quarantine_reason: null,
-    physical_specs_last_checked_at: null,
-
-    // ── Provenance (source-neutral) ─────────────────────────────────────────
-    source_id: uniqueSourceId(r.mcs_number),
-    country: 'GB',
-    primary_source: 'OFGEM_PEL',
-    // Listing flag drives the app's "On current PEL only" filter and chips.
-    bafa_listing_status: 'listed_in_snapshot',
-    bafa_foerderung_von: null,
-    bafa_foerderung_bis: null,
-    bafa_snapshot_fetched_at: null,
-    source_snapshot_generated_at: generatedAt,
-
-    // ── GB / PEL provenance ─────────────────────────────────────────────────
-    mcs_number: r.mcs_number,
-    mcs_number_base: r.mcs_number_base ?? null,
-    mcs_model_suffix: r.mcs_model_suffix ?? null,
-    product_name: r.product_name ?? null,
-    technology_type: r.technology_type,
-    technology_type_raw: r.technology_type_raw ?? null,
-    pel_certification_status: r.certification_status ?? null,
-    mcs_cert_date: toISODate(r.mcs_cert_date),
-    expiry_date: toISODate(r.expiry_date),
-    pel_eligibility_interpretation: r.eligibility_interpretation ?? null,
-    pel_eligibility_caveat: r.eligibility_caveat ?? null,
-    pel_snapshot: r.source_snapshot ?? SNAPSHOT,
-    pel_source_period: r.source_period ?? null,
-    pel_source_last_modified: r.source_last_modified ?? null,
-    pel_source_url: r.source_url ?? null,
-    pel_snapshot_fetched_at: PEL_FETCHED_AT,
-
-    // ── Enrichment provenance (one performance source per record) ───────────
-    // A recovered match carries the source it came from, so the record still has
-    // exactly ONE performance source. The match method and confidence tier ride in
-    // the match_type field ("shared_component:B") — internal provenance, never UI text.
-    performance_source: m ? 'BAFA_REFERENCE'
-      : eprelFilledPerf ? 'EPREL'
-        : rc ? (rcRegistry ? 'BAFA_REFERENCE' : 'EPREL')
-          : null,
-    bafa_reference_id: m?.bafa_id ?? (rcRegistry ? rc.candidate_id : null),
-    bafa_reference_model: m?.bafa_model ?? (rcRegistry ? rc.candidate_model : null),
-    bafa_reference_match_type: m?.match_type
-      ?? (rcRegistry ? `${rc.match_method}:${rc.confidence_tier}` : null),
-    eprel_registration_number: e?.eprel_registration_number
-      ?? (rc && !rcRegistry ? rc.candidate_id : null),
-    eprel_model: e?.eprel_model ?? (rc && !rcRegistry ? rc.candidate_model : null),
-    eprel_match_type: e?.match_type
-      ?? (rc && !rcRegistry ? `${rc.match_method}:${rc.confidence_tier}` : null),
-
-    // ── Component / outdoor-side fields (no GB classification yet) ──────────
-    outdoor_unit_model: null,
-    idu_model: null,
-    control_box_model: null,
-    tank_model: null,
-    tower_model: null,
-    hydraulic_module_model: null,
-    indoor_side_equipment_model: null,
-    outdoor_side_identified: false,
-    outdoor_side_display_model: null,
-    outdoor_side_display_kind: null,
-  };
-}
-
-const pelItems = hp.map(buildItem);
-
-// ── Union with the European (DE-derived) catalogue ────────────────────────────
-// Everything we have that is NOT on the PEL is added as a "Not on PEL"
-// reference record with full specs (same approach as the FR edition).
-const deCommercial = loadJSON('public/data/products-commercial.json');
-// Every registry record we have now tied to a PEL product — including the ones the
-// recovery pass tied — is the SAME hardware as a PEL row. It must not also appear as
-// a separate "Not on PEL" European record, or the catalogue would count it twice.
-const matchedBafaIds = new Set([
-  ...(matchFile?.matches ?? []).map(m => String(m.bafa_id)),
-  ...(recoveryFile?.matches ?? [])
-    .filter(m => m.source === 'EU_REGISTRY')
-    .flatMap(m => (m.candidate_ids ?? [m.candidate_id]).map(String)),
-]);
-
-/** German BAFA type strings → English display strings for the GB edition. */
+/** German type strings → English display strings. */
 const TYPE_EN = {
   'Luft / Wasser': 'Air / Water',
   'Sole / Wasser': 'Ground / Water',
@@ -348,191 +52,156 @@ const TYPE_EN = {
   'Luft / Luft': 'Air / Air',
 };
 
-function deItemToGb(p) {
+// ── Canonical baseline ───────────────────────────────────────────────────────
+const deResidential = loadJSON('public/data/products.json');
+const deCommercial = loadJSON('public/data/products-commercial.json');
+const canonicalCount = deResidential.items.length + deCommercial.items.length;
+console.log(`Canonical baseline: ${canonicalCount} products`);
+
+// ── PEL listing overlay (optional) ───────────────────────────────────────────
+const SNAPSHOT = newest('data_sources/ofgem_pel/parsed');
+const overlayPath = SNAPSHOT ? `data_sources/ofgem_pel/matching/${SNAPSHOT}/canonical-pel-overlay.json` : null;
+const overlayFile = overlayPath && existsSync(resolve(ROOT, overlayPath)) ? loadJSON(overlayPath) : null;
+const pelByBafaId = new Map((overlayFile?.overlay ?? []).map(e => [String(e.bafa_id), e]));
+console.log(overlayFile
+  ? `PEL overlay: ${pelByBafaId.size} mappings (snapshot ${overlayFile._meta.pel_snapshot})`
+  : 'PEL overlay: none — every product will show "verification required"');
+
+function pelFetchedAt() {
+  const p = resolve(ROOT, `data_sources/ofgem_pel/raw/${SNAPSHOT}/_meta.json`);
+  if (!existsSync(p)) return null;
+  try { return JSON.parse(readFileSync(p, 'utf8')).downloadedAt ?? null; } catch { return null; }
+}
+const PEL_FETCHED_AT = pelFetchedAt();
+const generatedAt = new Date().toISOString();
+
+// ── Build ────────────────────────────────────────────────────────────────────
+function toGbItem(p) {
+  const o = pelByBafaId.get(String(p.bafa_id)) ?? null;
+  const item = { ...p };
+  for (const f of GERMAN_ONLY_FIELDS) delete item[f];
+
   return {
-    ...p,
+    ...item,
     type: TYPE_EN[p.type] ?? p.type,
     country: 'GB',
     source_id: String(p.bafa_id),
+    // Provenance is internal. The UI calls this a European reference and never
+    // names the source country (EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md).
     primary_source: 'BAFA_REFERENCE',
-    bafa_listing_status: 'not_in_latest_snapshot',   // = Not on the Ofgem PEL
-    installation_type_derived: null,
-    // European-reference provenance (specs are the same hardware's registry values)
     performance_source: 'BAFA_REFERENCE',
-    bafa_reference_id: String(p.bafa_id),
+    bafa_reference_id: p.bafa_id != null ? String(p.bafa_id) : null,
     bafa_reference_model: p.model ?? null,
     bafa_reference_match_type: 'same_record',
-    // PEL identity fields — not on the PEL
-    mcs_number: null,
-    mcs_number_base: null,
-    mcs_model_suffix: null,
-    product_name: null,
-    technology_type: null,
-    technology_type_raw: null,
-    pel_certification_status: null,
-    mcs_cert_date: null,
-    expiry_date: null,
-    pel_eligibility_interpretation: null,
-    pel_eligibility_caveat: null,
-    pel_snapshot: SNAPSHOT,
-    pel_source_period: null,
-    pel_source_last_modified: null,
-    pel_source_url: null,
+
+    // ── UK local listing overlay — the ONLY thing the PEL contributes ────────
+    // 'confirmed'             the UK has listed this product (PEL id shown)
+    // 'review_required'       it WAS confirmed and stopped matching. A matcher or
+    //                         parser regression is likelier than an Ofgem delisting,
+    //                         so the mapping is kept and a human looks. Displayed
+    //                         exactly like verification_required — never "not listed".
+    // 'verification_required' no reliable match. That is a statement about OUR
+    //                         matching, not about the PEL: absence of a match is
+    //                         not evidence of absence from the list.
+    pel_match_status: o?.status ?? 'verification_required',
+    mcs_number: o?.status === 'confirmed' ? o.mcs_number : null,
+    pel_source_id: o?.pel_source_id ?? null,
+    pel_match_method: o?.match_method ?? null,
+    pel_match_confidence: o?.match_confidence ?? null,
+    pel_snapshot: o?.pel_snapshot ?? SNAPSHOT ?? null,
     pel_snapshot_fetched_at: PEL_FETCHED_AT,
+    pel_first_matched_at: o?.first_matched_at ?? null,
+    pel_last_confirmed_at: o?.last_confirmed_at ?? null,
+
+    source_snapshot_generated_at: generatedAt,
   };
 }
 
-// Commercial only — derived residential overlaps unmatched PEL hardware.
-const derivedItems = deCommercial.items
-  .filter(p => !matchedBafaIds.has(String(p.bafa_id)))
-  .map(deItemToGb);
-
-const items = [...pelItems, ...derivedItems];
-
-// ── Validate ──────────────────────────────────────────────────────────────────
-
-const fieldCount = Object.keys(pelItems[0]).length;
-const derivedFieldCount = derivedItems.length ? Object.keys(derivedItems[0]).length : EXPECTED_FIELD_COUNT;
-if (fieldCount !== EXPECTED_FIELD_COUNT || derivedFieldCount !== EXPECTED_FIELD_COUNT) {
-  console.error(`FAIL: field count mismatch: expected ${EXPECTED_FIELD_COUNT}, got PEL=${fieldCount}, derived=${derivedFieldCount}`);
-  process.exit(1);
-}
-const keySetPel = Object.keys(pelItems[0]).sort().join(',');
-const keySetDerived = derivedItems.length ? Object.keys(derivedItems[0]).sort().join(',') : keySetPel;
-if (keySetPel !== keySetDerived) {
-  console.error('FAIL: PEL and derived record shapes differ');
-  process.exit(1);
+const resEligible = applyEligibility(deResidential.items);
+const comEligible = applyEligibility(deCommercial.items);
+const rejected = [...resEligible.rejected, ...comEligible.rejected];
+const byReason = {};
+for (const r of [resEligible.byReason, comEligible.byReason]) {
+  for (const [k, v] of Object.entries(r)) byReason[k] = (byReason[k] ?? 0) + v;
 }
 
-const priceKeysFound = Object.keys(items[0]).filter(k =>
-  PRICE_KEY_FRAGMENTS.some(frag => k.includes(frag))
-);
-if (priceKeysFound.length > 0) {
-  console.error('FAIL: price-like keys present:', priceKeysFound.join(', '));
-  process.exit(1);
+const residential = resEligible.eligible.map(toGbItem);
+const commercial = comEligible.eligible.map(toGbItem);
+const items = [...residential, ...commercial];
+
+// ── Validate ─────────────────────────────────────────────────────────────────
+const fail = m => { console.error(`FAIL: ${m}`); process.exit(1); };
+
+if (!items.length) fail('no eligible products — refusing to write an empty catalogue');
+if (residential.length && commercial.length
+  && Object.keys(residential[0]).join(',') !== Object.keys(commercial[0]).join(',')) {
+  fail('residential and commercial record shapes differ');
 }
 
-const missingProvenance = items.filter(i => {
-  if (!i.source_id || i.country !== 'GB' || !i.pel_snapshot_fetched_at) return true;
-  if (i.primary_source === 'OFGEM_PEL') {
-    return !i.mcs_number || !i.pel_certification_status || i.bafa_listing_status !== 'listed_in_snapshot';
-  }
-  // European-reference (DE-derived) records
-  return i.primary_source !== 'BAFA_REFERENCE' || !i.bafa_id
-    || i.bafa_listing_status !== 'not_in_latest_snapshot' || i.performance_source !== 'BAFA_REFERENCE';
-});
-if (missingProvenance.length > 0) {
-  console.error(`FAIL: ${missingProvenance.length} items missing required provenance`);
-  process.exit(1);
+const keys = Object.keys(items[0]);
+const priceKeys = keys.filter(k => PRICE_KEY_FRAGMENTS.some(f => k.includes(f)));
+if (priceKeys.length) fail(`price-like keys present: ${priceKeys.join(', ')}`);
+
+for (const f of GERMAN_ONLY_FIELDS) {
+  if (keys.includes(f)) fail(`German registration/funding field leaked into the GB dataset: ${f}`);
 }
 
 const ids = new Set(items.map(i => i.source_id));
-if (ids.size !== items.length) {
-  console.error(`FAIL: source_id not unique: ${items.length - ids.size} collisions`);
-  process.exit(1);
-}
+if (ids.size !== items.length) fail(`source_id not unique: ${items.length - ids.size} collisions`);
 
-if (items.some(i => i.technology_type === 'Biomass')) {
-  console.error('FAIL: Biomass records leaked into output');
-  process.exit(1);
-}
+// Every published product must render a data sheet and land in a segment.
+const noCap = items.filter(i => ratedCapacityKw(i) == null);
+if (noCap.length) fail(`${noCap.length} published products have no rated capacity`);
+const unclassified = items.filter(i => segmentOf(i) === 'unclassified');
+if (unclassified.length) fail(`${unclassified.length} published products are unclassified`);
 
-if (pelItems.length !== records.length - biomassCount) {
-  console.error(`FAIL: PEL record count mismatch: ${pelItems.length} !== ${records.length} - ${biomassCount}`);
-  process.exit(1);
-}
+// The overlay may only say "confirmed" when a PEL id stands behind it.
+const badListing = items.filter(i =>
+  (i.pel_match_status === 'confirmed' && !i.mcs_number)
+  || !['confirmed', 'review_required', 'verification_required'].includes(i.pel_match_status));
+if (badListing.length) fail(`${badListing.length} products have an invalid PEL listing state`);
 
-const enrichedCount = items.filter(i => i.performance_source === 'BAFA_REFERENCE').length;
-if (matchFile && enrichedCount === 0) {
-  console.error('FAIL: BAFA overlay present but zero items enriched — match_key join broken?');
-  process.exit(1);
-}
-const eprelLinkedCount = items.filter(i => i.eprel_registration_number !== null).length;
-const eprelPerfCount = items.filter(i => i.performance_source === 'EPREL').length;
-if (eprelFile && eprelLinkedCount === 0) {
-  console.error('FAIL: EPREL overlay present but zero items linked — match_key join broken?');
-  process.exit(1);
-}
+// ── Write ────────────────────────────────────────────────────────────────────
+const confirmed = items.filter(i => i.pel_match_status === 'confirmed').length;
+const reviewReq = items.filter(i => i.pel_match_status === 'review_required').length;
+const verifyReq = items.filter(i => i.pel_match_status === 'verification_required').length;
 
-// ── Split by record class (v2.1): PEL → residential, European → commercial ──
+const meta = {
+  generated_at: generatedAt,
+  generator: 'build-app-products-gb.mjs v3.0 (canonical baseline + PEL listing overlay)',
+  country: 'GB',
+  architecture: 'Public products come from the canonical technical baseline. The Ofgem PEL is a '
+    + 'listing overlay only: it never creates a product, supplies a spec, changes a capacity or a '
+    + 'segment, and a failed match never removes a product.',
+  canonical_products: canonicalCount,
+  data_sheet_eligible: items.length,
+  rejected_ineligible: rejected.length,
+  rejection_reasons: byReason,
+  pel_snapshot: SNAPSHOT,
+  pel_overlay_source: overlayPath,
+  pel_confirmed: confirmed,
+  pel_review_required: reviewReq,
+  pel_verification_required: verifyReq,
+  listing_semantics: 'A product without a confirmed match shows "PEL verification required". The '
+    + 'absence of an automated match is NOT evidence that the product is absent from the PEL.',
+};
 
-const residential = pelItems;
-const commercial = derivedItems;
+writeFileSync(resolve(ROOT, 'public/data/products-gb.json'),
+  JSON.stringify({ _meta: { ...meta, source_file: 'canonical-residential' }, items: residential }, null, 2));
+writeFileSync(resolve(ROOT, 'public/data/products-commercial-gb.json'),
+  JSON.stringify({ _meta: { ...meta, source_file: 'canonical-commercial' }, items: commercial }, null, 2));
 
-// ── Write output ──────────────────────────────────────────────────────────────
+const seg = { residential: 0, commercial: 0, unclassified: 0 };
+items.forEach(i => seg[segmentOf(i)]++);
 
-function writeOutput(relPath, outItems, dataset, segmentsIncluded) {
-  const payload = {
-    _meta: {
-      generated: generatedAt,
-      generator: 'build-app-products-gb.mjs v2.1',
-      union_catalogue: {
-        pel_records: pelItems.length,
-        european_reference_records: derivedItems.length,
-        pel_matched_bafa_ids_excluded: matchedBafaIds.size,
-        policy: "GB split catalogue v2.1: residential = ALL PEL records ('On Ofgem PEL'); commercial = European (DE-derived) commercial catalogue only ('Not on PEL'; PEL-matched bafa_ids excluded as duplicate hardware). Derived residential records are not exported — unmatched PEL and European records can be the same hardware. BUS funding requires a PEL-listed product — the caveat stands.",
-      },
-      dataset,
-      country: 'GB',
-      primary_source: 'OFGEM_PEL',
-      description: 'UK heat pump dataset built from the Ofgem BUS Product Eligibility List (PEL). '
-        + 'PEL publishes identity/certification fields only. Records matched to the German BAFA registry '
-        + '(match-pel-to-bafa.mjs) carry technical specs as a cross-reference (performance_source=BAFA_REFERENCE); '
-        + 'unmatched records have null performance fields. Matched records are capacity-segmented like DE; '
-        + 'unmatched records stay in the residential dataset with market_segment null. '
-        + 'PEL listing is an administrative eligibility reference only and does not guarantee full BUS eligibility.',
-      total_items: outItems.length,
-      primary_source_file: `data_sources/ofgem_pel/parsed/${SNAPSHOT}/pel-normalized.json`,
-      overlay_source: matchFile ? `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-bafa-matches.json` : null,
-      bafa_reference_seed_snapshot: matchFile?._meta.bafa_seed_snapshot ?? null,
-      bafa_reference_enriched_total: enrichedCount,
-      eprel_overlay_source: eprelFile ? `data_sources/ofgem_pel/matching/${SNAPSHOT}/pel-eprel-matches.json` : null,
-      eprel_snapshot: eprelFile?._meta.eprel_snapshot ?? null,
-      eprel_linked_total: eprelLinkedCount,
-      eprel_performance_source_total: eprelPerfCount,
-      segments_included: segmentsIncluded,
-      segmentation_policy: 'capacity_v2 on BAFA_REFERENCE kW: ≤20.99=residential_core, 21-45=light_commercial, >45=commercial_project; unmatched (null kW) → residential dataset, market_segment null',
-      pel_snapshot: SNAPSHOT,
-      pel_snapshot_fetched_at: PEL_FETCHED_AT,
-      pel_records_total: records.length,
-      biomass_excluded: biomassCount,
-      duplicate_mcs_variants_suffixed: suffixed,
-      technology_distribution: outItems.reduce((acc, i) => {
-        acc[i.technology_type] = (acc[i.technology_type] ?? 0) + 1; return acc;
-      }, {}),
-    },
-    items: outItems,
-  };
-  writeFileSync(resolve(ROOT, relPath), JSON.stringify(payload));
-  console.log(`Wrote ${outItems.length} items → ${relPath}`);
-}
-
-writeOutput('public/data/products-gb.json', residential, 'residential', ['residential_core', null]);
-writeOutput('public/data/products-commercial-gb.json', commercial, 'commercial', ['light_commercial', 'commercial_project']);
-
-// ── Summary ───────────────────────────────────────────────────────────────────
-
-const statusDist = items.reduce((a, i) => { a[i.pel_certification_status] = (a[i.pel_certification_status] ?? 0) + 1; return a; }, {});
-const techDist = items.reduce((a, i) => { a[i.technology_type] = (a[i.technology_type] ?? 0) + 1; return a; }, {});
-const segDist = items.reduce((a, i) => { a[i.market_segment ?? 'null'] = (a[i.market_segment ?? 'null'] ?? 0) + 1; return a; }, {});
-const withShort = items.filter(i => i.manufacturer_short !== null).length;
-const withInstall = items.filter(i => i.installation_type !== null).length;
-
-console.log('');
-console.log('── Build summary (GB, split catalogue v2.1) ───────────────');
-console.log(`PEL records:          ${records.length}  (biomass excluded: ${biomassCount}) → ${pelItems.length} on PEL`);
-console.log(`European reference:   ${derivedItems.length}  (DE-derived, not on PEL; ${matchedBafaIds.size} matched bafa_ids excluded)`);
-console.log(`Exported heat pumps:  ${items.length}  (residential file: ${residential.length}, commercial file: ${commercial.length})`);
-console.log(`  technology:         ${JSON.stringify(techDist)}`);
-console.log(`  certification:      ${JSON.stringify(statusDist)}`);
-console.log(`  segments:           ${JSON.stringify(segDist)}`);
-console.log(`  BAFA_REFERENCE enriched: ${enrichedCount}/${items.length}`);
-console.log(`  EPREL linked (reg no.):  ${eprelLinkedCount}/${items.length}  (perf source EPREL: ${eprelPerfCount})`);
-console.log(`  manufacturer_short: ${withShort}/${items.length}`);
-console.log(`  installation_type (name keyword): ${withInstall}`);
-console.log(`  duplicate-variant source_ids suffixed: ${suffixed.length}`);
-console.log(`Field count:          ${fieldCount} ✓`);
-console.log(`No price keys:        ✓`);
-console.log(`Provenance complete:  ✓`);
-console.log(`source_id unique:     ✓`);
+console.log('\n── Build summary (GB v3.0 — canonical baseline) ───────────');
+console.log(`Canonical products:    ${canonicalCount}`);
+console.log(`Data Sheet eligible:   ${items.length}  (rejected ${rejected.length})`);
+if (rejected.length) console.log(`  rejection reasons:   ${JSON.stringify(byReason)}`);
+console.log(`Files:                 ${residential.length} + ${commercial.length}`);
+console.log(`23 kW segments:        residential ${seg.residential}, commercial ${seg.commercial}, unclassified ${seg.unclassified}`);
+console.log(`PEL overlay:           confirmed ${confirmed} | review required ${reviewReq} | verification required ${verifyReq}`);
+console.log(`PEL match rate:        ${(100 * confirmed / items.length).toFixed(1)}%`);
+console.log(`Field count:           ${keys.length}`);
+console.log('No German status/funding fields ✓   No price keys ✓   source_id unique ✓');
 console.log('──────────────────────────────────────────────────────────');

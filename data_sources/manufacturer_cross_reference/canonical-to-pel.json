@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "note": "Mappings confirmed by the manufacturer (see README.md). Applied as CONFIRMED listings; they outrank automated matching and survive a matcher regression. Empty until a manufacturer supplies one.",
+  "mappings": []
+}

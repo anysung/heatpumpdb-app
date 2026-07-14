@@ -93,13 +93,11 @@ const PIPELINES = {
     steps: [
       { name: 'fetch Ofgem PEL xlsx', cmd: 'node scripts/ofgem/fetch-pel-xlsx.mjs --download', when: 'fetch' },
       { name: 'parse Ofgem PEL', cmd: 'node scripts/ofgem/parse-pel-xlsx.mjs', when: 'fetch' },
-      { name: 'match PEL ↔ BAFA (specs)', cmd: 'node scripts/ofgem/match-pel-to-bafa.mjs', optional: true },
-      { name: 'match PEL ↔ EPREL (label data)', cmd: 'node scripts/ofgem/match-pel-to-eprel.mjs', optional: true },
-      // Recovers a rated capacity for PEL records the two matchers above miss
-      // (component pairs in the other order, package prefixes, market suffixes,
-      // one outdoor unit in several packages). Must run AFTER both — it only
-      // looks at what they left unresolved, and never overrides them.
-      { name: 'recover PEL rated capacity', cmd: 'node scripts/ofgem/match-pel-recovery.mjs', optional: true },
+      // Direction: CANONICAL → PEL. The PEL is a listing overlay, never a product
+      // source (docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md).
+      // The old PEL-first matchers (match-pel-to-bafa / -to-eprel / -recovery) are
+      // no longer part of the production path; they survive as internal audit tools.
+      { name: 'match canonical → Ofgem PEL (listing overlay)', cmd: 'node scripts/ofgem/match-canonical-to-pel.mjs', optional: true },
       { name: 'build GB app datasets', cmd: 'node scripts/ofgem/build-app-products-gb.mjs' },
     ],
     requires: ['data_sources/ofgem_pel/parsed', 'scripts/ofgem/manufacturer-short-names-gb.json'],
@@ -207,6 +205,23 @@ for (const code of order) {
   }
 }
 if (verifyFail) { console.error('ABORT: dataset verification failed — nothing will be deployed.'); process.exit(1); }
+
+/* ── Safety gate: the wall between GENERATION and PUBLICATION ─────────────── */
+// Everything above only wrote candidate files into public/data. Nothing has
+// touched production. The gate re-checks the candidate against the last approved
+// manifest (counts, duplicates, segment integrity, local-match collapse,
+// source-country leakage) and BLOCKS on anything alarming.
+console.log('\n════ Dataset gate ════');
+try {
+  execSync('node scripts/dataset-gate.mjs', { cwd: ROOT, stdio: 'inherit' });
+} catch {
+  console.error('\nABORT: the dataset gate blocked this candidate. Production is untouched.');
+  console.error('Nothing was uploaded and nothing was deployed.');
+  console.error('Fix the cause, or record an override: node scripts/dataset-gate.mjs --override --reason="…"');
+  process.exit(1);
+}
+console.log('\nCandidate is publishable. It has NOT been published:');
+console.log('  publish:  node scripts/upload-datasets.mjs  &&  node scripts/dataset-gate.mjs --approve');
 
 /* ── Shrink guard: new counts must be >= currently-live counts ────────────── */
 

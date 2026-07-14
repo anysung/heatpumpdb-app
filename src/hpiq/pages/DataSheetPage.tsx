@@ -4,7 +4,7 @@ import { HpApp, DsSectionKey } from '../appState';
 import { longDate } from '../model';
 import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
-import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
 import { IS_GB, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 
@@ -218,9 +218,18 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                     {LOCAL_LISTING_SOURCE && (
                     <FieldCell
                       label={t.ds.f.bafaStatus}
-                      value={localListingStatus(dsp.raw) === 'listed' ? t.ds.f.listed : t.ds.f.notListed}
+                      value={(() => {
+                        const st = localListingStatus(dsp.raw);
+                        return st === 'listed' ? t.ds.f.listed
+                          : st === 'not_listed' ? t.ds.f.notListed
+                            : t.ds.f.verifyRequired;
+                      })()}
                       note={n('bafaStatus')}
                     />
+                    )}
+                    {/* The registry's own id — only ever on a confirmed listing. */}
+                    {localListingId(dsp.raw) && (
+                      <FieldCell label={t.ds.f.localListingId} value={localListingId(dsp.raw)!} note={n('localListingId')} />
                     )}
                     <FieldCell label={t.ds.f.begRel} value={t.ds.f.begVerify} note={n('begRel')} />
                   </SectionGrid>

@@ -70,3 +70,6 @@ data_sources/bafa/matching/20*/
 data_sources/bafa/recovery/
 *.tmp.mjs
 .env.*.local
+
+# dataset gate: the candidate manifest is regenerated on every run
+data_manifests/candidate.json

@@ -27,6 +27,7 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
+import { applyEligibility } from '../lib/data-sheet-eligibility.mjs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -415,11 +416,24 @@ if (missingProvenance.length > 0) {
   process.exit(1);
 }
 
+// ── Data Sheet eligibility ───────────────────────────────────────────────────
+// These files are the CANONICAL TECHNICAL BASELINE: the German public catalogue
+// AND the source every other country publishes from. So the eligibility rule is
+// applied once, here, and every market inherits the same publishable products.
+// A product whose sheet would be a capacity and nothing else is not published
+// anywhere (docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md).
+const eligibility = applyEligibility(allItems);
+if (eligibility.rejected.length) {
+  console.log(`Data Sheet eligibility: ${eligibility.eligible.length} publishable, `
+    + `${eligibility.rejected.length} withheld — ${JSON.stringify(eligibility.byReason)}`);
+}
+const publishable = eligibility.eligible;
+
 // ── Split by capacity-derived segment ────────────────────────────────────────
 
-const residential = allItems.filter(i => i.market_segment === 'residential_core');
-const commercial  = allItems.filter(i => i.market_segment === 'light_commercial' || i.market_segment === 'commercial_project');
-const pending     = allItems.filter(i => i.market_segment === null);
+const residential = publishable.filter(i => i.market_segment === 'residential_core');
+const commercial  = publishable.filter(i => i.market_segment === 'light_commercial' || i.market_segment === 'commercial_project');
+const pending     = publishable.filter(i => i.market_segment === null);
 
 // ── Write output ──────────────────────────────────────────────────────────────
 

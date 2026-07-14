@@ -65,18 +65,12 @@ export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heat
 export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
 
 /**
- * Catalogue composition + which search controls this market may offer
- * (config: countryProfiles.commercialCatalog / searchCapabilities).
- *
- * EUROPE scope = the catalogue is supplemented with Europe-market product
- * information. That provenance stays internal: it is never named in the UI.
- *
- * LOCAL_LISTING_FILTER is false where a national-listing filter would not
- * meaningfully divide the catalogue (UK: PEL splits it far too unevenly; France:
- * there is no national list at all), so the control is not offered there.
+ * Every market publishes the SAME canonical technical products; a market differs
+ * only in its local-listing overlay. Both of those live in hpiq/listing.ts
+ * (LOCAL_LISTING_SOURCE / LOCAL_LISTING_FILTER) — import them from there, not here,
+ * so there is exactly one place that decides what a market may say about listing.
  */
-export const MARKET_SCOPE = ACTIVE_COUNTRY.commercialCatalog.marketScope;
-export const LOCAL_LISTING_FILTER = ACTIVE_COUNTRY.searchCapabilities.localListingFilter;
+export const TECHNICAL_BASELINE = ACTIVE_COUNTRY.technicalBaseline;
 
 /**
  * Funding-guide explainer video per market — YouTube video ID (the 11-char

@@ -33,7 +33,8 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const EXPECTED_FIELD_COUNT = 83; // DE 78 + performance_source + bafa_reference_*(3) + nf_pac_reference
+const EXPECTED_FIELD_COUNT = 79; // DE 78 − 4 German status/funding fields (they do not travel)
+                                 //        + performance_source + bafa_reference_*(3) + nf_pac_reference
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
 function loadJSON(relPath, hint) {
@@ -71,9 +72,16 @@ const TYPE_FR = {
   'Luft / Luft': 'Air / Air',
 };
 
+/** German registry status / funding fields — German facts. They do not travel. */
+const GERMAN_ONLY_FIELDS = [
+  'bafa_listing_status', 'bafa_foerderung_von', 'bafa_foerderung_bis', 'bafa_snapshot_fetched_at',
+];
+
 function toFrItem(p) {
+  const base = { ...p };
+  for (const f of GERMAN_ONLY_FIELDS) delete base[f];
   return {
-    ...p,
+    ...base,
     type: TYPE_FR[p.type] ?? p.type,
     country: 'FR',
     // Specs are the same hardware's German BAFA registry values — mark them as

@@ -1,0 +1,193 @@
+/**
+ * Architecture tests — canonical technical baseline + local listing overlay.
+ *
+ * Run: node tests/architecture.unit.mjs
+ *
+ * Guards docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md:
+ *   1. public products come from the canonical baseline, never from a local registry
+ *   2. a local match failure changes nothing — not the product, not the segment
+ *   3. "no match" is never rendered as "not listed"
+ *   4. Data Sheet eligibility is one shared, measurable rule
+ *   5. the publication gate blocks a bad candidate BEFORE anything is uploaded
+ */
+import { existsSync, readFileSync, writeFileSync, mkdtempSync, rmSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import {
+  dataSheetEligibility, isDataSheetEligible, applyEligibility,
+  ratedCapacityKw, segmentOf, coreFieldCount,
+  REQUIRED_FIELDS, CORE_PERFORMANCE_FIELDS, MIN_CORE_FIELDS, SEGMENT_THRESHOLD_KW,
+} from '../scripts/lib/data-sheet-eligibility.mjs';
+
+let failed = 0;
+const is = (name, actual, expected) => {
+  const ok = JSON.stringify(actual) === JSON.stringify(expected);
+  if (!ok) failed++;
+  console.log(`${ok ? '  ✓' : '  ✗'} ${name}${ok ? '' : `  — expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`}`);
+};
+
+/** A canonical product that passes everything — the baseline for the variations below. */
+const good = (over = {}) => ({
+  manufacturer: 'Acme GmbH', model: 'HP-12', bafa_id: 123456, type: 'Luft / Wasser',
+  efficiency_35C_percent: 185, power_35C_kw: 12,
+  refrigerant: 'R290', scop: 4.8, cop_A7W35: 5.1, cop_A2W35: 4.2, noise_outdoor_dB: 54,
+  ...over,
+});
+
+console.log('\nData Sheet eligibility — the required fields');
+is('a complete product is publishable', isDataSheetEligible(good()), true);
+for (const f of REQUIRED_FIELDS) {
+  is(`missing ${f} → not publishable`, isDataSheetEligible(good({ [f]: null })), false);
+}
+is('a record with only manufacturer, model and an id is NOT a data sheet',
+  dataSheetEligibility({ manufacturer: 'Acme', model: 'X', bafa_id: 1 }).eligible, false);
+is('no rated capacity → not publishable',
+  isDataSheetEligible(good({ power_35C_kw: null, power_design_35C_kw: null, power_55C_kw: null, power_design_55C_kw: null })), false);
+is('the reason is named, not just a boolean',
+  dataSheetEligibility(good({ power_35C_kw: null })).reasons.includes('no_rated_capacity'), true);
+
+console.log('\nData Sheet eligibility — the measured minimum');
+is(`${MIN_CORE_FIELDS} core fields is enough`,
+  isDataSheetEligible(good({ scop: null, cop_A7W35: null, cop_A2W35: null })), true);   // refrigerant + sound
+is('one lone core field is not',
+  isDataSheetEligible(good({ scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null })), false);
+is('and it says so', dataSheetEligibility(good({ scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null })).reasons,
+  ['insufficient_core_fields_1_of_2']);
+is('core fields are counted, not assumed', coreFieldCount(good()), CORE_PERFORMANCE_FIELDS.length);
+
+console.log('\nSegmentation is shared and unchanged');
+is(`threshold is ${SEGMENT_THRESHOLD_KW} kW`, SEGMENT_THRESHOLD_KW, 23);
+is('23.00 kW → residential', segmentOf({ power_35C_kw: 23 }), 'residential');
+is('23.01 kW → commercial', segmentOf({ power_35C_kw: 23.01 }), 'commercial');
+is('no capacity → unclassified (and so never publishable)', segmentOf({}), 'unclassified');
+is('an unclassified product can never be published', isDataSheetEligible({ ...good(), power_35C_kw: null, power_design_35C_kw: null, power_55C_kw: null, power_design_55C_kw: null }), false);
+
+console.log('\napplyEligibility reports causes, not just counts');
+{
+  const { eligible, rejected, byReason } = applyEligibility([good(), good({ noise_outdoor_dB: null, scop: null, cop_A7W35: null, cop_A2W35: null })]);
+  is('one in, one out', [eligible.length, rejected.length], [1, 1]);
+  is('the cause is tallied', byReason.insufficient_core_fields_1_of_2, 1);
+}
+
+// ── The built datasets ───────────────────────────────────────────────────────
+const GB = 'public/data/products-gb.json';
+if (!existsSync(GB)) {
+  console.log('\n(datasets not built — dataset architecture assertions skipped)');
+} else {
+  const load = f => JSON.parse(readFileSync(f, 'utf8'));
+  const de = [...load('public/data/products.json').items, ...load('public/data/products-commercial.json').items];
+  const gb = [...load(GB).items, ...load('public/data/products-commercial-gb.json').items];
+  const fr = [...load('public/data/products-fr.json').items, ...load('public/data/products-commercial-fr.json').items];
+
+  console.log('\nUK products come from the canonical baseline — not from the PEL');
+  const canonicalIds = new Set(de.map(p => String(p.bafa_id)));
+  is('every UK product is a canonical product', gb.every(p => canonicalIds.has(String(p.bafa_id))), true);
+  is('no UK product was created by the PEL', gb.every(p => p.primary_source !== 'OFGEM_PEL'), true);
+  is('the UK catalogue is the canonical catalogue', gb.length, de.length);
+  is('France too', fr.length, de.length);
+
+  console.log('\nA failed local match changes NOTHING');
+  const unmatched = gb.filter(p => p.pel_match_status !== 'confirmed');
+  is('unmatched products are still published', unmatched.length > 0, true);
+  is('…and still have a rated capacity', unmatched.every(p => ratedCapacityKw(p) != null), true);
+  is('…and still have a segment', unmatched.every(p => segmentOf(p) !== 'unclassified'), true);
+  is('…and still pass eligibility', unmatched.every(isDataSheetEligible), true);
+  // The overlay may not touch technical data: compare with the canonical record.
+  const byId = new Map(de.map(p => [String(p.bafa_id), p]));
+  const tech = ['power_35C_kw', 'scop', 'cop_A7W35', 'refrigerant', 'efficiency_35C_percent', 'noise_outdoor_dB'];
+  is('the overlay never overwrote a technical field',
+    gb.every(p => tech.every(f => JSON.stringify(p[f] ?? null) === JSON.stringify(byId.get(String(p.bafa_id))?.[f] ?? null))), true);
+  is('the overlay never changed a segment',
+    gb.every(p => segmentOf(p) === segmentOf(byId.get(String(p.bafa_id)))), true);
+
+  console.log('\nListing semantics');
+  is('every product has a listing state',
+    gb.every(p => ['confirmed', 'review_required', 'verification_required'].includes(p.pel_match_status)), true);
+  is('a confirmed listing always carries the registry id',
+    gb.every(p => p.pel_match_status !== 'confirmed' || !!p.mcs_number), true);
+  is('an unconfirmed product carries NO registry id (nothing is implied)',
+    gb.every(p => p.pel_match_status === 'confirmed' || p.mcs_number == null), true);
+  is('no UK product is marked "not listed" — absence of a match is not absence',
+    gb.every(p => p.pel_match_status !== 'not_listed' && p.bafa_listing_status === undefined), true);
+
+  console.log('\nNo German registration status leaves Germany');
+  for (const [cc, items] of [['GB', gb], ['FR', fr]]) {
+    is(`[${cc}] no bafa_listing_status field`, items.every(p => !('bafa_listing_status' in p)), true);
+    is(`[${cc}] no German funding fields`, items.every(p => !('bafa_foerderung_von' in p)), true);
+  }
+  is('[DE] Germany keeps its own listing status', de.every(p => 'bafa_listing_status' in p), true);
+
+  console.log('\nEvery published product is publishable, everywhere');
+  for (const [cc, items] of [['DE', de], ['GB', gb], ['FR', fr]]) {
+    is(`[${cc}] all products pass Data Sheet eligibility`, items.every(isDataSheetEligible), true);
+    is(`[${cc}] no unclassified public product`, items.every(p => segmentOf(p) !== 'unclassified'), true);
+    is(`[${cc}] residential ≤ 23 kW, commercial > 23 kW`,
+      items.every(p => (segmentOf(p) === 'residential') === (ratedCapacityKw(p) <= 23)), true);
+  }
+}
+
+// ── The publication gate ─────────────────────────────────────────────────────
+// The gate is what stands between a broken candidate and production, so it is
+// tested by actually running it against corrupted datasets in a throwaway copy.
+console.log('\nPublication gate — a bad candidate must never reach production');
+if (!existsSync(GB)) {
+  console.log('  (datasets not built — gate simulation skipped)');
+} else {
+  const root = process.cwd();
+  const gateBlocks = (mutate, label) => {
+    const dir = mkdtempSync(join(tmpdir(), 'hpdb-gate-'));
+    try {
+      mkdirSync(join(dir, 'public/data'), { recursive: true });
+      mkdirSync(join(dir, 'scripts/lib'), { recursive: true });
+      mkdirSync(join(dir, 'data_manifests'), { recursive: true });
+      for (const f of ['products.json', 'products-commercial.json', 'products-gb.json',
+        'products-commercial-gb.json', 'products-fr.json', 'products-commercial-fr.json']) {
+        const j = JSON.parse(readFileSync(resolve(root, 'public/data', f), 'utf8'));
+        writeFileSync(join(dir, 'public/data', f), JSON.stringify(mutate(j, f)));
+      }
+      writeFileSync(join(dir, 'scripts/dataset-gate.mjs'), readFileSync(resolve(root, 'scripts/dataset-gate.mjs')));
+      writeFileSync(join(dir, 'scripts/lib/data-sheet-eligibility.mjs'), readFileSync(resolve(root, 'scripts/lib/data-sheet-eligibility.mjs')));
+      if (existsSync(resolve(root, 'data_manifests/production.json'))) {
+        writeFileSync(join(dir, 'data_manifests/production.json'), readFileSync(resolve(root, 'data_manifests/production.json')));
+      }
+      execFileSync(process.execPath, [join(dir, 'scripts/dataset-gate.mjs')], { cwd: dir, stdio: 'pipe' });
+      return false;                       // exited 0 → it let the candidate through
+    } catch {
+      return true;                        // non-zero → blocked
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  };
+
+  is('an unchanged candidate passes', gateBlocks(j => j), false);
+  is('a source that failed to parse (zero records) is BLOCKED',
+    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: [] } : j)), true);
+  is('a truncated source (large product-count drop) is BLOCKED',
+    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: j.items.slice(0, Math.floor(j.items.length / 2)) } : j)), true);
+  is('duplicate canonical ids are BLOCKED',
+    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: [...j.items, j.items[0]] } : j)), true);
+  is('a product that lost its technical fields (eligibility regression) is BLOCKED',
+    gateBlocks((j, f) => (f !== 'products-gb.json' ? j : {
+      ...j,
+      items: j.items.map((p, i) => (i < 200 ? { ...p, scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null, refrigerant: null } : p)),
+    })), true);
+  is('a product with no capacity (unclassifiable) is BLOCKED',
+    gateBlocks((j, f) => (f !== 'products-gb.json' ? j : {
+      ...j,
+      items: j.items.map((p, i) => (i === 0 ? { ...p, power_35C_kw: null, power_design_35C_kw: null, power_55C_kw: null, power_design_55C_kw: null } : p)),
+    })), true);
+  is('a listing claimed with no registry id is BLOCKED',
+    gateBlocks((j, f) => (f !== 'products-gb.json' ? j : {
+      ...j,
+      items: j.items.map((p, i) => (i === 0 ? { ...p, pel_match_status: 'confirmed', mcs_number: null } : p)),
+    })), true);
+  is('German registration status leaking into the UK dataset is BLOCKED',
+    gateBlocks((j, f) => (f !== 'products-gb.json' ? j : {
+      ...j,
+      items: j.items.map(p => ({ ...p, bafa_listing_status: 'listed_in_snapshot' })),
+    })), true);
+}
+
+console.log(failed ? `\n✗ ${failed} assertion(s) failed\n` : '\n✓ all architecture assertions passed\n');
+process.exit(failed ? 1 : 0);

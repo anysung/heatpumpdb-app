@@ -10,7 +10,8 @@ import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
-import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB, LOCAL_LISTING_FILTER } from './market';
+import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
+import { LOCAL_LISTING_FILTER } from './listing';
 import { splitBySegment } from '../config/segmentation';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
@@ -67,7 +68,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   const [bafaOnly, setBafaOnly] = useState(true);
   /**
    * The local-listing filter is only ever applied where this market actually
-   * offers it (config: searchCapabilities.localListingFilter). Neutralising it in
+   * offers it (config: localListingOverlay.filterEnabled). Neutralising it in
    * state — not just hiding the control — means a stale toggle can never silently
    * empty the catalogue, which is exactly how UK Commercial came to show nothing.
    */

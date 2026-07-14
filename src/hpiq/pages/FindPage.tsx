@@ -2,7 +2,8 @@
 import React, { useRef } from 'react';
 import { HpApp } from '../appState';
 import { tr } from '../i18n';
-import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
+import { LOCAL_LISTING_SOURCE } from '../listing';
+import { ListingChip } from '../ListingChip';
 import { FD, C, SearchIcon, Check } from '../ui';
 
 export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
@@ -94,11 +95,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     </span>
                   </div>
                   <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                    {LOCAL_LISTING_SOURCE && (localListingStatus(p.raw) === 'listed' ? (
-                      <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', fontSize: 11.5 }}>{t.find.bafaListed}</span>
-                    ) : (
-                      <span style={{ border: '1px solid #e8c9c9', borderRadius: 999, padding: '3px 11px', fontSize: 11.5, background: '#fdf3f3', color: '#a33' }}>{t.products.chipDelisted}</span>
-                    ))}
+                    <ListingChip raw={p.raw} t={t} style={{ padding: '3px 11px', fontSize: 11.5 }} />
                     {p.eprel
                       ? <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', fontSize: 11.5 }}>{t.find.euLabel(p.label)}</span>
                       : <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '3px 11px', fontSize: 11.5, color: '#7a7a7a' }}>{t.find.eprelNotMatched}</span>}

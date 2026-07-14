@@ -4,7 +4,8 @@ import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
-import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
+import { ListingChip } from '../ListingChip';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, ChevronDown, KwRangeSlider, Watermark, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
@@ -330,11 +331,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span>{r.noise === '—' ? '—' : `${r.noise} dB`}</span>
                     <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                       {/* No national list in this market → say nothing about listing. */}
-                      {LOCAL_LISTING_SOURCE && (localListingStatus(r.raw) === 'listed' ? (
-                        <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{t.products.chipBafa}</span>
-                      ) : (
-                        <span style={{ border: '1px solid #e8c9c9', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fdf3f3', color: '#a33' }}>{t.products.chipDelisted}</span>
-                      ))}
+                      <ListingChip raw={r.raw} t={t} />
                       {r.eprel && <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{r.label}</span>}
                       <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{t.products.chipSheet}</span>
                     </span>
@@ -413,13 +410,25 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 9 }}>
                   <span style={{ ...sectionLabel, fontSize: 10.5 }}>{t.products.inspFunding}</span>
-                  {LOCAL_LISTING_SOURCE && (
-                  <span style={{ fontSize: 13.5, lineHeight: 1.5 }} data-testid="local-listing-status">
-                    {localListingStatus(sel.raw) === 'listed'
-                      ? t.products.inspListed
-                      : t.products.inspDelisted}
-                  </span>
-                  )}
+                  {LOCAL_LISTING_SOURCE && (() => {
+                    const status = localListingStatus(sel.raw);
+                    const id = localListingId(sel.raw);
+                    return (
+                      <>
+                        <span style={{ fontSize: 13.5, lineHeight: 1.5 }} data-testid="local-listing-status">
+                          {status === 'listed' ? t.products.inspListed
+                            : status === 'not_listed' ? t.products.inspDelisted
+                              : t.products.inspVerifyRequired}
+                        </span>
+                        {/* The registry's own id — only ever shown on a confirmed listing. */}
+                        {id && (
+                          <span style={{ fontSize: 12.5, color: '#1d1d1f' }} data-testid="local-listing-id">
+                            {t.products.localListingIdLabel}: {id}
+                          </span>
+                        )}
+                      </>
+                    );
+                  })()}
                   <span style={{ fontSize: 12, color: '#7a7a7a' }}>
                     {t.products.inspVerify}{' '}
                     <span onClick={() => window.open(REGISTRY_VERIFY_URL, '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.openBafa}</span>

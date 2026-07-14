@@ -1,4 +1,21 @@
 /**
+ * ⚠ INTERNAL / AUDIT ONLY — NOT part of the production data pipeline.
+ *
+ * This script belongs to the retired PEL-FIRST architecture, in which Ofgem PEL
+ * rows were published as technical products and their missing specifications were
+ * reconstructed from EPREL and component inference. That is exactly what produced
+ * 2,134 UK "products" with no capacity, no segment and a blank data sheet.
+ *
+ * Since v3.0 the UK catalogue is built from the canonical technical baseline and
+ * the PEL is only a listing overlay (match-canonical-to-pel.mjs →
+ * build-app-products-gb.mjs). See
+ * docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md.
+ *
+ * Kept because the matching evidence and audit trails are still useful for
+ * manufacturer follow-up and for investigating PEL data quality. DO NOT wire this
+ * back into a builder or into update-all.mjs.
+ */
+/**
  * match-pel-to-bafa.mjs  v1.0  (Phase B — BAFA_REFERENCE enrichment matching)
  *
  * Matches Ofgem PEL heat pump records against the BAFA master seed to fill
@@ -37,7 +54,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, '../..');
+const ROOT = resolve(__dirname, '../../..');
 
 function loadJSON(relPath) {
   const abs = resolve(ROOT, relPath);

@@ -21,7 +21,7 @@ import { jsPDF } from 'jspdf';
 import { HpVM } from '../model';
 import { HpStrings } from '../i18n';
 import { DsSectionKey } from '../appState';
-import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
 import { FLAG_ASPECT, LOGO_ASPECT } from '../../components/brandSvg';
 import { getBrandArtwork } from './brandArtwork';
 
@@ -299,11 +299,16 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     // foreign registry's listing is never printed as a local one.
     const rows: [string, string, number][] = [];
     if (LOCAL_LISTING_SOURCE) {
+      const st = localListingStatus(v.raw);
       rows.push([
         t.ds.f.bafaStatus,
-        localListingStatus(v.raw) === 'listed' ? t.ds.f.listed : t.ds.f.notListed,
+        st === 'listed' ? t.ds.f.listed
+          : st === 'not_listed' ? t.ds.f.notListed
+            : t.ds.f.verifyRequired,
         n('bafaStatus'),
       ]);
+      const id = localListingId(v.raw);
+      if (id) rows.push([t.ds.f.localListingId, id, n('localListingId')]);
     }
     rows.push([t.ds.f.begRel, t.ds.f.begVerify, n('begRel')]);
     fieldGrid(rows);

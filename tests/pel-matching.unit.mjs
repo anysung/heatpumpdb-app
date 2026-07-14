@@ -1,5 +1,10 @@
 /**
- * Unit tests for the PEL rated-capacity recovery rules (scripts/ofgem/pel-match-lib.mjs).
+ * Unit tests for the product-identity matching rules (scripts/ofgem/pel-match-lib.mjs).
+ *
+ * These rules now serve match-canonical-to-pel.mjs: they decide whether a canonical
+ * product can be CONFIRMED as listed on the Ofgem PEL. They no longer decide what is
+ * published — the canonical baseline does that. The refusals below matter more than
+ * ever: a wrong confirmation would claim a UK listing that does not exist.
  *
  * Run: node tests/pel-matching.unit.mjs
  *
@@ -11,7 +16,6 @@
  * silently moves a product into the wrong segment, so "no answer" must beat "a
  * plausible answer".
  */
-import { existsSync, readFileSync } from 'node:fs';
 import {
   compact, identityKeys, isStrongCode, codeTokens,
   numericConflict, conflictsWith, refrigerantIn, phaseIn,
@@ -182,53 +186,10 @@ console.log('\nFuzzy similarity never accepts');
   is('similarity alone is not identity', similarity('RAS-2WHVRP', 'RASM-3VTW2E') < 0.9, true);
 }
 
-// ── Dataset integrity ───────────────────────────────────────────────────────
-// Runs only when the GB datasets have been built (they are gitignored). These
-// assert the properties the matching pass must never break, on the real data.
-const GB = 'public/data/products-gb.json';
-if (existsSync(GB)) {
-  console.log('\nBuilt GB dataset');
-  const items = JSON.parse(readFileSync(GB, 'utf8')).items;
-  const eu = JSON.parse(readFileSync('public/data/products-commercial-gb.json', 'utf8')).items;
-  const pool = [...items, ...eu];
-  const capOf = p => ratedCapacity(p);
-
-  is('every PEL record is still exported', items.length, 4422);
-  is('source_id is unique across the pool', new Set(pool.map(p => p.source_id)).size, pool.length);
-
-  // Every record lands in exactly one bucket, and an unresolved one lands in none.
-  const res = pool.filter(p => capOf(p) && capOf(p).kw <= 23);
-  const com = pool.filter(p => capOf(p) && capOf(p).kw > 23);
-  const unc = pool.filter(p => !capOf(p));
-  is('no record is in two segments', res.filter(p => com.includes(p)).length, 0);
-  is('every record is in exactly one bucket', res.length + com.length + unc.length, pool.length);
-  is('no unresolved record was quietly classified', unc.every(p => !capOf(p)), true);
-
-  // A recovered match must have actually populated a capacity, and an unresolved
-  // record must have none — the whole point of the pass.
-  const recovered = items.filter(p =>
-    /:(A|B)$/.test(p.bafa_reference_match_type ?? '') || /:(A|B)$/.test(p.eprel_match_type ?? ''));
-  is('recovered records all carry a rated capacity', recovered.every(p => capOf(p) != null), true);
-  is('recovered records carry exactly one performance source',
-    recovered.every(p => p.performance_source === 'BAFA_REFERENCE' || p.performance_source === 'EPREL'), true);
-  is('records with no performance source have no capacity',
-    items.filter(p => p.performance_source == null).every(p => capOf(p) == null), true);
-
-  // Matching is technical only: it may never touch PEL listing or eligibility.
-  is('every PEL record is still listed on the PEL',
-    items.every(p => p.bafa_listing_status === 'listed_in_snapshot'), true);
-  is('recovery never made a product PEL-listed by inference',
-    recovered.every(p => p.primary_source === 'OFGEM_PEL'), true);
-  is('no European reference record was turned into a PEL listing',
-    eu.every(p => p.bafa_listing_status === 'not_in_latest_snapshot'), true);
-
-  // The same hardware must not be counted twice (PEL row + European record).
-  const pelBafaIds = new Set(items.map(p => p.bafa_reference_id).filter(Boolean));
-  is('no European record duplicates hardware already matched to a PEL row',
-    eu.filter(p => pelBafaIds.has(String(p.bafa_id))).length, 0);
-} else {
-  console.log('\n(GB dataset not built — dataset assertions skipped)');
-}
+// Dataset-level invariants moved to tests/architecture.unit.mjs when the UK moved
+// to the canonical-baseline + listing-overlay architecture: these rules no longer
+// decide what is PUBLISHED, only whether a canonical product can be CONFIRMED as
+// locally listed (scripts/ofgem/match-canonical-to-pel.mjs).
 
 console.log(failed ? `\n✗ ${failed} assertion(s) failed\n` : '\n✓ all PEL matching assertions passed\n');
 process.exit(failed ? 1 : 0);

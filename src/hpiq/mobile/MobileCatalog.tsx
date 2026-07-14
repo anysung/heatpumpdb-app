@@ -13,7 +13,8 @@ import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
-import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
+import { ListingChip } from '../ListingChip';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, SearchIcon, sectionLabel } from '../ui';
 import type { Viewport } from '../useViewport';
@@ -28,11 +29,7 @@ const chipStyle: React.CSSProperties = {
 
 const ListedChips: React.FC<{ v: HpVM; t: ReturnType<typeof tr> }> = ({ v, t }) => (
   <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-    {LOCAL_LISTING_SOURCE && (localListingStatus(v.raw) === 'listed' ? (
-      <span style={chipStyle}>{t.products.chipBafa}</span>
-    ) : (
-      <span style={{ ...chipStyle, border: '1px solid #e8c9c9', background: '#fdf3f3', color: '#a33' }}>{t.products.chipDelisted}</span>
-    ))}
+    <ListingChip raw={v.raw} t={t} />
     {v.eprel && <span style={chipStyle}>{v.label}</span>}
   </span>
 );
@@ -78,7 +75,8 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
     [t.products.inspSpecs.noise, v.noise === '—' ? '—' : `${v.noise} dB(A)`],
     [t.products.inspSpecs.type, v.installType],
   ];
-  const listed = localListingStatus(v.raw) === 'listed';
+  const listingStatus = localListingStatus(v.raw);
+  const listingId = localListingId(v.raw);
 
   const body = (
     <>
@@ -117,7 +115,14 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
 
       <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 14, padding: '13px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         <span style={{ ...sectionLabel, fontSize: 10 }}>{t.products.inspFunding}</span>
-        <span style={{ fontSize: 12.5, lineHeight: 1.5 }}>{listed ? t.products.inspListed : t.products.inspDelisted}</span>
+        <span style={{ fontSize: 12.5, lineHeight: 1.5 }} data-testid="local-listing-status">
+          {listingStatus === 'listed' ? t.products.inspListed
+            : listingStatus === 'not_listed' ? t.products.inspDelisted
+              : t.products.inspVerifyRequired}
+        </span>
+        {listingId && (
+          <span style={{ fontSize: 12.5 }} data-testid="local-listing-id">{t.products.localListingIdLabel}: {listingId}</span>
+        )}
         <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>
           {t.products.inspVerify}{' '}
           <span onClick={() => window.open(REGISTRY_VERIFY_URL, '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.openBafa}</span>
