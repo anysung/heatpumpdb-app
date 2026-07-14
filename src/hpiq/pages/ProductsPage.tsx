@@ -24,9 +24,6 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
   const { store } = app;
   const [mfrExpanded, setMfrExpanded] = useState(false);
-  const [items, setItems] = useState<HpVM[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [filteredTotal, setFilteredTotal] = useState(0);
   const [sort, setSort] = useState<ProductSort>('cop2');
   const [sortOpen, setSortOpen] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -51,22 +48,37 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   }), [app.refFilter, app.mfrFilter, app.bafaOnly, capNarrowed, capLo, capHi, sort]);
 
 
-  // First page (and reset) whenever data or filters change — cursor pagination.
-  // If a row was preselected (e.g. Find → "View details"), stream pages until
-  // it is included, then scroll it into view.
-  useEffect(() => {
-    if (!store) return;
-    let page = store.getPage(filters, null, PAGE_SIZE);
-    let acc = page.items;
+  /**
+   * The visible list is DERIVED, never stored.
+   *
+   * It used to live in React state, refilled by a useEffect that ran AFTER the
+   * render: changing a filter or the sort order painted one frame with the old
+   * result before the effect caught up. Deriving it means a filter change and
+   * its result land in the same render — no lag, no second interaction, and no
+   * stale "0 results" flash.
+   */
+  const filtered = useMemo(() => (store ? store.list(filters) : []), [store, filters]);
+  const filteredTotal = filtered.length;
+
+  // How many rows are revealed (infinite scroll). Reset during render whenever
+  // the dataset or the filters change — an effect would lag by a frame again.
+  const resetKey = `${store?.total ?? 0}|${JSON.stringify(filters)}`;
+  const [reveal, setReveal] = useState({ key: resetKey, count: PAGE_SIZE });
+  const revealed = reveal.key === resetKey ? reveal.count : PAGE_SIZE;
+
+  // A preselected row (Find → "View details") must be inside the slice so it can
+  // be scrolled to — reveal whole pages up to it.
+  const items = useMemo(() => {
+    let n = revealed;
     if (app.selectedId) {
-      while (page.nextCursor && !acc.some(v => v.id === app.selectedId)) {
-        page = store.getPage(filters, page.nextCursor, PAGE_SIZE);
-        acc = [...acc, ...page.items];
-      }
+      const idx = filtered.findIndex(v => v.id === app.selectedId);
+      if (idx >= 0) n = Math.max(n, Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE);
     }
-    setItems(acc);
-    setNextCursor(page.nextCursor);
-    setFilteredTotal(page.filteredTotal);
+    return filtered.slice(0, n);
+  }, [filtered, revealed, app.selectedId]);
+  const nextCursor = items.length < filtered.length ? items[items.length - 1]?.id ?? null : null;
+
+  useEffect(() => {
     pendingScrollRef.current = app.selectedId ?? '__top__';
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store, filters]);
@@ -81,19 +93,17 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
     if (target) target.scrollIntoView({ block: 'center' });
   }, [items]);
 
-  // Stream further pages as the sentinel scrolls into view.
+  // Stream further rows as the sentinel scrolls into view.
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel || !store || !nextCursor) return;
     const io = new IntersectionObserver(entries => {
       if (!entries.some(e => e.isIntersecting)) return;
-      const page = store.getPage(filters, nextCursor, PAGE_SIZE);
-      setItems(prev => [...prev, ...page.items]);
-      setNextCursor(page.nextCursor);
+      setReveal(r => ({ key: resetKey, count: (r.key === resetKey ? r.count : PAGE_SIZE) + PAGE_SIZE }));
     }, { root: scrollerRef.current, rootMargin: '600px' });
     io.observe(sentinel);
     return () => io.disconnect();
-  }, [store, filters, nextCursor]);
+  }, [store, resetKey, nextCursor]);
 
   const sel = app.selectedId && store ? store.byId.get(app.selectedId) ?? null : null;
   const compareItems = app.compare.map(id => store?.byId.get(id)).filter(Boolean) as HpVM[];
@@ -146,7 +156,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {t.products.countLine(fmtInt(filteredTotal), fmtInt(store?.total ?? 0), app.segment)}
         </span>
         <div style={{ position: 'relative' }}>
-          <span onClick={() => setSortOpen(o => !o)} style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+          <span onClick={() => setSortOpen(o => !o)} data-testid="sort-trigger" style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
             {t.products.sortPrefix} {t.products.sortLabels[sort]} <ChevronDown />
           </span>
           {sortOpen && (
@@ -158,6 +168,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     key={key}
                     onClick={() => { setSort(key); setSortOpen(false); }}
                     className="hp-row"
+                    data-testid="sort-option"
                     style={{ display: 'block', padding: '8px 16px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', ...(key === sort ? { fontWeight: 600, color: '#0066cc' } : {}) }}
                   >
                     {t.products.sortLabels[key]}
@@ -198,6 +209,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span
                       key={r}
                       className="hp-press"
+                      data-testid="ref-option"
                       onClick={() => app.setRefFilter(on ? null : r)}
                       style={{
                         borderRadius: 999, padding: '5px 13px', fontSize: 12.5, cursor: 'pointer',
@@ -219,6 +231,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   return (
                     <span
                       key={m.name}
+                      data-testid="mfr-option"
                       onClick={() => app.setMfrFilter(on ? app.mfrFilter.filter(x => x !== m.name) : [...app.mfrFilter, m.name])}
                       style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}
                     >
@@ -244,16 +257,25 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <span style={sectionLabel}>{t.products.funding}</span>
-              <span
-                onClick={() => app.setBafaOnly(!app.bafaOnly)}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, cursor: 'pointer', userSelect: 'none' }}
-              >
-                <span style={{ width: 34, height: 20, borderRadius: 999, background: app.bafaOnly ? '#0066cc' : '#d2d2d7', position: 'relative', display: 'inline-block', transition: 'background .18s ease' }}>
-                  <span style={{ position: 'absolute', top: 2, left: app.bafaOnly ? 16 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left .18s ease' }} />
-                </span>
-                {t.products.bafaListedOnly}
-              </span>
-              <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.45 }}>{t.products.begNote}</span>
+              {/* Not offered when the catalogue carries no local listing at all
+                  (imported commercial catalogue): the filter could only ever
+                  return zero results. The per-record status chip still shows the
+                  honest listing state for every product. */}
+              {app.listingFilterOffered && (
+                <>
+                  <span
+                    onClick={() => app.setBafaOnly(!app.bafaOnly)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, cursor: 'pointer', userSelect: 'none' }}
+                    data-testid="listed-only-toggle"
+                  >
+                    <span style={{ width: 34, height: 20, borderRadius: 999, background: app.bafaOnly ? '#0066cc' : '#d2d2d7', position: 'relative', display: 'inline-block', transition: 'background .18s ease' }}>
+                      <span style={{ position: 'absolute', top: 2, left: app.bafaOnly ? 16 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left .18s ease' }} />
+                    </span>
+                    {t.products.bafaListedOnly}
+                  </span>
+                  <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.45 }}>{t.products.begNote}</span>
+                </>
+              )}
               <span style={{ fontSize: 11, color: '#7a7a7a', lineHeight: 1.5, borderTop: '1px solid #f0f0f0', paddingTop: 8 }}>
                 {t.products.listDisclaimer}
               </span>
@@ -290,7 +312,9 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       ...(isSel ? { background: '#f5f5f7', boxShadow: 'inset 2px 0 0 #0066cc' } : { background: '#fff' }),
                     }}
                   >
-                    <CheckBox on={inCmp} size={16} radius={4} onClick={e => { e.stopPropagation(); app.toggleCompare(r.id); }} />
+                    <span data-testid="compare-toggle" style={{ display: 'inline-flex' }}>
+                      <CheckBox on={inCmp} size={16} radius={4} onClick={e => { e.stopPropagation(); app.toggleCompare(r.id); }} />
+                    </span>
                     <span style={{ minWidth: 0 }}>
                       <span style={{ fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.model}</span>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{SOURCE_ID_ABBR} {r.sourceId}</span>

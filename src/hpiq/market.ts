@@ -65,6 +65,21 @@ export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heat
 export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
 
 /**
+ * Commercial catalogue provenance (config: countryProfiles.commercialCatalog).
+ *
+ * A market whose national registry lists too few commercial models derives its
+ * commercial catalogue from another registry. Those records carry NO national
+ * listing, so a "listed only" filter over them can only ever return nothing —
+ * which is exactly why UK Commercial appeared empty. Where the imported records
+ * carry no local listing, the filter is not offered at all.
+ */
+export const COMMERCIAL_SOURCE_COUNTRY = ACTIVE_COUNTRY.commercialCatalog.sourceCountry;
+export const COMMERCIAL_IS_IMPORTED = COMMERCIAL_SOURCE_COUNTRY !== ACTIVE_COUNTRY.code;
+/** False when no commercial record can be locally listed (GB) → hide the filter. */
+export const COMMERCIAL_LISTING_APPLIES =
+  ACTIVE_COUNTRY.commercialCatalog.defaultEligibilityStatus === 'listed';
+
+/**
  * Funding-guide explainer video per market — YouTube video ID (the 11-char
  * code from youtube.com/watch?v=XXXXXXXXXXX). null = the "coming soon" slot.
  * Upload per-market videos (Unlisted is fine — embeds still play), paste the

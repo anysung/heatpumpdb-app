@@ -10,7 +10,7 @@ import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
-import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
+import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB, COMMERCIAL_LISTING_APPLIES } from './market';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
 import { preloadBrandArtwork } from './pdf/brandArtwork';
@@ -64,6 +64,15 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   });
   const [segment, setSegment] = useState<HpSegment>('residential');
   const [bafaOnly, setBafaOnly] = useState(true);
+  /**
+   * The "listed only" filter is meaningless for a commercial catalogue whose
+   * records carry no local listing (see market.ts COMMERCIAL_LISTING_APPLIES).
+   * Leaving it on there filters every record away — this is the UK Commercial
+   * empty-results bug. Neutralise it for that segment rather than trusting the
+   * UI to hide the toggle.
+   */
+  const listingFilterApplies = (s: HpSegment) => s === 'residential' || COMMERCIAL_LISTING_APPLIES;
+  const effectiveBafaOnly = bafaOnly && listingFilterApplies(segment);
   const [refFilter, setRefFilter] = useState<string | null>(null);
   const [classFilter, setClassFilter] = useState<string | null>(null);
   const [mfrFilter, setMfrFilter] = useState<string[]>([]);
@@ -195,7 +204,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     dsMode, setDsMode, dsId, setDsId,
     dsSections, toggleDsSection: (k) => setDsSections(s => ({ ...s, [k]: !s[k] })),
     segment, setSegment: switchSegment,
-    bafaOnly, setBafaOnly,
+    bafaOnly: effectiveBafaOnly, setBafaOnly,
+    listingFilterOffered: listingFilterApplies(segment),
     refFilter, setRefFilter, classFilter, setClassFilter, mfrFilter, setMfrFilter,
     guideTab, setGuideTab,
     checked, toggleChecked: (k) => setChecked(c => ({ ...c, [k]: !c[k] })),

@@ -84,7 +84,19 @@
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
-.hp-logo-spin { transform-box: fill-box; transform-origin: center; animation: hp-logo-spin 6s linear infinite; }
+/* Rotation centre: the mark sits at (32,32) in BOTH logo viewBoxes ("0 0 64 64"
+   symbol and "0 0 348 64" lockup), so pin the origin to that user-space point.
+   `transform-box: fill-box` + `center` looked right but resolved to the group's
+   fill bounding box — which the two chevrons make asymmetric, giving an origin of
+   27,22 and a visibly wobbling spin. view-box + an explicit point is exact, and
+   avoids fill-box entirely (its support has been the flakiest part of this rule
+   across engines). */
+.hp-logo-spin {
+  transform-box: view-box;
+  transform-origin: 32px 32px;
+  animation: hp-logo-spin 6s linear infinite;
+  will-change: transform;
+}
 
 /* Synced to hp-logo-spin (6s): the DB text always shows the ASCENDING arc
    color. At 0deg the blue arrowhead (left) climbs -> blue; after the half
@@ -117,6 +129,21 @@
   to   { transform: skewY(1.4deg) translateY(1px); }
 }
 .hp-flag-sway { transform-box: fill-box; transform-origin: left center; animation: hp-flag-sway 2.8s ease-in-out infinite alternate; }
+
+/* Print / PDF: the brand must be deterministic on paper — never a random frame
+   of the spin. Freeze the mark at 0deg (its canonical orientation, the same one
+   the generated PDF rasterizes) and stop the DB colour crossfade and the flag
+   sway. The generated PDF does not depend on this (it draws the static SVG), so
+   this only governs a browser print of the on-screen sheet. */
+@media print {
+  .hp-logo-spin,
+  .hp-logo-db,
+  .hp-flag-sway {
+    animation: none !important;
+  }
+  .hp-logo-spin { transform: rotate(0deg) !important; }
+  .hp-flag-sway { transform: none !important; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .hp-fade-up, .hp-fade-up-delay, .hp-aurora-a, .hp-aurora-b, .hp-flow-line,

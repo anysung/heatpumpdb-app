@@ -206,7 +206,7 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
   const store = app.store;
   const [sort, setSort] = useState<ProductSort>('cop2');
   const [sheet, setSheet] = useState<null | 'filters' | 'sort'>(null);
-  const [count, setCount] = useState(PAGE_SIZE);
+  const [count, setCount] = useState<{ key: string; n: number }>({ key: '', n: PAGE_SIZE });
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const filters: ProductFilters = useMemo(() => ({
@@ -217,32 +217,24 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
     sort,
   }), [app.refFilter, app.mfrFilter, app.bafaOnly, sort]);
 
-  const list = useMemo(() => {
-    if (!store) return [];
-    // Local pagination over the filtered list — page through the store API.
-    const acc: HpVM[] = [];
-    let cursor: string | null = null;
-    while (acc.length < count) {
-      const page = store.getPage(filters, cursor, PAGE_SIZE);
-      acc.push(...page.items);
-      if (!page.nextCursor) break;
-      cursor = page.nextCursor;
-    }
-    return acc;
-  }, [store, filters, count]);
-
-  const filteredTotal = useMemo(() => (store ? store.getPage(filters, null, 1).filteredTotal : 0), [store, filters]);
-  useEffect(() => { setCount(PAGE_SIZE); }, [filters, store]);
+  // Derived, never stored — a filter or sort change lands in the same render.
+  const filtered = useMemo(() => (store ? store.list(filters) : []), [store, filters]);
+  const filteredTotal = filtered.length;
+  // Reveal count resets during render when the dataset/filters change (an effect
+  // would lag a frame and briefly show the previous result).
+  const resetKey = `${store?.total ?? 0}|${JSON.stringify(filters)}`;
+  const revealed = count.key === resetKey ? count.n : PAGE_SIZE;
+  const list = useMemo(() => filtered.slice(0, revealed), [filtered, revealed]);
 
   useEffect(() => {
     const s = sentinelRef.current;
     if (!s || list.length >= filteredTotal) return;
     const io = new IntersectionObserver(es => {
-      if (es.some(e => e.isIntersecting)) setCount(c => c + PAGE_SIZE);
+      if (es.some(e => e.isIntersecting)) setCount(c => ({ key: resetKey, n: (c.key === resetKey ? c.n : PAGE_SIZE) + PAGE_SIZE }));
     }, { rootMargin: '400px' });
     io.observe(s);
     return () => io.disconnect();
-  }, [list.length, filteredTotal]);
+  }, [list.length, filteredTotal, resetKey]);
 
   const appliedCount = (app.refFilter ? 1 : 0) + app.mfrFilter.length;
   const fmtInt = (n: number) => n.toLocaleString(t.locale);
@@ -347,13 +339,15 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
                     );
                   })}
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-                  <span style={sectionLabel}>{t.products.funding}</span>
-                  <span onClick={() => app.setBafaOnly(!app.bafaOnly)} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, cursor: 'pointer' }}>
-                    <CheckBox on={app.bafaOnly} size={16} radius={4} />
-                    {t.products.bafaListedOnly}
-                  </span>
-                </div>
+                {app.listingFilterOffered && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+                    <span style={sectionLabel}>{t.products.funding}</span>
+                    <span onClick={() => app.setBafaOnly(!app.bafaOnly)} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, cursor: 'pointer' }} data-testid="listed-only-toggle">
+                      <CheckBox on={app.bafaOnly} size={16} radius={4} />
+                      {t.products.bafaListedOnly}
+                    </span>
+                  </div>
+                )}
                 <div style={{ display: 'flex', gap: 10, paddingTop: 4 }}>
                   <span onClick={() => { app.setRefFilter(null); app.setMfrFilter([]); }} style={{ flex: 1, textAlign: 'center', border: '1px solid #d2d2d7', borderRadius: 999, padding: '11px 0', fontSize: 14, cursor: 'pointer' }}>{t.products.clearAll}</span>
                   <span onClick={() => setSheet(null)} style={{ flex: 1, textAlign: 'center', background: '#0066cc', color: '#fff', borderRadius: 999, padding: '11px 0', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>{t.m.apply}</span>

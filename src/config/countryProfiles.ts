@@ -95,6 +95,31 @@ export interface CountryProfile {
     products: string;
     commercialProducts: string;
   };
+
+  /**
+   * Where this market's COMMERCIAL catalogue comes from, and what its records
+   * mean here.
+   *
+   * Some markets have too small a national commercial registry to be useful
+   * (the UK's Ofgem PEL lists <100 suitable commercial models), so their
+   * commercial catalogue is DERIVED from another market's registry — the same
+   * hardware, cross-referenced. Those records are real products, but they carry
+   * NO national listing and therefore no national subsidy status: they are
+   * shown as "not listed" against the local eligibility source, and never as
+   * eligible for the local scheme.
+   *
+   * `sourceCountry === code` means the catalogue is native (Germany, France).
+   */
+  commercialCatalog: {
+    /** Registry the records are derived from. */
+    sourceCountry: CountryCode;
+    /** Market they are shown in. */
+    displayCountry: CountryCode;
+    /** The national list that decides eligibility here ('BAFA', 'PEL', …). */
+    localEligibilitySource: string;
+    /** Listing status an imported record carries until a local match is found. */
+    defaultEligibilityStatus: 'listed' | 'non-listed';
+  };
 }
 
 // ─── Profiles ────────────────────────────────────────────────────────────────
@@ -118,6 +143,12 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     datasetPaths: {
       products: '/data/products.json',
       commercialProducts: '/data/products-commercial.json',
+    },
+    commercialCatalog: {
+      sourceCountry: 'DE',
+      displayCountry: 'DE',
+      localEligibilitySource: 'BAFA',
+      defaultEligibilityStatus: 'listed',
     },
   },
 
@@ -144,6 +175,16 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
       products: '/data/products-fr.json',
       commercialProducts: '/data/products-commercial-fr.json',
     },
+    // France derives its commercial catalogue from the German registry too, but
+    // its records keep the registry listing, which the FR UI presents as the
+    // "European reference list" (never as MaPrimeRénov'/CEE eligibility). So the
+    // listing filter is meaningful here — unchanged behaviour.
+    commercialCatalog: {
+      sourceCountry: 'DE',
+      displayCountry: 'FR',
+      localEligibilitySource: 'BAFA_REFERENCE',
+      defaultEligibilityStatus: 'listed',
+    },
   },
 
   GB: {
@@ -164,6 +205,15 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     datasetPaths: {
       products: '/data/products-gb.json',
       commercialProducts: '/data/products-commercial-gb.json',
+    },
+    // The Ofgem PEL lists too few commercial models to be a usable catalogue, so
+    // the UK commercial catalogue is derived from the German registry (same
+    // hardware). None of it is PEL-listed, so none of it is BUS-eligible.
+    commercialCatalog: {
+      sourceCountry: 'DE',
+      displayCountry: 'GB',
+      localEligibilitySource: 'PEL',
+      defaultEligibilityStatus: 'non-listed',
     },
   },
 };

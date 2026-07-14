@@ -124,6 +124,19 @@ export class ProductStore {
     return sorted;
   }
 
+  /**
+   * The complete filtered + sorted list. Pages are derived from this by slicing,
+   * so the visible list can be a pure `useMemo` of (store, filters) — no effect,
+   * no copy of the list in React state, and therefore no render where the UI
+   * still shows the previous filter's result.
+   *
+   * The returned array is never the canonical `all` array unless no filter and
+   * no sort are active, and callers only ever slice it — nothing mutates it.
+   */
+  list(filters: ProductFilters): HpVM[] {
+    return this.applyFilters(filters);
+  }
+
   /** Fetch one page after the given cursor (null = first page). */
   getPage(filters: ProductFilters, cursor: string | null, pageSize: number): ProductPage {
     const list = this.applyFilters(filters);

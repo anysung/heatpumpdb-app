@@ -102,11 +102,13 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
     <div className="hpiq-print-doc" style={{ position: 'relative', width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 20 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                  {/* Static: this is a document, and it must show exactly what the
-                      generated PDF shows — the spin/sway would drift from it. */}
+                  {/* The same shared BrandLogo as the header — animated on screen.
+                      Print/PDF freeze it: @media print stops the spin at 0deg, and
+                      the generated PDF rasterizes the static SVG, so paper output
+                      is always the canonical orientation. */}
                   <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <BrandLogo height={34} theme="light" animated={false} />
-                    <WavingFlag height={29} onLight animated={false} />
+                    <BrandLogo height={34} theme="light" />
+                    <WavingFlag height={29} onLight />
                   </span>
                   <span style={{ fontSize: 11.5, letterSpacing: '.08em', color: '#7a7a7a' }}>
                     {isLabelMode ? t.ds.docKindLabel : t.ds.docKindProduct}
