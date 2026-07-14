@@ -127,10 +127,8 @@ matched source-record id, which let one shared outdoor unit delete distinct
 packages. That whole mechanism is gone: there is nothing to deduplicate, because
 products come from one catalogue.
 
-One local certificate legitimately covers **several** canonical packages (one
-Clivet MCS number covers five packages of the same 5.5 kW heat pump). That is
-normal and is only a contradiction if the packages fall in **different segments** —
-which the dataset gate blocks.
+A local certificate landing on **several** canonical packages is not deduplicated
+and not confirmed — see §10. The products all stay; the listing does not.
 
 ## 8. Adding a country
 
