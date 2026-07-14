@@ -21,6 +21,7 @@ import { jsPDF } from 'jspdf';
 import { HpVM } from '../model';
 import { HpStrings } from '../i18n';
 import { DsSectionKey } from '../appState';
+import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
 import { FLAG_ASPECT, LOGO_ASPECT } from '../../components/brandSvg';
 import { getBrandArtwork } from './brandArtwork';
 
@@ -294,14 +295,18 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
 
   if (sections.bafa && !isLabelMode) {
     sectionHead(t.ds.headBafa);
-    fieldGrid([
-      [
+    // Listing status only where this market has a national list of its own — a
+    // foreign registry's listing is never printed as a local one.
+    const rows: [string, string, number][] = [];
+    if (LOCAL_LISTING_SOURCE) {
+      rows.push([
         t.ds.f.bafaStatus,
-        (v.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot' ? t.ds.f.listed : t.ds.f.notListed,
+        localListingStatus(v.raw) === 'listed' ? t.ds.f.listed : t.ds.f.notListed,
         n('bafaStatus'),
-      ],
-      [t.ds.f.begRel, t.ds.f.begVerify, n('begRel')],
-    ]);
+      ]);
+    }
+    rows.push([t.ds.f.begRel, t.ds.f.begVerify, n('begRel')]);
+    fieldGrid(rows);
   }
 
   // (SOURCE & VERIFICATION removed 2026-07-12 — the disclaimer below already

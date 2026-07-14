@@ -10,7 +10,8 @@ import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
-import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB, COMMERCIAL_LISTING_APPLIES } from './market';
+import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB, LOCAL_LISTING_FILTER } from './market';
+import { splitBySegment } from '../config/segmentation';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
 import { preloadBrandArtwork } from './pdf/brandArtwork';
@@ -65,14 +66,12 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   const [segment, setSegment] = useState<HpSegment>('residential');
   const [bafaOnly, setBafaOnly] = useState(true);
   /**
-   * The "listed only" filter is meaningless for a commercial catalogue whose
-   * records carry no local listing (see market.ts COMMERCIAL_LISTING_APPLIES).
-   * Leaving it on there filters every record away — this is the UK Commercial
-   * empty-results bug. Neutralise it for that segment rather than trusting the
-   * UI to hide the toggle.
+   * The local-listing filter is only ever applied where this market actually
+   * offers it (config: searchCapabilities.localListingFilter). Neutralising it in
+   * state — not just hiding the control — means a stale toggle can never silently
+   * empty the catalogue, which is exactly how UK Commercial came to show nothing.
    */
-  const listingFilterApplies = (s: HpSegment) => s === 'residential' || COMMERCIAL_LISTING_APPLIES;
-  const effectiveBafaOnly = bafaOnly && listingFilterApplies(segment);
+  const effectiveBafaOnly = bafaOnly && LOCAL_LISTING_FILTER;
   const [refFilter, setRefFilter] = useState<string | null>(null);
   const [classFilter, setClassFilter] = useState<string | null>(null);
   const [mfrFilter, setMfrFilter] = useState<string[]>([]);
@@ -88,14 +87,28 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     noticeTimer.current = setTimeout(() => setNotice(null), 2600);
   };
 
+  /**
+   * ONE segmentation rule for every market: rated capacity ≤ 23 kW is residential,
+   * above it is commercial (config/segmentation.ts). The dataset FILES are split by
+   * source, not by capacity — the UK's "residential" file runs to 177 kW — so the
+   * whole pool is re-split here and the source's own labels are ignored entirely.
+   * Records with no published capacity are unclassified: they are counted and
+   * disclosed, never quietly filed as residential.
+   */
+  const segments = useMemo(() => {
+    const pool = [...(dbData?.products ?? []), ...(dbData?.commercialProducts ?? [])];
+    return splitBySegment(pool);
+  }, [dbData?.products, dbData?.commercialProducts]);
+
   const resStore = useMemo(
-    () => (dbData?.products?.length ? new ProductStore(dbData.products) : null),
-    [dbData?.products],
+    () => (segments.residential.length ? new ProductStore(segments.residential) : null),
+    [segments],
   );
   const comStore = useMemo(
-    () => (dbData?.commercialProducts?.length ? new ProductStore(dbData.commercialProducts) : null),
-    [dbData?.commercialProducts],
+    () => (segments.commercial.length ? new ProductStore(segments.commercial) : null),
+    [segments],
   );
+  const unclassifiedCount = segments.unclassified.length;
   const store = segment === 'commercial' ? comStore : resStore;
   // Full catalog for the EU energy label page — every downloaded product, both segments.
   const allStore = useMemo(() => {
@@ -205,7 +218,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     dsSections, toggleDsSection: (k) => setDsSections(s => ({ ...s, [k]: !s[k] })),
     segment, setSegment: switchSegment,
     bafaOnly: effectiveBafaOnly, setBafaOnly,
-    listingFilterOffered: listingFilterApplies(segment),
+    listingFilterOffered: LOCAL_LISTING_FILTER,
+    unclassifiedCount,
     refFilter, setRefFilter, classFilter, setClassFilter, mfrFilter, setMfrFilter,
     guideTab, setGuideTab,
     checked, toggleChecked: (k) => setChecked(c => ({ ...c, [k]: !c[k] })),

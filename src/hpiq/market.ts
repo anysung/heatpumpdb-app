@@ -65,19 +65,18 @@ export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heat
 export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
 
 /**
- * Commercial catalogue provenance (config: countryProfiles.commercialCatalog).
+ * Catalogue composition + which search controls this market may offer
+ * (config: countryProfiles.commercialCatalog / searchCapabilities).
  *
- * A market whose national registry lists too few commercial models derives its
- * commercial catalogue from another registry. Those records carry NO national
- * listing, so a "listed only" filter over them can only ever return nothing —
- * which is exactly why UK Commercial appeared empty. Where the imported records
- * carry no local listing, the filter is not offered at all.
+ * EUROPE scope = the catalogue is supplemented with Europe-market product
+ * information. That provenance stays internal: it is never named in the UI.
+ *
+ * LOCAL_LISTING_FILTER is false where a national-listing filter would not
+ * meaningfully divide the catalogue (UK: PEL splits it far too unevenly; France:
+ * there is no national list at all), so the control is not offered there.
  */
-export const COMMERCIAL_SOURCE_COUNTRY = ACTIVE_COUNTRY.commercialCatalog.sourceCountry;
-export const COMMERCIAL_IS_IMPORTED = COMMERCIAL_SOURCE_COUNTRY !== ACTIVE_COUNTRY.code;
-/** False when no commercial record can be locally listed (GB) → hide the filter. */
-export const COMMERCIAL_LISTING_APPLIES =
-  ACTIVE_COUNTRY.commercialCatalog.defaultEligibilityStatus === 'listed';
+export const MARKET_SCOPE = ACTIVE_COUNTRY.commercialCatalog.marketScope;
+export const LOCAL_LISTING_FILTER = ACTIVE_COUNTRY.searchCapabilities.localListingFilter;
 
 /**
  * Funding-guide explainer video per market — YouTube video ID (the 11-char

@@ -95,7 +95,9 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   (auto-selects newest `data_sources/ofgem_pel/parsed/YYYY-MM/`) →
   `public/data/products-gb.json` + `products-commercial-gb.json`. PEL publishes no
   performance data; one performance source per record, never mixed:
-  `performance_source='BAFA_REFERENCE'` (German registry cross-reference — say so in UI)
+  `performance_source='BAFA_REFERENCE'` (cross-reference from the European registry —
+  internal provenance ONLY: the UK/FR UI must never name BAFA or Germany, see
+  `docs/EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md`)
   takes precedence, else `'EPREL'` (official EU label data: ηs, design output, sound
   power; SCOP/COP are NOT on EPREL and must not be derived). `eprel_registration_number`
   is set on every EPREL match regardless. Unmatched records keep null performance fields
@@ -142,6 +144,20 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
 
 ## 4. General Rules
 
+- **Segmentation + European presentation (permanent — `docs/EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md`).**
+  The residential/commercial split is the app's OWN rule, identical in every country:
+  rated capacity **≤ 23 kW residential, > 23 kW commercial** (never `>=`), missing
+  capacity → **unclassified** (never silently residential). One source:
+  `src/config/segmentation.ts`; the whole pool is re-split at load time because the
+  dataset FILES are split by source, not capacity (that is why UK Commercial was
+  empty). The capacity the UI shows/sorts/filters is the same one the split uses
+  (`HpVM.ratedKw`). **The word "BAFA" — and the source country — may appear only on
+  the German site**; elsewhere records are "European reference" (provenance stays
+  internal). Local listing status comes only from the market's OWN list via
+  `src/hpiq/listing.ts` (DE→BAFA, GB→PEL, FR→none; never inferred across markets),
+  and a filter is offered only where it actually divides the catalogue
+  (`searchCapabilities.localListingFilter`). Tests: `tests/segmentation.unit.mjs`,
+  `tests/products-segmentation.e2e.mjs` (fails if BAFA appears on GB/FR pages).
 - Refrigerant filtering always uses `.includes()` contains logic (values like
   `R290(estimated)` must match), never exact match.
 - Auth flow is approval-gated: registration (email or Google/Apple social) creates a

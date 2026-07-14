@@ -97,28 +97,34 @@ export interface CountryProfile {
   };
 
   /**
-   * Where this market's COMMERCIAL catalogue comes from, and what its records
-   * mean here.
+   * How this market's product catalogue is composed, and what it may say about
+   * local listing.
    *
-   * Some markets have too small a national commercial registry to be useful
-   * (the UK's Ofgem PEL lists <100 suitable commercial models), so their
-   * commercial catalogue is DERIVED from another market's registry — the same
-   * hardware, cross-referenced. Those records are real products, but they carry
-   * NO national listing and therefore no national subsidy status: they are
-   * shown as "not listed" against the local eligibility source, and never as
-   * eligible for the local scheme.
+   * `marketScope: 'EUROPE'` means the catalogue is supplemented with Europe-market
+   * product information (the same hardware, cross-referenced from another European
+   * registry). Those records are presented as European-market information —
+   * NEVER as the originating country's products, and never with that country's
+   * national terminology (see docs/EUROPE_DATA_AND_PRODUCT_SEGMENTATION_PRINCIPLES.md).
+   * Exact provenance is kept in the record for audit; it is not UI wording.
    *
-   * `sourceCountry === code` means the catalogue is native (Germany, France).
+   * `localListingSource` is the ONLY national list this market may talk about.
+   * null = this market has no national list, so no listing status is shown at all
+   * (a foreign registry's listing is never relabelled as a local one).
    */
   commercialCatalog: {
-    /** Registry the records are derived from. */
-    sourceCountry: CountryCode;
-    /** Market they are shown in. */
+    marketScope: 'NATIONAL' | 'EUROPE';
     displayCountry: CountryCode;
-    /** The national list that decides eligibility here ('BAFA', 'PEL', …). */
-    localEligibilitySource: string;
-    /** Listing status an imported record carries until a local match is found. */
-    defaultEligibilityStatus: 'listed' | 'non-listed';
+    localListingSource: 'BAFA' | 'PEL' | null;
+  };
+
+  /**
+   * Which search controls are worth offering here. A filter that returns nearly
+   * everything, nearly nothing, or zero is not discovery — it is a trap. Keep this
+   * as configuration; do not compute it from field presence.
+   */
+  searchCapabilities: {
+    /** Offer the "on the national list only" filter? */
+    localListingFilter: boolean;
   };
 }
 
@@ -144,12 +150,14 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
       products: '/data/products.json',
       commercialProducts: '/data/products-commercial.json',
     },
+    // Germany IS the registry it lists against, and the BAFA listing meaningfully
+    // divides the catalogue — so the filter earns its place here.
     commercialCatalog: {
-      sourceCountry: 'DE',
+      marketScope: 'NATIONAL',
       displayCountry: 'DE',
-      localEligibilitySource: 'BAFA',
-      defaultEligibilityStatus: 'listed',
+      localListingSource: 'BAFA',
     },
+    searchCapabilities: { localListingFilter: true },
   },
 
   FR: {
@@ -169,22 +177,23 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     subsidyAuthorityLabel: "MaPrimeRénov' (ANAH) / CEE",
     subsidyTabLabel: "MaPrimeRénov' / CEE",
     aiMarketContext: 'French market',
-    sourceIdLabel: { en: 'BAFA ID (reference)' },
+    // User-facing: neutral European reference — never names a foreign registry.
+    sourceIdLabel: { en: 'European reference' },
     enabledEnrichmentLayers: ['EPREL', 'NF_PAC'],
     datasetPaths: {
       products: '/data/products-fr.json',
       commercialProducts: '/data/products-commercial-fr.json',
     },
-    // France derives its commercial catalogue from the German registry too, but
-    // its records keep the registry listing, which the FR UI presents as the
-    // "European reference list" (never as MaPrimeRénov'/CEE eligibility). So the
-    // listing filter is meaningful here — unchanged behaviour.
+    // France has NO national heat-pump list of its own here (MaPrimeRénov'/CEE are
+    // criteria-based, not a product list). A foreign registry's listing must never
+    // be relabelled as a French one, so France shows no local listing status and
+    // offers no listing filter.
     commercialCatalog: {
-      sourceCountry: 'DE',
+      marketScope: 'EUROPE',
       displayCountry: 'FR',
-      localEligibilitySource: 'BAFA_REFERENCE',
-      defaultEligibilityStatus: 'listed',
+      localListingSource: null,
     },
+    searchCapabilities: { localListingFilter: false },
   },
 
   GB: {
@@ -206,15 +215,16 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
       products: '/data/products-gb.json',
       commercialProducts: '/data/products-commercial-gb.json',
     },
-    // The Ofgem PEL lists too few commercial models to be a usable catalogue, so
-    // the UK commercial catalogue is derived from the German registry (same
-    // hardware). None of it is PEL-listed, so none of it is BUS-eligible.
+    // The PEL publishes no performance data, so the catalogue is supplemented with
+    // Europe-market product information. PEL listing stays an independent layer and
+    // is shown on the product detail / data sheet — but NOT as a search filter:
+    // it splits the catalogue far too unevenly to help discovery.
     commercialCatalog: {
-      sourceCountry: 'DE',
+      marketScope: 'EUROPE',
       displayCountry: 'GB',
-      localEligibilitySource: 'PEL',
-      defaultEligibilityStatus: 'non-listed',
+      localListingSource: 'PEL',
     },
+    searchCapabilities: { localListingFilter: false },
   },
 };
 

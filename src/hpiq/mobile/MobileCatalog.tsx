@@ -13,6 +13,7 @@ import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
+import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, SearchIcon, sectionLabel } from '../ui';
 import type { Viewport } from '../useViewport';
@@ -27,11 +28,11 @@ const chipStyle: React.CSSProperties = {
 
 const ListedChips: React.FC<{ v: HpVM; t: ReturnType<typeof tr> }> = ({ v, t }) => (
   <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-    {(v.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot' ? (
+    {LOCAL_LISTING_SOURCE && (localListingStatus(v.raw) === 'listed' ? (
       <span style={chipStyle}>{t.products.chipBafa}</span>
     ) : (
       <span style={{ ...chipStyle, border: '1px solid #e8c9c9', background: '#fdf3f3', color: '#a33' }}>{t.products.chipDelisted}</span>
-    )}
+    ))}
     {v.eprel && <span style={chipStyle}>{v.label}</span>}
   </span>
 );
@@ -51,7 +52,7 @@ const ProductCard: React.FC<{ v: HpVM; t: ReturnType<typeof tr>; onOpen: () => v
       <span style={{ fontSize: 12, color: '#7a7a7a', flex: 'none', maxWidth: '38%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.mfr}</span>
     </div>
     <div style={{ display: 'flex', gap: '6px 14px', fontSize: 12.5, color: '#333', flexWrap: 'wrap' }}>
-      <span style={{ whiteSpace: 'nowrap' }}><strong style={{ fontWeight: 600 }}>{v.kw}</strong> {v.kw === '—' ? '' : 'kW'}</span>
+      <span style={{ whiteSpace: 'nowrap' }}><strong style={{ fontWeight: 600 }}>{v.ratedKw}</strong> {v.ratedKw === '—' ? '' : 'kW'}</span>
       <span>COP A2 <strong style={{ fontWeight: 600 }}>{v.cop2}</strong></span>
       <span>SCOP <strong style={{ fontWeight: 600 }}>{v.scop}</strong></span>
     </div>
@@ -77,7 +78,7 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
     [t.products.inspSpecs.noise, v.noise === '—' ? '—' : `${v.noise} dB(A)`],
     [t.products.inspSpecs.type, v.installType],
   ];
-  const listed = (v.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot';
+  const listed = localListingStatus(v.raw) === 'listed';
 
   const body = (
     <>
@@ -273,6 +274,10 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
             {toolbarChip(`${t.m.filters}${appliedCount ? ` · ${appliedCount}` : ''}`, () => setSheet('filters'), appliedCount > 0)}
             {toolbarChip(`${t.products.sortPrefix} ${t.products.sortLabels[sort]}`, () => setSheet('sort'))}
           </div>
+          {/* Same segmentation disclosure as desktop — one shared translation key. */}
+          <span style={{ fontSize: 11, color: '#7a7a7a', lineHeight: 1.4 }} data-testid="segment-note">
+            {t.products.segmentNote}
+          </span>
         </div>
 
         {/* card list */}

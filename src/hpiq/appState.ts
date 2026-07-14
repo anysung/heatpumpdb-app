@@ -62,11 +62,13 @@ export interface HpApp {
   /** FÖRDERUNG toggle — restrict list to BAFA-listed units. */
   bafaOnly: boolean;
   /**
-   * False when the active segment's catalogue carries no local listing at all
-   * (an imported commercial catalogue, e.g. UK). The toggle is then not offered:
-   * it could only ever return zero results.
+   * Whether this market offers a national-listing search filter at all
+   * (config: searchCapabilities.localListingFilter). False where the status would
+   * not meaningfully divide the catalogue (UK) or no national list exists (FR).
    */
   listingFilterOffered: boolean;
+  /** Records with no published rated capacity — in neither segment; disclosed, not hidden. */
+  unclassifiedCount: number;
   setBafaOnly: (v: boolean) => void;
 
   refFilter: string | null;

@@ -4,6 +4,7 @@ import { HpApp, DsSectionKey } from '../appState';
 import { longDate } from '../model';
 import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
+import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
 import { IS_GB, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 
@@ -213,11 +214,14 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                 <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headBafa} />
                   <SectionGrid>
+                    {/* Listing status only where this market has a national list of its own. */}
+                    {LOCAL_LISTING_SOURCE && (
                     <FieldCell
                       label={t.ds.f.bafaStatus}
-                      value={(dsp.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot' ? t.ds.f.listed : t.ds.f.notListed}
+                      value={localListingStatus(dsp.raw) === 'listed' ? t.ds.f.listed : t.ds.f.notListed}
                       note={n('bafaStatus')}
                     />
+                    )}
                     <FieldCell label={t.ds.f.begRel} value={t.ds.f.begVerify} note={n('begRel')} />
                   </SectionGrid>
                 </div>
@@ -322,7 +326,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 >
                   <span style={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 0 }}>
                     <span style={{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{d.model}</span>
-                    <span style={{ fontSize: 11, color: '#7a7a7a' }}>{d.mfr} · {d.kw} kW · {d.label}</span>
+                    <span style={{ fontSize: 11, color: '#7a7a7a' }}>{d.mfr} · {d.ratedKw} kW · {d.label}</span>
                   </span>
                 </span>
               );

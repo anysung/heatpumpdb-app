@@ -10,6 +10,7 @@
  * migrating storage to Firestore later only changes this file.
  */
 import { HeatPump } from '../types';
+import { localListingStatus } from './listing';
 import { HpVM, toVM } from './model';
 
 export type ProductSort = 'cop2' | 'scop' | 'kwDesc' | 'kwAsc' | 'noise' | 'model';
@@ -27,7 +28,7 @@ export interface ProductFilters {
   refrigerant: string | null;      // contains-match, e.g. 'R290'
   manufacturers: string[];         // manufacturer_short exact set
   bafaListedOnly: boolean;
-  /** Capacity range in kW — null bound = unbounded. Items without kwNum pass only when both bounds are null. */
+  /** Rated-capacity range in kW — null bound = unbounded. Records with no rated capacity pass only when both bounds are null. */
   capMin: number | null;
   capMax: number | null;
   sort: ProductSort;
@@ -47,7 +48,7 @@ export class ProductStore {
   readonly mfrCounts: { name: string; count: number }[];
   readonly bafaSnapshotDate: string | null;
   readonly sourceSnapshotDate: string | null;
-  /** Whole-kW capacity bounds across the catalog, or null if no record has kwNum. */
+  /** Whole-kW rated-capacity bounds across the catalog, or null if no record publishes one. */
   readonly kwBounds: { min: number; max: number } | null;
 
   constructor(products: HeatPump[]) {
@@ -77,7 +78,7 @@ export class ProductStore {
     this.bafaSnapshotDate = maxFetched;
     this.sourceSnapshotDate = maxGenerated;
 
-    const kws = this.all.map(v => v.kwNum).filter((n): n is number => n != null);
+    const kws = this.all.map(v => v.ratedKwNum).filter((n): n is number => n != null);
     this.kwBounds = kws.length
       ? { min: Math.floor(Math.min(...kws)), max: Math.ceil(Math.max(...kws)) }
       : null;
@@ -94,13 +95,15 @@ export class ProductStore {
       list = list.filter(v => set.has(v.mfr));
     }
     if (filters.bafaListedOnly) {
-      list = list.filter(v => (v.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot');
+      // Reads the market's OWN list via the resolver — a German registry listing is
+      // never treated as a UK or French listing (see hpiq/listing.ts).
+      list = list.filter(v => localListingStatus(v.raw) === 'listed');
     }
     if (filters.capMin != null || filters.capMax != null) {
       list = list.filter(v =>
-        v.kwNum != null
-        && (filters.capMin == null || v.kwNum >= filters.capMin)
-        && (filters.capMax == null || v.kwNum <= filters.capMax));
+        v.ratedKwNum != null
+        && (filters.capMin == null || v.ratedKwNum >= filters.capMin)
+        && (filters.capMax == null || v.ratedKwNum <= filters.capMax));
     }
     return this.applySort(list, filters.sort);
   }
@@ -113,9 +116,9 @@ export class ProductStore {
       case 'scop':
         sorted.sort((a, b) => (b.raw.scop ?? -Infinity) - (a.raw.scop ?? -Infinity)); break;
       case 'kwDesc':
-        sorted.sort((a, b) => (b.kwNum ?? -Infinity) - (a.kwNum ?? -Infinity)); break;
+        sorted.sort((a, b) => (b.ratedKwNum ?? -Infinity) - (a.ratedKwNum ?? -Infinity)); break;
       case 'kwAsc':
-        sorted.sort((a, b) => (a.kwNum ?? Infinity) - (b.kwNum ?? Infinity)); break;
+        sorted.sort((a, b) => (a.ratedKwNum ?? Infinity) - (b.ratedKwNum ?? Infinity)); break;
       case 'noise':
         sorted.sort((a, b) => (a.raw.noise_outdoor_dB ?? Infinity) - (b.raw.noise_outdoor_dB ?? Infinity)); break;
       case 'model':

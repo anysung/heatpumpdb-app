@@ -2,6 +2,7 @@
  * HeatPump DB view model — adapts the real HeatPump records (BAFA dataset +
  * EPREL enrichment fields) to the display shape used by the approved design.
  */
+import { ratedCapacityKw } from '../config/segmentation';
 import { HeatPump } from '../types';
 
 export interface HpVM {
@@ -9,10 +10,17 @@ export interface HpVM {
   mfr: string;
   model: string;
   odu: string;
-  /** Heating capacity at 55°C, formatted with one decimal, or '—'. */
+  /** Heating capacity at 55°C, formatted with one decimal, or '—'. Only ever shown under a 55°C label. */
   kw: string;
-  /** Numeric capacity for range filtering/sorting (55°C, falls back to 35°C). */
-  kwNum: number | null;
+  /**
+   * The canonical rated capacity (kW) — THE number the residential/commercial
+   * split is made on (config/segmentation.ts). Anywhere the UI shows a headline
+   * capacity, sorts by capacity, or filters a capacity range, it must use this
+   * one: showing a 55°C figure next to a segment derived from a different number
+   * is how a 24 kW commercial record ends up displaying "—" or "21.8".
+   */
+  ratedKw: string;
+  ratedKwNum: number | null;
   cop7: string;
   cop2: string;
   copm7: string;
@@ -75,7 +83,8 @@ export function toVM(p: HeatPump): HpVM {
     model: p.model,
     odu: p.outdoor_side_display_model || p.outdoor_unit_model || '—',
     kw: fmt(p.power_55C_kw, 1),
-    kwNum: p.power_55C_kw ?? p.power_35C_kw ?? null,
+    ratedKw: fmt(ratedCapacityKw(p), 1),
+    ratedKwNum: ratedCapacityKw(p),
     cop7: fmt(p.cop_A7W35, 2),
     cop2: fmt(p.cop_A2W35, 2),
     copm7: fmt(p.cop_AMinus7W35, 2),

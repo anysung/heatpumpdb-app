@@ -4,6 +4,7 @@ import { HpApp } from '../appState';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
+import { localListingStatus, LOCAL_LISTING_SOURCE } from '../listing';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, ChevronDown, KwRangeSlider, Watermark, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
@@ -152,6 +153,15 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             );
           })}
         </div>
+        {/* The site's own segmentation rule — small, secondary, always visible. */}
+        <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.4 }} data-testid="segment-note">
+          {t.products.segmentNote}
+        </span>
+        {app.unclassifiedCount > 0 && (
+          <span style={{ fontSize: 11.5, color: '#9a6b00', lineHeight: 1.4 }} data-testid="unclassified-note">
+            {t.products.unclassifiedNote(app.unclassifiedCount.toLocaleString(t.locale))}
+          </span>
+        )}
         <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
           {t.products.countLine(fmtInt(filteredTotal), fmtInt(store?.total ?? 0), app.segment)}
         </span>
@@ -255,34 +265,28 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
               )}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <span style={sectionLabel}>{t.products.funding}</span>
-              {/* Not offered when the catalogue carries no local listing at all
-                  (imported commercial catalogue): the filter could only ever
-                  return zero results. The per-record status chip still shows the
-                  honest listing state for every product. */}
-              {app.listingFilterOffered && (
-                <>
-                  <span
-                    onClick={() => app.setBafaOnly(!app.bafaOnly)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, cursor: 'pointer', userSelect: 'none' }}
-                    data-testid="listed-only-toggle"
-                  >
-                    <span style={{ width: 34, height: 20, borderRadius: 999, background: app.bafaOnly ? '#0066cc' : '#d2d2d7', position: 'relative', display: 'inline-block', transition: 'background .18s ease' }}>
-                      <span style={{ position: 'absolute', top: 2, left: app.bafaOnly ? 16 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left .18s ease' }} />
-                    </span>
-                    {t.products.bafaListedOnly}
+            {app.listingFilterOffered && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <span style={sectionLabel}>{t.products.funding}</span>
+                <span
+                  onClick={() => app.setBafaOnly(!app.bafaOnly)}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, cursor: 'pointer', userSelect: 'none' }}
+                  data-testid="listed-only-toggle"
+                >
+                  <span style={{ width: 34, height: 20, borderRadius: 999, background: app.bafaOnly ? '#0066cc' : '#d2d2d7', position: 'relative', display: 'inline-block', transition: 'background .18s ease' }}>
+                    <span style={{ position: 'absolute', top: 2, left: app.bafaOnly ? 16 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left .18s ease' }} />
                   </span>
-                  <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.45 }}>{t.products.begNote}</span>
-                </>
-              )}
-              <span style={{ fontSize: 11, color: '#7a7a7a', lineHeight: 1.5, borderTop: '1px solid #f0f0f0', paddingTop: 8 }}>
-                {t.products.listDisclaimer}
-              </span>
-              <span style={{ fontSize: 13.5 }}>
-                {t.products.bafaUpdated} <span style={{ fontWeight: 600 }}>{app.bafaSnapshotDate}</span>
-              </span>
-            </div>
+                  {t.products.bafaListedOnly}
+                </span>
+                <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.45 }}>{t.products.begNote}</span>
+                <span style={{ fontSize: 11, color: '#7a7a7a', lineHeight: 1.5, borderTop: '1px solid #f0f0f0', paddingTop: 8 }}>
+                  {t.products.listDisclaimer}
+                </span>
+                <span style={{ fontSize: 13.5 }}>
+                  {t.products.bafaUpdated} <span style={{ fontWeight: 600 }}>{app.bafaSnapshotDate}</span>
+                </span>
+              </div>
+            )}
           </div>
 
           {/* table */}
@@ -320,16 +324,17 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{SOURCE_ID_ABBR} {r.sourceId}</span>
                     </span>
                     <span>{r.mfr}</span>
-                    <span>{r.kw}</span>
+                    <span data-testid="row-kw">{r.ratedKw}</span>
                     <span style={{ fontWeight: 600 }}>{r.cop2}</span>
                     <span>{r.scop}</span>
                     <span>{r.noise === '—' ? '—' : `${r.noise} dB`}</span>
                     <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-                      {(r.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot' ? (
+                      {/* No national list in this market → say nothing about listing. */}
+                      {LOCAL_LISTING_SOURCE && (localListingStatus(r.raw) === 'listed' ? (
                         <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{t.products.chipBafa}</span>
                       ) : (
                         <span style={{ border: '1px solid #e8c9c9', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fdf3f3', color: '#a33' }}>{t.products.chipDelisted}</span>
-                      )}
+                      ))}
                       {r.eprel && <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{r.label}</span>}
                       <span style={{ border: '1px solid #e0e0e0', borderRadius: 999, padding: '2px 9px', fontSize: 10.5, background: '#fff' }}>{t.products.chipSheet}</span>
                     </span>
@@ -408,11 +413,13 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 9 }}>
                   <span style={{ ...sectionLabel, fontSize: 10.5 }}>{t.products.inspFunding}</span>
-                  <span style={{ fontSize: 13.5, lineHeight: 1.5 }}>
-                    {(sel.raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot'
+                  {LOCAL_LISTING_SOURCE && (
+                  <span style={{ fontSize: 13.5, lineHeight: 1.5 }} data-testid="local-listing-status">
+                    {localListingStatus(sel.raw) === 'listed'
                       ? t.products.inspListed
                       : t.products.inspDelisted}
                   </span>
+                  )}
                   <span style={{ fontSize: 12, color: '#7a7a7a' }}>
                     {t.products.inspVerify}{' '}
                     <span onClick={() => window.open(REGISTRY_VERIFY_URL, '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.openBafa}</span>

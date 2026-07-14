@@ -37,7 +37,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
       list = list.filter(v => set.has(v.mfr));
     }
     if (capNarrowed) {
-      list = list.filter(v => v.kwNum != null && v.kwNum >= capLo && v.kwNum <= capHi);
+      list = list.filter(v => v.ratedKwNum != null && v.ratedKwNum >= capLo && v.ratedKwNum <= capHi);
     }
     return list;
   }, [store, app.classFilter, refFilter, mfrFilter, capNarrowed, capLo, capHi]);
@@ -226,7 +226,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, minWidth: 0 }}>
                     <span><span style={{ color: '#7a7a7a' }}>{t.label.w35}</span> <strong style={{ fontWeight: 600 }}>{lsel.label}</strong> · <span style={{ color: '#7a7a7a' }}>{t.label.w55}</span> <strong style={{ fontWeight: 600 }}>{lsel.labelMed}</strong></span>
-                    <span><span style={{ color: '#7a7a7a' }}>{t.label.ratedOutput}</span> <strong style={{ fontWeight: 600 }}>{lsel.kw === '—' ? '—' : `${lsel.kw} kW`}</strong></span>
+                    <span><span style={{ color: '#7a7a7a' }}>{t.label.ratedOutput}</span> <strong style={{ fontWeight: 600 }}>{lsel.ratedKw === '—' ? '—' : `${lsel.ratedKw} kW`}</strong></span>
                     <span><span style={{ color: '#7a7a7a' }}>{t.label.soundPower}</span> <strong style={{ fontWeight: 600 }}>{lsel.noise === '—' ? '—' : `${lsel.noise} dB(A)`}</strong></span>
                     <span><span style={{ color: '#7a7a7a' }}>{t.label.refrigerantRow}</span> <strong style={{ fontWeight: 600 }}>{lsel.refKg === '—' ? lsel.ref : `${lsel.ref} · ${lsel.refKg} kg`}</strong></span>
                   </div>
