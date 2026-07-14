@@ -25,6 +25,7 @@
  * a builder emitting duplicates — cannot reach users silently.
  */
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -33,6 +34,10 @@ import { ratedCapacityKw, segmentOf, isDataSheetEligible } from './lib/data-shee
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const APPROVE = args.includes('--approve');
+// Rebuild the baseline from what is ACTUALLY LIVE in the bucket. The baseline must
+// describe production, not the candidate we happen to have on disk — otherwise the
+// change gates compare a candidate with itself and prove nothing.
+const FROM_LIVE = args.includes('--baseline-from-live');
 const OVERRIDE = args.includes('--override');
 const REASON = args.find(a => a.startsWith('--reason='))?.slice(9) ?? null;
 
@@ -47,6 +52,18 @@ const DATASETS = {
 
 /** German registry status/funding fields must never leave Germany. */
 const GERMAN_ONLY_FIELDS = ['bafa_listing_status', 'bafa_foerderung_von', 'bafa_foerderung_bis'];
+
+/**
+ * Approved one-to-many local-id exceptions. An entry says a document proves this
+ * identifier really does cover all those canonical products. An entry WITHOUT an
+ * evidence reference is itself a blocking condition — an unevidenced exception is
+ * just an override wearing a disguise.
+ */
+const EXC_PATH = resolve(ROOT, 'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json');
+const EXCEPTIONS = existsSync(EXC_PATH)
+  ? (JSON.parse(readFileSync(EXC_PATH, 'utf8')).exceptions ?? []).filter(e => e.approved)
+  : [];
+const UNEVIDENCED = EXCEPTIONS.filter(e => !e.evidence_reference || !Array.isArray(e.canonical_ids) || !e.canonical_ids.length);
 
 // ── Thresholds ───────────────────────────────────────────────────────────────
 const T = {
@@ -75,6 +92,29 @@ function loadItems(rel) {
   const j = JSON.parse(readFileSync(abs, 'utf8'));
   return { items: j.items ?? [], meta: j._meta ?? {} };
 }
+
+/** Read a dataset straight out of the production bucket (canaries subtracted). */
+const CANARIES_PER_FILE = 1;
+function loadLive(rel) {
+  const gcs = `gs://heatpumpdb-datasets/datasets/${rel.includes('-gb') ? 'GB' : rel.includes('-fr') ? 'FR' : 'DE'}/${rel.split('/').pop()}`;
+  const raw = execFileSync('gcloud', ['storage', 'cat', gcs], { maxBuffer: 512 * 1024 * 1024 });
+  const j = JSON.parse(raw.toString());
+  // The served copies carry one canary record each; the real catalogue is one shorter.
+  return { items: (j.items ?? []).slice(0, Math.max(0, (j.items ?? []).length - CANARIES_PER_FILE)), meta: j._meta ?? {} };
+}
+
+/**
+ * A one-time migration allowance. It authorises ONE declared structural transition
+ * (legacy PEL-first UK catalogue → canonical baseline) and nothing else: the
+ * candidate must land on the declared target counts EXACTLY, or the allowance does
+ * not apply and the normal gates fire. It never disables an absolute check —
+ * duplicates, missing capacity, ambiguous listings, leakage and source failures are
+ * all still enforced.
+ */
+const MIG_PATH = resolve(ROOT, 'data_manifests/migration.json');
+const migration = existsSync(MIG_PATH) ? JSON.parse(readFileSync(MIG_PATH, 'utf8')) : null;
+const migrationActive = migration && !migration.completed_at
+  && (!migration.expires_after || Date.parse(migration.expires_after) > Date.now());
 
 const blockers = [];
 const warnings = [];
@@ -118,21 +158,39 @@ for (const [cc, files] of Object.entries(DATASETS)) {
   const verifyReq = items.filter(i => i.pel_match_status === 'verification_required').length;
   const localIds = items.filter(i => i.mcs_number).map(i => String(i.mcs_number));
 
-  // One local registration id covering SEVERAL canonical products is normal, not an
-  // error: an MCS certificate is issued for a heat pump, and the canonical baseline
-  // registers each package built around it (bare, +tank, +tower …). Clivet's
-  // 041-K008-02 covers five packages, all 5.5 kW.
-  //
-  // What IS a contradiction is one certificate covering products that land in
-  // DIFFERENT SEGMENTS — that would mean the overlay is pulling a product across the
-  // 23 kW line, and the catalogue would be lying about one of them.
+  // ── Local-ID integrity ────────────────────────────────────────────────────
+  // The rule is one local registration id → one confirmed canonical product. A
+  // certificate may well cover a family of packages, but the data cannot tell that
+  // apart from our matcher over-reaching, so an unproven one-to-many mapping is
+  // downgraded upstream and must never arrive here still confirmed.
   const byLocalId = {};
   items.filter(i => i.mcs_number).forEach(i => {
     (byLocalId[String(i.mcs_number)] ??= []).push(i);
   });
-  const sharedLocalIds = Object.values(byLocalId).filter(v => v.length > 1).length;
-  const conflictingLocalIds = Object.values(byLocalId)
-    .filter(v => new Set(v.map(segmentOf)).size > 1).length;
+  const localGroups = Object.entries(byLocalId);
+  const approvedIds = new Set(EXCEPTIONS.map(e => e.local_id));
+
+  const ambiguousConfirmed = localGroups.filter(([id, v]) =>
+    v.length > 1
+    && !(approvedIds.has(id) && v.every(x => x.pel_match_method === 'approved_one_to_many')));
+
+  const crossManufacturer = localGroups.filter(([, v]) =>
+    new Set(v.map(x => x.manufacturer_short ?? x.manufacturer)).size > 1);
+  const capacityConflict = localGroups.filter(([, v]) =>
+    new Set(v.map(x => Math.round((ratedCapacityKw(x) ?? 0) * 10))).size > 1);
+  const refrigerantConflict = localGroups.filter(([, v]) =>
+    new Set(v.map(x => x.refrigerant ?? '')).size > 1);
+  const typeConflict = localGroups.filter(([, v]) =>
+    new Set(v.map(x => x.installation_type ?? '')).size > 1
+    || new Set(v.map(x => x.type ?? '')).size > 1);
+  const segmentConflict = localGroups.filter(([, v]) => new Set(v.map(segmentOf)).size > 1);
+
+  const sharedLocalIds = localGroups.filter(([, v]) => v.length > 1).length;
+  const conflictingLocalIds = segmentConflict.length;
+  // Anything not confirmed must carry no identity at all, or the UI could imply a
+  // listing we never established.
+  const idWithoutConfirmation = items.filter(i => i.pel_match_status !== 'confirmed'
+    && (i.mcs_number || i.pel_source_id)).length;
 
   const m = {
     products: items.length,
@@ -151,6 +209,8 @@ for (const [cc, files] of Object.entries(DATASETS)) {
     local_ids: new Set(localIds).size,
     shared_local_ids: sharedLocalIds,
     conflicting_local_ids: conflictingLocalIds,
+    ambiguous_confirmed_local_ids: ambiguousConfirmed.length,
+    approved_one_to_many: EXCEPTIONS.length,
     source_snapshot: parts[0].data.meta.pel_snapshot ?? parts[0].data.meta.source_snapshot ?? null,
     generated_at: parts[0].data.meta.generated_at ?? null,
     hash: createHash('sha256').update(JSON.stringify(items.map(i => i.source_id).sort())).digest('hex').slice(0, 16),
@@ -159,8 +219,18 @@ for (const [cc, files] of Object.entries(DATASETS)) {
 
   // ── Absolute rules (no baseline needed) ────────────────────────────────────
   if (dupIds > 0) block(`[${cc}] ${dupIds} duplicate canonical ids (source_id) — the catalogue would show the same product twice`);
-  if (conflictingLocalIds > 0) block(`[${cc}] ${conflictingLocalIds} local registration ids cover canonical products in DIFFERENT SEGMENTS — the overlay is contradicting itself`);
-  if (sharedLocalIds > 0) warn(`[${cc}] ${sharedLocalIds} local registration ids cover several canonical packages (normal: one certificate, several packages — all in the same segment)`);
+  if (ambiguousConfirmed.length > 0) {
+    block(`[${cc}] ${ambiguousConfirmed.length} local ids are CONFIRMED for several canonical products without an approved exception `
+      + `(e.g. ${ambiguousConfirmed[0][0]} → ${ambiguousConfirmed[0][1].length} products). An unproven one-to-many mapping must be `
+      + `downgraded to verification-required, not published as a listing.`);
+  }
+  if (crossManufacturer.length > 0) block(`[${cc}] ${crossManufacturer.length} local ids are confirmed across DIFFERENT MANUFACTURERS — the match is wrong`);
+  if (capacityConflict.length > 0) block(`[${cc}] ${capacityConflict.length} local ids are confirmed across CONFLICTING rated capacities`);
+  if (refrigerantConflict.length > 0) block(`[${cc}] ${refrigerantConflict.length} local ids are confirmed across CONFLICTING refrigerants`);
+  if (typeConflict.length > 0) block(`[${cc}] ${typeConflict.length} local ids are confirmed across incompatible product families (type / monobloc-split)`);
+  if (conflictingLocalIds > 0) block(`[${cc}] ${conflictingLocalIds} local ids cover canonical products in DIFFERENT SEGMENTS — the overlay is contradicting itself`);
+  if (idWithoutConfirmation > 0) block(`[${cc}] ${idWithoutConfirmation} products carry a local registration id without a confirmed listing — that implies a listing we never established`);
+  if (sharedLocalIds > 0) warn(`[${cc}] ${sharedLocalIds} local ids cover several canonical products and are approved by an evidenced exception`);
   if (badCapacity > 0) block(`[${cc}] ${badCapacity} records have an implausible rated capacity`);
   if (missingModel > 0) block(`[${cc}] ${missingModel} records have no model name`);
   if (seg.unclassified > 0) block(`[${cc}] ${seg.unclassified} published products have no segment — every public product must be classifiable`);
@@ -176,7 +246,37 @@ for (const [cc, files] of Object.entries(DATASETS)) {
   if (confirmedWithoutId > 0) block(`[${cc}] ${confirmedWithoutId} products are marked listed with no local registration id`);
 }
 
+if (UNEVIDENCED.length) {
+  block(`${UNEVIDENCED.length} one-to-many exception(s) are approved with no evidence reference or no canonical ids — `
+    + `an exception without a document is an override in disguise (data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json)`);
+}
+
 // ── Compare with the last approved baseline ──────────────────────────────────
+if (FROM_LIVE) {
+  console.log('Reading the LIVE datasets from the production bucket to rebuild the baseline…');
+  const live = { generated_at: new Date().toISOString(), source: 'live-bucket', markets: {} };
+  for (const [cc, files] of Object.entries(DATASETS)) {
+    const items = files.flatMap(f => loadLive(f).items);
+    const seg = { residential: 0, commercial: 0, unclassified: 0 };
+    items.forEach(i => seg[segmentOf(i)]++);
+    live.markets[cc] = {
+      products: items.length,
+      data_sheet_eligible: items.filter(isDataSheetEligible).length,
+      with_rated_capacity: items.filter(i => ratedCapacityKw(i) != null).length,
+      residential: seg.residential, commercial: seg.commercial, unclassified: seg.unclassified,
+      manufacturers: new Set(items.map(i => i.manufacturer_short ?? i.manufacturer)).size,
+      local_confirmed: items.filter(i => i.pel_match_status === 'confirmed').length,
+      local_verification_required: items.filter(i => i.pel_match_status === 'verification_required').length,
+      hash: createHash('sha256').update(JSON.stringify(items.map(i => i.source_id).sort())).digest('hex').slice(0, 16),
+    };
+    console.log(`  [${cc}] live: ${items.length} products (${seg.residential} residential, ${seg.commercial} commercial, ${seg.unclassified} unclassified)`);
+  }
+  mkdirSync(resolve(ROOT, 'data_manifests'), { recursive: true });
+  writeFileSync(resolve(ROOT, BASELINE), JSON.stringify(live, null, 2) + '\n');
+  console.log(`\n✓ Baseline rebuilt from production: ${BASELINE}`);
+  process.exit(0);
+}
+
 const baseline = existsSync(resolve(ROOT, BASELINE)) ? JSON.parse(readFileSync(resolve(ROOT, BASELINE), 'utf8')) : null;
 const rows = [];
 
@@ -189,6 +289,25 @@ if (!baseline) {
 
     const d = (k) => fmtPct(cur[k], prev[k]);
     rows.push({ cc, prev, cur });
+
+    // A declared, one-time migration: the change gates below compare against the
+    // OLD architecture, so they would fire on a transition we have already approved.
+    // The allowance applies only when the candidate hits the declared target on the
+    // nose — otherwise something other than the migration is going on, and the normal
+    // gates must speak.
+    const mig = migrationActive ? migration.markets?.[cc] : null;
+    if (mig) {
+      const target = mig.target;
+      const hit = Object.entries(target).every(([k, v]) => cur[k] === v);
+      if (hit) {
+        console.log(`  [${cc}] migration allowance applied — candidate matches the declared target exactly `
+          + `(${Object.entries(target).map(([k, v]) => `${k}=${v}`).join(', ')})`);
+        continue;      // absolute checks above already ran; only the CHANGE gates are waived
+      }
+      block(`[${cc}] a migration allowance is declared but the candidate does NOT match its target: `
+        + Object.entries(target).map(([k, v]) => `${k} expected ${v}, got ${cur[k]}`).filter((_, i) => true).join('; '));
+      continue;
+    }
 
     if (d('products') < -T.productDropPct) {
       block(`[${cc}] product count fell ${d('products').toFixed(1)}% (${prev.products} → ${cur.products}), limit ${T.productDropPct}% — looks like a truncated source or a failed builder`);
@@ -224,7 +343,8 @@ for (const [cc, cur] of Object.entries(manifest.markets)) {
   console.log(`\n[${cc}]  ${'metric'.padEnd(28)} ${pad('previous', 9)} ${pad('candidate', 10)} ${pad('change', 8)}`);
   const metrics = ['products', 'data_sheet_eligible', 'residential', 'commercial', 'unclassified',
     'with_rated_capacity', 'local_confirmed', 'local_review_required', 'local_verification_required',
-    'duplicate_source_ids', 'conflicting_local_ids', 'manufacturers'];
+    'duplicate_source_ids', 'shared_local_ids', 'ambiguous_confirmed_local_ids', 'conflicting_local_ids',
+    'manufacturers'];
   for (const k of metrics) {
     const p = prev?.[k];
     const c = cur[k];

@@ -135,7 +135,7 @@ if (!existsSync(GB)) {
   console.log('  (datasets not built — gate simulation skipped)');
 } else {
   const root = process.cwd();
-  const gateBlocks = (mutate, label) => {
+  const gateBlocks = (mutate, extra = {}) => {
     const dir = mkdtempSync(join(tmpdir(), 'hpdb-gate-'));
     try {
       mkdirSync(join(dir, 'public/data'), { recursive: true });
@@ -146,10 +146,12 @@ if (!existsSync(GB)) {
         const j = JSON.parse(readFileSync(resolve(root, 'public/data', f), 'utf8'));
         writeFileSync(join(dir, 'public/data', f), JSON.stringify(mutate(j, f)));
       }
+      mkdirSync(join(dir, 'data_sources/manufacturer_cross_reference'), { recursive: true });
       writeFileSync(join(dir, 'scripts/dataset-gate.mjs'), readFileSync(resolve(root, 'scripts/dataset-gate.mjs')));
       writeFileSync(join(dir, 'scripts/lib/data-sheet-eligibility.mjs'), readFileSync(resolve(root, 'scripts/lib/data-sheet-eligibility.mjs')));
-      if (existsSync(resolve(root, 'data_manifests/production.json'))) {
-        writeFileSync(join(dir, 'data_manifests/production.json'), readFileSync(resolve(root, 'data_manifests/production.json')));
+      for (const f of ['data_manifests/production.json', 'data_manifests/migration.json',
+        'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json']) {
+        if (existsSync(resolve(root, f))) writeFileSync(join(dir, f), extra[f] ?? readFileSync(resolve(root, f)));
       }
       execFileSync(process.execPath, [join(dir, 'scripts/dataset-gate.mjs')], { cwd: dir, stdio: 'pipe' });
       return false;                       // exited 0 → it let the candidate through
@@ -187,6 +189,61 @@ if (!existsSync(GB)) {
       ...j,
       items: j.items.map(p => ({ ...p, bafa_listing_status: 'listed_in_snapshot' })),
     })), true);
+
+  console.log('\nPublication gate — local-ID integrity');
+  // One MCS number confirmed for two canonical products, with no approved exception.
+  is('an ambiguous one-to-many CONFIRMED listing is BLOCKED',
+    gateBlocks((j, f) => (f !== 'products-gb.json' ? j : {
+      ...j,
+      items: j.items.map((p, i) => (i < 2
+        ? { ...p, pel_match_status: 'confirmed', mcs_number: 'MCS-AMBIGUOUS-1', pel_match_method: 'exact_model' }
+        : p)),
+    })), true);
+  // The same thing, but with a document behind it → allowed.
+  {
+    // An approved exception still has to satisfy every compatibility check (§3.2):
+    // same manufacturer, same capacity, same refrigerant, same family. So the pair
+    // must be genuinely compatible — two packages of the same heat pump.
+    const all = JSON.parse(readFileSync(resolve(root, 'public/data/products-gb.json'), 'utf8')).items;
+    const key = p => `${p.manufacturer_short}|${p.type}|${p.refrigerant}|${p.installation_type}|${ratedCapacityKw(p)}`;
+    const groups = {};
+    all.forEach(p => { (groups[key(p)] ??= []).push(p); });
+    const two = Object.values(groups).find(v => v.length >= 2).slice(0, 2);
+    const exception = JSON.stringify({
+      version: 1,
+      exceptions: [{
+        local_source: 'PEL', local_id: 'MCS-APPROVED-1',
+        canonical_ids: two.map(p => String(p.source_id)),
+        evidence_reference: 'manufacturer cross-reference, doc ref TEST-2026-01', approved: true,
+      }],
+    });
+    const pairIds = new Set(two.map(p => String(p.source_id)));
+    is('…but an EVIDENCED one-to-many exception is allowed through',
+      gateBlocks((j, f) => (f !== 'products-gb.json' ? j : {
+        ...j,
+        items: j.items.map(p => (pairIds.has(String(p.source_id))
+          ? { ...p, pel_match_status: 'confirmed', mcs_number: 'MCS-APPROVED-1', pel_match_method: 'approved_one_to_many' }
+          : p)),
+      }), { 'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json': exception }), false);
+    // An exception with no document is an override in disguise.
+    const noEvidence = JSON.stringify({
+      version: 1,
+      exceptions: [{ local_source: 'PEL', local_id: 'MCS-APPROVED-1', canonical_ids: two.map(p => String(p.source_id)), approved: true }],
+    });
+    is('an exception with NO evidence reference is BLOCKED',
+      gateBlocks(j => j, { 'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json': noEvidence }), true);
+  }
+  is('a product carrying a PEL id WITHOUT a confirmed listing is BLOCKED',
+    gateBlocks((j, f) => (f !== 'products-gb.json' ? j : {
+      ...j,
+      items: j.items.map((p, i) => (i === 0 ? { ...p, pel_match_status: 'verification_required', mcs_number: 'MCS-LEAK' } : p)),
+    })), true);
+
+  console.log('\nMigration allowance is narrow — it waives change gates, nothing else');
+  is('the allowance does NOT waive duplicate ids',
+    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: [...j.items, j.items[0]] } : j)), true);
+  is('the allowance does NOT apply when the candidate misses its declared target',
+    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: j.items.slice(0, j.items.length - 5) } : j)), true);
 }
 
 console.log(failed ? `\n✗ ${failed} assertion(s) failed\n` : '\n✓ all architecture assertions passed\n');

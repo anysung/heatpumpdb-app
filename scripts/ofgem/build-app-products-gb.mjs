@@ -78,6 +78,7 @@ const generatedAt = new Date().toISOString();
 // ── Build ────────────────────────────────────────────────────────────────────
 function toGbItem(p) {
   const o = pelByBafaId.get(String(p.bafa_id)) ?? null;
+  const confirmed = o?.status === 'confirmed';
   const item = { ...p };
   for (const f of GERMAN_ONLY_FIELDS) delete item[f];
 
@@ -103,15 +104,19 @@ function toGbItem(p) {
     // 'verification_required' no reliable match. That is a statement about OUR
     //                         matching, not about the PEL: absence of a match is
     //                         not evidence of absence from the list.
-    pel_match_status: o?.status ?? 'verification_required',
-    mcs_number: o?.status === 'confirmed' ? o.mcs_number : null,
-    pel_source_id: o?.pel_source_id ?? null,
-    pel_match_method: o?.match_method ?? null,
-    pel_match_confidence: o?.match_confidence ?? null,
+    // Identity travels ONLY with a confirmed listing. An ambiguity-blocked candidate
+    // (one MCS number resolving to several canonical products) publishes no id, no
+    // method and no dates — asserting nothing. Its candidate ids and evidence live in
+    // the internal review file, where a human can settle them.
+    pel_match_status: confirmed ? 'confirmed' : (o?.status === 'review_required' ? 'review_required' : 'verification_required'),
+    mcs_number: confirmed ? o.mcs_number : null,
+    pel_source_id: confirmed ? o.pel_source_id ?? null : null,
+    pel_match_method: confirmed ? o.match_method ?? null : null,
+    pel_match_confidence: confirmed ? o.match_confidence ?? null : null,
     pel_snapshot: o?.pel_snapshot ?? SNAPSHOT ?? null,
     pel_snapshot_fetched_at: PEL_FETCHED_AT,
-    pel_first_matched_at: o?.first_matched_at ?? null,
-    pel_last_confirmed_at: o?.last_confirmed_at ?? null,
+    pel_first_matched_at: confirmed ? o.first_matched_at ?? null : null,
+    pel_last_confirmed_at: confirmed ? o.last_confirmed_at ?? null : null,
 
     source_snapshot_generated_at: generatedAt,
   };
@@ -155,11 +160,26 @@ if (noCap.length) fail(`${noCap.length} published products have no rated capacit
 const unclassified = items.filter(i => segmentOf(i) === 'unclassified');
 if (unclassified.length) fail(`${unclassified.length} published products are unclassified`);
 
-// The overlay may only say "confirmed" when a PEL id stands behind it.
+// The overlay may only say "confirmed" when a PEL id stands behind it — and nothing
+// that is NOT confirmed may carry an id, or the UI could imply a listing we did not
+// establish.
 const badListing = items.filter(i =>
   (i.pel_match_status === 'confirmed' && !i.mcs_number)
+  || (i.pel_match_status !== 'confirmed' && i.mcs_number)
   || !['confirmed', 'review_required', 'verification_required'].includes(i.pel_match_status));
 if (badListing.length) fail(`${badListing.length} products have an invalid PEL listing state`);
+
+// One local id, one confirmed product — unless an approved exception says otherwise.
+const byLocal = new Map();
+items.filter(i => i.pel_match_status === 'confirmed').forEach(i => {
+  if (!byLocal.has(i.mcs_number)) byLocal.set(i.mcs_number, []);
+  byLocal.get(i.mcs_number).push(i);
+});
+const stillAmbiguous = [...byLocal.entries()].filter(([, v]) =>
+  v.length > 1 && !v.every(x => x.pel_match_method === 'approved_one_to_many'));
+if (stillAmbiguous.length) {
+  fail(`${stillAmbiguous.length} local ids are confirmed for several canonical products without an approved exception`);
+}
 
 // ── Write ────────────────────────────────────────────────────────────────────
 const confirmed = items.filter(i => i.pel_match_status === 'confirmed').length;

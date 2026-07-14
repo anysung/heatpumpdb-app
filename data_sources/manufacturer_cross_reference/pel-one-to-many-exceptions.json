@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "note": "Approved exceptions to the one-local-id → one-canonical-product rule. An entry here says: this exact local registration identifier legitimately covers ALL of these canonical products, and here is the document that proves it. Without an entry, an ambiguous mapping is downgraded to 'PEL verification required' — the canonical products stay published, they simply carry no confirmed listing. Never add an entry because the products merely look similar or share a segment.",
+  "required_evidence": [
+    "official manufacturer cross-reference, OR",
+    "official PEL/MCS documentation, OR",
+    "an official certification document listing the exact product packages"
+  ],
+  "checks_before_approving": [
+    "same manufacturer",
+    "same official product family",
+    "exact supported package relationship",
+    "compatible outdoor unit",
+    "compatible indoor unit / package configuration",
+    "no refrigerant conflict",
+    "no monobloc/split conflict",
+    "no material product-generation conflict",
+    "no rated-capacity conflict",
+    "an exact evidence reference"
+  ],
+  "exceptions": []
+}

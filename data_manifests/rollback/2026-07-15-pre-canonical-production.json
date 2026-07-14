@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-07-14T22:17:07.112Z",
+  "source": "live-bucket",
+  "markets": {
+    "DE": {
+      "products": 7155,
+      "data_sheet_eligible": 7063,
+      "with_rated_capacity": 7155,
+      "residential": 5208,
+      "commercial": 1947,
+      "unclassified": 0,
+      "manufacturers": 231,
+      "local_confirmed": 0,
+      "local_verification_required": 0,
+      "hash": "2b2265c841b958e8"
+    },
+    "GB": {
+      "products": 6367,
+      "data_sheet_eligible": 1853,
+      "with_rated_capacity": 3622,
+      "residential": 1609,
+      "commercial": 2013,
+      "unclassified": 2745,
+      "manufacturers": 207,
+      "local_confirmed": 0,
+      "local_verification_required": 0,
+      "hash": "fd7e0745c17b7bab"
+    },
+    "FR": {
+      "products": 7155,
+      "data_sheet_eligible": 7063,
+      "with_rated_capacity": 7155,
+      "residential": 5208,
+      "commercial": 1947,
+      "unclassified": 0,
+      "manufacturers": 231,
+      "local_confirmed": 0,
+      "local_verification_required": 0,
+      "hash": "2b2265c841b958e8"
+    }
+  }
+}

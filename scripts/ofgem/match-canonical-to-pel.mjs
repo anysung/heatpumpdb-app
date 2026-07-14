@@ -75,8 +75,25 @@ const xref = existsSync(resolve(ROOT, XREF_PATH))
   ? (loadJSON(XREF_PATH).mappings ?? []).filter(m => m.local_registry === 'PEL')
   : [];
 
+/**
+ * Approved one-to-many exceptions. Default rule: ONE local registration identifier
+ * confirms ONE canonical product. If an MCS number lands on several canonical
+ * products, we cannot tell which one Ofgem actually listed — the certificate may
+ * cover them all, or it may cover exactly one and our matcher over-reached. Both
+ * are plausible, so neither is asserted: the products stay published and simply
+ * carry no confirmed listing.
+ *
+ * An entry in this file is a document saying the identifier really does cover all
+ * of those products. Only then is a one-to-many mapping confirmed.
+ */
+const EXC_PATH = 'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json';
+const exceptions = existsSync(resolve(ROOT, EXC_PATH))
+  ? (loadJSON(EXC_PATH).exceptions ?? []).filter(e => e.local_source === 'PEL' && e.approved && e.evidence_reference)
+  : [];
+const exceptionFor = localId => exceptions.find(e => e.local_id === localId) ?? null;
+
 console.log(`canonical products: ${canonical.length} | PEL heat pumps: ${pel.length} (snapshot ${SNAPSHOT})`);
-console.log(`official manufacturer cross-references: ${xref.length}`);
+console.log(`official manufacturer cross-references: ${xref.length} | approved one-to-many exceptions: ${exceptions.length}`);
 console.log(`match history: ${Object.keys(history.matches).length} previously confirmed mappings`);
 
 // ── PEL candidate pool, indexed by the brand short name ──────────────────────
@@ -179,6 +196,64 @@ for (const m of xref) {
 }
 if (official) { stats.confirmed += official; byMethod.manufacturer_official = official; }
 
+// ── Ambiguity block: one local id must confirm exactly one canonical product ──
+//
+// 54 MCS numbers land on more than one canonical product. A certificate covering a
+// whole family of packages is entirely plausible (one Clivet number covers five
+// packages of the same heat pump) — and so is our matcher having over-reached. We
+// cannot tell the two apart from the data, so we assert neither: every affected
+// product KEEPS its place in the catalogue, its specs and its segment, and simply
+// loses the confirmed listing until a document settles it.
+const confirmedByLocalId = new Map();
+for (const e of overlay.values()) {
+  if (e.status !== 'confirmed') continue;
+  if (!confirmedByLocalId.has(e.mcs_number)) confirmedByLocalId.set(e.mcs_number, []);
+  confirmedByLocalId.get(e.mcs_number).push(e);
+}
+
+const ambiguous = [];
+let downgraded = 0, exceptionApplied = 0;
+for (const [localId, entries] of confirmedByLocalId) {
+  if (entries.length < 2) continue;
+
+  const exc = exceptionFor(localId);
+  const covers = exc && entries.every(e => exc.canonical_ids.map(String).includes(e.bafa_id))
+    && exc.canonical_ids.length === entries.length;
+  if (covers) {
+    // The document says this identifier really does cover all of them.
+    entries.forEach(e => { e.match_method = 'approved_one_to_many'; e.match_confidence = 'official'; e.evidence = exc.evidence_reference; });
+    exceptionApplied++;
+    continue;
+  }
+
+  ambiguous.push({
+    local_id: localId,
+    canonical_ids: entries.map(e => e.bafa_id),
+    canonical_count: entries.length,
+    reason: exc
+      ? 'an exception exists but does not cover exactly this set of canonical products'
+      : 'one local registration id resolved to several canonical products, and no official document says it covers them all',
+  });
+  for (const e of entries) {
+    downgraded++;
+    // The identifier and the evidence survive INTERNALLY, for review. The public
+    // record carries neither (the builder only publishes an id for a confirmed listing).
+    overlay.set(e.bafa_id, {
+      ...e,
+      status: 'verification_required',
+      ambiguity_blocked: true,
+      blocked_local_id: e.mcs_number,
+      blocked_with_canonical_ids: entries.map(x => x.bafa_id),
+      previous_status: 'confirmed_candidate',
+    });
+  }
+}
+stats.confirmed -= downgraded;
+stats.ambiguity_blocked = downgraded;
+stats.ambiguous_local_ids = ambiguous.length;
+stats.approved_one_to_many = exceptionApplied;
+review.push(...ambiguous.map(a => ({ ...a, kind: 'ambiguous_one_to_many' })));
+
 // ── Match stability: a confirmed mapping that stopped matching ───────────────
 // It does NOT become "not listed". Ofgem removing a product is possible; a
 // matcher or parser regression is far likelier, and only the source can prove
@@ -197,6 +272,14 @@ for (const [id, prev] of Object.entries(history.matches)) {
     lost_in_snapshot: SNAPSHOT,
     last_confirmed_at: prev.last_confirmed_at ?? null,
   });
+}
+
+// The method tally must describe what is actually CONFIRMED, not what was proposed
+// before the ambiguity block removed 260 of them.
+for (const k of Object.keys(byMethod)) delete byMethod[k];
+for (const e of overlay.values()) {
+  if (e.status !== 'confirmed') continue;
+  byMethod[e.match_method] = (byMethod[e.match_method] ?? 0) + 1;
 }
 
 // ── Write ────────────────────────────────────────────────────────────────────
@@ -248,7 +331,7 @@ writeFileSync(resolve(outDir, 'canonical-pel-followup.json'), JSON.stringify({
 // last confirmed state, so a recovered match resumes its original first_matched_at).
 const nextHistory = { ...history, updated_at: NOW, matches: { ...history.matches } };
 for (const e of overlay.values()) {
-  if (e.status !== 'confirmed') continue;
+  if (e.status !== 'confirmed') continue;   // an ambiguity-blocked candidate was never confirmed
   nextHistory.matches[e.bafa_id] = {
     mcs_number: e.mcs_number, pel_source_id: e.pel_source_id,
     match_method: e.match_method, match_confidence: e.match_confidence,
@@ -261,6 +344,8 @@ writeFileSync(resolve(ROOT, HISTORY_PATH), JSON.stringify(nextHistory, null, 2) 
 console.log('\n── Canonical → PEL overlay ────────────────────────────────');
 console.log(`confirmed listings:        ${stats.confirmed}  (${Object.entries(byMethod).map(([m, n]) => `${m}: ${n}`).join(', ')})`);
 console.log(`  listed by several PEL rows: ${stats.ambiguous}`);
+console.log(`ambiguous local ids blocked:  ${stats.ambiguous_local_ids} ids → ${stats.ambiguity_blocked} products downgraded to verification-required`);
+console.log(`approved one-to-many exceptions: ${stats.approved_one_to_many}`);
 console.log(`review candidates (ODU only): ${stats.review_candidate}`);
 console.log(`previously confirmed, now unmatched → review_required: ${lost}`);
 console.log(`no PEL candidate:          ${stats.no_candidate}`);

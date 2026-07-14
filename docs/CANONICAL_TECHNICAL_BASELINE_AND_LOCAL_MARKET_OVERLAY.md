@@ -155,8 +155,22 @@ It never borrows another country's, and it never invents a neutral-sounding one.
 | Market | Public products | Local overlay | Confirmed | Verification required |
 |---|---:|---|---:|---:|
 | DE | 7,063 | BAFA (owns its registry) | — | — |
-| GB | 7,063 | Ofgem PEL | 781 | 6,282 |
+| GB | 7,063 | Ofgem PEL | 521 | 6,542 |
 | FR | 7,063 | none | — | — |
 
-The UK went from 6,366 records (2,134 of them unclassifiable) to 7,063 products
+The UK went from 6,365 records (2,134 of them unclassifiable) to 7,063 products
 that all have a capacity, a segment and a data sheet.
+
+## 10. One local id confirms one product
+
+An MCS certificate that lands on several canonical products is not evidence that it
+covers them all — it is equally evidence that our matcher over-reached. We cannot
+tell the two apart from the data, so we assert neither: the products stay published,
+with their specs and their segment, and simply carry no confirmed listing until a
+document settles it. 54 identifiers (260 products) are blocked this way today, which
+is why the confirmed count is 521 and not 781.
+
+An approved exception (`data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json`)
+may confirm a one-to-many mapping, but only with an evidence reference AND full
+technical compatibility — same manufacturer, capacity, refrigerant and family. An
+exception without a document is an override in disguise, and the gate blocks it.

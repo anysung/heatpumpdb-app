@@ -1,0 +1,58 @@
+{
+  "id": "2026-07-canonical-baseline",
+  "reason": "One-time migration from the legacy PEL-first UK catalogue to the canonical technical baseline + local listing overlay (docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md). The UK product population changes wholesale — 4,422 PEL-sourced records (2,134 of them with no capacity, no segment, no data sheet) are replaced by the 7,063 Data-Sheet-eligible canonical products. DE and FR shed the 133 canonical candidates that fail the new shared eligibility rule. The normal change gates compare against the OLD architecture, so they would fire on a transition that has already been approved.",
+  "scope": "Waives ONLY the change gates (product-count drop, eligibility drop, local-match collapse, segment shift) and ONLY when the candidate hits the declared target exactly. Every absolute check still runs: duplicate ids, missing capacity, unclassified products, ambiguous confirmed listings, listing without an id, German fields outside Germany, zero-record parse, missing dataset.",
+  "declared_at": "2026-07-15",
+  "expires_after": "2026-08-15T00:00:00.000Z",
+  "completed_at": "2026-07-15",
+  "legacy_production": {
+    "GB": {
+      "products": 6367,
+      "residential": 1609,
+      "commercial": 2013,
+      "unclassified": 2745
+    },
+    "DE": {
+      "products": 7155,
+      "residential": 5208,
+      "commercial": 1947,
+      "unclassified": 0
+    },
+    "FR": {
+      "products": 7155,
+      "residential": 5208,
+      "commercial": 1947,
+      "unclassified": 0
+    }
+  },
+  "markets": {
+    "DE": {
+      "target": {
+        "products": 7063,
+        "data_sheet_eligible": 7063,
+        "residential": 5207,
+        "commercial": 1856,
+        "unclassified": 0
+      }
+    },
+    "GB": {
+      "target": {
+        "products": 7063,
+        "data_sheet_eligible": 7063,
+        "residential": 5207,
+        "commercial": 1856,
+        "unclassified": 0
+      }
+    },
+    "FR": {
+      "target": {
+        "products": 7063,
+        "data_sheet_eligible": 7063,
+        "residential": 5207,
+        "commercial": 1856,
+        "unclassified": 0
+      }
+    }
+  },
+  "completed_note": "Published 2026-07-15: datasets uploaded, remote hashes verified against the local candidate, production manifest approved, UK hosting deployed. The allowance is now inert — a future update is measured against the canonical baseline, not the legacy one."
+}

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T21:35:35.861Z",
+  "generated_at": "2026-07-14T22:28:19.053Z",
   "markets": {
     "DE": {
       "products": 7063,
@@ -18,6 +18,8 @@
       "local_ids": 0,
       "shared_local_ids": 0,
       "conflicting_local_ids": 0,
+      "ambiguous_confirmed_local_ids": 0,
+      "approved_one_to_many": 0,
       "source_snapshot": null,
       "generated_at": null,
       "hash": "73ec1d387c734198"
@@ -33,14 +35,16 @@
       "invalid_capacities": 0,
       "missing_model": 0,
       "manufacturers": 231,
-      "local_confirmed": 781,
+      "local_confirmed": 521,
       "local_review_required": 0,
-      "local_verification_required": 6282,
-      "local_ids": 575,
-      "shared_local_ids": 54,
+      "local_verification_required": 6542,
+      "local_ids": 521,
+      "shared_local_ids": 0,
       "conflicting_local_ids": 0,
+      "ambiguous_confirmed_local_ids": 0,
+      "approved_one_to_many": 0,
       "source_snapshot": "2026-06",
-      "generated_at": "2026-07-14T21:35:35.583Z",
+      "generated_at": "2026-07-14T22:15:39.033Z",
       "hash": "73ec1d387c734198"
     },
     "FR": {
@@ -60,6 +64,8 @@
       "local_ids": 0,
       "shared_local_ids": 0,
       "conflicting_local_ids": 0,
+      "ambiguous_confirmed_local_ids": 0,
+      "approved_one_to_many": 0,
       "source_snapshot": null,
       "generated_at": null,
       "hash": "73ec1d387c734198"
