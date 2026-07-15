@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS } from '../market';
-import { LEGAL_ROUTES, LegalDoc, SUPPORT_EMAIL } from '../../config/legal';
+import { LEGAL_ROUTES, LegalDoc, SUPPORT_EMAIL, MARKETING_EMAIL } from '../../config/legal';
 import { LEGAL_NAV } from '../../legal/LegalPage';
 import { openCheckout, portalUrlFor, checkoutConfigured } from '../../services/paddleService';
 import { SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, formatEur, isTeamPlan, subscriptionUnlocked } from '../../config/subscriptionPlans';
@@ -521,13 +521,23 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
       <div style={card}>
         <span style={sectionLabel}>{t.account.support}</span>
         <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.account.supportText}</span>
-        <a href={`mailto:${SUPPORT_EMAIL}`} style={{ fontSize: 12.5, color: '#0066cc', textDecoration: 'none' }} data-testid="support-email">{SUPPORT_EMAIL}</a>
+        {/* The raw support address is no longer shown here (parity with the
+            desktop Account Support card, 8fe2a80); the contact action still uses it. */}
         <span
           onClick={() => { window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(t.account.supportSubject)}&body=${encodeURIComponent(t.account.supportBody(app.user.email))}`; }}
           style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}
+          data-testid="mobile-contact-support"
         >
           {t.account.contactSupport}
         </span>
+      </div>
+
+      {/* Advertising & partnerships — compact, direct email only (no form / CTA /
+          admin workflow); mirrors the desktop card. Shared i18n keys (8fe2a80). */}
+      <div style={card}>
+        <span style={sectionLabel}>{t.account.adPartner}</span>
+        <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.account.adPartnerText}</span>
+        <a href={`mailto:${MARKETING_EMAIL}`} style={{ fontSize: 12.5, color: '#0066cc', textDecoration: 'none' }} data-testid="marketing-email">{MARKETING_EMAIL}</a>
       </div>
 
       <div style={card}>
