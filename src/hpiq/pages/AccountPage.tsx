@@ -23,7 +23,7 @@ import {
   TeamSummaryCard, YourTeamCard, TeamManagementView, PoliciesCard,
 } from './accountParts';
 import { previewOrg } from '../devPreview';
-import { SUPPORT_EMAIL } from '../../config/legal';
+import { MARKETING_EMAIL } from '../../config/legal';
 
 const statusChip = (status: string, label: string) => (
   <span style={{
@@ -96,7 +96,6 @@ const SupportCard: React.FC<{ app: HpApp }> = ({ app }) => {
         </span>
       </div>
       <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.supportText}</span>
-      <a href={`mailto:${SUPPORT_EMAIL}`} style={{ fontSize: 12.5, color: '#0066cc', textDecoration: 'none' }} data-testid="support-email">{SUPPORT_EMAIL}</a>
 
       {showForm && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, border: '1px solid #e0e0e0', borderRadius: 12, padding: 14, background: '#fafafa' }}>
@@ -457,6 +456,19 @@ const SubscriptionSection: React.FC<{ app: HpApp; org: Organization | null; onBi
   );
 };
 
+/** Compact direct-email card for advertising / business enquiries. No form,
+ *  no admin workflow — a mailto link only (marketing@heatpumpdb.eu). */
+const AdvertisingCard: React.FC<{ app: HpApp }> = ({ app }) => {
+  const t = tr(app.lang);
+  return (
+    <Card style={{ gap: 9 }}>
+      <CardTitle>{t.account.adPartner}</CardTitle>
+      <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.adPartnerText}</span>
+      <a href={`mailto:${MARKETING_EMAIL}`} style={{ fontSize: 13, color: '#0066cc', textDecoration: 'none', marginTop: 2 }} data-testid="marketing-email">{MARKETING_EMAIL}</a>
+    </Card>
+  );
+};
+
 export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
   const { user } = app;
@@ -543,73 +555,95 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
       {/* 1. Subscription & billing (a member sees their company's plan, read-only) */}
       <SubscriptionSection app={app} org={org} onBilling={openBillingPortal} />
 
-      {/* 2. Profile — company (professional / owner) or personal (team member) */}
-      <div className="hpiq-acc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-        {isMember
-          ? <PersonalProfileCard app={app} org={org} />
-          : <CompanyProfileCard app={app} org={org} isOwner={isOwner} onOrgChanged={setOrg} />}
+      {/* 2. Cards — two independent columns on desktop, a single stack on mobile.
+          Card ORDER is set per card so both layouts are correct from ONE DOM tree:
+          on desktop each column sorts its own cards (values are DOM-ascending, so no
+          visual change); on mobile the columns become `display:contents` and all
+          cards sort into the required single-column sequence 1..7. Adding a country
+          changes nothing here — the layout is shared, differences are config only.
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {/* 3. Team — management for the owner, read-only for a member */}
-          {isOwner && org && <TeamSummaryCard app={app} org={org} onManage={() => setView('team')} />}
-          {isMember && org && <YourTeamCard app={app} org={org} onLeft={() => setOrg(null)} />}
-
-          {/* 4. App language */}
-          <Card style={{ gap: 12 }}>
-            <CardTitle>{t.account.language}</CardTitle>
-            <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
-              {(([['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
-                .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
-                <span
-                  key={id}
-                  onClick={() => app.setLang(id)}
-                  style={{
-                    padding: '7px 18px', cursor: 'pointer',
-                    ...(app.lang === id ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
-                  }}
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-            <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.account.languageNote}</span>
-          </Card>
+          LEFT : Company profile · Support · Terms & policies
+          RIGHT: (Team) · App language · Email & password · Advertising · Delete
+          Mobile: Company · App language · Email · Support · Advertising · Terms · Delete */}
+      <div className="hpiq-acc-cols">
+        <div className="hpiq-acc-col">
+          {/* L1 · Company (or personal, for a team member) profile */}
+          <div style={{ order: 1 }}>
+            {isMember
+              ? <PersonalProfileCard app={app} org={org} />
+              : <CompanyProfileCard app={app} org={org} isOwner={isOwner} onOrgChanged={setOrg} />}
+          </div>
+          {/* L2 · Support */}
+          <div style={{ order: 4 }}><SupportCard app={app} /></div>
+          {/* L3 · Terms & policies */}
+          <div style={{ order: 6 }}><PoliciesCard app={app} /></div>
         </div>
-      </div>
 
-      {/* 5. Email & password + 6. Support */}
-      <div className="hpiq-acc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-        <Card style={{ gap: 9 }}>
-          <CardTitle>{t.account.security}</CardTitle>
-          <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.securityText}</span>
-          <span onClick={sendSetupLink} style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>{t.account.sendLink(user.email)}</span>
-        </Card>
-        <SupportCard app={app} />
-      </div>
+        <div className="hpiq-acc-col">
+          {/* Role-based: Team management (owner) / Your team (member) — sits at the
+              top of the right column, and right after Company profile on mobile. */}
+          {isOwner && org && <div style={{ order: 1 }}><TeamSummaryCard app={app} org={org} onManage={() => setView('team')} /></div>}
+          {isMember && org && <div style={{ order: 1 }}><YourTeamCard app={app} org={org} onLeft={() => setOrg(null)} /></div>}
 
-      {/* 7. Terms & policies + 8. Delete account */}
-      <div className="hpiq-acc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-        <PoliciesCard app={app} />
-        <Card style={{ gap: 10 }}>
-          <CardTitle>{t.account.del}</CardTitle>
-          <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.delText}</span>
-          <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.55, border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', background: '#f5f5f7' }}>
-            {t.account.delStoreNote}
-          </span>
-          {isOwner && org && org.members.length > 1 && (
-            <span style={{ fontSize: 12, color: '#9a6b00', lineHeight: 1.55, border: '1px solid #e8d9b5', borderRadius: 8, padding: '10px 14px', background: '#fdf8ec' }} data-testid="owner-delete-blocked">
-              {t.account.delOwnerBlocked}
-            </span>
-          )}
-          <span
-            className="hp-press"
-            onClick={deleteAccount}
-            style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 20px', fontSize: 13, background: '#fff', cursor: 'pointer', width: 'fit-content', color: '#c0392b' }}
-            data-testid="delete-account"
-          >
-            {t.account.delBtn}
-          </span>
-        </Card>
+          {/* R1 · App language */}
+          <div style={{ order: 2 }}>
+            <Card style={{ gap: 12 }}>
+              <CardTitle>{t.account.language}</CardTitle>
+              <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
+                {(([['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
+                  .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
+                  <span
+                    key={id}
+                    onClick={() => app.setLang(id)}
+                    style={{
+                      padding: '7px 18px', cursor: 'pointer',
+                      ...(app.lang === id ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : { color: '#1d1d1f' }),
+                    }}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+              <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.account.languageNote}</span>
+            </Card>
+          </div>
+
+          {/* R2 · Email & password */}
+          <div style={{ order: 3 }}>
+            <Card style={{ gap: 9 }}>
+              <CardTitle>{t.account.security}</CardTitle>
+              <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.securityText}</span>
+              <span onClick={sendSetupLink} style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>{t.account.sendLink(user.email)}</span>
+            </Card>
+          </div>
+
+          {/* R3 · Advertising & partnerships */}
+          <div style={{ order: 5 }}><AdvertisingCard app={app} /></div>
+
+          {/* R4 · Delete account */}
+          <div style={{ order: 7 }}>
+            <Card style={{ gap: 10 }}>
+              <CardTitle>{t.account.del}</CardTitle>
+              <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.delText}</span>
+              <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.55, border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', background: '#f5f5f7' }}>
+                {t.account.delStoreNote}
+              </span>
+              {isOwner && org && org.members.length > 1 && (
+                <span style={{ fontSize: 12, color: '#9a6b00', lineHeight: 1.55, border: '1px solid #e8d9b5', borderRadius: 8, padding: '10px 14px', background: '#fdf8ec' }} data-testid="owner-delete-blocked">
+                  {t.account.delOwnerBlocked}
+                </span>
+              )}
+              <span
+                className="hp-press"
+                onClick={deleteAccount}
+                style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 20px', fontSize: 13, background: '#fff', cursor: 'pointer', width: 'fit-content', color: '#c0392b' }}
+                data-testid="delete-account"
+              >
+                {t.account.delBtn}
+              </span>
+            </Card>
+          </div>
+        </div>
       </div>
 
       {/* Fair use: one-person accounts + no data extraction */}

@@ -123,3 +123,17 @@
 @media screen and (max-width: 860px) {
   .hpiq-acc-grid { grid-template-columns: 1fr !important; }
 }
+
+/* Account card layout — ONE DOM tree drives both breakpoints (AccountPage.tsx).
+   Desktop: two independent columns, each packing its own cards (independent
+   heights, no row-alignment gaps). Each card carries an `order`; within a column
+   the values are already DOM-ascending, so desktop looks exactly as written.
+   Mobile: the two column boxes become `display:contents`, so every card is a
+   direct child of .hpiq-acc-cols and the `order` values (1..7) resolve to the
+   required single-column sequence. No horizontal overflow, no empty cells. */
+.hpiq-acc-cols { display: flex; gap: 20px; align-items: flex-start; }
+.hpiq-acc-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+@media screen and (max-width: 860px) {
+  .hpiq-acc-cols { flex-direction: column; }
+  .hpiq-acc-col { display: contents; }
+}

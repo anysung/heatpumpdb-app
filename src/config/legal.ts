@@ -19,6 +19,9 @@ export const SERVICE_NAME = 'HeatPump DataBase (Europe)';
 /** The single customer-facing support address (policies, Imprint, Account). */
 export const SUPPORT_EMAIL = 'support@heatpumpdb.eu';
 
+/** Advertising / business-partnership contact — Account "Advertising & partnerships" card only. */
+export const MARKETING_EMAIL = 'marketing@heatpumpdb.eu';
+
 /** Bump when the wording changes materially; stamped on the profile at signup. */
 export const TERMS_VERSION = '2026-07-14';
 export const PRIVACY_VERSION = '2026-07-14';
