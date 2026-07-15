@@ -240,10 +240,22 @@ if (!existsSync(GB)) {
     })), true);
 
   console.log('\nMigration allowance is narrow — it waives change gates, nothing else');
+  // These two assertions only mean something while a migration allowance is ACTIVE.
+  // The real data_manifests/migration.json is a one-time record that is now marked
+  // completed, so the sandbox provisions its own ACTIVE allowance (test-only,
+  // deterministic) rather than depending on that live state.
+  const activeMigration = JSON.stringify({
+    ...(existsSync(resolve(root, 'data_manifests/migration.json'))
+      ? JSON.parse(readFileSync(resolve(root, 'data_manifests/migration.json'), 'utf8'))
+      : {}),
+    completed_at: null,
+    expires_after: '2099-01-01T00:00:00.000Z',
+  });
+  const withActiveMigration = { 'data_manifests/migration.json': activeMigration };
   is('the allowance does NOT waive duplicate ids',
-    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: [...j.items, j.items[0]] } : j)), true);
+    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: [...j.items, j.items[0]] } : j), withActiveMigration), true);
   is('the allowance does NOT apply when the candidate misses its declared target',
-    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: j.items.slice(0, j.items.length - 5) } : j)), true);
+    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: j.items.slice(0, j.items.length - 5) } : j), withActiveMigration), true);
 }
 
 console.log(failed ? `\n✗ ${failed} assertion(s) failed\n` : '\n✓ all architecture assertions passed\n');
