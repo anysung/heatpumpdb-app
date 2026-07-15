@@ -29,12 +29,12 @@ const check = (n, ok, d = '') => {
 // DE and GB default to English UI, France to French (market.ts DEFAULT_LANGUAGE).
 const EN = { language: 'App language.', support: 'Support.', ad: 'Advertising & partnerships.',
   adBody: 'Advertising inquiries and business opportunities.', terms: 'Terms & policies.',
-  contact: 'Contact support & view replies ›', account: 'Account' };
+  contact: 'Contact support & view replies ›', account: 'Account', mine: 'My inquiries' };
 const LABELS = {
   DE: EN, GB: EN,
   FR: { language: 'Langue de l’application.', support: 'Support.', ad: 'Publicité & partenariats.',
     adBody: 'Demandes publicitaires et opportunités commerciales.', terms: 'Conditions & politiques.',
-    contact: 'Contacter le support & voir les réponses ›', account: 'Compte' },
+    contact: 'Contacter le support & voir les réponses ›', account: 'Compte', mine: 'Mes demandes' },
 }[COUNTRY];
 
 const browser = await chromium.launch();
@@ -60,13 +60,17 @@ async function run(role) {
   const L = LABELS;
   const body = await page.locator('body').innerText();
 
-  // ── Support card: raw address gone, wording + contact action kept ──
+  // ── Support card: raw address gone; action opens the in-app inquiry, not mailto ──
   check('[support] the raw support@heatpumpdb.eu address is NOT shown',
     !body.includes('support@heatpumpdb.eu') && (await page.locator('[data-testid="support-email"]').count()) === 0,
     'the raw support address is still visible on the phone Account screen');
   check('[support] the Support section is still present', body.includes(L.support));
   const contact = page.locator('[data-testid="mobile-contact-support"]');
-  check('[support] the contact-support action still works', (await contact.count()) === 1 && (await contact.first().innerText()).includes(L.contact.replace(' ›', '')));
+  check('[support] the contact-support action is present', (await contact.count()) === 1 && (await contact.first().innerText()).includes(L.contact.replace(' ›', '')));
+  // It must NOT be a mailto: no href, and nowhere on the screen is a mailto:support link.
+  check('[support] the action is NOT a mailto link',
+    (await contact.first().getAttribute('href')) == null
+    && (await page.locator('a[href^="mailto:support"]').count()) === 0);
 
   // ── Advertising & partnerships (compact, mailto only) ──
   const ad = page.locator('[data-testid="marketing-email"]');
@@ -96,11 +100,35 @@ async function run(role) {
     ySupport != null && yAd != null && yTerms != null && ySupport < yAd && yAd < yTerms,
     `y: support=${ySupport} ad=${yAd} terms=${yTerms}`);
 
-  // ── No horizontal overflow ──
+  // ── No horizontal overflow (account list) ──
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   check('[layout] no horizontal overflow', !overflow, `scrollW ${await page.evaluate(() => document.documentElement.scrollWidth)} vs ${390}`);
-
   check('the account screen rendered for this role', body.length > 200);
+
+  // ── Support subview: the SAME in-app inquiry workflow as desktop (done last, as
+  //    it navigates away from the account list) ──
+  await contact.first().click();
+  await page.waitForTimeout(600);
+  check('[support] clicking Support opens the in-app inquiry view',
+    (await page.locator('[data-testid="support-new-inquiry"]').count()) === 1);
+  check('[support] the raw address does not appear in the inquiry view either',
+    !(await page.locator('body').innerText()).includes('support@heatpumpdb.eu'));
+  // New Inquiry → category, subject, message, send.
+  await page.locator('[data-testid="support-new-inquiry"]').first().click();
+  await page.waitForTimeout(300);
+  for (const f of ['support-form', 'support-category', 'support-subject', 'support-message', 'support-send']) {
+    check(`[support] inquiry form has ${f.replace('support-', '')}`, (await page.locator(`[data-testid="${f}"]`).count()) === 1);
+  }
+  check('[support] "My inquiries" section is shown', (await page.locator('body').innerText()).includes(L.mine));
+  check('[support] the inquiry view has no horizontal overflow',
+    !(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)));
+  // Back returns to the phone Account (Advertising card visible again).
+  await page.locator('[data-testid="support-back"]').first().click();
+  await page.waitForTimeout(500);
+  check('[support] Back returns to the phone Account',
+    (await page.locator('[data-testid="marketing-email"]').count()) === 1
+    && (await page.locator('[data-testid="support-new-inquiry"]').count()) === 0);
+
   check('no page errors', errors.length === 0, errors[0] ?? '');
   await ctx.close();
 }

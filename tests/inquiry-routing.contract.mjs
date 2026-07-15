@@ -55,6 +55,25 @@ console.log('\nThe data model carries the country');
 const types = read('src/types.ts');
 check('SupportTicket has a country field', /interface SupportTicket\s*\{[^}]*\bcountry\b/.test(types));
 
+console.log('\nOne inquiry workflow — desktop AND phone use the shared SupportCard');
+// The phone shell must not have its own support path. It reuses the exact same
+// SupportCard (→ same createTicket → same country tagging → same Admin routing).
+const parts = read('src/hpiq/pages/accountParts.tsx');
+check('the shared SupportCard is exported from accountParts',
+  /export const SupportCard/.test(parts));
+check('the shared SupportCard calls createTicket (the country-tagging path)',
+  /createTicket\(/.test(parts) && /from '\.\.\/\.\.\/services\/supportService'/.test(parts));
+const desktop = read('src/hpiq/pages/AccountPage.tsx');
+check('the desktop Account page imports SupportCard from accountParts',
+  /import\s*\{[^}]*\bSupportCard\b[^}]*\}\s*from\s*'\.\/accountParts'/.test(desktop));
+const mobile = read('src/hpiq/mobile/MobileApp.tsx');
+check('the phone shell imports the SAME SupportCard from accountParts',
+  /import\s*\{\s*SupportCard\s*\}\s*from\s*'\.\.\/pages\/accountParts'/.test(mobile));
+check('the phone shell no longer references SUPPORT_EMAIL (no mailto support)',
+  !/SUPPORT_EMAIL/.test(mobile));
+check('the phone Support action opens the in-app inquiry (setSupportOpen), not a mailto',
+  /setSupportOpen\(true\)/.test(mobile) && !/mailto:\$\{SUPPORT_EMAIL\}/.test(mobile));
+
 console.log('\nThe layout task did not touch the routing');
 // A behavioural guarantee: this feature must be layout-only. If any routing file
 // shows up as modified vs HEAD, that assumption is broken and must be reviewed.

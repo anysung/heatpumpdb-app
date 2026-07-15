@@ -13,7 +13,8 @@ import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS } from '../market';
-import { LEGAL_ROUTES, LegalDoc, SUPPORT_EMAIL, MARKETING_EMAIL } from '../../config/legal';
+import { LEGAL_ROUTES, LegalDoc, MARKETING_EMAIL } from '../../config/legal';
+import { SupportCard } from '../pages/accountParts';
 import { LEGAL_NAV } from '../../legal/LegalPage';
 import { openCheckout, portalUrlFor, checkoutConfigured } from '../../services/paddleService';
 import { SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, formatEur, isTeamPlan, subscriptionUnlocked } from '../../config/subscriptionPlans';
@@ -411,6 +412,7 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
 const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
   const s = t.sub;
+  const [supportOpen, setSupportOpen] = useState(false);
   const card: React.CSSProperties = { background: '#fff', border: '1px solid #e0e0e0', borderRadius: 14, padding: '15px 17px', display: 'flex', flexDirection: 'column', gap: 8 };
   const sub = app.user.subscription;
   const unlocked = !!sub && subscriptionUnlocked(sub.status, sub.currentPeriodEndsAt);
@@ -434,6 +436,26 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
     : sub.status === 'past_due' ? s.statusPastDue
     : sub.cancelAtPeriodEnd || sub.status === 'canceled' ? s.statusCanceled(fmtDate(sub.currentPeriodEndsAt))
     : s.statusActive(fmtDate(sub.currentPeriodEndsAt));
+
+  // Support subview — the SAME in-app inquiry workflow the desktop/tablet Account
+  // page uses (shared SupportCard, one data model, one country-tagging path). No
+  // mailto, no second support system. Back returns to the phone Account.
+  if (supportOpen) {
+    return (
+      <div style={{ padding: '18px 16px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <span
+          className="hp-press"
+          onClick={() => setSupportOpen(false)}
+          data-testid="support-back"
+          style={{ fontSize: 13.5, color: '#0066cc', cursor: 'pointer', width: 'fit-content' }}
+        >
+          {t.team.back}
+        </span>
+        <div style={card}><SupportCard app={app} embedded /></div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '20px 16px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
       <span style={{ fontFamily: FD, fontSize: 25, fontWeight: 600, letterSpacing: '-0.3px' }}>{t.account.heroTitle}</span>
@@ -521,11 +543,12 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
       <div style={card}>
         <span style={sectionLabel}>{t.account.support}</span>
         <span style={{ fontSize: 12.5, color: '#555', lineHeight: 1.5 }}>{t.account.supportText}</span>
-        {/* The raw support address is no longer shown here (parity with the
-            desktop Account Support card, 8fe2a80); the contact action still uses it. */}
+        {/* Opens the in-app inquiry workflow (shared SupportCard) — NOT a mailto.
+            The raw support address is not shown here (parity with desktop, 8fe2a80). */}
         <span
-          onClick={() => { window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(t.account.supportSubject)}&body=${encodeURIComponent(t.account.supportBody(app.user.email))}`; }}
-          style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}
+          className="hp-press"
+          onClick={() => setSupportOpen(true)}
+          style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer', width: 'fit-content' }}
           data-testid="mobile-contact-support"
         >
           {t.account.contactSupport}
