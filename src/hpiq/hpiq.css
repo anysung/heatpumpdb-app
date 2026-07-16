@@ -139,7 +139,12 @@
 }
 
 /* Public /pricing page: three plan cards side by side on desktop, stacked on
-   narrow screens so nothing is cramped and the page never overflows sideways. */
+   narrow screens so nothing is cramped and the page never overflows sideways.
+   The billing selector keeps three equal segments but switches from a one-line
+   (label + badge side by side) to a two-line layout (label above, badge below,
+   badge allowed to wrap) so the discount is never clipped on a phone. */
 @media screen and (max-width: 760px) {
   .hpiq-pricing-cards { grid-template-columns: 1fr !important; }
+  .hpiq-pricing-term { flex-direction: column !important; gap: 2px !important; padding: 7px 6px !important; }
+  .hpiq-pricing-badge { white-space: normal !important; }
 }

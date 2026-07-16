@@ -88,11 +88,12 @@ export const PublicPricingPage: React.FC<{
                 aria-pressed={selected}
                 onClick={() => setTerm(tm)}
                 onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTerm(tm); } }}
+                className="hpiq-pricing-term"
                 style={{ padding: '8px 10px', cursor: 'pointer', display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', textAlign: 'center', minWidth: 0, ...(selected ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}
               >
                 <span style={{ whiteSpace: 'nowrap' }}>{s.termNames[tm]}</span>
                 {pct > 0 && (
-                  <span style={{ fontSize: 10, fontWeight: 700, borderRadius: 999, padding: '2px 7px', whiteSpace: 'nowrap', background: selected ? 'rgba(255,255,255,.18)' : '#e7f6ee', color: selected ? '#fff' : '#0a7a43' }}>
+                  <span className="hpiq-pricing-badge" style={{ fontSize: 10, fontWeight: 700, borderRadius: 999, padding: '2px 7px', whiteSpace: 'nowrap', background: selected ? 'rgba(255,255,255,.18)' : '#e7f6ee', color: selected ? '#fff' : '#0a7a43' }}>
                     {s.termSavePct(pct)}
                   </span>
                 )}
