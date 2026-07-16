@@ -17,7 +17,7 @@ import { LEGAL_ROUTES, LegalDoc, MARKETING_EMAIL } from '../../config/legal';
 import { SupportCard } from '../pages/accountParts';
 import { LEGAL_NAV } from '../../legal/LegalPage';
 import { openCheckout, portalUrlFor, checkoutConfigured } from '../../services/paddleService';
-import { SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, formatEur, isTeamPlan, subscriptionUnlocked } from '../../config/subscriptionPlans';
+import { SubPlanCode, BillingTerm, BILLING_TERMS, SUB_PLANS, SUB_PLAN_CODES, formatEur, isTeamPlan, subscriptionUnlocked, sharedTermDiscountPct } from '../../config/subscriptionPlans';
 import { FD, SignOutIcon, VideoExplainer, sectionLabel } from '../ui';
 import { GUIDE_VIDEO_ID } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
@@ -482,12 +482,35 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
         <div style={card}>
           <span style={sectionLabel}>{s.pickTitle}</span>
           <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.5 }}>{s.pickSub}</span>
-          <div style={{ display: 'flex', border: '1px solid #d2d2d7', borderRadius: 999, overflow: 'hidden', fontSize: 12.5, width: 'fit-content' }}>
-            {(['monthly', 'six_months', 'annual'] as BillingTerm[]).map(tm => (
-              <span key={tm} onClick={() => setTerm(tm)} style={{ padding: '7px 13px', cursor: 'pointer', ...(term === tm ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}>
-                {s.termNames[tm]}
-              </span>
-            ))}
+          {/* Billing-term selector — three EQUAL segments (grid minmax(0,1fr) so a
+              nowrap label can't widen a column past its 1/3 share; min-width:0 lets
+              it shrink). Compact two-line layout: term label above, real discount
+              badge below. The percentage is sharedTermDiscountPct — the LOWEST
+              saving across all active plans for the term (same source as desktop,
+              never overstates), rendered with the localized s.termSavePct. */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', border: '1px solid #d2d2d7', borderRadius: 14, overflow: 'hidden', fontSize: 12.5 }}>
+            {BILLING_TERMS.map(tm => {
+              const pct = sharedTermDiscountPct(tm);
+              const selected = term === tm;
+              return (
+                <span
+                  key={tm}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={selected}
+                  onClick={() => setTerm(tm)}
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTerm(tm); } }}
+                  style={{ padding: '7px 6px', cursor: 'pointer', minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, textAlign: 'center', ...(selected ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}
+                >
+                  <span style={{ whiteSpace: 'nowrap' }}>{s.termNames[tm]}</span>
+                  {pct > 0 && (
+                    <span style={{ fontSize: 9, fontWeight: 700, borderRadius: 999, padding: '1px 6px', lineHeight: 1.35, background: selected ? 'rgba(255,255,255,.18)' : '#e7f6ee', color: selected ? '#fff' : '#0a7a43' }}>
+                      {s.termSavePct(pct)}
+                    </span>
+                  )}
+                </span>
+              );
+            })}
           </div>
           {SUB_PLAN_CODES.map(code => (
             <div key={code} style={{ border: code === 'team_3' && term === 'annual' ? '2px solid #0066cc' : '1px solid #e0e0e0', borderRadius: 12, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
@@ -498,6 +521,7 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
                 <span style={{ fontFamily: FD, fontSize: 16, fontWeight: 700 }}>{formatEur(SUB_PLANS[code].prices[term])}</span>
                 <span style={{ fontSize: 10.5, color: '#7a7a7a' }}>{s.perTerm[term]}</span>
+                <span style={{ fontSize: 9.5, fontWeight: 600, color: '#9a9aa0' }}>{s.exclVat}</span>
               </div>
               <span className="hp-press" onClick={() => startCheckout(code)} style={{ background: '#0066cc', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                 {s.startTrial.replace(' ›', '')}

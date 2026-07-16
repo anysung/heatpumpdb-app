@@ -137,3 +137,9 @@
   .hpiq-acc-cols { flex-direction: column; }
   .hpiq-acc-col { display: contents; }
 }
+
+/* Public /pricing page: three plan cards side by side on desktop, stacked on
+   narrow screens so nothing is cramped and the page never overflows sideways. */
+@media screen and (max-width: 760px) {
+  .hpiq-pricing-cards { grid-template-columns: 1fr !important; }
+}

@@ -13,7 +13,7 @@ import { tr } from '../i18n';
 import { Language, Organization, SubscriptionChangeRequest } from '../../types';
 import {
   SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, BILLING_TERMS,
-  formatEur, perMonth, perUserMonth, isTeamPlan, subscriptionUnlocked,
+  formatEur, perMonth, perUserMonth, isTeamPlan, subscriptionUnlocked, sharedTermDiscountPct,
 } from '../../config/subscriptionPlans';
 import { FD, sectionLabel } from '../ui';
 import { shortDate } from '../model';
@@ -79,22 +79,38 @@ const PlanPicker: React.FC<{
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {/* Step 2 first visually: billing-term toggle (annual default) */}
-      <div style={{ display: 'flex', border: '1px solid #d2d2d7', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
-        {BILLING_TERMS.map(tm => (
-          <span
-            key={tm}
-            onClick={() => setTerm(tm)}
-            style={{ padding: '8px 18px', cursor: 'pointer', display: 'flex', gap: 7, alignItems: 'center', ...(term === tm ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}
-          >
-            {s.termNames[tm]}
-            {s.termSave[tm] && (
-              <span style={{ fontSize: 10, fontWeight: 700, borderRadius: 999, padding: '2px 7px', background: term === tm ? 'rgba(255,255,255,.18)' : '#e7f6ee', color: term === tm ? '#fff' : '#0a7a43' }}>
-                {tm === 'annual' ? s.bestValue : s.termSave[tm]}
-              </span>
-            )}
-          </span>
-        ))}
+      {/* Step 2 first visually: billing-term toggle (annual default).
+          Three EQUAL segments, each centering its label + discount badge. The
+          badge shows the real saving from the configured prices via
+          sharedTermDiscountPct — the LOWEST discount across all plans, so the
+          single shared claim never overstates any plan; no hard-coded percentages,
+          no vague "best value". minmax(0, 1fr) (not plain 1fr) so a nowrap label
+          can never blow a column past its 1/3 share, and min-width:0 lets each
+          segment shrink — together they keep the three exactly equal and prevent
+          horizontal overflow at any width. */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', border: '1px solid #d2d2d7', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: '100%', maxWidth: 560 }}>
+        {BILLING_TERMS.map(tm => {
+          const pct = sharedTermDiscountPct(tm);
+          const selected = term === tm;
+          return (
+            <span
+              key={tm}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selected}
+              onClick={() => setTerm(tm)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTerm(tm); } }}
+              style={{ padding: '8px 10px', cursor: 'pointer', display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', textAlign: 'center', minWidth: 0, ...(selected ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}
+            >
+              <span style={{ whiteSpace: 'nowrap' }}>{s.termNames[tm]}</span>
+              {pct > 0 && (
+                <span style={{ fontSize: 10, fontWeight: 700, borderRadius: 999, padding: '2px 7px', whiteSpace: 'nowrap', background: selected ? 'rgba(255,255,255,.18)' : '#e7f6ee', color: selected ? '#fff' : '#0a7a43' }}>
+                  {s.termSavePct(pct)}
+                </span>
+              )}
+            </span>
+          );
+        })}
       </div>
 
       {/* Plan cards */}
@@ -117,9 +133,10 @@ const PlanPicker: React.FC<{
               )}
               <span style={{ fontFamily: FD, fontSize: 18, fontWeight: 600 }}>{s.planNames[code]}</span>
               <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{s.planUsers[code]}</span>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginTop: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginTop: 4, flexWrap: 'wrap' }}>
                 <span style={{ fontFamily: FD, fontSize: 27, fontWeight: 700, letterSpacing: '-0.4px' }}>{formatEur(price)}</span>
                 <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{s.perTerm[term]}{team ? ` ${s.forWholeTeam}` : ''}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#86868b', whiteSpace: 'nowrap' }}>{s.exclVat}</span>
               </div>
               <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>
                 {team ? s.perUserEq(formatEur(Math.round(perUserMonth(code, term) * 100) / 100)) : (term !== 'monthly' ? s.perMonthEq(formatEur(Math.round(perMonth(code, term) * 100) / 100)) : ' ')}
@@ -519,10 +536,13 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontSize: 12.5, color: '#5c4d1e', lineHeight: 1.6 }}>{t.account.fairUseData}</span>
       </div>
 
-      {/* Database rights / legal notice */}
-      <div style={{ borderTop: '1px solid #e0e0e0', marginTop: 6, paddingTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {/* Database rights / legal notice — same content container and the same box
+          treatment (radius + padding) as the fair-use notice directly above, so
+          its left/right edges align with the rest of the page instead of sitting
+          flush against the container. Neutral palette; wording unchanged. */}
+      <div style={{ border: '1px solid #e0e0e0', background: '#f7f7f9', borderRadius: 14, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', textTransform: 'uppercase' }}>{t.account.legalNoticeTitle}</span>
-        <p style={{ fontSize: 11, color: '#9a9aa0', lineHeight: 1.65, textAlign: 'justify', margin: 0, maxWidth: 980 }}>{t.account.legalNotice}</p>
+        <p style={{ fontSize: 11, color: '#9a9aa0', lineHeight: 1.65, textAlign: 'justify', margin: 0 }}>{t.account.legalNotice}</p>
         <span style={{ fontSize: 11, color: '#9a9aa0' }}>{t.footer.copyright(new Date().getFullYear())}</span>
       </div>
     </>,

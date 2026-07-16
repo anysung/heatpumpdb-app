@@ -93,6 +93,30 @@ export const perUserMonth = (plan: SubPlanCode, term: BillingTerm): number =>
   perMonth(plan, term) / SUB_PLANS[plan].seatLimit;
 
 /**
+ * Whole-percent saving of a term versus paying monthly for the same number of
+ * months, for ONE plan, derived straight from the configured prices — never a
+ * hard-coded figure. Monthly (or a bad/zero price) → 0. Rounded to a whole
+ * percent, which is the rounding the UI has always shown ("~7%", "~17%").
+ */
+export function termDiscountPct(plan: SubPlanCode, term: BillingTerm): number {
+  const months = TERM_MONTHS[term];
+  const monthlyTotal = SUB_PLANS[plan].prices.monthly * months;
+  if (months <= 1 || monthlyTotal <= 0) return 0;
+  return Math.round((1 - SUB_PLANS[plan].prices[term] / monthlyTotal) * 100);
+}
+
+/**
+ * The saving the plan-agnostic billing-period selector shows for a term: the
+ * LOWEST discount across every currently active plan. One "Save ~X%" badge sits
+ * above all three cards, so it must be the smallest of the three — that way the
+ * shared claim can never overstate the saving for any plan, whatever the prices
+ * become after a future change (it is not pinned to any one reference plan).
+ */
+export function sharedTermDiscountPct(term: BillingTerm): number {
+  return Math.min(...SUB_PLAN_CODES.map(code => termDiscountPct(code, term)));
+}
+
+/**
  * Paddle recurring-price id for a plan/term ('' = not configured yet).
  * The ids live in paddlePrices.ts, keyed by currency — DE and FR share the EUR
  * catalogue, and a market whose currency has no catalogue yet resolves to ''.

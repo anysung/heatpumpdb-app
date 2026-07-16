@@ -1,6 +1,7 @@
 
 import { Language } from './types';
 import { ACTIVE_COUNTRY } from './config/countryProfiles';
+import { BRAND_TM } from './config/legal';
 
 // Auth marketing chip for the market's funding scheme — the auth surface is
 // shared across editions; only this chip names the national scheme.
@@ -475,7 +476,7 @@ const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
 (DE_T as any).authSeoLine = SEO_LINE.de || SEO_LINE.en;
 (FR_T as any).authSeoLine = SEO_LINE.fr || SEO_LINE.en;
 
-// Simple declarative copyright line (public brand: HeatPump DataBase (Europe)).
+// Simple declarative copyright line (public brand mark: BRAND_TM).
 const YEAR = new Date().getFullYear();
 (EN_T as any).authStatsTitle = 'Registered Heat Pump Models';
 (DE_T as any).authStatsTitle = 'Registrierte Wärmepumpen-Modelle';
@@ -483,8 +484,8 @@ const YEAR = new Date().getFullYear();
 (EN_T as any).authStatsTotal = 'Total';
 (DE_T as any).authStatsTotal = 'Gesamt';
 (FR_T as any).authStatsTotal = 'Total';
-(EN_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · All rights reserved.`;
-(DE_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Alle Rechte vorbehalten.`;
-(FR_T as any).authCopyright = `© ${YEAR} HeatPump DataBase (Europe) · Tous droits réservés.`;
+(EN_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · All rights reserved.`;
+(DE_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Alle Rechte vorbehalten.`;
+(FR_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Tous droits réservés.`;
 
 export const translations = { en: EN_T, de: DE_T, fr: FR_T };

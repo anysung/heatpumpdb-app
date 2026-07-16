@@ -8,7 +8,7 @@
  */
 import React from 'react';
 import { Language } from '../types';
-import { LegalDoc, LEGAL_ROUTES } from '../config/legal';
+import { LegalDoc, LEGAL_ROUTES, BRAND_TM } from '../config/legal';
 import { LEGAL_CONTENT } from './legalContent';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
 import { UI_LANGUAGES } from '../hpiq/market';
@@ -17,10 +17,17 @@ const FD = '"SF Pro Display", system-ui, -apple-system, "Inter", sans-serif';
 
 /** Nav label for each policy, in each language. */
 export const LEGAL_NAV: Record<Language, Record<LegalDoc, string>> = {
-  en: { privacy: 'Privacy Policy', terms: 'Terms of Use', refund: 'Refund Policy', imprint: 'Imprint' },
+  en: { privacy: 'Privacy Policy', terms: 'Terms of Use', refund: 'Refund Policy', imprint: 'Legal Notice' },
   de: { privacy: 'Datenschutz', terms: 'Nutzungsbedingungen', refund: 'Widerruf & Kündigung', imprint: 'Impressum' },
   fr: { privacy: 'Confidentialité', terms: "Conditions d'utilisation", refund: 'Remboursement', imprint: 'Mentions légales' },
 };
+
+/** Public footer copyright — brand mark only; identity details stay in the Legal Notice. */
+const RIGHTS_RESERVED: Record<Language, string> = {
+  en: 'All rights reserved.', de: 'Alle Rechte vorbehalten.', fr: 'Tous droits réservés.',
+};
+const footerCopyright = (language: Language) =>
+  `© ${new Date().getFullYear()} ${BRAND_TM}. ${RIGHTS_RESERVED[language]}`;
 
 const BACK: Record<Language, string> = { en: 'Back to HeatPump DB', de: 'Zurück zu HeatPump DB', fr: 'Retour à HeatPump DB' };
 const UPDATED: Record<Language, string> = { en: 'Version', de: 'Fassung', fr: 'Version' };
@@ -78,33 +85,46 @@ export const LegalPage: React.FC<{
       </div>
 
       {/* Footer — the other policies, always reachable without a login */}
-      <LegalFooter language={language} current={doc} />
+      <LegalFooter language={language} current={doc} showCopyright />
     </div>
   );
 };
 
-/** Shared public policy links. Used on the policy pages and the auth screens. */
-export const LegalFooter: React.FC<{ language: Language; current?: LegalDoc; dark?: boolean }> = ({ language, current, dark }) => (
+/**
+ * Shared public policy links (Legal Notice, Terms, Privacy, Refund). Used on the
+ * policy pages and the public auth screens, so the four legal pages are reachable
+ * without a login. `showCopyright` adds the minimal brand copyright line for the
+ * standalone policy pages; the auth screens carry their own copyright, so they
+ * pass links only.
+ */
+export const LegalFooter: React.FC<{ language: Language; current?: LegalDoc; dark?: boolean; showCopyright?: boolean }> = ({ language, current, dark, showCopyright }) => (
   <div
     style={{
       borderTop: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid #e8e8ed',
       padding: '18px 24px',
-      display: 'flex', gap: 18, flexWrap: 'wrap', justifyContent: 'center',
+      display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center',
       fontSize: 12.5,
     }}
   >
-    {(Object.keys(LEGAL_ROUTES) as LegalDoc[]).map(d => (
-      <a
-        key={d}
-        href={LEGAL_ROUTES[d]}
-        style={{
-          color: d === current ? (dark ? '#fff' : '#1d1d1f') : dark ? 'rgba(255,255,255,0.55)' : '#7a7a7a',
-          textDecoration: 'none',
-          fontWeight: d === current ? 600 : 400,
-        }}
-      >
-        {LEGAL_NAV[language][d]}
-      </a>
-    ))}
+    <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', justifyContent: 'center' }}>
+      {(Object.keys(LEGAL_ROUTES) as LegalDoc[]).map(d => (
+        <a
+          key={d}
+          href={LEGAL_ROUTES[d]}
+          style={{
+            color: d === current ? (dark ? '#fff' : '#1d1d1f') : dark ? 'rgba(255,255,255,0.55)' : '#7a7a7a',
+            textDecoration: 'none',
+            fontWeight: d === current ? 600 : 400,
+          }}
+        >
+          {LEGAL_NAV[language][d]}
+        </a>
+      ))}
+    </div>
+    {showCopyright && (
+      <span style={{ color: dark ? 'rgba(255,255,255,0.4)' : '#9a9aa0', fontSize: 11.5 }}>
+        {footerCopyright(language)}
+      </span>
+    )}
   </div>
 );

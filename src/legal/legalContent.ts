@@ -4,19 +4,56 @@
  * Plain data, no country branches: DE/GB/FR (and any market added later) render
  * the same documents from the same keys.
  *
- * The documents address customers as the SERVICE (SERVICE_NAME) and give one
- * contact (SUPPORT_EMAIL). Registered address, register number, VAT/tax number
- * and a responsible-person name are intentionally not shown — and the wording
- * never draws attention to their absence: there are no "to be completed"
- * placeholders. Nothing here is invented.
+ * The Legal Notice (`imprint`) publishes the verified operator identity — trading
+ * name, owner, registered address, business registration number and merchant of
+ * record — and the Terms and Privacy documents name the operator where it belongs
+ * (operator provision / data controller). All of these read the SAME facts from
+ * config/legal.ts, so every country edition is identical and nothing is invented.
+ * The facts themselves are never translated; only the headings and the
+ * surrounding sentences are. Nothing beyond the specified public business
+ * information (no personal ID, tax-office data, certificate numbers, etc.) is
+ * shown, and there are no "to be completed" placeholders.
  */
 import { Language } from '../types';
-import { PRIVACY_VERSION, SERVICE_NAME, SUPPORT_EMAIL, TERMS_VERSION } from '../config/legal';
+import {
+  PRIVACY_VERSION, SERVICE_NAME, SUPPORT_EMAIL, TERMS_VERSION,
+  BRAND_TM, OPERATOR_NAME, OPERATOR_OWNER, BUSINESS_REG_NUMBER, BUSINESS_ADDRESS_LINES, PADDLE_ENTITY,
+} from '../config/legal';
 
 export type LegalSection = { h: string; p: string[] };
 export type LegalDocContent = { title: string; updated: string; intro?: string; sections: LegalSection[] };
 
 const ver = { terms: TERMS_VERSION, privacy: PRIVACY_VERSION };
+
+/* ── Legal Notice builder ─────────────────────────────────────────────────────
+ * The operator identity is published once, from the shared constants, so the
+ * Legal Notice is identical across every country edition and cannot drift. Only
+ * the headings, the sole-proprietorship label and the two explanatory sentences
+ * are localized; the trading name, owner, address, registration number and email
+ * are used verbatim. */
+type ImprintLabels = {
+  title: string;
+  operator: string; owner: string; address: string; regNo: string;
+  contact: string; brand: string; payment: string;
+  soleProp: string; emailLabel: string;
+  brandSentence: string; paymentSentence: string;
+};
+
+function buildImprint(L: ImprintLabels): LegalDocContent {
+  return {
+    title: L.title,
+    updated: ver.terms,
+    sections: [
+      { h: L.operator, p: [OPERATOR_NAME, L.soleProp] },
+      { h: L.owner, p: [OPERATOR_OWNER] },
+      { h: L.address, p: [...BUSINESS_ADDRESS_LINES] },
+      { h: L.regNo, p: [BUSINESS_REG_NUMBER] },
+      { h: L.contact, p: [`${L.emailLabel} ${SUPPORT_EMAIL}`] },
+      { h: L.brand, p: [L.brandSentence] },
+      { h: L.payment, p: [L.paymentSentence] },
+    ],
+  };
+}
 
 /* ── English ────────────────────────────────────────────────────────────── */
 
@@ -25,9 +62,17 @@ const EN = {
     title: 'Privacy Policy',
     updated: ver.privacy,
     intro:
-      'HeatPump DataBase is a web-based professional database service for the European heat-pump industry. This policy explains what we process when you use the service, and why. We collect the minimum needed to run a professional account.',
+      `${SERVICE_NAME} is a web-based professional database service for the European heat-pump industry. This policy explains what we process when you use the service, and why. We collect the minimum needed to run a professional account.`,
     sections: [
-      { h: 'Who we are', p: [`${SERVICE_NAME} is a professional, web-based database service for the European heat-pump industry, and is the controller for the personal data described here. You can reach us at ${SUPPORT_EMAIL}.`] },
+      {
+        h: 'Data Controller',
+        p: [
+          `${OPERATOR_NAME}, a sole proprietorship operated by ${OPERATOR_OWNER}, operates ${BRAND_TM} and is the controller for the personal data described in this policy.`,
+          'Registered business address:',
+          ...BUSINESS_ADDRESS_LINES,
+          `Email: ${SUPPORT_EMAIL}`,
+        ],
+      },
       {
         h: 'Account information we collect',
         p: [
@@ -91,7 +136,7 @@ const EN = {
       {
         h: 'Account deletion',
         p: [
-          'You can request deletion at any time from the Account page. Deleting your HeatPump DataBase account does not cancel a subscription — billing must be cancelled separately through Manage billing.',
+          'You can request deletion at any time from the Account page. Deleting your HeatPump Database account does not cancel a subscription — billing must be cancelled separately through Manage billing.',
         ],
       },
       {
@@ -112,9 +157,9 @@ const EN = {
   terms: {
     title: 'Terms of Use',
     updated: ver.terms,
-    intro: `These terms govern your use of ${SERVICE_NAME}, a professional web-based B2B database service. Please read them before you register.`,
+    intro: `${BRAND_TM} is a software service operated by ${OPERATOR_NAME}, a registered sole proprietorship. Full operator, registration and contact information is available in our Legal Notice. These terms govern your use of the service, a professional web-based B2B database service — please read them before you register.`,
     sections: [
-      { h: 'The service', p: [`${SERVICE_NAME} is a professional, web-based subscription service for the European heat-pump industry. Subscriptions are purchased on the web and billed by Paddle.`] },
+      { h: 'The service', p: [`${SERVICE_NAME} is a professional, web-based subscription service for the European heat-pump industry, operated by ${OPERATOR_NAME}. Subscriptions are purchased on the web and billed by Paddle. Full operator and registration details are in our Legal Notice.`] },
       { h: 'Account eligibility', p: ['Accounts are intended for professional use (manufacturers, wholesalers, installers, engineers, consultancies, housing, public sector, sole traders and comparable roles). New accounts are reviewed before activation.'] },
       { h: 'Account responsibility', p: ['You are responsible for your credentials and for everything done under your account. Keep your password confidential.'] },
       {
@@ -187,21 +232,27 @@ const EN = {
         h: 'How to cancel',
         p: [
           'Cancel through Manage billing on the Account page.',
-          'Deleting your HeatPump DataBase account does NOT cancel your subscription. Billing is handled separately and must be cancelled through Manage billing.',
+          'Deleting your HeatPump Database account does NOT cancel your subscription. Billing is handled separately and must be cancelled through Manage billing.',
         ],
       },
       { h: 'Exceptional refunds', p: [`If you believe your case is exceptional (for example a duplicate charge), send a New inquiry from the Account page or email ${SUPPORT_EMAIL}, and we will review it with Paddle.`] },
-      { h: 'Merchant of record', p: ['Paddle is the merchant of record for all subscriptions. Invoices and VAT receipts are issued by Paddle.'] },
+      { h: 'Merchant of record', p: [`Subscription payments are processed by ${PADDLE_ENTITY}, acting as merchant of record for all subscriptions. Invoices and VAT receipts are issued by Paddle. Refund and cancellation requests can be sent to ${SUPPORT_EMAIL}.`] },
     ],
   },
-  imprint: {
-    title: 'Imprint',
-    updated: ver.terms,
-    sections: [
-      { h: 'Service', p: [SERVICE_NAME] },
-      { h: 'Contact', p: [SUPPORT_EMAIL] },
-    ],
-  },
+  imprint: buildImprint({
+    title: 'Legal Notice',
+    operator: 'Service Operator',
+    owner: 'Owner and Operator',
+    address: 'Registered Business Address',
+    regNo: 'Business Registration Number',
+    contact: 'Contact',
+    brand: 'Product and Brand',
+    payment: 'Payment Processing',
+    soleProp: 'Sole proprietorship',
+    emailLabel: 'Email:',
+    brandSentence: `${BRAND_TM} is a product brand operated by ${OPERATOR_NAME}.`,
+    paymentSentence: `Subscription payments are processed by ${PADDLE_ENTITY}, acting as the merchant of record.`,
+  }),
 };
 
 /* ── German ─────────────────────────────────────────────────────────────── */
@@ -211,9 +262,17 @@ const DE = {
     title: 'Datenschutzerklärung',
     updated: ver.privacy,
     intro:
-      'HeatPump DataBase ist ein webbasierter, professioneller Datenbankdienst für die europäische Wärmepumpenbranche. Diese Erklärung beschreibt, welche Daten wir bei der Nutzung verarbeiten und warum. Wir erheben nur das Minimum, das für ein professionelles Konto erforderlich ist.',
+      'HeatPump Database ist ein webbasierter, professioneller Datenbankdienst für die europäische Wärmepumpenbranche. Diese Erklärung beschreibt, welche Daten wir bei der Nutzung verarbeiten und warum. Wir erheben nur das Minimum, das für ein professionelles Konto erforderlich ist.',
     sections: [
-      { h: 'Wer wir sind', p: [`${SERVICE_NAME} ist ein professioneller, webbasierter Datenbankdienst für die europäische Wärmepumpenbranche und Verantwortlicher für die hier beschriebenen personenbezogenen Daten. Sie erreichen uns unter ${SUPPORT_EMAIL}.`] },
+      {
+        h: 'Verantwortlicher',
+        p: [
+          `${OPERATOR_NAME}, ein von ${OPERATOR_OWNER} betriebenes Einzelunternehmen, betreibt ${BRAND_TM} und ist Verantwortlicher für die in dieser Erklärung beschriebenen personenbezogenen Daten.`,
+          'Eingetragene Geschäftsanschrift:',
+          ...BUSINESS_ADDRESS_LINES,
+          `E-Mail: ${SUPPORT_EMAIL}`,
+        ],
+      },
       {
         h: 'Kontodaten',
         p: [
@@ -267,7 +326,7 @@ const DE = {
       },
       {
         h: 'Kontolöschung',
-        p: ['Sie können die Löschung jederzeit auf der Kontoseite beantragen. Die Löschung Ihres HeatPump-DataBase-Kontos kündigt kein Abonnement — die Abrechnung muss separat über „Abrechnung verwalten“ gekündigt werden.'],
+        p: ['Sie können die Löschung jederzeit auf der Kontoseite beantragen. Die Löschung Ihres HeatPump-Database-Kontos kündigt kein Abonnement — die Abrechnung muss separat über „Abrechnung verwalten“ gekündigt werden.'],
       },
       {
         h: 'Ihre Rechte',
@@ -283,9 +342,9 @@ const DE = {
   terms: {
     title: 'Nutzungsbedingungen',
     updated: ver.terms,
-    intro: `Diese Bedingungen regeln die Nutzung von ${SERVICE_NAME}, einem professionellen, webbasierten B2B-Datenbankdienst. Bitte lesen Sie sie vor der Registrierung.`,
+    intro: `${BRAND_TM} ist ein Softwaredienst, der von ${OPERATOR_NAME}, einem eingetragenen Einzelunternehmen, betrieben wird. Vollständige Angaben zu Betreiber, Registrierung und Kontakt finden Sie in unserem Impressum. Diese Bedingungen regeln die Nutzung des Dienstes, eines professionellen, webbasierten B2B-Datenbankdienstes — bitte lesen Sie sie vor der Registrierung.`,
     sections: [
-      { h: 'Der Dienst', p: [`${SERVICE_NAME} ist ein professioneller, webbasierter Abonnementdienst für die europäische Wärmepumpenbranche. Abonnements werden im Web erworben und über Paddle abgerechnet.`] },
+      { h: 'Der Dienst', p: [`${SERVICE_NAME} ist ein professioneller, webbasierter Abonnementdienst für die europäische Wärmepumpenbranche, betrieben von ${OPERATOR_NAME}. Abonnements werden im Web erworben und über Paddle abgerechnet. Vollständige Angaben zu Betreiber und Registrierung finden Sie in unserem Impressum.`] },
       { h: 'Zulässige Nutzer', p: ['Konten sind für die professionelle Nutzung bestimmt (Hersteller, Großhandel, Installateure, Planung/Ingenieurbüros, Wohnungswirtschaft, öffentliche Hand, Einzelunternehmer und vergleichbare Rollen). Neue Konten werden vor der Freischaltung geprüft.'] },
       { h: 'Verantwortung für das Konto', p: ['Sie sind für Ihre Zugangsdaten und für alle unter Ihrem Konto vorgenommenen Handlungen verantwortlich. Halten Sie Ihr Passwort geheim.'] },
       {
@@ -356,21 +415,27 @@ const DE = {
         h: 'So kündigen Sie',
         p: [
           'Kündigen Sie über „Abrechnung verwalten“ auf der Kontoseite.',
-          'Das Löschen Ihres HeatPump-DataBase-Kontos kündigt das Abonnement NICHT. Die Abrechnung wird separat geführt und muss über „Abrechnung verwalten“ gekündigt werden.',
+          'Das Löschen Ihres HeatPump-Database-Kontos kündigt das Abonnement NICHT. Die Abrechnung wird separat geführt und muss über „Abrechnung verwalten“ gekündigt werden.',
         ],
       },
       { h: 'Ausnahmefälle', p: [`Wenn Sie Ihren Fall für außergewöhnlich halten (z. B. Doppelbuchung), senden Sie eine „Neue Anfrage“ über die Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL} — wir prüfen den Fall gemeinsam mit Paddle.`] },
-      { h: 'Merchant of Record', p: ['Paddle ist Merchant of Record für alle Abonnements. Rechnungen und Umsatzsteuerbelege werden von Paddle ausgestellt.'] },
+      { h: 'Merchant of Record', p: [`Abonnementzahlungen werden von ${PADDLE_ENTITY} als Merchant of Record für alle Abonnements abgewickelt. Rechnungen und Umsatzsteuerbelege werden von Paddle ausgestellt. Anfragen zu Erstattung und Kündigung senden Sie an ${SUPPORT_EMAIL}.`] },
     ],
   },
-  imprint: {
+  imprint: buildImprint({
     title: 'Impressum',
-    updated: ver.terms,
-    sections: [
-      { h: 'Dienst', p: [SERVICE_NAME] },
-      { h: 'Kontakt', p: [SUPPORT_EMAIL] },
-    ],
-  },
+    operator: 'Diensteanbieter',
+    owner: 'Inhaber und Betreiber',
+    address: 'Eingetragene Geschäftsanschrift',
+    regNo: 'Geschäftliche Registrierungsnummer',
+    contact: 'Kontakt',
+    brand: 'Produkt und Marke',
+    payment: 'Zahlungsabwicklung',
+    soleProp: 'Einzelunternehmen',
+    emailLabel: 'E-Mail:',
+    brandSentence: `${BRAND_TM} ist eine Produktmarke, die von ${OPERATOR_NAME} betrieben wird.`,
+    paymentSentence: `Abonnementzahlungen werden von ${PADDLE_ENTITY} als Merchant of Record abgewickelt.`,
+  }),
 };
 
 /* ── French ─────────────────────────────────────────────────────────────── */
@@ -380,9 +445,17 @@ const FR = {
     title: 'Politique de confidentialité',
     updated: ver.privacy,
     intro:
-      "HeatPump DataBase est un service de base de données professionnel sur le web, destiné à la filière européenne des pompes à chaleur. Cette politique explique quelles données nous traitons et pourquoi. Nous ne collectons que le minimum nécessaire au fonctionnement d'un compte professionnel.",
+      "HeatPump Database est un service de base de données professionnel sur le web, destiné à la filière européenne des pompes à chaleur. Cette politique explique quelles données nous traitons et pourquoi. Nous ne collectons que le minimum nécessaire au fonctionnement d'un compte professionnel.",
     sections: [
-      { h: 'Qui sommes-nous', p: [`${SERVICE_NAME} est un service de base de données professionnel sur le web destiné à la filière européenne des pompes à chaleur, et le responsable du traitement des données décrites ici. Vous pouvez nous joindre à ${SUPPORT_EMAIL}.`] },
+      {
+        h: 'Responsable du traitement',
+        p: [
+          `${OPERATOR_NAME}, une entreprise individuelle exploitée par ${OPERATOR_OWNER}, exploite ${BRAND_TM} et est le responsable du traitement des données personnelles décrites dans la présente politique.`,
+          'Adresse professionnelle enregistrée :',
+          ...BUSINESS_ADDRESS_LINES,
+          `E-mail : ${SUPPORT_EMAIL}`,
+        ],
+      },
       {
         h: 'Données de compte',
         p: [
@@ -436,7 +509,7 @@ const FR = {
       },
       {
         h: 'Suppression du compte',
-        p: ["Vous pouvez demander la suppression à tout moment depuis la page Compte. La suppression de votre compte HeatPump DataBase n'annule pas l'abonnement — la facturation doit être résiliée séparément via « Gérer la facturation »."],
+        p: ["Vous pouvez demander la suppression à tout moment depuis la page Compte. La suppression de votre compte HeatPump Database n'annule pas l'abonnement — la facturation doit être résiliée séparément via « Gérer la facturation »."],
       },
       {
         h: 'Vos droits',
@@ -452,9 +525,9 @@ const FR = {
   terms: {
     title: "Conditions d'utilisation",
     updated: ver.terms,
-    intro: `Ces conditions régissent l'utilisation de ${SERVICE_NAME}, service professionnel de base de données B2B sur le web. Merci de les lire avant de vous inscrire.`,
+    intro: `${BRAND_TM} est un service logiciel exploité par ${OPERATOR_NAME}, une entreprise individuelle enregistrée. Les informations complètes sur l'exploitant, l'enregistrement et le contact figurent dans nos Mentions légales. Ces conditions régissent l'utilisation du service, un service professionnel de base de données B2B sur le web — merci de les lire avant de vous inscrire.`,
     sections: [
-      { h: 'Le service', p: [`${SERVICE_NAME} est un service d'abonnement professionnel sur le web pour la filière européenne des pompes à chaleur. Les abonnements sont souscrits sur le web et facturés par Paddle.`] },
+      { h: 'Le service', p: [`${SERVICE_NAME} est un service d'abonnement professionnel sur le web pour la filière européenne des pompes à chaleur, exploité par ${OPERATOR_NAME}. Les abonnements sont souscrits sur le web et facturés par Paddle. Les informations complètes sur l'exploitant et l'enregistrement figurent dans nos Mentions légales.`] },
       { h: 'Éligibilité des comptes', p: ["Les comptes sont destinés à un usage professionnel (fabricants, grossistes, installateurs, bureaux d'études, promoteurs, bailleurs, secteur public, indépendants et fonctions comparables). Les nouveaux comptes sont vérifiés avant activation."] },
       { h: 'Responsabilité du compte', p: ['Vous êtes responsable de vos identifiants et de tout ce qui est fait depuis votre compte. Gardez votre mot de passe confidentiel.'] },
       {
@@ -525,21 +598,27 @@ const FR = {
         h: 'Comment résilier',
         p: [
           "Résiliez via « Gérer la facturation » sur la page Compte.",
-          "La suppression de votre compte HeatPump DataBase N'ANNULE PAS votre abonnement. La facturation est gérée séparément et doit être résiliée via « Gérer la facturation ».",
+          "La suppression de votre compte HeatPump Database N'ANNULE PAS votre abonnement. La facturation est gérée séparément et doit être résiliée via « Gérer la facturation ».",
         ],
       },
       { h: 'Cas exceptionnels', p: [`Si votre situation est exceptionnelle (par exemple un double débit), envoyez une « Nouvelle demande » depuis la page Compte ou écrivez à ${SUPPORT_EMAIL} ; nous l'examinerons avec Paddle.`] },
-      { h: 'Marchand officiel', p: ["Paddle est le marchand officiel de tous les abonnements. Les factures et justificatifs de TVA sont émis par Paddle."] },
+      { h: 'Marchand officiel', p: [`Les paiements d'abonnement sont traités par ${PADDLE_ENTITY}, agissant en tant que marchand officiel pour tous les abonnements. Les factures et justificatifs de TVA sont émis par Paddle. Les demandes de remboursement et de résiliation peuvent être adressées à ${SUPPORT_EMAIL}.`] },
     ],
   },
-  imprint: {
+  imprint: buildImprint({
     title: 'Mentions légales',
-    updated: ver.terms,
-    sections: [
-      { h: 'Service', p: [SERVICE_NAME] },
-      { h: 'Contact', p: [SUPPORT_EMAIL] },
-    ],
-  },
+    operator: "Exploitant du service",
+    owner: 'Propriétaire et exploitant',
+    address: 'Adresse professionnelle enregistrée',
+    regNo: "Numéro d'enregistrement de l'entreprise",
+    contact: 'Contact',
+    brand: 'Produit et marque',
+    payment: 'Traitement des paiements',
+    soleProp: 'Entreprise individuelle',
+    emailLabel: 'E-mail :',
+    brandSentence: `${BRAND_TM} est une marque de produit exploitée par ${OPERATOR_NAME}.`,
+    paymentSentence: `Les paiements d'abonnement sont traités par ${PADDLE_ENTITY}, agissant en tant que marchand officiel (merchant of record).`,
+  }),
 };
 
 export const LEGAL_CONTENT: Record<Language, Record<'privacy' | 'terms' | 'refund' | 'imprint', LegalDocContent>> = {

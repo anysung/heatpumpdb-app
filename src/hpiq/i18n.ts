@@ -9,11 +9,15 @@
  */
 import { Language } from '../types';
 import { IS_GB, IS_FR } from './market';
+import { BRAND_TM } from '../config/legal';
 
 /**
- * Ultimate rights holder named in the Account legal notice. The public-facing
- * brand on the footer stays "HeatPump DataBase (Europe)"; replace this single
- * constant once the final legal entity name is fixed.
+ * Operator named in the Account database-rights disclaimer. This is A Company's
+ * trading name (the same operator published in the Legal Notice), and it names
+ * the holder of the rights in the ORIGINAL database compilation — not the
+ * underlying third-party source materials, whose rights stay with their owners
+ * (see the disclaimer text). The user-facing brand mark is `BRAND_TM`
+ * ("HeatPump Database (Europe)™").
  */
 export const RIGHTS_HOLDER = 'A Company';
 
@@ -35,7 +39,7 @@ const EN = {
   footer: {
     edition: 'Germany edition',
     note: 'Product data is informational — verify BAFA, KfW and EPREL sources before contractual use.',
-    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · All rights reserved.`,
+    copyright: (y: number) => `© ${y} ${BRAND_TM} · All rights reserved.`,
   },
 
   /** Compact-device (phone/tablet) shell strings. */
@@ -473,7 +477,7 @@ const EN = {
     fairUseAccount: 'One account per person. Each account is strictly personal and may only be used by one individual. If use by two or more persons is detected, the account may be closed without prior notice as a breach of contract, with no refund for any remaining subscription period.',
     fairUseData: 'No unauthorised data extraction. Collecting, scraping or reusing the database contents outside the presentation forms of this application — including automated collection or AI training — is prohibited and leads to account closure; civil and criminal liability may apply under database-protection law.',
     legalNoticeTitle: 'Legal notice',
-    legalNotice: `The database provided in this application, “HeatPump DataBase (Europe)”, is a protected database within the meaning of applicable European database-protection law (including Directive 96/9/EC and its national implementations). Individual raw data points originate from publicly accessible sources; the content provided here, however, is the result of substantial independent investment in the selection, verification, cross-referencing, enrichment and presentation of that data, and constitutes an original database in its own right. Irrespective of the outcome of any future dispute concerning the copyright status of individual data elements, use of the reprocessed data provided here is permitted solely in the presentation forms offered by this application (in particular generated data sheets and product comparison views) and for the user’s own professional or private purposes. Any extraction, scraping, reproduction, redistribution or commercial re-use of the database or any substantial part of it, in any form or state other than as provided by this application, is prohibited without prior written consent. All rights, title and interest in HeatPump DataBase vest exclusively in ‘${RIGHTS_HOLDER}’.`,
+    legalNotice: `The database provided in this application, “HeatPump Database (Europe)™”, is a protected database within the meaning of applicable European database-protection law (including Directive 96/9/EC and its national implementations). Individual raw data points originate from publicly accessible sources; the content provided here, however, is the result of substantial independent investment in the selection, verification, cross-referencing, enrichment and presentation of that data, and constitutes an original database in its own right. Irrespective of the outcome of any future dispute concerning the copyright status of individual data elements, use of the reprocessed data provided here is permitted solely in the presentation forms offered by this application (in particular generated data sheets and product comparison views) and for the user’s own professional or private purposes. Any extraction, scraping, reproduction, redistribution or commercial re-use of the database or any substantial part of it, in any form or state other than as provided by this application, is prohibited without prior written consent. All rights, title and interest in HeatPump Database (Europe) vest exclusively in ‘${RIGHTS_HOLDER}’. Rights in the underlying third-party source materials, product information and trademarks remain with their respective owners.`,
   },
   /** Company types (config/companyTypes.ts) + the guidance shown with them. */
   company: {
@@ -532,7 +536,7 @@ const EN = {
     dupInvite: 'That email is already a member or already invited.',
     remove: 'Remove access',
     removeTitle: (name: string) => `Remove ${name} from this team?`,
-    removeBody: 'The user will immediately lose access to the team subscription. Their personal HeatPump DataBase account will not be deleted.',
+    removeBody: 'The user will immediately lose access to the team subscription. Their personal HeatPump Database account will not be deleted.',
     removed: 'Member removed — the seat is free again.',
     leave: 'Leave team',
     leaveText: 'Leaving frees your seat and ends your access to the team subscription. Your personal account stays — you can join another team or subscribe yourself later. This does not cancel the team subscription.',
@@ -557,8 +561,10 @@ const EN = {
     } as Record<string, string>,
     mostPopular: 'MOST POPULAR',
     bestValue: 'Best value',
+    exclVat: 'excl. VAT',
     termNames: { monthly: 'Monthly', six_months: '6 months', annual: 'Annual' } as Record<string, string>,
     termSave: { monthly: '', six_months: 'Save ~7%', annual: 'Save ~17%' } as Record<string, string>,
+    termSavePct: (p: number) => `Save ~${p}%`,
     perTerm: { monthly: '/month', six_months: '/6 months', annual: '/year' } as Record<string, string>,
     forWholeTeam: 'for the whole team',
     perMonthEq: (p: string) => `Equivalent to ${p}/month`,
@@ -653,7 +659,7 @@ const DE: HpStrings = {
   },
 
   footer: {
-    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · Alle Rechte vorbehalten.`,
+    copyright: (y: number) => `© ${y} ${BRAND_TM} · Alle Rechte vorbehalten.`,
     edition: 'Deutschland-Ausgabe',
     note: 'Produktdaten dienen der Information — prüfen Sie BAFA-, KfW- und EPREL-Quellen vor vertraglicher Nutzung.',
   },
@@ -1066,7 +1072,7 @@ const DE: HpStrings = {
     fairUseAccount: 'Ein Konto pro Person. Jedes Konto ist strikt persönlich und darf nur von einer Person genutzt werden. Wird die Nutzung durch zwei oder mehr Personen festgestellt, kann das Konto ohne Vorankündigung wegen Vertragsverletzung geschlossen werden — ohne Erstattung für die verbleibende Laufzeit.',
     fairUseData: 'Keine unerlaubte Datenentnahme. Das Sammeln, Auslesen (Scraping) oder Weiterverwenden der Datenbankinhalte außerhalb der Darstellungsformen dieser Anwendung — einschließlich automatisierter Erfassung oder KI-Trainings — ist untersagt und führt zur Kontoschließung; zivil- und strafrechtliche Folgen nach Datenbankschutzrecht sind möglich.',
     legalNoticeTitle: 'Rechtlicher Hinweis',
-    legalNotice: `Die in dieser Anwendung bereitgestellte Datenbank „HeatPump DataBase (Europe)“ ist eine geschützte Datenbank im Sinne der §§ 87a ff. UrhG (Datenbankherstellerrecht) sowie der Richtlinie 96/9/EG. Einzelne Rohdaten stammen aus öffentlich zugänglichen Quellen; die hier bereitgestellten Inhalte sind jedoch das Ergebnis wesentlicher eigenständiger Investitionen in Auswahl, Prüfung, Verknüpfung, Anreicherung und Darstellung dieser Daten und bilden damit eine eigenständige Datenbank. Unabhängig vom Ausgang etwaiger künftiger Auseinandersetzungen über die urheberrechtliche Einordnung einzelner Datenelemente ist die Nutzung der hier bereitgestellten, aufbereiteten Daten ausschließlich in den von dieser Anwendung angebotenen Darstellungsformen (insbesondere generierte Datenblätter und Produktvergleiche) und für eigene berufliche oder private Zwecke gestattet. Jede Entnahme, Extraktion (Scraping), Vervielfältigung, Weiterverbreitung oder kommerzielle Weiterverwendung der Datenbank oder wesentlicher Teile davon in anderer Form oder anderem Zustand als hier bereitgestellt ist ohne vorherige schriftliche Zustimmung untersagt. Sämtliche Rechte an HeatPump DataBase stehen ausschließlich ‚${RIGHTS_HOLDER}‘ zu.`,
+    legalNotice: `Die in dieser Anwendung bereitgestellte Datenbank „HeatPump Database (Europe)™“ ist eine geschützte Datenbank im Sinne der §§ 87a ff. UrhG (Datenbankherstellerrecht) sowie der Richtlinie 96/9/EG. Einzelne Rohdaten stammen aus öffentlich zugänglichen Quellen; die hier bereitgestellten Inhalte sind jedoch das Ergebnis wesentlicher eigenständiger Investitionen in Auswahl, Prüfung, Verknüpfung, Anreicherung und Darstellung dieser Daten und bilden damit eine eigenständige Datenbank. Unabhängig vom Ausgang etwaiger künftiger Auseinandersetzungen über die urheberrechtliche Einordnung einzelner Datenelemente ist die Nutzung der hier bereitgestellten, aufbereiteten Daten ausschließlich in den von dieser Anwendung angebotenen Darstellungsformen (insbesondere generierte Datenblätter und Produktvergleiche) und für eigene berufliche oder private Zwecke gestattet. Jede Entnahme, Extraktion (Scraping), Vervielfältigung, Weiterverbreitung oder kommerzielle Weiterverwendung der Datenbank oder wesentlicher Teile davon in anderer Form oder anderem Zustand als hier bereitgestellt ist ohne vorherige schriftliche Zustimmung untersagt. Sämtliche Rechte an HeatPump Database (Europe) stehen ausschließlich ‚${RIGHTS_HOLDER}‘ zu. Rechte an den zugrunde liegenden Quellmaterialien Dritter, Produktinformationen und Marken verbleiben bei den jeweiligen Rechteinhabern.`,
   },
   company: {
     types: {
@@ -1123,7 +1129,7 @@ const DE: HpStrings = {
     dupInvite: 'Diese E-Mail ist bereits Mitglied oder eingeladen.',
     remove: 'Zugang entziehen',
     removeTitle: (name: string) => `${name} aus diesem Team entfernen?`,
-    removeBody: 'Die Person verliert sofort den Zugang zum Team-Abonnement. Ihr persönliches HeatPump-DataBase-Konto wird nicht gelöscht.',
+    removeBody: 'Die Person verliert sofort den Zugang zum Team-Abonnement. Ihr persönliches HeatPump-Database-Konto wird nicht gelöscht.',
     removed: 'Mitglied entfernt — der Platz ist wieder frei.',
     leave: 'Team verlassen',
     leaveText: 'Beim Verlassen wird Ihr Platz frei und Ihr Zugang zum Team-Abonnement endet. Ihr persönliches Konto bleibt bestehen — Sie können später einem anderen Team beitreten oder selbst abonnieren. Das Team-Abonnement wird dadurch nicht gekündigt.',
@@ -1146,8 +1152,10 @@ const DE: HpStrings = {
     } as Record<string, string>,
     mostPopular: 'AM BELIEBTESTEN',
     bestValue: 'Bester Preis',
+    exclVat: 'zzgl. MwSt.',
     termNames: { monthly: 'Monatlich', six_months: '6 Monate', annual: 'Jährlich' } as Record<string, string>,
     termSave: { monthly: '', six_months: '~7 % sparen', annual: '~17 % sparen' } as Record<string, string>,
+    termSavePct: (p: number) => `~${p} % sparen`,
     perTerm: { monthly: '/Monat', six_months: '/6 Monate', annual: '/Jahr' } as Record<string, string>,
     forWholeTeam: 'für das ganze Team',
     perMonthEq: (p: string) => `Entspricht ${p}/Monat`,
@@ -1215,7 +1223,7 @@ const GB: HpStrings = {
   footer: {
     edition: 'United Kingdom edition',
     note: 'Product data is informational — verify Ofgem, MCS and manufacturer sources before contractual use.',
-    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · All rights reserved.`,
+    copyright: (y: number) => `© ${y} ${BRAND_TM} · All rights reserved.`,
   },
 
   find: {
@@ -1381,7 +1389,7 @@ const GB: HpStrings = {
   account: {
     ...EN.account,
     languageNote: 'English is the default for the United Kingdom edition.',
-    legalNotice: `The database provided in this application, “HeatPump DataBase (Europe)”, is a protected database within the meaning of the Copyright and Rights in Databases Regulations 1997 and, where applicable, Directive 96/9/EC. Individual raw data points originate from publicly accessible sources; the content provided here, however, is the result of substantial independent investment in the selection, verification, cross-referencing, enrichment and presentation of that data, and constitutes an original database in its own right. Irrespective of the outcome of any future dispute concerning the copyright status of individual data elements, use of the reprocessed data provided here is permitted solely in the presentation forms offered by this application (in particular generated data sheets and product comparison views) and for the user’s own professional or private purposes. Any extraction, scraping, reproduction, redistribution or commercial re-use of the database or any substantial part of it, in any form or state other than as provided by this application, is prohibited without prior written consent. All rights, title and interest in HeatPump DataBase vest exclusively in ‘${RIGHTS_HOLDER}’.`,
+    legalNotice: `The database provided in this application, “HeatPump Database (Europe)™”, is a protected database within the meaning of the Copyright and Rights in Databases Regulations 1997 and, where applicable, Directive 96/9/EC. Individual raw data points originate from publicly accessible sources; the content provided here, however, is the result of substantial independent investment in the selection, verification, cross-referencing, enrichment and presentation of that data, and constitutes an original database in its own right. Irrespective of the outcome of any future dispute concerning the copyright status of individual data elements, use of the reprocessed data provided here is permitted solely in the presentation forms offered by this application (in particular generated data sheets and product comparison views) and for the user’s own professional or private purposes. Any extraction, scraping, reproduction, redistribution or commercial re-use of the database or any substantial part of it, in any form or state other than as provided by this application, is prohibited without prior written consent. All rights, title and interest in HeatPump Database (Europe) vest exclusively in ‘${RIGHTS_HOLDER}’. Rights in the underlying third-party source materials, product information and trademarks remain with their respective owners.`,
   },
 };
 
@@ -1401,7 +1409,7 @@ const FR_EN: HpStrings = {
   footer: {
     edition: 'France edition',
     note: "Product data is informational — verify France Rénov', ANAH and manufacturer sources before contractual use.",
-    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · All rights reserved.`,
+    copyright: (y: number) => `© ${y} ${BRAND_TM} · All rights reserved.`,
   },
 
   find: {
@@ -1600,7 +1608,7 @@ const FR_FR: HpStrings = {
   footer: {
     edition: 'Édition France',
     note: 'Données produits à titre informatif — vérifiez France Rénov’, l’ANAH et les sources fabricants avant tout usage contractuel.',
-    copyright: (y: number) => `© ${y} HeatPump DataBase (Europe) · Tous droits réservés.`,
+    copyright: (y: number) => `© ${y} ${BRAND_TM} · Tous droits réservés.`,
   },
 
   find: {
@@ -1987,7 +1995,7 @@ const FR_FR: HpStrings = {
     dupInvite: 'Cette adresse est déjà membre ou déjà invitée.',
     remove: 'Retirer l’accès',
     removeTitle: (name: string) => `Retirer ${name} de cette équipe ?`,
-    removeBody: 'La personne perdra immédiatement l’accès à l’abonnement d’équipe. Son compte personnel HeatPump DataBase ne sera pas supprimé.',
+    removeBody: 'La personne perdra immédiatement l’accès à l’abonnement d’équipe. Son compte personnel HeatPump Database ne sera pas supprimé.',
     removed: 'Membre retiré — le siège est de nouveau libre.',
     leave: 'Quitter l’équipe',
     leaveText: 'Quitter l’équipe libère votre siège et met fin à votre accès à l’abonnement d’équipe. Votre compte personnel est conservé — vous pourrez rejoindre une autre équipe ou souscrire vous-même. L’abonnement d’équipe n’est pas résilié.',
@@ -2077,7 +2085,7 @@ const FR_FR: HpStrings = {
     fairUseAccount: 'Un compte par personne. Chaque compte est strictement personnel et ne peut être utilisé que par une seule personne. En cas d’utilisation par deux personnes ou plus, le compte peut être fermé sans préavis pour rupture de contrat, sans remboursement de la période restante.',
     fairUseData: 'Aucune extraction de données non autorisée. Collecter, extraire (scraping) ou réutiliser le contenu de la base de données en dehors des formes de présentation de cette application — y compris la collecte automatisée ou l’entraînement d’IA — est interdit et entraîne la fermeture du compte ; des responsabilités civiles et pénales peuvent s’appliquer au titre du droit des bases de données.',
     legalNoticeTitle: 'Mention légale',
-    legalNotice: `La base de données fournie dans cette application, « HeatPump DataBase (Europe) », est une base de données protégée au sens des articles L. 341-1 et suivants du Code de la propriété intellectuelle et de la directive 96/9/CE. Les données brutes individuelles proviennent de sources accessibles au public ; les contenus fournis ici sont toutefois le résultat d’investissements substantiels et indépendants dans la sélection, la vérification, le croisement, l’enrichissement et la présentation de ces données, et constituent à ce titre une base de données originale à part entière. Indépendamment de l’issue de tout litige futur relatif au statut des éléments de données individuels au regard du droit d’auteur, l’utilisation des données retraitées fournies ici n’est autorisée que dans les formes de présentation offertes par cette application (notamment les fiches techniques générées et les comparatifs de produits) et pour les besoins professionnels ou privés propres de l’utilisateur. Toute extraction, réutilisation, reproduction, rediffusion ou exploitation commerciale de la base de données ou d’une partie substantielle de celle-ci, sous une forme ou dans un état autres que ceux fournis par cette application, est interdite sans accord écrit préalable. L’ensemble des droits sur HeatPump DataBase appartient exclusivement à ‘${RIGHTS_HOLDER}’.`,
+    legalNotice: `La base de données fournie dans cette application, « HeatPump Database (Europe)™ », est une base de données protégée au sens des articles L. 341-1 et suivants du Code de la propriété intellectuelle et de la directive 96/9/CE. Les données brutes individuelles proviennent de sources accessibles au public ; les contenus fournis ici sont toutefois le résultat d’investissements substantiels et indépendants dans la sélection, la vérification, le croisement, l’enrichissement et la présentation de ces données, et constituent à ce titre une base de données originale à part entière. Indépendamment de l’issue de tout litige futur relatif au statut des éléments de données individuels au regard du droit d’auteur, l’utilisation des données retraitées fournies ici n’est autorisée que dans les formes de présentation offertes par cette application (notamment les fiches techniques générées et les comparatifs de produits) et pour les besoins professionnels ou privés propres de l’utilisateur. Toute extraction, réutilisation, reproduction, rediffusion ou exploitation commerciale de la base de données ou d’une partie substantielle de celle-ci, sous une forme ou dans un état autres que ceux fournis par cette application, est interdite sans accord écrit préalable. L’ensemble des droits sur HeatPump Database (Europe) appartient exclusivement à ‘${RIGHTS_HOLDER}’. Les droits sur les matériaux sources tiers sous-jacents, les informations produits et les marques restent la propriété de leurs titulaires respectifs.`,
   },
   sub: {
     pickTitle: 'Choisissez votre offre.',
@@ -2092,8 +2100,10 @@ const FR_FR: HpStrings = {
     } as Record<string, string>,
     mostPopular: 'LE PLUS POPULAIRE',
     bestValue: 'Meilleur prix',
+    exclVat: 'HT',
     termNames: { monthly: 'Mensuel', six_months: '6 mois', annual: 'Annuel' } as Record<string, string>,
     termSave: { monthly: '', six_months: '≈ 7 % d’économie', annual: '≈ 17 % d’économie' } as Record<string, string>,
+    termSavePct: (p: number) => `≈ ${p} % d’économie`,
     perTerm: { monthly: '/mois', six_months: '/6 mois', annual: '/an' } as Record<string, string>,
     forWholeTeam: 'pour toute l’équipe',
     perMonthEq: (p: string) => `Soit ${p}/mois`,

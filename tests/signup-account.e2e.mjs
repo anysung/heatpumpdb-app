@@ -99,17 +99,14 @@ check('Privacy link on signup', (await page.locator('[data-testid="su-privacy-li
 check('CTA reads "continue to plan selection"',
   /plan selection|Tarifauswahl|choix de la formule/i.test(await page.locator('[data-testid="su-submit"]').innerText()));
 
-/* ── 2. PUBLIC POLICY PAGES (no login, service identity, no omitted fields) ── */
-// Wording that must never appear: omitted legal fields, or any hint that they
-// are missing. `A Company` belongs only in the database Disclaimer (Account page).
+/* ── 2. PUBLIC POLICY PAGES (no login; Paddle-review business identity) ────── */
+// Every legal page is public over the same domain, shows the brand and the one
+// support contact, and never carries a "to be completed" placeholder or app-store
+// wording (billing is web-only via Paddle). The verified operator identity now
+// lives in the Legal Notice; the sensitive registration NUMBER appears ONLY there.
 const FORBIDDEN = [
   [/to be completed|zu ergänzen|à compléter|\[.*?\]/i, 'placeholder'],
-  [/registered address|Anschrift|Adresse du siège|Sitz der Gesellschaft/i, 'address'],
-  [/registration number|Registernummer|Registergericht|numéro d.immatriculation|Handelsregister/i, 'registration number'],
-  [/VAT (identification )?number|VAT ID|USt-IdNr|Umsatzsteuer-Identifikationsnummer|tax number|Steuernummer|numéro de TVA|TVA intracommunautaire/i, 'VAT/tax number'],
-  [/responsible for content|Inhaltlich verantwortlich|Responsable de la publication|legal representative|gesetzlicher Vertreter/i, 'responsible person'],
   [/app store|App Store|App-Store|Google Play|in-app purchase|boutique d.applications/i, 'app-store wording'],
-  [/A Company/, '"A Company" (belongs only in the Disclaimer)'],
 ];
 
 for (const [path, id] of [['/privacy', 'legal-privacy'], ['/terms', 'legal-terms'], ['/refund-policy', 'legal-refund'], ['/imprint', 'legal-imprint']]) {
@@ -118,19 +115,39 @@ for (const [path, id] of [['/privacy', 'legal-privacy'], ['/terms', 'legal-terms
   await p2.waitForTimeout(900);
   check(`${path} opens without a login`, await p2.locator(`[data-testid="${id}"]`).isVisible().catch(() => false));
   const text = await p2.locator('body').innerText();
-  check(`${path} shows "HeatPump DataBase (Europe)"`, text.includes('HeatPump DataBase (Europe)'));
+  check(`${path} shows "HeatPump Database (Europe)"`, text.includes('HeatPump Database (Europe)'));
   check(`${path} shows support@heatpumpdb.eu`, text.includes('support@heatpumpdb.eu'));
+  // The business registration number is sensitive: Legal Notice only.
+  check(`${path} shows the registration number only on the Legal Notice`,
+    text.includes('854-76-00547') === (path === '/imprint'));
   for (const [re, label] of FORBIDDEN) {
     check(`${path} has no ${label}`, !re.test(text), re.test(text) ? `matched: ${(text.match(re) || [])[0]}` : '');
   }
   await p2.close();
 }
 
-// The Imprint stays minimal: service name + contact, nothing else.
+// The Legal Notice carries the full verified operator identity (Paddle review):
+// operator, owner, registered address, registration number, contact, brand, MoR.
 const imp = await ctx.newPage();
 await imp.goto(`${BASE.replace(/\/$/, '')}/imprint`, { waitUntil: 'domcontentloaded' });
 await imp.waitForTimeout(700);
-check('/imprint is minimal (2 sections only)', (await imp.locator('[data-testid="legal-imprint"] section').count()) === 2);
+const impText = await imp.locator('[data-testid="legal-imprint"]').innerText();
+check('/imprint has the seven Legal Notice sections', (await imp.locator('[data-testid="legal-imprint"] section').count()) === 7);
+for (const fact of [
+  'A Company', 'Yong Soo Sung', '854-76-00547',
+  '1st Floor, 16-32, Seogyeong-ro 2-gil', 'Seongbuk-gu, Seoul', 'Republic of Korea',
+  'support@heatpumpdb.eu', 'Paddle.com Market Ltd', 'HeatPump Database (Europe)™',
+]) {
+  check(`/imprint shows "${fact}"`, impText.includes(fact));
+}
+// Terms name the operator and point to the Legal Notice; Privacy names the controller.
+const termsText = await (async () => { const t = await ctx.newPage(); await t.goto(`${BASE.replace(/\/$/, '')}/terms`, { waitUntil: 'domcontentloaded' }); await t.waitForTimeout(600); const x = await t.locator('body').innerText(); await t.close(); return x; })();
+check('/terms identifies A Company as operator', /A Company/.test(termsText));
+check('/terms links to / references the Legal Notice', /Legal Notice|Impressum|Mentions légales/i.test(termsText));
+const privText = await (async () => { const t = await ctx.newPage(); await t.goto(`${BASE.replace(/\/$/, '')}/privacy`, { waitUntil: 'domcontentloaded' }); await t.waitForTimeout(600); const x = await t.locator('body').innerText(); await t.close(); return x; })();
+check('/privacy names the data controller (A Company / owner)', /A Company/.test(privText) && /Yong Soo Sung/.test(privText));
+check('/privacy does NOT claim A Company is EU-established',
+  !/(established|incorporated|registered)\s+(in\s+)?(the\s+)?(EU|European Union)/i.test(privText));
 await imp.close();
 
 /* ── 3. ACCOUNT (professional) — real signed-in user ────────────────────── */

@@ -5,18 +5,42 @@
  * domain (hosting rewrites every path to index.html; App.tsx renders the policy
  * before the auth gate). One shared set of routes for every country edition.
  *
- * IDENTITY: the policies address customers as the SERVICE, with support email as
- * the single contact. Registered address, register number, VAT/tax number and a
- * responsible-person name are deliberately NOT shown — and not hinted at either:
- * there are no "missing information" placeholders anywhere in the documents.
- * (`RIGHTS_HOLDER` stays where it always was, in the database Disclaimer — see
- * hpiq/i18n.ts. It is not used on the policy pages.)
+ * IDENTITY: the full operator identity — trading name, owner, registered address,
+ * business registration number and merchant of record — is published in the
+ * LEGAL NOTICE (the `imprint` document) and, for the parts that belong there, in
+ * the Terms operator provision and the Privacy "Data Controller" section. These
+ * are the same verified facts in every country edition, from the constants below
+ * (one source of truth). The marketing surfaces — homepage, pricing cards, nav,
+ * Account summary — deliberately do NOT repeat the owner name, address, country
+ * or registration number: those stay one click away in the Legal Notice.
+ * The identity facts (trading name, owner, address, registration number, email)
+ * are never translated; only the surrounding headings and sentences are.
  */
 
-/** Customer-facing service identity used across all four policy pages. */
-export const SERVICE_NAME = 'HeatPump DataBase (Europe)';
+/** Customer-facing product/brand identity used across the policy pages. */
+export const SERVICE_NAME = 'HeatPump Database (Europe)';
 
-/** The single customer-facing support address (policies, Imprint, Account). */
+/** Prominent brand mark (trademark form) — Legal Notice, Terms intro, footers. */
+export const BRAND_TM = 'HeatPump Database (Europe)™';
+
+/* ── Verified operator identity (Paddle review). Facts, never translated. ──── */
+
+/** Registered trading name of the service operator. */
+export const OPERATOR_NAME = 'A Company';
+/** Owner and operator of the sole proprietorship. */
+export const OPERATOR_OWNER = 'Yong Soo Sung';
+/** Business registration number of the operator. */
+export const BUSINESS_REG_NUMBER = '854-76-00547';
+/** Registered business address, one postal line per entry (never altered/translated). */
+export const BUSINESS_ADDRESS_LINES = [
+  '1st Floor, 16-32, Seogyeong-ro 2-gil',
+  'Seongbuk-gu, Seoul',
+  'Republic of Korea',
+] as const;
+/** Payment merchant of record (Paddle legal entity). */
+export const PADDLE_ENTITY = 'Paddle.com Market Ltd';
+
+/** The single customer-facing support address (policies, Legal Notice, Account). */
 export const SUPPORT_EMAIL = 'support@heatpumpdb.eu';
 
 /** Advertising / business-partnership contact — Account "Advertising & partnerships" card only. */
@@ -32,6 +56,14 @@ export const LEGAL_ROUTES = {
   refund: '/refund-policy',
   imprint: '/imprint',
 } as const;
+
+/**
+ * Public, read-only pricing page (no login) so Paddle can inspect the plans,
+ * billing terms, trial and VAT-exclusive wording without an account. It renders
+ * the SAME shared subscription config (config/subscriptionPlans.ts) — no duplicated
+ * prices or rules — and never opens checkout (signup stays paused).
+ */
+export const PRICING_ROUTE = '/pricing';
 
 export type LegalDoc = keyof typeof LEGAL_ROUTES;
 

@@ -12,8 +12,9 @@ import { translations } from './translations';
 import { DEFAULT_LANGUAGE } from './hpiq/market';
 import { PUBLIC_ENV } from './config/env';
 import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE } from './config/registration';
-import { legalDocForPath } from './config/legal';
+import { legalDocForPath, PRICING_ROUTE } from './config/legal';
 import { LegalPage, LegalFooter } from './legal/LegalPage';
+import { PublicPricingPage } from './pricing/PublicPricingPage';
 import { SignupForm, SignupFormValues } from './components/auth/SignupForm';
 import { previewUserPatch } from './hpiq/devPreview';
 
@@ -233,6 +234,11 @@ const App: React.FC = () => {
     return <LegalPage doc={legalDoc} language={language} setLanguage={setLanguage} />;
   }
 
+  // ── Public pricing page (/pricing) — read-only, no login, shared plan config ──
+  if (window.location.pathname.replace(/\/+$/, '') === PRICING_ROUTE) {
+    return <PublicPricingPage language={language} setLanguage={setLanguage} />;
+  }
+
   // Dev-only admin console preview (no auth, layout only — Firestore reads
   // still require a real admin account): vite dev server + ?preview=admin
   if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === 'admin') {
@@ -306,6 +312,7 @@ const App: React.FC = () => {
   if (currentView === 'LANDING') {
     return (
       <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <div className="w-full flex flex-col items-center gap-10">
         <div className="w-full max-w-6xl grid lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-16 items-center">
           {/* Hero — market story */}
           <div className="max-w-xl hp-fade-up">
@@ -362,13 +369,22 @@ const App: React.FC = () => {
               <button onClick={() => setCurrentView('SIGNUP')} className={primaryBtn}>{t.signup}</button>
               <button onClick={() => setCurrentView('LOGIN')} className={ghostBtn}>{t.login}</button>
             </div>
-            <div className="mt-8 text-center">
+            {/* Public, read-only plans & pricing (no login required to view) */}
+            <div className="mt-4 text-center">
+              <a href={PRICING_ROUTE} className="text-emerald-300/90 text-sm font-medium hover:text-emerald-200 transition-colors">
+                {{ en: 'View plans & pricing', de: 'Tarife & Preise ansehen', fr: 'Voir les offres et tarifs' }[language] ?? 'View plans & pricing'} ›
+              </a>
+            </div>
+            <div className="mt-6 text-center">
               <button onClick={handleAdminAccess} className="text-white/30 text-xs hover:text-white/70 underline transition-colors">
                 {t.adminAccess}
               </button>
             </div>
           </GlassCard>
           </div>
+        </div>
+        {/* Public legal links on the entry page — reachable without any login */}
+        <LegalFooter language={language} dark />
         </div>
       </AuthShell>
     );
