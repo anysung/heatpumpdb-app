@@ -1,0 +1,358 @@
+/**
+ * build-app-products-pl.mjs  v1.0  (Poland dataset builder)
+ *
+ * Strategy (owner decision 2026-07-17): the PL catalogue is the canonical
+ * (German-registry-derived) European catalogue — same hardware sold across the
+ * EU — PLUS spec-complete Poland-market records for Lista ZUM devices that do
+ * not exist in the canonical catalogue (mostly DHW and PL-market variants).
+ *
+ * Layers:
+ *   1. Canonical baseline (public/data/products*.json) — identity, specs and
+ *      the 23 kW segmentation are inherited unchanged, exactly like FR/GB.
+ *   2. Lista ZUM LISTING OVERLAY (data_sources/lista_zum/matching/YYYY-MM/
+ *      canonical-zum-overlay.json) — a confirmed match may attach the ZUM id
+ *      and registry facts; it never creates/changes/removes a canonical
+ *      product. Unmatched products carry zum_match_status='verification_required'
+ *      (never a claim of absence — the PEL rule).
+ *   3. PL-MARKET EXTENSION (this builder, from the parsed ZUM snapshot):
+ *      registry entries with NO canonical counterpart become PL-edition-only
+ *      records IF AND ONLY IF the registry itself publishes enough measured
+ *      data to pass the SAME shared Data-Sheet eligibility rule
+ *      (scripts/lib/data-sheet-eligibility.mjs — no weaker Poland standard).
+ *      Provenance: performance_source='ZUM_REGISTRY', source_id 'PL-<zum id>',
+ *      zum_match_method='zum_native'. These records exist only in the PL
+ *      datasets and never travel to other markets.
+ *
+ * Honesty policy (PL):
+ *   - Canonical specs are European reference values (cross-reference,
+ *     performance_source='BAFA_REFERENCE'), not Polish certification data.
+ *   - ZUM listing is a product-side condition of the Czyste Powietrze program;
+ *     the app NEVER claims grant eligibility (applicant/building/income rules).
+ *   - Extension-record specs are the values Lista ZUM itself publishes
+ *     (IOŚ-PIB-verified per EN 14511/14825, EU-accredited labs) — traceable
+ *     via the ZUM id, plus the registry-published EPREL number where present.
+ */
+
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dataSheetEligibility, ratedCapacityKw, segmentOf } from '../lib/data-sheet-eligibility.mjs';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, '../..');
+
+const EXPECTED_FIELD_COUNT = 89; // DE 78 − 4 German fields + performance_source
+                                 // + bafa_reference_*(3) + zum_*(10) + zum_id
+const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
+
+function loadJSON(relPath, hint) {
+  const abs = resolve(ROOT, relPath);
+  if (!existsSync(abs)) {
+    console.error(`Missing ${relPath}${hint ? ` — ${hint}` : ''}`);
+    process.exit(1);
+  }
+  return JSON.parse(readFileSync(abs, 'utf8'));
+}
+const newestSnapshot = rel => {
+  const dir = resolve(ROOT, rel);
+  return existsSync(dir)
+    ? readdirSync(dir).filter(d => /^\d{4}-\d{2}$/.test(d)).sort().reverse()[0] ?? null
+    : null;
+};
+
+const deResidential = loadJSON('public/data/products.json', 'run the DE builder first');
+const deCommercial = loadJSON('public/data/products-commercial.json', 'run the DE builder first');
+
+/* ── ZUM overlay (optional — build proceeds unenriched without it) ────────── */
+const overlaySnapshot = newestSnapshot('data_sources/lista_zum/matching');
+const overlayFile = overlaySnapshot
+  ? JSON.parse(readFileSync(resolve(ROOT, 'data_sources/lista_zum/matching', overlaySnapshot, 'canonical-zum-overlay.json'), 'utf8'))
+  : null;
+const overlayByBafaId = new Map(Object.entries(overlayFile?.overlay ?? {}));
+console.log(overlayFile
+  ? `ZUM overlay: ${overlayByBafaId.size} products carry listing state (snapshot ${overlaySnapshot})`
+  : 'ZUM overlay: none (all products will show verification_required)');
+
+/* ── Parsed ZUM snapshot (for the PL-market extension) ───────────────────── */
+const parsedSnapshot = newestSnapshot('data_sources/lista_zum/parsed');
+const zumParsed = parsedSnapshot
+  ? JSON.parse(readFileSync(resolve(ROOT, 'data_sources/lista_zum/parsed', parsedSnapshot, 'zum-normalized.json'), 'utf8'))
+  : null;
+
+const generatedAt = new Date().toISOString();
+
+/** German BAFA type strings → Polish display strings. Unknown values pass through. */
+const TYPE_PL = {
+  'Luft / Wasser': 'Powietrze / Woda',
+  'Sole / Wasser': 'Solanka / Woda',
+  'Wasser / Wasser': 'Woda / Woda',
+  'Luft / Luft': 'Powietrze / Powietrze',
+};
+
+/** German registry status / funding fields — German facts. They do not travel. */
+const GERMAN_ONLY_FIELDS = [
+  'bafa_listing_status', 'bafa_foerderung_von', 'bafa_foerderung_bis', 'bafa_snapshot_fetched_at',
+];
+
+const EMPTY_ZUM_BLOCK = {
+  zum_match_status: 'verification_required',
+  zum_id: null,
+  zum_product_name: null,
+  zum_category: null,
+  zum_class_55c: null,
+  zum_match_method: null,
+  zum_match_confidence: null,
+  zum_snapshot: overlaySnapshot ?? parsedSnapshot ?? null,
+  zum_snapshot_fetched_at: overlayFile?.meta?.generated_at ?? null,
+  zum_first_matched_at: null,
+  zum_last_confirmed_at: null,
+};
+
+function toPlItem(p) {
+  const base = { ...p };
+  for (const f of GERMAN_ONLY_FIELDS) delete base[f];
+  const ov = overlayByBafaId.get(String(p.bafa_id));
+  return {
+    ...base,
+    type: TYPE_PL[p.type] ?? p.type,
+    country: 'PL',
+    performance_source: 'BAFA_REFERENCE',
+    bafa_reference_id: p.bafa_id != null ? String(p.bafa_id) : null,
+    bafa_reference_model: p.model ?? null,
+    bafa_reference_match_type: 'same_record',
+    ...EMPTY_ZUM_BLOCK,
+    ...(ov ?? {}),
+  };
+}
+
+const residential = deResidential.items.map(toPlItem);
+const commercial = deCommercial.items.map(toPlItem);
+
+/* ── PL-market extension records (ZUM-native, spec-complete only) ────────── */
+const TEMPLATE_KEYS = Object.keys(residential[0]);
+const canonicalEprels = new Set(
+  [...deResidential.items, ...deCommercial.items]
+    .filter(i => i.eprel_registration_number != null)
+    .map(i => String(i.eprel_registration_number)),
+);
+const confirmedZumIds = new Set(
+  [...overlayByBafaId.values()].filter(o => o.zum_match_status === 'confirmed').map(o => o.zum_id),
+);
+
+const LEGAL_TOKENS = new Set(['GMBH', 'KG', 'CO', 'SP', 'ZOO', 'SA', 'AG', 'SE', 'SRL', 'SAS',
+  'LTD', 'LLC', 'BV', 'AS', 'OY', 'AB', 'SPA', 'POLAND', 'POLSKA', 'EUROPE', 'AIRCONDITIONING']);
+const shortName = mfr => {
+  const t = String(mfr ?? '').normalize('NFKD').replace(/[^A-Za-z ]+/g, ' ').split(/\s+/)
+    .find(w => w.length >= 3 && !LEGAL_TOKENS.has(w.toUpperCase()));
+  return t ? t[0].toUpperCase() + t.slice(1) : (mfr ?? null);
+};
+
+const ZUM_TYPE = {
+  PW: 'Powietrze / Woda',
+  PG: 'Solanka / Woda',
+  PU: 'Powietrze / Woda (C.W.U.)',
+  PP: 'Powietrze / Powietrze',
+};
+
+const extensionStats = { candidates: 0, alreadyConfirmed: 0, eprelInCanonical: 0, ineligible: 0, added: 0, byReason: {} };
+const extension = [];
+
+for (const z of zumParsed?.entries ?? []) {
+  if (confirmedZumIds.has(z.zum_id)) { extensionStats.alreadyConfirmed++; continue; }
+  // If the registry's EPREL number already exists in the canonical catalogue,
+  // this device IS (a variant of) a canonical product — an ambiguity for the
+  // review queue, never a duplicate product record.
+  if (z.eprel_number && canonicalEprels.has(z.eprel_number)) { extensionStats.eprelInCanonical++; continue; }
+  extensionStats.candidates++;
+
+  const candidate = Object.fromEntries(TEMPLATE_KEYS.map(k => [k, null]));
+  Object.assign(candidate, {
+    bafa_id: `PL-${z.zum_id}`,
+    source_id: `PL-${z.zum_id}`,
+    uuid: null,
+    country: 'PL',
+    primary_source: 'LISTA_ZUM',
+    manufacturer: z.manufacturer,
+    manufacturer_normalized: String(z.manufacturer ?? '').toUpperCase().normalize('NFKD').replace(/[^A-Z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(),
+    manufacturer_short: shortName(z.manufacturer),
+    model: z.model,
+    type: ZUM_TYPE[z.category] ?? null,
+    market_segment: null, // resolved by segmentOf at validation below
+    installation_type: null,
+    refrigerant: z.refrigerant ?? null,
+    refrigerant_amount_kg: z.refrigerant_kg ?? null,
+    power_55C_kw: z.rated_kw_55 ?? null,
+    efficiency_55C_percent: z.etas_55 ?? null,
+    efficiency_35C_percent: z.etas_35 ?? null,
+    scop: z.scop ?? null,
+    noise_outdoor_dB: z.noise_outdoor_db && z.noise_outdoor_db > 0 ? z.noise_outdoor_db : null,
+    noise_indoor_dB: z.noise_indoor_db && z.noise_indoor_db > 0 ? z.noise_indoor_db : null,
+    website: z.producer_url ?? null,
+    eprel_registration_number: z.eprel_number ?? null,
+    eprel_match_type: z.eprel_number ? 'zum_published' : null,
+    performance_source: 'ZUM_REGISTRY',
+    bafa_reference_id: null,
+    bafa_reference_model: null,
+    bafa_reference_match_type: null,
+    source_snapshot_generated_at: zumParsed.meta.generated_at,
+    zum_match_status: 'confirmed',
+    zum_id: z.zum_id,
+    zum_product_name: z.product_name ?? null,
+    zum_category: z.category,
+    zum_class_55c: z.class_55 ?? z.single_class ?? null,
+    zum_match_method: 'zum_native',
+    zum_match_confidence: 'high',
+    zum_snapshot: parsedSnapshot,
+    zum_snapshot_fetched_at: zumParsed.meta.generated_at,
+    zum_first_matched_at: z.added_at ?? null,
+    zum_last_confirmed_at: generatedAt,
+  });
+
+  // THE SAME eligibility rule as every market — no weaker Poland standard.
+  const elig = dataSheetEligibility(candidate);
+  if (!elig.eligible) {
+    extensionStats.ineligible++;
+    for (const r of elig.reasons) extensionStats.byReason[r] = (extensionStats.byReason[r] ?? 0) + 1;
+    continue;
+  }
+  extension.push(candidate);
+  extensionStats.added++;
+}
+
+for (const x of extension) {
+  x.market_segment = segmentOf(x) === 'commercial' ? 'commercial_project' : 'residential_core';
+  (segmentOf(x) === 'commercial' ? commercial : residential).push(x);
+}
+
+const allItems = [...residential, ...commercial];
+
+/* ── Validate ─────────────────────────────────────────────────────────────── */
+
+const fieldCount = Object.keys(allItems[0]).length;
+if (fieldCount !== EXPECTED_FIELD_COUNT) {
+  console.error(`FAIL: field count mismatch: expected ${EXPECTED_FIELD_COUNT}, got ${fieldCount}`);
+  console.error('Fields:', Object.keys(allItems[0]).join(', '));
+  process.exit(1);
+}
+const extBadKeys = extension.filter(x => Object.keys(x).length !== fieldCount);
+if (extBadKeys.length) {
+  console.error(`FAIL: ${extBadKeys.length} extension records deviate from the shared schema`);
+  process.exit(1);
+}
+
+const priceKeysFound = Object.keys(allItems[0]).filter(k =>
+  PRICE_KEY_FRAGMENTS.some(frag => k.includes(frag)));
+if (priceKeysFound.length > 0) {
+  console.error('FAIL: price-like keys present:', priceKeysFound.join(', '));
+  process.exit(1);
+}
+
+const germanLeak = allItems.filter(i => GERMAN_ONLY_FIELDS.some(f => f in i));
+if (germanLeak.length > 0) {
+  console.error(`FAIL: ${germanLeak.length} items carry German-only registry fields`);
+  process.exit(1);
+}
+
+const badProvenance = allItems.filter(i =>
+  !i.bafa_id || !i.source_id || i.country !== 'PL'
+  || (i.performance_source !== 'BAFA_REFERENCE' && i.performance_source !== 'ZUM_REGISTRY'));
+if (badProvenance.length > 0) {
+  console.error(`FAIL: ${badProvenance.length} items missing required PL provenance`);
+  process.exit(1);
+}
+
+const ids = allItems.map(i => String(i.source_id));
+if (new Set(ids).size !== ids.length) {
+  console.error('FAIL: duplicate source_id in PL catalogue');
+  process.exit(1);
+}
+
+// Listing-state integrity: confirmed ⇔ has zum_id; nothing else carries an id.
+const badListing = allItems.filter(i =>
+  (i.zum_match_status === 'confirmed') !== Boolean(i.zum_id));
+if (badListing.length > 0) {
+  console.error(`FAIL: ${badListing.length} items violate confirmed⇔zum_id integrity`);
+  process.exit(1);
+}
+
+// One ZUM id → one product.
+const zumIds = allItems.filter(i => i.zum_id).map(i => i.zum_id);
+if (new Set(zumIds).size !== zumIds.length) {
+  console.error('FAIL: a ZUM id is attached to more than one product');
+  process.exit(1);
+}
+
+// Every product must be publishable and classifiable.
+const inelig = allItems.filter(i => !dataSheetEligibility(i).eligible);
+if (inelig.length > 0) {
+  console.error(`FAIL: ${inelig.length} items fail Data-Sheet eligibility`);
+  process.exit(1);
+}
+const unclassified = allItems.filter(i => segmentOf(i) === 'unclassified');
+if (unclassified.length > 0) {
+  console.error(`FAIL: ${unclassified.length} items unclassifiable (no rated capacity)`);
+  process.exit(1);
+}
+
+const derivedCount = deResidential.items.length + deCommercial.items.length;
+if (allItems.length !== derivedCount + extension.length) {
+  console.error('FAIL: record count mismatch vs DE source + extension');
+  process.exit(1);
+}
+
+/* ── Write output ─────────────────────────────────────────────────────────── */
+
+function writeOutput(relPath, items, dataset, sourceMeta) {
+  const payload = {
+    _meta: {
+      generated: generatedAt,
+      generator: 'build-app-products-pl.mjs v1.0',
+      dataset,
+      country: 'PL',
+      primary_source: 'BAFA',
+      description: 'Polish market catalogue: the canonical European (German-registry-derived) dataset — '
+        + "technical specifications presented as a cross-reference (performance_source='BAFA_REFERENCE'), "
+        + 'not Polish certification data — plus a Lista ZUM listing overlay (confirmed matches only; a '
+        + 'failed match is shown as verification-required, never as absence) and spec-complete PL-market '
+        + "records built from Lista ZUM's own published measured values (performance_source='ZUM_REGISTRY', "
+        + 'source_id PL-<zum id>). Czyste Powietrze / Moje Ciepło eligibility is applicant- and '
+        + 'building-dependent — this app makes no eligibility claims.',
+      total_items: items.length,
+      derived_from: {
+        de_dataset_generated: sourceMeta.generated,
+        de_generator: sourceMeta.generator,
+        bafa_seed: sourceMeta.primary_source,
+      },
+      zum_overlay_source: overlayFile ? `data_sources/lista_zum/matching/${overlaySnapshot}/canonical-zum-overlay.json` : null,
+      zum_snapshot: parsedSnapshot ?? null,
+      zum_confirmed_total: items.filter(i => i.zum_match_status === 'confirmed').length,
+      zum_native_total: items.filter(i => i.zum_match_method === 'zum_native').length,
+      eprel_linked_total: items.filter(i => i.eprel_registration_number != null).length,
+      segments_included: dataset === 'residential' ? ['residential_core'] : ['light_commercial', 'commercial_project'],
+    },
+    items,
+  };
+  writeFileSync(resolve(ROOT, relPath), JSON.stringify(payload));
+  console.log(`Wrote ${items.length} items → ${relPath}`);
+}
+
+writeOutput('public/data/products-pl.json', residential, 'residential', deResidential._meta);
+writeOutput('public/data/products-commercial-pl.json', commercial, 'commercial', deCommercial._meta);
+
+/* ── Summary ──────────────────────────────────────────────────────────────── */
+
+const confirmedTotal = allItems.filter(i => i.zum_match_status === 'confirmed').length;
+console.log('');
+console.log('── Build summary (PL) ─────────────────────────────────────');
+console.log(`Catalogue:                ${allItems.length} items (residential ${residential.length}, commercial ${commercial.length})`);
+console.log(`  derived from DE:        ${derivedCount}`);
+console.log(`  PL-market extension:    ${extension.length} (ZUM-native, spec-complete)`);
+console.log(`  ZUM listed (confirmed): ${confirmedTotal}`);
+console.log(`  review_required:        ${allItems.filter(i => i.zum_match_status === 'review_required').length}`);
+console.log(`  EPREL linked:           ${allItems.filter(i => i.eprel_registration_number != null).length}`);
+console.log(`Extension funnel:         candidates ${extensionStats.candidates + extensionStats.alreadyConfirmed + extensionStats.eprelInCanonical}`
+  + ` → matched ${extensionStats.alreadyConfirmed} | eprel-in-canonical ${extensionStats.eprelInCanonical}`
+  + ` | ineligible ${extensionStats.ineligible} | added ${extensionStats.added}`);
+if (extensionStats.ineligible) console.log('  ineligible reasons:', JSON.stringify(extensionStats.byReason));
+console.log(`Field count:              ${fieldCount} ✓   No price keys ✓   PL provenance ✓   listing integrity ✓`);
+console.log('──────────────────────────────────────────────────────────');

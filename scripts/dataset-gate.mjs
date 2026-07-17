@@ -48,10 +48,11 @@ const DATASETS = {
   DE: ['public/data/products.json', 'public/data/products-commercial.json'],
   GB: ['public/data/products-gb.json', 'public/data/products-commercial-gb.json'],
   FR: ['public/data/products-fr.json', 'public/data/products-commercial-fr.json'],
+  PL: ['public/data/products-pl.json', 'public/data/products-commercial-pl.json'],
 };
 
 /** German registry status/funding fields must never leave Germany. */
-const GERMAN_ONLY_FIELDS = ['bafa_listing_status', 'bafa_foerderung_von', 'bafa_foerderung_bis'];
+const GERMAN_ONLY_FIELDS = ['bafa_listing_status', 'bafa_foerderung_von', 'bafa_foerderung_bis', 'bafa_snapshot_fetched_at'];
 
 /**
  * Approved one-to-many local-id exceptions. An entry says a document proves this
@@ -59,11 +60,33 @@ const GERMAN_ONLY_FIELDS = ['bafa_listing_status', 'bafa_foerderung_von', 'bafa_
  * evidence reference is itself a blocking condition — an unevidenced exception is
  * just an override wearing a disguise.
  */
-const EXC_PATH = resolve(ROOT, 'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json');
-const EXCEPTIONS = existsSync(EXC_PATH)
-  ? (JSON.parse(readFileSync(EXC_PATH, 'utf8')).exceptions ?? []).filter(e => e.approved)
-  : [];
-const UNEVIDENCED = EXCEPTIONS.filter(e => !e.evidence_reference || !Array.isArray(e.canonical_ids) || !e.canonical_ids.length);
+const loadExceptions = file => {
+  const p = resolve(ROOT, 'data_sources/manufacturer_cross_reference', file);
+  return existsSync(p)
+    ? (JSON.parse(readFileSync(p, 'utf8')).exceptions ?? []).filter(e => e.approved)
+    : [];
+};
+
+/**
+ * Per-market local-listing overlay field names. The integrity rules are shared
+ * (one local id → one confirmed product, no cross-manufacturer/capacity/type/
+ * segment conflicts, no id without a confirmed listing); only the field names
+ * differ per registry. Markets without an overlay (DE has its own registry
+ * fields, FR has no list) simply count zero local ids here.
+ */
+const LOCAL_OVERLAY = {
+  GB: {
+    status: 'pel_match_status', id: 'mcs_number', extraId: 'pel_source_id',
+    method: 'pel_match_method', exceptions: loadExceptions('pel-one-to-many-exceptions.json'),
+  },
+  PL: {
+    status: 'zum_match_status', id: 'zum_id', extraId: null,
+    method: 'zum_match_method', exceptions: loadExceptions('zum-one-to-many-exceptions.json'),
+  },
+};
+const NO_OVERLAY = { status: 'pel_match_status', id: 'mcs_number', extraId: 'pel_source_id', method: 'pel_match_method', exceptions: [] };
+const ALL_EXCEPTIONS = Object.values(LOCAL_OVERLAY).flatMap(o => o.exceptions);
+const UNEVIDENCED = ALL_EXCEPTIONS.filter(e => !e.evidence_reference || !Array.isArray(e.canonical_ids) || !e.canonical_ids.length);
 
 // ── Thresholds ───────────────────────────────────────────────────────────────
 const T = {
@@ -152,11 +175,13 @@ for (const [cc, files] of Object.entries(DATASETS)) {
     return kw != null && (!Number.isFinite(kw) || kw <= 0 || kw > 2000);
   }).length;
 
-  // Local listing overlay
-  const confirmed = items.filter(i => i.pel_match_status === 'confirmed').length;
-  const reviewReq = items.filter(i => i.pel_match_status === 'review_required').length;
-  const verifyReq = items.filter(i => i.pel_match_status === 'verification_required').length;
-  const localIds = items.filter(i => i.mcs_number).map(i => String(i.mcs_number));
+  // Local listing overlay (field names differ per registry — LOCAL_OVERLAY)
+  const OV = LOCAL_OVERLAY[cc] ?? NO_OVERLAY;
+  const EXCEPTIONS = OV.exceptions;
+  const confirmed = items.filter(i => i[OV.status] === 'confirmed').length;
+  const reviewReq = items.filter(i => i[OV.status] === 'review_required').length;
+  const verifyReq = items.filter(i => i[OV.status] === 'verification_required').length;
+  const localIds = items.filter(i => i[OV.id]).map(i => String(i[OV.id]));
 
   // ── Local-ID integrity ────────────────────────────────────────────────────
   // The rule is one local registration id → one confirmed canonical product. A
@@ -164,15 +189,15 @@ for (const [cc, files] of Object.entries(DATASETS)) {
   // apart from our matcher over-reaching, so an unproven one-to-many mapping is
   // downgraded upstream and must never arrive here still confirmed.
   const byLocalId = {};
-  items.filter(i => i.mcs_number).forEach(i => {
-    (byLocalId[String(i.mcs_number)] ??= []).push(i);
+  items.filter(i => i[OV.id]).forEach(i => {
+    (byLocalId[String(i[OV.id])] ??= []).push(i);
   });
   const localGroups = Object.entries(byLocalId);
   const approvedIds = new Set(EXCEPTIONS.map(e => e.local_id));
 
   const ambiguousConfirmed = localGroups.filter(([id, v]) =>
     v.length > 1
-    && !(approvedIds.has(id) && v.every(x => x.pel_match_method === 'approved_one_to_many')));
+    && !(approvedIds.has(id) && v.every(x => x[OV.method] === 'approved_one_to_many')));
 
   const crossManufacturer = localGroups.filter(([, v]) =>
     new Set(v.map(x => x.manufacturer_short ?? x.manufacturer)).size > 1);
@@ -189,8 +214,8 @@ for (const [cc, files] of Object.entries(DATASETS)) {
   const conflictingLocalIds = segmentConflict.length;
   // Anything not confirmed must carry no identity at all, or the UI could imply a
   // listing we never established.
-  const idWithoutConfirmation = items.filter(i => i.pel_match_status !== 'confirmed'
-    && (i.mcs_number || i.pel_source_id)).length;
+  const idWithoutConfirmation = items.filter(i => i[OV.status] !== 'confirmed'
+    && (i[OV.id] || (OV.extraId && i[OV.extraId]))).length;
 
   const m = {
     products: items.length,

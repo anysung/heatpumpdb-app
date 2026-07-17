@@ -35,6 +35,7 @@ const DATASETS = {
   DE: { residential: 'products.json',    commercial: 'products-commercial.json' },
   GB: { residential: 'products-gb.json', commercial: 'products-commercial-gb.json' },
   FR: { residential: 'products-fr.json', commercial: 'products-commercial-fr.json' },
+  PL: { residential: 'products-pl.json', commercial: 'products-commercial-pl.json' },
 };
 
 /**

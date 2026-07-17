@@ -105,7 +105,7 @@ if (await note.count()) {
   // DE edition opens in English with German behind the DE chip.
   if (COUNTRY === 'DE') await setLang('DE');
   const nt = await text(note.first());
-  const lang = COUNTRY === 'DE' ? /Nennleistung/i : COUNTRY === 'FR' ? /puissance nominale/i : /rated capacity/i;
+  const lang = COUNTRY === 'DE' ? /Nennleistung/i : COUNTRY === 'FR' ? /puissance nominale/i : COUNTRY === 'PL' ? /moc znamionowa/i : /rated capacity/i;
   check(`[disclosure] the note is in the ${COUNTRY} market language`, lang.test(nt), nt);
   check('[disclosure] the note still names the threshold in that language', /23 kW/.test(nt), nt);
   if (COUNTRY === 'DE') await setLang('EN');
@@ -150,6 +150,25 @@ if (COUNTRY === 'GB') {
   check('[FR] no local listing status is shown at all',
     (await page.locator('[data-testid="local-listing-status"]').count()) === 0);
   check('[FR] no foreign listing is relabelled as French', !/Ofgem|\bPEL\b/i.test(comBody));
+} else if (COUNTRY === 'PL') {
+  // Poland has its own national list (Lista ZUM) — PEL rules apply: only a
+  // confirmed match is "listed", a failed match is never absence.
+  check('[PL] ZUM status is shown on the list', /\bZUM\b/i.test(comBody));
+  check('[PL] no product is claimed absent from ZUM ("nie ma na liście" is banned)',
+    !/nie (ma|znajduje się) na liście|not on (the )?ZUM/i.test(comBody), around(comBody, 'na liście'));
+  check('[PL] no foreign listing leaks onto the Polish edition', !/Ofgem|\bPEL\b|\bMCS\b/i.test(comBody));
+  check('[PL] no grant eligibility is claimed',
+    !/gwarantuje dotacj|kwalifikuje się do dotacji|eligible for (a )?grant/i.test(comBody));
+  if ((await page.locator('[data-testid="listed-only-toggle"]').count()) === 1) {
+    const withFilter = await total();
+    await page.locator('[data-testid="listed-only-toggle"]').first().click();
+    await page.waitForTimeout(300);
+    const withoutFilter = await total();
+    check('[PL] the ZUM filter narrows the catalogue without emptying it',
+      withFilter > 0 && withFilter < withoutFilter, `listed ${withFilter} of ${withoutFilter}`);
+    await page.locator('[data-testid="listed-only-toggle"]').first().click();
+    await page.waitForTimeout(300);
+  }
 } else {
   check('[DE] the BAFA listing filter IS offered (it meaningfully divides the catalogue)',
     (await page.locator('[data-testid="listed-only-toggle"]').count()) === 1);
@@ -221,7 +240,7 @@ if (await search.count()) {
 await page.locator('[data-row-id]').first().click();
 await page.waitForTimeout(900);
 const detail = await bodyText();
-check('[commercial] product detail opens', /Manufacturer|Hersteller|Fabricant/i.test(detail));
+check('[commercial] product detail opens', /Manufacturer|Hersteller|Fabricant|Producent/i.test(detail));
 if (COUNTRY === 'GB') {
   check('[GB] product detail keeps PEL status', /\bPEL Listed|verification required/i.test(detail));
   check('[GB] product detail never says "Not on PEL"', !/not on (the )?(current )?PEL/i.test(detail));
@@ -230,6 +249,11 @@ if (COUNTRY === 'GB') {
 if (COUNTRY === 'FR') {
   check('[FR] product detail never says BAFA', !/BAFA/i.test(detail), around(detail, 'BAFA'));
 }
+if (COUNTRY === 'PL') {
+  check('[PL] product detail never says BAFA', !/BAFA/i.test(detail), around(detail, 'BAFA'));
+  check('[PL] product detail keeps ZUM status wording',
+    /Na liście ZUM|Weryfikacja ZUM|ZUM listed|ZUM verification/i.test(detail));
+}
 
 const cmp = page.locator('[data-testid="compare-toggle"]');
 check('[commercial] compare controls render', (await cmp.count()) >= 2);
@@ -237,9 +261,9 @@ await cmp.nth(0).click();
 await cmp.nth(1).click();
 await page.waitForTimeout(500);
 const cmpText = await bodyText();
-check('[commercial] two records can be compared', /2/.test(cmpText) && /Compare|Vergleich|Comparer/i.test(cmpText));
+check('[commercial] two records can be compared', /2/.test(cmpText) && /Compare|Vergleich|Comparer|Porówn/i.test(cmpText));
 
-await page.getByText(/^Data sheet$|^Datenblatt$|^Fiche technique$/).first().click();
+await page.getByText(/^Data sheet$|^Datenblatt$|^Fiche technique$|^Karta danych$/).first().click();
 await page.waitForTimeout(2500);
 check('[commercial] Data Sheet opens for a commercial record',
   (await page.locator('.hpiq-print-doc').count()) >= 1);
@@ -254,6 +278,12 @@ if (COUNTRY === 'GB') {
 if (COUNTRY === 'FR') {
   check('[FR] the Data Sheet never says BAFA', !/BAFA/i.test(sheet), around(sheet, 'BAFA'));
   check('[FR] the Data Sheet shows no local listing status', !/Ofgem|\bPEL\b/i.test(sheet));
+}
+if (COUNTRY === 'PL') {
+  check('[PL] the Data Sheet never says BAFA', !/BAFA/i.test(sheet), around(sheet, 'BAFA'));
+  check('[PL] the Data Sheet does not name the source country',
+    !namesSourceCountry(sheet), around(stripCompanyNames(sheet), 'German'));
+  check('[PL] the Data Sheet shows no foreign listing', !/Ofgem|\bPEL\b|\bMCS\b/i.test(sheet));
 }
 if (COUNTRY === 'DE') {
   check('[DE] the Data Sheet still shows a valid BAFA reference', /BAFA/i.test(sheet));
@@ -296,11 +326,11 @@ check('[logo] the wordmark does not rotate', logo?.textAnim === 'none');
  * the default language would have missed both.
  */
 if (COUNTRY !== 'DE') {
-  const langs = COUNTRY === 'FR' ? ['FR', 'EN'] : ['EN'];
+  const langs = COUNTRY === 'FR' ? ['FR', 'EN'] : COUNTRY === 'PL' ? ['PL', 'EN'] : ['EN'];
   const pages = [
-    /^Find product$|^Rechercher$/,
-    /^Products$|^Produits$/,
-    /^EU energy label$|^Étiquette énergie UE$|^Étiquette énergétique UE$/,
+    /^Find product$|^Rechercher$|^Znajdź produkt$/,
+    /^Products$|^Produits$|^Produkty$/,
+    /^EU energy label$|^Étiquette énergie UE$|^Étiquette énergétique UE$|^Etykieta energetyczna UE$/,
   ];
   for (const l of langs) {
     await setLang(l);

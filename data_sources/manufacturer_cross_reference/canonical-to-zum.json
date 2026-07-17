@@ -1,0 +1,4 @@
+{
+  "_readme": "Official manufacturer-provided canonical<->Lista-ZUM mappings for the PL market. Same contract as canonical-to-pel.json: an entry here outranks automated matching and requires manufacturer evidence. Fields: local_registry='ZUM', zum_id, canonical_id (bafa_id), manufacturer, evidence_reference, approved (bool).",
+  "mappings": []
+}

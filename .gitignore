@@ -11,6 +11,7 @@ node_modules
 dist
 dist-uk
 dist-fr
+dist-pl
 dist-admin
 dist-ssr
 *.local
@@ -73,3 +74,9 @@ data_sources/bafa/recovery/
 
 # dataset gate: the candidate manifest is regenerated on every run
 data_manifests/candidate.json
+
+# Lista ZUM raw snapshots, parsed output, and matching artifacts (rebuilt by scripts/pl/; monthly refresh)
+# Keep: manifest.json, zum-match-history.json
+data_sources/lista_zum/raw/20*/
+data_sources/lista_zum/parsed/20*/
+data_sources/lista_zum/matching/20*/

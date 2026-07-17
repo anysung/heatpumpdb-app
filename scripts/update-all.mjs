@@ -57,6 +57,8 @@ const LIVE_GCS = {
   'public/data/products-commercial-gb.json': 'gs://heatpumpdb-datasets/datasets/GB/products-commercial-gb.json',
   'public/data/products-fr.json':            'gs://heatpumpdb-datasets/datasets/FR/products-fr.json',
   'public/data/products-commercial-fr.json': 'gs://heatpumpdb-datasets/datasets/FR/products-commercial-fr.json',
+  'public/data/products-pl.json':            'gs://heatpumpdb-datasets/datasets/PL/products-pl.json',
+  'public/data/products-commercial-pl.json': 'gs://heatpumpdb-datasets/datasets/PL/products-commercial-pl.json',
 };
 const CANARIES_PER_FILE = 1;
 
@@ -110,6 +112,19 @@ const PIPELINES = {
     ],
     requires: [],
     datasets: ['public/data/products-fr.json', 'public/data/products-commercial-fr.json'],
+  },
+  PL: {
+    dependsOn: ['DE'],
+    steps: [
+      // Direction: CANONICAL → ZUM. Lista ZUM is a listing overlay, never a
+      // product source (same rule as the Ofgem PEL).
+      { name: 'fetch Lista ZUM (grid + details)', cmd: 'node scripts/pl/fetch-zum.mjs', when: 'fetch' },
+      { name: 'parse Lista ZUM', cmd: 'node scripts/pl/parse-zum.mjs', when: 'fetch' },
+      { name: 'match canonical → Lista ZUM (listing overlay)', cmd: 'node scripts/pl/match-canonical-to-zum.mjs', optional: true },
+      { name: 'build PL app datasets', cmd: 'node scripts/pl/build-app-products-pl.mjs' },
+    ],
+    requires: [],
+    datasets: ['public/data/products-pl.json', 'public/data/products-commercial-pl.json'],
   },
 };
 
@@ -251,10 +266,10 @@ if (DEPLOY) {
   console.log('\n════ Upload datasets (auth-protected Storage, + canaries) ════');
   execSync('node scripts/upload-datasets.mjs', { cwd: ROOT, stdio: 'inherit' });
   console.log('\n════ Build & deploy all editions ════');
-  for (const cmd of ['npm run build:de', 'npm run build:uk', 'npm run build:fr', 'npm run build:admin']) {
+  for (const cmd of ['npm run build:de', 'npm run build:uk', 'npm run build:fr', 'npm run build:pl', 'npm run build:admin']) {
     execSync(cmd, { cwd: ROOT, stdio: 'inherit' });
   }
-  execSync('firebase deploy --only hosting:de,hosting:uk,hosting:fr,hosting:hub', { cwd: ROOT, stdio: 'inherit' });
+  execSync('firebase deploy --only hosting:de,hosting:uk,hosting:fr,hosting:pl,hosting:hub', { cwd: ROOT, stdio: 'inherit' });
 }
 
 /* ── Summary ──────────────────────────────────────────────────────────────── */

@@ -1,0 +1,4 @@
+{
+  "_readme": "Approved, evidenced one-ZUM-id-to-many-canonical-products exceptions (typoszereg family entries). An entry without evidence_reference or canonical_ids is itself a blocking condition in the dataset gate.",
+  "exceptions": []
+}

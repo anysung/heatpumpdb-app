@@ -125,6 +125,36 @@ if (!existsSync(GB)) {
     is(`[${cc}] residential ≤ 23 kW, commercial > 23 kW`,
       items.every(p => (segmentOf(p) === 'residential') === (ratedCapacityKw(p) <= 23)), true);
   }
+
+  // ── Poland: canonical baseline + ZUM overlay + spec-complete PL extension ──
+  const PL = 'public/data/products-pl.json';
+  if (!existsSync(PL)) {
+    console.log('\n(PL datasets not built — Poland assertions skipped)');
+  } else {
+    const pl = [...load(PL).items, ...load('public/data/products-commercial-pl.json').items];
+    console.log('\nPoland: canonical baseline + Lista ZUM overlay + ZUM-native extension');
+    const derived = pl.filter(p => p.performance_source === 'BAFA_REFERENCE');
+    const native = pl.filter(p => p.performance_source === 'ZUM_REGISTRY');
+    is('[PL] derived catalogue is the canonical catalogue', derived.length, de.length);
+    is('[PL] every derived product is a canonical product',
+      derived.every(p => canonicalIds.has(String(p.bafa_id))), true);
+    is('[PL] catalogue = canonical + extension (nothing dropped, nothing duplicated)',
+      pl.length, de.length + native.length);
+    is('[PL] extension records are ZUM-native, PL-prefixed and never leak elsewhere',
+      native.every(p => p.zum_match_method === 'zum_native' && String(p.source_id).startsWith('PL-')), true);
+    is('[PL] every product has a listing state',
+      pl.every(p => ['confirmed', 'review_required', 'verification_required'].includes(p.zum_match_status)), true);
+    is('[PL] a confirmed listing always carries the ZUM id — and only then',
+      pl.every(p => (p.zum_match_status === 'confirmed') === Boolean(p.zum_id)), true);
+    is('[PL] the overlay never overwrote a technical field',
+      derived.every(p => tech.every(f => JSON.stringify(p[f] ?? null) === JSON.stringify(byId.get(String(p.bafa_id))?.[f] ?? null))), true);
+    is('[PL] the overlay never changed a segment',
+      derived.every(p => segmentOf(p) === segmentOf(byId.get(String(p.bafa_id)))), true);
+    is('[PL] no German registry fields',
+      pl.every(p => !('bafa_listing_status' in p) && !('bafa_foerderung_von' in p)), true);
+    is('[PL] all products (incl. extension) pass Data Sheet eligibility', pl.every(isDataSheetEligible), true);
+    is('[PL] no unclassified public product', pl.every(p => segmentOf(p) !== 'unclassified'), true);
+  }
 }
 
 // ── The publication gate ─────────────────────────────────────────────────────
@@ -142,7 +172,8 @@ if (!existsSync(GB)) {
       mkdirSync(join(dir, 'scripts/lib'), { recursive: true });
       mkdirSync(join(dir, 'data_manifests'), { recursive: true });
       for (const f of ['products.json', 'products-commercial.json', 'products-gb.json',
-        'products-commercial-gb.json', 'products-fr.json', 'products-commercial-fr.json']) {
+        'products-commercial-gb.json', 'products-fr.json', 'products-commercial-fr.json',
+        'products-pl.json', 'products-commercial-pl.json']) {
         const j = JSON.parse(readFileSync(resolve(root, 'public/data', f), 'utf8'));
         writeFileSync(join(dir, 'public/data', f), JSON.stringify(mutate(j, f)));
       }
@@ -150,7 +181,8 @@ if (!existsSync(GB)) {
       writeFileSync(join(dir, 'scripts/dataset-gate.mjs'), readFileSync(resolve(root, 'scripts/dataset-gate.mjs')));
       writeFileSync(join(dir, 'scripts/lib/data-sheet-eligibility.mjs'), readFileSync(resolve(root, 'scripts/lib/data-sheet-eligibility.mjs')));
       for (const f of ['data_manifests/production.json', 'data_manifests/migration.json',
-        'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json']) {
+        'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json',
+        'data_sources/manufacturer_cross_reference/zum-one-to-many-exceptions.json']) {
         if (existsSync(resolve(root, f))) writeFileSync(join(dir, f), extra[f] ?? readFileSync(resolve(root, f)));
       }
       execFileSync(process.execPath, [join(dir, 'scripts/dataset-gate.mjs')], { cwd: dir, stdio: 'pipe' });

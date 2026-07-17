@@ -53,6 +53,19 @@ const MARKETS = [
     reputableSources: 'ofgem.gov.uk, gov.uk, mcscertified.com, heatpumps.org.uk, nesta.org.uk, manufacturer newsrooms, established trade press',
     policyScope: 'Boiler Upgrade Scheme grant amounts and conditions, MCS standards, Future Homes Standard, Clean Heat Market Mechanism',
   },
+  {
+    code: 'PL',
+    marketName: 'Poland',
+    includeGermanTranslation: false,
+    polishTranslation: true,
+    researchScope: `- Czyste Powietrze program changes, grant conditions and processing for heat pumps
+- Lista ZUM (lista zielonych urządzeń i materiałów) updates and device eligibility
+- NFOŚiGW announcements and funding calls (Moje Ciepło, Ciepłe Mieszkanie)
+- Polish heat pump market trends and sales statistics (PORT PC, manufacturer reports)
+- EU policy developments affecting Poland (EPBD, efficiency standards, refrigerants)`,
+    reputableSources: 'gov.pl, nfosigw.gov.pl, czystepowietrze.gov.pl, mojecieplo.gov.pl, lista-zum.ios.edu.pl, portpc.pl, ec.europa.eu, manufacturer newsrooms, established trade press',
+    policyScope: 'Czyste Powietrze grant amounts and conditions, Moje Ciepło, Ciepłe Mieszkanie, ulga termomodernizacyjna, EU EPBD requirements',
+  },
 ];
 
 // -------------------------------------------------------------------
@@ -345,7 +358,13 @@ async function researchNewsAndPolicies(ai, budget, market) {
   French for professional installers (correct terminology: pompe à chaleur,
   aides, puissance acoustique, fluide frigorigène…), not a literal
   word-by-word translation. Same paragraph structure as "body".`
-      : `- Do NOT include any translated fields — this market edition is English-only.`;
+      : market.polishTranslation
+        ? `- For EACH article ALSO provide a professional Polish version of the same
+  content in "title_pl", "summary_pl", and "body_pl": natural, journalistic
+  Polish for professional installers (correct terminology: pompa ciepła,
+  dofinansowanie, moc akustyczna, czynnik chłodniczy…), not a literal
+  word-by-word translation. Same paragraph structure as "body".`
+        : `- Do NOT include any translated fields — this market edition is English-only.`;
 
   const germanJsonFields = market.includeGermanTranslation
     ? `
@@ -357,7 +376,12 @@ async function researchNewsAndPolicies(ai, budget, market) {
       "title_fr": "Titre éditorial concis (français)",
       "summary_fr": "Chapeau de 2-3 phrases (français)",
       "body_fr": "Premier paragraphe...\\n\\nDeuxième paragraphe...\\n\\nTroisième paragraphe...",`
-      : '';
+      : market.polishTranslation
+        ? `
+      "title_pl": "Zwięzły nagłówek redakcyjny (polski)",
+      "summary_pl": "Lead 2-3 zdania (polski)",
+      "body_pl": "Pierwszy akapit...\\n\\nDrugi akapit...\\n\\nTrzeci akapit...",`
+        : '';
 
   const prompt = `You are the editorial engine of "HeatPump DB", a ${market.marketName} heat pump market intelligence app.
 

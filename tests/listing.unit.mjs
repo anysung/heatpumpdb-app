@@ -43,7 +43,7 @@ async function resolverFor(country) {
   return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 }
 
-for (const country of ['GB', 'DE', 'FR']) {
+for (const country of ['GB', 'DE', 'FR', 'PL']) {
   const { localListingStatus, localListingId, LOCAL_LISTING_SOURCE, LOCAL_LISTING_FILTER } = await resolverFor(country);
   console.log(`\n${country} — local listing overlay`);
 
@@ -102,6 +102,38 @@ for (const country of ['GB', 'DE', 'FR']) {
       localListingStatus({ bafa_listing_status: 'listed_in_snapshot' }), null);
     is('and no id is shown', localListingId({ mcs_number: 'X' }), null);
     is('no listing filter', LOCAL_LISTING_FILTER, false);
+  }
+
+  if (country === 'PL') {
+    is('source is Lista ZUM', LOCAL_LISTING_SOURCE, 'ZUM');
+    is('the ZUM listing filter IS offered', LOCAL_LISTING_FILTER, true);
+
+    is('confirmed → listed',
+      localListingStatus({ zum_match_status: 'confirmed', zum_id: 'PW-123456' }), 'listed');
+    is('confirmed → the ZUM id is shown',
+      localListingId({ zum_match_status: 'confirmed', zum_id: 'PW-123456' }), 'PW-123456');
+
+    is('verification_required → verification required',
+      localListingStatus({ zum_match_status: 'verification_required' }), 'verification_required');
+    is('verification_required → no id is shown',
+      localListingId({ zum_match_status: 'verification_required', zum_id: 'PW-123456' }), null);
+
+    is('review_required → verification required (never still "listed")',
+      localListingStatus({ zum_match_status: 'review_required', zum_id: 'PW-123456' }), 'verification_required');
+    is('review_required → the old ZUM id is NOT presented as a current listing',
+      localListingId({ zum_match_status: 'review_required', zum_id: 'PW-123456' }), null);
+
+    is('an unknown state fails safe to verification required',
+      localListingStatus({ zum_match_status: 'something_new' }), 'verification_required');
+    is('a missing state fails safe to verification required', localListingStatus({}), 'verification_required');
+    is('PL can NEVER say "not listed" — absence of a match is not absence from the list',
+      ['confirmed', 'verification_required', 'review_required', 'nonsense', undefined]
+        .some(s => localListingStatus({ zum_match_status: s }) === 'not_listed'), false);
+    is('a German listing status is ignored entirely',
+      localListingStatus({ bafa_listing_status: 'listed_in_snapshot' }), 'verification_required');
+    is('a UK PEL status is ignored entirely',
+      localListingStatus({ pel_match_status: 'confirmed', mcs_number: 'X' }), 'verification_required');
+    is('Poland shows no PEL id', localListingId({ zum_match_status: 'confirmed', zum_id: 'PW-1', mcs_number: 'X' }), 'PW-1');
   }
 }
 
