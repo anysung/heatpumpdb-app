@@ -187,6 +187,13 @@ for (const c of canonical) {
 }
 const mfrOf = c => c.manufacturer_normalized ?? c.manufacturer ?? '';
 
+// Every canonical identity string (model + components), all manufacturers,
+// joined for O(1)-ish primary-component presence checks in the release logic.
+const GLOBAL_IDENTITY_HAYSTACK = canonical
+  .map(c => compact(c.model ?? '') + '|' + compact(c.outdoor_unit_model ?? '')
+    + '|' + compact(c.idu_model ?? '') + '|' + compact(c.outdoor_side_display_model ?? ''))
+  .join('§');
+
 /** Trade-name aliases the registry itself publishes in Informacja dodatkowa. */
 function aliasModels(z) {
   const info = z.additional_info ?? '';
@@ -201,6 +208,36 @@ function aliasModels(z) {
 const xrefByZumId = new Map(xref.map(m => [m.zum_id, m]));
 const approvedOneToMany = new Map(exceptions.map(e => [e.local_id, e]));
 
+/**
+ * Split a package model string into its component identifiers.
+ * "WH-ADC0912K9E8AN + WH-UXZ09KE8" / "AQS80X1o/AQS100T240X13i" → compacted parts.
+ */
+const componentsOf = s => String(s ?? '').split(/\s*[+/]\s*|\s{2,}/)
+  .map(p => compact(p)).filter(p => p.length >= 6);
+
+/**
+ * Does candidate model/component identity CONTAIN every component of the ZUM
+ * string (or the full string)? Registries decorate identical hardware
+ * differently; containment of long compacted identifiers is identity, not
+ * similarity. Masked canonical strings ("C***GN8-B") can never pass — '*' is
+ * stripped by compact() so the remaining fragment must still match verbatim.
+ */
+function containsIdentity(z, c) {
+  const zc = compact(z);
+  if (!zc || zc.length < 12) return false;
+  const cAll = compact(c.model ?? '')
+    + '|' + compact(c.outdoor_unit_model ?? '') + '|' + compact(c.idu_model ?? '');
+  if (cAll.includes(zc)) return true;
+  const parts = componentsOf(z);
+  if (parts.length >= 2 && parts.every(p => cAll.includes(p))) return true;
+  return false;
+}
+
+const specIdentical = (a, b) =>
+  (a.power_55C_kw ?? null) === (b.power_55C_kw ?? null)
+  && (a.efficiency_55C_percent ?? null) === (b.efficiency_55C_percent ?? null)
+  && (a.refrigerant ?? null) === (b.refrigerant ?? null);
+
 function resolveModel(z, modelString, method) {
   // full compact equality first — strongest string identity
   const zc = compact(modelString);
@@ -212,11 +249,29 @@ function resolveModel(z, modelString, method) {
       ? { state: 'conflict', method, target: full[0], conflicts: conf }
       : { state: 'confirmed', method, target: full[0], confidence: 'high' };
   }
-  if (full.length > 1) return { state: 'review', method: `${method}_duplicate`, targets: full };
+  if (full.length > 1) {
+    // The registry (BAFA) sometimes lists the identical model more than once.
+    // When every duplicate carries the same specs it is one physical product —
+    // attach the listing to a deterministic representative (lowest id); the
+    // twins stay verification-required (no false claim: same hardware).
+    if (full.every(c => specIdentical(c, full[0]))) {
+      const rep = [...full].sort((a, b) => String(a.bafa_id).localeCompare(String(b.bafa_id)))[0];
+      const conf = conflicts(z, rep);
+      if (!conf.length) return { state: 'confirmed', method: `${method}_duplicate_representative`, target: rep, confidence: 'high' };
+    }
+    return { state: 'review', method: `${method}_duplicate`, targets: full };
+  }
   // unique strong-code resolution
   const hits = new Set();
   for (const k of identityKeys(modelString)) for (const c of byKey.get(k) ?? []) hits.add(c);
   const mfrHits = [...hits].filter(c => mfrConsistent(z.manufacturer, mfrOf(c)));
+  if (!mfrHits.length && hits.size) {
+    // Identity hits exist ONLY under other manufacturer names — typically the
+    // same hardware listed by a distributor in another market (Samsung units
+    // under "MTF Marken-Distributions"). Not confirmable automatically, and it
+    // must never become a PL-native record (near-duplicate): review, blocked.
+    return { state: 'review', method: 'cross_brand_identity', targets: [...hits].slice(0, 8), secondaryOverlapOnly: false };
+  }
   if (mfrHits.length === 1) {
     const c = mfrHits[0];
     if (numericConflict(modelString, c.model ?? '')) {
@@ -228,21 +283,68 @@ function resolveModel(z, modelString, method) {
       : { state: 'confirmed', method: method === 'exact_model' ? 'exact_model_code' : method, target: c, confidence: 'high' };
   }
   if (mfrHits.length > 1) {
-    // Capacity resolution: the registry publishes the exact rated 55 °C output of
-    // the LISTED configuration. If exactly one identity-key candidate carries that
-    // capacity (±10%) and nothing contradicts, that candidate IS the listed unit.
-    // (Identity keys narrowed the set to one family; the registry's own rated
-    // value picks the subtype — never fuzzy similarity.)
-    if (z.rated_kw_55 != null) {
-      const within = mfrHits.filter(c => {
+    // Resolution ladder for identity-key families — every rung is exact
+    // identity or the registry's own published value, never similarity:
+    // 1) CONTAINMENT: exactly one candidate whose model/component identity
+    //    contains the ZUM string (or all of its package components).
+    const containing = mfrHits.filter(c => containsIdentity(modelString, c));
+    if (containing.length === 1 && !conflicts(z, containing[0]).length) {
+      return { state: 'confirmed', method: componentsOf(modelString).length >= 2 ? 'component_identity' : method, target: containing[0], confidence: 'high' };
+    }
+    if (containing.length > 1 && containing.every(c => specIdentical(c, containing[0]))) {
+      const rep = [...containing].sort((a, b) => String(a.bafa_id).localeCompare(String(b.bafa_id)))[0];
+      if (!conflicts(z, rep).length) {
+        return { state: 'confirmed', method: `${method}_duplicate_representative`, target: rep, confidence: 'high' };
+      }
+    }
+    // Rungs 2–3 disambiguate by the registry's own published values, but the
+    // winner must additionally CONTAIN the ZUM unit's primary component —
+    // otherwise a shared hydro-box with identical platform specs confirms the
+    // WRONG outdoor unit (PUZ- vs PUD-SHWM100YAA both read 10 kW / ηs 135).
+    const zPrimary = componentsOf(modelString)[0] ?? compact(modelString);
+    const hasPrimary = c => zPrimary.length >= 6
+      && (compact(c.model ?? '') + '|' + compact(c.outdoor_unit_model ?? '')
+        + '|' + compact(c.idu_model ?? '')).includes(zPrimary);
+    // 2) CAPACITY: the registry publishes the exact rated 55 °C output of the
+    //    listed configuration — a unique ±10% candidate IS the listed unit.
+    const pool = (containing.length > 1 ? containing : mfrHits).filter(hasPrimary);
+    if (z.rated_kw_55 != null && pool.length) {
+      const within = pool.filter(c => {
         const kw = c.power_55C_kw ?? c.power_design_55C_kw ?? ratedCapacityKw(c);
         return kw != null && Math.abs(kw - z.rated_kw_55) / Math.max(kw, z.rated_kw_55) <= 0.10;
       });
       if (within.length === 1 && !conflicts(z, within[0]).length) {
         return { state: 'confirmed', method: `${method}_capacity_resolved`, target: within[0], confidence: 'high' };
       }
+      // 3) SPEC ELIMINATION among capacity survivors: ηs(55) within ±2 points
+      //    AND same refrigerant leaves exactly one → the registry's own numbers
+      //    named it. (Identical-spec tank-size twins resolve at rung 1 or stay.)
+      if (within.length > 1) {
+        const spec = within.filter(c =>
+          (z.etas_55 == null || c.efficiency_55C_percent == null
+            || Math.abs(z.etas_55 - c.efficiency_55C_percent) <= 2)
+          && (!z.refrigerant || !c.refrigerant
+            || String(c.refrigerant).toUpperCase().includes(String(z.refrigerant).toUpperCase())));
+        if (spec.length === 1 && !conflicts(z, spec[0]).length) {
+          return { state: 'confirmed', method: `${method}_spec_resolved`, target: spec[0], confidence: 'high' };
+        }
+      }
     }
-    return { state: 'review', method: `${method}_ambiguous`, targets: mfrHits };
+    // Unresolvable ambiguity. Flag whether the ZUM unit's PRIMARY component
+    // (its first identifier — the heat-pump unit itself, not the hydro-box)
+    // exists ANYWHERE in the canonical catalogue — across ALL manufacturers,
+    // because the same hardware is often listed under a distributor's legal
+    // name in another market (Samsung units under "MTF Marken-Distributions").
+    // Only when the primary is absent everywhere is the overlap a shared
+    // SECONDARY component and the ZUM unit publishable as a PL-market record.
+    const primary = componentsOf(modelString)[0] ?? compact(modelString);
+    return {
+      state: 'review',
+      method: `${method}_ambiguous`,
+      targets: mfrHits,
+      secondaryOverlapOnly: containing.length === 0
+        && !(primary.length >= 6 && GLOBAL_IDENTITY_HAYSTACK.includes(primary)),
+    };
   }
   return null;
 }
@@ -318,36 +420,65 @@ const review = [];
 const confirmedByZum = new Map();
 let conflictCount = 0, unmatched = 0;
 
-for (const z of zum.entries) {
-  const r = classify(z);
-  if (r.state === 'confirmed') {
-    const bafaId = String(r.target.bafa_id);
-    if (overlay[bafaId]) {
-      // one canonical product may carry ONE listing id — a second confirmed ZUM
-      // entry for the same product is an ambiguity, not a listing.
-      review.push({ zum_id: z.zum_id, reason: 'second_confirmation_same_product', existing: overlay[bafaId].zum_id, method: r.method });
-      continue;
-    }
-    const prior = history.mappings[z.zum_id];
-    overlay[bafaId] = {
-      zum_id: z.zum_id,
-      zum_match_status: 'confirmed',
-      zum_product_name: z.product_name ?? null,
-      zum_category: z.category,
-      zum_class_55c: z.class_55 ?? z.single_class ?? null,
-      zum_match_method: r.method,
-      zum_match_confidence: r.confidence ?? 'high',
-      zum_snapshot: SNAPSHOT,
-      zum_snapshot_fetched_at: zum.meta.generated_at,
-      zum_first_matched_at: prior?.first_matched_at ?? now,
-      zum_last_confirmed_at: now,
-    };
-    confirmedByZum.set(z.zum_id, bafaId);
-  } else if (r.state === 'conflict') {
+// Method strength for collision resolution: when two ZUM entries confirm the
+// same canonical product, the stronger evidence keeps it; the weaker becomes
+// a review row (never a silent overwrite, never first-come-wins).
+const METHOD_RANK = ['manufacturer_official', 'eprel_exact', 'component_identity',
+  'exact_model', 'exact_model_duplicate_representative', 'eprel_bridge', 'alias_model',
+  'exact_model_code', 'exact_model_spec_resolved', 'exact_model_capacity_resolved',
+  'eprel_capacity_resolved', 'approved_one_to_many'];
+const rankOf = m => {
+  const i = METHOD_RANK.indexOf(m);
+  return i === -1 ? METHOD_RANK.length : i;
+};
+
+const classifications = zum.entries.map(z => ({ z, r: classify(z) }));
+const confirmations = classifications
+  .filter(({ r }) => r.state === 'confirmed')
+  .sort((a, b) => rankOf(a.r.method) - rankOf(b.r.method));
+
+for (const { z, r } of confirmations) {
+  const bafaId = String(r.target.bafa_id);
+  if (overlay[bafaId]) {
+    // one canonical product carries ONE listing id — the weaker-evidence entry
+    // stays a review row. It matched a canonical product, so it must never be
+    // republished as a PL-native record (near-duplicate risk).
+    review.push({ zum_id: z.zum_id, reason: 'second_confirmation_same_product', existing: overlay[bafaId].zum_id, method: r.method, releasable: false });
+    continue;
+  }
+  const prior = history.mappings[z.zum_id];
+  overlay[bafaId] = {
+    zum_id: z.zum_id,
+    zum_match_status: 'confirmed',
+    zum_product_name: z.product_name ?? null,
+    zum_category: z.category,
+    zum_class_55c: z.class_55 ?? z.single_class ?? null,
+    zum_match_method: r.method,
+    zum_match_confidence: r.confidence ?? 'high',
+    zum_snapshot: SNAPSHOT,
+    zum_snapshot_fetched_at: zum.meta.generated_at,
+    zum_first_matched_at: prior?.first_matched_at ?? now,
+    zum_last_confirmed_at: now,
+  };
+  confirmedByZum.set(z.zum_id, bafaId);
+}
+
+for (const { z, r } of classifications) {
+  if (r.state === 'confirmed') continue;
+  if (r.state === 'conflict') {
     conflictCount++;
-    review.push({ zum_id: z.zum_id, reason: 'contradiction', method: r.method, conflicts: r.conflicts, candidate: String(r.target.bafa_id), zum_model: z.model, canonical_model: r.target.model });
+    review.push({ zum_id: z.zum_id, reason: 'contradiction', method: r.method, conflicts: r.conflicts, candidate: String(r.target.bafa_id), zum_model: z.model, canonical_model: r.target.model, releasable: false });
   } else if (r.state === 'review') {
-    review.push({ zum_id: z.zum_id, reason: r.method, candidates: (r.targets ?? []).map(c => String(c.bafa_id)).slice(0, 8), zum_model: z.model, zum_manufacturer: z.manufacturer });
+    review.push({
+      zum_id: z.zum_id,
+      reason: r.method,
+      candidates: (r.targets ?? []).map(c => String(c.bafa_id)).slice(0, 8),
+      zum_model: z.model,
+      zum_manufacturer: z.manufacturer,
+      // secondary-component-only overlap: the ZUM unit itself has no canonical
+      // counterpart — the builder may publish it as a PL-market record.
+      releasable: r.secondaryOverlapOnly === true,
+    });
   } else {
     unmatched++;
   }

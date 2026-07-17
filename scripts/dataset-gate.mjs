@@ -119,7 +119,8 @@ function loadItems(rel) {
 /** Read a dataset straight out of the production bucket (canaries subtracted). */
 const CANARIES_PER_FILE = 1;
 function loadLive(rel) {
-  const gcs = `gs://heatpumpdb-datasets/datasets/${rel.includes('-gb') ? 'GB' : rel.includes('-fr') ? 'FR' : 'DE'}/${rel.split('/').pop()}`;
+  const cc = rel.includes('-gb') ? 'GB' : rel.includes('-fr') ? 'FR' : rel.includes('-pl') ? 'PL' : 'DE';
+  const gcs = `gs://heatpumpdb-datasets/datasets/${cc}/${rel.split('/').pop()}`;
   const raw = execFileSync('gcloud', ['storage', 'cat', gcs], { maxBuffer: 512 * 1024 * 1024 });
   const j = JSON.parse(raw.toString());
   // The served copies carry one canary record each; the real catalogue is one shorter.

@@ -32,6 +32,7 @@ const good = (over = {}) => ({
   manufacturer: 'Acme GmbH', model: 'HP-12', bafa_id: 123456, type: 'Luft / Wasser',
   efficiency_35C_percent: 185, power_35C_kw: 12,
   refrigerant: 'R290', scop: 4.8, cop_A7W35: 5.1, cop_A2W35: 4.2, noise_outdoor_dB: 54,
+  noise_indoor_dB: 42,
   ...over,
 });
 
@@ -51,9 +52,11 @@ console.log('\nData Sheet eligibility — the measured minimum');
 is(`${MIN_CORE_FIELDS} core fields is enough`,
   isDataSheetEligible(good({ scop: null, cop_A7W35: null, cop_A2W35: null })), true);   // refrigerant + sound
 is('one lone core field is not',
-  isDataSheetEligible(good({ scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null })), false);
-is('and it says so', dataSheetEligibility(good({ scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null })).reasons,
+  isDataSheetEligible(good({ scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null, noise_indoor_dB: null })), false);
+is('and it says so', dataSheetEligibility(good({ scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null, noise_indoor_dB: null })).reasons,
   ['insufficient_core_fields_1_of_2']);
+is('indoor sound power counts as a measured field (ground/exhaust units)',
+  isDataSheetEligible(good({ scop: null, cop_A7W35: null, cop_A2W35: null, noise_outdoor_dB: null })), true);
 is('core fields are counted, not assumed', coreFieldCount(good()), CORE_PERFORMANCE_FIELDS.length);
 
 console.log('\nSegmentation is shared and unchanged');
@@ -65,7 +68,7 @@ is('an unclassified product can never be published', isDataSheetEligible({ ...go
 
 console.log('\napplyEligibility reports causes, not just counts');
 {
-  const { eligible, rejected, byReason } = applyEligibility([good(), good({ noise_outdoor_dB: null, scop: null, cop_A7W35: null, cop_A2W35: null })]);
+  const { eligible, rejected, byReason } = applyEligibility([good(), good({ noise_outdoor_dB: null, noise_indoor_dB: null, scop: null, cop_A7W35: null, cop_A2W35: null })]);
   is('one in, one out', [eligible.length, rejected.length], [1, 1]);
   is('the cause is tallied', byReason.insufficient_core_fields_1_of_2, 1);
 }
@@ -134,7 +137,7 @@ if (!existsSync(GB)) {
     const pl = [...load(PL).items, ...load('public/data/products-commercial-pl.json').items];
     console.log('\nPoland: canonical baseline + Lista ZUM overlay + ZUM-native extension');
     const derived = pl.filter(p => p.performance_source === 'BAFA_REFERENCE');
-    const native = pl.filter(p => p.performance_source === 'ZUM_REGISTRY');
+    const native = pl.filter(p => p.performance_source === 'ZUM_REGISTRY' || p.performance_source === 'ZUM_EPREL');
     is('[PL] derived catalogue is the canonical catalogue', derived.length, de.length);
     is('[PL] every derived product is a canonical product',
       derived.every(p => canonicalIds.has(String(p.bafa_id))), true);

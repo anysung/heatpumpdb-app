@@ -210,7 +210,7 @@ for (const code of order) {
     if (!existsSync(abs)) { console.error(`FAIL [${code}] ${rel} missing`); verifyFail = true; continue; }
     const d = JSON.parse(readFileSync(abs, 'utf8'));
     const n = d.items?.length ?? 0;
-    const gen = d._meta?.generated ?? null;
+    const gen = d._meta?.generated ?? d._meta?.generated_at ?? null;
     const fresh = gen && new Date(gen) >= startedAt;
     // Commercial FR/DE always >0; GB residential etc. — only require non-empty
     // where the pipeline promises items (commercial GB may legitimately vary).

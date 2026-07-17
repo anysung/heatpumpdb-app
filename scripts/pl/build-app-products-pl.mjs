@@ -81,6 +81,41 @@ const zumParsed = parsedSnapshot
 
 const generatedAt = new Date().toISOString();
 
+/* ── EPREL enrichment for PL-market records ────────────────────────────────
+   Every active ZUM entry publishes its own EPREL registration number — an
+   official EU identifier for the EXACT product. The local EPREL snapshot
+   supplies label values the ZUM page does not repeat (ηs at 35 °C, indoor/
+   outdoor sound power, 35 °C output). Values are copied only from the record
+   with the identical registration number — identity by official id, never by
+   name. Enriched records carry performance_source='ZUM_EPREL'.               */
+function eprelValueIndex() {
+  const dirRoot = resolve(ROOT, 'data_sources/eprel_raw/raw');
+  const snaps = existsSync(dirRoot)
+    ? readdirSync(dirRoot).filter(d => /^\d{4}-\d{2}$/.test(d)).sort() : [];
+  const idx = new Map();
+  if (!snaps.length) return idx;
+  const dir = resolve(dirRoot, snaps[snaps.length - 1], 'spaceheaters-heatpump');
+  if (!existsSync(dir)) return idx;
+  for (const f of readdirSync(dir)) {
+    if (!/^page-\d+\.json$/.test(f)) continue;
+    for (const h of JSON.parse(readFileSync(resolve(dir, f), 'utf8')).hits ?? []) {
+      idx.set(String(h.eprelRegistrationNumber), {
+        etas35: h.seasonalSpaceHeatingEnergyEfficiencyAverage35
+          ?? h.seasonalSpaceHeatingEnergyEfficiencyAverage ?? null,
+        etas55: h.seasonalSpaceHeatingEnergyEfficiencyAverage55
+          ?? h.mediumTempSeasonalSpaceHeatingEnergyEfficiencyAverage ?? null,
+        kw35: h.ratedHeatOutputAverage35 ?? h.ratedHeatOutput ?? null,
+        kw55: h.ratedHeatOutputAverage55 ?? h.mediumTempRatedHeatOutputAverage ?? null,
+        noiseIndoor: h.noise ?? null,
+        noiseOutdoor: h.outdoorNoise ?? null,
+      });
+    }
+  }
+  return idx;
+}
+const EPREL_VALUES = eprelValueIndex();
+console.log(`EPREL value index: ${EPREL_VALUES.size} registration numbers (local snapshot)`);
+
 /** German BAFA type strings → Polish display strings. Unknown values pass through. */
 const TYPE_PL = {
   'Luft / Wasser': 'Powietrze / Woda',
@@ -159,14 +194,20 @@ const ZUM_TYPE = {
 // Publishing them as new PL records would put a near-duplicate next to their
 // canonical sibling — they stay out of the extension until a human resolves
 // the review row (or an official mapping/exception lands).
+// EXCEPTION: rows the matcher marked `releasable` — their overlap was a shared
+// SECONDARY component only (hydro-box/tank); the ZUM unit itself has no
+// canonical counterpart and is safe to publish as a PL-market record.
 const reviewFile = overlaySnapshot
   ? resolve(ROOT, 'data_sources/lista_zum/matching', overlaySnapshot, 'canonical-zum-review.json')
   : null;
-const reviewIds = new Set(
-  (reviewFile && existsSync(reviewFile)
-    ? JSON.parse(readFileSync(reviewFile, 'utf8')).review ?? []
-    : []).map(r => r.zum_id).filter(Boolean),
-);
+const reviewRows = (reviewFile && existsSync(reviewFile)
+  ? JSON.parse(readFileSync(reviewFile, 'utf8')).review ?? []
+  : []);
+// An id is blocked if ANY of its review rows is non-releasable.
+const blockedIds = new Set(reviewRows.filter(r => r.releasable !== true).map(r => r.zum_id).filter(Boolean));
+const reviewIds = blockedIds;
+const releasableIds = new Set(reviewRows.filter(r => r.releasable === true).map(r => r.zum_id)
+  .filter(id => id && !blockedIds.has(id)));
 
 const extensionStats = { candidates: 0, alreadyConfirmed: 0, eprelInCanonical: 0, inReviewQueue: 0, ineligible: 0, added: 0, byReason: {} };
 const extension = [];
@@ -179,6 +220,17 @@ for (const z of zumParsed?.entries ?? []) {
   if (z.eprel_number && canonicalEprels.has(z.eprel_number)) { extensionStats.eprelInCanonical++; continue; }
   if (reviewIds.has(z.zum_id)) { extensionStats.inReviewQueue++; continue; }
   extensionStats.candidates++;
+  if (releasableIds.has(z.zum_id)) extensionStats.releasedFromReview = (extensionStats.releasedFromReview ?? 0) + 1;
+
+  // EPREL label values for the ZUM entry's own registration number.
+  const ep = z.eprel_number ? EPREL_VALUES.get(z.eprel_number) ?? null : null;
+  const usedEprel = Boolean(ep && (
+    (z.etas_35 == null && ep.etas35 != null)
+    || (z.etas_55 == null && ep.etas55 != null)
+    || (!(z.noise_outdoor_db > 0) && ep.noiseOutdoor > 0)
+    || (!(z.noise_indoor_db > 0) && ep.noiseIndoor > 0)
+    || (z.rated_kw_55 == null && ep.kw55 != null)
+    || ep.kw35 != null));
 
   const candidate = Object.fromEntries(TEMPLATE_KEYS.map(k => [k, null]));
   Object.assign(candidate, {
@@ -196,16 +248,19 @@ for (const z of zumParsed?.entries ?? []) {
     installation_type: null,
     refrigerant: z.refrigerant ?? null,
     refrigerant_amount_kg: z.refrigerant_kg ?? null,
-    power_55C_kw: z.rated_kw_55 ?? null,
-    efficiency_55C_percent: z.etas_55 ?? null,
-    efficiency_35C_percent: z.etas_35 ?? null,
+    power_55C_kw: z.rated_kw_55 ?? ep?.kw55 ?? null,
+    power_35C_kw: ep?.kw35 ?? null,
+    efficiency_55C_percent: z.etas_55 ?? ep?.etas55 ?? null,
+    efficiency_35C_percent: z.etas_35 ?? ep?.etas35 ?? null,
     scop: z.scop ?? null,
-    noise_outdoor_dB: z.noise_outdoor_db && z.noise_outdoor_db > 0 ? z.noise_outdoor_db : null,
-    noise_indoor_dB: z.noise_indoor_db && z.noise_indoor_db > 0 ? z.noise_indoor_db : null,
+    noise_outdoor_dB: z.noise_outdoor_db && z.noise_outdoor_db > 0 ? z.noise_outdoor_db
+      : (ep?.noiseOutdoor && ep.noiseOutdoor > 0 ? ep.noiseOutdoor : null),
+    noise_indoor_dB: z.noise_indoor_db && z.noise_indoor_db > 0 ? z.noise_indoor_db
+      : (ep?.noiseIndoor && ep.noiseIndoor > 0 ? ep.noiseIndoor : null),
     website: z.producer_url ?? null,
     eprel_registration_number: z.eprel_number ?? null,
     eprel_match_type: z.eprel_number ? 'zum_published' : null,
-    performance_source: 'ZUM_REGISTRY',
+    performance_source: usedEprel ? 'ZUM_EPREL' : 'ZUM_REGISTRY',
     bafa_reference_id: null,
     bafa_reference_model: null,
     bafa_reference_match_type: null,
@@ -235,12 +290,21 @@ for (const z of zumParsed?.entries ?? []) {
 }
 
 // Extension-internal dedupe: distinct ZUM ids can carry the same physical
-// product (re-registrations, category moves). One model, one record.
+// product (re-registrations, category moves, trade-name variants). One model,
+// one record — and one EPREL registration, one record: a shared EPREL number
+// is the SAME registered product under two designations (Ecoforest "… EH" /
+// "… HTR EH" pairs). The base (shortest) designation stays, deterministically.
+extension.sort((a, b) => String(a.model ?? '').length - String(b.model ?? '').length
+  || String(a.zum_id).localeCompare(String(b.zum_id)));
 const seenModelKey = new Set();
+const seenEprel = new Set();
 const dedupedExtension = extension.filter(x => {
   const key = `${x.manufacturer_normalized}|${String(x.model ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '')}`;
   if (seenModelKey.has(key)) { extensionStats.added--; extensionStats.duplicateModel = (extensionStats.duplicateModel ?? 0) + 1; return false; }
+  const ek = x.eprel_registration_number ? String(x.eprel_registration_number) : null;
+  if (ek && seenEprel.has(ek)) { extensionStats.added--; extensionStats.duplicateEprel = (extensionStats.duplicateEprel ?? 0) + 1; return false; }
   seenModelKey.add(key);
+  if (ek) seenEprel.add(ek);
   return true;
 });
 extension.length = 0;
@@ -282,7 +346,7 @@ if (germanLeak.length > 0) {
 
 const badProvenance = allItems.filter(i =>
   !i.bafa_id || !i.source_id || i.country !== 'PL'
-  || (i.performance_source !== 'BAFA_REFERENCE' && i.performance_source !== 'ZUM_REGISTRY'));
+  || !['BAFA_REFERENCE', 'ZUM_REGISTRY', 'ZUM_EPREL'].includes(i.performance_source));
 if (badProvenance.length > 0) {
   console.error(`FAIL: ${badProvenance.length} items missing required PL provenance`);
   process.exit(1);
@@ -380,6 +444,9 @@ console.log(`  EPREL linked:           ${allItems.filter(i => i.eprel_registrati
 console.log(`Extension funnel:         zum entries ${extensionStats.candidates + extensionStats.alreadyConfirmed + extensionStats.eprelInCanonical + extensionStats.inReviewQueue}`
   + ` → matched ${extensionStats.alreadyConfirmed} | eprel-in-canonical ${extensionStats.eprelInCanonical}`
   + ` | review-queue ${extensionStats.inReviewQueue} | ineligible ${extensionStats.ineligible} | added ${extensionStats.added}`);
+console.log(`  released from review (secondary-overlap only): ${extensionStats.releasedFromReview ?? 0}`
+  + ` | EPREL-enriched natives: ${extension.filter(x => x.performance_source === 'ZUM_EPREL').length}`
+  + ` | duplicate drops: ${extensionStats.duplicateModel ?? 0} model + ${extensionStats.duplicateEprel ?? 0} eprel`);
 if (extensionStats.ineligible) console.log('  ineligible reasons:', JSON.stringify(extensionStats.byReason));
 console.log(`Field count:              ${fieldCount} ✓   No price keys ✓   PL provenance ✓   listing integrity ✓`);
 console.log('──────────────────────────────────────────────────────────');

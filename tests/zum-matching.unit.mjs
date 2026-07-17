@@ -59,7 +59,9 @@ is('review_required carries NO public zum_id (listing no longer proven)',
 
 const CONFIRMING = ['manufacturer_official', 'eprel_exact', 'eprel_bridge', 'exact_model',
   'exact_model_code', 'exact_model_capacity_resolved', 'eprel_capacity_resolved',
-  'alias_model', 'approved_one_to_many'];
+  'alias_model', 'approved_one_to_many', 'component_identity',
+  'exact_model_duplicate_representative', 'exact_model_spec_resolved',
+  'eprel_bridge_duplicate_representative'];
 is('every confirmation used a whitelisted confirming method',
   confirmed.every(([, o]) => CONFIRMING.includes(o.zum_match_method)), true);
 

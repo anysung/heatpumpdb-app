@@ -18,6 +18,7 @@
  *   manufacturer / model / canonical id / rated capacity / ηs(35°C) / type
  *                                                        → present on 100 %
  *   refrigerant 7,136 · sound power 6,961 · COP A7 6,225 · COP A2 6,150 · SCOP 4,488
+ *   indoor sound power — the sound figure for indoor-sited (ground/exhaust) units
  *   dimensions & weight  3,321  (46 %)  → NOT required: too sparse to demand
  *   max water temp / operating range    → NOT in the schema at all
  *
@@ -66,6 +67,13 @@ export const CORE_PERFORMANCE_FIELDS = [
   'cop_A7W35',
   'cop_A2W35',
   'noise_outdoor_dB',
+  // Indoor sound power (added 2026-07-17): for indoor-sited ground-source and
+  // exhaust-air units this IS the sound figure — registries publish outdoor
+  // sound as 0/absent for them. Excluding it rejected 43 real ground-source
+  // records whose sheets carry capacity, ηs, refrigerant and indoor noise —
+  // penalising a product class for its siting, not its data. Same measured-
+  // field class as outdoor sound power; the ≥2-fields bar is unchanged.
+  'noise_indoor_dB',
 ];
 
 /**
