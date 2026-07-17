@@ -313,6 +313,7 @@ const MobileGuide: React.FC<{ app: HpApp }> = ({ app }) => {
 function localized(item: NewsItem, lang: Language): { title: string; summary: string; body: string } {
   if (lang === 'de') return { title: item.title_de ?? item.title, summary: item.summary_de ?? item.summary, body: item.body_de ?? item.body ?? '' };
   if (lang === 'fr') return { title: item.title_fr ?? item.title, summary: item.summary_fr ?? item.summary, body: item.body_fr ?? item.body ?? '' };
+  if (lang === 'pl') return { title: item.title_pl ?? item.title, summary: item.summary_pl ?? item.summary, body: item.body_pl ?? item.body ?? '' };
   return { title: item.title, summary: item.summary, body: item.body ?? '' };
 }
 

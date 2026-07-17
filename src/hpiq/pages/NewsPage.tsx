@@ -12,9 +12,10 @@ import { FD } from '../ui';
 function categoryOf(item: NewsItem): string {
   if (item.category) return item.category;
   const text = `${item.title} ${item.summary}`.toLowerCase();
-  if (/(bafa|kfw|beg|subsidy|funding|grant|zuschuss|förder)/.test(text)) return 'FUNDING';
-  if (/(r290|r32|refrigerant|cop|scop|efficiency|innovation|technology)/.test(text)) return 'TECHNOLOGY';
-  if (/(install|montage|handwerk|technician)/.test(text)) return 'INSTALLER INSIGHT';
+  if (/(bafa|kfw|beg|subsidy|funding|grant|zuschuss|förder|dotacj|dofinansow|czyste powietrze|nfośigw|ulga)/.test(text)) return 'FUNDING';
+  if (/(r290|r32|refrigerant|cop|scop|efficiency|innovation|technology|technolog|czynnik)/.test(text)) return 'TECHNOLOGY';
+  if (/(install|montage|handwerk|technician|instalator)/.test(text)) return 'INSTALLER INSIGHT';
+  if (/(rynek|sprzedaż)/.test(text)) return 'MARKET';
   return 'MARKET';
 }
 
@@ -34,6 +35,13 @@ function localized(item: NewsItem, lang: string): { title: string; summary: stri
       title: item.title_fr ?? item.title,
       summary: item.summary_fr ?? item.summary,
       body: item.body_fr ?? item.body ?? '',
+    };
+  }
+  if (lang === 'pl') {
+    return {
+      title: item.title_pl ?? item.title,
+      summary: item.summary_pl ?? item.summary,
+      body: item.body_pl ?? item.body ?? '',
     };
   }
   return { title: item.title, summary: item.summary, body: item.body ?? '' };

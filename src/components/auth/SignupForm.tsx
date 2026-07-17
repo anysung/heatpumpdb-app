@@ -67,6 +67,18 @@ const TYPE_LABELS: Record<Language, Record<string, string>> = {
     individual: 'Particulier / Indépendant',
     other: 'Autre',
   },
+  pl: {
+    manufacturer: 'Producent',
+    wholesaler: 'Hurtownia / Dystrybutor',
+    installer: 'Instalator / firma instalacyjna',
+    engineering: 'Inżynieria / Biuro projektowe / Doradztwo',
+    construction: 'Budownictwo / Deweloper',
+    esco_utility: 'Przedsiębiorstwo usług energetycznych / Dostawca energii',
+    housing: 'Spółdzielnia mieszkaniowa / Zarządzanie nieruchomościami',
+    public_research: 'Sektor publiczny / Badania / Stowarzyszenie branżowe',
+    individual: 'Osoba prywatna / Działalność jednoosobowa',
+    other: 'Inne',
+  },
 };
 
 export const SignupForm: React.FC<{

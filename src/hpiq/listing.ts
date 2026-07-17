@@ -15,6 +15,9 @@
  *                        Absence of a match is not evidence of absence.
  *   FR → none            France has no national product list. Nothing is shown; a
  *                        foreign registry's listing is never relabelled as French.
+ *   PL → Lista ZUM       an overlay, PEL rules: a confirmed match says
+ *                        "ZUM listed" (na liście ZUM); anything else says
+ *                        verification required. Never "not on ZUM".
  */
 import { HeatPump } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
@@ -47,6 +50,12 @@ export function localListingStatus(p: HeatPump): LocalListingStatus | null {
     return raw.pel_match_status === 'confirmed' ? 'listed' : 'verification_required';
   }
 
+  if (LOCAL_LISTING_SOURCE === 'ZUM') {
+    // Lista ZUM follows the PEL rules exactly: our catalogue does not originate
+    // from the registry, so a failed match may never be presented as absence.
+    return raw.zum_match_status === 'confirmed' ? 'listed' : 'verification_required';
+  }
+
   // DE — the registry snapshot IS this market's own list, so absence is evidence.
   return (raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot'
     ? 'listed'
@@ -55,8 +64,14 @@ export function localListingStatus(p: HeatPump): LocalListingStatus | null {
 
 /** The local registry's identifier, shown only where the listing is confirmed. */
 export function localListingId(p: HeatPump): string | null {
-  if (LOCAL_LISTING_SOURCE !== 'PEL') return null;
   const raw = p as unknown as Record<string, unknown>;
-  if (raw.pel_match_status !== 'confirmed') return null;
-  return typeof raw.mcs_number === 'string' && raw.mcs_number ? raw.mcs_number : null;
+  if (LOCAL_LISTING_SOURCE === 'PEL') {
+    if (raw.pel_match_status !== 'confirmed') return null;
+    return typeof raw.mcs_number === 'string' && raw.mcs_number ? raw.mcs_number : null;
+  }
+  if (LOCAL_LISTING_SOURCE === 'ZUM') {
+    if (raw.zum_match_status !== 'confirmed') return null;
+    return typeof raw.zum_id === 'string' && raw.zum_id ? raw.zum_id : null;
+  }
+  return null;
 }

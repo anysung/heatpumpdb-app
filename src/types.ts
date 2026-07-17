@@ -77,6 +77,23 @@ export interface HeatPump {
   // confident match exists — uncertain matches are never shown (user policy).
   nf_pac_reference?: string | null;
 
+  // ── Lista ZUM listing overlay (PL only, set by build-app-products-pl.mjs) ──
+  // Same contract as the PEL overlay: a CONFIRMED match may say "ZUM listed" and
+  // carry the ZUM id; anything else is verification-required. The overlay never
+  // creates a product, supplies a spec, or removes a product on a failed match.
+  // zum_id: the public Lista ZUM device identifier (e.g. 'PC-12345').
+  zum_match_status?: string | null;   // 'confirmed' | 'review_required' | 'verification_required'
+  zum_id?: string | null;
+  zum_product_name?: string | null;
+  zum_category?: string | null;       // 'PW' | 'PWX' | 'PU' | 'PG' | 'PP'
+  zum_class_55c?: string | null;      // registry-published class — display-only fact
+  zum_match_method?: string | null;
+  zum_match_confidence?: string | null;
+  zum_snapshot?: string | null;
+  zum_snapshot_fetched_at?: string | null;
+  zum_first_matched_at?: string | null;
+  zum_last_confirmed_at?: string | null;
+
   // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
   // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source
   //   snapshot used to generate this dataset — NOT a claim of current eligibility.
@@ -166,6 +183,10 @@ export interface NewsItem {
   title_fr?: string;
   summary_fr?: string;
   body_fr?: string;
+  /** Stored Polish translations of the article (PL market edition). */
+  title_pl?: string;
+  summary_pl?: string;
+  body_pl?: string;
 }
 
 export interface PolicyItem {
@@ -221,7 +242,7 @@ export enum InstallationType {
 }
 
 export type FetchState = 'idle' | 'loading' | 'success' | 'error';
-export type Language = 'en' | 'de' | 'fr';
+export type Language = 'en' | 'de' | 'fr' | 'pl';
 
 // --- Auth Types ---
 /**

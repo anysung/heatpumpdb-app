@@ -13,6 +13,7 @@ function marketStats(country: string): { res: number; com: number; mfr: number }
     DE: ['public/data/products.json', 'public/data/products-commercial.json'],
     GB: ['public/data/products-gb.json', 'public/data/products-commercial-gb.json'],
     FR: ['public/data/products-fr.json', 'public/data/products-commercial-fr.json'],
+    PL: ['public/data/products-pl.json', 'public/data/products-commercial-pl.json'],
   };
   const [resPath, comPath] = files[country] ?? files.DE;
   try {
@@ -65,9 +66,19 @@ const MARKET_HTML: Record<string, { lang: string; hreflang: string; title: strin
     desc: "Base de données et comparateur de pompes à chaleur air/eau pour le marché français : SCOP, COP, puissance acoustique, fluides frigorigènes (R290) et étiquette énergie UE — fiches techniques pour installateurs et particuliers.",
     canonical: 'https://www.heatpumpdb.fr/',
   },
+  PL: {
+    lang: 'pl',
+    hreflang: 'pl-PL',
+    iconCode: 'pl',
+    appName: 'HeatPump DB Poland',
+    themeColor: '#1c0a11',
+    title: 'HeatPump DB Poland — Baza danych pomp ciepła',
+    desc: 'Baza danych i porównywarka pomp ciepła dla polskiego rynku: status na liście ZUM (Czyste Powietrze), SCOP, COP, moc akustyczna, czynniki chłodnicze (R290) i etykieta energetyczna UE — karty danych dla instalatorów i projektantów.',
+    canonical: 'https://www.heatpumpdb.pl/',
+  },
 };
 
-/** hreflang cluster — the three market editions are alternates of each other. */
+/** hreflang cluster — the market editions are alternates of each other. */
 function hreflangLinks(): string {
   const links = Object.values(MARKET_HTML)
     .map(x => `    <link rel="alternate" hreflang="${x.hreflang}" href="${x.canonical}" />`)
@@ -201,7 +212,7 @@ export default defineConfig(({ mode }) => {
       // CRITICAL FIX: Added || "" to prevent build failure if API_KEY is undefined in Cloud Build env
       'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY || ""),
       '__MARKET_STATS__': JSON.stringify(marketStats(country)),
-      '__ALL_MARKET_STATS__': JSON.stringify({ DE: marketStats('DE'), GB: marketStats('GB'), FR: marketStats('FR') }),
+      '__ALL_MARKET_STATS__': JSON.stringify({ DE: marketStats('DE'), GB: marketStats('GB'), FR: marketStats('FR'), PL: marketStats('PL') }),
     }
   }
 })

@@ -13,9 +13,11 @@
  * and it doubles as the "PDF download" users asked for (iOS has no
  * "Save as PDF" print destination).
  *
- * Text is drawn with the standard PDF font (Helvetica, WinAnsi), which covers
- * EN/DE/FR. Typographic characters outside Latin-1 are folded to ASCII by
- * `ascii()` — never remove that or German/French sheets get mojibake.
+ * Text is drawn with embedded Noto Sans (Latin + Latin-Extended-A subset,
+ * pdfFonts.ts) so EN/DE/FR/PL all render real glyphs; if the font preload has
+ * not finished the build falls back to standard Helvetica (WinAnsi). Symbol
+ * folds in `ascii()` (η→eta, − →-, …) apply either way — never remove them or
+ * sheets get mojibake on the fallback path.
  */
 import { jsPDF } from 'jspdf';
 import { HpVM } from '../model';
@@ -24,6 +26,7 @@ import { DsSectionKey } from '../appState';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
 import { FLAG_ASPECT, LOGO_ASPECT } from '../../components/brandSvg';
 import { getBrandArtwork } from './brandArtwork';
+import { registerPdfFonts, PDF_FONT_FAMILY } from './pdfFonts';
 
 /* ── Page geometry (mm) ──────────────────────────────────────────────────── */
 const PW = 210;          // A4 width
@@ -55,6 +58,20 @@ const FAINT: [number, number, number] = [154, 154, 160];
  */
 const WINANSI_EXTRA = '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ';
 
+/**
+ * True when the embedded Noto Sans registered on the current document — then
+ * Latin-Extended-A letters (Polish ą ć ę ł ń ó ś ź ż, Czech, etc.) are kept
+ * instead of dropped. Set per-build in buildDataSheetPdf.
+ */
+let LATIN_EXT_OK = false;
+
+const keepChar = (ch: string): boolean => {
+  const cp = ch.codePointAt(0) ?? 0;
+  if (cp <= 0xFF) return true;
+  if (LATIN_EXT_OK && cp >= 0x100 && cp <= 0x17F) return true;
+  return WINANSI_EXTRA.includes(ch);
+};
+
 const ascii = (s: string): string =>
   (s ?? '').toString()
     .normalize('NFC')
@@ -68,7 +85,7 @@ const ascii = (s: string): string =>
     .replace(/[‹«]/g, '<')
     .replace(/ /g, ' ')          // non-breaking space
     .split('')
-    .filter(ch => ch.codePointAt(0) <= 0xFF || WINANSI_EXTRA.includes(ch))
+    .filter(keepChar)
     .join('');
 
 export interface DataSheetPdfInput {
@@ -83,6 +100,10 @@ export interface DataSheetPdfInput {
 
 export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb }: DataSheetPdfInput): jsPDF {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
+  // Embedded Noto Sans (Latin-Extended) when preloaded; Helvetica fallback keeps
+  // exports working offline. LATIN_EXT_OK widens ascii()'s keep-set to match.
+  const fontFamily = registerPdfFonts(doc);
+  LATIN_EXT_OK = fontFamily === PDF_FONT_FAMILY;
   let y = M_TOP;
 
   /* ── Footnote numbering: assigned in draw order, exactly like the on-screen
@@ -95,7 +116,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   };
 
   const setFont = (size: number, bold = false, color: [number, number, number] = INK) => {
-    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+    doc.setFont(fontFamily, bold ? 'bold' : 'normal');
     doc.setFontSize(size);
     doc.setTextColor(color[0], color[1], color[2]);
   };

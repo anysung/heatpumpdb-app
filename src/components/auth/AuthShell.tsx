@@ -358,7 +358,8 @@ const CommercialInstallScene: React.FC = () => (
 
 /* ── Market background palettes ──────────────────────────────────────────────
    Each edition gets its own hue family so the three landings read differently
-   at a glance: DE emerald, GB blue, FR indigo with a warm highlight.
+   at a glance: DE emerald, GB blue, FR indigo with a warm highlight,
+   PL crimson/rose (white-red flag analog).
    (Rollback: git tag auth-bg-v1 holds the previous grid-overlay design.) */
 const MARKET_BG: Record<string, {
   baseMid: string; base: string; baseDeep: string;
@@ -367,6 +368,7 @@ const MARKET_BG: Record<string, {
   DE: { baseMid: '#0e2019', base: '#0a1712', baseDeep: '#071009', glowA: '#34d399', glowB: '#22d3ee', lineA: '#34d399', lineB: '#38bdf8' },
   GB: { baseMid: '#0c1a2e', base: '#081322', baseDeep: '#050c18', glowA: '#38bdf8', glowB: '#818cf8', lineA: '#38bdf8', lineB: '#818cf8' },
   FR: { baseMid: '#111a38', base: '#0b1128', baseDeep: '#070b1c', glowA: '#60a5fa', glowB: '#fb7185', lineA: '#60a5fa', lineB: '#22d3ee' },
+  PL: { baseMid: '#2a1019', base: '#1c0a11', baseDeep: '#12060b', glowA: '#fb7185', glowB: '#f9a8d4', lineA: '#fb7185', lineB: '#fda4af' },
 };
 const BG = MARKET_BG[ACTIVE_COUNTRY.code] ?? MARKET_BG.DE;
 

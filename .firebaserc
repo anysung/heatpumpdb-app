@@ -16,6 +16,9 @@
         ],
         "hub": [
           "heatpumpdb-hub"
+        ],
+        "pl": [
+          "heatpumpdb-pl"
         ]
       }
     }

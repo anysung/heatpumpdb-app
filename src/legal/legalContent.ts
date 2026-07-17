@@ -621,8 +621,209 @@ const FR = {
   }),
 };
 
+/* ── Polish ─────────────────────────────────────────────────────────────── */
+
+const PL = {
+  privacy: {
+    title: 'Polityka prywatności',
+    updated: ver.privacy,
+    intro:
+      `${SERVICE_NAME} to internetowy, profesjonalny serwis bazodanowy dla europejskiej branży pomp ciepła. Niniejsza polityka wyjaśnia, jakie dane przetwarzamy podczas korzystania z serwisu i dlaczego. Zbieramy wyłącznie minimum niezbędne do prowadzenia konta profesjonalnego.`,
+    sections: [
+      {
+        h: 'Administrator danych',
+        p: [
+          `${OPERATOR_NAME}, jednoosobowa działalność gospodarcza prowadzona przez ${OPERATOR_OWNER}, prowadzi ${BRAND_TM} i jest administratorem danych osobowych opisanych w niniejszej polityce.`,
+          'Zarejestrowany adres działalności:',
+          ...BUSINESS_ADDRESS_LINES,
+          `E-mail: ${SUPPORT_EMAIL}`,
+        ],
+      },
+      {
+        h: 'Zbierane dane konta',
+        p: [
+          'Podczas rejestracji zbieramy: imię, nazwisko, adres e-mail oraz hasło (przechowywane wyłącznie w postaci skrótu przez Firebase Authentication — nigdy go nie widzimy).',
+          'Nie pytamy o stanowisko, o to, skąd dowiedzieli się Państwo o nas, ani o żadne inne dane osobowe, które nie są potrzebne do prowadzenia konta.',
+        ],
+      },
+      {
+        h: 'Zbierane dane firmowe',
+        p: [
+          'Wymagane: nazwa firmy i rodzaj firmy. Opcjonalne: miejscowość firmy i strona internetowa firmy. W przypadku wyboru rodzaju firmy „Inne” zapisujemy wprowadzony przez Państwa krótki opis.',
+          'Osoby wykonujące zawód samodzielnie oraz osoby prowadzące jednoosobową działalność gospodarczą podają jako nazwę firmy własne imię i nazwisko lub zarejestrowaną nazwę handlową.',
+          'Kraj rejestracji jest przejmowany automatycznie z edycji krajowej, w której zakładają Państwo konto. Nie pytamy o niego.',
+        ],
+      },
+      {
+        h: 'Cele przetwarzania',
+        p: [
+          'Świadczenie usługi bazodanowej i prowadzenie Państwa konta; identyfikacja użytkowników profesjonalnych; obsługa subskrypcji zespołowych (miejsca, zaproszenia); rozliczenia za pośrednictwem naszego dostawcy płatności; odpowiadanie na zapytania do pomocy technicznej; zabezpieczenie serwisu przed nadużyciami i nieuprawnionym pozyskiwaniem danych.',
+        ],
+      },
+      {
+        h: 'Podstawy prawne',
+        p: [
+          'Wykonanie umowy (art. 6 ust. 1 lit. b RODO) w zakresie konta, subskrypcji i wsparcia; prawnie uzasadnione interesy (art. 6 ust. 1 lit. f RODO) w zakresie bezpieczeństwa, zapobiegania oszustwom i ochrony bazy danych; obowiązki prawne (art. 6 ust. 1 lit. c RODO) w zakresie dokumentacji księgowej i podatkowej prowadzonej przez naszego dostawcę płatności.',
+        ],
+      },
+      {
+        h: 'Podmioty przetwarzające i wykorzystywane usługi',
+        p: [
+          'Firebase Authentication (Google) — logowanie i obsługa haseł.',
+          'Firebase Firestore, Cloud Storage i Hosting (Google) — dane kont, zbiory danych produktowych i dostarczanie aplikacji.',
+          'Firebase App Check z reCAPTCHA Enterprise (Google) — weryfikuje, że żądania pochodzą z naszej aplikacji, i blokuje zautomatyzowane pozyskiwanie danych.',
+          'Paddle — nasz dostawca płatności i sprzedawca rozliczeniowy (merchant of record). Paddle zbiera i przetwarza Państwa dane płatnicze; my nigdy nie otrzymujemy ani nie przechowujemy danych kart.',
+        ],
+      },
+      {
+        h: 'Rozliczenia i merchant of record',
+        p: [
+          'Subskrypcje są sprzedawane w internecie za pośrednictwem Paddle, który działa jako sprzedawca rozliczeniowy (merchant of record). Paddle obsługuje płatności, fakturowanie i należny podatek VAT oraz jest administratorem zbieranych przez siebie danych płatniczych. Przechowujemy tylko to, co jest niezbędne do powiązania subskrypcji z Państwa kontem i do udzielania Państwu wsparcia.',
+        ],
+      },
+      {
+        h: 'Zapytania do pomocy technicznej',
+        p: [
+          'Zapytania wysyłane ze strony Konto są zapisywane wraz z Państwa kontem, aby nasz zespół wsparcia mógł na nie odpowiedzieć, a Państwo mogli przeczytać odpowiedź w aplikacji.',
+        ],
+      },
+      {
+        h: 'Bezpieczeństwo i zapobieganie nadużyciom',
+        p: [
+          'Konta są osobiste i nie mogą być współdzielone. Rejestrujemy aktywność kont, aby wykrywać współdzielenie kont i nieuprawnione pozyskiwanie zawartości bazy danych. Dane produktowe są udostępniane wyłącznie zalogowanym, zatwierdzonym kontom.',
+        ],
+      },
+      {
+        h: 'Okres przechowywania danych',
+        p: [
+          'Dane konta i dane firmowe są przechowywane przez czas istnienia konta. Po usunięciu konta zachowujemy tylko to, czego wymagają cele prawne, księgowe lub dowodowe; dokumentacja rozliczeniowa jest przechowywana przez Paddle przez okresy ustawowe.',
+        ],
+      },
+      {
+        h: 'Usunięcie konta',
+        p: [
+          'Usunięcia konta można zażądać w każdej chwili na stronie Konto. Usunięcie konta HeatPump Database nie anuluje subskrypcji — rozliczenia należy anulować osobno w sekcji „Zarządzaj rozliczeniami”.',
+        ],
+      },
+      {
+        h: 'Państwa prawa',
+        p: [
+          'Na podstawie RODO mogą Państwo żądać dostępu do danych, ich sprostowania, usunięcia, ograniczenia przetwarzania i przenoszenia oraz wnieść sprzeciw wobec przetwarzania opartego na prawnie uzasadnionych interesach. Przysługuje Państwu również prawo wniesienia skargi do organu nadzorczego.',
+        ],
+      },
+      {
+        h: 'Przetwarzanie międzynarodowe',
+        p: [
+          'Nasi dostawcy mogą przetwarzać dane poza EOG. W takim przypadku przekazywanie danych opiera się na zabezpieczeniach oferowanych przez tych dostawców (w tym na standardowych klauzulach umownych UE).',
+        ],
+      },
+      { h: 'Kontakt', p: [`Prosimy skorzystać z opcji „Nowe zapytanie” na stronie Konto lub napisać na adres ${SUPPORT_EMAIL}.`] },
+    ],
+  },
+  terms: {
+    title: 'Warunki korzystania',
+    updated: ver.terms,
+    intro: `${BRAND_TM} to usługa oprogramowania prowadzona przez ${OPERATOR_NAME}, zarejestrowaną jednoosobową działalność gospodarczą. Pełne informacje o operatorze, rejestracji i kontakcie znajdują się w Informacjach o usługodawcy. Niniejsze warunki regulują korzystanie z usługi — profesjonalnego, internetowego serwisu bazodanowego B2B — prosimy o ich przeczytanie przed rejestracją.`,
+    sections: [
+      { h: 'Usługa', p: [`${SERVICE_NAME} to profesjonalna, internetowa usługa subskrypcyjna dla europejskiej branży pomp ciepła, prowadzona przez ${OPERATOR_NAME}. Subskrypcje są nabywane w internecie i rozliczane przez Paddle. Pełne dane operatora i rejestracji znajdują się w Informacjach o usługodawcy.`] },
+      { h: 'Kto może założyć konto', p: ['Konta są przeznaczone do użytku profesjonalnego (producenci, hurtownicy, instalatorzy, inżynierowie, firmy doradcze, sektor mieszkaniowy, sektor publiczny, osoby prowadzące jednoosobową działalność gospodarczą i porównywalne role). Nowe konta są weryfikowane przed aktywacją.'] },
+      { h: 'Odpowiedzialność za konto', p: ['Odpowiadają Państwo za swoje dane logowania i za wszystkie działania wykonywane w ramach konta. Hasło należy zachować w poufności.'] },
+      {
+        h: 'Jedno konto na osobę',
+        p: [
+          'Każde konto jest ściśle osobiste i może być używane tylko przez jedną osobę. Współdzielenie konta stanowi naruszenie niniejszych warunków i może prowadzić do zamknięcia konta bez wcześniejszego powiadomienia i bez zwrotu za pozostały okres.',
+          'Firmy z kilkoma użytkownikami muszą korzystać z planu Team, który zapewnia jedno konto na osobę.',
+        ],
+      },
+      {
+        h: 'Plany zespołowe, miejsca i właściciele',
+        p: [
+          'Team 3 zapewnia trzy miejsca, a Team 5 pięć miejsc, w każdym przypadku łącznie z nabywcą. Nabywca zostaje właścicielem zespołu i odpowiada za subskrypcję, rozliczenia oraz za to, kto zajmuje miejsca.',
+          'Liczba aktywnych członków wraz z otwartymi zaproszeniami nigdy nie może przekroczyć limitu miejsc. Właściciel może w każdej chwili usunąć członka; usunięta osoba natychmiast traci dostęp do subskrypcji zespołowej, ale zachowuje swoje konto osobiste.',
+          'Członek zespołu może w każdej chwili opuścić zespół. Opuszczenie zespołu zwalnia miejsce i nie anuluje subskrypcji zespołowej.',
+        ],
+      },
+      {
+        h: 'Bezpłatny okres próbny',
+        p: [
+          'Każda subskrypcja rozpoczyna się 7-dniowym bezpłatnym okresem próbnym. Do rozpoczęcia okresu próbnego wymagana jest ważna metoda płatności. W okresie próbnym nie są pobierane żadne opłaty.',
+          'Jeżeli subskrypcja nie zostanie anulowana przed końcem okresu próbnego, pobierana jest pierwsza płatność i subskrypcja się rozpoczyna.',
+        ],
+      },
+      {
+        h: 'Rozliczenia, odnowienia i zmiany',
+        p: [
+          'Subskrypcje są oferowane w miesięcznym, 6-miesięcznym i rocznym okresie rozliczeniowym i odnawiają się automatycznie na koniec każdego okresu do momentu anulowania.',
+          'Plan i okres rozliczeniowy są stałe w opłaconym okresie. Zmiany nie wchodzą w życie w trakcie okresu: zgłoszona przez Państwa zmiana obowiązuje od następnego odnowienia, a nowe warunki zaczynają obowiązywać dopiero po zakończeniu bieżącego okresu.',
+          'Subskrypcję można anulować w każdej chwili. Anulowanie wstrzymuje następne odnowienie; dostęp pozostaje aktywny do końca opłaconego okresu.',
+        ],
+      },
+      { h: 'Płatności', p: ['Płatności są przetwarzane przez Paddle, który działa jako sprzedawca rozliczeniowy (merchant of record) i wystawia faktury zawierające należny podatek VAT.'] },
+      {
+        h: 'Dozwolone korzystanie i ochrona bazy danych',
+        p: [
+          'Baza danych jest chroniona na podstawie europejskiego prawa ochrony baz danych. Z danych mogą Państwo korzystać wyłącznie w formach prezentacji oferowanych przez tę aplikację (w szczególności wyszukiwanie, widoki porównań i generowane karty danych) i wyłącznie do własnych celów zawodowych.',
+          'Scraping, masowe pozyskiwanie, zautomatyzowane zbieranie, powielanie, redystrybucja, wykorzystywanie do trenowania AI oraz jakiekolwiek komercyjne ponowne wykorzystanie bazy danych lub jej istotnej części są zabronione bez uprzedniej pisemnej zgody.',
+          'Próby obchodzenia technicznych środków ochrony lub uzyskiwania dostępu do zbiorów danych poza aplikacją prowadzą do zamknięcia konta i mogą skutkować odpowiedzialnością cywilną i karną.',
+        ],
+      },
+      { h: 'Dostępność usługi', p: ['Dążymy do wysokiej dostępności, ale nie gwarantujemy nieprzerwanego działania usługi. Konserwacja, aktualizacje i awarie u dostawców zewnętrznych mogą przerywać dostęp.'] },
+      {
+        h: 'Poprawność danych',
+        p: [
+          'Dane produktowe pochodzą z rejestrów publicznych i źródeł producentów i są udostępniane wyłącznie w celach informacji zawodowej. O kwalifikacji do finansowania publicznego decyduje wyłącznie właściwy organ. Przed podjęciem decyzji handlowych lub technicznych zawsze należy zweryfikować dane w oficjalnym źródle.',
+        ],
+      },
+      { h: 'Odpowiedzialność', p: ['W zakresie dozwolonym przez prawo nie ponosimy odpowiedzialności za szkody pośrednie lub następcze ani za decyzje podjęte na podstawie udostępnionych danych. Żadne postanowienie niniejszych warunków nie wyłącza odpowiedzialności, której nie można wyłączyć na mocy prawa.'] },
+      { h: 'Rozwiązanie umowy i zawieszenie konta', p: ['Możemy zawiesić lub zamknąć konta naruszające niniejsze warunki, w szczególności w przypadku współdzielenia konta i nieuprawnionego pozyskiwania danych. Mogą Państwo w każdej chwili zaprzestać korzystania z usługi i zażądać usunięcia konta.'] },
+      { h: 'Kontakt', p: [`Pytania dotyczące niniejszych warunków: ${SUPPORT_EMAIL} lub „Nowe zapytanie” na stronie Konto.`] },
+    ],
+  },
+  refund: {
+    title: 'Zasady zwrotów i anulowania subskrypcji',
+    updated: ver.terms,
+    intro: `Niniejsze zasady wyjaśniają, co się dzieje po anulowaniu subskrypcji ${SERVICE_NAME} oraz kiedy zwrot przysługuje, a kiedy nie. Paddle jest naszym sprzedawcą rozliczeniowym (merchant of record) i obsługuje wszystkie płatności.`,
+    sections: [
+      { h: 'W trakcie bezpłatnego okresu próbnego', p: ['Każda subskrypcja rozpoczyna się 7-dniowym bezpłatnym okresem próbnym. W okresie próbnym nie są pobierane żadne opłaty. Jeżeli anulują Państwo subskrypcję przed końcem okresu próbnego, żadna płatność nie zostanie pobrana.'] },
+      { h: 'Po okresie próbnym', p: ['Jeżeli subskrypcja nie zostanie anulowana przed końcem okresu próbnego, pobierana jest pierwsza płatność i rozpoczyna się opłacony okres.'] },
+      {
+        h: 'Anulowanie płatnej subskrypcji',
+        p: [
+          'Subskrypcję można anulować w każdej chwili. Anulowanie wstrzymuje następne odnowienie — nie kończy bieżącego okresu.',
+          'Dostęp pozostaje aktywny do końca już opłaconego okresu.',
+        ],
+      },
+      { h: 'Niewykorzystany czas', p: ['Nie zwracamy automatycznie środków za niewykorzystany czas w ramach już opłaconego okresu.'] },
+      {
+        h: 'Jak anulować',
+        p: [
+          'Subskrypcję anulują Państwo w sekcji „Zarządzaj rozliczeniami” na stronie Konto.',
+          'Usunięcie konta HeatPump Database NIE anuluje subskrypcji. Rozliczenia są prowadzone osobno i muszą zostać anulowane w sekcji „Zarządzaj rozliczeniami”.',
+        ],
+      },
+      { h: 'Zwroty w wyjątkowych przypadkach', p: [`Jeżeli uważają Państwo, że Państwa przypadek jest wyjątkowy (na przykład podwójne obciążenie), prosimy wysłać „Nowe zapytanie” ze strony Konto lub napisać na adres ${SUPPORT_EMAIL} — rozpatrzymy sprawę wspólnie z Paddle.`] },
+      { h: 'Merchant of record', p: [`Płatności za subskrypcje są przetwarzane przez ${PADDLE_ENTITY}, działający jako sprzedawca rozliczeniowy (merchant of record) dla wszystkich subskrypcji. Faktury i dokumenty VAT wystawia Paddle. Wnioski o zwrot i anulowanie można kierować na adres ${SUPPORT_EMAIL}.`] },
+    ],
+  },
+  imprint: buildImprint({
+    title: 'Informacje o usługodawcy',
+    operator: 'Usługodawca',
+    owner: 'Właściciel i operator',
+    address: 'Zarejestrowany adres działalności',
+    regNo: 'Numer rejestracyjny działalności',
+    contact: 'Kontakt',
+    brand: 'Produkt i marka',
+    payment: 'Przetwarzanie płatności',
+    soleProp: 'Jednoosobowa działalność gospodarcza',
+    emailLabel: 'E-mail:',
+    brandSentence: `${BRAND_TM} to marka produktu prowadzona przez ${OPERATOR_NAME}.`,
+    paymentSentence: `Płatności za subskrypcje są przetwarzane przez ${PADDLE_ENTITY}, działający jako sprzedawca rozliczeniowy (merchant of record).`,
+  }),
+};
+
 export const LEGAL_CONTENT: Record<Language, Record<'privacy' | 'terms' | 'refund' | 'imprint', LegalDocContent>> = {
   en: EN,
   de: DE,
   fr: FR,
+  pl: PL,
 };

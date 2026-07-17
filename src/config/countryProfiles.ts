@@ -25,7 +25,7 @@ import { PUBLIC_ENV } from './env';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type CountryCode = 'DE' | 'GB' | 'FR';
+export type CountryCode = 'DE' | 'GB' | 'FR' | 'PL';
 
 /** Identifies the primary eligibility/registry data source for a country. */
 export type PrimaryRegistry = 'BAFA' | 'OFGEM_PEL';
@@ -122,7 +122,7 @@ export interface CountryProfile {
    * wording stays translatable and no English leaks into a non-English site.
    */
   localListingOverlay: {
-    source: 'BAFA' | 'PEL' | null;
+    source: 'BAFA' | 'PEL' | 'ZUM' | null;
     filterEnabled: boolean;
   };
 }
@@ -218,6 +218,39 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     // PEL. No search filter: the status divides the catalogue far too unevenly to
     // help discovery, and a default-on filter once emptied the whole page.
     localListingOverlay: { source: 'PEL', filterEnabled: false },
+  },
+
+  PL: {
+    code: 'PL',
+    name: 'Poland',
+    marketName: 'Polish market',
+    currency: 'PLN',
+    currencySymbol: 'zł',
+    locale: 'pl-PL',
+    firestoreRoot: 'countries/PL',
+    // PL catalogue is derived from the canonical (German-registry) baseline —
+    // same hardware sold across the EU. Lista ZUM (IOŚ-PIB) is a LISTING overlay
+    // only; it never becomes the technical catalogue.
+    primaryRegistry: 'BAFA',
+    primaryRegistryIdField: 'bafa_id',
+    subsidyAuthorityLabel: 'NFOŚiGW (Czyste Powietrze / Moje Ciepło)',
+    subsidyTabLabel: 'Czyste Powietrze / ZUM',
+    aiMarketContext: 'Polish market',
+    // User-facing: neutral European reference — never names a foreign registry.
+    sourceIdLabel: { en: 'European reference' },
+    enabledEnrichmentLayers: ['BAFA_REFERENCE', 'EPREL'],
+    datasetPaths: {
+      products: '/data/products-pl.json',
+      commercialProducts: '/data/products-commercial-pl.json',
+    },
+    technicalBaseline: 'canonical',
+    // Poland HAS a national product list — Lista ZUM — and heat pumps must be on
+    // it for Czyste Powietrze grants (invoices from 14.06.2024). Only a CONFIRMED
+    // match says "ZUM listed"; everything else says "verification required" (the
+    // PEL rule: a failed match is a fact about our matching, not about the list).
+    // The filter earns its place: ZUM listing meaningfully divides the catalogue
+    // and is the question Polish installers actually ask.
+    localListingOverlay: { source: 'ZUM', filterEnabled: true },
   },
 };
 

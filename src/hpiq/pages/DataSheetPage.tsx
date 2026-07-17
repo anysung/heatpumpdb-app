@@ -5,7 +5,7 @@ import { longDate } from '../model';
 import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
-import { IS_GB, SOURCE_ID_ABBR } from '../market';
+import { IS_GB, IS_PL, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 
 const PICKER_LIMIT = 60;
@@ -124,7 +124,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               {/* title card + key stats */}
               <div style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <span style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}</span>
-                <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
+                <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB || IS_PL ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
                 {([
@@ -205,7 +205,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                     <FieldCell label={t.ds.f.refKg} value={dsp.refKg === '—' ? '—' : `${dsp.refKg} kg`} note={n('refKg')} />
                     <FieldCell label={t.ds.f.noise} value={dsp.noise === '—' ? '—' : `${dsp.noise} dB(A)`} note={n('noise')} />
                     {/* GB: SG-Ready is not recorded on the PEL — unknown, not "No". */}
-                    <FieldCell label={t.ds.f.grid} value={IS_GB ? '—' : dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
+                    <FieldCell label={t.ds.f.grid} value={IS_GB || dsp.raw.grid_ready == null ? '—' : dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
                   </SectionGrid>
                 </div>
               )}

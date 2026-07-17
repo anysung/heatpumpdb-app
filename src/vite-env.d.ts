@@ -1,5 +1,11 @@
 /// <reference types="vite/client" />
 
+/** TTF font assets imported as URLs (jsPDF embedded fonts). */
+declare module '*.ttf?url' {
+  const url: string;
+  export default url;
+}
+
 /** Build-time market catalogue stats (vite.config define) — shown on the auth landing. */
 declare const __MARKET_STATS__: { res: number; com: number; mfr: number };
 

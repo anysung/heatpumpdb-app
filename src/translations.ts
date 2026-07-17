@@ -6,10 +6,12 @@ import { BRAND_TM } from './config/legal';
 // Auth marketing chip for the market's funding scheme — the auth surface is
 // shared across editions; only this chip names the national scheme.
 const FUNDING_CHIP = ACTIVE_COUNTRY.code === 'GB'
-  ? { en: 'BUS / MCS eligibility', de: 'BUS / MCS eligibility', fr: 'BUS / MCS eligibility' }
+  ? { en: 'BUS / MCS eligibility', de: 'BUS / MCS eligibility', fr: 'BUS / MCS eligibility', pl: 'BUS / MCS eligibility' }
   : ACTIVE_COUNTRY.code === 'FR'
-    ? { en: "MaPrimeRénov' / CEE eligibility", de: "MaPrimeRénov' / CEE eligibility", fr: "Éligibilité MaPrimeRénov' / CEE" }
-    : { en: 'BAFA / KfW eligibility', de: 'BAFA-/KfW-Förderfähigkeit', fr: 'BAFA / KfW eligibility' };
+    ? { en: "MaPrimeRénov' / CEE eligibility", de: "MaPrimeRénov' / CEE eligibility", fr: "Éligibilité MaPrimeRénov' / CEE", pl: "MaPrimeRénov' / CEE eligibility" }
+    : ACTIVE_COUNTRY.code === 'PL'
+      ? { en: 'Czyste Powietrze · Lista ZUM', de: 'Czyste Powietrze · Lista ZUM', fr: 'Czyste Powietrze · Lista ZUM', pl: 'Czyste Powietrze · Lista ZUM' }
+      : { en: 'BAFA / KfW eligibility', de: 'BAFA-/KfW-Förderfähigkeit', fr: 'BAFA / KfW eligibility', pl: 'BAFA / KfW eligibility' };
 
 const EN_T = {
     // General / Auth
@@ -452,40 +454,141 @@ const FR_T = {
     noResults: "Aucun résultat.",
 };
 
+// Polish auth surface (PL edition) — user-facing auth/footer strings in
+// Polish; admin-console strings intentionally stay English (operator-facing).
+const PL_T = {
+    ...EN_T,
+    termsTitle: "Warunki korzystania z konta i danych",
+    termsIntro: "Prosimy o zapoznanie się z warunkami i ich akceptację przed utworzeniem konta:",
+    termsAccount: "Jedno konto na osobę. Każde konto jest ściśle osobiste i może być używane wyłącznie przez jedną osobę. W przypadku stwierdzenia korzystania przez dwie lub więcej osób konto może zostać zamknięte bez uprzedzenia z tytułu naruszenia umowy — bez zwrotu opłat za pozostały okres subskrypcji.",
+    termsData: "Zakaz nieuprawnionego pozyskiwania danych. Zbieranie, pobieranie (scraping) lub ponowne wykorzystywanie zawartości bazy danych poza formami prezentacji tej aplikacji — w tym pozyskiwanie zautomatyzowane lub trenowanie AI — jest zabronione i prowadzi do zamknięcia konta; możliwa jest odpowiedzialność cywilna i karna na podstawie przepisów o ochronie baz danych.",
+    termsAgree: "Akceptuję — utwórz konto",
+    termsCancel: "Anuluj",
+    termsDeclined: "Rejestracja anulowana — do utworzenia konta wymagana jest akceptacja warunków.",
+
+    // Wstrzymanie rejestracji (zob. src/config/registration.ts)
+    regPausedTitle: "Rejestracja jest tymczasowo niedostępna",
+    regPausedBody: "Obecnie przeprowadzamy przegląd systemu w związku z rozszerzaniem bazy HeatPump DB na kolejne rynki europejskie. W trakcie przeglądu nie można tworzyć nowych kont.",
+    regPausedReopen: "Przewidywane wznowienie",
+    regPausedExisting: "Masz już konto? Obecni członkowie mogą logować się jak zwykle.",
+    regPausedNotice: "Nowe rejestracje są wstrzymane na czas przeglądu związanego z ekspansją europejską. Istniejące konta pozostają bez zmian.",
+    subTitle: "Najbardziej kompletna baza danych pomp ciepła — regularnie aktualizowana",
+    welcomeTitle: "Witamy w świecie pomp ciepła",
+    signup: "Zarejestruj się",
+    login: "Zaloguj się",
+    suAccountSection: "Dane konta",
+    suCompanySection: "Dane firmy",
+    suCompanyWebsite: "Strona internetowa firmy",
+    suOptional: "opcjonalnie",
+    suCompanyTypeOther: "Proszę określić rodzaj firmy",
+    suCompanyGuidance: "Jeśli rejestrujesz się w imieniu firmy, podaj jej dane. Osoby wykonujące samodzielną działalność zawodową i jednoosobowi przedsiębiorcy podają własne imię i nazwisko lub zarejestrowaną nazwę działalności jako nazwę firmy i wybierają „Osoba prywatna / Działalność jednoosobowa”.",
+    suIndividualHint: "Podaj swoje pełne imię i nazwisko lub zarejestrowaną nazwę działalności jako nazwę firmy.",
+    suConsentPre: "Akceptuję ",
+    suConsentTerms: "Warunki korzystania",
+    suConsentMid: " i potwierdzam zapoznanie się z ",
+    suConsentPrivacy: "Polityką prywatności",
+    suConsentPost: ".",
+    suMarketing: "Chcę otrzymywać okazjonalne informacje o nowościach (opcjonalnie).",
+    suContinue: "Przejdź do wyboru planu",
+    suErrRequired: "Proszę wypełnić wszystkie wymagane pola.",
+    suErrEmail: "Proszę podać prawidłowy adres e-mail.",
+    suErrWebsite: "Proszę podać prawidłowy adres strony, np. przyklad.pl.",
+    suErrConsent: "Aby kontynuować, zaakceptuj Warunki korzystania i Politykę prywatności.",
+    suErrOther: "Proszę określić rodzaj firmy.",
+    invTitle: "Dołącz do swojego zespołu",
+    invSub: "Otrzymałeś(-aś) zaproszenie do zespołu HeatPump DB. Skonfiguruj swoje konto osobiste — dane firmy pochodzą z Twojego zespołu.",
+    invEmailFixed: "To jest adres, na który wysłano zaproszenie — nie można go zmienić.",
+    invContinue: "Utwórz konto i dołącz do zespołu",
+    invFailed: "Nie udało się dołączyć do zespołu — zaproszenie mogło zostać wycofane. Skontaktuj się z administratorem zespołu.",
+    back: "Wstecz",
+    loginTitle: "Logowanie",
+    loginSub: "Wprowadź dane logowania, aby uzyskać dostęp do bazy danych.",
+    email: "Adres e-mail",
+    password: "Hasło",
+    forgotPass: "Nie pamiętasz hasła?",
+    loggingIn: "Logowanie…",
+    createAccount: "Utwórz konto",
+    firstName: "Imię",
+    lastName: "Nazwisko",
+    companyType: "Rodzaj firmy",
+    select: "Wybierz…",
+    jobRole: "Stanowisko",
+    companyName: "Nazwa firmy",
+    city: "Miejscowość",
+    referralSource: "Skąd o nas wiesz?",
+    registering: "Rejestrowanie…",
+    completeSignup: "Zakończ rejestrację",
+    searchPlaceholder: "Szukaj modelu, marki lub mocy…",
+    authTagline: "Inteligencja dla transformacji ogrzewania",
+    authHeadline: "Każda pompa ciepła na rynku.",
+    authHeadlineAccent: "Jedna inteligentna baza danych.",
+    authMarketLabel: "Rynek",
+    authResidentialDesc: "Domy jedno- i wielorodzinne",
+    authCommercialDesc: "Obiekty komercyjne i duże instalacje",
+    authChipBafa: FUNDING_CHIP.pl,
+    authChipRefrigerant: "R290 i dane czynników chłodniczych",
+    authChipScop: "Porównanie SCOP, hałasu i mocy",
+    tabResidential: "Mieszkaniowe",
+    tabCommercial: "Komercyjne",
+    authEcoLine: "Dane dla neutralnych klimatycznie budynków",
+    authNoAccount: "Nie masz jeszcze konta?",
+    authHaveAccount: "Masz już konto?",
+    orContinueWith: "lub kontynuuj przez",
+    continueGoogle: "Kontynuuj z Google",
+    continueApple: "Kontynuuj z Apple",
+    legalDisclaimer: "Zastrzeżenie: dane są generowane automatycznie i mogą zawierać błędy. Zawsze weryfikuj informacje w kartach katalogowych producentów.",
+    loading: "Ładowanie…",
+    noResults: "Brak wyników.",
+};
+
 // SEO paragraph on the auth landing (the only publicly indexable page).
 // Market keywords chosen per edition: DE = BAFA-Liste/Förderung/Luft-Wasser,
-// GB = Ofgem BUS PEL/MCS/air source, FR = comparateur/MaPrimeRénov'/air-eau.
+// GB = Ofgem BUS PEL/MCS/air source, FR = comparateur/MaPrimeRénov'/air-eau,
+// PL = Lista ZUM/Czyste Powietrze/Moje Ciepło.
 const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
   ? {
       en: 'UK heat pump database & comparison — Ofgem Boiler Upgrade Scheme (BUS) eligibility list, MCS-certified air source heat pumps, SCOP, sound power and refrigerant data.',
-      de: '', fr: '',
+      de: '', fr: '', pl: '',
     }
   : ACTIVE_COUNTRY.code === 'FR'
     ? {
         en: 'Heat pump database & comparison for the French market — air-to-water models, SCOP & COP, sound power, R290 refrigerant, EU energy label, MaPrimeRénov’ & CEE guidance.',
         de: '',
         fr: 'Base de données et comparateur de pompes à chaleur air/eau — SCOP & COP, puissance acoustique, fluide R290, étiquette énergie UE, repères MaPrimeRénov’ & CEE.',
+        pl: '',
       }
-    : {
-        en: 'Heat pump database & comparison for the German market — BAFA list of eligible heat pumps, SCOP & COP data, sound power, R290 refrigerant and EU energy label classes.',
-        de: 'Wärmepumpen-Datenbank & Vergleich für Deutschland — BAFA-Liste förderfähiger Wärmepumpen, SCOP- & COP-Daten, Schallleistung, R290-Kältemittel und EU-Energielabel.',
-        fr: '',
-      };
+    : ACTIVE_COUNTRY.code === 'PL'
+      ? {
+          en: 'Heat pump database & comparison for the Polish market — rated capacity, SCOP & COP, refrigerants, EU energy label classes, Lista ZUM listing status, Czyste Powietrze & Moje Ciepło funding guidance, data sheets for professionals.',
+          de: '',
+          fr: '',
+          pl: 'Baza danych i porównywarka pomp ciepła dla polskiego rynku — kompletne specyfikacje techniczne modeli powietrze-woda i gruntowych: moc znamionowa, SCOP i COP, czynnik chłodniczy (w tym R290), poziom mocy akustycznej oraz klasy efektywności energetycznej według norm UE. Sprawdzisz status wpisu na liście ZUM, znajdziesz informacje o dofinansowaniu z programów Czyste Powietrze i Moje Ciepło, porównasz modele i wygenerujesz karty danych. Narzędzie dla instalatorów, projektantów, producentów i dystrybutorów — europejskie dane referencyjne z pomiarów zgodnych z normami UE, regularnie aktualizowane.',
+        }
+      : {
+          en: 'Heat pump database & comparison for the German market — BAFA list of eligible heat pumps, SCOP & COP data, sound power, R290 refrigerant and EU energy label classes.',
+          de: 'Wärmepumpen-Datenbank & Vergleich für Deutschland — BAFA-Liste förderfähiger Wärmepumpen, SCOP- & COP-Daten, Schallleistung, R290-Kältemittel und EU-Energielabel.',
+          fr: '',
+          pl: '',
+        };
 
 (EN_T as any).authSeoLine = SEO_LINE.en;
 (DE_T as any).authSeoLine = SEO_LINE.de || SEO_LINE.en;
 (FR_T as any).authSeoLine = SEO_LINE.fr || SEO_LINE.en;
+(PL_T as any).authSeoLine = SEO_LINE.pl || SEO_LINE.en;
 
 // Simple declarative copyright line (public brand mark: BRAND_TM).
 const YEAR = new Date().getFullYear();
 (EN_T as any).authStatsTitle = 'Registered Heat Pump Models';
 (DE_T as any).authStatsTitle = 'Registrierte Wärmepumpen-Modelle';
 (FR_T as any).authStatsTitle = 'Modèles de pompes à chaleur référencés';
+(PL_T as any).authStatsTitle = 'Zarejestrowane modele pomp ciepła';
 (EN_T as any).authStatsTotal = 'Total';
 (DE_T as any).authStatsTotal = 'Gesamt';
 (FR_T as any).authStatsTotal = 'Total';
+(PL_T as any).authStatsTotal = 'Łącznie';
 (EN_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · All rights reserved.`;
 (DE_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Alle Rechte vorbehalten.`;
 (FR_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Tous droits réservés.`;
+(PL_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Wszelkie prawa zastrzeżone.`;
 
-export const translations = { en: EN_T, de: DE_T, fr: FR_T };
+export const translations = { en: EN_T, de: DE_T, fr: FR_T, pl: PL_T };
