@@ -21,6 +21,19 @@ const BAFA_REF   = `${ACTIVE_COUNTRY.firestoreRoot}/bafa`;
  * Dev server: reads the local file from public/data (vite serves it), so the
  * pipeline/preview workflow keeps working without a Storage round-trip.
  */
+/**
+ * Anti-scraping honeytoken filter — ALL markets. The served dataset files carry
+ * one fictitious canary record each (scripts/upload-datasets.mjs; ids reserved
+ * in the 1699xxxx block, scripts/canary/canary-records.json). The canary's job
+ * is to prove FILE exfiltration — it must stay in the served bytes — but it is
+ * not a real product: the app excludes it from every catalogue, count, search,
+ * comparison, PDF and export path by filtering the reserved id block here, in
+ * the one place all product data enters the app.
+ */
+const isHoneytokenRecord = (p: HeatPump): boolean =>
+  [p.source_id, p.bafa_id, p.european_reference_id]
+    .some(id => id != null && /^1699\d{4}$/.test(String(id)));
+
 const loadProductsFromJson = async (path: string): Promise<HeatPump[]> => {
   try {
     let data: any;
@@ -33,7 +46,7 @@ const loadProductsFromJson = async (path: string): Promise<HeatPump[]> => {
       const blob = await getBlob(ref(datasetStorage, `datasets/${ACTIVE_COUNTRY.code}/${file}`));
       data = JSON.parse(await blob.text());
     }
-    return (data.items || []) as HeatPump[];
+    return ((data.items || []) as HeatPump[]).filter(p => !isHoneytokenRecord(p));
   } catch (error) {
     console.error(`Error fetching products from ${path}:`, error);
     return [];

@@ -51,10 +51,18 @@ export function segmentOf(p) {
 export const REQUIRED_FIELDS = [
   'manufacturer',              // who made it
   'model',                     // what it is
-  'bafa_id',                   // canonical identity, traceable to the source record
   'type',                      // air/water, ground/water …
   'efficiency_35C_percent',    // ηs → the energy class shown on the sheet
 ];
+
+/**
+ * The canonical identity requirement, kept separate from REQUIRED_FIELDS
+ * because its FIELD NAME differs per public schema: DE/GB/FR publish
+ * `bafa_id`; the PL public schema publishes the neutral
+ * `european_reference_id` (same value — the German field name must not
+ * appear in Polish public data). Either satisfies traceability.
+ */
+export const CANONICAL_ID_FIELDS = ['bafa_id', 'european_reference_id'];
 
 /**
  * Measured performance. At least MIN_CORE_FIELDS of these must be published, or
@@ -109,6 +117,7 @@ export function dataSheetEligibility(p) {
   for (const f of REQUIRED_FIELDS) {
     if (!present(p?.[f])) reasons.push(`missing_${f}`);
   }
+  if (!CANONICAL_ID_FIELDS.some(f => present(p?.[f]))) reasons.push('missing_canonical_id');
   if (ratedCapacityKw(p) == null) reasons.push('no_rated_capacity');
   // A product we cannot place in a segment cannot be published: the app would
   // have to show it in neither list. (Follows from the capacity rule, kept

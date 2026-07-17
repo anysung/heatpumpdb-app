@@ -41,7 +41,7 @@ import { dataSheetEligibility, ratedCapacityKw, segmentOf } from '../lib/data-sh
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const EXPECTED_FIELD_COUNT = 89; // DE 78 − 4 German fields + performance_source
+const EXPECTED_FIELD_COUNT = 88; // DE 78 − 4 German fields + performance_source
                                  // + bafa_reference_*(3) + zum_*(10) + zum_id
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
@@ -315,7 +315,35 @@ for (const x of extension) {
   (segmentOf(x) === 'commercial' ? commercial : residential).push(x);
 }
 
-const allItems = [...residential, ...commercial];
+/* ── Public-schema transform: no German-market field names leave Poland ────
+   Internal building above uses the canonical field names (bafa_id, …) so the
+   overlay/matching artifacts stay traceable. The PUBLIC Polish dataset renames
+   them to neutral European-reference terminology — visible text was always
+   neutral; this makes the machine-readable payload neutral too:
+     bafa_id                   → european_reference_id
+     bafa_reference_model      → european_reference_model
+     bafa_reference_match_type → european_reference_match_type
+     bafa_reference_id         → (dropped — same value as european_reference_id)
+     performance_source        'BAFA_REFERENCE' → 'EU_MEASURED_REFERENCE'
+     primary_source            'BAFA' → 'EU_REFERENCE'                        */
+function toPublicPlItem(p) {
+  const {
+    bafa_id, bafa_reference_id, bafa_reference_model, bafa_reference_match_type,
+    ...rest
+  } = p;
+  return {
+    ...rest,
+    european_reference_id: bafa_id != null ? String(bafa_id) : null,
+    european_reference_model: bafa_reference_model ?? null,
+    european_reference_match_type: bafa_reference_match_type ?? null,
+    performance_source: p.performance_source === 'BAFA_REFERENCE' ? 'EU_MEASURED_REFERENCE' : p.performance_source,
+    primary_source: p.primary_source === 'BAFA' ? 'EU_REFERENCE' : p.primary_source,
+  };
+}
+const publicResidential = residential.map(toPublicPlItem);
+const publicCommercial = commercial.map(toPublicPlItem);
+
+const allItems = [...publicResidential, ...publicCommercial];
 
 /* ── Validate ─────────────────────────────────────────────────────────────── */
 
@@ -325,9 +353,18 @@ if (fieldCount !== EXPECTED_FIELD_COUNT) {
   console.error('Fields:', Object.keys(allItems[0]).join(', '));
   process.exit(1);
 }
-const extBadKeys = extension.filter(x => Object.keys(x).length !== fieldCount);
-if (extBadKeys.length) {
-  console.error(`FAIL: ${extBadKeys.length} extension records deviate from the shared schema`);
+const badKeySets = allItems.filter(x => Object.keys(x).length !== fieldCount);
+if (badKeySets.length) {
+  console.error(`FAIL: ${badKeySets.length} public records deviate from the shared schema`);
+  process.exit(1);
+}
+
+// The public Polish schema must carry NO German-market field names or source
+// labels — machine-readable payloads included, not just visible text.
+const bafaKeyLeak = Object.keys(allItems[0]).filter(k => /bafa/i.test(k));
+const bafaValueLeak = allItems.filter(i => /BAFA/i.test(String(i.performance_source ?? '')) || /^BAFA$/i.test(String(i.primary_source ?? '')));
+if (bafaKeyLeak.length || bafaValueLeak.length) {
+  console.error(`FAIL: German-market provenance in the public schema (keys: ${bafaKeyLeak.join(',') || 'none'}; value leaks: ${bafaValueLeak.length})`);
   process.exit(1);
 }
 
@@ -345,8 +382,8 @@ if (germanLeak.length > 0) {
 }
 
 const badProvenance = allItems.filter(i =>
-  !i.bafa_id || !i.source_id || i.country !== 'PL'
-  || !['BAFA_REFERENCE', 'ZUM_REGISTRY', 'ZUM_EPREL'].includes(i.performance_source));
+  !i.european_reference_id || !i.source_id || i.country !== 'PL'
+  || !['EU_MEASURED_REFERENCE', 'ZUM_REGISTRY', 'ZUM_EPREL'].includes(i.performance_source));
 if (badProvenance.length > 0) {
   console.error(`FAIL: ${badProvenance.length} items missing required PL provenance`);
   process.exit(1);
@@ -400,20 +437,17 @@ function writeOutput(relPath, items, dataset, sourceMeta) {
       generator: 'build-app-products-pl.mjs v1.0',
       dataset,
       country: 'PL',
-      primary_source: 'BAFA',
-      description: 'Polish market catalogue: the canonical European (German-registry-derived) dataset — '
-        + "technical specifications presented as a cross-reference (performance_source='BAFA_REFERENCE'), "
-        + 'not Polish certification data — plus a Lista ZUM listing overlay (confirmed matches only; a '
-        + 'failed match is shown as verification-required, never as absence) and spec-complete PL-market '
-        + "records built from Lista ZUM's own published measured values (performance_source='ZUM_REGISTRY', "
-        + 'source_id PL-<zum id>). Czyste Powietrze / Moje Ciepło eligibility is applicant- and '
-        + 'building-dependent — this app makes no eligibility claims.',
+      primary_source: 'EU_REFERENCE',
+      description: 'Polish market catalogue: the canonical European reference dataset — technical '
+        + 'specifications are EU-harmonised measured reference values (EN 14511/14825, EU 811/2013; '
+        + "performance_source='EU_MEASURED_REFERENCE'), not Polish certification data — plus a Lista ZUM "
+        + 'listing overlay (confirmed matches only; a failed match is shown as verification-required, '
+        + 'never as absence) and spec-complete PL-market records built from Lista ZUM\'s own published '
+        + "measured values (performance_source='ZUM_REGISTRY'/'ZUM_EPREL', source_id PL-<zum id>). "
+        + 'Czyste Powietrze / Moje Ciepło eligibility is applicant- and building-dependent — this app '
+        + 'makes no eligibility claims.',
       total_items: items.length,
-      derived_from: {
-        de_dataset_generated: sourceMeta.generated,
-        de_generator: sourceMeta.generator,
-        bafa_seed: sourceMeta.primary_source,
-      },
+      reference_dataset_generated: sourceMeta.generated,
       zum_overlay_source: overlayFile ? `data_sources/lista_zum/matching/${overlaySnapshot}/canonical-zum-overlay.json` : null,
       zum_snapshot: parsedSnapshot ?? null,
       zum_confirmed_total: items.filter(i => i.zum_match_status === 'confirmed').length,
@@ -427,8 +461,8 @@ function writeOutput(relPath, items, dataset, sourceMeta) {
   console.log(`Wrote ${items.length} items → ${relPath}`);
 }
 
-writeOutput('public/data/products-pl.json', residential, 'residential', deResidential._meta);
-writeOutput('public/data/products-commercial-pl.json', commercial, 'commercial', deCommercial._meta);
+writeOutput('public/data/products-pl.json', publicResidential, 'residential', deResidential._meta);
+writeOutput('public/data/products-commercial-pl.json', publicCommercial, 'commercial', deCommercial._meta);
 
 /* ── Summary ──────────────────────────────────────────────────────────────── */
 

@@ -55,6 +55,14 @@ const DATASETS = {
 const GERMAN_ONLY_FIELDS = ['bafa_listing_status', 'bafa_foerderung_von', 'bafa_foerderung_bis', 'bafa_snapshot_fetched_at'];
 
 /**
+ * Markets whose PUBLIC schema must be fully neutral: no field name matching
+ * /bafa/i and no German-market source labels in provenance values. (GB/FR keep
+ * the legacy bafa_reference_* technical-traceability fields; Poland publishes
+ * european_reference_* instead.)
+ */
+const NEUTRAL_PUBLIC_MARKETS = ['PL'];
+
+/**
  * Approved one-to-many local-id exceptions. An entry says a document proves this
  * identifier really does cover all those canonical products. An entry WITHOUT an
  * evidence reference is itself a blocking condition — an unevidenced exception is
@@ -266,6 +274,13 @@ for (const [cc, files] of Object.entries(DATASETS)) {
   if (cc !== 'DE') {
     const leaked = GERMAN_ONLY_FIELDS.filter(f => f in items[0]);
     if (leaked.length) block(`[${cc}] German registry/funding fields present in a non-German dataset: ${leaked.join(', ')}`);
+  }
+  if (NEUTRAL_PUBLIC_MARKETS.includes(cc)) {
+    const keyLeak = Object.keys(items[0]).filter(k => /bafa/i.test(k));
+    const valueLeak = items.filter(i => /BAFA/i.test(String(i.performance_source ?? ''))
+      || /^BAFA$/i.test(String(i.primary_source ?? ''))).length;
+    if (keyLeak.length) block(`[${cc}] German-market field names in a neutral public schema: ${keyLeak.join(', ')}`);
+    if (valueLeak) block(`[${cc}] ${valueLeak} records carry German-market provenance labels in a neutral public schema`);
   }
   // A "confirmed" listing must have the registry's own id behind it.
   const confirmedWithoutId = items.filter(i => i.pel_match_status === 'confirmed' && !i.mcs_number).length;

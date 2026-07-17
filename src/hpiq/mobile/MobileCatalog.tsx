@@ -10,7 +10,7 @@
  */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
-import { HpVM } from '../model';
+import { HpVM, crossRefId } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
@@ -129,9 +129,9 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
         </span>
       </div>
 
-      {v.raw.performance_source === 'BAFA_REFERENCE' && (
+      {crossRefId(v.raw) != null && (
         <span style={{ fontSize: 10.5, color: '#7a7a7a', lineHeight: 1.5, padding: '0 2px' }}>
-          {t.ds.perfCrossRefNote(v.raw.bafa_reference_id ?? '—')}
+          {t.ds.perfCrossRefNote(crossRefId(v.raw) ?? '—')}
         </span>
       )}
 

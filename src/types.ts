@@ -77,6 +77,16 @@ export interface HeatPump {
   // confident match exists — uncertain matches are never shown (user policy).
   nf_pac_reference?: string | null;
 
+  // ── Neutral European-reference identity (PL public schema) ────────────────
+  // The PL edition publishes NO German-market field names: the builder renames
+  // bafa_id → european_reference_id, bafa_reference_model/_match_type →
+  // european_reference_*, and performance_source 'BAFA_REFERENCE' →
+  // 'EU_MEASURED_REFERENCE' at output time. Internal artifacts keep the
+  // original provenance for traceability.
+  european_reference_id?: string | null;
+  european_reference_model?: string | null;
+  european_reference_match_type?: string | null;
+
   // ── Lista ZUM listing overlay (PL only, set by build-app-products-pl.mjs) ──
   // Same contract as the PEL overlay: a CONFIRMED match may say "ZUM listed" and
   // carry the ZUM id; anything else is verification-required. The overlay never

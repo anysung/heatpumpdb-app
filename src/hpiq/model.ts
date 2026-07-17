@@ -71,8 +71,20 @@ function completenessOf(p: HeatPump): string {
   return `${Math.round((present / fields.length) * 100)}%`;
 }
 
+/**
+ * The European cross-reference id shown in the "specs are reference values"
+ * note — GB/FR publish it as bafa_reference_id, the PL public schema as the
+ * neutral european_reference_id. Null when the record's specs are not a
+ * cross-reference (DE originals, ZUM-native records).
+ */
+export function crossRefId(p: HeatPump): string | null {
+  if (p.performance_source === 'BAFA_REFERENCE') return p.bafa_reference_id ?? null;
+  if (p.performance_source === 'EU_MEASURED_REFERENCE') return p.european_reference_id ?? null;
+  return null;
+}
+
 export function toVM(p: HeatPump): HpVM {
-  const id = p.source_id || p.bafa_id;
+  const id = p.source_id || p.bafa_id || p.european_reference_id;
   const mfr = p.manufacturer_short || p.manufacturer;
   const eprel = !!p.eprel_registration_number;
   const eta35 = (p as any).efficiency_35C_percent as number | null;

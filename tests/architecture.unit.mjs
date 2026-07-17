@@ -129,6 +129,23 @@ if (!existsSync(GB)) {
       items.every(p => (segmentOf(p) === 'residential') === (ratedCapacityKw(p) <= 23)), true);
   }
 
+  // ── Honeytokens: reserved id block, absent from every real catalogue ──────
+  console.log('\nHoneytokens live in a reserved id block and never in real data');
+  {
+    const canaries = JSON.parse(readFileSync(resolve(process.cwd(), 'scripts/canary/canary-records.json'), 'utf8'));
+    const inBlock = r => [r?.source_id, r?.bafa_id, r?.european_reference_id]
+      .some(id => id != null && /^1699\d{4}$/.test(String(id)));
+    const canaryRecs = Object.entries(canaries).filter(([k]) => k !== '_readme')
+      .flatMap(([, v]) => [v.residential, v.commercial]).filter(Boolean);
+    is('every canary record carries an id in the reserved 1699xxxx block (the app filters this block)',
+      canaryRecs.every(inBlock), true);
+    const allBuilt = [...de, ...gb, ...fr];
+    is('no REAL product occupies the reserved honeytoken block',
+      allBuilt.every(p => !inBlock(p)), true);
+    is('no canary identity appears in any committed dataset',
+      !allBuilt.some(p => /Grzewpol|Nordvik|Calderra|Thermalis/i.test(String(p.manufacturer ?? ''))), true);
+  }
+
   // ── Poland: canonical baseline + ZUM overlay + spec-complete PL extension ──
   const PL = 'public/data/products-pl.json';
   if (!existsSync(PL)) {
@@ -136,11 +153,17 @@ if (!existsSync(GB)) {
   } else {
     const pl = [...load(PL).items, ...load('public/data/products-commercial-pl.json').items];
     console.log('\nPoland: canonical baseline + Lista ZUM overlay + ZUM-native extension');
-    const derived = pl.filter(p => p.performance_source === 'BAFA_REFERENCE');
+    const derived = pl.filter(p => p.performance_source === 'EU_MEASURED_REFERENCE');
     const native = pl.filter(p => p.performance_source === 'ZUM_REGISTRY' || p.performance_source === 'ZUM_EPREL');
     is('[PL] derived catalogue is the canonical catalogue', derived.length, de.length);
-    is('[PL] every derived product is a canonical product',
-      derived.every(p => canonicalIds.has(String(p.bafa_id))), true);
+    is('[PL] every derived product is a canonical product (neutral id, same value)',
+      derived.every(p => canonicalIds.has(String(p.european_reference_id))), true);
+    is('[PL] the public schema carries NO German-market field names',
+      pl.every(p => Object.keys(p).every(k => !/bafa/i.test(k))), true);
+    is('[PL] no German-market provenance labels in public values',
+      pl.every(p => !/BAFA/i.test(String(p.performance_source ?? '')) && !/^BAFA$/i.test(String(p.primary_source ?? ''))), true);
+    is('[PL] no real product occupies the honeytoken block',
+      pl.every(p => !/^1699\d{4}$/.test(String(p.source_id ?? ''))), true);
     is('[PL] catalogue = canonical + extension (nothing dropped, nothing duplicated)',
       pl.length, de.length + native.length);
     is('[PL] extension records are ZUM-native, PL-prefixed and never leak elsewhere',
@@ -150,9 +173,9 @@ if (!existsSync(GB)) {
     is('[PL] a confirmed listing always carries the ZUM id — and only then',
       pl.every(p => (p.zum_match_status === 'confirmed') === Boolean(p.zum_id)), true);
     is('[PL] the overlay never overwrote a technical field',
-      derived.every(p => tech.every(f => JSON.stringify(p[f] ?? null) === JSON.stringify(byId.get(String(p.bafa_id))?.[f] ?? null))), true);
+      derived.every(p => tech.every(f => JSON.stringify(p[f] ?? null) === JSON.stringify(byId.get(String(p.european_reference_id))?.[f] ?? null))), true);
     is('[PL] the overlay never changed a segment',
-      derived.every(p => segmentOf(p) === segmentOf(byId.get(String(p.bafa_id)))), true);
+      derived.every(p => segmentOf(p) === segmentOf(byId.get(String(p.european_reference_id)))), true);
     is('[PL] no German registry fields',
       pl.every(p => !('bafa_listing_status' in p) && !('bafa_foerderung_von' in p)), true);
     is('[PL] all products (incl. extension) pass Data Sheet eligibility', pl.every(isDataSheetEligible), true);

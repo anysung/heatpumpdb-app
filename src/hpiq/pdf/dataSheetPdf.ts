@@ -20,7 +20,7 @@
  * sheets get mojibake on the fallback path.
  */
 import { jsPDF } from 'jspdf';
-import { HpVM } from '../model';
+import { HpVM, crossRefId } from '../model';
 import { HpStrings } from '../i18n';
 import { DsSectionKey } from '../appState';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
@@ -299,8 +299,8 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
       [t.ds.f.cop2, v.cop2, n('cop2')],
       [t.ds.f.copm7, v.copm7, n('copm7')],
     ]);
-    if (v.raw.performance_source === 'BAFA_REFERENCE') {
-      paragraph(t.ds.perfCrossRefNote(v.raw.bafa_reference_id ?? '—'));
+    if (crossRefId(v.raw) != null) {
+      paragraph(t.ds.perfCrossRefNote(crossRefId(v.raw) ?? '—'));
     }
   }
 

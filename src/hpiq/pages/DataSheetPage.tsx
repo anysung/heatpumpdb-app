@@ -1,7 +1,7 @@
 /** Data sheet studio — two modes, model picker, section toggles, live preview. */
 import React, { useMemo, useState } from 'react';
 import { HpApp, DsSectionKey } from '../appState';
-import { longDate } from '../model';
+import { longDate, crossRefId } from '../model';
 import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
@@ -189,9 +189,9 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                     <FieldCell label={t.ds.f.cop2} value={dsp.cop2} note={n('cop2')} />
                     <FieldCell label={t.ds.f.copm7} value={dsp.copm7} note={n('copm7')} />
                   </SectionGrid>
-                  {dsp.raw.performance_source === 'BAFA_REFERENCE' && (
+                  {crossRefId(dsp.raw) != null && (
                     <span style={{ fontSize: 10.5, color: '#7a7a7a', lineHeight: 1.55, paddingTop: 10 }}>
-                      {t.ds.perfCrossRefNote(dsp.raw.bafa_reference_id ?? '—')}
+                      {t.ds.perfCrossRefNote(crossRefId(dsp.raw) ?? '—')}
                     </span>
                   )}
                 </div>
