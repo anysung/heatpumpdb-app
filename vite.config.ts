@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
-import { writeFileSync, readFileSync, existsSync } from 'node:fs'
+import { writeFileSync, readFileSync, existsSync, copyFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 /**
@@ -150,6 +150,11 @@ export default defineConfig(({ mode }) => {
               + `    <meta name="theme-color" content="${m.themeColor}" />\n`
               + `    <meta name="mobile-web-app-capable" content="yes" />\n`
               + `    <meta name="apple-mobile-web-app-title" content="HeatPump DB" />\n`
+              // Favicons: root /favicon.ico + 48px PNG (Google Search prefers
+              // ≥48×48) — per-market copies written in closeBundle so the SPA
+              // rewrite never answers these URLs with index.html.
+              + `    <link rel="icon" href="/favicon.ico" sizes="any" />\n`
+              + `    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />\n`
               + `    <link rel="icon" type="image/png" sizes="32x32" href="/icons/${m.iconCode}-32.png" />\n`
               + `    <link rel="apple-touch-icon" sizes="180x180" href="/icons/${m.iconCode}-180.png" />\n`
               + jsonLd(m),
@@ -161,6 +166,11 @@ export default defineConfig(({ mode }) => {
             writeFileSync(resolve(outDir, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
             return;
           }
+          // Root favicons — per-market copies of the official market icon
+          // (public/icons/<cc>.ico|<cc>-48.png). Real files at the well-known
+          // URLs, otherwise the `**` rewrite serves index.html to crawlers.
+          copyFileSync(resolve(outDir, `icons/${m.iconCode}.ico`), resolve(outDir, 'favicon.ico'));
+          copyFileSync(resolve(outDir, `icons/${m.iconCode}-48.png`), resolve(outDir, 'favicon-48x48.png'));
           // Per-market sitemap + robots (the shared public/ dir cannot carry
           // market-specific Sitemap URLs).
           const today = new Date().toISOString().slice(0, 10);
