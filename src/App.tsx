@@ -372,7 +372,7 @@ const App: React.FC = () => {
             {/* Public, read-only plans & pricing (no login required to view) */}
             <div className="mt-4 text-center">
               <a href={PRICING_ROUTE} className="text-emerald-300/90 text-sm font-medium hover:text-emerald-200 transition-colors">
-                {{ en: 'View plans & pricing', de: 'Tarife & Preise ansehen', fr: 'Voir les offres et tarifs' }[language] ?? 'View plans & pricing'} ›
+                {{ en: 'View plans & pricing', de: 'Tarife & Preise ansehen', fr: 'Voir les offres et tarifs', pl: 'Zobacz plany i cennik' }[language] ?? 'View plans & pricing'} ›
               </a>
             </div>
             <div className="mt-6 text-center">
