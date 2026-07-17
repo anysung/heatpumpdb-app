@@ -36,6 +36,10 @@ export const LOCAL_LISTING_SOURCE = ACTIVE_COUNTRY.localListingOverlay.source;
 /** Offer a "listed only" search filter here? */
 export const LOCAL_LISTING_FILTER = ACTIVE_COUNTRY.localListingOverlay.filterEnabled;
 
+/** Should the offered filter start switched ON? (Germany only — see profile.) */
+export const LOCAL_LISTING_FILTER_DEFAULT_ON =
+  LOCAL_LISTING_FILTER && (ACTIVE_COUNTRY.localListingOverlay.filterDefaultOn ?? false);
+
 /** The listing status to show, or null when this market has no national list. */
 export function localListingStatus(p: HeatPump): LocalListingStatus | null {
   if (!LOCAL_LISTING_SOURCE) return null;             // France — nothing may be claimed

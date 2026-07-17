@@ -105,7 +105,7 @@ if (await note.count()) {
   // DE edition opens in English with German behind the DE chip.
   if (COUNTRY === 'DE') await setLang('DE');
   const nt = await text(note.first());
-  const lang = COUNTRY === 'DE' ? /Nennleistung/i : COUNTRY === 'FR' ? /puissance nominale/i : COUNTRY === 'PL' ? /moc znamionowa/i : /rated capacity/i;
+  const lang = COUNTRY === 'DE' ? /Nennleistung/i : COUNTRY === 'FR' ? /puissance nominale/i : COUNTRY === 'PL' ? /moc[a-zy]* znamionow/i : /rated capacity/i;
   check(`[disclosure] the note is in the ${COUNTRY} market language`, lang.test(nt), nt);
   check('[disclosure] the note still names the threshold in that language', /23 kW/.test(nt), nt);
   if (COUNTRY === 'DE') await setLang('EN');
@@ -154,20 +154,28 @@ if (COUNTRY === 'GB') {
   // Poland has its own national list (Lista ZUM) — PEL rules apply: only a
   // confirmed match is "listed", a failed match is never absence.
   check('[PL] ZUM status is shown on the list', /\bZUM\b/i.test(comBody));
-  check('[PL] no product is claimed absent from ZUM ("nie ma na liście" is banned)',
-    !/nie (ma|znajduje się) na liście|not on (the )?ZUM/i.test(comBody), around(comBody, 'na liście'));
+  // The honest verification wording legitimately contains "…nie ma na liście"
+  // inside a negation ("this is NOT proof the product is absent") — ban only
+  // STATUS-style absence claims.
+  check('[PL] no product is claimed absent from ZUM ("Brak na liście" as a status is banned)',
+    !/Brak na liście ZUM|Nieobecny na liście|Usunięto z listy ZUM|not on (the )?ZUM/i.test(comBody), around(comBody, 'na liście'));
   check('[PL] no foreign listing leaks onto the Polish edition', !/Ofgem|\bPEL\b|\bMCS\b/i.test(comBody));
   check('[PL] no grant eligibility is claimed',
     !/gwarantuje dotacj|kwalifikuje się do dotacji|eligible for (a )?grant/i.test(comBody));
-  if ((await page.locator('[data-testid="listed-only-toggle"]').count()) === 1) {
-    const withFilter = await total();
+  check('[PL] the ZUM "listed only" filter IS offered',
+    (await page.locator('[data-testid="listed-only-toggle"]').count()) === 1);
+  {
+    // The PL filter starts OFF (ZUM covers 3–55 kW; a default-on filter would
+    // near-empty the commercial tab) — the assertion is order-agnostic.
+    const a = await total();
     await page.locator('[data-testid="listed-only-toggle"]').first().click();
     await page.waitForTimeout(300);
-    const withoutFilter = await total();
+    const b = await total();
     check('[PL] the ZUM filter narrows the catalogue without emptying it',
-      withFilter > 0 && withFilter < withoutFilter, `listed ${withFilter} of ${withoutFilter}`);
+      Math.min(a, b) > 0 && Math.min(a, b) < Math.max(a, b), `totals ${a} ↔ ${b}`);
     await page.locator('[data-testid="listed-only-toggle"]').first().click();
     await page.waitForTimeout(300);
+    check('[PL] toggling back restores the unfiltered list', (await total()) === a);
   }
 } else {
   check('[DE] the BAFA listing filter IS offered (it meaningfully divides the catalogue)',
@@ -353,12 +361,20 @@ const m = await ctx.newPage();
 await m.setViewportSize({ width: 390, height: 844 });
 await m.goto(BASE, { waitUntil: 'domcontentloaded' });
 await m.waitForTimeout(6000);
-await m.getByText(/^Products$|^Produkte$|^Produits$/).first().click();
+await m.getByText(/^Products$|^Produkte$|^Produits$|^Produkty$/).first().click();
 await m.waitForTimeout(3000);
 const mBody = await m.locator('body').innerText();
 check('[mobile] the catalogue renders', (await m.locator('[data-row-id]').count()) > 0 || /kW/.test(mBody));
 check('[mobile] the 23 kW rule is disclosed', (await m.locator('[data-testid="segment-note"]').count()) >= 1);
-if (COUNTRY !== 'DE') {
+if (COUNTRY === 'PL') {
+  // Poland offers its OWN list's filter (Lista ZUM) on mobile too — it lives
+  // in the bottom-sheet filter panel, so open that first.
+  await m.getByText(/^Filtry/).first().click();
+  await m.waitForTimeout(600);
+  check('[mobile PL] the ZUM listing filter is offered (in the filter sheet)',
+    (await m.locator('[data-testid="listed-only-toggle"]').count()) === 1);
+  check('[mobile PL] the word "BAFA" does not appear', !/BAFA/i.test(mBody), around(mBody, 'BAFA'));
+} else if (COUNTRY !== 'DE') {
   check(`[mobile ${COUNTRY}] no listing filter is offered`,
     (await m.locator('[data-testid="listed-only-toggle"]').count()) === 0);
   check(`[mobile ${COUNTRY}] the word "BAFA" does not appear`, !/BAFA/i.test(mBody), around(mBody, 'BAFA'));

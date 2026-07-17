@@ -154,7 +154,21 @@ const ZUM_TYPE = {
   PP: 'Powietrze / Powietrze',
 };
 
-const extensionStats = { candidates: 0, alreadyConfirmed: 0, eprelInCanonical: 0, ineligible: 0, added: 0, byReason: {} };
+// ZUM entries in the matcher's review queue have a PLAUSIBLE canonical
+// counterpart (ambiguous identity, numeric conflict, one-to-many EPREL…).
+// Publishing them as new PL records would put a near-duplicate next to their
+// canonical sibling — they stay out of the extension until a human resolves
+// the review row (or an official mapping/exception lands).
+const reviewFile = overlaySnapshot
+  ? resolve(ROOT, 'data_sources/lista_zum/matching', overlaySnapshot, 'canonical-zum-review.json')
+  : null;
+const reviewIds = new Set(
+  (reviewFile && existsSync(reviewFile)
+    ? JSON.parse(readFileSync(reviewFile, 'utf8')).review ?? []
+    : []).map(r => r.zum_id).filter(Boolean),
+);
+
+const extensionStats = { candidates: 0, alreadyConfirmed: 0, eprelInCanonical: 0, inReviewQueue: 0, ineligible: 0, added: 0, byReason: {} };
 const extension = [];
 
 for (const z of zumParsed?.entries ?? []) {
@@ -163,6 +177,7 @@ for (const z of zumParsed?.entries ?? []) {
   // this device IS (a variant of) a canonical product — an ambiguity for the
   // review queue, never a duplicate product record.
   if (z.eprel_number && canonicalEprels.has(z.eprel_number)) { extensionStats.eprelInCanonical++; continue; }
+  if (reviewIds.has(z.zum_id)) { extensionStats.inReviewQueue++; continue; }
   extensionStats.candidates++;
 
   const candidate = Object.fromEntries(TEMPLATE_KEYS.map(k => [k, null]));
@@ -218,6 +233,18 @@ for (const z of zumParsed?.entries ?? []) {
   extension.push(candidate);
   extensionStats.added++;
 }
+
+// Extension-internal dedupe: distinct ZUM ids can carry the same physical
+// product (re-registrations, category moves). One model, one record.
+const seenModelKey = new Set();
+const dedupedExtension = extension.filter(x => {
+  const key = `${x.manufacturer_normalized}|${String(x.model ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '')}`;
+  if (seenModelKey.has(key)) { extensionStats.added--; extensionStats.duplicateModel = (extensionStats.duplicateModel ?? 0) + 1; return false; }
+  seenModelKey.add(key);
+  return true;
+});
+extension.length = 0;
+extension.push(...dedupedExtension);
 
 for (const x of extension) {
   x.market_segment = segmentOf(x) === 'commercial' ? 'commercial_project' : 'residential_core';
@@ -350,9 +377,9 @@ console.log(`  PL-market extension:    ${extension.length} (ZUM-native, spec-com
 console.log(`  ZUM listed (confirmed): ${confirmedTotal}`);
 console.log(`  review_required:        ${allItems.filter(i => i.zum_match_status === 'review_required').length}`);
 console.log(`  EPREL linked:           ${allItems.filter(i => i.eprel_registration_number != null).length}`);
-console.log(`Extension funnel:         candidates ${extensionStats.candidates + extensionStats.alreadyConfirmed + extensionStats.eprelInCanonical}`
+console.log(`Extension funnel:         zum entries ${extensionStats.candidates + extensionStats.alreadyConfirmed + extensionStats.eprelInCanonical + extensionStats.inReviewQueue}`
   + ` → matched ${extensionStats.alreadyConfirmed} | eprel-in-canonical ${extensionStats.eprelInCanonical}`
-  + ` | ineligible ${extensionStats.ineligible} | added ${extensionStats.added}`);
+  + ` | review-queue ${extensionStats.inReviewQueue} | ineligible ${extensionStats.ineligible} | added ${extensionStats.added}`);
 if (extensionStats.ineligible) console.log('  ineligible reasons:', JSON.stringify(extensionStats.byReason));
 console.log(`Field count:              ${fieldCount} ✓   No price keys ✓   PL provenance ✓   listing integrity ✓`);
 console.log('──────────────────────────────────────────────────────────');

@@ -124,6 +124,14 @@ export interface CountryProfile {
   localListingOverlay: {
     source: 'BAFA' | 'PEL' | 'ZUM' | null;
     filterEnabled: boolean;
+    /**
+     * Start with the "listed only" filter ON? Only sensible where the listed
+     * subset dominates BOTH segments (Germany). Poland offers the filter but
+     * starts unfiltered: ZUM covers 3–55 kW, so a default-on filter would
+     * near-empty the commercial tab — the exact trap that once blanked UK
+     * Commercial. Ignored when filterEnabled is false.
+     */
+    filterDefaultOn?: boolean;
   };
 }
 
@@ -154,7 +162,7 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     // fact, not a failed match — so Germany is the one market that may say a
     // product is NOT listed. The listing also meaningfully divides the catalogue,
     // so the filter earns its place here.
-    localListingOverlay: { source: 'BAFA', filterEnabled: true },
+    localListingOverlay: { source: 'BAFA', filterEnabled: true, filterDefaultOn: true },
   },
 
   FR: {
@@ -250,7 +258,7 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     // PEL rule: a failed match is a fact about our matching, not about the list).
     // The filter earns its place: ZUM listing meaningfully divides the catalogue
     // and is the question Polish installers actually ask.
-    localListingOverlay: { source: 'ZUM', filterEnabled: true },
+    localListingOverlay: { source: 'ZUM', filterEnabled: true, filterDefaultOn: false },
   },
 };
 

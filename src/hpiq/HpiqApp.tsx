@@ -11,7 +11,7 @@ import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
 import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
-import { LOCAL_LISTING_FILTER } from './listing';
+import { LOCAL_LISTING_FILTER, LOCAL_LISTING_FILTER_DEFAULT_ON } from './listing';
 import { splitBySegment } from '../config/segmentation';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
@@ -66,7 +66,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     identity: true, performance: true, env: true, bafa: true,
   });
   const [segment, setSegment] = useState<HpSegment>('residential');
-  const [bafaOnly, setBafaOnly] = useState(true);
+  const [bafaOnly, setBafaOnly] = useState(LOCAL_LISTING_FILTER_DEFAULT_ON);
   /**
    * The local-listing filter is only ever applied where this market actually
    * offers it (config: localListingOverlay.filterEnabled). Neutralising it in

@@ -118,9 +118,23 @@ const typeFamily = t =>
         : 'other';
 const ZUM_FAMILY = { PW: 'air_water', PG: 'ground', PP: 'air_air', PU: 'dhw' };
 
+/**
+ * Full model identity: the ZUM model string appears verbatim (compacted) inside
+ * the canonical model string or vice versa. Registries decorate the same
+ * hardware differently ("Aquarea [WH-ADC0912K6E5 / WH-UXZ12KE5]" vs
+ * "WH-ADC0912K6E5 + WH-UXZ12KE5") — containment of a long-enough compact
+ * string IS the identity, not a similarity heuristic.
+ */
+function exactIdentity(zModel, cModel) {
+  const a = compact(zModel ?? ''), b = compact(cModel ?? '');
+  if (a.length < 12 || b.length < 12) return a === b && a.length > 0;
+  return a === b || a.includes(b) || b.includes(a);
+}
+
 /** Contradiction check; returns list of conflicts (empty = sane). */
 function conflicts(z, c) {
   const out = [];
+  const identity = exactIdentity(z.model, c.model);
   const zf = ZUM_FAMILY[z.category];
   if (zf && zf !== 'dhw') {
     const cf = typeFamily(c.type);
@@ -129,7 +143,12 @@ function conflicts(z, c) {
   const cKw = c.power_55C_kw ?? c.power_design_55C_kw ?? ratedCapacityKw(c);
   if (z.rated_kw_55 != null && cKw != null) {
     const rel = Math.abs(z.rated_kw_55 - cKw) / Math.max(z.rated_kw_55, cKw);
-    if (rel > 0.15) out.push(`capacity:${z.rated_kw_55}vs${cKw}`);
+    // The registries rate at different conditions (ZUM: moderate-climate 55 °C
+    // design output; the canonical value can be a full-load rating) — when the
+    // full model identity already matches verbatim, a capacity delta is a
+    // measurement-condition artifact up to a much wider band. Without exact
+    // identity the tight band stays: capacity is then doing identity work.
+    if (rel > (identity ? 0.40 : 0.15)) out.push(`capacity:${z.rated_kw_55}vs${cKw}`);
   }
   if (z.class_55 && c.efficiency_55C_percent != null) {
     const gap = classGap(z.class_55, bandOf(c.efficiency_55C_percent));
@@ -153,9 +172,17 @@ for (const c of canonical) {
     if (!byCompact.has(cm)) byCompact.set(cm, []);
     byCompact.get(cm).push(c);
   }
-  for (const k of identityKeys(c.model ?? '')) {
-    if (!byKey.has(k)) byKey.set(k, []);
-    byKey.get(k).push(c);
+  // Identity keys come from the model string AND the component identity fields:
+  // several manufacturers (Daikin above all) list marketing names in `model`
+  // while the technical unit codes live in idu/odu fields — the same codes the
+  // Polish registry and EPREL publish. Strong-code equality on a component is
+  // still exact identity, never similarity.
+  for (const src of [c.model, c.outdoor_unit_model, c.idu_model, c.outdoor_side_display_model]) {
+    if (!src) continue;
+    for (const k of identityKeys(src)) {
+      if (!byKey.has(k)) byKey.set(k, []);
+      if (!byKey.get(k).includes(c)) byKey.get(k).push(c);
+    }
   }
 }
 const mfrOf = c => c.manufacturer_normalized ?? c.manufacturer ?? '';
@@ -228,13 +255,17 @@ function classify(z) {
     if (c) return { state: 'confirmed', method: 'manufacturer_official', target: c, confidence: 'high' };
   }
   // 1) eprel_exact
+  let eprelConflict = null;
   if (z.eprel_number && byEprel.has(z.eprel_number)) {
     const cands = byEprel.get(z.eprel_number);
     if (cands.length === 1) {
       const conf = conflicts(z, cands[0]);
-      return conf.length
-        ? { state: 'conflict', method: 'eprel_exact', target: cands[0], conflicts: conf }
-        : { state: 'confirmed', method: 'eprel_exact', target: cands[0], confidence: 'high' };
+      if (!conf.length) return { state: 'confirmed', method: 'eprel_exact', target: cands[0], confidence: 'high' };
+      // The canonical EPREL link is itself a matcher product (link-only, can sit
+      // on the wrong variant of a family, e.g. air-collector vs ground loop).
+      // Hold the conflict and let the exact-model path try the RIGHT variant;
+      // the conflict is only reported if nothing cleaner confirms.
+      eprelConflict = { state: 'conflict', method: 'eprel_exact', target: cands[0], conflicts: conf };
     }
     const exc = approvedOneToMany.get(z.zum_id);
     if (exc) {
@@ -243,7 +274,7 @@ function classify(z) {
     }
     // Same capacity resolution as the model path: one EPREL number, several
     // canonical configurations — the registry's rated 55 °C value names the one.
-    if (z.rated_kw_55 != null) {
+    if (cands.length > 1 && z.rated_kw_55 != null) {
       const within = cands.filter(c => {
         const kw = c.power_55C_kw ?? c.power_design_55C_kw ?? ratedCapacityKw(c);
         return kw != null && Math.abs(kw - z.rated_kw_55) / Math.max(kw, z.rated_kw_55) <= 0.10;
@@ -252,7 +283,9 @@ function classify(z) {
         return { state: 'confirmed', method: 'eprel_capacity_resolved', target: within[0], confidence: 'high' };
       }
     }
-    return { state: 'review', method: 'eprel_one_to_many', targets: cands };
+    if (cands.length > 1) {
+      eprelConflict = { state: 'review', method: 'eprel_one_to_many', targets: cands };
+    }
   }
   // 2) eprel_bridge
   if (z.eprel_number && EPREL.has(z.eprel_number)) {
@@ -264,14 +297,17 @@ function classify(z) {
     }
     if (viaBridge && viaBridge.state !== 'confirmed') { /* fall through to model match */ }
   }
-  // 3) exact model on the registry's model string
+  // 3) exact model on the registry's model string — a clean confirmation here
+  //    outranks a held EPREL conflict (the EPREL link chose the wrong variant).
   const viaModel = resolveModel(z, z.model ?? '', 'exact_model');
-  if (viaModel) return viaModel;
+  if (viaModel?.state === 'confirmed') return viaModel;
   // 4) registry-published trade-name aliases
   for (const alias of aliasModels(z)) {
     const viaAlias = resolveModel(z, alias, 'alias_model');
     if (viaAlias?.state === 'confirmed') return { ...viaAlias, method: 'alias_model' };
   }
+  if (eprelConflict) return eprelConflict;
+  if (viaModel) return viaModel;
   return { state: 'unmatched' };
 }
 
