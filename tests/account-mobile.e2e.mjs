@@ -35,6 +35,9 @@ const LABELS = {
   FR: { language: 'Langue de l’application.', support: 'Support.', ad: 'Publicité & partenariats.',
     adBody: 'Demandes publicitaires et opportunités commerciales.', terms: 'Conditions & politiques.',
     contact: 'Contacter le support & voir les réponses ›', account: 'Compte', mine: 'Mes demandes' },
+  PL: { language: 'Język aplikacji.', support: 'Pomoc.', ad: 'Reklama i partnerstwa.',
+    adBody: 'Zapytania reklamowe i możliwości współpracy biznesowej.', terms: 'Regulaminy i polityki.',
+    contact: 'Skontaktuj się z pomocą i zobacz odpowiedzi ›', account: 'Konto', mine: 'Moje zgłoszenia' },
 }[COUNTRY];
 
 const browser = await chromium.launch();

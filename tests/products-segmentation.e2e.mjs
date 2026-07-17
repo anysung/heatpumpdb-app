@@ -38,14 +38,14 @@ console.log(`\nProducts — ${COUNTRY} edition\n`);
 await page.goto(BASE, { waitUntil: 'domcontentloaded' });
 await page.waitForTimeout(5000);          // datasets load from public/data
 
-await page.getByText(/^Products$|^Produkte$|^Produits$/).first().click();
+await page.getByText(/^Products$|^Produkte$|^Produits$|^Produkty$/).first().click();
 await page.waitForTimeout(3500);
 
 /** The result count shown in the header ("N models"). */
 const total = async () => {
   const txt = await page.locator('body').innerText();
-  const m = txt.match(/([\d.,]+)\s*(models|Modelle|modèles|of|von|sur)/i);
-  return m ? parseInt(m[1].replace(/[.,]/g, ''), 10) : -1;
+  const m = txt.match(/([\d]{1,3}(?:[.,\s\u00A0\u202F]\d{3})*|\d+)\s*(models|Modelle|modèles|of|von|sur|z)\b/i);
+  return m ? parseInt(m[1].replace(/[.,\s\u00A0\u202F]/g, ''), 10) : -1;
 };
 const rows = () => page.locator('[data-row-id]').count();
 const bodyText = () => page.locator('body').innerText();
@@ -75,12 +75,12 @@ check('[residential] products load', (await rows()) > 0);
 
 // Sorting capacity high→low brings the single largest residential product to the
 // top: if THAT one is ≤ 23 kW, then no residential product is above the threshold.
-const resMaxKw = await sortAndReadTopKw(/high to low|hoch|décroissante|haut/i);
+const resMaxKw = await sortAndReadTopKw(/high to low|hoch|décroissante|haut|od najwyższej/i);
 check(`[segment] no residential product exceeds ${THRESHOLD} kW`,
   Number.isFinite(resMaxKw) && resMaxKw <= THRESHOLD, `largest residential = ${resMaxKw} kW`);
 
 /* ── Commercial ───────────────────────────────────────────────────────── */
-await page.getByText(/^Commercial$|^Gewerbe$|^Tertiaire$/).first().click();
+await page.getByText(/^Commercial$|^Gewerbe$|^Tertiaire$|^Komercyjne$/).first().click();
 await page.waitForTimeout(2500);
 const comRows = await rows();
 const comTotal = await total();
@@ -88,7 +88,7 @@ check('[commercial] catalogue loads (non-zero)', comRows > 0, `rows=${comRows}`)
 check('[commercial] total is plausible (>100)', comTotal > 100, `total=${comTotal}`);
 
 // Mirror image: the smallest commercial product must still be above the threshold.
-const comMinKw = await sortAndReadTopKw(/low to high|niedrig|croissante|bas/i);
+const comMinKw = await sortAndReadTopKw(/low to high|niedrig|croissante|bas|od najniższej/i);
 check(`[segment] every commercial product is above ${THRESHOLD} kW`,
   Number.isFinite(comMinKw) && comMinKw > THRESHOLD, `smallest commercial = ${comMinKw} kW`);
 

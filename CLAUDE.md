@@ -24,7 +24,7 @@
 - Entry: `src/index.tsx` → `src/App.tsx`. Views: auth surface (`src/components/auth/AuthShell.tsx`),
   main app (`src/hpiq/HpiqApp.tsx`), admin (`src/components/AdminDashboard.tsx`).
 - Two parallel i18n systems, both live: `src/translations.ts` (auth + admin) and
-  `src/hpiq/i18n.ts` (main app, EN/DE dictionaries + a GB market dictionary). Add
+  `src/hpiq/i18n.ts` (main app: EN/DE + GB + FR_FR/FR_EN + PL_PL/PL_EN market dictionaries). Add
   strings to the matching one. The GB edition is English-only and always serves the
   GB dictionary — the DE dictionary is Germany-market *content*, not a translation.
 - Country-specific UI semantics in hpiq go through `src/hpiq/market.ts` (derived from
@@ -70,7 +70,7 @@
 ## 2. Data Pipeline (BAFA → app)
 
 **Regular updates run through `node scripts/update-all.mjs`** (dependency-graph
-orchestrator: DE first, then FR/GB derive from the built DE datasets; optional
+orchestrator: DE first, then FR/GB/PL derive from the built DE datasets; optional
 matcher overlays; freshness + shrink-guard verification; `--deploy` ships all
 sites in one atomic call). Never hand-run builders for production updates —
 see `docs/UPDATE_PIPELINE.md` for the graph, schedule (monthly, 2nd, 03:00
@@ -110,6 +110,20 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   via `data_sources/manufacturer_cross_reference/canonical-to-pel.json` (no code change).
   The old PEL-first matchers live in `scripts/ofgem/internal/` — audit only, never wire
   them back into a builder.
+- **PL pipeline** (`scripts/pl/`) — canonical baseline + **Lista ZUM listing overlay**
+  (PEL rules verbatim): `fetch-zum.mjs` (public grid + detail pages, facts only, no
+  attachments, ≥1.5s politeness) → `parse-zum.mjs` → `match-canonical-to-zum.mjs` →
+  `build-app-products-pl.mjs`. Confirming methods only (manufacturer_official,
+  eprel_exact/bridge, exact model/code, capacity-resolved identity, registry-published
+  alias); fuzzy/family/ODU-only never confirm. States: `confirmed` → "Na liście ZUM" +
+  ZUM id; everything else → "Weryfikacja ZUM wymagana" — **never "not on ZUM"**.
+  Confirmed mappings persist in committed `data_sources/lista_zum/zum-match-history.json`;
+  official mappings enter via `data_sources/manufacturer_cross_reference/canonical-to-zum.json`.
+  PL additionally publishes **spec-complete PL-market extension records** (ZUM entries
+  with no canonical counterpart, mostly DHW): `performance_source='ZUM_REGISTRY'`,
+  `source_id 'PL-<zum id>'`, admitted ONLY through the shared Data-Sheet eligibility
+  rule — never a weaker standard, and they never travel to other markets. ZUM data is
+  used facts-only (no IOŚ-PIB logo/branding; source attribution + snapshot dates shown).
 - **FR pipeline** (`scripts/fr/`): `build-app-products-fr.mjs` derives the France
   catalogue from the **built DE datasets** (same hardware sold in both markets — run the
   DE builder first) → `public/data/products-fr*.json`. German type strings are localised
@@ -120,7 +134,7 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   (FR_FR/FR_EN dictionaries in `src/hpiq/i18n.ts`).
 - Cloud Function (`google_cloud_function/index.js`) is deployed separately via its own
   `deploy.sh`; it owns the news pipeline. News/policies are market-parameterized
-  (`MARKETS`: DE + FR + GB → `countries/<code>/news|policies`); a manual run can be
+  (`MARKETS`: DE + FR + GB + PL → `countries/<code>/news|policies`); a manual run can be
   narrowed with `?newsOnly=true&countries=GB`. GB articles are English-only (no `_de`
   fields); FR articles carry `_fr` fields.
   News is **append-only** (press-agency format, byline "HeatPump DataBase (Europe)",
@@ -180,6 +194,7 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   `firebase deploy --only hosting` (it deploys every target).
   `npm run deploy:de` → site `gen-lang-client-0324244302` (heatpumpdb.de);
   `npm run deploy:uk` → site `heatpumpdb-uk`; `npm run deploy:fr` → `heatpumpdb-fr`;
+  `npm run deploy:pl` → `heatpumpdb-pl` (www.heatpumpdb.pl);
   `npm run deploy:admin` → `heatpumpdb-hub` (unified ops console, noindex,
   VITE_APP_MODE=admin, admin-role gate — heatpumpdb.click attachable later).
   Targets are mapped in `.firebaserc`; per-target config in `firebase.json`.

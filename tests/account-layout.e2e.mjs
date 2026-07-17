@@ -35,6 +35,9 @@ const TITLES = {
   FR: { company: 'Profil de l’entreprise.', personal: 'Profil personnel.', support: 'Support.',
     terms: 'Conditions & politiques.', language: 'Langue de l’application.', email: 'E-mail & mot de passe.',
     ad: 'Publicité & partenariats.', del: 'Supprimer le compte.', adBody: 'Demandes publicitaires et opportunités commerciales.' },
+  PL: { company: 'Profil firmy.', personal: 'Profil osobisty.', support: 'Pomoc.',
+    terms: 'Regulaminy i polityki.', language: 'Język aplikacji.', email: 'E-mail i hasło.',
+    ad: 'Reklama i partnerstwa.', del: 'Usuń konto.', adBody: 'Zapytania reklamowe i możliwości współpracy biznesowej.' },
 }[COUNTRY];
 
 const browser = await chromium.launch();
@@ -112,14 +115,14 @@ async function run(role) {
       while (card && !(card.style && card.style.borderRadius === '18px')) card = card.parentElement;
       return card ? !card.innerText.includes('support@heatpumpdb.eu') : false;
     }));
-  check('[support] the "New inquiry" control is still present', (await page.locator('text=/New inquiry|Neue Anfrage|Nouvelle demande/').count()) > 0);
+  check('[support] the "New inquiry" control is still present', (await page.locator('text=/New inquiry|Neue Anfrage|Nouvelle demande|Nowe zgłoszenie/').count()) > 0);
 
   // ── Team card position (role-based) ──
   if (role === 'owner' || role === 'member') {
     // Team titles follow the same default-language rule (DE/GB → English, FR → French).
     const teamTitle = role === 'owner'
-      ? (COUNTRY === 'FR' ? 'Gestion de l’équipe.' : 'Team management.')
-      : (COUNTRY === 'FR' ? 'Votre équipe.' : 'Your team.');
+      ? (COUNTRY === 'FR' ? 'Gestion de l’équipe.' : COUNTRY === 'PL' ? 'Zarządzanie zespołem.' : 'Team management.')
+      : (COUNTRY === 'FR' ? 'Votre équipe.' : COUNTRY === 'PL' ? 'Twój zespół.' : 'Your team.');
     const team = await cardBox(page, teamTitle);
     check(`[${role}] the team card renders in the right column, above App language`,
       !!team && team.cx > leftCx - 1 && team.y < boxes.language.y,

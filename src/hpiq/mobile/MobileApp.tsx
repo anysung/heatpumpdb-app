@@ -554,7 +554,7 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
         <div style={card}>
           <span style={sectionLabel}>{t.account.language}</span>
           <div style={{ display: 'flex', border: '1px solid #d2d2d7', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
-            {(([['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
+            {(([['pl', 'Polski'], ['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
               .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
               <span key={id} onClick={() => app.setLang(id)} style={{ padding: '8px 16px', cursor: 'pointer', ...(app.lang === id ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}>
                 {label}

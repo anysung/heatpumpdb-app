@@ -22,7 +22,7 @@ const APPCHECK = readFileSync(`${SECRETS}/appcheck-debug-token.txt`, 'utf8').tri
 const USER = 'e2e-verify@heatpumpdb.de';
 
 const LANG = { DE: 'en', GB: 'en', FR: 'fr' }[COUNTRY];
-const SIGNUP_BTN = /Sign Up|Registrieren|Créer un compte/i;
+const SIGNUP_BTN = /Sign Up|Registrieren|Créer un compte|Zarejestruj się/i;
 const LOGIN_BTN = /Log In|Anmelden|Se connecter/i;
 
 let passed = 0, failed = 0;

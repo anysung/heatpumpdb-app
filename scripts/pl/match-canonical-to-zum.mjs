@@ -200,7 +200,23 @@ function resolveModel(z, modelString, method) {
       ? { state: 'conflict', method: `${method}_code`, target: c, conflicts: conf }
       : { state: 'confirmed', method: method === 'exact_model' ? 'exact_model_code' : method, target: c, confidence: 'high' };
   }
-  if (mfrHits.length > 1) return { state: 'review', method: `${method}_ambiguous`, targets: mfrHits };
+  if (mfrHits.length > 1) {
+    // Capacity resolution: the registry publishes the exact rated 55 °C output of
+    // the LISTED configuration. If exactly one identity-key candidate carries that
+    // capacity (±10%) and nothing contradicts, that candidate IS the listed unit.
+    // (Identity keys narrowed the set to one family; the registry's own rated
+    // value picks the subtype — never fuzzy similarity.)
+    if (z.rated_kw_55 != null) {
+      const within = mfrHits.filter(c => {
+        const kw = c.power_55C_kw ?? c.power_design_55C_kw ?? ratedCapacityKw(c);
+        return kw != null && Math.abs(kw - z.rated_kw_55) / Math.max(kw, z.rated_kw_55) <= 0.10;
+      });
+      if (within.length === 1 && !conflicts(z, within[0]).length) {
+        return { state: 'confirmed', method: `${method}_capacity_resolved`, target: within[0], confidence: 'high' };
+      }
+    }
+    return { state: 'review', method: `${method}_ambiguous`, targets: mfrHits };
+  }
   return null;
 }
 
@@ -224,6 +240,17 @@ function classify(z) {
     if (exc) {
       const ok = cands.filter(c => exc.canonical_ids.includes(String(c.bafa_id)));
       if (ok.length === 1) return { state: 'confirmed', method: 'approved_one_to_many', target: ok[0], confidence: 'high' };
+    }
+    // Same capacity resolution as the model path: one EPREL number, several
+    // canonical configurations — the registry's rated 55 °C value names the one.
+    if (z.rated_kw_55 != null) {
+      const within = cands.filter(c => {
+        const kw = c.power_55C_kw ?? c.power_design_55C_kw ?? ratedCapacityKw(c);
+        return kw != null && Math.abs(kw - z.rated_kw_55) / Math.max(kw, z.rated_kw_55) <= 0.10;
+      });
+      if (within.length === 1 && !conflicts(z, within[0]).length) {
+        return { state: 'confirmed', method: 'eprel_capacity_resolved', target: within[0], confidence: 'high' };
+      }
     }
     return { state: 'review', method: 'eprel_one_to_many', targets: cands };
   }

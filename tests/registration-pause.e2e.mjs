@@ -28,13 +28,14 @@ const NOTICE = {
   en: { title: 'Registration is temporarily unavailable', date: '24 July 2026' },
   de: { title: 'Registrierung vorübergehend nicht möglich', date: '24. Juli 2026' },
   fr: { title: 'Les inscriptions sont temporairement suspendues', date: '24 juillet 2026' },
+  pl: { title: 'Rejestracja jest tymczasowo niedostępna', date: '24 lipca 2026' },
 };
 /** Languages the edition must be able to show it in. */
-const LANGS = { DE: ['en', 'de'], GB: ['en'], FR: ['fr'] }[COUNTRY];
-const DEFAULT_LANG = COUNTRY === 'FR' ? 'fr' : 'en';
+const LANGS = { DE: ['en', 'de'], GB: ['en'], FR: ['fr'], PL: ['pl', 'en'] }[COUNTRY];
+const DEFAULT_LANG = COUNTRY === 'FR' ? 'fr' : COUNTRY === 'PL' ? 'pl' : 'en';
 
-const SIGNUP_BTN = /Sign Up|Registrieren|Créer un compte/i;
-const LOGIN_BTN = /Log In|Anmelden|Se connecter/i;
+const SIGNUP_BTN = /Sign Up|Registrieren|Créer un compte|Zarejestruj się/i;
+const LOGIN_BTN = /Log In|Anmelden|Se connecter|Zaloguj się/i;
 
 let passed = 0;
 let failed = 0;

@@ -13,13 +13,18 @@
   (--fetch)                (self-accumulating)                │          │
                                                               ├─► FR builder (DE-derived)
   Ofgem PEL fetch → parse (--fetch)                           │
-        └─► match PEL↔BAFA ── match PEL↔EPREL ────────────────┴─► GB builder
+        └─► match canonical→PEL ──────────────────────────────┼─► GB builder
+                                                              │
+  Lista ZUM fetch → parse (--fetch)                           │
+        └─► match canonical→ZUM ──────────────────────────────┴─► PL builder
                                                      (needs built DE datasets)
 ```
 
-- **FR and GB depend on the BUILT DE datasets** (FR derives its whole
-  catalogue; GB derives its commercial catalogue). DE always runs first —
+- **FR, GB and PL depend on the BUILT DE datasets** (each derives its
+  catalogue from the canonical baseline). DE always runs first —
   the orchestrator computes this from `dependsOn`, never by hand.
+- The PL builder additionally appends spec-complete ZUM-native extension
+  records (see CLAUDE.md §2 and `scripts/pl/build-app-products-pl.mjs`).
 - Matcher steps are **optional overlays**: if one fails, the run continues
   and the builders emit unenriched (but valid) output.
 - EPREL is a slow full crawl (~45k records); refresh monthly at most.

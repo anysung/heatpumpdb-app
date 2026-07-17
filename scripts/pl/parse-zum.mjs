@@ -157,7 +157,15 @@ for (const [id, base] of activeById) {
   const file = path.join(RAW, 'detail', `${id}.html`);
   if (!fs.existsSync(file)) {
     missingDetail++;
-    entries.push({ ...base, higher_class: higherClassIds.has(id), detail_ok: false, status: 'active' });
+    entries.push({
+      ...base,
+      manufacturer: base.grid_manufacturer,
+      model: base.grid_model,
+      product_name: base.grid_product_name,
+      higher_class: higherClassIds.has(id),
+      detail_ok: false,
+      status: 'active',
+    });
     continue;
   }
   const d = parseDetail(fs.readFileSync(file, 'utf8'), id);
@@ -174,9 +182,10 @@ for (const [id, base] of activeById) {
 }
 
 /* ── Validations (fatal) ────────────────────────────────────────────────── */
+const PARTIAL = process.argv.includes('--allow-partial'); // smoke-testing/ops only — never for a production build
 const fail = m => { console.error(`FATAL: ${m}`); process.exit(1); };
 if (activeById.size < 2500) fail(`only ${activeById.size} active HP entries — grid parse collapsed`);
-if (missingDetail > activeById.size * 0.05) fail(`${missingDetail} entries have no detail page (>5%) — fetch incomplete; rerun fetch-zum.mjs --details-from-rows`);
+if (!PARTIAL && missingDetail > activeById.size * 0.05) fail(`${missingDetail} entries have no detail page (>5%) — fetch incomplete; rerun fetch-zum.mjs --details-from-rows`);
 if (badDetail > 20) fail(`${badDetail} detail pages failed to parse — page structure changed?`);
 const withModel = entries.filter(e => e.model).length;
 if (withModel < entries.length * 0.98) fail(`only ${withModel}/${entries.length} entries carry a model identifier`);

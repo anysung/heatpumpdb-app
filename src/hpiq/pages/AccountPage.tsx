@@ -473,7 +473,7 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <Card style={{ gap: 12 }}>
               <CardTitle>{t.account.language}</CardTitle>
               <div style={{ display: 'flex', border: '1px solid #e0e0e0', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
-                {(([['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
+                {(([['pl', 'Polski'], ['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
                   .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
                   <span
                     key={id}
