@@ -97,7 +97,16 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
     if (i === -1) { noteOrder.push(key); i = noteOrder.length - 1; }
     return i + 1;
   };
-  const typeLine = `${dsp.raw.type ?? 'Luft / Wasser'}${dsp.installType !== '—' ? ` · ${dsp.installType}` : ''}`;
+  const typeLine = `${dsp.raw.type ?? '—'}${dsp.installType !== '—' ? ` · ${dsp.installType}` : ''}`;
+  // GSE-native records (IT only): the catalogue's declared operating points,
+  // rendered verbatim. Labels come from ds.notes (IT dictionaries); the code
+  // fallbacks keep other dictionaries type-stable.
+  const gn = (k: string, fb: string): string => (t.ds.notes as Record<string, string>)[k] ?? fb;
+  const gseRows = dsp.raw.performance_source === 'GSE_CATALOGUE' && Array.isArray(dsp.raw.gse_ratings) && dsp.raw.gse_ratings.length
+    ? dsp.raw.gse_ratings : null;
+  const gsePointValue = (r: { kw: number | null; etas: number | null; scop: number | null }): string =>
+    [r.kw != null ? `${r.kw} kW` : null, r.etas != null ? `\u03b7s ${r.etas} %` : null, r.scop != null ? `SCOP/COP ${r.scop}` : null]
+      .filter(Boolean).join(' \u00b7 ') || '—';
 
   return (
     <div className="hpiq-print-doc" style={{ position: 'relative', width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
@@ -146,6 +155,10 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                   <SectionGrid>
                     <FieldCell label={t.ds.f.manufacturer} value={dsp.mfr} note={n('manufacturer')} />
                     <FieldCell label={t.ds.f.odu} value={dsp.odu} note={n('odu')} />
+                    {/* GSE-native split systems: the catalogue's own indoor-unit identifier. */}
+                    {gseRows && dsp.raw.idu_model && (
+                      <FieldCell label={gn('gseIduLabel', 'Indoor unit (IDU)')} value={dsp.raw.idu_model} note={n('gseIdu')} />
+                    )}
                     <FieldCell label={t.ds.f.type} value={typeLine} note={n('type')} />
                     <FieldCell label={t.ds.f.bafaId} value={dsp.sourceId} note={n('bafaId')} />
                     {/* NF PAC reference — only present on confident matches (FR policy). */}
@@ -179,7 +192,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
               )}
 
-              {app.dsSections.performance && (
+              {app.dsSections.performance && !gseRows && (
                 <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headPerf} />
                   <SectionGrid>
@@ -197,7 +210,49 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                 </div>
               )}
 
-              {app.dsSections.env && (
+              {app.dsSections.performance && gseRows
+                && (dsp.raw.power_35C_kw != null || dsp.raw.power_55C_kw != null || dsp.raw.scop != null) && (
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                  <SectionHead title={t.ds.headPerf} />
+                  <SectionGrid>
+                    {dsp.raw.power_35C_kw != null && (
+                      <FieldCell label={gn('gseKw35Label', 'Heat output (35\u00a0\u00b0C)')} value={`${dsp.raw.power_35C_kw} kW`} note={n('gsePoints')} />
+                    )}
+                    {dsp.raw.power_55C_kw != null && (
+                      <FieldCell label={t.ds.f.kw55} value={`${dsp.raw.power_55C_kw} kW`} note={n('kw55')} />
+                    )}
+                    {dsp.raw.scop != null && (
+                      <FieldCell label={t.ds.f.scop} value={dsp.scop} note={n('scop')} />
+                    )}
+                  </SectionGrid>
+                </div>
+              )}
+
+              {!isLabelMode && gseRows && (
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                  <SectionHead title={gn('gseHead', 'Values declared in the GSE catalogue')} />
+                  <SectionGrid>
+                    {gseRows.map((r, i) => (
+                      <FieldCell key={i} label={`${gn('gsePointLabel', 'Declared operating point')} ${gseRows.length > 1 ? i + 1 : ''}`.trim()} value={gsePointValue(r)} note={n('gsePoints')} />
+                    ))}
+                  </SectionGrid>
+                  <span style={{ fontSize: 10.5, color: '#7a7a7a', lineHeight: 1.55, paddingTop: 10 }}>
+                    {gn('gseProvenance', 'Source: GSE Conto Termico 3.0 catalogue of pre-qualified appliances (catalogue III.A)')}
+                    {dsp.raw.gse_snapshot ? ` \u00b7 ${dsp.raw.gse_snapshot}` : ''}
+                  </span>
+                </div>
+              )}
+
+              {app.dsSections.env && gseRows && dsp.ref !== '—' && (
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                  <SectionHead title={t.ds.headEnv} />
+                  <SectionGrid>
+                    <FieldCell label={t.ds.f.ref} value={dsp.ref} note={n('ref')} />
+                  </SectionGrid>
+                </div>
+              )}
+
+              {app.dsSections.env && !gseRows && (
                 <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headEnv} />
                   <SectionGrid>

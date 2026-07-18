@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T09:35:02.903Z",
+  "generated_at": "2026-07-18T12:15:51.476Z",
   "markets": {
     "DE": {
       "products": 7106,
@@ -94,27 +94,27 @@
       "hash": "83b4a340735ada69"
     },
     "IT": {
-      "products": 7106,
-      "data_sheet_eligible": 7106,
-      "with_rated_capacity": 7106,
-      "residential": 5207,
-      "commercial": 1899,
+      "products": 10835,
+      "data_sheet_eligible": 10835,
+      "with_rated_capacity": 10835,
+      "residential": 8548,
+      "commercial": 2287,
       "unclassified": 0,
       "duplicate_source_ids": 0,
       "invalid_capacities": 0,
       "missing_model": 0,
-      "manufacturers": 231,
-      "local_confirmed": 422,
+      "manufacturers": 301,
+      "local_confirmed": 4151,
       "local_review_required": 3,
       "local_verification_required": 6681,
-      "local_ids": 422,
+      "local_ids": 4151,
       "shared_local_ids": 0,
       "conflicting_local_ids": 0,
       "ambiguous_confirmed_local_ids": 0,
       "approved_one_to_many": 0,
       "source_snapshot": null,
       "generated_at": null,
-      "hash": "261429c327255352"
+      "hash": "ef169763913e07e9"
     }
   }
 }

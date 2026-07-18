@@ -15,7 +15,7 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import {
-  dataSheetEligibility, isDataSheetEligible, applyEligibility,
+  dataSheetEligibility, isDataSheetEligible, applyEligibility, isPublishable,
   ratedCapacityKw, segmentOf, coreFieldCount,
   REQUIRED_FIELDS, CORE_PERFORMANCE_FIELDS, MIN_CORE_FIELDS, SEGMENT_THRESHOLD_KW,
 } from '../scripts/lib/data-sheet-eligibility.mjs';
@@ -188,12 +188,27 @@ if (!existsSync(GB)) {
     console.log('\n(IT datasets not built — Italy assertions skipped)');
   } else {
     const it = [...load(IT).items, ...load('public/data/products-commercial-it.json').items];
-    console.log('\nItaly: canonical baseline + GSE Conto Termico listing overlay');
-    is('[IT] the catalogue IS the canonical catalogue (no extension layer, by design)', it.length, de.length);
-    is('[IT] every product is a canonical product (neutral id, same value)',
-      it.every(p => canonicalIds.has(String(p.european_reference_id))), true);
-    is('[IT] every product is EU-reference sourced (a GSE row can never become a product)',
-      it.every(p => p.performance_source === 'EU_MEASURED_REFERENCE'), true);
+    console.log('\nItaly: European reference catalogue + Italy-only GSE-native layer');
+    const itDerived = it.filter(p => p.performance_source === 'EU_MEASURED_REFERENCE');
+    const itNative = it.filter(p => p.performance_source === 'GSE_CATALOGUE');
+    is('[IT] catalogue = European reference + GSE-native (nothing else)',
+      it.length, itDerived.length + itNative.length);
+    is('[IT] the European-reference layer IS the canonical catalogue', itDerived.length, de.length);
+    is('[IT] every derived product is a canonical product (neutral id, same value)',
+      itDerived.every(p => canonicalIds.has(String(p.european_reference_id))), true);
+    is('[IT] native records are GSE-catalogue products, IT-prefixed, never leaking elsewhere',
+      itNative.every(p => p.gse_match_method === 'gse_native' && String(p.source_id).startsWith('IT-')
+        && p.gse_match_status === 'confirmed' && Array.isArray(p.gse_ratings) && p.gse_ratings.length > 0), true);
+    is('[IT] no air/air, VRF or gas-driven product in the Italian catalogue',
+      it.every(p => ['Aria / Acqua', 'Salamoia / Acqua', 'Acqua / Acqua', 'Aria / Aria'].includes(p.type)
+        && !(p.performance_source === 'GSE_CATALOGUE' && p.type === 'Aria / Aria')), true);
+    is('[IT] temperature-basis honesty: 35/55 fields only with a provable assignment',
+      itNative.every(p => p.gse_temp_assignment != null
+        || (p.power_35C_kw == null && p.power_55C_kw == null && p.efficiency_35C_percent == null
+          && p.efficiency_55C_percent == null && p.scop == null && p.declared_capacity_kw != null)), true);
+    is('[IT] native records never fabricate measured fields the catalogue does not publish',
+      itNative.every(p => p.cop_A7W35 == null && p.cop_A2W35 == null && p.noise_outdoor_dB == null
+        && p.eprel_registration_number == null && p.width_mm == null && p.weight_kg == null), true);
     is('[IT] the public schema carries NO German-market field names',
       it.every(p => Object.keys(p).every(k => !/bafa/i.test(k))), true);
     is('[IT] no German-market provenance labels in public values',
@@ -208,14 +223,22 @@ if (!existsSync(GB)) {
       const keys = it.filter(p => p.gse_entry_key).map(p => p.gse_entry_key);
       return new Set(keys).size === keys.length;
     })(), true);
-    is('[IT] the overlay never overwrote a technical field',
-      it.every(p => tech.every(f => JSON.stringify(p[f] ?? null) === JSON.stringify(byId.get(String(p.european_reference_id))?.[f] ?? null))), true);
-    is('[IT] the overlay never changed a segment',
-      it.every(p => segmentOf(p) === segmentOf(byId.get(String(p.european_reference_id)))), true);
+    is('[IT] the overlay never overwrote a technical field (European-reference layer)',
+      itDerived.every(p => tech.every(f => JSON.stringify(p[f] ?? null) === JSON.stringify(byId.get(String(p.european_reference_id))?.[f] ?? null))), true);
+    is('[IT] the overlay never changed a segment (European-reference layer)',
+      itDerived.every(p => segmentOf(p) === segmentOf(byId.get(String(p.european_reference_id)))), true);
     is('[IT] no German registry fields',
       it.every(p => !('bafa_listing_status' in p) && !('bafa_foerderung_von' in p)), true);
-    is('[IT] all products pass Data Sheet eligibility', it.every(isDataSheetEligible), true);
+    is('[IT] derived products pass the GLOBAL Data Sheet eligibility rule', itDerived.every(isDataSheetEligible), true);
+    is('[IT] every product passes its publication rule (global or Italy GSE tier)', it.every(isPublishable), true);
     is('[IT] no unclassified public product', it.every(p => segmentOf(p) !== 'unclassified'), true);
+    // Isolation: Italy-only fields and records must not exist in any other market.
+    const others = [...de, ...gb, ...fr,
+      ...load('public/data/products-pl.json').items, ...load('public/data/products-commercial-pl.json').items];
+    is('[cross] no GSE-native record outside Italy',
+      others.every(p => p.performance_source !== 'GSE_CATALOGUE' && !String(p.source_id ?? '').startsWith('IT-')), true);
+    is('[cross] no Italy-only field keys outside Italy',
+      others.every(p => !('gse_ratings' in p) && !('declared_capacity_kw' in p) && !('gse_temp_assignment' in p)), true);
   }
 }
 
@@ -349,8 +372,16 @@ if (!existsSync(GB)) {
   const withActiveMigration = { 'data_manifests/migration.json': activeMigration };
   is('the allowance does NOT waive duplicate ids',
     gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: [...j.items, j.items[0]] } : j), withActiveMigration), true);
+  // Mutate a market that actually DECLARES a target in the active allowance —
+  // markets without a declared target are governed by the normal change gates,
+  // where a 5-row drop is legitimately below the drop threshold.
+  const migTargetMarket = Object.keys(JSON.parse(activeMigration).markets ?? {})[0] ?? 'GB';
+  const migTargetFile = {
+    DE: 'products.json', GB: 'products-gb.json', FR: 'products-fr.json',
+    PL: 'products-pl.json', IT: 'products-it.json',
+  }[migTargetMarket] ?? 'products-gb.json';
   is('the allowance does NOT apply when the candidate misses its declared target',
-    gateBlocks((j, f) => (f === 'products-gb.json' ? { ...j, items: j.items.slice(0, j.items.length - 5) } : j), withActiveMigration), true);
+    gateBlocks((j, f) => (f === migTargetFile ? { ...j, items: j.items.slice(0, j.items.length - 5) } : j), withActiveMigration), true);
 }
 
 console.log(failed ? `\n✗ ${failed} assertion(s) failed\n` : '\n✓ all architecture assertions passed\n');

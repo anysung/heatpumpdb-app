@@ -164,7 +164,7 @@ export class ProductStore {
     const items: HpVM[] = [];
     let total = 0;
     for (const v of this.all) {
-      if (`${v.model} ${v.mfr} ${v.odu} ${v.sourceId}`.toLowerCase().includes(needle)) {
+      if (`${v.model} ${v.mfr} ${v.odu} ${v.raw.idu_model ?? ''} ${v.sourceId}`.toLowerCase().includes(needle)) {
         total++;
         if (items.length < max) items.push(v);
       }

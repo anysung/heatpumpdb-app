@@ -10,7 +10,7 @@ import { ProductStore } from './productService';
 import { shortDate } from './model';
 import { HpApp, HpPage, HpSegment, DsMode, DsSectionKey } from './appState';
 import { tr } from './i18n';
-import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB } from './market';
+import { UI_LANGUAGES, SOURCE_ID_ABBR, IS_GB, IS_PL, IS_IT } from './market';
 import { LOCAL_LISTING_FILTER, LOCAL_LISTING_FILTER_DEFAULT_ON } from './listing';
 import { splitBySegment } from '../config/segmentation';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
@@ -180,6 +180,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         isLabelMode: dsMode === 'label',
         sourceAbbr: SOURCE_ID_ABBR,
         isGb: IS_GB,
+        useRawType: IS_GB || IS_PL || IS_IT,
       }),
       filename: pdfFileName(v),
     };

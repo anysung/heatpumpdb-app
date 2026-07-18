@@ -104,7 +104,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '11px 16px', borderTop: '1px solid #f0f0f0', paddingTop: 13 }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{t.find.capacity55}</span>
-                      <span style={{ fontSize: 16, fontWeight: 600 }}>{p.ratedKw} kW</span>
+                      <span style={{ fontSize: 16, fontWeight: 600 }}>{p.ratedKw === '—' ? '—' : `${p.ratedKw} kW`}</span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{t.find.energyClass}</span>
@@ -116,7 +116,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{t.find.soundPower}</span>
-                      <span style={{ fontSize: 16, fontWeight: 600 }}>{p.noise} dB(A)</span>
+                      <span style={{ fontSize: 16, fontWeight: 600 }}>{p.noise === '—' ? '—' : `${p.noise} dB(A)`}</span>
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 2 }}>

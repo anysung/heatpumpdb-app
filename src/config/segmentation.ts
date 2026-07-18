@@ -47,7 +47,11 @@ export function ratedCapacityKw(p: HeatPump): number | null {
     num(raw.power_35C_kw) ??
     num(raw.power_design_35C_kw) ??
     num(raw.power_55C_kw) ??
-    num(raw.power_design_55C_kw)
+    num(raw.power_design_55C_kw) ??
+    // Registry-declared rated output whose measurement basis the source does
+    // not state (IT GSE-native records only; null everywhere else). Mirrors
+    // scripts/lib/data-sheet-eligibility.mjs CAPACITY_CHAIN.
+    num(raw.declared_capacity_kw)
   );
 }
 

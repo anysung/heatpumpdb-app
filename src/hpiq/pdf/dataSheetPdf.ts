@@ -96,9 +96,12 @@ export interface DataSheetPdfInput {
   /** Registry abbreviation for this market (BAFA / MCS). */
   sourceAbbr: string;
   isGb: boolean;
+  /** Markets whose dataset type strings are already localized (GB/PL/IT):
+   *  print the record's own type instead of the dictionary air/water label. */
+  useRawType?: boolean;
 }
 
-export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb }: DataSheetPdfInput): jsPDF {
+export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb, useRawType }: DataSheetPdfInput): jsPDF {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   // Embedded Noto Sans (Latin-Extended) when preloaded; Helvetica fallback keeps
   // exports working offline. LATIN_EXT_OK widens ascii()'s keep-set to match.
@@ -186,7 +189,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   setFont(13.5, true, [255, 255, 255]);
   titleLines.forEach((ln, i) => doc.text(ln, M_X + 6, y + 7.6 + i * 6));
   setFont(8.5, false, [205, 205, 205]);
-  const typeStr = isGb ? (v.raw.type ?? '—').toLowerCase() : t.ds.airWater;
+  const typeStr = (useRawType ?? isGb) ? (v.raw.type ?? '—').toLowerCase() : t.ds.airWater;
   doc.text(
     ascii(`${v.mfr} · ${typeStr}${v.installType !== '—' ? ` · ${v.installType.toLowerCase()}` : ''}`),
     M_X + 6, y + cardH - 3.4,
@@ -272,7 +275,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     const cells: [string, string, number | null][] = [
       [t.ds.f.manufacturer, v.mfr, n('manufacturer')],
       [t.ds.f.odu, v.odu, n('odu')],
-      [t.ds.f.type, `${v.raw.type ?? 'Luft / Wasser'}${v.installType !== '—' ? ` · ${v.installType}` : ''}`, n('type')],
+      [t.ds.f.type, `${v.raw.type ?? '—'}${v.installType !== '—' ? ` · ${v.installType}` : ''}`, n('type')],
       [t.ds.f.bafaId, v.sourceId, n('bafaId')],
     ];
     if (v.raw.nf_pac_reference) cells.push([t.ds.f.nfPac, v.raw.nf_pac_reference, n('nfPac')]);
@@ -290,7 +293,10 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     paragraph(t.ds.labelDerivation);
   }
 
-  if (sections.performance) {
+  const pdfGseRows = v.raw.performance_source === 'GSE_CATALOGUE'
+    && Array.isArray(v.raw.gse_ratings) && v.raw.gse_ratings.length ? v.raw.gse_ratings : null;
+  const gnote = (k: string, fb: string): string => (t.ds.notes as Record<string, string>)[k] ?? fb;
+  if (sections.performance && !pdfGseRows) {
     sectionHead(t.ds.headPerf);
     fieldGrid([
       [t.ds.f.kw55, v.kw === '—' ? '—' : `${v.kw} kW`, n('kw55')],
@@ -303,14 +309,41 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
       paragraph(t.ds.perfCrossRefNote(crossRefId(v.raw) ?? '—'));
     }
   }
+  if (sections.performance && pdfGseRows
+    && (v.raw.power_35C_kw != null || v.raw.power_55C_kw != null || v.raw.scop != null)) {
+    sectionHead(t.ds.headPerf);
+    const cells: [string, string, number | null][] = [];
+    if (v.raw.power_35C_kw != null) cells.push([gnote('gseKw35Label', 'Heat output (35 \u00b0C)'), `${v.raw.power_35C_kw} kW`, n('gsePoints')]);
+    if (v.raw.power_55C_kw != null) cells.push([t.ds.f.kw55, `${v.raw.power_55C_kw} kW`, n('kw55')]);
+    if (v.raw.scop != null) cells.push([t.ds.f.scop, v.scop, n('scop')]);
+    fieldGrid(cells);
+  }
 
-  if (sections.env) {
+  if (!isLabelMode && pdfGseRows) {
+    const gn = gnote;
+    const rows = pdfGseRows;
+    sectionHead(gn('gseHead', 'VALUES DECLARED IN THE GSE CATALOGUE'));
+    fieldGrid(rows.map((r, i) => [
+      `${gn('gsePointLabel', 'Declared operating point')}${rows.length > 1 ? ` ${i + 1}` : ''}`,
+      [r.kw != null ? `${r.kw} kW` : null, r.etas != null ? `\u03b7s ${r.etas} %` : null, r.scop != null ? `SCOP/COP ${r.scop}` : null]
+        .filter(Boolean).join(' \u00b7 ') || '—',
+      n('gsePoints'),
+    ] as [string, string, number | null]));
+    paragraph(`${gn('gseProvenance', 'Source: GSE Conto Termico 3.0 catalogue of pre-qualified appliances (III.A)')}${v.raw.gse_snapshot ? ` \u00b7 ${v.raw.gse_snapshot}` : ''}`);
+  }
+
+  if (sections.env && pdfGseRows) {
+    if (v.ref !== '—') {
+      sectionHead(t.ds.headEnv);
+      fieldGrid([[t.ds.f.ref, v.ref, n('ref')]]);
+    }
+  } else if (sections.env) {
     sectionHead(t.ds.headEnv);
     fieldGrid([
       [t.ds.f.ref, v.ref, n('ref')],
       [t.ds.f.refKg, v.refKg === '—' ? '—' : `${v.refKg} kg`, n('refKg')],
       [t.ds.f.noise, v.noise === '—' ? '—' : `${v.noise} dB(A)`, n('noise')],
-      [t.ds.f.grid, isGb ? '—' : v.raw.grid_ready ? t.ds.f.yes : t.ds.f.no, n('grid')],
+      [t.ds.f.grid, isGb || v.raw.grid_ready == null ? '—' : v.raw.grid_ready ? t.ds.f.yes : t.ds.f.no, n('grid')],
     ]);
   }
 

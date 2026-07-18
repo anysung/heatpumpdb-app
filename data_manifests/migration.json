@@ -1,58 +1,28 @@
 {
-  "id": "2026-07-canonical-baseline",
-  "reason": "One-time migration from the legacy PEL-first UK catalogue to the canonical technical baseline + local listing overlay (docs/CANONICAL_TECHNICAL_BASELINE_AND_LOCAL_MARKET_OVERLAY.md). The UK product population changes wholesale — 4,422 PEL-sourced records (2,134 of them with no capacity, no segment, no data sheet) are replaced by the 7,063 Data-Sheet-eligible canonical products. DE and FR shed the 133 canonical candidates that fail the new shared eligibility rule. The normal change gates compare against the OLD architecture, so they would fire on a transition that has already been approved.",
-  "scope": "Waives ONLY the change gates (product-count drop, eligibility drop, local-match collapse, segment shift) and ONLY when the candidate hits the declared target exactly. Every absolute check still runs: duplicate ids, missing capacity, unclassified products, ambiguous confirmed listings, listing without an id, German fields outside Germany, zero-record parse, missing dataset.",
-  "declared_at": "2026-07-15",
-  "expires_after": "2026-08-15T00:00:00.000Z",
-  "completed_at": "2026-07-15",
+  "id": "2026-07-it-gse-primary-layer",
+  "reason": "One-time structural expansion of the ITALIAN catalogue only (owner decision 2026-07-18): alongside the unchanged European reference catalogue (7,106 canonical products), the IT edition now publishes the Italy-only GSE-native layer — 3,729 in-scope GSE Conto Termico III.A products with no canonical counterpart, admitted under the Italy-specific GSE-native publication tier (scripts/lib/data-sheet-eligibility.mjs → gseNativeEligibility; identity + type + capacity + seasonal performance + provenance). The segment-shift and count change gates compare against the single-layer baseline, so they would fire on a transition that has already been approved. DE/GB/FR/PL are NOT part of this migration and keep their normal gates. (Predecessor allowance 2026-07-canonical-baseline completed 2026-07-15 — see git history.)",
+  "scope": "Waives ONLY the change gates for IT and ONLY when the candidate hits the declared target exactly. Every absolute check still runs: duplicate ids, missing capacity, unclassified products, ambiguous confirmed listings, listing without an id, German fields outside Germany, GSE-native leakage into non-IT datasets, zero-record parse, missing dataset.",
+  "declared_at": "2026-07-18",
+  "expires_after": "2026-08-18T00:00:00.000Z",
+  "completed_at": "2026-07-18",
   "legacy_production": {
-    "GB": {
-      "products": 6367,
-      "residential": 1609,
-      "commercial": 2013,
-      "unclassified": 2745
-    },
-    "DE": {
-      "products": 7155,
-      "residential": 5208,
-      "commercial": 1947,
-      "unclassified": 0
-    },
-    "FR": {
-      "products": 7155,
-      "residential": 5208,
-      "commercial": 1947,
+    "IT": {
+      "products": 7106,
+      "residential": 5207,
+      "commercial": 1899,
       "unclassified": 0
     }
   },
   "markets": {
-    "DE": {
+    "IT": {
       "target": {
-        "products": 7063,
-        "data_sheet_eligible": 7063,
-        "residential": 5207,
-        "commercial": 1856,
-        "unclassified": 0
-      }
-    },
-    "GB": {
-      "target": {
-        "products": 7063,
-        "data_sheet_eligible": 7063,
-        "residential": 5207,
-        "commercial": 1856,
-        "unclassified": 0
-      }
-    },
-    "FR": {
-      "target": {
-        "products": 7063,
-        "data_sheet_eligible": 7063,
-        "residential": 5207,
-        "commercial": 1856,
+        "products": 10835,
+        "data_sheet_eligible": 10835,
+        "residential": 8548,
+        "commercial": 2287,
         "unclassified": 0
       }
     }
   },
-  "completed_note": "Published 2026-07-15: datasets uploaded, remote hashes verified against the local candidate, production manifest approved, UK hosting deployed. The allowance is now inert — a future update is measured against the canonical baseline, not the legacy one."
+  "completed_note": "Published 2026-07-18: IT datasets (10,835 products incl. the 3,729-product GSE-native layer) uploaded to the auth bucket, gate approved, production manifest updated, all hosting editions redeployed. The allowance is now inert — future IT updates are measured against the two-layer baseline."
 }

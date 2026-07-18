@@ -186,8 +186,10 @@ if (COUNTRY === 'GB') {
   check('[IT] no foreign listing leaks onto the Italian edition', !/Ofgem|\bPEL\b|\bMCS\b|\bZUM\b/i.test(comBody));
   check('[IT] no incentive eligibility is claimed',
     !/garantisce l.incentivo|idoneo all.incentivo|diritto all.incentivo|eligible for (an? )?(grant|incentive)/i.test(comBody));
-  check('[IT] the "listed only" filter is NOT offered (confirmed subset too small — a discovery trap)',
+  check('[IT] the "listed only" filter is NOT offered (a discovery trap)',
     (await page.locator('[data-testid="listed-only-toggle"]').count()) === 0);
+  check('[IT] the two data sources are disclosed next to the count (GSE catalogue vs European reference)',
+    (await page.locator('[data-testid="source-mix-note"]').count()) === 1);
 } else {
   check('[DE] the BAFA listing filter IS offered (it meaningfully divides the catalogue)',
     (await page.locator('[data-testid="listed-only-toggle"]').count()) === 1);

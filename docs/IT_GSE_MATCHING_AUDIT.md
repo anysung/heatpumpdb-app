@@ -100,3 +100,20 @@ enter via `data_sources/manufacturer_cross_reference/canonical-to-gse.json`).
    monthly BAFA baseline — no IT-side work needed.
 4. The 52 `exact_model_numeric_conflict` review rows (mostly Airwell
    `-19/-25` revision suffixes) need documentation evidence, not looser rules.
+
+## Addendum (2026-07-18, later the same day): the GSE-primary layer shipped
+
+The owner approved making GSE the primary Italy-specific product axis. The
+audit above sized the population; the implementation
+(`build-app-products-it.mjs` v2.0) now publishes, alongside the unchanged
+7,106-product European reference catalogue, the **Italy-only GSE-native
+layer: 3,729 products** (in-scope 4,388 − 422 canonical-confirmed − 147
+review-blocked − 90 ineligible), under the Italy-specific tier
+`gseNativeEligibility`. Temperature-basis mapping: 2,581 dual-row entries
+(provable 35/55 °C application pairs) + 240 "LWT"-labelled single rows are
+mapped onto the canonical 35/55 fields; 908 basis-unstated entries keep
+`gse_ratings` + `declared_capacity_kw` only. IT totals: 10,835 products
+(residential 8,548 / commercial 2,287 by the shared 23 kW rule). Isolation is
+gate-enforced (GSE_CATALOGUE records outside IT are a blocker) and
+architecture-tested; the one-time count/segment transition is declared in
+`data_manifests/migration.json` (id 2026-07-it-gse-primary-layer).

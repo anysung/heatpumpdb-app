@@ -148,6 +148,17 @@ actually helps discovery (usually it does not).
 **A country with no reliable local list shows no local status at all** (France).
 It never borrows another country's, and it never invents a neutral-sounding one.
 
+**Registry-native market layers.** Two markets additionally publish records that
+originate in their OWN national list, clearly provenance-labelled and never
+travelling to other markets: Poland (ZUM-native, admitted through the shared
+eligibility rule) and Italy (GSE-native, owner decision 2026-07-18, admitted
+through the Italy-specific `gseNativeEligibility` tier because the GSE
+catalogue structurally publishes no refrigerant/sound fields — see
+docs/IT_GSE_MATCHING_AUDIT.md). In both cases the EUROPEAN products remain the
+canonical baseline, matched entries never duplicate, review-queue entries are
+blocked from the native layer, and a native record may never overwrite or
+generate canonical data — the enrichment direction stays canonical → market.
+
 ## 9. Current state (July 2026)
 
 | Market | Public products | Local overlay | Confirmed | Verification required |

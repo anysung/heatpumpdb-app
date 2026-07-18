@@ -120,6 +120,13 @@ export interface HeatPump {
   gse_snapshot_fetched_at?: string | null;
   gse_first_matched_at?: string | null;
   gse_last_confirmed_at?: string | null;
+  // ── GSE-native records (IT only, gse_match_method='gse_native') ────────────
+  // The catalogue's rating rows verbatim (per declared operating point), the
+  // basis-unstated declared capacity fallback, and how/whether the rows were
+  // provably assigned to the 35/55 °C application fields.
+  gse_ratings?: { kw: number | null; etas: number | null; scop: number | null }[] | null;
+  declared_capacity_kw?: number | null;
+  gse_temp_assignment?: 'declared_pair' | 'model_label' | null;
 
   // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
   // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source

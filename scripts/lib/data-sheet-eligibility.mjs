@@ -28,8 +28,15 @@
  * single lonely field.
  */
 
-/** Rated capacity — the SAME chain the app segments on (src/config/segmentation.ts). */
-export const CAPACITY_CHAIN = ['power_35C_kw', 'power_design_35C_kw', 'power_55C_kw', 'power_design_55C_kw'];
+/**
+ * Rated capacity — the SAME chain the app segments on (src/config/segmentation.ts).
+ * `declared_capacity_kw` is the LAST fallback: a registry-declared rated heat
+ * output whose measurement basis the source does not state (today: IT
+ * GSE-native records whose single rating row carries no temperature label).
+ * It exists only on such records — every other market's products resolve on
+ * the measured-basis fields before ever reaching it.
+ */
+export const CAPACITY_CHAIN = ['power_35C_kw', 'power_design_35C_kw', 'power_55C_kw', 'power_design_55C_kw', 'declared_capacity_kw'];
 
 export function ratedCapacityKw(p) {
   for (const f of CAPACITY_CHAIN) {
@@ -131,6 +138,54 @@ export function dataSheetEligibility(p) {
 }
 
 export const isDataSheetEligible = p => dataSheetEligibility(p).eligible;
+
+/* ── Italy GSE-native publication tier (2026-07 owner decision) ─────────────
+   The Italian edition additionally publishes ITALY-ONLY products built from
+   the GSE Conto Termico catalogue (performance_source='GSE_CATALOGUE',
+   source_id 'IT-<gse entry key>'). The GSE catalogue publishes capacity, ηs
+   and SCOP but no refrigerant/sound/COP fields, so the global ≥2-of-5
+   measured-fields rule is structurally unreachable for them; the owner
+   approved an ITALY-SPECIFIC publication standard for THIS layer only:
+
+     identity        manufacturer + model (a name alone is still refused —
+                     the record must also carry its registry provenance and
+                     its component identity where the catalogue publishes one)
+     type + segment  supported family string + resolvable rated capacity
+     performance     ηs and/or SCOP from the catalogue (gse_ratings), i.e.
+                     the sheet always has capacity plus at least one seasonal
+                     performance figure — never capacity alone
+     provenance      gse_entry_key + catalogue identity (III.A)
+
+   This function applies ONLY to GSE-native records on the IT build; every
+   other market and the IT European-reference layer keep dataSheetEligibility
+   unchanged. (docs/IT_GSE_MATCHING_AUDIT.md records the decision context.) */
+export function gseNativeEligibility(p) {
+  const reasons = [];
+  if (p?.performance_source !== 'GSE_CATALOGUE') reasons.push('not_gse_native');
+  for (const f of ['manufacturer', 'model', 'type']) {
+    if (!present(p?.[f])) reasons.push(`missing_${f}`);
+  }
+  if (!present(p?.gse_entry_key)) reasons.push('missing_gse_provenance');
+  if (!String(p?.source_id ?? '').startsWith('IT-')) reasons.push('missing_it_source_id');
+  if (ratedCapacityKw(p) == null) reasons.push('no_rated_capacity');
+  if (segmentOf(p) === 'unclassified') reasons.push('unclassified_segment');
+  const ratings = Array.isArray(p?.gse_ratings) ? p.gse_ratings : [];
+  const hasSeasonal = present(p?.efficiency_35C_percent) || present(p?.scop)
+    || ratings.some(r => present(r?.etas) || present(r?.scop));
+  if (!hasSeasonal) reasons.push('no_seasonal_performance');
+  return { eligible: reasons.length === 0, reasons };
+}
+
+export const isGseNativeEligible = p => gseNativeEligibility(p).eligible;
+
+/**
+ * Publication rule for a MARKET's public dataset: the global rule, plus the
+ * Italy-only GSE-native tier for records that declare that provenance. Used by
+ * the IT builder and the dataset gate's IT section; other markets never
+ * contain GSE_CATALOGUE records, so this is the global rule there.
+ */
+export const isPublishable = p =>
+  p?.performance_source === 'GSE_CATALOGUE' ? isGseNativeEligible(p) : isDataSheetEligible(p);
 
 /** Split a canonical pool, with failure reasons tallied for the build report. */
 export function applyEligibility(products) {

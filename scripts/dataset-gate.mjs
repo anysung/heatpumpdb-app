@@ -29,7 +29,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ratedCapacityKw, segmentOf, isDataSheetEligible } from './lib/data-sheet-eligibility.mjs';
+import { ratedCapacityKw, segmentOf, isDataSheetEligible, isPublishable } from './lib/data-sheet-eligibility.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -183,7 +183,14 @@ for (const [cc, files] of Object.entries(DATASETS)) {
   const ids = items.map(i => String(i.source_id));
   const dupIds = ids.length - new Set(ids).size;
 
-  const eligible = items.filter(isDataSheetEligible).length;
+  // IT publishes an additional GSE-native layer under the Italy-specific tier;
+  // isPublishable applies the global rule everywhere else (no other market
+  // carries GSE_CATALOGUE records — guarded below).
+  const eligible = items.filter(isPublishable).length;
+  if (cc !== 'IT') {
+    const foreignNative = items.filter(i => i.performance_source === 'GSE_CATALOGUE').length;
+    if (foreignNative) block(`[${cc}] ${foreignNative} Italy-only GSE-native records leaked into a non-IT dataset`);
+  }
   const withCapacity = items.filter(i => ratedCapacityKw(i) != null).length;
   const missingModel = items.filter(i => !i.model).length;
   const badCapacity = items.filter(i => {

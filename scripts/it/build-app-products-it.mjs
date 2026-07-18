@@ -1,22 +1,49 @@
 /**
- * build-app-products-it.mjs  v1.0  (Italy dataset builder)
+ * build-app-products-it.mjs  v2.0  (Italy dataset builder — GSE-primary layer)
  *
- * Strategy: the IT catalogue IS the canonical (German-registry-derived)
- * European catalogue — same hardware sold across the EU, exactly like FR/GB/PL.
+ * Strategy (owner decision 2026-07-18): the Italian catalogue is the canonical
+ * (German-registry-derived) European catalogue PLUS an ITALY-ONLY layer of
+ * GSE-catalogue products — the Italian market's own registry entries that have
+ * no canonical counterpart. Italy-only data NEVER travels to other markets and
+ * never mutates the canonical datasets (read-only enrichment direction:
+ * canonical → IT build; GSE → IT build; nothing flows back).
  *
  * Layers:
  *   1. Canonical baseline (public/data/products*.json) — identity, specs and
- *      the 23 kW segmentation are inherited unchanged.
- *   2. GSE Conto Termico LISTING OVERLAY (data_sources/gse_ct/matching/YYYY-MM/
+ *      the 23 kW segmentation are inherited unchanged (the "European
+ *      reference" catalogue on the Italian site).
+ *   2. GSE Conto Termico LISTING OVERLAY (matching/YYYY-MM/
  *      canonical-gse-overlay.json) — a confirmed match may attach the
  *      catalogue facts; it never creates/changes/removes a canonical product.
  *      Unmatched products carry gse_match_status='verification_required'
  *      (never a claim of absence — the PEL rule).
+ *   3. IT-MARKET GSE-NATIVE LAYER (this builder, from the parsed GSE
+ *      snapshot): in-scope catalogue entries (air/water, ground, water/water —
+ *      the German taxonomy; NEVER air/air, VRF, water/air or gas-driven) with
+ *      NO canonical counterpart become IT-edition-only records IF AND ONLY IF
+ *      they pass the Italy GSE-native publication tier
+ *      (scripts/lib/data-sheet-eligibility.mjs → gseNativeEligibility: identity
+ *      + type + capacity + seasonal performance + provenance; a name alone is
+ *      still refused). Provenance: performance_source='GSE_CATALOGUE',
+ *      source_id 'IT-<gse entry key>', gse_match_method='gse_native'. Entries
+ *      in the matcher's review queue (plausible canonical counterpart) are
+ *      BLOCKED from this layer — publishing them would put a near-duplicate
+ *      next to their canonical sibling.
  *
- * There is NO IT-market extension layer, deliberately: the GSE catalogue
- * publishes brand, model, unit ids, capacity, ηs and SCOP/COP only — no
- * refrigerant, no sound power — so a catalogue-native record can never pass
- * the shared Data-Sheet eligibility rule (a model name is not a data sheet).
+ * Honest field mapping for GSE-native records:
+ *   - The catalogue's rating rows (potenza/ηs/SCOP) are kept verbatim in
+ *     gse_ratings. They map onto the canonical 35°C/55°C fields ONLY where the
+ *     basis is provable: a two-row entry whose ηs values are ≥8 % apart IS the
+ *     low/medium-temperature application pair (ηs at 35 °C flow is physically
+ *     always higher than at 55 °C; EU 813/2014 requires declaring both), and a
+ *     single row whose model string carries an explicit "LWT 35/55" label is
+ *     what it says. Everything else stays in gse_ratings with
+ *     declared_capacity_kw (max declared output, basis unstated) as the
+ *     capacity used for the 23 kW segmentation — never a fabricated basis.
+ *   - refrigerant is set only when the catalogue row itself declares it in the
+ *     model/denomination string (…R32, …R290).
+ *   - No energy class is implied unless efficiency_35C_percent was provably
+ *     mapped (the class derivation rule is unchanged, EU 811/2013).
  *
  * Honesty policy (IT):
  *   - Canonical specs are European reference values (performance_source =
@@ -25,19 +52,23 @@
  *     appliance side; the app NEVER claims incentive eligibility (applicant/
  *     building/intervention rules).
  *   - GSE data is used facts-only: source attribution + snapshot dates, no
- *     GSE branding, and the overlay carries only what the catalogue publishes.
+ *     GSE branding, and records carry only what the catalogue publishes.
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { dataSheetEligibility, segmentOf } from '../lib/data-sheet-eligibility.mjs';
+import {
+  dataSheetEligibility, gseNativeEligibility, isPublishable, segmentOf,
+} from '../lib/data-sheet-eligibility.mjs';
+import { gseFamily, gseKws, compact, refrigerantIn } from './gse-match-lib.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const EXPECTED_FIELD_COUNT = 88; // DE 78 − 4 German fields + performance_source
+const EXPECTED_FIELD_COUNT = 91; // DE 78 − 4 German fields + performance_source
                                  // + european_reference_*(3, public names) + gse_*(11)
+                                 // + gse_ratings + declared_capacity_kw + gse_temp_assignment
 const PRICE_KEY_FRAGMENTS = ['price', 'brand_tier', 'price_confidence', 'package_scope', 'capacity_band', 'refrigerant_group'];
 
 function loadJSON(relPath, hint) {
@@ -109,6 +140,10 @@ function toItItem(p) {
     bafa_reference_id: p.bafa_id != null ? String(p.bafa_id) : null,
     bafa_reference_model: p.model ?? null,
     bafa_reference_match_type: 'same_record',
+    // GSE-native-layer fields — null on European-reference records.
+    gse_ratings: null,
+    declared_capacity_kw: null,
+    gse_temp_assignment: null,
     ...EMPTY_GSE_BLOCK,
     ...(ov ?? {}),
   };
@@ -116,6 +151,143 @@ function toItItem(p) {
 
 const residential = deResidential.items.map(toItItem);
 const commercial = deCommercial.items.map(toItItem);
+
+/* ── IT-market GSE-native layer (in-scope, no canonical counterpart) ─────── */
+const parsedSnapshot = newestSnapshot('data_sources/gse_ct/parsed');
+const gseParsed = parsedSnapshot
+  ? JSON.parse(readFileSync(resolve(ROOT, 'data_sources/gse_ct/parsed', parsedSnapshot, 'gse-normalized.json'), 'utf8'))
+  : null;
+const reviewPath = overlaySnapshot
+  ? resolve(ROOT, 'data_sources/gse_ct/matching', overlaySnapshot, 'canonical-gse-review.json')
+  : null;
+const reviewKeys = new Set((reviewPath && existsSync(reviewPath)
+  ? JSON.parse(readFileSync(reviewPath, 'utf8')).review ?? []
+  : []).map(r => r.gse_entry_key).filter(Boolean));
+const confirmedKeys = new Set([...overlayByBafaId.values()].map(o => o.gse_entry_key).filter(Boolean));
+
+/** GSE exchange strings → the Italian display types (German taxonomy families). */
+const SCAMBIO_TYPE = scambio =>
+  /aria\s*\/\s*acqua/i.test(scambio ?? '') ? 'Aria / Acqua'
+    : /salamoia/i.test(scambio ?? '') ? 'Salamoia / Acqua'
+      : /acqua\s*\/\s*acqua/i.test(scambio ?? '') ? 'Acqua / Acqua'
+        : null;
+const IN_FAMILIES = new Set(['air_water', 'ground', 'water_water']);
+
+const LEGAL_TOKENS = new Set(['GMBH', 'KG', 'CO', 'SP', 'ZOO', 'SA', 'AG', 'SE', 'SRL', 'SRLS', 'SAS',
+  'LTD', 'LLC', 'BV', 'AS', 'OY', 'AB', 'SPA', 'ITALIA', 'ITALY', 'EUROPE', 'AIRCONDITIONING']);
+const shortName = mfr => {
+  const t = String(mfr ?? '').normalize('NFKD').replace(/[^A-Za-z ]+/g, ' ').split(/\s+/)
+    .find(w => w.length >= 3 && !LEGAL_TOKENS.has(w.toUpperCase()));
+  return t ? t[0].toUpperCase() + t.slice(1) : (mfr ?? null);
+};
+
+/**
+ * Provable temperature-basis assignment for the catalogue's rating rows.
+ *  - declared_pair: exactly two rows, both with ηs, ≥8 % apart — the low/medium
+ *    temperature application pair required by EU 813/2013 (ηs at 35 °C flow is
+ *    physically always the higher one).
+ *  - model_label: a single row whose model string carries an explicit LWT
+ *    temperature ("… - LWT 55°C").
+ *  - null: basis unprovable — values stay in gse_ratings only.
+ */
+function assignTemps(z) {
+  const rows = z.ratings.filter(r => r.kw > 0 || r.etas != null || r.scop != null);
+  if (rows.length === 2 && rows[0].etas != null && rows[1].etas != null) {
+    const [a, b] = rows;
+    const hi = a.etas >= b.etas ? a : b;
+    const lo = hi === a ? b : a;
+    if (hi.etas >= lo.etas * 1.08) return { mode: 'declared_pair', r35: hi, r55: lo };
+  }
+  if (rows.length === 1) {
+    if (/LWT\s*55/i.test(z.model ?? '')) return { mode: 'model_label', r55: rows[0] };
+    if (/LWT\s*35/i.test(z.model ?? '')) return { mode: 'model_label', r35: rows[0] };
+  }
+  return { mode: null };
+}
+
+const TEMPLATE_KEYS = Object.keys(residential[0] ?? {});
+const nativeStats = { in_scope: 0, blocked_confirmed: 0, blocked_review: 0, ineligible: 0, added: 0, mapped_pair: 0, mapped_label: 0, unmapped: 0, byReason: {} };
+const native = [];
+
+for (const z of gseParsed?.entries ?? []) {
+  const fam = gseFamily(z.scambio);
+  if (!IN_FAMILIES.has(fam) || /gas/i.test(z.funzionamento ?? '')) continue;
+  nativeStats.in_scope++;
+  if (confirmedKeys.has(z.gse_entry_key)) { nativeStats.blocked_confirmed++; continue; }
+  if (reviewKeys.has(z.gse_entry_key)) { nativeStats.blocked_review++; continue; }
+
+  const temps = assignTemps(z);
+  const kws = gseKws(z);
+  const declaredMax = kws.length ? Math.max(...kws) : null;
+  const refr = refrigerantIn(z.model) ?? refrigerantIn(z.denominazione);
+  const odu = compact(z.odu_id ?? '').length >= 4 ? z.odu_id : null;
+  const idu = compact(z.idu_id ?? '').length >= 4 ? z.idu_id : null;
+
+  const candidate = Object.fromEntries(TEMPLATE_KEYS.map(k => [k, null]));
+  Object.assign(candidate, {
+    bafa_id: `IT-${z.gse_entry_key}`,
+    source_id: `IT-${z.gse_entry_key}`,
+    uuid: null,
+    country: 'IT',
+    primary_source: 'GSE_CATALOGUE',
+    performance_source: 'GSE_CATALOGUE',
+    manufacturer: z.brand,
+    manufacturer_normalized: String(z.brand ?? '').toUpperCase().normalize('NFKD').replace(/[^A-Z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(),
+    manufacturer_short: shortName(z.brand),
+    model: z.model,
+    type: SCAMBIO_TYPE(z.scambio),
+    market_segment: null, // resolved after eligibility below
+    installation_type: null, // the catalogue does not state it; never inferred
+    refrigerant: refr ? `R${refr}` : null,
+    grid_ready: null,
+    // Component identity exactly as the catalogue publishes it.
+    outdoor_unit_model: odu,
+    idu_model: idu,
+    outdoor_side_display_model: odu,
+    outdoor_side_identified: Boolean(odu),
+    outdoor_side_display_kind: odu ? 'exact_model' : null,
+    // Provable temperature-basis mapping only (see assignTemps).
+    power_35C_kw: temps.r35?.kw ?? null,
+    power_55C_kw: temps.r55?.kw ?? null,
+    efficiency_35C_percent: temps.r35?.etas ?? null,
+    efficiency_55C_percent: temps.r55?.etas ?? null,
+    scop: temps.r35?.scop ?? null,
+    // The catalogue rows verbatim + the basis-unstated capacity fallback.
+    gse_ratings: z.ratings.map(r => ({ kw: r.kw, etas: r.etas, scop: r.scop })),
+    declared_capacity_kw: temps.mode ? null : declaredMax,
+    gse_temp_assignment: temps.mode,
+    source_snapshot_generated_at: gseParsed.meta.generated_at,
+    // Listing block: the record IS a catalogue entry.
+    gse_match_status: 'confirmed',
+    gse_entry_key: z.gse_entry_key,
+    gse_catalogue: z.catalogue,
+    gse_brand: z.brand,
+    gse_model: z.model,
+    gse_match_method: 'gse_native',
+    gse_match_confidence: 'high',
+    gse_snapshot: parsedSnapshot,
+    gse_snapshot_fetched_at: gseParsed.meta.fetched_at,
+    gse_first_matched_at: gseParsed.meta.fetched_at,
+    gse_last_confirmed_at: generatedAt,
+  });
+
+  const elig = gseNativeEligibility(candidate);
+  if (!elig.eligible) {
+    nativeStats.ineligible++;
+    for (const r of elig.reasons) nativeStats.byReason[r] = (nativeStats.byReason[r] ?? 0) + 1;
+    continue;
+  }
+  if (temps.mode === 'declared_pair') nativeStats.mapped_pair++;
+  else if (temps.mode === 'model_label') nativeStats.mapped_label++;
+  else nativeStats.unmapped++;
+  native.push(candidate);
+  nativeStats.added++;
+}
+
+for (const x of native) {
+  x.market_segment = segmentOf(x) === 'commercial' ? 'commercial_project' : 'residential_core';
+  (segmentOf(x) === 'commercial' ? commercial : residential).push(x);
+}
 
 /* ── Public-schema transform: no German-market field names leave Italy ─────
    Internal building above uses the canonical field names (bafa_id, …) so the
@@ -182,11 +354,38 @@ if (germanLeak.length > 0) {
   process.exit(1);
 }
 
-const badProvenance = allItems.filter(i =>
-  !i.european_reference_id || !i.source_id || i.country !== 'IT'
-  || i.performance_source !== 'EU_MEASURED_REFERENCE');
+const badProvenance = allItems.filter(i => {
+  if (!i.european_reference_id || !i.source_id || i.country !== 'IT') return true;
+  if (i.performance_source === 'EU_MEASURED_REFERENCE') return String(i.source_id).startsWith('IT-');
+  if (i.performance_source === 'GSE_CATALOGUE') {
+    return !String(i.source_id).startsWith('IT-') || i.gse_match_method !== 'gse_native'
+      || !Array.isArray(i.gse_ratings) || !i.gse_ratings.length;
+  }
+  return true;
+});
 if (badProvenance.length > 0) {
   console.error(`FAIL: ${badProvenance.length} items missing required IT provenance`);
+  process.exit(1);
+}
+
+// Scope guard: the German taxonomy only — an air/air, VRF or gas-driven record
+// must never reach the Italian public catalogue.
+const ALLOWED_TYPES = new Set(['Aria / Acqua', 'Salamoia / Acqua', 'Acqua / Acqua', 'Aria / Aria']);
+const badType = allItems.filter(i => !ALLOWED_TYPES.has(i.type) || (i.performance_source === 'GSE_CATALOGUE' && i.type === 'Aria / Aria'));
+if (badType.length > 0) {
+  console.error(`FAIL: ${badType.length} items outside the supported type taxonomy:`, [...new Set(badType.map(i => i.type))].slice(0, 5));
+  process.exit(1);
+}
+
+// Basis honesty: a GSE-native record may carry 35/55 °C values ONLY with a
+// provable assignment, and must otherwise carry the basis-unstated fallback.
+const badBasis = allItems.filter(i => i.performance_source === 'GSE_CATALOGUE' && (
+  (i.gse_temp_assignment == null && (i.power_35C_kw != null || i.power_55C_kw != null
+    || i.efficiency_35C_percent != null || i.efficiency_55C_percent != null || i.scop != null))
+  || (i.gse_temp_assignment == null && i.declared_capacity_kw == null)
+  || (i.gse_temp_assignment != null && i.declared_capacity_kw != null)));
+if (badBasis.length > 0) {
+  console.error(`FAIL: ${badBasis.length} GSE-native records violate the temperature-basis honesty rule`);
   process.exit(1);
 }
 
@@ -211,10 +410,16 @@ if (new Set(gseKeys).size !== gseKeys.length) {
   process.exit(1);
 }
 
-// Every product must be publishable and classifiable.
-const inelig = allItems.filter(i => !dataSheetEligibility(i).eligible);
+// Every product must be publishable and classifiable — European-reference
+// records under the global rule, GSE-native records under the Italy tier.
+const inelig = allItems.filter(i => !isPublishable(i));
 if (inelig.length > 0) {
-  console.error(`FAIL: ${inelig.length} items fail Data-Sheet eligibility`);
+  console.error(`FAIL: ${inelig.length} items fail their publication rule`);
+  process.exit(1);
+}
+const derivedInelig = allItems.filter(i => i.performance_source !== 'GSE_CATALOGUE' && !dataSheetEligibility(i).eligible);
+if (derivedInelig.length > 0) {
+  console.error(`FAIL: ${derivedInelig.length} European-reference items fail the GLOBAL eligibility rule`);
   process.exit(1);
 }
 const unclassified = allItems.filter(i => segmentOf(i) === 'unclassified');
@@ -224,8 +429,8 @@ if (unclassified.length > 0) {
 }
 
 const derivedCount = deResidential.items.length + deCommercial.items.length;
-if (allItems.length !== derivedCount) {
-  console.error('FAIL: record count mismatch vs DE source');
+if (allItems.length !== derivedCount + native.length) {
+  console.error('FAIL: record count mismatch vs DE source + GSE-native layer');
   process.exit(1);
 }
 
@@ -249,8 +454,10 @@ function writeOutput(relPath, items, dataset, sourceMeta) {
       total_items: items.length,
       reference_dataset_generated: sourceMeta.generated,
       gse_overlay_source: overlayFile ? `data_sources/gse_ct/matching/${overlaySnapshot}/canonical-gse-overlay.json` : null,
-      gse_snapshot: overlaySnapshot ?? null,
+      gse_snapshot: overlaySnapshot ?? parsedSnapshot ?? null,
       gse_confirmed_total: items.filter(i => i.gse_match_status === 'confirmed').length,
+      gse_native_total: items.filter(i => i.gse_match_method === 'gse_native').length,
+      european_reference_total: items.filter(i => i.performance_source === 'EU_MEASURED_REFERENCE').length,
       segments_included: dataset === 'residential' ? ['residential_core'] : ['light_commercial', 'commercial_project'],
     },
     items,
@@ -268,9 +475,14 @@ const confirmedTotal = allItems.filter(i => i.gse_match_status === 'confirmed').
 console.log('');
 console.log('── Build summary (IT) ─────────────────────────────────────');
 console.log(`Catalogue:                ${allItems.length} items (residential ${residential.length}, commercial ${commercial.length})`);
-console.log(`  derived from DE:        ${derivedCount}`);
-console.log(`  GSE listed (confirmed): ${confirmedTotal}`);
+console.log(`  European reference:     ${derivedCount}`);
+console.log(`  GSE-native (IT-only):   ${native.length}`);
+console.log(`  GSE listed (confirmed): ${confirmedTotal} (matched canonical ${confirmedTotal - native.length} + native ${native.length})`);
 console.log(`  review_required:        ${allItems.filter(i => i.gse_match_status === 'review_required').length}`);
 console.log(`  EPREL linked:           ${allItems.filter(i => i.eprel_registration_number != null).length}`);
+console.log(`Native funnel:            in-scope ${nativeStats.in_scope} → confirmed-blocked ${nativeStats.blocked_confirmed}`
+  + ` | review-blocked ${nativeStats.blocked_review} | ineligible ${nativeStats.ineligible} | added ${nativeStats.added}`);
+console.log(`  temp-basis mapping:     declared-pair ${nativeStats.mapped_pair} | model-label ${nativeStats.mapped_label} | unmapped (declared kW only) ${nativeStats.unmapped}`);
+if (nativeStats.ineligible) console.log('  ineligible reasons:', JSON.stringify(nativeStats.byReason));
 console.log(`Field count:              ${fieldCount} ✓   No price keys ✓   IT provenance ✓   listing integrity ✓`);
 console.log('──────────────────────────────────────────────────────────');

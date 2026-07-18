@@ -99,6 +99,7 @@ const EN = {
     unclassifiedNote: (n: string) => `${n} products publish no rated capacity and are therefore not assigned to a segment.`,
     countLine: (f: string, t: string, seg: 'residential' | 'commercial') =>
       `${f} of ${t} ${seg} products`,
+    countGse: (gse: string, eu: string) => `${gse} from the national heat-pump catalogue \u00b7 ${eu} European reference products`,
     sortPrefix: 'Sort:',
     sortLabels: {
       cop2: 'COP A2/W35',
@@ -698,6 +699,7 @@ const DE: HpStrings = {
     unclassifiedNote: (n: string) => `Für ${n} Produkte ist keine Nennleistung veröffentlicht; sie sind daher keinem Segment zugeordnet.`,
     countLine: (f: string, t: string, seg: 'residential' | 'commercial') =>
       `${f} von ${t} ${seg === 'residential' ? 'Wohngebäude-Produkten' : 'Gewerbe-Produkten'}`,
+    countGse: (gse: string, eu: string) => `${gse} aus dem nationalen W\u00e4rmepumpen-Katalog \u00b7 ${eu} europ\u00e4ische Referenzprodukte`,
     sortPrefix: 'Sortierung:',
     sortLabels: {
       cop2: 'COP A2/W35',
@@ -1457,6 +1459,13 @@ const FR_EN: HpStrings = {
     sourceText: "Data compiled from European registry sources for the same hardware sold in France (technical cross-reference) and EPREL-style records. This sheet is generated documentation, not an official certificate. French aid (MaPrimeRénov', CEE) is criteria-based and requires an RGE-certified installer — verify all criteria via official sources before contractual use.",
     notes: {
       ...EN.ds.notes,
+      gseIduLabel: 'Indoor unit (IDU)',
+      gseKw35Label: 'Heat output (35\u00a0\u00b0C)',
+      gseIdu: 'Indoor-unit model identifier exactly as published in the GSE catalogue row for this system combination.',
+      gseHead: 'VALUES DECLARED IN THE GSE CATALOGUE',
+      gsePointLabel: 'Declared operating point',
+      gsePoints: 'Operating-point values (heat output, seasonal efficiency \u03b7s, SCOP/COP) exactly as declared in the GSE Conto Termico 3.0 pre-qualified appliance catalogue. Where two points are declared they are the low- and medium-temperature applications (the higher \u03b7s is the 35\u00a0\u00b0C application, EU 813/2013); a single unlabeled point carries no stated temperature basis.',
+      gseProvenance: 'Source: GSE Conto Termico 3.0 \u2014 catalogue of pre-qualified appliances (catalogue III.A), facts only, snapshot',
       manufacturer: 'Equipment manufacturer as registered in the European source registry, the cross-reference source for this catalogue.',
       model: 'Specific product model designation as listed in the European source registry.',
       odu: 'Outdoor unit model as identified from the European source registration text or manufacturer documentation.',
@@ -1647,6 +1656,7 @@ const FR_FR: HpStrings = {
     unclassifiedNote: (n: string) => `${n} produits ne publient aucune puissance nominale et ne sont donc rattachés à aucun segment.`,
     countLine: (f: string, t: string, seg: 'residential' | 'commercial') =>
       `${f} sur ${t} produits ${seg === 'residential' ? 'résidentiels' : 'tertiaires'}`,
+    countGse: (gse: string, eu: string) => `${gse} du catalogue national des pompes \u00e0 chaleur \u00b7 ${eu} produits de r\u00e9f\u00e9rence europ\u00e9ens`,
     sortPrefix: 'Tri :',
     sortLabels: {
       cop2: 'COP A2/W35',
@@ -2238,6 +2248,13 @@ const PL_EN: HpStrings = {
     sourceText: 'Data compiled from European registry sources for the same hardware sold in Poland (technical cross-reference), EPREL-style records and, where confirmed, Lista ZUM entries. This sheet is generated documentation, not an official certificate. Czyste Powietrze grants are criteria-based — verify the ZUM entry and all programme criteria via official sources before contractual use.',
     notes: {
       ...EN.ds.notes,
+      gseIduLabel: 'Indoor unit (IDU)',
+      gseKw35Label: 'Heat output (35\u00a0\u00b0C)',
+      gseIdu: 'Indoor-unit model identifier exactly as published in the GSE catalogue row for this system combination.',
+      gseHead: 'VALUES DECLARED IN THE GSE CATALOGUE',
+      gsePointLabel: 'Declared operating point',
+      gsePoints: 'Operating-point values (heat output, seasonal efficiency \u03b7s, SCOP/COP) exactly as declared in the GSE Conto Termico 3.0 pre-qualified appliance catalogue. Where two points are declared they are the low- and medium-temperature applications (the higher \u03b7s is the 35\u00a0\u00b0C application, EU 813/2013); a single unlabeled point carries no stated temperature basis.',
+      gseProvenance: 'Source: GSE Conto Termico 3.0 \u2014 catalogue of pre-qualified appliances (catalogue III.A), facts only, snapshot',
       manufacturer: 'Equipment manufacturer as registered in the European source registry, the cross-reference source for this catalogue.',
       model: 'Specific product model designation as listed in the European source registry.',
       odu: 'Outdoor unit model as identified from the European source registration text or manufacturer documentation.',
@@ -2428,6 +2445,7 @@ const PL_PL: HpStrings = {
     unclassifiedNote: (n: string) => `Moc znamionowa nie jest opublikowana dla ${n} produktów, dlatego nie zostały one przypisane do żadnego segmentu.`,
     countLine: (f: string, t: string, seg: 'residential' | 'commercial') =>
       `${f} z ${t} produktów ${seg === 'residential' ? 'mieszkaniowych' : 'komercyjnych'}`,
+    countGse: (gse: string, eu: string) => `${gse} z krajowego katalogu pomp ciep\u0142a \u00b7 ${eu} europejskie produkty referencyjne`,
     sortPrefix: 'Sortowanie:',
     sortLabels: {
       cop2: 'COP A2/W35',
@@ -2980,6 +2998,7 @@ const IT_EN: HpStrings = {
 
   products: {
     ...EN.products,
+    countGse: (gse: string, eu: string) => `${gse} from the GSE catalogue (Conto Termico) \u00b7 ${eu} European reference products`,
     funding: 'INCENTIVI · FUNDING',
     chipBafa: 'GSE',
     // A confirmed GSE-catalogue match. Anything else is "verification required" —
@@ -3024,6 +3043,13 @@ const IT_EN: HpStrings = {
     sourceText: 'Data compiled from European registry sources for the same hardware sold in Italy (technical cross-reference), EPREL-style records and, where confirmed, entries in the GSE Conto Termico catalogue of pre-qualified appliances. This sheet is generated documentation, not an official certificate. Conto Termico incentives are criteria-based — verify the catalogue entry and all programme criteria via official sources before contractual use.',
     notes: {
       ...EN.ds.notes,
+      gseIduLabel: 'Indoor unit (IDU)',
+      gseKw35Label: 'Heat output (35\u00a0\u00b0C)',
+      gseIdu: 'Indoor-unit model identifier exactly as published in the GSE catalogue row for this system combination.',
+      gseHead: 'VALUES DECLARED IN THE GSE CATALOGUE',
+      gsePointLabel: 'Declared operating point',
+      gsePoints: 'Operating-point values (heat output, seasonal efficiency \u03b7s, SCOP/COP) exactly as declared in the GSE Conto Termico 3.0 pre-qualified appliance catalogue. Where two points are declared they are the low- and medium-temperature applications (the higher \u03b7s is the 35\u00a0\u00b0C application, EU 813/2013); a single unlabeled point carries no stated temperature basis.',
+      gseProvenance: 'Source: GSE Conto Termico 3.0 \u2014 catalogue of pre-qualified appliances (catalogue III.A), facts only, snapshot',
       manufacturer: 'Equipment manufacturer as registered in the European source registry, the cross-reference source for this catalogue.',
       model: 'Specific product model designation as listed in the European source registry.',
       odu: 'Outdoor unit model as identified from the European source registration text or manufacturer documentation.',
@@ -3214,6 +3240,7 @@ const IT_IT: HpStrings = {
     unclassifiedNote: (n: string) => `${n} prodotti non pubblicano la potenza nominale e non sono quindi assegnati ad alcun segmento.`,
     countLine: (f: string, t: string, seg: 'residential' | 'commercial') =>
       `${f} di ${t} prodotti ${seg === 'residential' ? 'residenziali' : 'commerciali'}`,
+    countGse: (gse: string, eu: string) => `${gse} dal catalogo GSE (Conto Termico) \u00b7 ${eu} prodotti di riferimento europeo`,
     sortPrefix: 'Ordina:',
     sortLabels: {
       cop2: 'COP A2/W35',
@@ -3355,7 +3382,14 @@ const IT_IT: HpStrings = {
     scaleCaption: (cur: string, med: string) =>
       `Classe di efficienza energetica stagionale di riscaldamento d’ambiente ai sensi del regolamento (UE) 811/2013.${cur !== '—' ? ` Questo apparecchio: ${cur} (W35)${med !== '—' ? ` · ${med} (W55)` : ''}.` : ' Classe non derivabile dai dati disponibili.'}`,
     notes: {
-      manufacturer: 'Produttore dell’apparecchio come registrato nel registro europeo di origine — la fonte di riferimento di questo catalogo.',
+      gseIduLabel: 'Unit\u00e0 interna (IDU)',
+      gseKw35Label: 'Potenza termica (35\u00b0C)',
+      gseIdu: 'Identificativo del modello dell\u2019unit\u00e0 interna esattamente come pubblicato nella riga del catalogo GSE per questa combinazione di sistema.',
+      gseHead: 'VALORI DICHIARATI NEL CATALOGO GSE',
+      gsePointLabel: 'Punto di funzionamento dichiarato',
+      gsePoints: 'Valori dei punti di funzionamento (potenza termica, efficienza stagionale \u03b7s, SCOP/COP) esattamente come dichiarati nel catalogo GSE degli apparecchi prequalificati (Conto Termico 3.0). Dove sono dichiarati due punti, corrispondono alle applicazioni a bassa e media temperatura (il valore \u03b7s pi\u00f9 alto \u00e8 l\u2019applicazione a 35\u00a0\u00b0C, EU 813/2013); un punto singolo senza etichetta non dichiara la temperatura di riferimento.',
+      gseProvenance: 'Fonte: GSE Conto Termico 3.0 \u2014 catalogo degli apparecchi prequalificati (catalogo III.A), solo dati fattuali, snapshot',
+      manufacturer: 'Produttore dell\u2019apparecchio come registrato nel registro europeo di origine — la fonte di riferimento di questo catalogo.',
       model: 'Denominazione esatta del modello come riportata nel registro.',
       odu: 'Modello dell’unità esterna identificato dal testo di registrazione o dalla documentazione del produttore.',
       type: 'Combinazione di sorgente e mezzo di cessione del calore (es. Aria / Acqua) e tipo costruttivo: monoblocco (unica unità esterna) o split (unità interna ed esterna separate).',

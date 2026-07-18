@@ -169,8 +169,17 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             {t.products.unclassifiedNote(app.unclassifiedCount.toLocaleString(t.locale))}
           </span>
         )}
-        <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a' }}>
-          {t.products.countLine(fmtInt(filteredTotal), fmtInt(store?.total ?? 0), app.segment)}
+        <span style={{ marginLeft: 'auto', fontSize: 13, color: '#7a7a7a', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+          <span>{t.products.countLine(fmtInt(filteredTotal), fmtInt(store?.total ?? 0), app.segment)}</span>
+          {/* IT: the catalogue mixes two sources — say so instead of one undifferentiated count. */}
+          {LOCAL_LISTING_SOURCE === 'GSE' && store && store.all.some(v => v.raw.gse_match_method === 'gse_native') && (
+            <span style={{ fontSize: 11 }} data-testid="source-mix-note">
+              {t.products.countGse(
+                fmtInt(store.all.filter(v => v.raw.gse_match_method === 'gse_native').length),
+                fmtInt(store.all.filter(v => v.raw.gse_match_method !== 'gse_native').length),
+              )}
+            </span>
+          )}
         </span>
         <div style={{ position: 'relative' }}>
           <span onClick={() => setSortOpen(o => !o)} data-testid="sort-trigger" style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>

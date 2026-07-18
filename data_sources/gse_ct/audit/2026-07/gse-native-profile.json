@@ -1,0 +1,141 @@
+{
+ "snapshot": "2026-07",
+ "generated_at": "2026-07-18T11:45:43.378Z",
+ "stats": {
+  "totals": {
+   "entries": 10268,
+   "in_scope": 4388,
+   "confirmed_or_second": 422,
+   "review_blocked": 147,
+   "candidates": 3729
+  },
+  "by_family": {
+   "water_water": 124,
+   "air_water": 3427,
+   "ground": 178
+  },
+  "by_shape": {
+   "model_only": 383,
+   "split_combo": 1804,
+   "monobloc_or_odu": 1259,
+   "idu_only": 283
+  },
+  "by_tier": {
+   "T1_full": 3727,
+   "excluded_no_capacity": 15,
+   "excluded_capacity_only": 75,
+   "T2_partial": 2
+  },
+  "segment": {
+   "residential": 3333,
+   "commercial": 396,
+   "boundary_ambiguous": 36
+  },
+  "rebadge_same_components_diff_model": 388,
+  "multi_rating_entries": 2655
+ },
+ "unique_in_scope_candidate_odus": 1714,
+ "new_brands_count": 49,
+ "new_brands_top": [
+  [
+   "TOSHIBA",
+   240
+  ],
+  [
+   "INNOVA",
+   153
+  ],
+  [
+   "ENEREN",
+   147
+  ],
+  [
+   "FERROLI",
+   93
+  ],
+  [
+   "Lamborghini CaloreClima",
+   93
+  ],
+  [
+   "ARISTON",
+   89
+  ],
+  [
+   "CHAFFOTEAUX",
+   89
+  ],
+  [
+   "CLINT",
+   81
+  ],
+  [
+   "BERETTA",
+   67
+  ],
+  [
+   "DEDIETRICH",
+   53
+  ],
+  [
+   "IMMERGAS",
+   48
+  ],
+  [
+   "Radiant Bruciatori S.p.a.",
+   48
+  ],
+  [
+   "INTUIS",
+   46
+  ],
+  [
+   "Rossato S.p.A.",
+   44
+  ],
+  [
+   "SINCLAIR",
+   43
+  ],
+  [
+   "RINNAI",
+   38
+  ],
+  [
+   "MAXA",
+   33
+  ],
+  [
+   "BONGIOANNI",
+   32
+  ],
+  [
+   "DUEDI",
+   32
+  ],
+  [
+   "Fondital",
+   31
+  ],
+  [
+   "Stelbi",
+   27
+  ],
+  [
+   "Biasi",
+   24
+  ],
+  [
+   "Savio",
+   24
+  ],
+  [
+   "TADIRAN",
+   24
+  ],
+  [
+   "Multiwarm",
+   23
+  ]
+ ]
+}

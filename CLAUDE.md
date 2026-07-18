@@ -152,9 +152,25 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   States: `confirmed` → "Nel catalogo GSE"; everything else → "Verifica catalogo GSE
   richiesta" — **never "not in the catalogue"**. The catalogue publishes NO per-row
   id — `gse_entry_key` is OUR deterministic key (history/integrity only, never shown
-  as an official id) and no listing id is ever displayed. NO IT extension records,
-  deliberately: GSE rows publish no refrigerant/sound data, so they can never pass
-  Data-Sheet eligibility (a model name is not a data sheet). Confirmed mappings
+  as an official id) and no listing id is ever displayed. **IT additionally publishes an
+  Italy-only GSE-NATIVE LAYER** (owner decision 2026-07-18): in-scope catalogue
+  entries (air/water + ground/water families ONLY — never air/air, VRF, water/air
+  or gas-driven) with no canonical counterpart become IT-edition records
+  (performance_source='GSE_CATALOGUE', source_id 'IT-<gse entry key>', method
+  'gse_native'), admitted through the ITALY-SPECIFIC publication tier
+  `gseNativeEligibility` (scripts/lib/data-sheet-eligibility.mjs): identity +
+  type + capacity + seasonal performance (ηs/SCOP) + provenance — a name alone
+  is still refused; the GLOBAL rule is unchanged for every other layer/market.
+  Honest basis mapping: dual rating rows ≥8% apart = the 35/55 °C application
+  pair (physical ordering, EU 813/2013), single rows only via an explicit
+  "LWT 35/55" model label; everything else stays in gse_ratings verbatim with
+  declared_capacity_kw (basis unstated) for the 23 kW split — 35/55 fields are
+  NEVER fabricated (builder + architecture tests enforce). Refrigerant only when
+  printed in the catalogue row itself (…R32/R290). These records never travel to
+  other markets (gate blocks GSE_CATALOGUE outside IT). Data sheet renders a
+  native-aware sparse layout (no structural-null COP rows) + a "Valori
+  dichiarati nel catalogo GSE" section; the products page discloses the source
+  mix (countGse line). Confirmed mappings
   persist in committed `data_sources/gse_ct/gse-match-history.json`; official
   mappings enter via `data_sources/manufacturer_cross_reference/canonical-to-gse.json`.
   GSE data facts-only (no GSE logo; source attribution + snapshot dates). No

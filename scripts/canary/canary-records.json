@@ -226,7 +226,12 @@
    "gse_match_method": null,
    "gse_match_confidence": null,
    "gse_first_matched_at": null,
-   "gse_last_confirmed_at": null
+   "gse_last_confirmed_at": null,
+   "performance_source": "EU_MEASURED_REFERENCE",
+   "primary_source": "EU_REFERENCE",
+   "gse_ratings": null,
+   "declared_capacity_kw": null,
+   "gse_temp_assignment": null
   },
   "commercial": {
    "bafa_id": "16990844",
@@ -258,7 +263,12 @@
    "gse_match_method": null,
    "gse_match_confidence": null,
    "gse_first_matched_at": null,
-   "gse_last_confirmed_at": null
+   "gse_last_confirmed_at": null,
+   "performance_source": "EU_MEASURED_REFERENCE",
+   "primary_source": "EU_REFERENCE",
+   "gse_ratings": null,
+   "declared_capacity_kw": null,
+   "gse_temp_assignment": null
   }
  }
 }
