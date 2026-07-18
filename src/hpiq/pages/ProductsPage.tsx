@@ -9,7 +9,13 @@ import { ListingChip } from '../ListingChip';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, ChevronDown, KwRangeSlider, Watermark, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 
-const GRID = '34px 2.2fr 1fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr';
+// Every row is its OWN grid (rows stream in), so tracks must resolve
+// identically regardless of row content: bare `fr` means minmax(auto, fr) and
+// lets a wide status pill ("ZUM verification required") widen ITS row's last
+// column, misaligning the numeric columns row-by-row. minmax(0, fr) pins the
+// division to the container width alone; the status floor keeps pills legible
+// on narrow screens (same floor in every row → still aligned).
+const GRID = '34px minmax(0, 2.2fr) minmax(0, 1fr) minmax(0, 0.9fr) minmax(0, 0.8fr) minmax(0, 0.7fr) minmax(0, 0.7fr) minmax(150px, 1.2fr)';
 const PAGE_SIZE = 100;
 
 const SkeletonRow: React.FC<{ widths: string[]; dim?: boolean }> = ({ widths, dim }) => (
@@ -324,7 +330,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       <span style={{ fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.model}</span>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{SOURCE_ID_ABBR} {r.sourceId}</span>
                     </span>
-                    <span>{r.mfr}</span>
+                    <span style={{ minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.mfr}</span>
                     <span data-testid="row-kw">{r.ratedKw}</span>
                     <span style={{ fontWeight: 600 }}>{r.cop2}</span>
                     <span>{r.scop}</span>
