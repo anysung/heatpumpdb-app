@@ -255,79 +255,81 @@ JSON array:`;
 // All images: Unsplash (free to use, no attribution required for web)
 // Rule: assign based on keyword match in title/summary; never let AI hallucinate URLs
 // -------------------------------------------------------------------
-const NEWS_IMAGES = {
-  heatpump:     'https://images.unsplash.com/photo-1621905251189-08b1059efa82?auto=format&fit=crop&q=80&w=600',
-  subsidy:      'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=600',
-  house:        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=600',
-  government:   'https://images.unsplash.com/photo-1555900234-35b55afe19df?auto=format&fit=crop&q=80&w=600',
-  solar:        'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=600',
-  technology:   'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600',
-  installation: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=600',
-  market:       'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600',
-  energy:       'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=600',
+// News-article images (2026-07-19): curated LOCAL webp pool shipped with every
+// market build at /news-images/ (public/news-images/manifest.json is the
+// source of truth for these slugs — keep in sync). Rules (owner spec):
+//   - assignment is deterministic (category field + keyword match) — never AI URLs;
+//   - POLICY articles use the market's OWN policy set (each image carries that
+//     country's flag — never cross markets); EU-level policy topics rotate the
+//     three eu-policy images instead;
+//   - non-policy articles use the COMMON pools by subject category;
+//   - within one (market, month) no file is used twice (pools ≥ articles/run);
+//     rotation is least-recently-used via a total-count offset so consecutive
+//     months walk the pool instead of always starting at the first file;
+//   - every article ALWAYS gets an image (pool exhausted → least-used file).
+const NEWS_IMAGE_POOLS = {
+  policy: {
+    DE: ['de-policy-01.webp', 'de-policy-02.webp', 'de-policy-03.webp'],
+    GB: ['uk-policy-01.webp', 'uk-policy-02.webp', 'uk-policy-03.webp'],
+    FR: ['fr-policy-01.webp', 'fr-policy-02.webp', 'fr-policy-03.webp'],
+    PL: ['pl-policy-01.webp', 'pl-policy-02.webp', 'pl-policy-03.webp'],
+    IT: ['it-policy-01.webp', 'it-policy-02.webp', 'it-policy-03.webp'],
+    EU: ['eu-policy-01.webp', 'eu-policy-02.webp', 'eu-policy-03.webp'],
+  },
+  install: ['common-install-01.webp', 'common-install-02.webp', 'common-install-03.webp', 'common-install-04.webp', 'common-install-05.webp'],
+  market: ['common-market-01.webp', 'common-market-02.webp', 'common-market-03.webp', 'common-market-04.webp', 'common-market-05.webp', 'common-market-06.webp'],
+  tech: ['common-tech-01.webp', 'common-tech-02.webp', 'common-tech-03.webp', 'common-tech-04.webp', 'common-tech-05.webp', 'common-tech-06.webp'],
+  energy: ['common-energy-01.webp', 'common-energy-02.webp', 'common-energy-03.webp', 'common-energy-04.webp', 'common-energy-05.webp'],
 };
 
-const NEWS_IMAGE_RULES = [
-  { key: 'subsidy',      keywords: ['bafa', 'beg', 'subsidy', 'funding', 'grant', 'zuschuss', 'kfw', 'förder', 'förderung', 'ofgem', 'boiler upgrade', 'voucher', 'maprimerénov', 'maprimerenov', 'coup de pouce', 'anah', 'aides'] },
-  { key: 'government',   keywords: ['parliament', 'bundestag', 'bundesrat', 'minister', 'government', 'geg', 'regulation', 'gesetz', 'policy', 'law', 'legislation', 'desnz', 'future homes', 'clean heat', 're2020', 'france rénov'] },
-  { key: 'solar',        keywords: ['solar', 'photovoltaic', 'pv', 'renewable', 'wind', 'erneuerbar', 'green energy'] },
-  { key: 'technology',   keywords: ['r290', 'r32', 'refrigerant', 'cop', 'scop', 'efficiency', 'innovation', 'technology', 'inverter', 'compressor'] },
-  { key: 'installation', keywords: ['install', 'installer', 'montage', 'handwerk', 'technician', 'fachmann', 'workforce'] },
-  { key: 'market',       keywords: ['market', 'sales', 'statistics', 'stat', 'trend', 'bwp', 'report', 'record', 'growth', 'demand', 'forecast', 'mcs', 'installation figures'] },
-  { key: 'energy',       keywords: ['energy', 'electricity', 'power', 'grid', 'strom', 'energie', 'tariff', 'price hike'] },
-  { key: 'house',        keywords: ['house', 'home', 'building', 'residential', 'gebäude', 'renovation', 'refurb', 'retrofit'] },
-  { key: 'heatpump',     keywords: ['heat pump', 'heatpump', 'wärmepumpe', 'outdoor unit', 'odu', 'idu', 'hvac', 'heating', 'viessmann', 'vaillant', 'stiebel', 'bosch', 'daikin', 'nibe', 'wolf', 'panasonic'] },
-];
+const NATIONAL_POLICY_KEYWORDS = ['bafa', 'beg', 'kfw', 'geg', 'bundes',
+  'boiler upgrade', 'bus grant', 'mcs', 'clean heat market', 'future homes', 'ofgem',
+  'maprimerénov', 'maprimerenov', 'coup de pouce', 'cee', 'anah', 'france rénov',
+  'czyste powietrze', 'moje ciepło', 'cieple mieszkanie', 'ciepłe mieszkanie', 'lista zum', 'nfośigw', 'nfosigw',
+  'conto termico', 'gse', 'ecobonus', 'detrazion', 'agenzia delle entrate', 'enea'];
+const EU_POLICY_KEYWORDS = ['epbd', 'european commission', 'eu directive', 'eu-richtlinie',
+  'direttiva', 'dyrektywa', 'brussels', 'bruxelles', 'case green', 'european union',
+  'f-gas', 'ecodesign', 'red iii', 'fit for 55'];
+const ENERGY_KEYWORDS = ['district heating', 'fernwärme', 'waste heat', 'data center',
+  'data centre', 'industrial heat', 'solar', 'photovoltaic', 'battery', 'grid',
+  'decarbon', 'carbon', 'geothermal'];
 
-/**
- * Select an appropriate image URL based on news title and summary keywords.
- * Rule: always assign from curated map — never use AI-generated URLs.
- */
-function selectNewsImage(title = '', summary = '') {
+/** Deterministic subject classification: article category field + keyword nudges. */
+function newsImageCategory(category = 'MARKET', title = '', summary = '') {
   const text = `${title} ${summary}`.toLowerCase();
-  for (const rule of NEWS_IMAGE_RULES) {
-    if (rule.keywords.some(kw => text.includes(kw))) {
-      return NEWS_IMAGES[rule.key];
-    }
+  if (category === 'FUNDING') {
+    // A NATIONAL programme mention always outranks an incidental EU reference:
+    // a BUS/Conto-Termico article that cites the EPBD is still national policy.
+    if (NATIONAL_POLICY_KEYWORDS.some(k => text.includes(k))) return 'policy';
+    return EU_POLICY_KEYWORDS.some(k => text.includes(k)) ? 'eu-policy' : 'policy';
   }
-  return NEWS_IMAGES.heatpump; // default fallback
+  if (category === 'INSTALLER INSIGHT') return 'install';
+  if (category === 'TECHNOLOGY') {
+    return ENERGY_KEYWORDS.some(k => text.includes(k)) ? 'energy' : 'tech';
+  }
+  return ENERGY_KEYWORDS.some(k => text.includes(k)) ? 'energy' : 'market';
 }
 
-// -------------------------------------------------------------------
-// -------------------------------------------------------------------
-// Article graphic generator — deterministic branded SVG (data URI).
-// Never uses AI-generated image URLs; generated by code, works offline.
-// -------------------------------------------------------------------
-const ARTICLE_GRAPHIC_THEMES = {
-  FUNDING:             { bg0: '#0b3d2e', bg1: '#127a55', accent: '#7be3b3' },
-  MARKET:              { bg0: '#0f2a4a', bg1: '#1c5a9e', accent: '#7fb8ff' },
-  TECHNOLOGY:          { bg0: '#3a1d0b', bg1: '#8a4d16', accent: '#ffc38a' },
-  'INSTALLER INSIGHT': { bg0: '#2a2140', bg1: '#54448a', accent: '#c1b3ff' },
-};
-
-function generateArticleGraphic(category = 'MARKET') {
-  const t = ARTICLE_GRAPHIC_THEMES[category] || ARTICLE_GRAPHIC_THEMES.MARKET;
-  // Fan-blade motif (heat pump outdoor unit) + concentric airflow arcs.
-  const blades = [0, 60, 120, 180, 240, 300]
-    .map(a => `<ellipse cx="0" cy="-118" rx="34" ry="86" fill="${t.accent}" opacity=".28" transform="rotate(${a})"/>`)
-    .join('');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">`
-    + `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">`
-    + `<stop offset="0" stop-color="${t.bg0}"/><stop offset="1" stop-color="${t.bg1}"/>`
-    + `</linearGradient></defs>`
-    + `<rect width="1200" height="630" fill="url(#g)"/>`
-    + `<g transform="translate(920,315)">`
-    + `<circle r="240" fill="none" stroke="${t.accent}" stroke-opacity=".18" stroke-width="2"/>`
-    + `<circle r="180" fill="none" stroke="${t.accent}" stroke-opacity=".26" stroke-width="2"/>`
-    + blades
-    + `<circle r="44" fill="${t.accent}" opacity=".85"/>`
-    + `</g>`
-    + `<text x="64" y="120" font-family="Helvetica,Arial,sans-serif" font-size="30" font-weight="600" letter-spacing="6" fill="${t.accent}">${category}</text>`
-    + `<text x="64" y="540" font-family="Helvetica,Arial,sans-serif" font-size="42" font-weight="700" fill="#ffffff">HeatPump DB</text>`
-    + `<text x="64" y="580" font-family="Helvetica,Arial,sans-serif" font-size="22" fill="#ffffff" opacity=".65">Market intelligence briefing</text>`
-    + `</svg>`;
-  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+function newsImagePool(marketCode, imgCat) {
+  if (imgCat === 'eu-policy') return NEWS_IMAGE_POOLS.policy.EU;
+  if (imgCat === 'policy') return NEWS_IMAGE_POOLS.policy[marketCode] ?? NEWS_IMAGE_POOLS.market;
+  return NEWS_IMAGE_POOLS[imgCat] ?? NEWS_IMAGE_POOLS.market;
 }
+
+/** Pick the next pool file: skip files already used this month; walk from a
+ *  rotation offset so usage spreads across months; if the whole pool was used
+ *  this month already (more articles than images), fall back to the
+ *  least-used file — an article must never be imageless. */
+function chooseNewsImage(pool, usedFilesThisMonth, rotationOffset = 0) {
+  for (let i = 0; i < pool.length; i++) {
+    const f = pool[(rotationOffset + i) % pool.length];
+    if (!usedFilesThisMonth.includes(f)) return f;
+  }
+  const counts = pool.map(f => [f, usedFilesThisMonth.filter(u => u === f).length]);
+  counts.sort((a, b) => a[1] - b[1]);
+  return counts[0][0];
+}
+
 
 const ARTICLE_CATEGORIES = ['FUNDING', 'MARKET', 'TECHNOLOGY', 'INSTALLER INSIGHT'];
 
@@ -507,7 +509,8 @@ Return ONLY the JSON object, no other text:`;
             original: true,
             // Original articles open in-app; keep first source as fallback link.
             sourceUrl: sources[0]?.url ?? '',
-            imageUrl: generateArticleGraphic(category),
+            // imageUrl is assigned at PUBLISH time (publishNewsAndPolicies):
+            // it needs the month's existing usage for the no-repeat rule.
           };
         })
     );
@@ -548,9 +551,32 @@ async function publishNewsAndPolicies(marketCode, news, policies) {
   if (news.length > 0) {
     // APPEND — past articles are never deleted; the app shows an archive.
     const newsRef = firestoreDb.collection(`countries/${marketCode}/news`);
+
+    // Image assignment (deterministic, month-scoped no-repeat): collect the
+    // files already used by THIS month's existing articles, then assign each
+    // new article the next rotation slot of its subject pool.
+    const yyyymm = new Date().toISOString().slice(0, 7).replace('-', '');
+    const monthSnap = await newsRef
+      .orderBy(admin.firestore.FieldPath.documentId())
+      .startAt(`news-${yyyymm}`)
+      .endAt(`news-${yyyymm}\uf8ff`)
+      .get();
+    const usedThisMonth = monthSnap.docs
+      .map(d => String(d.data().imageUrl ?? ''))
+      .filter(u => u.startsWith('/news-images/'))
+      .map(u => u.slice('/news-images/'.length));
+    const totalNewsCount = (await newsRef.count().get()).data().count;
+
     const newsBatch = firestoreDb.batch();
     news.forEach((item, i) => {
       const id = item.id || `news-${Date.now()}-${i}`;
+      if (!item.imageUrl) {
+        const imgCat = newsImageCategory(item.category, item.title, item.summary);
+        const pool = newsImagePool(marketCode, imgCat);
+        const file = chooseNewsImage(pool, usedThisMonth, (totalNewsCount + i) % pool.length);
+        item.imageUrl = `/news-images/${file}`;
+        usedThisMonth.push(file);
+      }
       newsBatch.set(newsRef.doc(id), item);
     });
     await newsBatch.commit();

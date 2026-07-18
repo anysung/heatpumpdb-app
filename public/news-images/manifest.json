@@ -1,0 +1,285 @@
+{
+ "_readme": "News-article image pool, assigned deterministically at article-write time (google_cloud_function selectNewsImage + scripts/news/backfill-news-images.mjs). Rules: policy articles use the market-own set (files carry that country's flag in the image — NEVER cross markets); EU-policy topics rotate the 3 eu-policy images; non-policy articles use the COMMON pools by category. Within one (market, month) no file is used twice; within a topic pool files rotate least-used-first. Slugs are stable; topic_ko/desc_ko keep the original semantic descriptors for keyword matching.",
+ "images": [
+  {
+   "file": "eu-policy-01.webp",
+   "scope": "EU",
+   "category": "policy",
+   "topic_ko": "정부정책",
+   "desc_ko": "정부정책_(EU의회_앞_정책회의)"
+  },
+  {
+   "file": "eu-policy-02.webp",
+   "scope": "EU",
+   "category": "policy",
+   "topic_ko": "정책시행",
+   "desc_ko": "정책시행_(EU청사_앞_규제검토)"
+  },
+  {
+   "file": "eu-policy-03.webp",
+   "scope": "EU",
+   "category": "policy",
+   "topic_ko": "주택상담",
+   "desc_ko": "주택상담_(EU보조금_주택상담)"
+  },
+  {
+   "file": "common-install-01.webp",
+   "scope": "COMMON",
+   "category": "install",
+   "topic_ko": "공공공동주택프로젝트",
+   "desc_ko": "공공공동주택프로젝트_공동주택설치프로젝트점검"
+  },
+  {
+   "file": "common-install-02.webp",
+   "scope": "COMMON",
+   "category": "install",
+   "topic_ko": "기존주택교체설치",
+   "desc_ko": "기존주택교체설치_기존주택히트펌프교체설치"
+  },
+  {
+   "file": "common-install-03.webp",
+   "scope": "COMMON",
+   "category": "install",
+   "topic_ko": "신축주택설치",
+   "desc_ko": "신축주택설치_신축주택히트펌프설치현장"
+  },
+  {
+   "file": "common-install-04.webp",
+   "scope": "COMMON",
+   "category": "install",
+   "topic_ko": "에너지비용개선",
+   "desc_ko": "에너지비용개선_단열라디에이터개선상담"
+  },
+  {
+   "file": "common-install-05.webp",
+   "scope": "COMMON",
+   "category": "install",
+   "topic_ko": "인스톨러교육",
+   "desc_ko": "인스톨러교육_현장실습기술교육"
+  },
+  {
+   "file": "common-market-01.webp",
+   "scope": "COMMON",
+   "category": "market",
+   "topic_ko": "국가간경쟁력",
+   "desc_ko": "국가간경쟁력_전시회비즈니스경쟁분석"
+  },
+  {
+   "file": "common-market-02.webp",
+   "scope": "COMMON",
+   "category": "market",
+   "topic_ko": "산업일자리감소",
+   "desc_ko": "산업일자리감소_공장밖퇴직과구조조정"
+  },
+  {
+   "file": "common-market-03.webp",
+   "scope": "COMMON",
+   "category": "market",
+   "topic_ko": "생산량공장투자",
+   "desc_ko": "생산량공장투자_공장생산라인과품질점검"
+  },
+  {
+   "file": "common-market-04.webp",
+   "scope": "COMMON",
+   "category": "market",
+   "topic_ko": "시장전망",
+   "desc_ko": "시장전망_시장분석과성장전망"
+  },
+  {
+   "file": "common-market-05.webp",
+   "scope": "COMMON",
+   "category": "market",
+   "topic_ko": "에너지가격영향",
+   "desc_ko": "에너지가격영향_주택상담과비용비교"
+  },
+  {
+   "file": "common-market-06.webp",
+   "scope": "COMMON",
+   "category": "market",
+   "topic_ko": "판매부진재고",
+   "desc_ko": "판매부진재고_창고재고점검과재고누적"
+  },
+  {
+   "file": "common-tech-01.webp",
+   "scope": "COMMON",
+   "category": "tech",
+   "topic_ko": "고출수온기술",
+   "desc_ko": "고출수온기술_기계실고온수시스템"
+  },
+  {
+   "file": "common-tech-02.webp",
+   "scope": "COMMON",
+   "category": "tech",
+   "topic_ko": "냉매전환",
+   "desc_ko": "냉매전환_냉매전환기술점검"
+  },
+  {
+   "file": "common-tech-03.webp",
+   "scope": "COMMON",
+   "category": "tech",
+   "topic_ko": "스마트제어AI",
+   "desc_ko": "스마트제어AI_원격모니터링예지보전"
+  },
+  {
+   "file": "common-tech-04.webp",
+   "scope": "COMMON",
+   "category": "tech",
+   "topic_ko": "신제품출시",
+   "desc_ko": "신제품출시_쇼룸신제품발표"
+  },
+  {
+   "file": "common-tech-05.webp",
+   "scope": "COMMON",
+   "category": "tech",
+   "topic_ko": "저소음제품",
+   "desc_ko": "저소음제품_조용한주택야간운전"
+  },
+  {
+   "file": "common-tech-06.webp",
+   "scope": "COMMON",
+   "category": "tech",
+   "topic_ko": "혹한성능개선",
+   "desc_ko": "혹한성능개선_설경속혹한운전"
+  },
+  {
+   "file": "common-energy-01.webp",
+   "scope": "COMMON",
+   "category": "energy",
+   "topic_ko": "건물난방탄소감축",
+   "desc_ko": "건물난방탄소감축_저탄소건물난방전환"
+  },
+  {
+   "file": "common-energy-02.webp",
+   "scope": "COMMON",
+   "category": "energy",
+   "topic_ko": "데이터센터열활용",
+   "desc_ko": "데이터센터열활용_데이터센터폐열회수"
+  },
+  {
+   "file": "common-energy-03.webp",
+   "scope": "COMMON",
+   "category": "energy",
+   "topic_ko": "산업용고온히트펌프",
+   "desc_ko": "산업용고온히트펌프_산업폐열회수시스템"
+  },
+  {
+   "file": "common-energy-04.webp",
+   "scope": "COMMON",
+   "category": "energy",
+   "topic_ko": "지역난방도시전환",
+   "desc_ko": "지역난방도시전환_대형히트펌프에너지센터"
+  },
+  {
+   "file": "common-energy-05.webp",
+   "scope": "COMMON",
+   "category": "energy",
+   "topic_ko": "태양광배터리연계",
+   "desc_ko": "태양광배터리연계_태양광배터리히트펌프통합"
+  },
+  {
+   "file": "de-policy-01.webp",
+   "scope": "DE",
+   "category": "policy",
+   "topic_ko": "설치점검",
+   "desc_ko": "설치점검_(베를린_거리_설치검토)"
+  },
+  {
+   "file": "de-policy-02.webp",
+   "scope": "DE",
+   "category": "policy",
+   "topic_ko": "정부정책",
+   "desc_ko": "정부정책_(정부배경_기술자상담)"
+  },
+  {
+   "file": "de-policy-03.webp",
+   "scope": "DE",
+   "category": "policy",
+   "topic_ko": "주택상담",
+   "desc_ko": "주택상담_(라이히스타크_배경_서류검토)"
+  },
+  {
+   "file": "uk-policy-01.webp",
+   "scope": "GB",
+   "category": "policy",
+   "topic_ko": "설치점검",
+   "desc_ko": "설치점검_(테라스하우스_설치점검)"
+  },
+  {
+   "file": "uk-policy-02.webp",
+   "scope": "GB",
+   "category": "policy",
+   "topic_ko": "정부정책",
+   "desc_ko": "정부정책_(화이트홀_정책검토)"
+  },
+  {
+   "file": "uk-policy-03.webp",
+   "scope": "GB",
+   "category": "policy",
+   "topic_ko": "주택상담",
+   "desc_ko": "주택상담_(주택앞_보조금_안내)"
+  },
+  {
+   "file": "it-policy-01.webp",
+   "scope": "IT",
+   "category": "policy",
+   "topic_ko": "설치점검",
+   "desc_ko": "설치점검_(도심거리_설치관리_서류확인)"
+  },
+  {
+   "file": "it-policy-02.webp",
+   "scope": "IT",
+   "category": "policy",
+   "topic_ko": "정부정책",
+   "desc_ko": "정부정책_(관공서_앞_정책검토)"
+  },
+  {
+   "file": "it-policy-03.webp",
+   "scope": "IT",
+   "category": "policy",
+   "topic_ko": "주택상담",
+   "desc_ko": "주택상담_(주택앞_인센티브_서류검토)"
+  },
+  {
+   "file": "pl-policy-01.webp",
+   "scope": "PL",
+   "category": "policy",
+   "topic_ko": "설치점검",
+   "desc_ko": "설치점검_(주택가_설치점검_서류확인)"
+  },
+  {
+   "file": "pl-policy-02.webp",
+   "scope": "PL",
+   "category": "policy",
+   "topic_ko": "정부정책",
+   "desc_ko": "정부정책_(공공건물_앞_정책회의)"
+  },
+  {
+   "file": "pl-policy-03.webp",
+   "scope": "PL",
+   "category": "policy",
+   "topic_ko": "주택상담",
+   "desc_ko": "주택상담_(현대주택_보조금_서류검토)"
+  },
+  {
+   "file": "fr-policy-01.webp",
+   "scope": "FR",
+   "category": "policy",
+   "topic_ko": "설치현장",
+   "desc_ko": "설치현장_(도심주택_설치프로젝트)"
+  },
+  {
+   "file": "fr-policy-02.webp",
+   "scope": "FR",
+   "category": "policy",
+   "topic_ko": "정부정책",
+   "desc_ko": "정부정책_(정부건물_앞_정책회의)"
+  },
+  {
+   "file": "fr-policy-03.webp",
+   "scope": "FR",
+   "category": "policy",
+   "topic_ko": "주택상담",
+   "desc_ko": "주택상담_(가정용_보조금_서류검토)"
+  }
+ ]
+}
