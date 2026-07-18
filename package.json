@@ -18,6 +18,7 @@
     "deploy:admin": "npm run build:admin && firebase deploy --only hosting:hub",
     "preview": "vite preview",
     "test:registration": "bash tests/run-registration-e2e.sh",
+    "test:storage": "bash tests/run-storage-smoke.sh",
     "start": "node server.js",
     "update:all": "node scripts/update-all.mjs",
     "update:all:deploy": "node scripts/update-all.mjs --fetch --fetch-eprel --deploy",

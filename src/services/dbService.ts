@@ -34,23 +34,21 @@ const isHoneytokenRecord = (p: HeatPump): boolean =>
   [p.source_id, p.bafa_id, p.european_reference_id]
     .some(id => id != null && /^1699\d{4}$/.test(String(id)));
 
+// Errors propagate to the caller (App.tsx loadData): a failed dataset download
+// must surface as a visible error + retry, never as a silently empty catalogue
+// (the 2026-07-18 PL incident hid an access-layer failure behind "0 products").
 const loadProductsFromJson = async (path: string): Promise<HeatPump[]> => {
-  try {
-    let data: any;
-    if (import.meta.env.DEV) {
-      const resp = await fetch(path);
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      data = await resp.json();
-    } else {
-      const file = path.split('/').pop()!;
-      const blob = await getBlob(ref(datasetStorage, `datasets/${ACTIVE_COUNTRY.code}/${file}`));
-      data = JSON.parse(await blob.text());
-    }
-    return ((data.items || []) as HeatPump[]).filter(p => !isHoneytokenRecord(p));
-  } catch (error) {
-    console.error(`Error fetching products from ${path}:`, error);
-    return [];
+  let data: any;
+  if (import.meta.env.DEV) {
+    const resp = await fetch(path);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    data = await resp.json();
+  } else {
+    const file = path.split('/').pop()!;
+    const blob = await getBlob(ref(datasetStorage, `datasets/${ACTIVE_COUNTRY.code}/${file}`));
+    data = JSON.parse(await blob.text());
   }
+  return ((data.items || []) as HeatPump[]).filter(p => !isHoneytokenRecord(p));
 };
 
 /** Load residential products (static JSON, path from active country profile). */

@@ -4,8 +4,11 @@ import {
   signOut,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   OAuthProvider,
+  type User as FirebaseUser,
 } from 'firebase/auth';
 import {
   doc,
@@ -307,7 +310,7 @@ export const loginWithProvider = async (
   /** First-time social sign-ins are registrations: the caller shows the
    *  account/data-use terms popup and resolves on consent (rejects on cancel). */
   confirmTerms?: () => Promise<void>,
-): Promise<'active' | 'pending-created'> => {
+): Promise<'active' | 'pending-created' | 'redirecting'> => {
   const provider =
     providerName === 'google'
       ? new GoogleAuthProvider()
@@ -318,8 +321,40 @@ export const loginWithProvider = async (
           return p;
         })();
 
-  const cred = await signInWithPopup(auth, provider);
-  const fbUser = cred.user;
+  let cred;
+  try {
+    cred = await signInWithPopup(auth, provider);
+  } catch (err: any) {
+    // Safari (and strict popup blockers) refuse the OAuth popup — fall back to
+    // a full-page redirect. The page navigates away here; on return,
+    // completeRedirectSignIn() (App boot) finishes the same flow.
+    if (err?.code === 'auth/popup-blocked' || err?.code === 'auth/operation-not-supported-in-this-environment') {
+      await signInWithRedirect(auth, provider);
+      return 'redirecting';
+    }
+    throw err;
+  }
+  return finishProviderSignIn(cred.user, providerName, confirmTerms);
+};
+
+/** Redirect-flow completion — call once on app boot. Resolves null when no
+ *  redirect sign-in is pending; otherwise runs the exact post-popup flow
+ *  (terms gate for first-timers, approval checks, status routing). */
+export const completeRedirectSignIn = async (
+  confirmTerms?: () => Promise<void>,
+): Promise<'active' | 'pending-created' | null> => {
+  const cred = await getRedirectResult(auth);
+  if (!cred) return null;
+  const providerName = cred.providerId === 'apple.com' ? 'apple' : 'google';
+  return finishProviderSignIn(cred.user, providerName, confirmTerms);
+};
+
+/** Shared post-sign-in flow for both the popup and redirect variants. */
+const finishProviderSignIn = async (
+  fbUser: FirebaseUser,
+  providerName: 'google' | 'apple',
+  confirmTerms?: () => Promise<void>,
+): Promise<'active' | 'pending-created'> => {
   const uid = fbUser.uid;
   const email = fbUser.email || '';
   const providerLabel = providerName === 'google' ? 'Google' : 'Apple';

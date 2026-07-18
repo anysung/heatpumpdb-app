@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { loginUser, registerUser, registerInvitedMember, logoutUser, onUserChange, loginWithProvider, isAdminRole } from './services/authService';
+import { loginUser, registerUser, registerInvitedMember, logoutUser, onUserChange, loginWithProvider, completeRedirectSignIn, isAdminRole } from './services/authService';
 import { HpiqApp } from './hpiq/HpiqApp';
 import { AdminDashboard } from './components/AdminDashboard';
 import {
@@ -33,6 +33,10 @@ const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
 
   const [fullDatabase, setFullDatabase] = useState<HeatPumpDatabase | null>(null);
+  // Dataset download failure (Storage/network/access layer) — surfaced as a
+  // banner with retry in the app shell, never as a silently empty catalogue.
+  const [datasetsFailed, setDatasetsFailed] = useState(false);
+  const [datasetsRetryTick, setDatasetsRetryTick] = useState(0);
   
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
@@ -97,13 +101,19 @@ const App: React.FC = () => {
     // 2. Load Data from Firestore
     const loadData = async () => {
       try {
+        // Dataset fetches report failure (banner + retry) but never abort the
+        // rest of the load — news/policies still render.
+        let productsFailed = false;
+        const orEmpty = <T,>(p: Promise<T[]>): Promise<T[]> =>
+          p.catch(err => { console.error('Dataset load failed:', err); productsFailed = true; return []; });
         const [products, commercialProducts, news, policies, bafa] = await Promise.all([
-            getProducts(),
-            getCommercialProducts(),
+            orEmpty(getProducts()),
+            orEmpty(getCommercialProducts()),
             getNews(),
             getPolicies(),
             getBAFA()
         ]);
+        setDatasetsFailed(productsFailed);
 
         const dbData: HeatPumpDatabase = {
             generatedAt: new Date().toISOString(),
@@ -127,7 +137,7 @@ const App: React.FC = () => {
     if (import.meta.env.DEV || auth.currentUser) loadData();
 
     return () => unsubscribe();
-  }, [currentView]);
+  }, [currentView, datasetsRetryTick]);
 
   // ... (Keep all Handlers: handleLogin, handleSignup, etc. EXACTLY AS THEY WERE) ...
   const handleLogin = async (e: React.FormEvent) => {
@@ -191,6 +201,8 @@ const App: React.FC = () => {
     try {
       const result = await loginWithProvider(provider, requestTermsConsent);
       // 'active' → onUserChange routes into the app automatically.
+      // 'redirecting' → the page is navigating to the provider (popup was
+      // blocked, e.g. Safari); the redirect-return effect below finishes.
       if (result === 'pending-created') setCurrentView('PENDING_APPROVAL');
     } catch (err: any) {
       // User closed/cancelled the popup — not an error worth alerting.
@@ -207,6 +219,22 @@ const App: React.FC = () => {
     const name = currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : '';
     await logoutUser(email, name);
   };
+
+  // Redirect-flow return (Safari popup-blocked fallback): finish the social
+  // sign-in the popup path could not run — same terms gate and status routing.
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await completeRedirectSignIn(requestTermsConsent);
+        if (result === 'pending-created') setCurrentView('PENDING_APPROVAL');
+        // 'active' → onUserChange routes into the app; null → nothing pending.
+      } catch (err: any) {
+        if (err?.message === 'terms-declined') { alert(t.termsDeclined); return; }
+        if (err?.message) alert(err.message);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Admin access is role-based (Firebase account): owner/admin/support/ops only.
   // Firestore security rules enforce the same roles server-side, so the view
@@ -266,6 +294,8 @@ const App: React.FC = () => {
         user={previewUser}
         onLogout={() => {}}
         dbData={fullDatabase}
+        datasetsFailed={datasetsFailed}
+        onRetryDatasets={() => setDatasetsRetryTick(n => n + 1)}
         language={language}
         setLanguage={setLanguage}
       />
@@ -545,6 +575,8 @@ const App: React.FC = () => {
         onLogout={handleLogout}
         onAdminAccess={isAdminRole(currentUser.role) ? handleAdminAccess : undefined}
         dbData={fullDatabase}
+        datasetsFailed={datasetsFailed}
+        onRetryDatasets={() => setDatasetsRetryTick(n => n + 1)}
         language={language}
         setLanguage={setLanguage}
       />

@@ -37,6 +37,10 @@ interface Props {
   onLogout: () => void;
   onAdminAccess?: () => void;
   dbData: HeatPumpDatabase | null;
+  /** Dataset download failed (Storage/network/access layer) — show the error
+   *  banner instead of letting the catalogue look silently empty. */
+  datasetsFailed?: boolean;
+  onRetryDatasets?: () => void;
   language: Language;
   setLanguage: (l: Language) => void;
 }
@@ -44,7 +48,7 @@ interface Props {
 const NAV_IDS: Exclude<HpPage, 'account'>[] = ['find', 'products', 'label', 'datasheet', 'bafa', 'guide', 'news'];
 
 
-export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAccess, dbData, language, setLanguage }) => {
+export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAccess, dbData, datasetsFailed, onRetryDatasets, language, setLanguage }) => {
   // Profile edits are written to Firestore; this overlay reflects them at once
   // (the auth listener would only refresh the profile on the next sign-in).
   const [userPatch, setUserPatch] = useState<Partial<User>>({});
@@ -257,6 +261,21 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     document.body,
   );
 
+  // A failed dataset download must be visible: banner + retry, both shells.
+  // (2026-07-18 PL incident: an access-layer failure looked like an empty
+  // catalogue — "0 z 0" — and was undiagnosable from the UI.)
+  const dataBanner = datasetsFailed ? (
+    <div data-testid="dataset-load-error" style={{ background: '#b42318', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '10px 20px', fontSize: 13.5, flex: 'none' }}>
+      <span>{t.products.loadError}</span>
+      <button
+        onClick={onRetryDatasets}
+        style={{ background: '#fff', color: '#b42318', border: 'none', borderRadius: 999, padding: '6px 16px', fontWeight: 600, cursor: 'pointer', fontSize: 12.5 }}
+      >
+        {t.products.loadRetry}
+      </button>
+    </div>
+  ) : null;
+
   // Phones get the curated mobile shell. Tablets get the FULL desktop UI
   // (owner decision 2026-07-12 — no curated subset on tablets); the <1100px
   // nav/typography tolerances live in hpiq.css (@media max-width:1099px).
@@ -264,6 +283,9 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     return (
       <>
         {printPortal}
+        {dataBanner && (
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 120 }}>{dataBanner}</div>
+        )}
         <MobileApp app={app} viewport={viewport} />
         {notice && (
           <div style={{ position: 'fixed', bottom: 84, left: '50%', transform: 'translateX(-50%)', zIndex: 100, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '11px 22px', fontSize: 13.5, boxShadow: '0 8px 24px rgba(0,0,0,.22)', maxWidth: '86vw' }}>
@@ -348,6 +370,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
           </span>
         </div>
       </div>
+
+      {dataBanner}
 
       {/* ============ Pages ============ */}
       {page === 'find' && <FindPage app={app} />}
