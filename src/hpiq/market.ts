@@ -74,6 +74,12 @@ export const UI_LANGUAGES: Language[] = IS_GB ? ['en'] : IS_FR ? ['fr', 'en'] : 
 export const DEFAULT_LANGUAGE: Language = IS_FR ? 'fr' : IS_PL ? 'pl' : IS_IT ? 'it' : 'en';
 
 /**
+ * This edition's round country icon (news bylines etc.). NOTE the GB asset
+ * family is named `uk-*` on disk.
+ */
+export const MARKET_ICON_32 = IS_GB ? '/icons/uk-32.png' : `/icons/${ACTIVE_COUNTRY.code.toLowerCase()}-32.png`;
+
+/**
  * This edition's public web domain (owned: heatpumpdb.de / .uk / .fr / .pl;
  * heatpumpdb.click is the market-neutral hub/short-link domain).
  */

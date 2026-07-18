@@ -207,10 +207,23 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
 ## 3. Market News Image Rules (google_cloud_function/index.js)
 
 - **Every news article must always display an image** — never leave the image slot empty.
-- **Never let AI (Gemini) generate or hallucinate image URLs** — assign images by keyword
-  matching (`selectNewsImage(title, summary)` with `NEWS_IMAGE_RULES` priority list) from
-  the curated Unsplash `NEWS_IMAGES` set in `index.js`.
-- The hpiq NewsPage renders `imageUrl` assigned at write time by the function.
+- **Never let AI (Gemini) generate or hallucinate image URLs** — images are assigned
+  deterministically at PUBLISH time from the owner-curated LOCAL pool
+  `public/news-images/` (slugs in `manifest.json`; ships with every market build;
+  imageUrl is root-relative `/news-images/<slug>.webp`). Rules (2026-07-19, mirrored
+  in `google_cloud_function/index.js` and `scripts/news/backfill-news-images.mjs` —
+  keep in sync): subject = category field + keyword nudges; POLICY articles use the
+  market's OWN `<cc>-policy-*` set (images carry that country's flag — NEVER cross
+  markets); a national-programme mention outranks an incidental EU reference and only
+  genuinely EU-level policy rotates the three `eu-policy-*` images; non-policy uses
+  the COMMON pools; within one (market, month) no file twice; rotation walks each
+  pool with a running counter; exhausted pool → least-used (an article is never
+  imageless).
+- The hpiq NewsPage renders `imageUrl` assigned at write time by the function
+  (press-format reader: masthead, eyebrow, serif headline, byline
+  "HeatPump DB <Country> Editorial Team" + country icon, PDF/Print/Email action bar —
+  PDF and Print both go through the generated `pdf/newsArticlePdf.ts`, never
+  window.print()).
 
 ## 4. General Rules
 

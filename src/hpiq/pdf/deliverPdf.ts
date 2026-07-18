@@ -32,6 +32,21 @@ export function downloadPdf(doc: jsPDF, filename: string): void {
 }
 
 /**
+ * Desktop print route for GENERATED documents (news articles): open the PDF in
+ * a new tab, where the browser's own PDF viewer offers Print with our exact A4
+ * geometry. Never a share sheet; falls back to a download if the popup is
+ * blocked. (The product data sheet keeps its DOM print on desktop — this is
+ * only for documents that exist solely as generated PDFs.)
+ */
+export function openPdfForPrint(doc: jsPDF, filename: string): void {
+  const blob = doc.output('blob') as Blob;
+  const url = URL.createObjectURL(blob);
+  const w = window.open(url, '_blank');
+  if (!w) downloadBlob(blob, filename);
+  setTimeout(() => URL.revokeObjectURL(url), 60_000);
+}
+
+/**
  * iOS-only print route: offer the PDF to the system share sheet, whose actions
  * include "Print". Falls back to a download if sharing is unavailable/declined.
  */

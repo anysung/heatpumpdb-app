@@ -12,7 +12,7 @@
 import React, { useState } from 'react';
 import { HpApp, HpPage } from '../appState';
 import { tr } from '../i18n';
-import { UI_LANGUAGES, FUNDING_SOURCE_LINKS } from '../market';
+import { UI_LANGUAGES, FUNDING_SOURCE_LINKS, MARKET_ICON_32 } from '../market';
 import { LEGAL_ROUTES, LegalDoc, MARKETING_EMAIL } from '../../config/legal';
 import { SupportCard } from '../pages/accountParts';
 import { LEGAL_NAV } from '../../legal/LegalPage';
@@ -26,6 +26,9 @@ import type { Viewport } from '../useViewport';
 import { MobileFind, MobileProducts, MobileDetail } from './MobileCatalog';
 import { DataSheetDoc } from '../pages/DataSheetPage';
 import { showInstallUi, canPromptInstall, isIos, promptInstall, onInstallStateChange } from '../pwaInstall';
+import { shortDate } from '../model';
+import { NEWS_SERIF, localizedNews, newsEyebrow, articleDeepLink, emailArticleHref, makeArticlePdf } from '../newsModel';
+import { printPdfViaShareSheet } from '../pdf/deliverPdf';
 
 type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account'> | 'guide';
 
@@ -308,15 +311,22 @@ const MobileGuide: React.FC<{ app: HpApp }> = ({ app }) => {
   );
 };
 
-/* ── News (list + full-screen reader) ────────────────────────────────────── */
+/* ── News (press-format list + full-screen article reader) ───────────────── */
 
-function localized(item: NewsItem, lang: Language): { title: string; summary: string; body: string } {
-  if (lang === 'de') return { title: item.title_de ?? item.title, summary: item.summary_de ?? item.summary, body: item.body_de ?? item.body ?? '' };
-  if (lang === 'fr') return { title: item.title_fr ?? item.title, summary: item.summary_fr ?? item.summary, body: item.body_fr ?? item.body ?? '' };
-  if (lang === 'pl') return { title: item.title_pl ?? item.title, summary: item.summary_pl ?? item.summary, body: item.body_pl ?? item.body ?? '' };
-  if (lang === 'it') return { title: item.title_it ?? item.title, summary: item.summary_it ?? item.summary, body: item.body_it ?? item.body ?? '' };
-  return { title: item.title, summary: item.summary, body: item.body ?? '' };
-}
+const MNewsIcon: React.FC<{ d: string }> = ({ d }) => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={d} />
+  </svg>
+);
+const M_NEWS_ICONS = {
+  pdf: 'M12 3v10m0 0l-4-4m4 4l4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2',
+  email: 'M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM3.5 6.5L12 13l8.5-6.5',
+  share: 'M7 11l5-5 5 5M12 6v11M5 20h14',
+};
+
+const mNewsEyebrow: React.CSSProperties = {
+  fontSize: 10.5, fontWeight: 700, letterSpacing: '.12em', color: '#0066cc', textTransform: 'uppercase',
+};
 
 const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
@@ -325,7 +335,7 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
   const q = query.trim().toLowerCase();
   const items = q
     ? app.news.filter(n => {
-        const loc = localized(n, app.lang);
+        const loc = localizedNews(n, app.lang);
         return `${loc.title} ${loc.summary}`.toLowerCase().includes(q);
       })
     : app.news;
@@ -338,37 +348,77 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [app.news.length]);
 
+  React.useEffect(() => { if (openId) window.scrollTo(0, 0); }, [openId]);
+
   const shareArticle = (item: NewsItem) => {
-    const url = `${window.location.origin}/?article=${encodeURIComponent(item.id)}`;
-    const title = localized(item, app.lang).title;
+    const url = articleDeepLink(item.id);
+    const title = localizedNews(item, app.lang).title;
     if (navigator.share) navigator.share({ title, url }).catch(() => {});
     else navigator.clipboard?.writeText(url).then(() => app.notify(t.news.linkCopied)).catch(() => {});
   };
 
+  /** PDF on mobile: the generated article PDF via the OS share sheet
+   *  (the only route to save/print a PDF on iOS); falls back to a download. */
+  const pdfArticle = (item: NewsItem) => {
+    try {
+      const made = makeArticlePdf(item, t, app.lang);
+      printPdfViaShareSheet(made.doc, made.filename).catch(() => app.notify(t.ds.pdfFailed));
+    } catch { app.notify(t.ds.pdfFailed); }
+  };
+
+  const emailArticle = (item: NewsItem) => {
+    const loc = localizedNews(item, app.lang);
+    window.location.href = emailArticleHref(loc.title, loc.summary, articleDeepLink(item.id));
+  };
+
   if (open) {
-    const loc = localized(open, app.lang);
+    const loc = localizedNews(open, app.lang);
+    const actionBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600, color: '#1d1d1f', cursor: 'pointer', padding: '4px 0' };
     return (
-      <div style={{ padding: '18px 16px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ padding: '18px 16px 28px', background: '#fff', display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span onClick={() => setOpenId(null)} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>‹ {t.nav.news}</span>
-          <span onClick={() => shareArticle(open)} style={{ fontSize: 12.5, border: '1px solid #d2d2d7', borderRadius: 999, padding: '6px 14px', background: '#fff', cursor: 'pointer' }}>{t.news.share} ↗</span>
         </div>
-        <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.06em', color: '#7a7a7a' }}>{t.news.categories[open.category ?? 'MARKET'] ?? open.category}</span>
-        <span style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, lineHeight: 1.25, letterSpacing: '-0.24px' }}>{loc.title}</span>
-        <span style={{ fontSize: 13.5, color: '#555', lineHeight: 1.55 }}>{loc.summary}</span>
-        {open.imageUrl && <img src={open.imageUrl} alt="" style={{ width: '100%', borderRadius: 12 }} />}
-        {loc.body.split(/\n\s*\n/).map((p, i) => (
-          <p key={i} style={{ fontSize: 14.5, lineHeight: 1.65, margin: 0 }}>{p}</p>
-        ))}
+
+        {/* eyebrow · serif headline · dek */}
+        <span style={{ ...mNewsEyebrow, marginTop: 16 }}>{newsEyebrow(t, open)}</span>
+        <h1 style={{ fontFamily: NEWS_SERIF, fontSize: 27, fontWeight: 700, lineHeight: 1.18, letterSpacing: '-0.01em', color: '#1d1d1f', margin: '9px 0 0' }}>{loc.title}</h1>
+        <p style={{ fontSize: 15.5, color: '#6e6e73', lineHeight: 1.5, margin: '11px 0 0' }}>{loc.summary}</p>
+
+        {/* byline */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 14, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 12.5, color: '#555' }}>{t.news.by}</span>
+          <img src={MARKET_ICON_32} alt="" width={18} height={18} style={{ borderRadius: '50%', display: 'block' }} />
+          <span style={{ fontSize: 12.5, fontWeight: 600, color: '#1d1d1f' }}>{t.news.editorialTeam(t.news.marketCountry)}</span>
+        </div>
+        <span style={{ fontSize: 12, color: '#7a7a7a', marginTop: 4 }}>{t.news.updated} {shortDate(open.date, t.locale)}</span>
+
+        {/* action bar — PDF (share sheet) · Email · Share */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 12, padding: '8px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
+          <span style={actionBtn} onClick={() => pdfArticle(open)}><MNewsIcon d={M_NEWS_ICONS.pdf} />{t.news.actionPdf}</span>
+          <span style={actionBtn} onClick={() => emailArticle(open)}><MNewsIcon d={M_NEWS_ICONS.email} />{t.news.actionEmail}</span>
+          <span style={actionBtn} onClick={() => shareArticle(open)}><MNewsIcon d={M_NEWS_ICONS.share} />{t.news.share}</span>
+        </div>
+
+        {/* hero */}
+        {open.imageUrl && <img src={open.imageUrl} alt="" style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 3, marginTop: 16 }} />}
+
+        {/* serif body */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 15, marginTop: 18 }}>
+          {loc.body.split(/\n\s*\n/).map((p, i) => (
+            <p key={i} style={{ fontFamily: NEWS_SERIF, fontSize: 16.5, lineHeight: 1.7, color: '#1d1d1f', margin: 0 }}>{p}</p>
+          ))}
+        </div>
+
         {(open.sources?.length ?? 0) > 0 && (
-          <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ borderTop: '1px solid #e0e0e0', marginTop: 18, paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={sectionLabel}>{t.news.sources}</span>
             {open.sources!.map(s => (
               <span key={s.url} onClick={() => window.open(s.url, '_blank', 'noopener')} style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer', overflowWrap: 'anywhere' }}>{s.title}</span>
             ))}
           </div>
         )}
-        <span style={{ fontSize: 10.5, color: '#b6b6bc', lineHeight: 1.5 }}>{t.news.editorialNote}</span>
+        <span style={{ fontSize: 10.5, color: '#b6b6bc', lineHeight: 1.5, marginTop: 14 }}>{t.news.editorialNote}</span>
       </div>
     );
   }
@@ -384,23 +434,23 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
         style={{ border: '1px solid #d2d2d7', borderRadius: 999, padding: '9px 16px', fontSize: 13.5, fontFamily: 'inherit', background: '#fff', outline: 'none' }}
       />
       {items.length === 0 && (
-        <div style={{ border: '1px solid #e0e0e0', borderRadius: 14, padding: '15px 17px', background: '#fff', display: 'flex', flexDirection: 'column', gap: 5 }}>
-          <span style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.06em', color: '#7a7a7a' }}>{t.news.fallbackFeatured.kicker}</span>
-          <span style={{ fontFamily: FD, fontSize: 17, fontWeight: 600, lineHeight: 1.3 }}>{t.news.fallbackFeatured.title}</span>
-          <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.news.fallbackFeatured.dek}</span>
+        <div style={{ border: '1px solid #e0e0e0', borderRadius: 10, padding: '15px 17px', background: '#fff', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <span style={mNewsEyebrow}>{(t.news.categories[t.news.fallbackFeatured.badge] ?? t.news.fallbackFeatured.badge)} • {t.news.marketCountry.toLocaleUpperCase()}</span>
+          <span style={{ fontFamily: NEWS_SERIF, fontSize: 18, fontWeight: 700, lineHeight: 1.25, color: '#1d1d1f' }}>{t.news.fallbackFeatured.title}</span>
+          <span style={{ fontSize: 12.5, color: '#6e6e73', lineHeight: 1.5 }}>{t.news.fallbackFeatured.dek}</span>
           <span style={{ fontSize: 11.5, color: '#b6b6bc' }}>{t.news.notPublished}</span>
         </div>
       )}
       {items.map(n => {
-        const loc = localized(n, app.lang);
+        const loc = localizedNews(n, app.lang);
         return (
-          <div key={n.id} onClick={() => setOpenId(n.id)} style={{ border: '1px solid #e0e0e0', borderRadius: 14, background: '#fff', overflow: 'hidden', cursor: 'pointer' }}>
+          <div key={n.id} onClick={() => setOpenId(n.id)} style={{ border: '1px solid #e0e0e0', borderRadius: 10, background: '#fff', overflow: 'hidden', cursor: 'pointer' }}>
             {n.imageUrl && <img src={n.imageUrl} alt="" style={{ width: '100%', display: 'block', maxHeight: 150, objectFit: 'cover' }} />}
-            <div style={{ padding: '13px 16px', display: 'flex', flexDirection: 'column', gap: 5 }}>
-              <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.06em', color: '#7a7a7a' }}>{t.news.categories[n.category ?? 'MARKET'] ?? n.category}</span>
-              <span style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.3 }}>{loc.title}</span>
-              <span style={{ fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>{loc.summary}</span>
-              <span style={{ fontSize: 12.5, color: '#0066cc' }}>{t.news.readBriefing}</span>
+            <div style={{ padding: '13px 16px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <span style={mNewsEyebrow}>{newsEyebrow(t, n)}</span>
+              <span style={{ fontFamily: NEWS_SERIF, fontSize: 17.5, fontWeight: 700, lineHeight: 1.28, color: '#1d1d1f' }}>{loc.title}</span>
+              <span style={{ fontSize: 12.5, color: '#6e6e73', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{loc.summary}</span>
+              <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{shortDate(n.date, t.locale)}</span>
             </div>
           </div>
         );

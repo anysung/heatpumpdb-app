@@ -399,6 +399,14 @@ const EN = {
     archiveTitle: 'All articles',
     searchPlaceholder: 'Search articles…',
     noArchiveMatch: 'No articles match your search.',
+    // ── Press-format article view (Jul 2026 redesign) ──
+    by: 'By',
+    marketCountry: 'Germany',
+    editorialTeam: (country: string) => `HeatPump DB ${country} Editorial Team`,
+    updated: 'Updated',
+    actionPdf: 'PDF',
+    actionPrint: 'Print',
+    actionEmail: 'Email',
   },
 
   account: {
@@ -997,6 +1005,13 @@ const DE: HpStrings = {
     archiveTitle: 'Alle Artikel',
     searchPlaceholder: 'Artikel durchsuchen…',
     noArchiveMatch: 'Keine Artikel zu Ihrer Suche.',
+    by: 'Von',
+    marketCountry: 'Deutschland',
+    editorialTeam: (country: string) => `HeatPump DB ${country} Redaktionsteam`,
+    updated: 'Aktualisiert',
+    actionPdf: 'PDF',
+    actionPrint: 'Drucken',
+    actionEmail: 'E-Mail',
   },
 
   account: {
@@ -1379,6 +1394,7 @@ const GB: HpStrings = {
 
   news: {
     ...EN.news,
+    marketCountry: 'United Kingdom',
     fallbackFeatured: {
       badge: 'MARKET',
       kicker: 'July 2026 briefing',
@@ -1560,6 +1576,7 @@ const FR_EN: HpStrings = {
 
   news: {
     ...EN.news,
+    marketCountry: 'France',
     fallbackFeatured: {
       badge: 'MARKET',
       kicker: 'July 2026 briefing',
@@ -1954,6 +1971,13 @@ const FR_FR: HpStrings = {
     archiveTitle: 'Tous les articles',
     searchPlaceholder: 'Rechercher des articles…',
     noArchiveMatch: 'Aucun article ne correspond à votre recherche.',
+    by: 'Par',
+    marketCountry: 'France',
+    editorialTeam: (country: string) => `l’équipe éditoriale HeatPump DB ${country}`,
+    updated: 'Mis à jour le',
+    actionPdf: 'PDF',
+    actionPrint: 'Imprimer',
+    actionEmail: 'E-mail',
   },
 
   company: {
@@ -2349,6 +2373,7 @@ const PL_EN: HpStrings = {
 
   news: {
     ...EN.news,
+    marketCountry: 'Poland',
     fallbackFeatured: {
       badge: 'MARKET',
       kicker: 'July 2026 briefing',
@@ -2743,6 +2768,13 @@ const PL_PL: HpStrings = {
     archiveTitle: 'Wszystkie artykuły',
     searchPlaceholder: 'Szukaj artykułów…',
     noArchiveMatch: 'Brak artykułów pasujących do wyszukiwania.',
+    by: 'Autor:',
+    marketCountry: 'Polska',
+    editorialTeam: (country: string) => `Zespół redakcyjny HeatPump DB ${country}`,
+    updated: 'Zaktualizowano',
+    actionPdf: 'PDF',
+    actionPrint: 'Drukuj',
+    actionEmail: 'E-mail',
   },
 
   company: {
@@ -3144,6 +3176,7 @@ const IT_EN: HpStrings = {
 
   news: {
     ...EN.news,
+    marketCountry: 'Italy',
     fallbackFeatured: {
       badge: 'MARKET',
       kicker: 'July 2026 briefing',
@@ -3545,6 +3578,13 @@ const IT_IT: HpStrings = {
     archiveTitle: 'Tutti gli articoli',
     searchPlaceholder: 'Cerca articoli…',
     noArchiveMatch: 'Nessun articolo corrisponde alla ricerca.',
+    by: 'Di',
+    marketCountry: 'Italia',
+    editorialTeam: (country: string) => `Redazione HeatPump DB ${country}`,
+    updated: 'Aggiornato',
+    actionPdf: 'PDF',
+    actionPrint: 'Stampa',
+    actionEmail: 'E-mail',
   },
 
   company: {
