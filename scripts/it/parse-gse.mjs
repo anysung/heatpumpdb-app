@@ -187,6 +187,7 @@ const { rows: iiiaRows, stats: iiiaStats } = parseIIIA();
 const compact = s => (s ?? '').toUpperCase().normalize('NFKD').replace(/[^A-Z0-9]/g, '');
 
 const entries = new Map();
+let dualRegistrations = 0;
 for (const r of iiiaRows) {
   const identity = ['IIIA', compact(r.brand), compact(r.model), compact(r.odu_id), compact(r.idu_id)].join('|');
   const key = `IIIA-${createHash('sha1').update(identity).digest('hex').slice(0, 12)}`;
@@ -204,7 +205,16 @@ for (const r of iiiaRows) {
       ratings: [],
     });
   }
-  entries.get(key).ratings.push({ kw: r.kw, etas: r.etas, scop: r.scop, no2: r.no2 });
+  const e = entries.get(key);
+  // Dual registration: the same unit listed under a second exchange type
+  // (e.g. MASTER THERM AQUAMASTER under Acqua/acqua AND Salamoia/acqua —
+  // a unit approved for both source loops). Keep one identity, record the
+  // extra type (2026-07 audit: 30 rows, all water/water ↔ brine/water).
+  if (e.scambio !== r.scambio && !(e.scambio_alt ?? []).includes(r.scambio)) {
+    e.scambio_alt = [...(e.scambio_alt ?? []), r.scambio];
+    dualRegistrations++;
+  }
+  e.ratings.push({ kw: r.kw, etas: r.etas, scop: r.scop, no2: r.no2 });
 }
 
 const iiib = parseIIIB();
@@ -220,6 +230,7 @@ const out = {
     iiia_rows: iiiaStats.data,
     iiia_rejected: iiiaStats.rejected,
     iiia_entries: entries.size,
+    iiia_dual_registrations: dualRegistrations,
     iiib_rows: iiib.length,
     iiie_rows: iiie.length,
   },

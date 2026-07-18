@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T03:15:37.110Z",
+  "generated_at": "2026-07-18T09:35:02.903Z",
   "markets": {
     "DE": {
       "products": 7106,
@@ -104,10 +104,10 @@
       "invalid_capacities": 0,
       "missing_model": 0,
       "manufacturers": 231,
-      "local_confirmed": 425,
-      "local_review_required": 0,
+      "local_confirmed": 422,
+      "local_review_required": 3,
       "local_verification_required": 6681,
-      "local_ids": 425,
+      "local_ids": 422,
       "shared_local_ids": 0,
       "conflicting_local_ids": 0,
       "ambiguous_confirmed_local_ids": 0,

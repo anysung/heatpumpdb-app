@@ -158,7 +158,12 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   persist in committed `data_sources/gse_ct/gse-match-history.json`; official
   mappings enter via `data_sources/manufacturer_cross_reference/canonical-to-gse.json`.
   GSE data facts-only (no GSE logo; source attribution + snapshot dates). No
-  "listed only" filter (425/7,106 confirmed would be a discovery trap — GB rule).
+  "listed only" filter (422/7,106 confirmed would be a discovery trap — GB rule).
+  Match-rate root-cause audit (2026-07): docs/IT_GSE_MATCHING_AUDIT.md +
+  scripts/it/audit-gse-*.mjs — 60% of the catalogue is out of scope (air/air;
+  the canonical baseline is 100% air/water), 18% are brands with zero canonical
+  presence, 16% newer/absent hardware; parser quality contributes zero. Rule
+  changes must be measured through the audit's mode flags before adoption.
 - **FR pipeline** (`scripts/fr/`): `build-app-products-fr.mjs` derives the France
   catalogue from the **built DE datasets** (same hardware sold in both markets — run the
   DE builder first) → `public/data/products-fr*.json`. German type strings are localised

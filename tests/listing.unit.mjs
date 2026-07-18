@@ -138,7 +138,7 @@ for (const country of ['GB', 'DE', 'FR', 'PL', 'IT']) {
 
   if (country === 'IT') {
     is('source is the GSE Conto Termico catalogue', LOCAL_LISTING_SOURCE, 'GSE');
-    is('no listing search filter is offered (425/7106 would be a discovery trap)', LOCAL_LISTING_FILTER, false);
+    is('no listing search filter is offered (422/7106 would be a discovery trap)', LOCAL_LISTING_FILTER, false);
 
     is('confirmed → listed',
       localListingStatus({ gse_match_status: 'confirmed', gse_entry_key: 'IIIA-abc123def456' }), 'listed');
