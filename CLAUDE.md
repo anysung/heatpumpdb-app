@@ -44,9 +44,18 @@
   The shrink guard reads live counts from the bucket via gcloud and subtracts
   the canary. robots.txt disallows `/data/` and opts out AI-training crawlers.
   **App Check** (reCAPTCHA Enterprise, `VITE_RECAPTCHA_SITE_KEY`) is initialized
-  in `src/firebase.ts` and ENFORCED on Cloud Storage — raw scripts cannot read
-  the datasets even with a stolen user token. Firestore is intentionally
-  UNENFORCED (login safety); e2e tests use a registered debug token via
+  in `src/firebase.ts` and runs in MONITORING mode on every service — Cloud
+  Storage enforcement was TURNED OFF 2026-07-18 after it silently blocked
+  legitimate logged-in users (empty catalogue, no error): reCAPTCHA scores are
+  domain-reputation-based, so a fresh market domain (heatpumpdb.pl) failed the
+  0.5 threshold even for real users, and the B2B audience (corporate
+  VPN/proxy) is structurally low-scoring. The access gate is the approval
+  system + storage.rules + canaries + terms, not the bot score. Do NOT
+  re-enforce on a hunch — only with observed-abuse evidence (canary hit,
+  download-pattern anomaly), and never during a market launch. When adding a
+  market domain, register it in the reCAPTCHA key's allowed domains
+  (gcloud recaptcha keys update). Firestore was always UNENFORCED (login
+  safety); e2e tests use a registered debug token via
   `window.FIREBASE_APPCHECK_DEBUG_TOKEN` (dev server auto-generates one).
 - Registration consent: every signup path (form + first-time social) must pass
   the account/data-use terms popup (one account per person; no data
