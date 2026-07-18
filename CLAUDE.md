@@ -52,9 +52,15 @@
   VPN/proxy) is structurally low-scoring. The access gate is the approval
   system + storage.rules + canaries + terms, not the bot score. Do NOT
   re-enforce on a hunch — only with observed-abuse evidence (canary hit,
-  download-pattern anomaly), and never during a market launch. When adding a
-  market domain, register it in the reCAPTCHA key's allowed domains
-  (gcloud recaptcha keys update). Firestore was always UNENFORCED (login
+  download-pattern anomaly), and never during a market launch. **When adding a
+  market domain, TWO per-domain allowlists must be updated or the new site
+  silently gets an empty catalogue** (the PL launch hit both): ① the reCAPTCHA
+  key's allowed domains (gcloud recaptcha keys update), ② the datasets
+  bucket's CORS origins — source of truth `scripts/infra/storage-cors.json`,
+  applied with `gcloud storage buckets update gs://heatpumpdb-datasets
+  --cors-file=scripts/infra/storage-cors.json` (the browser cannot read
+  Storage responses from an origin missing there, even though the server
+  logs a 200). Firestore was always UNENFORCED (login
   safety); e2e tests use a registered debug token via
   `window.FIREBASE_APPCHECK_DEBUG_TOKEN` (dev server auto-generates one).
 - Registration consent: every signup path (form + first-time social) must pass

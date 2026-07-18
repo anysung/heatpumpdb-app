@@ -1,0 +1,25 @@
+[
+  {
+    "maxAgeSeconds": 3600,
+    "method": ["GET", "HEAD"],
+    "origin": [
+      "https://www.heatpumpdb.de",
+      "https://heatpumpdb.de",
+      "https://www.heatpumpdb.uk",
+      "https://heatpumpdb.uk",
+      "https://www.heatpumpdb.fr",
+      "https://heatpumpdb.fr",
+      "https://www.heatpumpdb.pl",
+      "https://heatpumpdb.pl",
+      "https://gen-lang-client-0324244302.web.app",
+      "https://heatpumpdb-uk.web.app",
+      "https://heatpumpdb-fr.web.app",
+      "https://heatpumpdb-pl.web.app",
+      "https://heatpumpdb-hub.web.app",
+      "http://localhost:5173",
+      "http://localhost:5199",
+      "http://localhost:5311"
+    ],
+    "responseHeader": ["Content-Type", "Authorization", "x-goog-meta-*"]
+  }
+]
