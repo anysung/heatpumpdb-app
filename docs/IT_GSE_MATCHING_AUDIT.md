@@ -119,3 +119,17 @@ basis-unstated entries keep `gse_ratings` + `declared_capacity_kw` only. IT tota
 gate-enforced (GSE_CATALOGUE records outside IT are a blocker) and
 architecture-tested; the one-time count/segment transition is declared in
 `data_manifests/migration.json` (id 2026-07-it-gse-primary-layer).
+
+## Decision record (2026-07-18): GSE→canonical component backfill — REJECTED
+
+Evaluated using GSE ODU/IDU ids from the 422 confirmed pairs to fill missing
+canonical component fields. Findings: 4 ODU + 34 genuinely-new IDU values
+(+80 already-in-model structurings) = 1.7 % of the canonical catalogue at
+best. The owner decided NOT to proceed: the benefit is small against the
+risks (cross-market propagation would require an explicit canonical-promotion
+workflow to avoid the forbidden IT→canonical direction and a DE→IT→DE
+pipeline cycle; exact_model-derived IDUs can over-specify collapsed
+multi-variant records; provenance mixing in component fields). Any future
+attempt must start from this analysis, use a committed cross-reference file
+read by the DE builder, and re-gate every market.
+
