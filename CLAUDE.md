@@ -53,14 +53,17 @@
   system + storage.rules + canaries + terms, not the bot score. Do NOT
   re-enforce on a hunch — only with observed-abuse evidence (canary hit,
   download-pattern anomaly), and never during a market launch. **When adding a
-  market domain, TWO per-domain allowlists must be updated or the new site
-  silently gets an empty catalogue** (the PL launch hit both): ① the reCAPTCHA
-  key's allowed domains (gcloud recaptcha keys update), ② the datasets
+  market domain, THREE per-domain allowlists must be updated** (PL hit ① and ②
+  — empty catalogue; IT hit ③ — auth/unauthorized-domain on login, fixed
+  2026-07-18): ① the reCAPTCHA key's allowed domains (gcloud recaptcha keys
+  update --web --domains=<FULL list — it REPLACES>), ② the datasets
   bucket's CORS origins — source of truth `scripts/infra/storage-cors.json`,
   applied with `gcloud storage buckets update gs://heatpumpdb-datasets
   --cors-file=scripts/infra/storage-cors.json` (the browser cannot read
   Storage responses from an origin missing there, even though the server
-  logs a 200). Firestore was always UNENFORCED (login
+  logs a 200), ③ Firebase Auth authorized domains (no gcloud command — PATCH
+  identitytoolkit admin/v2 config `authorizedDomains` with an access token +
+  x-goog-user-project header, or Firebase console → Auth → Settings). Firestore was always UNENFORCED (login
   safety); e2e tests use a registered debug token via
   `window.FIREBASE_APPCHECK_DEBUG_TOKEN` (dev server auto-generates one).
 - Registration consent: every signup path (form + first-time social) must pass

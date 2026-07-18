@@ -81,7 +81,11 @@ npm aliases: `npm run update:all` / `npm run update:all:deploy`.
 4. `vite.config.ts`: `marketStats` files map + `MARKET_HTML` + `__ALL_MARKET_STATS__`.
 5. Hosting: `firebase hosting:sites:create`, target in `firebase.json`/`.firebaserc`,
    `build:xx`/`deploy:xx` scripts; add the target to the orchestrator deploy list
-   and its datasets to `LIVE_GCS` (shrink guard). Add the market to
+   and its datasets to `LIVE_GCS` (shrink guard). THREE per-domain allowlists
+   (all three have caused a live incident when missed): reCAPTCHA key domains,
+   datasets-bucket CORS (`scripts/infra/storage-cors.json`), and Firebase Auth
+   authorized domains (identitytoolkit admin/v2 PATCH or console) — see
+   CLAUDE.md §1. Add the market to
    `scripts/upload-datasets.mjs` DATASETS + a canary pair in
    `scripts/canary/canary-records.json` (datasets are served from the
    auth-protected Storage bucket, not hosting).
