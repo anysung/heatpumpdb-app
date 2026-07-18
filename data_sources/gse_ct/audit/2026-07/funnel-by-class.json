@@ -1,0 +1,38 @@
+{
+ "water_water": {
+  "unmatched": 133
+ },
+ "air_water_split": {
+  "unmatched": 2054,
+  "confirmed": 295,
+  "granularity": 42,
+  "review": 69,
+  "conflict": 2
+ },
+ "air_water_monobloc_or_odu_only": {
+  "unmatched": 1454,
+  "confirmed": 127,
+  "review": 24,
+  "granularity": 8,
+  "conflict": 2
+ },
+ "air_air_split": {
+  "unmatched": 5111
+ },
+ "air_air_vrf": {
+  "unmatched": 672,
+  "conflict": 1
+ },
+ "air_air_packaged": {
+  "unmatched": 21
+ },
+ "ground_source": {
+  "unmatched": 178
+ },
+ "water_air": {
+  "unmatched": 68
+ },
+ "gas_driven": {
+  "unmatched": 7
+ }
+}

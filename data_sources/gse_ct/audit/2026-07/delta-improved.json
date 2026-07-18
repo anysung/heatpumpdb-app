@@ -1,0 +1,37 @@
+{
+ "added": [],
+ "removed": [
+  {
+   "gse_entry_key": "IIIA-cf5ea3b064e6",
+   "brand": "Vaillant",
+   "gse_model": "VWL 125/5 AS S3 + VWL 128/5 IS",
+   "odu": "0010034190",
+   "idu": "0010034196",
+   "kw": [
+    11,
+    14
+   ],
+   "method": "component_identity",
+   "canonical_id": "16003240",
+   "canonical_mfr": "Vaillant Deutschland GmbH & Co. KG",
+   "canonical_model": "aroTHERM Split VWL 125/5 AS S2 + VWL 128/5 IS",
+   "canonical_kw": 13.57
+  },
+  {
+   "gse_entry_key": "IIIA-afa99ded8f4e",
+   "brand": "Vaillant",
+   "gse_model": "VWL 125/5 AS S3 + VWL 127/5 IS",
+   "odu": "0010034190",
+   "idu": "0010034193",
+   "kw": [
+    11,
+    14
+   ],
+   "method": "component_identity",
+   "canonical_id": "16003239",
+   "canonical_mfr": "Vaillant Deutschland GmbH & Co. KG",
+   "canonical_model": "aroTHERM Split VWL 125/5 (AS/S2) + VWL (127/5 IS / 128/5 IS)",
+   "canonical_kw": 13.57
+  }
+ ]
+}

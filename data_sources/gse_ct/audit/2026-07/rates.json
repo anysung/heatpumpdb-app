@@ -1,0 +1,30 @@
+{
+ "baseline": {
+  "confirmed_products": 422,
+  "confirmed_gse_combinations": 472,
+  "raw_rate_vs_identities_pct": 4.6,
+  "raw_rate_vs_canonical_pct": 5.9,
+  "scope_adjusted_rate_pct": 11.6
+ },
+ "brand": {
+  "confirmed_products": 422,
+  "confirmed_gse_combinations": 472,
+  "raw_rate_vs_identities_pct": 4.6,
+  "raw_rate_vs_canonical_pct": 5.9,
+  "scope_adjusted_rate_pct": 11.6
+ },
+ "plus": {
+  "confirmed_products": 420,
+  "confirmed_gse_combinations": 470,
+  "raw_rate_vs_identities_pct": 4.6,
+  "raw_rate_vs_canonical_pct": 5.9,
+  "scope_adjusted_rate_pct": 11.5
+ },
+ "improved": {
+  "confirmed_products": 420,
+  "confirmed_gse_combinations": 470,
+  "raw_rate_vs_identities_pct": 4.6,
+  "raw_rate_vs_canonical_pct": 5.9,
+  "scope_adjusted_rate_pct": 11.5
+ }
+}

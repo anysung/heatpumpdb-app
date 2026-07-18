@@ -1,0 +1,348 @@
+{
+ "counts": {
+  "pdf_data_lines": 13613,
+  "parsed_rows": 13613,
+  "parsed_identities": 10268,
+  "identity_rating_rows": 13613
+ },
+ "row_alignment": {
+  "aligned_rows": 13613,
+  "pdf_lines": 13613,
+  "identity_not_found": 0,
+  "untokenizable": 0
+ },
+ "field_checks": {
+  "numeric_tail_ok": 13613,
+  "numeric_tail_mismatch": 0,
+  "token_loss_rows": 0,
+  "tokens_ok": 13613,
+  "id_order_ok": 9310,
+  "id_order_reversed": 0
+ },
+ "brand_tally": [
+  {
+   "brand": "DAIKIN",
+   "parsed_rows": 1186,
+   "raw_lines_containing": 1186,
+   "ok": true
+  },
+  {
+   "brand": "Fujitsu General Italia Spa",
+   "parsed_rows": 891,
+   "raw_lines_containing": 891,
+   "ok": true
+  },
+  {
+   "brand": "Haier",
+   "parsed_rows": 572,
+   "raw_lines_containing": 572,
+   "ok": true
+  },
+  {
+   "brand": "ARISTON",
+   "parsed_rows": 476,
+   "raw_lines_containing": 476,
+   "ok": true
+  },
+  {
+   "brand": "Mitsubishi Electric",
+   "parsed_rows": 472,
+   "raw_lines_containing": 472,
+   "ok": true
+  },
+  {
+   "brand": "TOSHIBA",
+   "parsed_rows": 440,
+   "raw_lines_containing": 440,
+   "ok": true
+  },
+  {
+   "brand": "ELCO",
+   "parsed_rows": 419,
+   "raw_lines_containing": 419,
+   "ok": true
+  },
+  {
+   "brand": "Ecoforest Geotermia S.L.U.",
+   "parsed_rows": 342,
+   "raw_lines_containing": 342,
+   "ok": true
+  },
+  {
+   "brand": "ENEREN",
+   "parsed_rows": 341,
+   "raw_lines_containing": 341,
+   "ok": true
+  },
+  {
+   "brand": "HITACHI",
+   "parsed_rows": 333,
+   "raw_lines_containing": 333,
+   "ok": true
+  },
+  {
+   "brand": "SAMSUNG",
+   "parsed_rows": 319,
+   "raw_lines_containing": 319,
+   "ok": true
+  },
+  {
+   "brand": "BONGIOANNI",
+   "parsed_rows": 292,
+   "raw_lines_containing": 292,
+   "ok": true
+  },
+  {
+   "brand": "DUEDI",
+   "parsed_rows": 292,
+   "raw_lines_containing": 292,
+   "ok": true
+  },
+  {
+   "brand": "Bosch",
+   "parsed_rows": 250,
+   "raw_lines_containing": 250,
+   "ok": true
+  },
+  {
+   "brand": "PANASONIC",
+   "parsed_rows": 249,
+   "raw_lines_containing": 249,
+   "ok": true
+  },
+  {
+   "brand": "AERMEC",
+   "parsed_rows": 241,
+   "raw_lines_containing": 241,
+   "ok": true
+  },
+  {
+   "brand": "Olimpia Splendid",
+   "parsed_rows": 232,
+   "raw_lines_containing": 232,
+   "ok": true
+  },
+  {
+   "brand": "Viessmann",
+   "parsed_rows": 232,
+   "raw_lines_containing": 232,
+   "ok": true
+  },
+  {
+   "brand": "FERROLI",
+   "parsed_rows": 218,
+   "raw_lines_containing": 218,
+   "ok": true
+  },
+  {
+   "brand": "Lamborghini CaloreClima",
+   "parsed_rows": 202,
+   "raw_lines_containing": 202,
+   "ok": true
+  },
+  {
+   "brand": "Mitsubishi Heavy Industries",
+   "parsed_rows": 189,
+   "raw_lines_containing": 189,
+   "ok": true
+  },
+  {
+   "brand": "Swegon Operations s.r.l.",
+   "parsed_rows": 189,
+   "raw_lines_containing": 189,
+   "ok": true
+  },
+  {
+   "brand": "Rhoss",
+   "parsed_rows": 187,
+   "raw_lines_containing": 187,
+   "ok": true
+  },
+  {
+   "brand": "CHAFFOTEAUX",
+   "parsed_rows": 178,
+   "raw_lines_containing": 178,
+   "ok": true
+  },
+  {
+   "brand": "INNOVA",
+   "parsed_rows": 177,
+   "raw_lines_containing": 177,
+   "ok": true
+  },
+  {
+   "brand": "RIELLO",
+   "parsed_rows": 175,
+   "raw_lines_containing": 175,
+   "ok": true
+  },
+  {
+   "brand": "HISENSE",
+   "parsed_rows": 171,
+   "raw_lines_containing": 171,
+   "ok": true
+  },
+  {
+   "brand": "MIDEA",
+   "parsed_rows": 167,
+   "raw_lines_containing": 167,
+   "ok": true
+  },
+  {
+   "brand": "Buderus",
+   "parsed_rows": 163,
+   "raw_lines_containing": 163,
+   "ok": true
+  },
+  {
+   "brand": "CLINT",
+   "parsed_rows": 163,
+   "raw_lines_containing": 163,
+   "ok": true
+  },
+  {
+   "brand": "MASTER THERM",
+   "parsed_rows": 162,
+   "raw_lines_containing": 162,
+   "ok": true
+  },
+  {
+   "brand": "SINCLAIR",
+   "parsed_rows": 144,
+   "raw_lines_containing": 144,
+   "ok": true
+  },
+  {
+   "brand": "Panasonic",
+   "parsed_rows": 143,
+   "raw_lines_containing": 143,
+   "ok": true
+  },
+  {
+   "brand": "BERETTA",
+   "parsed_rows": 141,
+   "raw_lines_containing": 141,
+   "ok": true
+  },
+  {
+   "brand": "Stelbi",
+   "parsed_rows": 137,
+   "raw_lines_containing": 137,
+   "ok": true
+  },
+  {
+   "brand": "Vaillant",
+   "parsed_rows": 124,
+   "raw_lines_containing": 124,
+   "ok": true
+  },
+  {
+   "brand": "Climenia",
+   "parsed_rows": 120,
+   "raw_lines_containing": 120,
+   "ok": true
+  },
+  {
+   "brand": "WOLF",
+   "parsed_rows": 114,
+   "raw_lines_containing": 114,
+   "ok": true
+  },
+  {
+   "brand": "CLIVET",
+   "parsed_rows": 108,
+   "raw_lines_containing": 108,
+   "ok": true
+  },
+  {
+   "brand": "FINTEK",
+   "parsed_rows": 107,
+   "raw_lines_containing": 107,
+   "ok": true
+  }
+ ],
+ "problem_samples": {
+  "numericTailMismatch": [],
+  "tokenLoss": [],
+  "idOrderReversed": [],
+  "identityNotFound": [],
+  "untokenizable": []
+ },
+ "visual_sample": [
+  {
+   "page": 2,
+   "why": "first row of page 2",
+   "line": "III.A     PdC elettrica                   Aria/acqua             -         AERMEC   ANL 021 HP                                   -                        -     "
+  },
+  {
+   "page": 2,
+   "why": "last row of page 2",
+   "line": "III.A     PdC elettrica                   Aria/acqua             -         AERMEC   ANK 045 HA                                   -                        -     "
+  },
+  {
+   "page": 47,
+   "why": "first row of page 47",
+   "line": "III.A     PdC elettrica                Aria/acqua a bassa temperatura         -         DAIKIN         Minichiller 4-6-8                              EWYA004DV3"
+  },
+  {
+   "page": 47,
+   "why": "last row of page 47",
+   "line": "III.A     PdC elettrica                Aria/acqua a bassa temperatura         -         DAIKIN       ALTHERMA 3 M 4-6-8                                 EBLA08EV"
+  },
+  {
+   "page": 92,
+   "why": "first row of page 92",
+   "line": "III.A     Pdc elettrica                Aria/acqua a bassa temperatura          -           FERROLI    OMNIA LIFE M 10 + OMNIA FT - 250                         2"
+  },
+  {
+   "page": 92,
+   "why": "last row of page 92",
+   "line": "III.A     Pdc elettrica                          Aria/aria              Split/Multisplit   FERROLI       GIADA-C FLOOR-CEILING 18                              2"
+  },
+  {
+   "page": 137,
+   "why": "first row of page 137",
+   "line": "III.A     PdC elettrica                Aria/acqua a bassa temperatura          -           IMMERGAS             MAGIS M 12                                   MAG"
+  },
+  {
+   "page": 137,
+   "why": "last row of page 137",
+   "line": "III.A     PdC elettrica                         Aria/acqua                     -            INNOVA             eHPoca 18T R32                                P09"
+  },
+  {
+   "page": 182,
+   "why": "first row of page 182",
+   "line": "III.A     PdC elettrica                Aria/acqua a bassa temperatura         -         Radiant Bruciatori S.p.a.                  Ri-EL 15                     "
+  },
+  {
+   "page": 182,
+   "why": "last row of page 182",
+   "line": "III.A     PdC elettrica                         Aria/acqua                    -                  Rhoss                   MidiPACK-PI THAITP 139 ASP2            "
+  },
+  {
+   "page": 227,
+   "why": "first row of page 227",
+   "line": "III.A     PdC elettrica                Aria/acqua a bassa temperatura         -             WOLF            FHA-11/14 senza resistenza                        FH"
+  },
+  {
+   "page": 227,
+   "why": "last row of page 227",
+   "line": "III.A     PdC elettrica                Aria/acqua a bassa temperatura         -         Yokohama Sekai         XMZZR3 0024TZ-R3                                X"
+  },
+  {
+   "page": 6,
+   "why": "very long row",
+   "line": "III.A     PdC elettrica                          Aria/aria              Split/multisplit    AIRCON                   MLT42X5/Y24                               M"
+  },
+  {
+   "page": 6,
+   "why": "very long row",
+   "line": "III.A     PdC elettrica                          Aria/aria              Split/multisplit    AIRCON                   MLT32X4/Y24                               M"
+  },
+  {
+   "page": 6,
+   "why": "very long row",
+   "line": "III.A     PdC elettrica                          Aria/aria              Split/multisplit    AIRCON                   MLT32X4/Y24                               M"
+  }
+ ]
+}

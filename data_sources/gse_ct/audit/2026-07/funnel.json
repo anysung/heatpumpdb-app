@@ -1,0 +1,102 @@
+{
+ "baseline": {
+  "confirmedProducts": 422,
+  "supersededCombos": 50,
+  "reasons": {
+   "unmatched:mfr_present_model_absent": 613,
+   "unmatched:mfr_present_combo_absent": 3618,
+   "confirmed:exact_model": 60,
+   "unmatched:mfr_present_odu_absent": 1418,
+   "granularity:second_combination_same_product": 50,
+   "unmatched:manufacturer_not_in_canonical": 4049,
+   "review:exact_model_numeric_conflict": 52,
+   "confirmed:component_identity": 211,
+   "confirmed:component_identity_duplicate_representative": 39,
+   "confirmed:monobloc_identity_duplicate_representative": 20,
+   "confirmed:monobloc_identity": 84,
+   "review:exact_model_ambiguous": 34,
+   "review:monobloc_ambiguous": 3,
+   "confirmed:exact_model_code": 7,
+   "conflict:capacity": 4,
+   "review:cross_brand_identity": 3,
+   "conflict:type+capacity": 1,
+   "review:component_identity_ambiguous": 1,
+   "confirmed:exact_model_capacity_resolved": 1
+  }
+ },
+ "brand": {
+  "confirmedProducts": 422,
+  "supersededCombos": 50,
+  "reasons": {
+   "unmatched:mfr_present_model_absent": 613,
+   "unmatched:mfr_present_combo_absent": 3618,
+   "confirmed:exact_model": 60,
+   "unmatched:mfr_present_odu_absent": 1418,
+   "granularity:second_combination_same_product": 50,
+   "unmatched:manufacturer_not_in_canonical": 4049,
+   "review:exact_model_numeric_conflict": 52,
+   "confirmed:component_identity": 211,
+   "confirmed:component_identity_duplicate_representative": 39,
+   "confirmed:monobloc_identity_duplicate_representative": 20,
+   "confirmed:monobloc_identity": 84,
+   "review:exact_model_ambiguous": 34,
+   "review:monobloc_ambiguous": 3,
+   "confirmed:exact_model_code": 7,
+   "conflict:capacity": 4,
+   "review:cross_brand_identity": 3,
+   "conflict:type+capacity": 1,
+   "review:component_identity_ambiguous": 1,
+   "confirmed:exact_model_capacity_resolved": 1
+  }
+ },
+ "plus": {
+  "confirmedProducts": 420,
+  "supersededCombos": 50,
+  "reasons": {
+   "unmatched:mfr_present_model_absent": 613,
+   "unmatched:mfr_present_combo_absent": 3618,
+   "confirmed:exact_model": 60,
+   "unmatched:mfr_present_odu_absent": 1418,
+   "granularity:second_combination_same_product": 50,
+   "unmatched:manufacturer_not_in_canonical": 4049,
+   "review:exact_model_numeric_conflict": 52,
+   "confirmed:component_identity": 209,
+   "confirmed:component_identity_duplicate_representative": 39,
+   "confirmed:monobloc_identity_duplicate_representative": 20,
+   "confirmed:monobloc_identity": 84,
+   "review:exact_model_ambiguous": 36,
+   "review:monobloc_ambiguous": 3,
+   "confirmed:exact_model_code": 7,
+   "conflict:capacity": 4,
+   "review:cross_brand_identity": 3,
+   "conflict:type+capacity": 1,
+   "review:component_identity_ambiguous": 1,
+   "confirmed:exact_model_capacity_resolved": 1
+  }
+ },
+ "improved": {
+  "confirmedProducts": 420,
+  "supersededCombos": 50,
+  "reasons": {
+   "unmatched:mfr_present_model_absent": 613,
+   "unmatched:mfr_present_combo_absent": 3618,
+   "confirmed:exact_model": 60,
+   "unmatched:mfr_present_odu_absent": 1418,
+   "granularity:second_combination_same_product": 50,
+   "unmatched:manufacturer_not_in_canonical": 4049,
+   "review:exact_model_numeric_conflict": 52,
+   "confirmed:component_identity": 209,
+   "confirmed:component_identity_duplicate_representative": 39,
+   "confirmed:monobloc_identity_duplicate_representative": 20,
+   "confirmed:monobloc_identity": 84,
+   "review:exact_model_ambiguous": 36,
+   "review:monobloc_ambiguous": 3,
+   "confirmed:exact_model_code": 7,
+   "conflict:capacity": 4,
+   "review:cross_brand_identity": 3,
+   "conflict:type+capacity": 1,
+   "review:component_identity_ambiguous": 1,
+   "confirmed:exact_model_capacity_resolved": 1
+  }
+ }
+}

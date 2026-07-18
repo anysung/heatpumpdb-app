@@ -1,0 +1,85 @@
+{
+ "entries_with_odu_unconfirmed": 9012,
+ "odu_found_in_canonical_same_brand": 84,
+ "categories": {
+  "exact_component_system_unresolved": {
+   "count": 1,
+   "sample": [
+    "IIIA-d6bfcd7ea4cf"
+   ]
+  },
+  "likely_same_core_different_indoor": {
+   "count": 17,
+   "sample": [
+    "IIIA-6fedd6ce42c0",
+    "IIIA-8db0c85cdfd5",
+    "IIIA-b73eeebf2804",
+    "IIIA-0fe95db4c41e",
+    "IIIA-646ff209b5f1",
+    "IIIA-bf8113b1bb19",
+    "IIIA-832f44e5660a",
+    "IIIA-b36e5623f331",
+    "IIIA-6f79c46816e2",
+    "IIIA-c4d2bdd7d37a",
+    "IIIA-197d43186768",
+    "IIIA-4f285f343d53"
+   ]
+  },
+  "canonical_idu_missing": {
+   "count": 29,
+   "sample": [
+    "IIIA-85e5dd8dcada",
+    "IIIA-ebd31446d727",
+    "IIIA-16ee656340cf",
+    "IIIA-19baa7a23f62",
+    "IIIA-d8fc3188ba4c",
+    "IIIA-0f8a09f6d562",
+    "IIIA-85bd786a065b",
+    "IIIA-88ca60e3c058",
+    "IIIA-8d78bf1fb3e4",
+    "IIIA-505289283c5a",
+    "IIIA-bfb6925dd2b5",
+    "IIIA-d71c2dc745fa"
+   ]
+  },
+  "multiple_valid_indoor_combinations": {
+   "count": 25,
+   "sample": [
+    "IIIA-b5f931a01839",
+    "IIIA-d1987a7686e4",
+    "IIIA-7e2216d8234b",
+    "IIIA-daf19438da04",
+    "IIIA-032cd12c272a",
+    "IIIA-30d2ef587b76",
+    "IIIA-15b90d27fd9b",
+    "IIIA-cc4d05cdc4a4",
+    "IIIA-d91248986d57",
+    "IIIA-8e16545d78e2",
+    "IIIA-5ff04c10bd53",
+    "IIIA-39f32e39cc32"
+   ]
+  },
+  "technical_conflict": {
+   "count": 7,
+   "sample": [
+    "IIIA-c2c03eefb130",
+    "IIIA-9454e5458cdb",
+    "IIIA-2cc449ec5696",
+    "IIIA-f20c54895572",
+    "IIIA-084f499f575c",
+    "IIIA-087fd6f8deb8",
+    "IIIA-e6b778070fa0"
+   ]
+  },
+  "ambiguous_cross_family": {
+   "count": 5,
+   "sample": [
+    "IIIA-bf216ee0e4f4",
+    "IIIA-11c3cb792871",
+    "IIIA-a55d7692507b",
+    "IIIA-c2aa16740a49",
+    "IIIA-d524b8ef3c86"
+   ]
+  }
+ }
+}

@@ -1,0 +1,99 @@
+{
+ "classes": {
+  "water_water": {
+   "gse_identities": 133,
+   "confirmed": 0,
+   "candidates": 0,
+   "conflicts": 0,
+   "unmatched": 133,
+   "canonical_family": "ground",
+   "canonical_comparable": 0,
+   "in_current_scope": false
+  },
+  "air_water_split": {
+   "gse_identities": 2462,
+   "confirmed": 337,
+   "candidates": 69,
+   "conflicts": 2,
+   "unmatched": 2054,
+   "canonical_family": "air_water",
+   "canonical_comparable": 7106,
+   "in_current_scope": true
+  },
+  "air_water_monobloc_or_odu_only": {
+   "gse_identities": 1615,
+   "confirmed": 135,
+   "candidates": 24,
+   "conflicts": 2,
+   "unmatched": 1454,
+   "canonical_family": "air_water",
+   "canonical_comparable": 7106,
+   "in_current_scope": true
+  },
+  "air_air_split": {
+   "gse_identities": 5111,
+   "confirmed": 0,
+   "candidates": 0,
+   "conflicts": 0,
+   "unmatched": 5111,
+   "canonical_family": "air_air",
+   "canonical_comparable": 0,
+   "in_current_scope": false
+  },
+  "air_air_vrf": {
+   "gse_identities": 673,
+   "confirmed": 0,
+   "candidates": 0,
+   "conflicts": 1,
+   "unmatched": 672,
+   "canonical_family": "air_air",
+   "canonical_comparable": 0,
+   "in_current_scope": false
+  },
+  "air_air_packaged": {
+   "gse_identities": 21,
+   "confirmed": 0,
+   "candidates": 0,
+   "conflicts": 0,
+   "unmatched": 21,
+   "canonical_family": "air_air",
+   "canonical_comparable": 0,
+   "in_current_scope": false
+  },
+  "ground_source": {
+   "gse_identities": 178,
+   "confirmed": 0,
+   "candidates": 0,
+   "conflicts": 0,
+   "unmatched": 178,
+   "canonical_family": "ground",
+   "canonical_comparable": 0,
+   "in_current_scope": false
+  },
+  "water_air": {
+   "gse_identities": 68,
+   "confirmed": 0,
+   "candidates": 0,
+   "conflicts": 0,
+   "unmatched": 68,
+   "canonical_family": "other",
+   "canonical_comparable": 0,
+   "in_current_scope": false
+  },
+  "gas_driven": {
+   "gse_identities": 7,
+   "confirmed": 0,
+   "candidates": 0,
+   "conflicts": 0,
+   "unmatched": 7,
+   "canonical_family": "n/a",
+   "canonical_comparable": 0,
+   "in_current_scope": false
+  }
+ },
+ "canonical_by_family": {
+  "air_water": 7106
+ },
+ "in_scope_identities": 4077,
+ "out_of_scope_identities": 6191
+}

@@ -1,0 +1,75 @@
+{
+ "total": 7106,
+ "manufacturer": {
+  "count": 7106,
+  "pct": 100
+ },
+ "model": {
+  "count": 7106,
+  "pct": 100
+ },
+ "canonical_id": {
+  "count": 7106,
+  "pct": 100
+ },
+ "odu_code": {
+  "count": 6546,
+  "pct": 92.1
+ },
+ "idu_code": {
+  "count": 1526,
+  "pct": 21.5
+ },
+ "odu_and_idu": {
+  "count": 1524,
+  "pct": 21.4
+ },
+ "package_or_system_model": {
+  "count": 2060,
+  "pct": 29
+ },
+ "component_codes_embedded_in_model_only": {
+  "count": 881,
+  "pct": 12.4
+ },
+ "display_model_only": {
+  "count": 501,
+  "pct": 7.1
+ },
+ "no_component_identity": {
+  "count": 525,
+  "pct": 7.4
+ },
+ "refrigerant": {
+  "count": 7088,
+  "pct": 99.7
+ },
+ "rated_capacity": {
+  "count": 7106,
+  "pct": 100
+ },
+ "voltage_in_model": {
+  "count": 124,
+  "pct": 1.7
+ },
+ "phase_in_model": {
+  "count": 78,
+  "pct": 1.1
+ },
+ "type": {
+  "count": 7106,
+  "pct": 100
+ },
+ "installation_type": {
+  "count": 6430,
+  "pct": 90.5
+ },
+ "outdoor_side_display_model": {
+  "count": 6629,
+  "pct": 93.3
+ },
+ "outdoor_side_identified": {
+  "count": 6629,
+  "pct": 93.3
+ }
+}

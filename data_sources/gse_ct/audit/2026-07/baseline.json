@@ -1,0 +1,29 @@
+{
+ "snapshot": "2026-07",
+ "generated_at": "2026-07-18T09:29:09.511Z",
+ "source_files": {
+  "IIIA": {
+   "sha256": "b59452e88aab8b734831143d03a0ee63cf8a2b7435d21a6d970d1e4b14928a65",
+   "bytes": 1197143
+  },
+  "IIIB": {
+   "sha256": "f2460882d61fe2bea05f1b3d24ea17bf90bd91b207296bf0f59f1e70a4a26911",
+   "bytes": 516700
+  },
+  "IIIE": {
+   "sha256": "60e9419485a0b616d3e8959e7bcec05c1d0caca2e452ea9c32990b313ffab638",
+   "bytes": 75773
+  }
+ },
+ "fetched_at": "2026-07-18T02:41:06.877Z",
+ "gse_last_modified": "Wed, 15 Apr 2026 13:48:38 GMT",
+ "iiia_source_rows": 13613,
+ "iiia_rejected": 0,
+ "iiia_identities": 10268,
+ "canonical_products": 7106,
+ "it_public_products": 7106,
+ "it_public_status": {
+  "verification_required": 6681,
+  "confirmed": 425
+ }
+}

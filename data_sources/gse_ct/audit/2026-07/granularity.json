@@ -1,0 +1,10 @@
+{
+ "gse_unique_combinations": 8968,
+ "gse_unique_odus": 4087,
+ "gse_unique_idus": 3362,
+ "gse_rows_per_identity": 1.33,
+ "canonical_with_odu_field": 2203,
+ "canonical_with_idu_field": 1526,
+ "one_product_multiple_gse_combos": 50,
+ "confirmed_odus_shared_by_products": 82
+}

@@ -1,0 +1,4849 @@
+{
+ "count": 131,
+ "rows": [
+  {
+   "gse_entry_key": "IIIA-4982908d8fca",
+   "brand": "AIRA",
+   "gse_model": "HPO-AW-6-230V-1.0",
+   "odu": "HPO-AW-6-230V-1.0",
+   "idu": "HPI-AO-250-1.5",
+   "kw": [
+    6.7,
+    6.76
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16014527",
+     "model": "HPO-AW-6-230V-1.0",
+     "odu": "HPO-AW-6-230V-1.0",
+     "idu": null,
+     "kw": 6.76,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-f935285cc054",
+   "brand": "AIRA",
+   "gse_model": "HPO-AW-6-230V-1.0",
+   "odu": "HPO-AW-6-230V-1.0",
+   "idu": "HPI-HB-1.5",
+   "kw": [
+    6.7,
+    6.76
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16014527",
+     "model": "HPO-AW-6-230V-1.0",
+     "odu": "HPO-AW-6-230V-1.0",
+     "idu": null,
+     "kw": 6.76,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-441340eb7996",
+   "brand": "AIRA",
+   "gse_model": "HPO-AW-8-230V-1.0",
+   "odu": "HPO-AW-8-230V-1.0",
+   "idu": "HPI-AO-250-1.5",
+   "kw": [
+    8.65,
+    8.77
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16014528",
+     "model": "HPO-AW-8-230V-1.0",
+     "odu": "HPO-AW-8-230V-1.0",
+     "idu": null,
+     "kw": 8.77,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-8960bbfcd7e0",
+   "brand": "AIRA",
+   "gse_model": "HPO-AW-8-230V-1.0",
+   "odu": "HPO-AW-8-230V-1.0",
+   "idu": "HPI-HB-1.5",
+   "kw": [
+    8.65,
+    8.77
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16014528",
+     "model": "HPO-AW-8-230V-1.0",
+     "odu": "HPO-AW-8-230V-1.0",
+     "idu": null,
+     "kw": 8.77,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-640a7eaa0f7b",
+   "brand": "AIRA",
+   "gse_model": "HPO-AW-12-400V-1.0",
+   "odu": "HPO-AW-12-400V-1.0",
+   "idu": "HPI-HB-1.5",
+   "kw": [
+    11.68,
+    12.61
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16014529",
+     "model": "HPO-AW-12-400V-1.0",
+     "odu": "HPO-AW-12-400V-1.0",
+     "idu": null,
+     "kw": 12.61,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-c2c03eefb130",
+   "brand": "Bosch",
+   "gse_model": "Compress 7001i AW 7 - E",
+   "odu": "AW 7 OR-S",
+   "idu": "AWE 5-9",
+   "kw": [
+    5,
+    5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017313",
+     "model": "Compress 6800 AW 7 OR-S-Hybrid",
+     "odu": "Compress 6800 AW 7 OR-S-Hybrid",
+     "idu": null,
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003951",
+     "model": "Compress CS5800iAW 7 ORE-S (AW 7 OR-S + CS5800iAW 12 E)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 E",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003949",
+     "model": "Compress CS5800iAW 7 ORM-S (AW 7 OR-S + CS5800iAW 12 M)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 M",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16011469",
+     "model": "Compress CS5800iAW 7 ORMB-S (AW 7 OR-S + CS5800iAW 12 MB)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 MB",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003956",
+     "model": "Compress CS6800iAW 7 ORE-S (AW 7 OR-S + CS6800iAW 12 E)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS6800iAW 12 E",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16010279",
+     "model": "Compress CS6800iAW 7 ORM-S (AW 7 OR-S + CS6800iAW 12 M)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS6800iAW 12 M",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-9454e5458cdb",
+   "brand": "Bosch",
+   "gse_model": "Compress 7001i AW 7 - M",
+   "odu": "AW 7 OR-S",
+   "idu": "AWM 5-9",
+   "kw": [
+    5,
+    5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017313",
+     "model": "Compress 6800 AW 7 OR-S-Hybrid",
+     "odu": "Compress 6800 AW 7 OR-S-Hybrid",
+     "idu": null,
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003951",
+     "model": "Compress CS5800iAW 7 ORE-S (AW 7 OR-S + CS5800iAW 12 E)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 E",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003949",
+     "model": "Compress CS5800iAW 7 ORM-S (AW 7 OR-S + CS5800iAW 12 M)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 M",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16011469",
+     "model": "Compress CS5800iAW 7 ORMB-S (AW 7 OR-S + CS5800iAW 12 MB)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 MB",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003956",
+     "model": "Compress CS6800iAW 7 ORE-S (AW 7 OR-S + CS6800iAW 12 E)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS6800iAW 12 E",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16010279",
+     "model": "Compress CS6800iAW 7 ORM-S (AW 7 OR-S + CS6800iAW 12 M)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS6800iAW 12 M",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-2cc449ec5696",
+   "brand": "Bosch",
+   "gse_model": "Compress 7001i AW 7 - MS",
+   "odu": "AW 7 OR-S",
+   "idu": "AWMS 5-9",
+   "kw": [
+    5,
+    5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017313",
+     "model": "Compress 6800 AW 7 OR-S-Hybrid",
+     "odu": "Compress 6800 AW 7 OR-S-Hybrid",
+     "idu": null,
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003951",
+     "model": "Compress CS5800iAW 7 ORE-S (AW 7 OR-S + CS5800iAW 12 E)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 E",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003949",
+     "model": "Compress CS5800iAW 7 ORM-S (AW 7 OR-S + CS5800iAW 12 M)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 M",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16011469",
+     "model": "Compress CS5800iAW 7 ORMB-S (AW 7 OR-S + CS5800iAW 12 MB)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS5800iAW 12 MB",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16003956",
+     "model": "Compress CS6800iAW 7 ORE-S (AW 7 OR-S + CS6800iAW 12 E)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS6800iAW 12 E",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    },
+    {
+     "canonical_id": "16010279",
+     "model": "Compress CS6800iAW 7 ORM-S (AW 7 OR-S + CS6800iAW 12 M)",
+     "odu": "AW 7 OR-S",
+     "idu": "CS6800iAW 12 M",
+     "kw": 6.6,
+     "conflicts": [
+      "capacity:5/5vs6.6"
+     ]
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-b5f931a01839",
+   "brand": "CLIVET",
+   "gse_model": "Edge F",
+   "odu": "WiSAN-PME 1 S 7.1",
+   "idu": null,
+   "kw": [
+    13,
+    13.7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16013605",
+     "model": "EDGE F / WiSAN-PME 1 S 7.1",
+     "odu": "EDGE F / WiSAN-PME 1 S 7.1",
+     "idu": null,
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16013606",
+     "model": "EDGE F / WiSAN-PME 1 S 7.1T",
+     "odu": "EDGE F / WiSAN-PME 1 S 7.1T",
+     "idu": null,
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016688",
+     "model": "EDGE F + Box / WiSAN-PME 1 S 7.1 + HQCN-NEE 1 BC A",
+     "odu": "WiSAN-PME 1 S 7.1",
+     "idu": "HQCN-NEE 1 BC A",
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016689",
+     "model": "EDGE F + Box / WiSAN-PME 1 S 7.1T + HQCN-NEE 1 BC A",
+     "odu": "WiSAN-PME 1 S 7.1T",
+     "idu": "HQCN-NEE 1 BC A",
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016712",
+     "model": "EDGE F + Mini / WiSAN-PME 1 S 7.1 + HQCN-NEE 1 MC A",
+     "odu": "WiSAN-PME 1 S 7.1",
+     "idu": "HQCN-NEE 1 MC A",
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016713",
+     "model": "EDGE F + Mini / WiSAN-PME 1 S 7.1T + HQCN-NEE 1 MC A",
+     "odu": "WiSAN-PME 1 S 7.1T",
+     "idu": "HQCN-NEE 1 MC A",
+     "kw": 13.7,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-85e5dd8dcada",
+   "brand": "HISENSE",
+   "gse_model": "Serie Hi-Therma Integra",
+   "odu": "AHW-060HCDS1",
+   "idu": "AHS-060HCDSAA-23",
+   "kw": [
+    5.37,
+    6.1
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007269",
+     "model": "AHW-060HCDS1+AHM-060HCDSAA",
+     "odu": "AHW-060HCDS1+AHM-060HCDSAA",
+     "idu": null,
+     "kw": 6.09,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-ebd31446d727",
+   "brand": "HISENSE",
+   "gse_model": "Serie Hi-Therma Split",
+   "odu": "AHW-120HEDS1",
+   "idu": "AHM-120HEDSAA",
+   "kw": [
+    9.1,
+    9.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16012324",
+     "model": "AHW-120HEDS1/AHM-120HEDSAA",
+     "odu": "AHW-120HEDS1/AHM-120HEDSAA",
+     "idu": null,
+     "kw": 12.05,
+     "conflicts": [
+      "capacity:9.1/9.5vs12.05"
+     ]
+    },
+    {
+     "canonical_id": "16014011",
+     "model": "AHW-120HEDS1/AHS-120HEDSAA-23",
+     "odu": "AHW-120HEDS1/AHS-120HEDSAA-23",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d1987a7686e4",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 600S Combi NV",
+   "odu": "RAS-2WHVRP2E",
+   "idu": "RWD-2.0RW3E-220S-6H",
+   "kw": [
+    4,
+    4
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16018383",
+     "model": "airH2O 600 S (2HP) RAS-2WHVRP2E+RWM-2.0R3E",
+     "odu": "RAS-2WHVRP2E",
+     "idu": "RWM-2.0R3E",
+     "kw": 4.3,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018384",
+     "model": "airH2O 600 S Combi (2HP) RAS-2WHVRP2E+RWD-2.0RW3E-220S",
+     "odu": "RAS-2WHVRP2E",
+     "idu": "RWD-2.0RW3E-220S",
+     "kw": 4.3,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016415",
+     "model": "YUTAKI S (2HP) RAS-2WHVRP2E+RWM-2.0R2E",
+     "odu": "RAS-2WHVRP2E",
+     "idu": "RWM-2.0R2E",
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016419",
+     "model": "YUTAKI S Combi (2HP) RAS-2WHVRP2E+RWD-2.0RW2E-220S(-K)",
+     "odu": "RAS-2WHVRP2E",
+     "idu": "RWD-2.0RW2E-220S(-K)",
+     "kw": 4,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-46eb50100821",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-2VTW2E",
+   "idu": null,
+   "kw": [
+    4,
+    4
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017774",
+     "model": "airH2O 800 Control Box (2HP) RASM-2VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (2HP) RASM-2VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017754",
+     "model": "airH2O 800 H (2HP) RASM-2VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (2HP) RASM-2VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017763",
+     "model": "airH2O 800 H Combi (2HP) RASM-2VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (2HP) RASM-2VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 4,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-444483f11246",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-2VTW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    4,
+    4
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017774",
+     "model": "airH2O 800 Control Box (2HP) RASM-2VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (2HP) RASM-2VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017754",
+     "model": "airH2O 800 H (2HP) RASM-2VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (2HP) RASM-2VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017763",
+     "model": "airH2O 800 H Combi (2HP) RASM-2VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (2HP) RASM-2VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 4,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-7e2216d8234b",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 600S Combi NV",
+   "odu": "RAS-2.5WHVRP2E",
+   "idu": "RWD-2.5RW3E-220S-6H",
+   "kw": [
+    5,
+    6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16018385",
+     "model": "airH2O 600 S (2.5HP) RAS-2.5WHVRP2E+RWM-2.5R3E",
+     "odu": "RAS-2.5WHVRP2E",
+     "idu": "RWM-2.5R3E",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018386",
+     "model": "airH2O 600 S Combi (2.5HP) RAS-2.5WHVRP2E+RWD-2.5RW3E-220S",
+     "odu": "RAS-2.5WHVRP2E",
+     "idu": "RWD-2.5RW3E-220S",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016416",
+     "model": "YUTAKI S (2.5HP) RAS-2.5WHVRP2E+RWM-2.5R2E",
+     "odu": "RAS-2.5WHVRP2E",
+     "idu": "RWM-2.5R2E",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016420",
+     "model": "YUTAKI S Combi (2.5HP) RAS-2.5WHVRP2E+RWD-2.5RW2E-220S(-K)",
+     "odu": "RAS-2.5WHVRP2E",
+     "idu": "RWD-2.5RW2E-220S(-K)",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-daf19438da04",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 600S Combi NV",
+   "odu": "RAS-3WHVRP2E",
+   "idu": "RWD-3.0RW3E-220S-6H",
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16018387",
+     "model": "airH2O 600 S (3HP) RAS-3WHVRP2E+RWM-3.0R3E",
+     "odu": "RAS-3WHVRP2E",
+     "idu": "RWM-3.0R3E",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018388",
+     "model": "airH2O 600 S Combi (3HP) RAS-3WHVRP2E+RWD-3.0RW3E-220S",
+     "odu": "RAS-3WHVRP2E",
+     "idu": "RWD-3.0RW3E-220S",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016417",
+     "model": "YUTAKI S (3HP) RAS-3WHVRP2E+RWM-3.0R2E",
+     "odu": "RAS-3WHVRP2E",
+     "idu": "RWM-3.0R2E",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016421",
+     "model": "YUTAKI S Combi (3HP) RAS-3WHVRP2E+RWD-3.0RW2E-220S(-K)",
+     "odu": "RAS-3WHVRP2E",
+     "idu": "RWD-3.0RW2E-220S(-K)",
+     "kw": 7,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-431d69e4f5ab",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-3.5VTW2E",
+   "idu": null,
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017776",
+     "model": "airH2O 800 Control Box (3.5HP) RASM-3.5VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (3.5HP) RASM-3.5VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017756",
+     "model": "airH2O 800 H (3.5HP) RASM-3.5VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (3.5HP) RASM-3.5VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017767",
+     "model": "airH2O 800 H Combi (3.5HP) RASM-3.5VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (3.5HP) RASM-3.5VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-5c7e4be8ef12",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-3.5VTW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017776",
+     "model": "airH2O 800 Control Box (3.5HP) RASM-3.5VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (3.5HP) RASM-3.5VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017756",
+     "model": "airH2O 800 H (3.5HP) RASM-3.5VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (3.5HP) RASM-3.5VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017767",
+     "model": "airH2O 800 H Combi (3.5HP) RASM-3.5VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (3.5HP) RASM-3.5VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-9b8c30e95208",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-4VTW2E",
+   "idu": null,
+   "kw": [
+    10,
+    10
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017777",
+     "model": "airH2O 800 Control Box (4HP) RASM-4VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (4HP) RASM-4VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017757",
+     "model": "airH2O 800 H (4HP) RASM-4VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (4HP) RASM-4VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017768",
+     "model": "airH2O 800 H Combi (4HP) RASM-4VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (4HP) RASM-4VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-22d1d7396300",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-4TW2E",
+   "idu": null,
+   "kw": [
+    10,
+    10
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017780",
+     "model": "airH2O 800 Control Box (4HP) RASM-4TW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (4HP) RASM-4TW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017760",
+     "model": "airH2O 800 H (4HP) RASM-4TW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (4HP) RASM-4TW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017771",
+     "model": "airH2O 800 H Combi (4HP) RASM-4TW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (4HP) RASM-4TW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-473f5872eb2e",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-4VTW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    10,
+    10
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017777",
+     "model": "airH2O 800 Control Box (4HP) RASM-4VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (4HP) RASM-4VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017757",
+     "model": "airH2O 800 H (4HP) RASM-4VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (4HP) RASM-4VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017768",
+     "model": "airH2O 800 H Combi (4HP) RASM-4VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (4HP) RASM-4VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-475e34a3b828",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-4TW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    10,
+    10
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017780",
+     "model": "airH2O 800 Control Box (4HP) RASM-4TW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (4HP) RASM-4TW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017760",
+     "model": "airH2O 800 H (4HP) RASM-4TW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (4HP) RASM-4TW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017771",
+     "model": "airH2O 800 H Combi (4HP) RASM-4TW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (4HP) RASM-4TW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 10,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-6fedd6ce42c0",
+   "brand": "HITACHI",
+   "gse_model": "Yutaki S80",
+   "odu": "RAS-4WHVNPE",
+   "idu": "RWH-4.0VNFE",
+   "kw": [
+    11,
+    11
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007736",
+     "model": "YUTAKI S (4HP) RAS-4WHVNPE+RWM-4.0N1E",
+     "odu": "RAS-4WHVNPE",
+     "idu": "RWM-4.0N1E",
+     "kw": 11,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16006651",
+     "model": "YUTAKI S Combi (4HP) RAS-4WHVNPE+RWD-4.0NW1E-220S(-K)",
+     "odu": "RAS-4WHVNPE",
+     "idu": "RWD-4.0NW1E-220S(-K)",
+     "kw": 11,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-8db0c85cdfd5",
+   "brand": "HITACHI",
+   "gse_model": "Yutaki S80",
+   "odu": "RAS-4WHNPE",
+   "idu": "RWH-4.0NFE",
+   "kw": [
+    11,
+    11
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16006645",
+     "model": "YUTAKI S (4HP) RAS-4WHNPE+RWM-4.0N1E",
+     "odu": "RAS-4WHNPE",
+     "idu": "RWM-4.0N1E",
+     "kw": 11,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16006654",
+     "model": "YUTAKI S Combi (4HP) RAS-4WHNPE+RWD-4.0NW1E-220S(-K)",
+     "odu": "RAS-4WHNPE",
+     "idu": "RWD-4.0NW1E-220S(-K)",
+     "kw": 11,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-b73eeebf2804",
+   "brand": "HITACHI",
+   "gse_model": "Yutaki S80 Combi",
+   "odu": "RAS-4WHVNPE",
+   "idu": "RWH-4.0VNFWE",
+   "kw": [
+    11,
+    11
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007736",
+     "model": "YUTAKI S (4HP) RAS-4WHVNPE+RWM-4.0N1E",
+     "odu": "RAS-4WHVNPE",
+     "idu": "RWM-4.0N1E",
+     "kw": 11,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16006651",
+     "model": "YUTAKI S Combi (4HP) RAS-4WHVNPE+RWD-4.0NW1E-220S(-K)",
+     "odu": "RAS-4WHVNPE",
+     "idu": "RWD-4.0NW1E-220S(-K)",
+     "kw": 11,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-0fe95db4c41e",
+   "brand": "HITACHI",
+   "gse_model": "Yutaki S80 Combi",
+   "odu": "RAS-4WHNPE",
+   "idu": "RWH-4.0NFWE",
+   "kw": [
+    11,
+    11
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16006645",
+     "model": "YUTAKI S (4HP) RAS-4WHNPE+RWM-4.0N1E",
+     "odu": "RAS-4WHNPE",
+     "idu": "RWM-4.0N1E",
+     "kw": 11,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16006654",
+     "model": "YUTAKI S Combi (4HP) RAS-4WHNPE+RWD-4.0NW1E-220S(-K)",
+     "odu": "RAS-4WHNPE",
+     "idu": "RWD-4.0NW1E-220S(-K)",
+     "kw": 11,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d66d6e0252d2",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-5VTW2E",
+   "idu": null,
+   "kw": [
+    12,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017778",
+     "model": "airH2O 800 Control Box (5HP) RASM-5VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (5HP) RASM-5VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017758",
+     "model": "airH2O 800 H (5HP) RASM-5VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (5HP) RASM-5VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017769",
+     "model": "airH2O 800 H Combi (5HP) RASM-5VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (5HP) RASM-5VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 14,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-45f9f48e5792",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-5TW2E",
+   "idu": null,
+   "kw": [
+    12,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017781",
+     "model": "airH2O 800 Control Box (5HP) RASM-5TW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (5HP) RASM-5TW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017761",
+     "model": "airH2O 800 H (5HP) RASM-5TW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (5HP) RASM-5TW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017772",
+     "model": "airH2O 800 H Combi (5HP) RASM-5TW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (5HP) RASM-5TW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 14,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-5c910156d499",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-5VTW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    12,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017778",
+     "model": "airH2O 800 Control Box (5HP) RASM-5VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (5HP) RASM-5VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017758",
+     "model": "airH2O 800 H (5HP) RASM-5VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (5HP) RASM-5VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017769",
+     "model": "airH2O 800 H Combi (5HP) RASM-5VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (5HP) RASM-5VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 14,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-0cc625c47ed9",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-5TW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    12,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017781",
+     "model": "airH2O 800 Control Box (5HP) RASM-5TW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (5HP) RASM-5TW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017761",
+     "model": "airH2O 800 H (5HP) RASM-5TW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (5HP) RASM-5TW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017772",
+     "model": "airH2O 800 H Combi (5HP) RASM-5TW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (5HP) RASM-5TW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 14,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-440f9cb80e7f",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-6VTW2E",
+   "idu": null,
+   "kw": [
+    14,
+    13
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017779",
+     "model": "airH2O 800 Control Box (6HP) RASM-6VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (6HP) RASM-6VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017759",
+     "model": "airH2O 800 H (6HP) RASM-6VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (6HP) RASM-6VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017770",
+     "model": "airH2O 800 H Combi (6HP) RASM-6VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (6HP) RASM-6VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-49dc2abeac07",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800M",
+   "odu": "RASM-6TW2E",
+   "idu": null,
+   "kw": [
+    14,
+    13
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017782",
+     "model": "airH2O 800 Control Box (6HP) RASM-6TW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (6HP) RASM-6TW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017762",
+     "model": "airH2O 800 H (6HP) RASM-6TW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (6HP) RASM-6TW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017773",
+     "model": "airH2O 800 H Combi (6HP) RASM-6TW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (6HP) RASM-6TW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-cd9b6876c29e",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-6VTW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    14,
+    13
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017779",
+     "model": "airH2O 800 Control Box (6HP) RASM-6VTW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (6HP) RASM-6VTW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017759",
+     "model": "airH2O 800 H (6HP) RASM-6VTW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (6HP) RASM-6VTW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017770",
+     "model": "airH2O 800 H Combi (6HP) RASM-6VTW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (6HP) RASM-6VTW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-bec5c6deebd2",
+   "brand": "HITACHI",
+   "gse_model": "airH2O 800H B",
+   "odu": "RASM-6TW2E",
+   "idu": "HWM-W2E-B",
+   "kw": [
+    14,
+    13
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017782",
+     "model": "airH2O 800 Control Box (6HP) RASM-6TW2E+ATW-CBX-01",
+     "odu": "airH2O 800 Control Box (6HP) RASM-6TW2E+ATW-CBX-01",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017762",
+     "model": "airH2O 800 H (6HP) RASM-6TW2E+HWM-W2E(-B)",
+     "odu": "airH2O 800 H (6HP) RASM-6TW2E+HWM-W2E(-B)",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017773",
+     "model": "airH2O 800 H Combi (6HP) RASM-6TW2E+HWD-W2E-220S",
+     "odu": "airH2O 800 H Combi (6HP) RASM-6TW2E+HWD-W2E-220S",
+     "idu": null,
+     "kw": 13,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-f20c54895572",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM051MR U44",
+   "idu": null,
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007253",
+     "model": "THERMA V [ HM051MR.U44 ]",
+     "odu": "THERMA V [ HM051MR.U44 ]",
+     "idu": null,
+     "kw": 5,
+     "conflicts": [
+      "capacity:6/7vs5"
+     ]
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-646ff209b5f1",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM071HF UB40",
+   "idu": "PHCS0",
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016406",
+     "model": "THERMA V[HM071HF.UB40 + HN1616HC.NK0]",
+     "odu": "HM071HF.UB40",
+     "idu": "HN1616HC.NK0",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016402",
+     "model": "THERMA V[HM071HF.UB40 + PHCS0]",
+     "odu": "HM071HF.UB40",
+     "idu": "PHCS0",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-bf8113b1bb19",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM091HF UB40",
+   "idu": "PHCS0",
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016407",
+     "model": "THERMA V[HM091HF.UB40 + HN1616HC.NK0]",
+     "odu": "HM091HF.UB40",
+     "idu": "HN1616HC.NK0",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016403",
+     "model": "THERMA V[HM091HF.UB40 + PHCS0]",
+     "odu": "HM091HF.UB40",
+     "idu": "PHCS0",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-832f44e5660a",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM093HF UB40",
+   "idu": "PHCS0",
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016409",
+     "model": "THERMA V[HM093HF.UB40 + HN1639HC.NK0]",
+     "odu": "HM093HF.UB40",
+     "idu": "HN1639HC.NK0",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016405",
+     "model": "THERMA V[HM093HF.UB40 + PHCS0]",
+     "odu": "HM093HF.UB40",
+     "idu": "PHCS0",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-b36e5623f331",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM071HF UB40",
+   "idu": "HN1616HY NK0",
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016406",
+     "model": "THERMA V[HM071HF.UB40 + HN1616HC.NK0]",
+     "odu": "HM071HF.UB40",
+     "idu": "HN1616HC.NK0",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016402",
+     "model": "THERMA V[HM071HF.UB40 + PHCS0]",
+     "odu": "HM071HF.UB40",
+     "idu": "PHCS0",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-6f79c46816e2",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM091HF UB40",
+   "idu": "HN1616HY NK0",
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016407",
+     "model": "THERMA V[HM091HF.UB40 + HN1616HC.NK0]",
+     "odu": "HM091HF.UB40",
+     "idu": "HN1616HC.NK0",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016403",
+     "model": "THERMA V[HM091HF.UB40 + PHCS0]",
+     "odu": "HM091HF.UB40",
+     "idu": "PHCS0",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-c4d2bdd7d37a",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM093HF UB40",
+   "idu": "HN1639HY NK0",
+   "kw": [
+    6,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016409",
+     "model": "THERMA V[HM093HF.UB40 + HN1639HC.NK0]",
+     "odu": "HM093HF.UB40",
+     "idu": "HN1639HC.NK0",
+     "kw": 6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016405",
+     "model": "THERMA V[HM093HF.UB40 + PHCS0]",
+     "odu": "HM093HF.UB40",
+     "idu": "PHCS0",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-197d43186768",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HU091MR U44",
+   "idu": "HN0913T NK0",
+   "kw": [
+    6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007319",
+     "model": "THERMA V [ HU091MR.U44 + HN0913T.NK0 ]",
+     "odu": "HU091MR.U44",
+     "idu": "HN0913T.NK0",
+     "kw": 9,
+     "conflicts": [
+      "capacity:6vs9"
+     ]
+    },
+    {
+     "canonical_id": "16006771",
+     "model": "THERMA V [ HU091MR.U44 + HN091MR.NK5 ]",
+     "odu": "HU091MR.U44",
+     "idu": "HN091MR.NK5",
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-084f499f575c",
+   "brand": "LG ELECTRONICS",
+   "gse_model": "THERMAV",
+   "odu": "HM163MR U34",
+   "idu": null,
+   "kw": [
+    12,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007306",
+     "model": "THERMA V [ HM163MR.U34 ]",
+     "odu": "THERMA V [ HM163MR.U34 ]",
+     "idu": null,
+     "kw": 15,
+     "conflicts": [
+      "capacity:12/12vs15"
+     ]
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-032cd12c272a",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V6W/D2N8-B",
+   "idu": "HBT-A100/190CD30CGN8-B",
+   "kw": [
+    5.7,
+    6.8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007633",
+     "model": "MHA-V6W/D2N8-B + HB-A60/C***GN8-B",
+     "odu": "MHA-V6W/D2N8-B",
+     "idu": "HB-A60/C***GN8-B",
+     "kw": 6.8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007636",
+     "model": "MHA-V6W/D2N8-B + HBT-A100/190C***GN8-B",
+     "odu": "MHA-V6W/D2N8-B",
+     "idu": "HBT-A100/190C***GN8-B",
+     "kw": 6.8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010327",
+     "model": "MHA-V6W/D2N8-B + HBT-A100/240C***GN8-B",
+     "odu": "MHA-V6W/D2N8-B",
+     "idu": "HBT-A100/240C***GN8-B",
+     "kw": 6.8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-30d2ef587b76",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V6W/D2N8-B",
+   "idu": "HBT-A100/240CD30GN8-B",
+   "kw": [
+    5.7,
+    6.8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007633",
+     "model": "MHA-V6W/D2N8-B + HB-A60/C***GN8-B",
+     "odu": "MHA-V6W/D2N8-B",
+     "idu": "HB-A60/C***GN8-B",
+     "kw": 6.8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007636",
+     "model": "MHA-V6W/D2N8-B + HBT-A100/190C***GN8-B",
+     "odu": "MHA-V6W/D2N8-B",
+     "idu": "HBT-A100/190C***GN8-B",
+     "kw": 6.8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010327",
+     "model": "MHA-V6W/D2N8-B + HBT-A100/240C***GN8-B",
+     "odu": "MHA-V6W/D2N8-B",
+     "idu": "HBT-A100/240C***GN8-B",
+     "kw": 6.8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-15b90d27fd9b",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V8W/D2N8-B",
+   "idu": "HBT-A100/190CD30CGN8-B",
+   "kw": [
+    6.6,
+    8.1
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010324",
+     "model": "MHA-V8W/D2N8-B + HB-A100/C***GN8-B",
+     "odu": "MHA-V8W/D2N8-B",
+     "idu": "HB-A100/C***GN8-B",
+     "kw": 8.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007637",
+     "model": "MHA-V8W/D2N8-B + HBT-A100/190C***GN8-B",
+     "odu": "MHA-V8W/D2N8-B",
+     "idu": "HBT-A100/190C***GN8-B",
+     "kw": 8.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010218",
+     "model": "MHA-V8W/D2N8-B + HBT-A100/240C***GN8-B",
+     "odu": "MHA-V8W/D2N8-B",
+     "idu": "HBT-A100/240C***GN8-B",
+     "kw": 8.1,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-cc4d05cdc4a4",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V8W/D2N8-B",
+   "idu": "HBT-A100/240CD30GN8-B",
+   "kw": [
+    6.6,
+    8.1
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010324",
+     "model": "MHA-V8W/D2N8-B + HB-A100/C***GN8-B",
+     "odu": "MHA-V8W/D2N8-B",
+     "idu": "HB-A100/C***GN8-B",
+     "kw": 8.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007637",
+     "model": "MHA-V8W/D2N8-B + HBT-A100/190C***GN8-B",
+     "odu": "MHA-V8W/D2N8-B",
+     "idu": "HBT-A100/190C***GN8-B",
+     "kw": 8.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010218",
+     "model": "MHA-V8W/D2N8-B + HBT-A100/240C***GN8-B",
+     "odu": "MHA-V8W/D2N8-B",
+     "idu": "HBT-A100/240C***GN8-B",
+     "kw": 8.1,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d91248986d57",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V10W/D2N8-B",
+   "idu": "HBT-A100/190CD30CGN8-B",
+   "kw": [
+    7.7,
+    9.2
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010203",
+     "model": "MHA-V10W/D2N8-B + HB-A100/C***GN8-B",
+     "odu": "MHA-V10W/D2N8-B",
+     "idu": "HB-A100/C***GN8-B",
+     "kw": 9.2,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010326",
+     "model": "MHA-V10W/D2N8-B + HBT-A100/190C***GN8-B",
+     "odu": "MHA-V10W/D2N8-B",
+     "idu": "HBT-A100/190C***GN8-B",
+     "kw": 9.2,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007638",
+     "model": "MHA-V10W/D2N8-B + HBT-A100/240C***GN8-B",
+     "odu": "MHA-V10W/D2N8-B",
+     "idu": "HBT-A100/240C***GN8-B",
+     "kw": 9.2,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-8e16545d78e2",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V10W/D2N8-B",
+   "idu": "HBT-A100/240CD30GN8-B",
+   "kw": [
+    7.7,
+    9.2
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010203",
+     "model": "MHA-V10W/D2N8-B + HB-A100/C***GN8-B",
+     "odu": "MHA-V10W/D2N8-B",
+     "idu": "HB-A100/C***GN8-B",
+     "kw": 9.2,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010326",
+     "model": "MHA-V10W/D2N8-B + HBT-A100/190C***GN8-B",
+     "odu": "MHA-V10W/D2N8-B",
+     "idu": "HBT-A100/190C***GN8-B",
+     "kw": 9.2,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007638",
+     "model": "MHA-V10W/D2N8-B + HBT-A100/240C***GN8-B",
+     "odu": "MHA-V10W/D2N8-B",
+     "idu": "HBT-A100/240C***GN8-B",
+     "kw": 9.2,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-4f285f343d53",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V12W/D2RN8-B",
+   "idu": "HBT-A160/240CD30GN8-B",
+   "kw": [
+    11.6,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007634",
+     "model": "MHA-V12W/D2RN8-B + HB-A160/C***GN8-B",
+     "odu": "MHA-V12W/D2RN8-B",
+     "idu": "HB-A160/C***GN8-B",
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007639",
+     "model": "MHA-V12W/D2RN8-B + HBT-A160/240C***GN8-B",
+     "odu": "MHA-V12W/D2RN8-B",
+     "idu": "HBT-A160/240C***GN8-B",
+     "kw": 12,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-bf216ee0e4f4",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL ARCTIC R290",
+   "odu": "MHC-V12WD2RN7",
+   "idu": null,
+   "kw": [
+    12,
+    12.1
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16018882",
+     "model": "MHC-V12WD2RN7",
+     "odu": "MHC-V12WD2RN7",
+     "idu": null,
+     "kw": 12.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16019060",
+     "model": "MHC-V12WD2RN7-B2ER90",
+     "odu": null,
+     "idu": null,
+     "kw": 12.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015166",
+     "model": "MHC-V12WD2RN7-BER90",
+     "odu": "MHC-V12WD2RN7-BER90",
+     "idu": null,
+     "kw": 12.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018884",
+     "model": "MHC-V12WD2RN7-E30",
+     "odu": "MHC-V12WD2RN7-E30",
+     "idu": null,
+     "kw": 12.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018883",
+     "model": "MHC-V12WD2RN7-ER60",
+     "odu": "MHC-V12WD2RN7-ER60",
+     "idu": null,
+     "kw": 12.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16014137",
+     "model": "MHC-V12WD2RN7-ER90",
+     "odu": "MHC-V12WD2RN7-ER90",
+     "idu": null,
+     "kw": 12.1,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-3e70105ca38b",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V14W/D2RN8-B",
+   "idu": "HBT-A160/240CD30GN8-B",
+   "kw": [
+    12.1,
+    13.7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010146",
+     "model": "MHA-V14W/D2RN8-B + HB-A160/C***GN8-B",
+     "odu": "MHA-V14W/D2RN8-B",
+     "idu": "HB-A160/C***GN8-B",
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16007640",
+     "model": "MHA-V14W/D2RN8-B + HBT-A160/240C***GN8-B",
+     "odu": "MHA-V14W/D2RN8-B",
+     "idu": "HBT-A160/240C***GN8-B",
+     "kw": 13.7,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-11c3cb792871",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL ARCTIC R290",
+   "odu": "MHC-V14WD2RN7",
+   "idu": null,
+   "kw": [
+    13,
+    13.7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16018885",
+     "model": "MHC-V14WD2RN7",
+     "odu": "MHC-V14WD2RN7",
+     "idu": null,
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16019061",
+     "model": "MHC-V14WD2RN7-B2ER90",
+     "odu": null,
+     "idu": null,
+     "kw": 14.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015167",
+     "model": "MHC-V14WD2RN7-BER90",
+     "odu": "MHC-V14WD2RN7-BER90",
+     "idu": null,
+     "kw": 14.1,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018886",
+     "model": "MHC-V14WD2RN7-E30",
+     "odu": "MHC-V14WD2RN7-E30",
+     "idu": null,
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018887",
+     "model": "MHC-V14WD2RN7-E60",
+     "odu": "MHC-V14WD2RN7-E60",
+     "idu": null,
+     "kw": 13.7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16014138",
+     "model": "MHC-V14WD2RN7-ER90",
+     "odu": "MHC-V14WD2RN7-ER90",
+     "idu": null,
+     "kw": 13.7,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-35eed099e15d",
+   "brand": "MIDEA",
+   "gse_model": "M-THERMAL SPLIT ARCTIC SERIES",
+   "odu": "MHA-V16W/D2RN8-B",
+   "idu": "HBT-A160/240CD30GN8-B",
+   "kw": [
+    13,
+    15.2
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16007635",
+     "model": "MHA-V16W/D2RN8-B + HB-A160/C***GN8-B",
+     "odu": "MHA-V16W/D2RN8-B",
+     "idu": "HB-A160/C***GN8-B",
+     "kw": 15.2,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010147",
+     "model": "MHA-V16W/D2RN8-B + HBT-A160/240C***GN8-B",
+     "odu": "MHA-V16W/D2RN8-B",
+     "idu": "HBT-A160/240C***GN8-B",
+     "kw": 15.2,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-5ff04c10bd53",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - Alta Performance",
+   "odu": "WH-UDZ03KE5",
+   "idu": null,
+   "kw": [
+    3,
+    4
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010864",
+     "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ03KE5]",
+     "odu": "WH-UDZ03KE5",
+     "idu": "WH-ADC0309K3E5",
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010868",
+     "model": "Aquarea [WH-ADC0309K3E5AN / WH-UDZ03KE5]",
+     "odu": "WH-UDZ03KE5",
+     "idu": "WH-ADC0309K3E5AN",
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010872",
+     "model": "Aquarea [WH-ADC0309K6E5 / WH-UDZ03KE5]",
+     "odu": "WH-UDZ03KE5",
+     "idu": "WH-ADC0309K6E5",
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010875",
+     "model": "Aquarea [WH-ADC0309K6E5AN / WH-UDZ03KE5]",
+     "odu": "WH-UDZ03KE5",
+     "idu": "WH-ADC0309K6E5AN",
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010911",
+     "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ03KE5]",
+     "odu": "WH-UDZ03KE5",
+     "idu": "WH-SDC0309K3E5",
+     "kw": 4,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010919",
+     "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ03KE5]",
+     "odu": "WH-UDZ03KE5",
+     "idu": "WH-SDC0309K6E5",
+     "kw": 4,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-39f32e39cc32",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - Alta Performance",
+   "odu": "WH-UDZ05KE5",
+   "idu": null,
+   "kw": [
+    5,
+    5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010865",
+     "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ05KE5]",
+     "odu": "WH-UDZ05KE5",
+     "idu": "WH-ADC0309K3E5",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010869",
+     "model": "Aquarea [WH-ADC0309K3E5AN / WH-UDZ05KE5]",
+     "odu": "WH-UDZ05KE5",
+     "idu": "WH-ADC0309K3E5AN",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010873",
+     "model": "Aquarea [WH-ADC0309K6E5 / WH-UDZ05KE5]",
+     "odu": "WH-UDZ05KE5",
+     "idu": "WH-ADC0309K6E5",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010893",
+     "model": "Aquarea [WH-ADC0309K6E5AN / WH-UDZ05KE5]",
+     "odu": "WH-UDZ05KE5",
+     "idu": "WH-ADC0309K6E5AN",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010912",
+     "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ05KE5]",
+     "odu": "WH-UDZ05KE5",
+     "idu": "WH-SDC0309K3E5",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010920",
+     "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ05KE5]",
+     "odu": "WH-UDZ05KE5",
+     "idu": "WH-SDC0309K6E5",
+     "kw": 5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-42f23e855f7b",
+   "brand": "Panasonic",
+   "gse_model": "Serie L - Alta Performance",
+   "odu": "WH-WDG05LE5",
+   "idu": null,
+   "kw": [
+    5,
+    5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011239",
+     "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG05LE5]",
+     "odu": "WH-WDG05LE5",
+     "idu": "WH-ADC0509L3E5",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010898",
+     "model": "Aquarea [WH-ADC0509L3E5AN / WH-WDG05LE5]",
+     "odu": "WH-WDG05LE5",
+     "idu": "WH-ADC0509L3E5AN",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010901",
+     "model": "Aquarea [WH-ADC0509L6E5 / WH-WDG05LE5]",
+     "odu": "WH-WDG05LE5",
+     "idu": "WH-ADC0509L6E5",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010904",
+     "model": "Aquarea [WH-ADC0509L6E5AN / WH-WDG05LE5]",
+     "odu": "WH-WDG05LE5",
+     "idu": "WH-ADC0509L6E5AN",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010922",
+     "model": "Aquarea [WH-SDC0509L3E5 / WH-WDG05LE5]",
+     "odu": "WH-WDG05LE5",
+     "idu": "WH-SDC0509L3E5",
+     "kw": 5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010925",
+     "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG05LE5]",
+     "odu": "WH-WDG05LE5",
+     "idu": "WH-SDC0509L6E5",
+     "kw": 5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-26d03571bec3",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - Alta Performance",
+   "odu": "WH-UDZ07KE5",
+   "idu": null,
+   "kw": [
+    7,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010866",
+     "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ07KE5]",
+     "odu": "WH-UDZ07KE5",
+     "idu": "WH-ADC0309K3E5",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010870",
+     "model": "Aquarea [WH-ADC0309K3E5AN / WH-UDZ07KE5]",
+     "odu": "WH-UDZ07KE5",
+     "idu": "WH-ADC0309K3E5AN",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010874",
+     "model": "Aquarea [WH-ADC0309K6E5 / WH-UDZ07KE5]",
+     "odu": "WH-UDZ07KE5",
+     "idu": "WH-ADC0309K6E5",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010894",
+     "model": "Aquarea [WH-ADC0309K6E5AN / WH-UDZ07KE5]",
+     "odu": "WH-UDZ07KE5",
+     "idu": "WH-ADC0309K6E5AN",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010913",
+     "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ07KE5]",
+     "odu": "WH-UDZ07KE5",
+     "idu": "WH-SDC0309K3E5",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011250",
+     "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ07KE5]",
+     "odu": "WH-UDZ07KE5",
+     "idu": "WH-SDC0309K6E5",
+     "kw": 7,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-7d398842f7a0",
+   "brand": "Panasonic",
+   "gse_model": "Serie L - Alta Performance",
+   "odu": "WH-WDG07LE5",
+   "idu": null,
+   "kw": [
+    7,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010896",
+     "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG07LE5]",
+     "odu": "WH-WDG07LE5",
+     "idu": "WH-ADC0509L3E5",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010899",
+     "model": "Aquarea [WH-ADC0509L3E5AN / WH-WDG07LE5]",
+     "odu": "WH-WDG07LE5",
+     "idu": "WH-ADC0509L3E5AN",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010902",
+     "model": "Aquarea [WH-ADC0509L6E5 / WH-WDG07LE5]",
+     "odu": "WH-WDG07LE5",
+     "idu": "WH-ADC0509L6E5",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010905",
+     "model": "Aquarea [WH-ADC0509L6E5AN / WH-WDG07LE5]",
+     "odu": "WH-WDG07LE5",
+     "idu": "WH-ADC0509L6E5AN",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010923",
+     "model": "Aquarea [WH-SDC0509L3E5 / WH-WDG07LE5]",
+     "odu": "WH-WDG07LE5",
+     "idu": "WH-SDC0509L3E5",
+     "kw": 7,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010926",
+     "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG07LE5]",
+     "odu": "WH-WDG07LE5",
+     "idu": "WH-SDC0509L6E5",
+     "kw": 7,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-28643ea4e058",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - Alta Performance",
+   "odu": "WH-UDZ09KE5",
+   "idu": null,
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010867",
+     "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ09KE5]",
+     "odu": "WH-UDZ09KE5",
+     "idu": "WH-ADC0309K3E5",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010871",
+     "model": "Aquarea [WH-ADC0309K3E5AN / WH-UDZ09KE5]",
+     "odu": "WH-UDZ09KE5",
+     "idu": "WH-ADC0309K3E5AN",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011238",
+     "model": "Aquarea [WH-ADC0309K6E5 / WH-UDZ09KE5]",
+     "odu": "WH-UDZ09KE5",
+     "idu": "WH-ADC0309K6E5",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010895",
+     "model": "Aquarea [WH-ADC0309K6E5AN / WH-UDZ09KE5]",
+     "odu": "WH-UDZ09KE5",
+     "idu": "WH-ADC0309K6E5AN",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010918",
+     "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ09KE5]",
+     "odu": "WH-UDZ09KE5",
+     "idu": "WH-SDC0309K3E5",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010921",
+     "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ09KE5]",
+     "odu": "WH-UDZ09KE5",
+     "idu": "WH-SDC0309K6E5",
+     "kw": 8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-1750725a363c",
+   "brand": "Panasonic",
+   "gse_model": "Serie L - Alta Performance",
+   "odu": "WH-WDG09LE5",
+   "idu": null,
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010897",
+     "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG09LE5]",
+     "odu": "WH-WDG09LE5",
+     "idu": "WH-ADC0509L3E5",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010900",
+     "model": "Aquarea [WH-ADC0509L3E5AN / WH-WDG09LE5]",
+     "odu": "WH-WDG09LE5",
+     "idu": "WH-ADC0509L3E5AN",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010903",
+     "model": "Aquarea [WH-ADC0509L6E5 / WH-WDG09LE5]",
+     "odu": "WH-WDG09LE5",
+     "idu": "WH-ADC0509L6E5",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010906",
+     "model": "Aquarea [WH-ADC0509L6E5AN / WH-WDG09LE5]",
+     "odu": "WH-WDG09LE5",
+     "idu": "WH-ADC0509L6E5AN",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010924",
+     "model": "Aquarea [WH-SDC0509L3E5 / WH-WDG09LE5]",
+     "odu": "WH-WDG09LE5",
+     "idu": "WH-SDC0509L3E5",
+     "kw": 8,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010927",
+     "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG09LE5]",
+     "odu": "WH-WDG09LE5",
+     "idu": "WH-SDC0509L6E5",
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-f1d4d5c5e2bc",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - T-CAP",
+   "odu": "WH-UXZ09KE5",
+   "idu": null,
+   "kw": [
+    9,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010907",
+     "model": "Aquarea [WH-ADC0912K6E5 / WH-UXZ09KE5]",
+     "odu": "WH-UXZ09KE5",
+     "idu": "WH-ADC0912K6E5",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010908",
+     "model": "Aquarea [WH-ADC0912K6E5AN / WH-UXZ09KE5]",
+     "odu": "WH-UXZ09KE5",
+     "idu": "WH-ADC0912K6E5AN",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010928",
+     "model": "Aquarea [WH-SXC09K3E5 / WH-UXZ09KE5]",
+     "odu": "WH-UXZ09KE5",
+     "idu": "WH-SXC09K3E5",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011187",
+     "model": "Aquarea [WH-SXC09K6E5 / WH-UXZ09KE5]",
+     "odu": "WH-UXZ09KE5",
+     "idu": "WH-SXC09K6E5",
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-087fd6f8deb8",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - T-CAP",
+   "odu": "WH-UXZ12KE5",
+   "idu": null,
+   "kw": [
+    9,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011185",
+     "model": "Aquarea [WH-ADC0912K6E5 / WH-UXZ12KE5]",
+     "odu": "WH-UXZ12KE5",
+     "idu": "WH-ADC0912K6E5",
+     "kw": 12.1,
+     "conflicts": [
+      "capacity:9/9vs12.1"
+     ]
+    },
+    {
+     "canonical_id": "16010909",
+     "model": "Aquarea [WH-ADC0912K6E5AN / WH-UXZ12KE5]",
+     "odu": "WH-UXZ12KE5",
+     "idu": "WH-ADC0912K6E5AN",
+     "kw": 12.1,
+     "conflicts": [
+      "capacity:9/9vs12.1"
+     ]
+    },
+    {
+     "canonical_id": "16010930",
+     "model": "Aquarea [WH-SXC12K6E5 / WH-UXZ12KE5]",
+     "odu": "WH-UXZ12KE5",
+     "idu": "WH-SXC12K6E5",
+     "kw": 12.1,
+     "conflicts": [
+      "capacity:9/9vs12.1"
+     ]
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-b9536d569d74",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - T-CAP",
+   "odu": "WH-UXZ09KE8",
+   "idu": null,
+   "kw": [
+    9,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011497",
+     "model": "Aquarea [WH-ADC0912K9E8 / WH-UXZ09KE8]",
+     "odu": "WH-UXZ09KE8",
+     "idu": "WH-ADC0912K9E8",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011186",
+     "model": "Aquarea [WH-ADC0912K9E8AN / WH-UXZ09KE8]",
+     "odu": "WH-UXZ09KE8",
+     "idu": "WH-ADC0912K9E8AN",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011502",
+     "model": "Aquarea [WH-SXC09K3E8 / WH-UXZ09KE8]",
+     "odu": "WH-UXZ09KE8",
+     "idu": "WH-SXC09K3E8",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16010929",
+     "model": "Aquarea [WH-SXC09K9E8 / WH-UXZ09KE8]",
+     "odu": "WH-UXZ09KE8",
+     "idu": "WH-SXC09K9E8",
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-28fe0275b3fc",
+   "brand": "Panasonic",
+   "gse_model": "Serie M - T-CAP",
+   "odu": "WH-WXG09ME8",
+   "idu": null,
+   "kw": [
+    9,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16015310",
+     "model": "AQUAREA [WH-WXG09ME8 + WH-ADC0316M9E82]",
+     "odu": "WH-WXG09ME8",
+     "idu": "WH-ADC0316M9E82",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015304",
+     "model": "AQUAREA [WH-WXG09ME8 + WH-ADC0316M9E8AN2]",
+     "odu": "WH-WXG09ME8",
+     "idu": "WH-ADC0316M9E8AN2",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015308",
+     "model": "AQUAREA [WH-WXG09ME8 + WH-CME8]",
+     "odu": "WH-WXG09ME8",
+     "idu": "WH-CME8",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015306",
+     "model": "AQUAREA [WH-WXG09ME8 + WH-SDC0316M9E8]",
+     "odu": "WH-WXG09ME8",
+     "idu": "WH-SDC0316M9E8",
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018562",
+     "model": "AQUAREA [WH-WXG09ME8 +WH-ADC0316M9E8AN3]",
+     "odu": "WH-WXG09ME8",
+     "idu": "WH-ADC0316M9E8AN3",
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-3b49a3871529",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - T-CAP",
+   "odu": "WH-UXZ12KE8",
+   "idu": null,
+   "kw": [
+    12,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16010910",
+     "model": "Aquarea [WH-ADC0912K9E8 / WH-UXZ12KE8]",
+     "odu": "WH-UXZ12KE8",
+     "idu": "WH-ADC0912K9E8",
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011501",
+     "model": "Aquarea [WH-ADC0912K9E8AN / WH-UXZ12KE8]",
+     "odu": "WH-UXZ12KE8",
+     "idu": "WH-ADC0912K9E8AN",
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011503",
+     "model": "Aquarea [WH-SXC12K9E8 / WH-UXZ12KE8]",
+     "odu": "WH-UXZ12KE8",
+     "idu": "WH-SXC12K9E8",
+     "kw": 12,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-435f6f9da218",
+   "brand": "Panasonic",
+   "gse_model": "Serie M - T-CAP",
+   "odu": "WH-WXG12ME8",
+   "idu": null,
+   "kw": [
+    12,
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16015311",
+     "model": "AQUAREA [WH-WXG12ME8 + WH-ADC0316M9E82]",
+     "odu": "WH-WXG12ME8",
+     "idu": "WH-ADC0316M9E82",
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015305",
+     "model": "AQUAREA [WH-WXG12ME8 + WH-ADC0316M9E8AN2]",
+     "odu": "WH-WXG12ME8",
+     "idu": "WH-ADC0316M9E8AN2",
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015309",
+     "model": "AQUAREA [WH-WXG12ME8 + WH-CME8]",
+     "odu": "WH-WXG12ME8",
+     "idu": "WH-CME8",
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015307",
+     "model": "AQUAREA [WH-WXG12ME8 + WH-SDC0316M9E8]",
+     "odu": "WH-WXG12ME8",
+     "idu": "WH-SDC0316M9E8",
+     "kw": 12,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018563",
+     "model": "AQUAREA [WH-WXG12ME8 +WH-ADC0316M9E8AN3]",
+     "odu": "WH-WXG12ME8",
+     "idu": "WH-ADC0316M9E8AN3",
+     "kw": 12,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-0e45212165f8",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - Alta Performance",
+   "odu": "WH-UDZ16KE8",
+   "idu": null,
+   "kw": [
+    13,
+    13
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16018519",
+     "model": "Aquarea [WH-ADC16K9E8AN / WH-UDZ16KE8]",
+     "odu": "WH-UDZ16KE8",
+     "idu": "WH-ADC16K9E8AN",
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018520",
+     "model": "Aquarea [WH-ADC16K9E8AN3 / WH-UDZ16KE8]",
+     "odu": "WH-UDZ16KE8",
+     "idu": "WH-ADC16K9E8AN3",
+     "kw": 16,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018518",
+     "model": "Aquarea [WH-SDC16K9E8 / WH-UDZ16KE8]",
+     "odu": "WH-UDZ16KE8",
+     "idu": "WH-SDC16K9E8",
+     "kw": 13,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-e64ade447e3e",
+   "brand": "Panasonic",
+   "gse_model": "Serie K - T-CAP",
+   "odu": "WH-UXZ16KE8",
+   "idu": null,
+   "kw": [
+    16,
+    13
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16015302",
+     "model": "AQUAREA [WH-UXZ16KE8 + WH-ADC16K9E8]",
+     "odu": "WH-UXZ16KE8",
+     "idu": "WH-ADC16K9E8",
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015301",
+     "model": "AQUAREA [WH-UXZ16KE8 + WH-ADC16K9E8AN]",
+     "odu": "WH-UXZ16KE8",
+     "idu": "WH-ADC16K9E8AN",
+     "kw": 13,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16015303",
+     "model": "AQUAREA [WH-UXZ16KE8 + WH-SXC16K9E8]",
+     "odu": "WH-UXZ16KE8",
+     "idu": "WH-SXC16K9E8",
+     "kw": 13,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-50ddeb696dd4",
+   "brand": "Panasonic",
+   "gse_model": "Serie M - T-CAP",
+   "odu": "WH-WXG16ME8",
+   "idu": null,
+   "kw": [
+    16,
+    16
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016479",
+     "model": "AQUAREA [WH-WXG16ME8 + WH-ADC0316M9E82]",
+     "odu": "WH-WXG16ME8",
+     "idu": "WH-ADC0316M9E82",
+     "kw": 16,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016477",
+     "model": "AQUAREA [WH-WXG16ME8 + WH-CME8]",
+     "odu": "WH-WXG16ME8",
+     "idu": "WH-CME8",
+     "kw": 16,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016478",
+     "model": "AQUAREA [WH-WXG16ME8 + WH-SDC0316M9E8]",
+     "odu": "WH-WXG16ME8",
+     "idu": "WH-SDC0316M9E8",
+     "kw": 16,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16018564",
+     "model": "AQUAREA [WH-WXG16ME8 +WH-ADC0316M9E8AN3]",
+     "odu": "WH-WXG16ME8",
+     "idu": "WH-ADC0316M9E8AN3",
+     "kw": 16,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-5e57e1f8a534",
+   "brand": "Panasonic",
+   "gse_model": "Serie M - T-CAP",
+   "odu": "WH-WXG20ME8",
+   "idu": null,
+   "kw": [
+    20,
+    20
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016480",
+     "model": "AQUAREA [WH-WXG20ME8 + WH-CME8L]",
+     "odu": "WH-WXG20ME8",
+     "idu": "WH-CME8L",
+     "kw": 20,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-106c5a820a85",
+   "brand": "Panasonic",
+   "gse_model": "Serie M - T-CAP",
+   "odu": "WH-WXG25ME8",
+   "idu": null,
+   "kw": [
+    25,
+    25
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016481",
+     "model": "AQUAREA [WH-WXG25ME8 + WH-CME8L]",
+     "odu": "WH-WXG25ME8",
+     "idu": "WH-CME8L",
+     "kw": 25,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-1aa0e4ec2fbd",
+   "brand": "Panasonic",
+   "gse_model": "Serie M - T-CAP",
+   "odu": "WH-WXG30ME8",
+   "idu": null,
+   "kw": [
+    30,
+    30
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017070",
+     "model": "AQUAREA [WH-WXG30ME8 + WH-CME8L]",
+     "odu": "WH-WXG30ME8",
+     "idu": "WH-CME8L",
+     "kw": 30,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-16ee656340cf",
+   "brand": "PANASONIC",
+   "gse_model": "VRF_ECOi + kit idronico",
+   "odu": "U-10ME2E8",
+   "idu": "PAW-250W5G1",
+   "kw": [
+    19
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16001177",
+     "model": "U-10ME2E8 / PAW-250WP5G1",
+     "odu": "U-10ME2E8 / PAW-250WP5G1",
+     "idu": null,
+     "kw": 19,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-e6b778070fa0",
+   "brand": "PANASONIC",
+   "gse_model": "VRF_ECOi_2 Tubi_R410A",
+   "odu": "U-10ME2E8",
+   "idu": null,
+   "kw": [
+    31.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16001177",
+     "model": "U-10ME2E8 / PAW-250WP5G1",
+     "odu": "U-10ME2E8 / PAW-250WP5G1",
+     "idu": null,
+     "kw": 19,
+     "conflicts": [
+      "type:air_air≠air_water",
+      "capacity:31.5vs19"
+     ]
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-19baa7a23f62",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Bassa temperatura",
+   "odu": "AE050CXYDEK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    5.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016777",
+     "model": "AE050CXYDEK/EU + AE200DNWMPK/EU",
+     "odu": "AE050CXYDEK/EU",
+     "idu": null,
+     "kw": 5.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-306ecb9ded10",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE050CXYDEK/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    5.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016777",
+     "model": "AE050CXYDEK/EU + AE200DNWMPK/EU",
+     "odu": "AE050CXYDEK/EU",
+     "idu": null,
+     "kw": 5.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d8fc3188ba4c",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE050CXYDEK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    5.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016777",
+     "model": "AE050CXYDEK/EU + AE200DNWMPK/EU",
+     "odu": "AE050CXYDEK/EU",
+     "idu": null,
+     "kw": 5.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-0f8a09f6d562",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Bassa temperatura",
+   "odu": "AE080CXYDGK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016779",
+     "model": "AE080CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE080CXYDGK/EU",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-e6cbdbf1986c",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE080CXYDGK/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016779",
+     "model": "AE080CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE080CXYDGK/EU",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-85bd786a065b",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE080CXYDGK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016779",
+     "model": "AE080CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE080CXYDGK/EU",
+     "idu": null,
+     "kw": 8,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-88ca60e3c058",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Bassa temperatura",
+   "odu": "AE080BXYDEG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    9.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011034",
+     "model": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011035",
+     "model": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011827",
+     "model": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-8d78bf1fb3e4",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Bassa temperatura",
+   "odu": "AE080BXYDEG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    9.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011034",
+     "model": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011035",
+     "model": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011827",
+     "model": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-505289283c5a",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE080BXYDEG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    9.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011034",
+     "model": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011035",
+     "model": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011827",
+     "model": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-bfb6925dd2b5",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE080BXYDEG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    9.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011034",
+     "model": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-200 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011035",
+     "model": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-260 (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011827",
+     "model": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 8-RE (AE080BXYDEG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-87ed33478527",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE080BXYDGG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    9.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016734",
+     "model": "AE080BXYDGG/EU + AE160DNYMPK/EU",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016728",
+     "model": "AE080BXYDGG/EU + AE200DNWMPK/EU",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016740",
+     "model": "AE080BXYDGG/EU + MIM-E03FN",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016747",
+     "model": "AE080BXYDGG/EU + MIM-E03GN",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011036",
+     "model": "WPLW-Hub Mono HT Quiet 8-260-3 (AE080BXYDGG/EU + AE260RNWMGG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-260-3 (AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011837",
+     "model": "WPLW-Mono HT-Quiet 8-RE-3 (AE080BXYDGG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 8-RE-3 (AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-86d89b70ce34",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE080BXYDGG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    9.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016734",
+     "model": "AE080BXYDGG/EU + AE160DNYMPK/EU",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016728",
+     "model": "AE080BXYDGG/EU + AE200DNWMPK/EU",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016740",
+     "model": "AE080BXYDGG/EU + MIM-E03FN",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016747",
+     "model": "AE080BXYDGG/EU + MIM-E03GN",
+     "odu": "AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011036",
+     "model": "WPLW-Hub Mono HT Quiet 8-260-3 (AE080BXYDGG/EU + AE260RNWMGG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 8-260-3 (AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011837",
+     "model": "WPLW-Mono HT-Quiet 8-RE-3 (AE080BXYDGG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 8-RE-3 (AE080BXYDGG/EU",
+     "idu": null,
+     "kw": 9.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d71c2dc745fa",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS SPLIT Media temperatura",
+   "odu": "AE125DXEDGG/EU",
+   "idu": "AE160DNYSPG/EU",
+   "kw": [
+    11.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16019544",
+     "model": "AE125DXEDGG/EU + AE200DNWSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017685",
+     "model": "AE125DXEDGG/EU+AE160DNZSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017683",
+     "model": "AE125DXEDGG/EU+AE200DNXSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-afb044a4bc53",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Bassa temperatura",
+   "odu": "AE120CXYDGK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016781",
+     "model": "AE120CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE120CXYDGK/EU",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-e1089fcc765a",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE120CXYDGK/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016781",
+     "model": "AE120CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE120CXYDGK/EU",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-2860de7bd432",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE120CXYDGK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    12
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016781",
+     "model": "AE120CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE120CXYDGK/EU",
+     "idu": null,
+     "kw": 12,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-f60330a32df2",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS SPLIT Bassa temperatura",
+   "odu": "AE125DXEDGG/EU",
+   "idu": "AE200DNWSPG/EU",
+   "kw": [
+    12.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16019544",
+     "model": "AE125DXEDGG/EU + AE200DNWSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017685",
+     "model": "AE125DXEDGG/EU+AE160DNZSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017683",
+     "model": "AE125DXEDGG/EU+AE200DNXSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-a73e773e4c3d",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS SPLIT Bassa temperatura",
+   "odu": "AE125DXEDGG/EU",
+   "idu": "AE160DNYSPG/EU",
+   "kw": [
+    12.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16019544",
+     "model": "AE125DXEDGG/EU + AE200DNWSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017685",
+     "model": "AE125DXEDGG/EU+AE160DNZSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017683",
+     "model": "AE125DXEDGG/EU+AE200DNXSPG/EU",
+     "odu": "AE125DXEDGG/EU",
+     "idu": null,
+     "kw": 12.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-c85c4de7519c",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS SPLIT Media temperatura",
+   "odu": "AE160DXEDGG/EU",
+   "idu": "AE200DNWSPG/EU",
+   "kw": [
+    12.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017689",
+     "model": "AE160DXEDGG/EU+AE160DNZSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017687",
+     "model": "AE160DXEDGG/EU+AE200DNXSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-3425788511de",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS SPLIT Media temperatura",
+   "odu": "AE160DXEDGG/EU",
+   "idu": "AE160DNYSPG/EU",
+   "kw": [
+    12.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017689",
+     "model": "AE160DXEDGG/EU+AE160DNZSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017687",
+     "model": "AE160DXEDGG/EU+AE200DNXSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-c74bb1fa653d",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Bassa temperatura",
+   "odu": "AE120BXYDEG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    12.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011037",
+     "model": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011249",
+     "model": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011838",
+     "model": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-6d5c9ed9d71d",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Bassa temperatura",
+   "odu": "AE120BXYDEG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    12.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011037",
+     "model": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011249",
+     "model": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011838",
+     "model": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-2b5c95b1b6db",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE120BXYDEG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    12.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011037",
+     "model": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011249",
+     "model": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011838",
+     "model": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-e28199cd776e",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE120BXYDEG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    12.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011037",
+     "model": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-200 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011249",
+     "model": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU + AE260RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-260 (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011838",
+     "model": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 12-RE (AE120BXYDEG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-85ebcdd445ab",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE120BXYDGG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    12.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016736",
+     "model": "AE120BXYDGG/EU + AE160DNYMPK/EU",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016730",
+     "model": "AE120BXYDGG/EU + AE200DNWMPK/EU",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016743",
+     "model": "AE120BXYDGG/EU + MIM-E03FN",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016749",
+     "model": "AE120BXYDGG/EU + MIM-E03GN",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011039",
+     "model": "WPLW-Hub Mono HT Quiet 12-260-3 (AE120BXYDGG/EU + AE260RNWMGG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-260-3 (AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011825",
+     "model": "WPLW-Mono HT-Quiet 12-RE-3 (AE120BXYDGG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 12-RE-3 (AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-7e1c07ae2e43",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE120BXYDGG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    12.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016736",
+     "model": "AE120BXYDGG/EU + AE160DNYMPK/EU",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016730",
+     "model": "AE120BXYDGG/EU + AE200DNWMPK/EU",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016743",
+     "model": "AE120BXYDGG/EU + MIM-E03FN",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016749",
+     "model": "AE120BXYDGG/EU + MIM-E03GN",
+     "odu": "AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011039",
+     "model": "WPLW-Hub Mono HT Quiet 12-260-3 (AE120BXYDGG/EU + AE260RNWMGG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 12-260-3 (AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011825",
+     "model": "WPLW-Mono HT-Quiet 12-RE-3 (AE120BXYDGG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 12-RE-3 (AE120BXYDGG/EU",
+     "idu": null,
+     "kw": 12.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-5142f85a6e01",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS SPLIT Bassa temperatura",
+   "odu": "AE160DXEDGG/EU",
+   "idu": "AE200DNWSPG/EU",
+   "kw": [
+    13.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017689",
+     "model": "AE160DXEDGG/EU+AE160DNZSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017687",
+     "model": "AE160DXEDGG/EU+AE200DNXSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-846fbbfc0541",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS SPLIT Bassa temperatura",
+   "odu": "AE160DXEDGG/EU",
+   "idu": "AE160DNYSPG/EU",
+   "kw": [
+    13.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017689",
+     "model": "AE160DXEDGG/EU+AE160DNZSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017687",
+     "model": "AE160DXEDGG/EU+AE200DNXSPG/EU",
+     "odu": "AE160DXEDGG/EU",
+     "idu": null,
+     "kw": 13.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d9c0a7bd77b1",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Bassa temperatura",
+   "odu": "AE140BXYDEG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    13.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011038",
+     "model": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011826",
+     "model": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU + AE260RNWMEG/EU",
+     "odu": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011839",
+     "model": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-dc83900108e6",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Bassa temperatura",
+   "odu": "AE140BXYDEG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    13.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011038",
+     "model": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011826",
+     "model": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU + AE260RNWMEG/EU",
+     "odu": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011839",
+     "model": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-10c554da9ff5",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE140BXYDEG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    13.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011038",
+     "model": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011826",
+     "model": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU + AE260RNWMEG/EU",
+     "odu": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011839",
+     "model": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-8df8b5a2ceb7",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE140BXYDEG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    13.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16011038",
+     "model": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU + AE200RNWMEG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 14-200 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011826",
+     "model": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU + AE260RNWMEG/EU",
+     "odu": "WPLW-Hub Mono HT Quiet 14-260 (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011839",
+     "model": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 14-RE (AE140BXYDEG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-07208842e387",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE140BXYDGG/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    13.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016738",
+     "model": "AE140BXYDGG/EU + AE160DNYMPK/EU",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016732",
+     "model": "AE140BXYDGG/EU + AE200DNWMPK/EU",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016745",
+     "model": "AE140BXYDGG/EU + MIM-E03FN",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016751",
+     "model": "AE140BXYDGG/EU + MIM-E03GN",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011040",
+     "model": "WPLW-Hub Mono HT Quiet 14-260-3 (AE140BXYDGG/EU + AE260RNWMGG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 14-260-3 (AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011840",
+     "model": "WPLW-Mono HT-Quiet 14-RE-3 (AE140BXYDGG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 14-RE-3 (AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-470fb1bee9fc",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO HT Media temperatura",
+   "odu": "AE140BXYDGG/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    13.6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016738",
+     "model": "AE140BXYDGG/EU + AE160DNYMPK/EU",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016732",
+     "model": "AE140BXYDGG/EU + AE200DNWMPK/EU",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016745",
+     "model": "AE140BXYDGG/EU + MIM-E03FN",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16016751",
+     "model": "AE140BXYDGG/EU + MIM-E03GN",
+     "odu": "AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011040",
+     "model": "WPLW-Hub Mono HT Quiet 14-260-3 (AE140BXYDGG/EU + AE260RNWMGG/EU)",
+     "odu": "WPLW-Hub Mono HT Quiet 14-260-3 (AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16011840",
+     "model": "WPLW-Mono HT-Quiet 14-RE-3 (AE140BXYDGG/EU + MIM-E03EN)",
+     "odu": "WPLW-Mono HT-Quiet 14-RE-3 (AE140BXYDGG/EU",
+     "idu": null,
+     "kw": 13.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-f47423ee87c4",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Bassa temperatura",
+   "odu": "AE160CXYDGK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    15.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016783",
+     "model": "AE160CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE160CXYDGK/EU",
+     "idu": null,
+     "kw": 15.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-f1098098f828",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE160CXYDGK/EU",
+   "idu": "AE200DNWMPK/EU",
+   "kw": [
+    15.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016783",
+     "model": "AE160CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE160CXYDGK/EU",
+     "idu": null,
+     "kw": 15.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-656349498706",
+   "brand": "SAMSUNG",
+   "gse_model": "EHS MONO R290 senza pompa Media temperatura",
+   "odu": "AE160CXYDGK/EU",
+   "idu": "AE160DNYMPK/EU",
+   "kw": [
+    15.5
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16016783",
+     "model": "AE160CXYDGK/EU + AE200DNWMPK/EU",
+     "odu": "AE160CXYDGK/EU",
+     "idu": null,
+     "kw": 15.5,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d6bfcd7ea4cf",
+   "brand": "Viessmann",
+   "gse_model": "Vitocal 250-A 16 400V",
+   "odu": "AWMOF-251.A1.16-400",
+   "idu": "AWMIW.A1.19",
+   "kw": [
+    12.1,
+    13.3
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16017833",
+     "model": "IDU-A 2C AWMIW.A1.19-V055 ODU 250-A AWMOF-251.A1.16-400-V001",
+     "odu": "ODU 250-A AWMOF-251.A1.16-400-V001",
+     "idu": "IDU-A 2C AWMIW.A1.19-V055",
+     "kw": 13.29,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017836",
+     "model": "IDU-A 2C AWMIW.A1.19-V055 ODU 250-A AWMOF-251.A1.16-400-V002",
+     "odu": "ODU 250-A AWMOF-251.A1.16-400-V002",
+     "idu": "IDU-A 2C AWMIW.A1.19-V055",
+     "kw": 13.29,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017831",
+     "model": "IDU-A AWMIW.A1.19-V052 ODU 250-A AWMOF-251.A1.16-400-V001",
+     "odu": "ODU 250-A AWMOF-251.A1.16-400-V001",
+     "idu": "IDU-A AWMIW.A1.19-V052",
+     "kw": 13.61,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017834",
+     "model": "IDU-A AWMIW.A1.19-V052 ODU 250-A AWMOF-251.A1.16-400-V002",
+     "odu": "ODU 250-A AWMOF-251.A1.16-400-V002",
+     "idu": "IDU-A AWMIW.A1.19-V052",
+     "kw": 13.29,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017838",
+     "model": "IDU-A Compact 2C AWMIT.A1.19-V056 ODU 250-A AWMOF-251.A1.16-400-V001",
+     "odu": "ODU 250-A AWMOF-251.A1.16-400-V001",
+     "idu": "IDU-A Compact 2C AWMIT.A1.19-V056",
+     "kw": 13.29,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16017840",
+     "model": "IDU-A Compact 2C AWMIT.A1.19-V056 ODU 250-A AWMOF-251.A1.16-400-V002",
+     "odu": "ODU 250-A AWMOF-251.A1.16-400-V002",
+     "idu": "IDU-A Compact 2C AWMIT.A1.19-V056",
+     "kw": 13.29,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-a55d7692507b",
+   "brand": "WOLF",
+   "gse_model": "FHA-08/10 senza resistenza",
+   "odu": "FHA-08/10-230V-M2",
+   "idu": "FS-B2",
+   "kw": [
+    4,
+    7
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16008934",
+     "model": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008935",
+     "model": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008936",
+     "model": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008937",
+     "model": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008938",
+     "model": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008982",
+     "model": "FHA-08/10-230V-M2 FS-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FS-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-5e5592c69ff8",
+   "brand": "WOLF",
+   "gse_model": "CHC 07/200",
+   "odu": "CHA-07 400V",
+   "idu": "CHA-07/400V",
+   "kw": [
+    6,
+    6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002241",
+     "model": "CHA-07/400V",
+     "odu": "CHA-07/400V",
+     "idu": null,
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d2709270fd40",
+   "brand": "WOLF",
+   "gse_model": "CHC 07/300",
+   "odu": "CHA-07 400V",
+   "idu": "CHA-07/400V",
+   "kw": [
+    6,
+    6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002241",
+     "model": "CHA-07/400V",
+     "odu": "CHA-07/400V",
+     "idu": null,
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-f958a3d2798d",
+   "brand": "WOLF",
+   "gse_model": "CHC-35 07/200",
+   "odu": "CHA-07 400V",
+   "idu": "CHA-07/400V",
+   "kw": [
+    6,
+    6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002241",
+     "model": "CHA-07/400V",
+     "odu": "CHA-07/400V",
+     "idu": null,
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-7167c8b8d6f4",
+   "brand": "WOLF",
+   "gse_model": "CHC-R50 07/300",
+   "odu": "CHA-07 400V",
+   "idu": "CHA-07/400V",
+   "kw": [
+    6,
+    6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002241",
+     "model": "CHA-07/400V",
+     "odu": "CHA-07/400V",
+     "idu": null,
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-46c4985895f4",
+   "brand": "WOLF",
+   "gse_model": "CHC-S50 07/300",
+   "odu": "CHA-07 400V",
+   "idu": "CHA-07/400V",
+   "kw": [
+    6,
+    6
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002241",
+     "model": "CHA-07/400V",
+     "odu": "CHA-07/400V",
+     "idu": null,
+     "kw": 6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-b938c7fddef3",
+   "brand": "WOLF",
+   "gse_model": "CHC 10/200",
+   "odu": "CHA-10 400V",
+   "idu": "CHA-10/400V",
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002242",
+     "model": "CHA-10/400V",
+     "odu": "CHA-10/400V",
+     "idu": null,
+     "kw": 7.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-164b8617e03d",
+   "brand": "WOLF",
+   "gse_model": "CHC 10/300",
+   "odu": "CHA-10 400V",
+   "idu": "CHA-10/400V",
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002242",
+     "model": "CHA-10/400V",
+     "odu": "CHA-10/400V",
+     "idu": null,
+     "kw": 7.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-77fdd2bfcab5",
+   "brand": "WOLF",
+   "gse_model": "CHC-R50 10/300",
+   "odu": "CHA-10 400V",
+   "idu": "CHA-10/400V",
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002242",
+     "model": "CHA-10/400V",
+     "odu": "CHA-10/400V",
+     "idu": null,
+     "kw": 7.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-3ce9e33685bb",
+   "brand": "WOLF",
+   "gse_model": "CHC-S50 10/300",
+   "odu": "CHA-10 400V",
+   "idu": "CHA-10/400V",
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002242",
+     "model": "CHA-10/400V",
+     "odu": "CHA-10/400V",
+     "idu": null,
+     "kw": 7.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-96f965e4c5ff",
+   "brand": "WOLF",
+   "gse_model": "CHC-35 10/200",
+   "odu": "CHA-10 400V",
+   "idu": "CHA-10/400V",
+   "kw": [
+    8,
+    8
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16002242",
+     "model": "CHA-10/400V",
+     "odu": "CHA-10/400V",
+     "idu": null,
+     "kw": 7.6,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-69941b148deb",
+   "brand": "WOLF",
+   "gse_model": "FHA-CENTER-R35-200 08/10",
+   "odu": "FHA-08/10-230V-M2",
+   "idu": "FS-e6-B2",
+   "kw": [
+    8,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16008934",
+     "model": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008935",
+     "model": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008936",
+     "model": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008937",
+     "model": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008938",
+     "model": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008982",
+     "model": "FHA-08/10-230V-M2 FS-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FS-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-cf390135f983",
+   "brand": "WOLF",
+   "gse_model": "FHA-CENTER 230V 300 08/10",
+   "odu": "FHA-08/10-230V-M2",
+   "idu": "FS-e6-B2",
+   "kw": [
+    8,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16008934",
+     "model": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008935",
+     "model": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008936",
+     "model": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008937",
+     "model": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008938",
+     "model": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008982",
+     "model": "FHA-08/10-230V-M2 FS-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FS-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-7bf38548b0f5",
+   "brand": "WOLF",
+   "gse_model": "FHA-CENTER-R50 230V 300 08/10",
+   "odu": "FHA-08/10-230V-M2",
+   "idu": "FS-e6-B2",
+   "kw": [
+    8,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16008934",
+     "model": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008935",
+     "model": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008936",
+     "model": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008937",
+     "model": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008938",
+     "model": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008982",
+     "model": "FHA-08/10-230V-M2 FS-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FS-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-6e0f6808a909",
+   "brand": "WOLF",
+   "gse_model": "FHA-CENTER-S50 230V 300 08/10",
+   "odu": "FHA-08/10-230V-M2",
+   "idu": "FS-e6-B2",
+   "kw": [
+    8,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16008934",
+     "model": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008935",
+     "model": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008936",
+     "model": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008937",
+     "model": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008938",
+     "model": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008982",
+     "model": "FHA-08/10-230V-M2 FS-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FS-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-c8de12eac184",
+   "brand": "WOLF",
+   "gse_model": "FHA-CENTER-200 08/10",
+   "odu": "FHA-08/10-230V-M2",
+   "idu": "FS-e6-B2",
+   "kw": [
+    8,
+    9
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16008934",
+     "model": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008935",
+     "model": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-200-R35-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008936",
+     "model": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008937",
+     "model": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-R50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008938",
+     "model": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FC-300-S50-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16008982",
+     "model": "FHA-08/10-230V-M2 FS-e6-B2",
+     "odu": "FHA-08/10-230V-M2 FS-e6-B2",
+     "idu": null,
+     "kw": 9,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-c2aa16740a49",
+   "brand": "WOLF",
+   "gse_model": "CHA-16/20-400V senza resistenza",
+   "odu": "CHA-16/20-400V-M2",
+   "idu": "CS-C2",
+   "kw": [
+    15,
+    14
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16008923",
+     "model": "CHA-16/20-400V-M2 CC-300-S50-e9-C2",
+     "odu": "CHA-16/20-400V-M2 CC-300-S50-e9-C2",
+     "idu": null,
+     "kw": 14,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16002359",
+     "model": "CHA-16/20-400V-M2 CS-C2",
+     "odu": "CHA-16/20-400V-M2 CS-C2",
+     "idu": null,
+     "kw": 14,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16002360",
+     "model": "CHA-16/20-400V-M2 CS-e9-C2",
+     "odu": "CHA-16/20-400V-M2 CS-e9-C2",
+     "idu": null,
+     "kw": 14,
+     "conflicts": []
+    }
+   ]
+  },
+  {
+   "gse_entry_key": "IIIA-d524b8ef3c86",
+   "brand": "WOLF",
+   "gse_model": "CHA-20/24-400V senza resistenza",
+   "odu": "CHA-20/24-400V-M2",
+   "idu": "CS-D2",
+   "kw": [
+    18,
+    18
+   ],
+   "candidates": [
+    {
+     "canonical_id": "16014561",
+     "model": "CHA-20/24-400V-M2 CS-D2",
+     "odu": "CHA-20/24-400V-M2 CS-D2",
+     "idu": null,
+     "kw": 24.03,
+     "conflicts": []
+    },
+    {
+     "canonical_id": "16014562",
+     "model": "CHA-20/24-400V-M2 CS-e9-D2",
+     "odu": "CHA-20/24-400V-M2 CS-e9-D2",
+     "idu": null,
+     "kw": 24,
+     "conflicts": []
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,194 @@
+{
+ "baseline": {
+  "capacity": {
+   "count": 5,
+   "rows": [
+    {
+     "key": "IIIA-ebd31446d727",
+     "gse": "Serie Hi-Therma Split",
+     "canonical": "AHW-120HEDS1/AHM-120HEDSAA",
+     "detail": "capacity:9.1/9.5vs12.05"
+    },
+    {
+     "key": "IIIA-f20c54895572",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM051MR.U44 ]",
+     "detail": "capacity:6/7vs5"
+    },
+    {
+     "key": "IIIA-197d43186768",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HU091MR.U44 + HN0913T.NK0 ]",
+     "detail": "capacity:6vs9"
+    },
+    {
+     "key": "IIIA-084f499f575c",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM163MR.U34 ]",
+     "detail": "capacity:12/12vs15"
+    },
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "capacity:31.5vs19"
+    }
+   ]
+  },
+  "type": {
+   "count": 1,
+   "rows": [
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "type:air_air≠air_water"
+    }
+   ]
+  }
+ },
+ "brand": {
+  "capacity": {
+   "count": 5,
+   "rows": [
+    {
+     "key": "IIIA-ebd31446d727",
+     "gse": "Serie Hi-Therma Split",
+     "canonical": "AHW-120HEDS1/AHM-120HEDSAA",
+     "detail": "capacity:9.1/9.5vs12.05"
+    },
+    {
+     "key": "IIIA-f20c54895572",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM051MR.U44 ]",
+     "detail": "capacity:6/7vs5"
+    },
+    {
+     "key": "IIIA-197d43186768",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HU091MR.U44 + HN0913T.NK0 ]",
+     "detail": "capacity:6vs9"
+    },
+    {
+     "key": "IIIA-084f499f575c",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM163MR.U34 ]",
+     "detail": "capacity:12/12vs15"
+    },
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "capacity:31.5vs19"
+    }
+   ]
+  },
+  "type": {
+   "count": 1,
+   "rows": [
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "type:air_air≠air_water"
+    }
+   ]
+  }
+ },
+ "plus": {
+  "capacity": {
+   "count": 5,
+   "rows": [
+    {
+     "key": "IIIA-ebd31446d727",
+     "gse": "Serie Hi-Therma Split",
+     "canonical": "AHW-120HEDS1/AHM-120HEDSAA",
+     "detail": "capacity:9.1/9.5vs12.05"
+    },
+    {
+     "key": "IIIA-f20c54895572",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM051MR.U44 ]",
+     "detail": "capacity:6/7vs5"
+    },
+    {
+     "key": "IIIA-197d43186768",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HU091MR.U44 + HN0913T.NK0 ]",
+     "detail": "capacity:6vs9"
+    },
+    {
+     "key": "IIIA-084f499f575c",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM163MR.U34 ]",
+     "detail": "capacity:12/12vs15"
+    },
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "capacity:31.5vs19"
+    }
+   ]
+  },
+  "type": {
+   "count": 1,
+   "rows": [
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "type:air_air≠air_water"
+    }
+   ]
+  }
+ },
+ "improved": {
+  "capacity": {
+   "count": 5,
+   "rows": [
+    {
+     "key": "IIIA-ebd31446d727",
+     "gse": "Serie Hi-Therma Split",
+     "canonical": "AHW-120HEDS1/AHM-120HEDSAA",
+     "detail": "capacity:9.1/9.5vs12.05"
+    },
+    {
+     "key": "IIIA-f20c54895572",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM051MR.U44 ]",
+     "detail": "capacity:6/7vs5"
+    },
+    {
+     "key": "IIIA-197d43186768",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HU091MR.U44 + HN0913T.NK0 ]",
+     "detail": "capacity:6vs9"
+    },
+    {
+     "key": "IIIA-084f499f575c",
+     "gse": "THERMAV",
+     "canonical": "THERMA V [ HM163MR.U34 ]",
+     "detail": "capacity:12/12vs15"
+    },
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "capacity:31.5vs19"
+    }
+   ]
+  },
+  "type": {
+   "count": 1,
+   "rows": [
+    {
+     "key": "IIIA-e6b778070fa0",
+     "gse": "VRF_ECOi_2 Tubi_R410A",
+     "canonical": "U-10ME2E8 / PAW-250WP5G1",
+     "detail": "type:air_air≠air_water"
+    }
+   ]
+  }
+ }
+}
