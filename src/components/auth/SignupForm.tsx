@@ -79,6 +79,18 @@ const TYPE_LABELS: Record<Language, Record<string, string>> = {
     individual: 'Osoba prywatna / Działalność jednoosobowa',
     other: 'Inne',
   },
+  it: {
+    manufacturer: 'Produttore',
+    wholesaler: 'Grossista / Distributore',
+    installer: 'Installatore / Impresa termoidraulica',
+    engineering: 'Ingegneria / Studio di progettazione / Consulenza',
+    construction: 'Costruzioni / Sviluppo immobiliare',
+    esco_utility: 'ESCo / Utility energetica',
+    housing: 'Edilizia residenziale pubblica / Amministrazione immobiliare',
+    public_research: 'Settore pubblico / Ricerca / Associazione di categoria',
+    individual: 'Privato / Ditta individuale',
+    other: 'Altro',
+  },
 };
 
 export const SignupForm: React.FC<{

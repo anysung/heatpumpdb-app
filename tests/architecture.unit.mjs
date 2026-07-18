@@ -143,7 +143,7 @@ if (!existsSync(GB)) {
     is('no REAL product occupies the reserved honeytoken block',
       allBuilt.every(p => !inBlock(p)), true);
     is('no canary identity appears in any committed dataset',
-      !allBuilt.some(p => /Grzewpol|Nordvik|Calderra|Thermalis/i.test(String(p.manufacturer ?? ''))), true);
+      !allBuilt.some(p => /Grzewpol|Nordvik|Calderra|Thermalis|Termoclima/i.test(String(p.manufacturer ?? ''))), true);
   }
 
   // ── Poland: canonical baseline + ZUM overlay + spec-complete PL extension ──
@@ -181,6 +181,42 @@ if (!existsSync(GB)) {
     is('[PL] all products (incl. extension) pass Data Sheet eligibility', pl.every(isDataSheetEligible), true);
     is('[PL] no unclassified public product', pl.every(p => segmentOf(p) !== 'unclassified'), true);
   }
+
+  // ── Italy: canonical baseline + GSE Conto Termico overlay (no extension) ──
+  const IT = 'public/data/products-it.json';
+  if (!existsSync(IT)) {
+    console.log('\n(IT datasets not built — Italy assertions skipped)');
+  } else {
+    const it = [...load(IT).items, ...load('public/data/products-commercial-it.json').items];
+    console.log('\nItaly: canonical baseline + GSE Conto Termico listing overlay');
+    is('[IT] the catalogue IS the canonical catalogue (no extension layer, by design)', it.length, de.length);
+    is('[IT] every product is a canonical product (neutral id, same value)',
+      it.every(p => canonicalIds.has(String(p.european_reference_id))), true);
+    is('[IT] every product is EU-reference sourced (a GSE row can never become a product)',
+      it.every(p => p.performance_source === 'EU_MEASURED_REFERENCE'), true);
+    is('[IT] the public schema carries NO German-market field names',
+      it.every(p => Object.keys(p).every(k => !/bafa/i.test(k))), true);
+    is('[IT] no German-market provenance labels in public values',
+      it.every(p => !/BAFA/i.test(String(p.performance_source ?? '')) && !/^BAFA$/i.test(String(p.primary_source ?? ''))), true);
+    is('[IT] no real product occupies the honeytoken block',
+      it.every(p => !/^1699\d{4}$/.test(String(p.source_id ?? ''))), true);
+    is('[IT] every product has a listing state',
+      it.every(p => ['confirmed', 'review_required', 'verification_required'].includes(p.gse_match_status)), true);
+    is('[IT] a confirmed listing always carries the entry key — and only then',
+      it.every(p => (p.gse_match_status === 'confirmed') === Boolean(p.gse_entry_key)), true);
+    is('[IT] one GSE catalogue entry confirms at most one product', (() => {
+      const keys = it.filter(p => p.gse_entry_key).map(p => p.gse_entry_key);
+      return new Set(keys).size === keys.length;
+    })(), true);
+    is('[IT] the overlay never overwrote a technical field',
+      it.every(p => tech.every(f => JSON.stringify(p[f] ?? null) === JSON.stringify(byId.get(String(p.european_reference_id))?.[f] ?? null))), true);
+    is('[IT] the overlay never changed a segment',
+      it.every(p => segmentOf(p) === segmentOf(byId.get(String(p.european_reference_id)))), true);
+    is('[IT] no German registry fields',
+      it.every(p => !('bafa_listing_status' in p) && !('bafa_foerderung_von' in p)), true);
+    is('[IT] all products pass Data Sheet eligibility', it.every(isDataSheetEligible), true);
+    is('[IT] no unclassified public product', it.every(p => segmentOf(p) !== 'unclassified'), true);
+  }
 }
 
 // ── The publication gate ─────────────────────────────────────────────────────
@@ -199,7 +235,8 @@ if (!existsSync(GB)) {
       mkdirSync(join(dir, 'data_manifests'), { recursive: true });
       for (const f of ['products.json', 'products-commercial.json', 'products-gb.json',
         'products-commercial-gb.json', 'products-fr.json', 'products-commercial-fr.json',
-        'products-pl.json', 'products-commercial-pl.json']) {
+        'products-pl.json', 'products-commercial-pl.json',
+        'products-it.json', 'products-commercial-it.json']) {
         const j = JSON.parse(readFileSync(resolve(root, 'public/data', f), 'utf8'));
         writeFileSync(join(dir, 'public/data', f), JSON.stringify(mutate(j, f)));
       }

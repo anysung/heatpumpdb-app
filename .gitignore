@@ -12,6 +12,7 @@ dist
 dist-uk
 dist-fr
 dist-pl
+dist-it
 dist-admin
 dist-ssr
 *.local
@@ -80,3 +81,21 @@ data_manifests/candidate.json
 data_sources/lista_zum/raw/20*/
 data_sources/lista_zum/parsed/20*/
 data_sources/lista_zum/matching/20*/
+
+# GSE Conto Termico raw snapshots, parsed output, and matching artifacts
+# (rebuilt by scripts/it/; monthly refresh)
+# Keep: manifest.json, gse-match-history.json
+data_sources/gse_ct/raw/20*/
+data_sources/gse_ct/parsed/20*/
+data_sources/gse_ct/matching/20*/
+
+# Feasibility-research workspaces (inactive PoC tooling; keep scripts + README,
+# never their downloaded caches or generated outputs)
+feasibility_tests/**/raw/
+feasibility_tests/**/out/
+feasibility_tests/**/cache/
+feasibility_tests/**/tmp/
+feasibility_tests/**/*.xlsx
+feasibility_tests/**/evidence-*/
+__pycache__/
+.venv/

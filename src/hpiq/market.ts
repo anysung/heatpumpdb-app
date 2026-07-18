@@ -10,6 +10,7 @@ export const MARKET = ACTIVE_COUNTRY;
 export const IS_GB = ACTIVE_COUNTRY.code === 'GB';
 export const IS_FR = ACTIVE_COUNTRY.code === 'FR';
 export const IS_PL = ACTIVE_COUNTRY.code === 'PL';
+export const IS_IT = ACTIVE_COUNTRY.code === 'IT';
 
 /**
  * Short prefix shown next to the registry product id
@@ -18,7 +19,7 @@ export const IS_PL = ACTIVE_COUNTRY.code === 'PL';
  * non-national sources are labelled as European per market policy; the data
  * sheet fine print still names the source registry for traceability.
  */
-export const SOURCE_ID_ABBR = IS_GB ? 'MCS' : IS_FR ? 'Réf.' : IS_PL ? 'Ref.' : 'BAFA';
+export const SOURCE_ID_ABBR = IS_GB ? 'MCS' : IS_FR ? 'Réf.' : IS_PL ? 'Ref.' : IS_IT ? 'Rif.' : 'BAFA';
 
 /** Where "verify eligibility" links point on the products inspector. */
 export const REGISTRY_VERIFY_URL = IS_GB
@@ -27,7 +28,9 @@ export const REGISTRY_VERIFY_URL = IS_GB
     ? 'https://france-renov.gouv.fr'
     : IS_PL
       ? 'https://lista-zum.ios.edu.pl'
-      : 'https://www.bafa.de';
+      : IS_IT
+        ? 'https://www.gse.it/servizi-per-te/efficienza-energetica/conto-termico-3-0/apparecchi-prequalificati'
+        : 'https://www.bafa.de';
 
 /** Official-source link cards on the funding page (titles/subs come from i18n, zipped by index). */
 export const FUNDING_SOURCE_LINKS = IS_GB
@@ -48,27 +51,33 @@ export const FUNDING_SOURCE_LINKS = IS_GB
           { link: 'lista-zum.ios.edu.pl ›', href: 'https://lista-zum.ios.edu.pl' },
           { link: 'mojecieplo.gov.pl ›', href: 'https://mojecieplo.gov.pl' },
         ]
-      : [
-          { link: 'bafa.de ›', href: 'https://www.bafa.de' },
-          { link: 'kfw.de ›', href: 'https://www.kfw.de' },
-          { link: 'bmwk.de ›', href: 'https://www.bmwk.de' },
-        ];
+      : IS_IT
+        ? [
+            { link: 'gse.it ›', href: 'https://www.gse.it/servizi-per-te/efficienza-energetica/conto-termico-3-0' },
+            { link: 'agenziaentrate.gov.it ›', href: 'https://www.agenziaentrate.gov.it' },
+            { link: 'enea.it ›', href: 'https://www.efficienzaenergetica.enea.it' },
+          ]
+        : [
+            { link: 'bafa.de ›', href: 'https://www.bafa.de' },
+            { link: 'kfw.de ›', href: 'https://www.kfw.de' },
+            { link: 'bmwk.de ›', href: 'https://www.bmwk.de' },
+          ];
 
 /**
  * Languages offered in the global nav. The GB edition is English-only
  * (the DE dictionary is Germany-market content, not just a translation);
  * DE and FR are bilingual (market language + English).
  */
-export const UI_LANGUAGES: Language[] = IS_GB ? ['en'] : IS_FR ? ['fr', 'en'] : IS_PL ? ['pl', 'en'] : ['de', 'en'];
+export const UI_LANGUAGES: Language[] = IS_GB ? ['en'] : IS_FR ? ['fr', 'en'] : IS_PL ? ['pl', 'en'] : IS_IT ? ['it', 'en'] : ['de', 'en'];
 
 /** Language the app starts in for this edition. */
-export const DEFAULT_LANGUAGE: Language = IS_FR ? 'fr' : IS_PL ? 'pl' : 'en';
+export const DEFAULT_LANGUAGE: Language = IS_FR ? 'fr' : IS_PL ? 'pl' : IS_IT ? 'it' : 'en';
 
 /**
  * This edition's public web domain (owned: heatpumpdb.de / .uk / .fr / .pl;
  * heatpumpdb.click is the market-neutral hub/short-link domain).
  */
-export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heatpumpdb.fr' : IS_PL ? 'www.heatpumpdb.pl' : 'www.heatpumpdb.de';
+export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heatpumpdb.fr' : IS_PL ? 'www.heatpumpdb.pl' : IS_IT ? 'www.heatpumpdb.it' : 'www.heatpumpdb.de';
 
 /** Sign-in entry URL shown on the Account page ("use on the web"). */
 export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
@@ -89,4 +98,4 @@ export const TECHNICAL_BASELINE = ACTIVE_COUNTRY.technicalBaseline;
  * embed (youtube-nocookie.com), so no YouTube cookies load before the user
  * presses play.
  */
-export const GUIDE_VIDEO_ID: string | null = IS_GB ? '5zkU-KQjzvo' : IS_FR ? 'L8FDkPmjd14' : IS_PL ? null : 'JSkbYarh_iA';
+export const GUIDE_VIDEO_ID: string | null = IS_GB ? '5zkU-KQjzvo' : IS_FR ? 'L8FDkPmjd14' : IS_PL || IS_IT ? null : 'JSkbYarh_iA';

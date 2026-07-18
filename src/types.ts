@@ -104,6 +104,23 @@ export interface HeatPump {
   zum_first_matched_at?: string | null;
   zum_last_confirmed_at?: string | null;
 
+  // ── GSE Conto Termico listing overlay (IT only, build-app-products-it.mjs) ──
+  // Same contract as the PEL/ZUM overlays: a CONFIRMED match may say "nel
+  // catalogo GSE"; anything else is verification-required. The catalogue
+  // publishes NO per-row identifier — gse_entry_key is OUR deterministic
+  // internal key (history/integrity only) and is never shown as an official id.
+  gse_match_status?: string | null;   // 'confirmed' | 'review_required' | 'verification_required'
+  gse_entry_key?: string | null;
+  gse_catalogue?: string | null;      // 'III.A'
+  gse_brand?: string | null;          // catalogue-published brand (fact)
+  gse_model?: string | null;          // catalogue-published model (fact)
+  gse_match_method?: string | null;
+  gse_match_confidence?: string | null;
+  gse_snapshot?: string | null;
+  gse_snapshot_fetched_at?: string | null;
+  gse_first_matched_at?: string | null;
+  gse_last_confirmed_at?: string | null;
+
   // ── BAFA listing provenance (Phase 1) ───────────────────────────────────────
   // bafa_listing_status: 'listed_in_snapshot' means present in the BAFA source
   //   snapshot used to generate this dataset — NOT a claim of current eligibility.
@@ -197,6 +214,10 @@ export interface NewsItem {
   title_pl?: string;
   summary_pl?: string;
   body_pl?: string;
+  /** Stored Italian translations of the article (IT market edition). */
+  title_it?: string;
+  summary_it?: string;
+  body_it?: string;
 }
 
 export interface PolicyItem {
@@ -252,7 +273,7 @@ export enum InstallationType {
 }
 
 export type FetchState = 'idle' | 'loading' | 'success' | 'error';
-export type Language = 'en' | 'de' | 'fr' | 'pl';
+export type Language = 'en' | 'de' | 'fr' | 'pl' | 'it';
 
 // --- Auth Types ---
 /**

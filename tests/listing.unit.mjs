@@ -43,7 +43,7 @@ async function resolverFor(country) {
   return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 }
 
-for (const country of ['GB', 'DE', 'FR', 'PL']) {
+for (const country of ['GB', 'DE', 'FR', 'PL', 'IT']) {
   const { localListingStatus, localListingId, LOCAL_LISTING_SOURCE, LOCAL_LISTING_FILTER } = await resolverFor(country);
   console.log(`\n${country} — local listing overlay`);
 
@@ -134,6 +134,34 @@ for (const country of ['GB', 'DE', 'FR', 'PL']) {
     is('a UK PEL status is ignored entirely',
       localListingStatus({ pel_match_status: 'confirmed', mcs_number: 'X' }), 'verification_required');
     is('Poland shows no PEL id', localListingId({ zum_match_status: 'confirmed', zum_id: 'PW-1', mcs_number: 'X' }), 'PW-1');
+  }
+
+  if (country === 'IT') {
+    is('source is the GSE Conto Termico catalogue', LOCAL_LISTING_SOURCE, 'GSE');
+    is('no listing search filter is offered (425/7106 would be a discovery trap)', LOCAL_LISTING_FILTER, false);
+
+    is('confirmed → listed',
+      localListingStatus({ gse_match_status: 'confirmed', gse_entry_key: 'IIIA-abc123def456' }), 'listed');
+    is('confirmed → but NO id is ever shown (the catalogue publishes no per-row id; our entry key is not an official id)',
+      localListingId({ gse_match_status: 'confirmed', gse_entry_key: 'IIIA-abc123def456' }), null);
+
+    is('verification_required → verification required',
+      localListingStatus({ gse_match_status: 'verification_required' }), 'verification_required');
+    is('review_required → verification required (never still "listed")',
+      localListingStatus({ gse_match_status: 'review_required', gse_entry_key: 'IIIA-abc123def456' }), 'verification_required');
+
+    is('an unknown state fails safe to verification required',
+      localListingStatus({ gse_match_status: 'something_new' }), 'verification_required');
+    is('a missing state fails safe to verification required', localListingStatus({}), 'verification_required');
+    is('IT can NEVER say "not listed" — absence of a match is not absence from the catalogue',
+      ['confirmed', 'verification_required', 'review_required', 'nonsense', undefined]
+        .some(s => localListingStatus({ gse_match_status: s }) === 'not_listed'), false);
+    is('a German listing status is ignored entirely',
+      localListingStatus({ bafa_listing_status: 'listed_in_snapshot' }), 'verification_required');
+    is('a UK PEL status is ignored entirely',
+      localListingStatus({ pel_match_status: 'confirmed', mcs_number: 'X' }), 'verification_required');
+    is('a Polish ZUM status is ignored entirely',
+      localListingStatus({ zum_match_status: 'confirmed', zum_id: 'PW-1' }), 'verification_required');
   }
 }
 

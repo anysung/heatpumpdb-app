@@ -25,7 +25,7 @@ import { PUBLIC_ENV } from './env';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type CountryCode = 'DE' | 'GB' | 'FR' | 'PL';
+export type CountryCode = 'DE' | 'GB' | 'FR' | 'PL' | 'IT';
 
 /** Identifies the primary eligibility/registry data source for a country. */
 export type PrimaryRegistry = 'BAFA' | 'OFGEM_PEL';
@@ -122,7 +122,7 @@ export interface CountryProfile {
    * wording stays translatable and no English leaks into a non-English site.
    */
   localListingOverlay: {
-    source: 'BAFA' | 'PEL' | 'ZUM' | null;
+    source: 'BAFA' | 'PEL' | 'ZUM' | 'GSE' | null;
     filterEnabled: boolean;
     /**
      * Start with the "listed only" filter ON? Only sensible where the listed
@@ -259,6 +259,41 @@ export const COUNTRY_PROFILES: Record<CountryCode, CountryProfile> = {
     // The filter earns its place: ZUM listing meaningfully divides the catalogue
     // and is the question Polish installers actually ask.
     localListingOverlay: { source: 'ZUM', filterEnabled: true, filterDefaultOn: false },
+  },
+
+  IT: {
+    code: 'IT',
+    name: 'Italy',
+    marketName: 'Italian market',
+    currency: 'EUR',
+    currencySymbol: '€',
+    locale: 'it-IT',
+    firestoreRoot: 'countries/IT',
+    // IT catalogue is derived from the canonical (German-registry) baseline —
+    // same hardware sold across the EU. The GSE Conto Termico pre-qualified
+    // appliance catalogue is a LISTING overlay only; it never becomes the
+    // technical catalogue (it publishes no refrigerant/sound data at all).
+    primaryRegistry: 'BAFA',
+    primaryRegistryIdField: 'bafa_id',
+    subsidyAuthorityLabel: 'GSE (Conto Termico 3.0) / Agenzia delle Entrate (detrazioni)',
+    subsidyTabLabel: 'Conto Termico',
+    aiMarketContext: 'Italian market',
+    // User-facing: neutral European reference — never names a foreign registry.
+    sourceIdLabel: { en: 'European reference' },
+    enabledEnrichmentLayers: ['BAFA_REFERENCE', 'EPREL'],
+    datasetPaths: {
+      products: '/data/products-it.json',
+      commercialProducts: '/data/products-commercial-it.json',
+    },
+    technicalBaseline: 'canonical',
+    // Italy HAS a national pre-qualified appliance catalogue (GSE Conto Termico
+    // 3.0, catalogo III.A) — listed appliances get the simplified incentive
+    // path. Only a CONFIRMED match says "nel catalogo GSE"; everything else
+    // says "verifica richiesta" (the PEL rule: a failed match is a fact about
+    // our matching, not about the catalogue). NO search filter: confirmed
+    // listings divide the catalogue far too unevenly to help discovery —
+    // the same trap that once emptied a whole page on the UK edition.
+    localListingOverlay: { source: 'GSE', filterEnabled: false },
   },
 };
 

@@ -369,6 +369,8 @@ const MARKET_BG: Record<string, {
   GB: { baseMid: '#0c1a2e', base: '#081322', baseDeep: '#050c18', glowA: '#38bdf8', glowB: '#818cf8', lineA: '#38bdf8', lineB: '#818cf8' },
   FR: { baseMid: '#111a38', base: '#0b1128', baseDeep: '#070b1c', glowA: '#60a5fa', glowB: '#fb7185', lineA: '#60a5fa', lineB: '#22d3ee' },
   PL: { baseMid: '#2a1019', base: '#1c0a11', baseDeep: '#12060b', glowA: '#fb7185', glowB: '#f9a8d4', lineA: '#fb7185', lineB: '#fda4af' },
+  // IT: tricolore analog — deep green base with a warm red counter-glow.
+  IT: { baseMid: '#10241a', base: '#0a1a0f', baseDeep: '#061109', glowA: '#4ade80', glowB: '#f87171', lineA: '#4ade80', lineB: '#fca5a5' },
 };
 const BG = MARKET_BG[ACTIVE_COUNTRY.code] ?? MARKET_BG.DE;
 

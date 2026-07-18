@@ -68,6 +68,22 @@
       ]
     },
     {
+      "target": "it",
+      "public": "dist-it",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "data/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
       "target": "hub",
       "public": "dist-admin",
       "ignore": [

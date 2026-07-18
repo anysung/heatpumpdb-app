@@ -1,0 +1,4 @@
+{
+ "_readme": "Official manufacturer cross-references canonical↔GSE Conto Termico catalogue (IT). Each mapping: { local_registry: 'GSE', gse_entry_key: '<IIIA-… key from parse-gse.mjs>', canonical_id: '<bafa_id>', evidence_reference: '<document/url>' }. Entries here outrank the automated matcher (method 'manufacturer_official'). Evidence-based only — never name similarity.",
+ "mappings": []
+}

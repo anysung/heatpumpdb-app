@@ -66,6 +66,19 @@ const MARKETS = [
     reputableSources: 'gov.pl, nfosigw.gov.pl, czystepowietrze.gov.pl, mojecieplo.gov.pl, lista-zum.ios.edu.pl, portpc.pl, ec.europa.eu, manufacturer newsrooms, established trade press',
     policyScope: 'Czyste Powietrze grant amounts and conditions, Moje Ciepło, Ciepłe Mieszkanie, ulga termomodernizacyjna, EU EPBD requirements',
   },
+  {
+    code: 'IT',
+    marketName: 'Italy',
+    includeGermanTranslation: false,
+    italianTranslation: true,
+    researchScope: `- Conto Termico 3.0 (GSE) rules, incentive amounts and the pre-qualified appliance catalogues (catalogo apparecchi prequalificati)
+- Detrazioni fiscali / Ecobonus changes affecting heat pumps (Agenzia delle Entrate, ENEA)
+- Italian heat pump market trends and sales statistics (Assoclima, EHPA, manufacturer reports)
+- Technology developments (R290/natural refrigerants, sound power, hybrid systems)
+- EU policy developments affecting Italy (EPBD/case green, efficiency standards, refrigerants)`,
+    reputableSources: 'gse.it, mase.gov.it, agenziaentrate.gov.it, enea.it, efficienzaenergetica.enea.it, assoclima.it, ec.europa.eu, manufacturer newsrooms, established trade press',
+    policyScope: 'Conto Termico 3.0 incentive amounts and conditions, detrazioni fiscali / Ecobonus, EU EPBD (direttiva case green) requirements',
+  },
 ];
 
 // -------------------------------------------------------------------
@@ -364,7 +377,13 @@ async function researchNewsAndPolicies(ai, budget, market) {
   Polish for professional installers (correct terminology: pompa ciepła,
   dofinansowanie, moc akustyczna, czynnik chłodniczy…), not a literal
   word-by-word translation. Same paragraph structure as "body".`
-        : `- Do NOT include any translated fields — this market edition is English-only.`;
+        : market.italianTranslation
+          ? `- For EACH article ALSO provide a professional Italian version of the same
+  content in "title_it", "summary_it", and "body_it": natural, journalistic
+  Italian for professional installers (correct terminology: pompa di calore,
+  incentivi, potenza sonora, refrigerante…), not a literal word-by-word
+  translation. Same paragraph structure as "body".`
+          : `- Do NOT include any translated fields — this market edition is English-only.`;
 
   const germanJsonFields = market.includeGermanTranslation
     ? `
@@ -381,7 +400,12 @@ async function researchNewsAndPolicies(ai, budget, market) {
       "title_pl": "Zwięzły nagłówek redakcyjny (polski)",
       "summary_pl": "Lead 2-3 zdania (polski)",
       "body_pl": "Pierwszy akapit...\\n\\nDrugi akapit...\\n\\nTrzeci akapit...",`
-        : '';
+        : market.italianTranslation
+          ? `
+      "title_it": "Titolo editoriale conciso (italiano)",
+      "summary_it": "Sommario di 2-3 frasi (italiano)",
+      "body_it": "Primo paragrafo...\\n\\nSecondo paragrafo...\\n\\nTerzo paragrafo...",`
+          : '';
 
   const prompt = `You are the editorial engine of "HeatPump DB", a ${market.marketName} heat pump market intelligence app.
 

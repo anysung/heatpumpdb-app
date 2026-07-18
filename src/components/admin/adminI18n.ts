@@ -27,7 +27,7 @@ const EN = {
   menuMembers: 'Members',
   menuData: 'Data',
   menuAudit: 'Audit Logs',
-  marketNames: { DE: 'Germany', GB: 'United Kingdom', FR: 'France', PL: 'Poland' } as Record<string, string>,
+  marketNames: { DE: 'Germany', GB: 'United Kingdom', FR: 'France', PL: 'Poland', IT: 'Italy' } as Record<string, string>,
   // Overview (unified dashboard)
   ovTitle: 'Overview',
   ovSubtitle: 'All markets at a glance — work happens in the market pages.',
@@ -155,7 +155,7 @@ const KO: typeof EN = {
   menuMembers: '전체 회원',
   menuData: '데이터',
   menuAudit: '감사 로그',
-  marketNames: { DE: '독일', GB: '영국', FR: '프랑스', PL: '폴란드' } as Record<string, string>,
+  marketNames: { DE: '독일', GB: '영국', FR: '프랑스', PL: '폴란드', IT: '이탈리아' } as Record<string, string>,
   ovTitle: '대시보드',
   ovSubtitle: '전체 마켓 현황 한눈에 보기 — 실제 업무는 국가별 페이지에서 진행합니다.',
   ovAlerts: '처리 필요 업무',

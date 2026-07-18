@@ -21,17 +21,18 @@ export const LEGAL_NAV: Record<Language, Record<LegalDoc, string>> = {
   de: { privacy: 'Datenschutz', terms: 'Nutzungsbedingungen', refund: 'Widerruf & Kündigung', imprint: 'Impressum' },
   fr: { privacy: 'Confidentialité', terms: "Conditions d'utilisation", refund: 'Remboursement', imprint: 'Mentions légales' },
   pl: { privacy: 'Polityka prywatności', terms: 'Warunki korzystania', refund: 'Zasady zwrotów', imprint: 'Informacje o usługodawcy' },
+  it: { privacy: 'Informativa sulla privacy', terms: 'Condizioni d’uso', refund: 'Politica di rimborso', imprint: 'Note legali' },
 };
 
 /** Public footer copyright — brand mark only; identity details stay in the Legal Notice. */
 const RIGHTS_RESERVED: Record<Language, string> = {
-  en: 'All rights reserved.', de: 'Alle Rechte vorbehalten.', fr: 'Tous droits réservés.', pl: 'Wszelkie prawa zastrzeżone.',
+  en: 'All rights reserved.', de: 'Alle Rechte vorbehalten.', fr: 'Tous droits réservés.', pl: 'Wszelkie prawa zastrzeżone.', it: 'Tutti i diritti riservati.',
 };
 const footerCopyright = (language: Language) =>
   `© ${new Date().getFullYear()} ${BRAND_TM}. ${RIGHTS_RESERVED[language]}`;
 
-const BACK: Record<Language, string> = { en: 'Back to HeatPump DB', de: 'Zurück zu HeatPump DB', fr: 'Retour à HeatPump DB', pl: 'Powrót do HeatPump DB' };
-const UPDATED: Record<Language, string> = { en: 'Version', de: 'Fassung', fr: 'Version', pl: 'Wersja' };
+const BACK: Record<Language, string> = { en: 'Back to HeatPump DB', de: 'Zurück zu HeatPump DB', fr: 'Retour à HeatPump DB', pl: 'Powrót do HeatPump DB', it: 'Torna a HeatPump DB' };
+const UPDATED: Record<Language, string> = { en: 'Version', de: 'Fassung', fr: 'Version', pl: 'Wersja', it: 'Versione' };
 
 export const LegalPage: React.FC<{
   doc: LegalDoc;

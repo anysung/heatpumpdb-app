@@ -49,6 +49,7 @@ const DATASETS = {
   GB: ['public/data/products-gb.json', 'public/data/products-commercial-gb.json'],
   FR: ['public/data/products-fr.json', 'public/data/products-commercial-fr.json'],
   PL: ['public/data/products-pl.json', 'public/data/products-commercial-pl.json'],
+  IT: ['public/data/products-it.json', 'public/data/products-commercial-it.json'],
 };
 
 /** German registry status/funding fields must never leave Germany. */
@@ -60,7 +61,7 @@ const GERMAN_ONLY_FIELDS = ['bafa_listing_status', 'bafa_foerderung_von', 'bafa_
  * the legacy bafa_reference_* technical-traceability fields; Poland publishes
  * european_reference_* instead.)
  */
-const NEUTRAL_PUBLIC_MARKETS = ['PL'];
+const NEUTRAL_PUBLIC_MARKETS = ['PL', 'IT'];
 
 /**
  * Approved one-to-many local-id exceptions. An entry says a document proves this
@@ -90,6 +91,12 @@ const LOCAL_OVERLAY = {
   PL: {
     status: 'zum_match_status', id: 'zum_id', extraId: null,
     method: 'zum_match_method', exceptions: loadExceptions('zum-one-to-many-exceptions.json'),
+  },
+  IT: {
+    // The GSE catalogue publishes no per-row id; gse_entry_key is our
+    // deterministic entry key — the same one-key-one-product integrity applies.
+    status: 'gse_match_status', id: 'gse_entry_key', extraId: null,
+    method: 'gse_match_method', exceptions: [],
   },
 };
 const NO_OVERLAY = { status: 'pel_match_status', id: 'mcs_number', extraId: 'pel_source_id', method: 'pel_match_method', exceptions: [] };
@@ -127,7 +134,7 @@ function loadItems(rel) {
 /** Read a dataset straight out of the production bucket (canaries subtracted). */
 const CANARIES_PER_FILE = 1;
 function loadLive(rel) {
-  const cc = rel.includes('-gb') ? 'GB' : rel.includes('-fr') ? 'FR' : rel.includes('-pl') ? 'PL' : 'DE';
+  const cc = rel.includes('-gb') ? 'GB' : rel.includes('-fr') ? 'FR' : rel.includes('-pl') ? 'PL' : rel.includes('-it') ? 'IT' : 'DE';
   const gcs = `gs://heatpumpdb-datasets/datasets/${cc}/${rel.split('/').pop()}`;
   const raw = execFileSync('gcloud', ['storage', 'cat', gcs], { maxBuffer: 512 * 1024 * 1024 });
   const j = JSON.parse(raw.toString());

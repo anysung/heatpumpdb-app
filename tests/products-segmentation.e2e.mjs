@@ -38,13 +38,13 @@ console.log(`\nProducts — ${COUNTRY} edition\n`);
 await page.goto(BASE, { waitUntil: 'domcontentloaded' });
 await page.waitForTimeout(5000);          // datasets load from public/data
 
-await page.getByText(/^Products$|^Produkte$|^Produits$|^Produkty$/).first().click();
+await page.getByText(/^Products$|^Produkte$|^Produits$|^Produkty$|^Prodotti$/).first().click();
 await page.waitForTimeout(3500);
 
 /** The result count shown in the header ("N models"). */
 const total = async () => {
   const txt = await page.locator('body').innerText();
-  const m = txt.match(/([\d]{1,3}(?:[.,\s\u00A0\u202F]\d{3})*|\d+)\s*(models|Modelle|modèles|of|von|sur|z)\b/i);
+  const m = txt.match(/([\d]{1,3}(?:[.,\s\u00A0\u202F]\d{3})*|\d+)\s*(models|Modelle|modèles|of|von|sur|z|di)\b/i);
   return m ? parseInt(m[1].replace(/[.,\s\u00A0\u202F]/g, ''), 10) : -1;
 };
 const rows = () => page.locator('[data-row-id]').count();
@@ -75,12 +75,12 @@ check('[residential] products load', (await rows()) > 0);
 
 // Sorting capacity high→low brings the single largest residential product to the
 // top: if THAT one is ≤ 23 kW, then no residential product is above the threshold.
-const resMaxKw = await sortAndReadTopKw(/high to low|hoch|décroissante|haut|od najwyższej/i);
+const resMaxKw = await sortAndReadTopKw(/high to low|hoch|décroissante|haut|od najwyższej|decrescente/i);
 check(`[segment] no residential product exceeds ${THRESHOLD} kW`,
   Number.isFinite(resMaxKw) && resMaxKw <= THRESHOLD, `largest residential = ${resMaxKw} kW`);
 
 /* ── Commercial ───────────────────────────────────────────────────────── */
-await page.getByText(/^Commercial$|^Gewerbe$|^Tertiaire$|^Komercyjne$/).first().click();
+await page.getByText(/^Commercial$|^Gewerbe$|^Tertiaire$|^Komercyjne$|^Commerciale$/).first().click();
 await page.waitForTimeout(2500);
 const comRows = await rows();
 const comTotal = await total();
@@ -88,7 +88,7 @@ check('[commercial] catalogue loads (non-zero)', comRows > 0, `rows=${comRows}`)
 check('[commercial] total is plausible (>100)', comTotal > 100, `total=${comTotal}`);
 
 // Mirror image: the smallest commercial product must still be above the threshold.
-const comMinKw = await sortAndReadTopKw(/low to high|niedrig|croissante|bas|od najniższej/i);
+const comMinKw = await sortAndReadTopKw(/low to high|niedrig|croissante|bas|od najniższej|crescente/i);
 check(`[segment] every commercial product is above ${THRESHOLD} kW`,
   Number.isFinite(comMinKw) && comMinKw > THRESHOLD, `smallest commercial = ${comMinKw} kW`);
 
@@ -105,7 +105,7 @@ if (await note.count()) {
   // DE edition opens in English with German behind the DE chip.
   if (COUNTRY === 'DE') await setLang('DE');
   const nt = await text(note.first());
-  const lang = COUNTRY === 'DE' ? /Nennleistung/i : COUNTRY === 'FR' ? /puissance nominale/i : COUNTRY === 'PL' ? /moc[a-zy]* znamionow/i : /rated capacity/i;
+  const lang = COUNTRY === 'DE' ? /Nennleistung/i : COUNTRY === 'FR' ? /puissance nominale/i : COUNTRY === 'PL' ? /moc[a-zy]* znamionow/i : COUNTRY === 'IT' ? /potenza nominale/i : /rated capacity/i;
   check(`[disclosure] the note is in the ${COUNTRY} market language`, lang.test(nt), nt);
   check('[disclosure] the note still names the threshold in that language', /23 kW/.test(nt), nt);
   if (COUNTRY === 'DE') await setLang('EN');
@@ -177,6 +177,17 @@ if (COUNTRY === 'GB') {
     await page.waitForTimeout(300);
     check('[PL] toggling back restores the unfiltered list', (await total()) === a);
   }
+} else if (COUNTRY === 'IT') {
+  // Italy has its own national catalogue (GSE Conto Termico, III.A) — PEL rules
+  // apply: only a confirmed match is "listed", a failed match is never absence.
+  check('[IT] GSE catalogue status is shown on the list', /\bGSE\b/i.test(comBody));
+  check('[IT] no product is claimed absent from the GSE catalogue',
+    !/Non (è |e )?nel catalogo|(?<!sia )assente dal catalogo|rimosso dal catalogo|not in (the )?GSE catalogue/i.test(comBody), around(comBody, 'catalogo'));
+  check('[IT] no foreign listing leaks onto the Italian edition', !/Ofgem|\bPEL\b|\bMCS\b|\bZUM\b/i.test(comBody));
+  check('[IT] no incentive eligibility is claimed',
+    !/garantisce l.incentivo|idoneo all.incentivo|diritto all.incentivo|eligible for (an? )?(grant|incentive)/i.test(comBody));
+  check('[IT] the "listed only" filter is NOT offered (confirmed subset too small — a discovery trap)',
+    (await page.locator('[data-testid="listed-only-toggle"]').count()) === 0);
 } else {
   check('[DE] the BAFA listing filter IS offered (it meaningfully divides the catalogue)',
     (await page.locator('[data-testid="listed-only-toggle"]').count()) === 1);
@@ -248,7 +259,7 @@ if (await search.count()) {
 await page.locator('[data-row-id]').first().click();
 await page.waitForTimeout(900);
 const detail = await bodyText();
-check('[commercial] product detail opens', /Manufacturer|Hersteller|Fabricant|Producent/i.test(detail));
+check('[commercial] product detail opens', /Manufacturer|Hersteller|Fabricant|Producent|Produttore/i.test(detail));
 if (COUNTRY === 'GB') {
   check('[GB] product detail keeps PEL status', /\bPEL Listed|verification required/i.test(detail));
   check('[GB] product detail never says "Not on PEL"', !/not on (the )?(current )?PEL/i.test(detail));
@@ -262,6 +273,11 @@ if (COUNTRY === 'PL') {
   check('[PL] product detail keeps ZUM status wording',
     /Na liście ZUM|Weryfikacja ZUM|ZUM listed|ZUM verification/i.test(detail));
 }
+if (COUNTRY === 'IT') {
+  check('[IT] product detail never says BAFA', !/BAFA/i.test(detail), around(detail, 'BAFA'));
+  check('[IT] product detail keeps GSE status wording',
+    /catalogo GSE|GSE catalogue|Verifica.*GSE|GSE verification/i.test(detail));
+}
 
 const cmp = page.locator('[data-testid="compare-toggle"]');
 check('[commercial] compare controls render', (await cmp.count()) >= 2);
@@ -269,9 +285,9 @@ await cmp.nth(0).click();
 await cmp.nth(1).click();
 await page.waitForTimeout(500);
 const cmpText = await bodyText();
-check('[commercial] two records can be compared', /2/.test(cmpText) && /Compare|Vergleich|Comparer|Porówn/i.test(cmpText));
+check('[commercial] two records can be compared', /2/.test(cmpText) && /Compare|Vergleich|Comparer|Porówn|Confront/i.test(cmpText));
 
-await page.getByText(/^Data sheet$|^Datenblatt$|^Fiche technique$|^Karta danych$/).first().click();
+await page.getByText(/^Data sheet$|^Datenblatt$|^Fiche technique$|^Karta danych$|^Scheda tecnica$/).first().click();
 await page.waitForTimeout(2500);
 check('[commercial] Data Sheet opens for a commercial record',
   (await page.locator('.hpiq-print-doc').count()) >= 1);
@@ -292,6 +308,12 @@ if (COUNTRY === 'PL') {
   check('[PL] the Data Sheet does not name the source country',
     !namesSourceCountry(sheet), around(stripCompanyNames(sheet), 'German'));
   check('[PL] the Data Sheet shows no foreign listing', !/Ofgem|\bPEL\b|\bMCS\b/i.test(sheet));
+}
+if (COUNTRY === 'IT') {
+  check('[IT] the Data Sheet never says BAFA', !/BAFA/i.test(sheet), around(sheet, 'BAFA'));
+  check('[IT] the Data Sheet does not name the source country',
+    !namesSourceCountry(sheet), around(stripCompanyNames(sheet), 'German'));
+  check('[IT] the Data Sheet shows no foreign listing', !/Ofgem|\bPEL\b|\bMCS\b|\bZUM\b/i.test(sheet));
 }
 if (COUNTRY === 'DE') {
   check('[DE] the Data Sheet still shows a valid BAFA reference', /BAFA/i.test(sheet));
@@ -334,10 +356,10 @@ check('[logo] the wordmark does not rotate', logo?.textAnim === 'none');
  * the default language would have missed both.
  */
 if (COUNTRY !== 'DE') {
-  const langs = COUNTRY === 'FR' ? ['FR', 'EN'] : COUNTRY === 'PL' ? ['PL', 'EN'] : ['EN'];
+  const langs = COUNTRY === 'FR' ? ['FR', 'EN'] : COUNTRY === 'PL' ? ['PL', 'EN'] : COUNTRY === 'IT' ? ['IT', 'EN'] : ['EN'];
   const pages = [
     /^Find product$|^Rechercher$|^Znajdź produkt$/,
-    /^Products$|^Produits$|^Produkty$/,
+    /^Products$|^Produits$|^Produkty$|^Prodotti$/,
     /^EU energy label$|^Étiquette énergie UE$|^Étiquette énergétique UE$|^Etykieta energetyczna UE$/,
   ];
   for (const l of langs) {
@@ -361,7 +383,7 @@ const m = await ctx.newPage();
 await m.setViewportSize({ width: 390, height: 844 });
 await m.goto(BASE, { waitUntil: 'domcontentloaded' });
 await m.waitForTimeout(6000);
-await m.getByText(/^Products$|^Produkte$|^Produits$|^Produkty$/).first().click();
+await m.getByText(/^Products$|^Produkte$|^Produits$|^Produkty$|^Prodotti$/).first().click();
 await m.waitForTimeout(3000);
 const mBody = await m.locator('body').innerText();
 check('[mobile] the catalogue renders', (await m.locator('[data-row-id]').count()) > 0 || /kW/.test(mBody));

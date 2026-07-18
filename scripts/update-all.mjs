@@ -59,6 +59,8 @@ const LIVE_GCS = {
   'public/data/products-commercial-fr.json': 'gs://heatpumpdb-datasets/datasets/FR/products-commercial-fr.json',
   'public/data/products-pl.json':            'gs://heatpumpdb-datasets/datasets/PL/products-pl.json',
   'public/data/products-commercial-pl.json': 'gs://heatpumpdb-datasets/datasets/PL/products-commercial-pl.json',
+  'public/data/products-it.json':            'gs://heatpumpdb-datasets/datasets/IT/products-it.json',
+  'public/data/products-commercial-it.json': 'gs://heatpumpdb-datasets/datasets/IT/products-commercial-it.json',
 };
 const CANARIES_PER_FILE = 1;
 
@@ -125,6 +127,19 @@ const PIPELINES = {
     ],
     requires: [],
     datasets: ['public/data/products-pl.json', 'public/data/products-commercial-pl.json'],
+  },
+  IT: {
+    dependsOn: ['DE'],
+    steps: [
+      // Direction: CANONICAL → GSE. The Conto Termico catalogue is a listing
+      // overlay, never a product source (same rule as the Ofgem PEL).
+      { name: 'fetch GSE Conto Termico catalogues', cmd: 'node scripts/it/fetch-gse.mjs', when: 'fetch' },
+      { name: 'parse GSE catalogues', cmd: 'node scripts/it/parse-gse.mjs', when: 'fetch' },
+      { name: 'match canonical → GSE catalogue (listing overlay)', cmd: 'node scripts/it/match-canonical-to-gse.mjs', optional: true },
+      { name: 'build IT app datasets', cmd: 'node scripts/it/build-app-products-it.mjs' },
+    ],
+    requires: [],
+    datasets: ['public/data/products-it.json', 'public/data/products-commercial-it.json'],
   },
 };
 
@@ -266,14 +281,14 @@ if (DEPLOY) {
   console.log('\n════ Upload datasets (auth-protected Storage, + canaries) ════');
   execSync('node scripts/upload-datasets.mjs', { cwd: ROOT, stdio: 'inherit' });
   console.log('\n════ Build & deploy all editions ════');
-  for (const cmd of ['npm run build:de', 'npm run build:uk', 'npm run build:fr', 'npm run build:pl', 'npm run build:admin']) {
+  for (const cmd of ['npm run build:de', 'npm run build:uk', 'npm run build:fr', 'npm run build:pl', 'npm run build:it', 'npm run build:admin']) {
     execSync(cmd, { cwd: ROOT, stdio: 'inherit' });
   }
-  execSync('firebase deploy --only hosting:de,hosting:uk,hosting:fr,hosting:pl,hosting:hub', { cwd: ROOT, stdio: 'inherit' });
+  execSync('firebase deploy --only hosting:de,hosting:uk,hosting:fr,hosting:pl,hosting:it,hosting:hub', { cwd: ROOT, stdio: 'inherit' });
 }
 
 /* ── Summary ──────────────────────────────────────────────────────────────── */
 
 console.log('\n════ Summary ════');
 for (const r of results) console.log(`  ${r.ok ? '✓' : '✗ (optional)'} [${r.code}] ${r.name} — ${r.secs}s`);
-console.log(DEPLOY ? '  ✓ deployed: de, uk, fr, hub' : '  (no deploy — run with --deploy to ship)');
+console.log(DEPLOY ? '  ✓ deployed: de, uk, fr, pl, it, hub' : '  (no deploy — run with --deploy to ship)');

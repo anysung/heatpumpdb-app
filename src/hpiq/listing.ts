@@ -18,6 +18,11 @@
  *   PL → Lista ZUM       an overlay, PEL rules: a confirmed match says
  *                        "ZUM listed" (na liście ZUM); anything else says
  *                        verification required. Never "not on ZUM".
+ *   IT → GSE Conto Termico catalogue (III.A) — an overlay, PEL rules: a
+ *                        confirmed match says "nel catalogo GSE"; anything
+ *                        else says verification required. Never "not in the
+ *                        catalogue". The catalogue publishes no per-row id,
+ *                        so no identifier is ever shown — status only.
  */
 import { HeatPump } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
@@ -60,6 +65,12 @@ export function localListingStatus(p: HeatPump): LocalListingStatus | null {
     return raw.zum_match_status === 'confirmed' ? 'listed' : 'verification_required';
   }
 
+  if (LOCAL_LISTING_SOURCE === 'GSE') {
+    // GSE Conto Termico catalogue follows the PEL rules exactly: a failed
+    // match may never be presented as absence from the catalogue.
+    return raw.gse_match_status === 'confirmed' ? 'listed' : 'verification_required';
+  }
+
   // DE — the registry snapshot IS this market's own list, so absence is evidence.
   return (raw.bafa_listing_status ?? 'listed_in_snapshot') === 'listed_in_snapshot'
     ? 'listed'
@@ -77,5 +88,7 @@ export function localListingId(p: HeatPump): string | null {
     if (raw.zum_match_status !== 'confirmed') return null;
     return typeof raw.zum_id === 'string' && raw.zum_id ? raw.zum_id : null;
   }
+  // GSE: the Conto Termico catalogue publishes NO per-row identifier, and our
+  // internal gse_entry_key must never be presented as an official id.
   return null;
 }

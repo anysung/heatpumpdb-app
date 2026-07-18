@@ -99,7 +99,11 @@ export function flagInner(opts: { country: CountryCode; onLight?: boolean; anima
         : country === 'PL'
           ? `<rect x="0" y="0" width="96" height="33" fill="#ffffff"/>` +
             `<rect x="0" y="33" width="96" height="33" fill="#D4213D"/>`
-          : `<rect x="0" y="0" width="96" height="66" fill="#7a7a7a"/>`;
+          : country === 'IT'
+            ? `<rect x="0" y="0" width="32" height="66" fill="#008C45"/>` +
+              `<rect x="32" y="0" width="32" height="66" fill="#F4F9FF"/>` +
+              `<rect x="64" y="0" width="32" height="66" fill="#CD212A"/>`
+            : `<rect x="0" y="0" width="96" height="66" fill="#7a7a7a"/>`;
 
   return (
     `<g${sway}>` +

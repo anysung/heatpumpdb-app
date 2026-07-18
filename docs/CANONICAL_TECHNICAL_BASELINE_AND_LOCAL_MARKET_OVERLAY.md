@@ -152,9 +152,11 @@ It never borrows another country's, and it never invents a neutral-sounding one.
 
 | Market | Public products | Local overlay | Confirmed | Verification required |
 |---|---:|---|---:|---:|
-| DE | 7,063 | BAFA (owns its registry) | — | — |
-| GB | 7,063 | Ofgem PEL | 521 | 6,542 |
-| FR | 7,063 | none | — | — |
+| DE | 7,106 | BAFA (owns its registry) | — | — |
+| GB | 7,106 | Ofgem PEL | 521 | 6,585 |
+| FR | 7,106 | none | — | — |
+| PL | 9,128 | Lista ZUM (+ spec-complete ZUM-native extension) | 2,566 | 6,562 |
+| IT | 7,106 | GSE Conto Termico catalogue (III.A) | 425 | 6,681 |
 
 The UK went from 6,365 records (2,134 of them unclassifiable) to 7,063 products
 that all have a capacity, a segment and a data sheet.

@@ -821,9 +821,210 @@ const PL = {
   }),
 };
 
+/* ── Italian ────────────────────────────────────────────────────────────── */
+
+const IT = {
+  privacy: {
+    title: 'Informativa sulla privacy',
+    updated: ver.privacy,
+    intro:
+      `${SERVICE_NAME} è un servizio di banca dati professionale via web per il settore europeo delle pompe di calore. La presente informativa spiega quali dati trattiamo quando utilizzate il servizio e perché. Raccogliamo solo il minimo necessario alla gestione di un account professionale.`,
+    sections: [
+      {
+        h: 'Titolare del trattamento',
+        p: [
+          `${OPERATOR_NAME}, impresa individuale gestita da ${OPERATOR_OWNER}, gestisce ${BRAND_TM} ed è il titolare del trattamento dei dati personali descritti nella presente informativa.`,
+          'Indirizzo commerciale registrato:',
+          ...BUSINESS_ADDRESS_LINES,
+          `E-mail: ${SUPPORT_EMAIL}`,
+        ],
+      },
+      {
+        h: 'Dati dell’account che raccogliamo',
+        p: [
+          'Al momento della registrazione raccogliamo: nome, cognome, indirizzo e-mail e una password (conservata esclusivamente in forma di hash da Firebase Authentication — non la vediamo mai).',
+          'Non chiediamo la funzione ricoperta, come ci avete conosciuti, né altri dati personali non necessari alla gestione dell’account.',
+        ],
+      },
+      {
+        h: 'Dati aziendali che raccogliamo',
+        p: [
+          'Obbligatori: ragione sociale e tipo di azienda. Facoltativi: città e sito web dell’azienda. Se selezionate «Altro» come tipo di azienda, memorizziamo la breve descrizione da voi inserita.',
+          'I professionisti autonomi e le ditte individuali indicano come ragione sociale il proprio nome o la propria denominazione commerciale registrata.',
+          'Il paese di registrazione è ricavato automaticamente dall’edizione nazionale su cui vi registrate. Non ve lo chiediamo.',
+        ],
+      },
+      {
+        h: 'Finalità del trattamento',
+        p: [
+          'Fornitura del servizio di banca dati e del vostro account; identificazione degli utenti professionali; gestione degli abbonamenti di team (posti, inviti); fatturazione tramite il nostro fornitore di pagamenti; risposta alle richieste di assistenza; protezione del servizio contro abusi ed estrazione non autorizzata di dati.',
+        ],
+      },
+      {
+        h: 'Basi giuridiche',
+        p: [
+          'Esecuzione del contratto (art. 6, par. 1, lett. b del GDPR — Regolamento (UE) 2016/679) per l’account, l’abbonamento e l’assistenza; legittimo interesse (art. 6, par. 1, lett. f del GDPR) per la sicurezza, la prevenzione delle frodi e la protezione della banca dati; obblighi legali (art. 6, par. 1, lett. c del GDPR) per la documentazione contabile e fiscale conservata dal nostro fornitore di pagamenti.',
+        ],
+      },
+      {
+        h: 'Responsabili del trattamento e servizi utilizzati',
+        p: [
+          'Firebase Authentication (Google) — accesso e gestione delle password.',
+          'Firebase Firestore, Cloud Storage e Hosting (Google) — dati degli account, set di dati dei prodotti e distribuzione dell’applicazione.',
+          'Firebase App Check con reCAPTCHA Enterprise (Google) — verifica che le richieste provengano dalla nostra applicazione e blocca l’estrazione automatizzata di dati.',
+          'Paddle — il nostro fornitore di pagamenti e venditore ufficiale (merchant of record). Paddle raccoglie e tratta i vostri dati di pagamento; noi non riceviamo né conserviamo mai i dati delle carte.',
+        ],
+      },
+      {
+        h: 'Fatturazione e merchant of record',
+        p: [
+          'Gli abbonamenti sono venduti sul web tramite Paddle, che agisce come venditore ufficiale (merchant of record). Paddle gestisce il pagamento, la fatturazione e l’IVA applicabile ed è titolare del trattamento dei dati di pagamento che raccoglie. Conserviamo solo quanto necessario per collegare l’abbonamento al vostro account e per assistervi.',
+        ],
+      },
+      {
+        h: 'Richieste di assistenza',
+        p: [
+          'Le richieste inviate dalla pagina Account vengono memorizzate insieme al vostro account, affinché il nostro team di assistenza possa rispondere e voi possiate leggere la risposta nell’applicazione.',
+        ],
+      },
+      {
+        h: 'Sicurezza e prevenzione degli abusi',
+        p: [
+          'Gli account sono personali e non possono essere condivisi. Registriamo l’attività degli account per rilevare la condivisione degli account e l’estrazione non autorizzata della banca dati. I dati dei prodotti sono forniti esclusivamente ad account autenticati e approvati.',
+        ],
+      },
+      {
+        h: 'Conservazione dei dati',
+        p: [
+          'I dati dell’account e i dati aziendali sono conservati per la durata dell’account. Dopo la cancellazione conserviamo solo quanto richiesto per finalità legali, contabili o probatorie; la documentazione di fatturazione è conservata da Paddle per i periodi previsti dalla legge.',
+        ],
+      },
+      {
+        h: 'Cancellazione dell’account',
+        p: [
+          'Potete richiedere la cancellazione in qualsiasi momento dalla pagina Account. La cancellazione dell’account HeatPump Database non annulla l’abbonamento — la fatturazione deve essere disdetta separatamente tramite «Gestisci fatturazione».',
+        ],
+      },
+      {
+        h: 'I vostri diritti',
+        p: [
+          'Ai sensi del GDPR (Regolamento (UE) 2016/679) potete richiedere l’accesso, la rettifica, la cancellazione, la limitazione e la portabilità dei dati, nonché opporvi ai trattamenti basati sul legittimo interesse. Potete inoltre proporre reclamo a un’autorità di controllo (in Italia, il Garante per la protezione dei dati personali).',
+        ],
+      },
+      {
+        h: 'Trattamenti internazionali',
+        p: [
+          'I nostri fornitori possono trattare dati al di fuori del SEE. In tal caso i trasferimenti si basano sulle garanzie offerte da tali fornitori (comprese le clausole contrattuali standard dell’UE).',
+        ],
+      },
+      { h: 'Contatto', p: [`Utilizzate «Nuova richiesta» sulla pagina Account oppure scrivete a ${SUPPORT_EMAIL}.`] },
+    ],
+  },
+  terms: {
+    title: 'Condizioni d’uso',
+    updated: ver.terms,
+    intro: `${BRAND_TM} è un servizio software gestito da ${OPERATOR_NAME}, impresa individuale registrata. Le informazioni complete su gestore, registrazione e contatti sono disponibili nelle nostre Note legali. Le presenti condizioni disciplinano l’utilizzo del servizio, un servizio professionale di banca dati B2B via web — vi invitiamo a leggerle prima di registrarvi.`,
+    sections: [
+      { h: 'Il servizio', p: [`${SERVICE_NAME} è un servizio professionale in abbonamento via web per il settore europeo delle pompe di calore, gestito da ${OPERATOR_NAME}. Gli abbonamenti si acquistano sul web e sono fatturati da Paddle. Le informazioni complete su gestore e registrazione sono nelle nostre Note legali.`] },
+      { h: 'Requisiti per l’account', p: ['Gli account sono destinati a un uso professionale (produttori, grossisti, installatori, ingegneri, società di consulenza, settore abitativo, settore pubblico, ditte individuali e ruoli comparabili). I nuovi account vengono verificati prima dell’attivazione.'] },
+      { h: 'Responsabilità dell’account', p: ['Siete responsabili delle vostre credenziali e di tutto ciò che avviene tramite il vostro account. Mantenete riservata la vostra password.'] },
+      {
+        h: 'Un account per persona',
+        p: [
+          'Ogni account è strettamente personale e può essere utilizzato da una sola persona. La condivisione di un account costituisce una violazione delle presenti condizioni e può comportarne la chiusura senza preavviso e senza rimborso del periodo residuo.',
+          'Le aziende con più utenti devono utilizzare un piano Team, che fornisce un account per persona.',
+        ],
+      },
+      {
+        h: 'Piani Team, posti e titolari',
+        p: [
+          'Team 3 fornisce tre posti e Team 5 cinque posti, in ogni caso incluso l’acquirente. L’acquirente diventa titolare del team ed è responsabile dell’abbonamento, della fatturazione e dell’assegnazione dei posti.',
+          'I membri attivi più gli inviti in sospeso non possono mai superare il limite dei posti. Il titolare può rimuovere un membro in qualsiasi momento; la persona rimossa perde immediatamente l’accesso all’abbonamento del team ma conserva il proprio account personale.',
+          'Un membro del team può lasciare il team in qualsiasi momento. L’uscita libera il posto e non annulla l’abbonamento del team.',
+        ],
+      },
+      {
+        h: 'Prova gratuita',
+        p: [
+          'Ogni abbonamento inizia con una prova gratuita di 7 giorni. Per avviare la prova è richiesto un metodo di pagamento valido. Durante la prova non viene addebitato nulla.',
+          'Se non disdite prima della fine della prova, viene prelevato il primo pagamento e l’abbonamento ha inizio.',
+        ],
+      },
+      {
+        h: 'Fatturazione, rinnovo e modifiche',
+        p: [
+          'Gli abbonamenti sono offerti con periodi di fatturazione mensile, semestrale e annuale e si rinnovano automaticamente alla fine di ogni periodo fino alla disdetta.',
+          'Piano e periodo di fatturazione sono fissi per il periodo pagato. Le modifiche non hanno effetto a metà periodo: una modifica richiesta si applica dal rinnovo successivo e le nuove condizioni iniziano solo al termine del periodo in corso.',
+          'Potete disdire in qualsiasi momento. La disdetta blocca il rinnovo successivo; l’accesso continua fino alla fine del periodo già pagato.',
+        ],
+      },
+      { h: 'Pagamenti', p: ['I pagamenti sono elaborati da Paddle, che agisce come venditore ufficiale (merchant of record) ed emette le fatture comprensive dell’IVA applicabile.'] },
+      {
+        h: 'Uso consentito e protezione della banca dati',
+        p: [
+          'La banca dati è protetta dal diritto europeo delle banche dati. Potete utilizzare i dati solo nelle forme di presentazione offerte da questa applicazione (in particolare la ricerca, le viste di confronto e le schede tecniche generate) e solo per le vostre finalità professionali.',
+          'Scraping, estrazione massiva, raccolta automatizzata, riproduzione, ridistribuzione, utilizzo per l’addestramento di IA e qualsiasi riutilizzo commerciale della banca dati o di una sua parte sostanziale sono vietati senza previo consenso scritto.',
+          'I tentativi di aggirare le misure tecniche di protezione o di accedere ai set di dati al di fuori dell’applicazione comportano la chiusura dell’account e possono determinare responsabilità civile e penale.',
+        ],
+      },
+      { h: 'Disponibilità del servizio', p: ['Puntiamo a un’elevata disponibilità ma non garantiamo un servizio ininterrotto. Manutenzione, aggiornamenti e guasti di terzi possono interrompere l’accesso.'] },
+      {
+        h: 'Esattezza dei dati',
+        p: [
+          'I dati dei prodotti provengono da registri pubblici e da fonti dei produttori e sono forniti esclusivamente a scopo di informazione professionale. L’ammissibilità agli incentivi pubblici è decisa esclusivamente dall’autorità competente. Verificate sempre la fonte ufficiale prima di prendere decisioni commerciali o tecniche.',
+        ],
+      },
+      { h: 'Responsabilità', p: ['Nei limiti consentiti dalla legge, non rispondiamo di danni indiretti o consequenziali, né di decisioni prese sulla base dei dati forniti. Nulla nelle presenti condizioni esclude responsabilità che non possono essere escluse per legge.'] },
+      { h: 'Risoluzione e sospensione', p: ['Possiamo sospendere o chiudere gli account che violano le presenti condizioni, in particolare in caso di condivisione dell’account ed estrazione non autorizzata di dati. Potete cessare di utilizzare il servizio in qualsiasi momento e richiedere la cancellazione del vostro account.'] },
+      { h: 'Contatto', p: [`Domande sulle presenti condizioni: ${SUPPORT_EMAIL}, oppure «Nuova richiesta» sulla pagina Account.`] },
+    ],
+  },
+  refund: {
+    title: 'Politica di rimborso e disdetta',
+    updated: ver.terms,
+    intro: `La presente politica spiega cosa accade quando disdite il vostro abbonamento ${SERVICE_NAME} e quando un rimborso è dovuto o meno. Paddle è il nostro venditore ufficiale (merchant of record) e gestisce tutti i pagamenti.`,
+    sections: [
+      { h: 'Durante la prova gratuita', p: ['Ogni abbonamento inizia con una prova gratuita di 7 giorni. Durante la prova non viene addebitato nulla. Se disdite prima della fine della prova, nessun pagamento viene prelevato.'] },
+      { h: 'Dopo la prova', p: ['Se non disdite prima della fine della prova, viene prelevato il primo pagamento e inizia il periodo pagato.'] },
+      {
+        h: 'Disdire un abbonamento a pagamento',
+        p: [
+          'Potete disdire in qualsiasi momento. La disdetta blocca il rinnovo successivo — non pone fine al periodo in corso.',
+          'L’accesso continua fino alla fine del periodo già pagato.',
+        ],
+      },
+      { h: 'Tempo non utilizzato', p: ['Non rimborsiamo automaticamente il tempo non utilizzato di un periodo già pagato.'] },
+      {
+        h: 'Come disdire',
+        p: [
+          'Disdite tramite «Gestisci fatturazione» sulla pagina Account.',
+          'La cancellazione dell’account HeatPump Database NON disdice l’abbonamento. La fatturazione è gestita separatamente e deve essere disdetta tramite «Gestisci fatturazione».',
+        ],
+      },
+      { h: 'Rimborsi eccezionali', p: [`Se ritenete che il vostro caso sia eccezionale (ad esempio un addebito doppio), inviate una «Nuova richiesta» dalla pagina Account oppure scrivete a ${SUPPORT_EMAIL}: lo esamineremo insieme a Paddle.`] },
+      { h: 'Merchant of record', p: [`I pagamenti degli abbonamenti sono elaborati da ${PADDLE_ENTITY}, che agisce come venditore ufficiale (merchant of record) per tutti gli abbonamenti. Fatture e documenti IVA sono emessi da Paddle. Le richieste di rimborso e disdetta possono essere inviate a ${SUPPORT_EMAIL}.`] },
+    ],
+  },
+  imprint: buildImprint({
+    title: 'Note legali',
+    operator: 'Gestore del servizio',
+    owner: 'Proprietario e gestore',
+    address: 'Indirizzo commerciale registrato',
+    regNo: 'Numero di registrazione dell’impresa',
+    contact: 'Contatto',
+    brand: 'Prodotto e marchio',
+    payment: 'Elaborazione dei pagamenti',
+    soleProp: 'Impresa individuale',
+    emailLabel: 'E-mail:',
+    brandSentence: `${BRAND_TM} è un marchio di prodotto gestito da ${OPERATOR_NAME}.`,
+    paymentSentence: `I pagamenti degli abbonamenti sono elaborati da ${PADDLE_ENTITY}, che agisce come venditore ufficiale (merchant of record).`,
+  }),
+};
+
 export const LEGAL_CONTENT: Record<Language, Record<'privacy' | 'terms' | 'refund' | 'imprint', LegalDocContent>> = {
   en: EN,
   de: DE,
   fr: FR,
   pl: PL,
+  it: IT,
 };

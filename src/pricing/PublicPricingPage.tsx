@@ -23,13 +23,14 @@ import { LegalFooter } from '../legal/LegalPage';
 
 const FD = '"SF Pro Display", system-ui, -apple-system, "Inter", sans-serif';
 
-const BACK: Record<Language, string> = { en: 'Back to HeatPump DB', de: 'Zurück zu HeatPump DB', fr: 'Retour à HeatPump DB', pl: 'Powrót do HeatPump DB' };
+const BACK: Record<Language, string> = { en: 'Back to HeatPump DB', de: 'Zurück zu HeatPump DB', fr: 'Retour à HeatPump DB', pl: 'Powrót do HeatPump DB', it: 'Torna a HeatPump DB' };
 /** "To subscribe, sign in to your account." — no signup here (paused); inspection only. */
 const SUBSCRIBE_NOTE: Record<Language, string> = {
   en: 'To start a subscription, sign in to your account.',
   de: 'Um ein Abonnement zu starten, melden Sie sich in Ihrem Konto an.',
   fr: 'Pour souscrire un abonnement, connectez-vous à votre compte.',
   pl: 'Aby rozpocząć subskrypcję, zaloguj się na swoje konto.',
+  it: 'Per attivare un abbonamento, accedi al tuo account.',
 };
 
 const pill = (bg: string, color: string): React.CSSProperties => ({

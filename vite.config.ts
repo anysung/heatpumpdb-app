@@ -14,6 +14,7 @@ function marketStats(country: string): { res: number; com: number; mfr: number }
     GB: ['public/data/products-gb.json', 'public/data/products-commercial-gb.json'],
     FR: ['public/data/products-fr.json', 'public/data/products-commercial-fr.json'],
     PL: ['public/data/products-pl.json', 'public/data/products-commercial-pl.json'],
+    IT: ['public/data/products-it.json', 'public/data/products-commercial-it.json'],
   };
   const [resPath, comPath] = files[country] ?? files.DE;
   try {
@@ -75,6 +76,16 @@ const MARKET_HTML: Record<string, { lang: string; hreflang: string; title: strin
     title: 'HeatPump Database Polska | Wyszukiwarka pomp ciepła',
     desc: 'Wyszukuj i porównuj pompy ciepła dostępne na rynku europejskim. Sprawdzaj dane techniczne, etykiety energetyczne i twórz arkusze danych.',
     canonical: 'https://www.heatpumpdb.pl/',
+  },
+  IT: {
+    lang: 'it',
+    hreflang: 'it-IT',
+    iconCode: 'it',
+    appName: 'HeatPump DB Italia',
+    themeColor: '#0a1a0f',
+    title: 'HeatPump Database Italia | Database pompe di calore',
+    desc: 'Cerca e confronta le pompe di calore disponibili sul mercato europeo. Dati tecnici, etichette energetiche, stato nel catalogo GSE (Conto Termico) e schede tecniche per installatori e progettisti.',
+    canonical: 'https://www.heatpumpdb.it/',
   },
 };
 
@@ -222,7 +233,7 @@ export default defineConfig(({ mode }) => {
       // CRITICAL FIX: Added || "" to prevent build failure if API_KEY is undefined in Cloud Build env
       'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY || ""),
       '__MARKET_STATS__': JSON.stringify(marketStats(country)),
-      '__ALL_MARKET_STATS__': JSON.stringify({ DE: marketStats('DE'), GB: marketStats('GB'), FR: marketStats('FR'), PL: marketStats('PL') }),
+      '__ALL_MARKET_STATS__': JSON.stringify({ DE: marketStats('DE'), GB: marketStats('GB'), FR: marketStats('FR'), PL: marketStats('PL'), IT: marketStats('IT') }),
     }
   }
 })

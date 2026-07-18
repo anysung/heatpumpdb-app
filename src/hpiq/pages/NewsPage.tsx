@@ -44,6 +44,13 @@ function localized(item: NewsItem, lang: string): { title: string; summary: stri
       body: item.body_pl ?? item.body ?? '',
     };
   }
+  if (lang === 'it') {
+    return {
+      title: item.title_it ?? item.title,
+      summary: item.summary_it ?? item.summary,
+      body: item.body_it ?? item.body ?? '',
+    };
+  }
   return { title: item.title, summary: item.summary, body: item.body ?? '' };
 }
 

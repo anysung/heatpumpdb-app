@@ -314,6 +314,7 @@ function localized(item: NewsItem, lang: Language): { title: string; summary: st
   if (lang === 'de') return { title: item.title_de ?? item.title, summary: item.summary_de ?? item.summary, body: item.body_de ?? item.body ?? '' };
   if (lang === 'fr') return { title: item.title_fr ?? item.title, summary: item.summary_fr ?? item.summary, body: item.body_fr ?? item.body ?? '' };
   if (lang === 'pl') return { title: item.title_pl ?? item.title, summary: item.summary_pl ?? item.summary, body: item.body_pl ?? item.body ?? '' };
+  if (lang === 'it') return { title: item.title_it ?? item.title, summary: item.summary_it ?? item.summary, body: item.body_it ?? item.body ?? '' };
   return { title: item.title, summary: item.summary, body: item.body ?? '' };
 }
 
@@ -554,7 +555,7 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
         <div style={card}>
           <span style={sectionLabel}>{t.account.language}</span>
           <div style={{ display: 'flex', border: '1px solid #d2d2d7', borderRadius: 999, overflow: 'hidden', fontSize: 13, width: 'fit-content' }}>
-            {(([['pl', 'Polski'], ['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
+            {(([['pl', 'Polski'], ['it', 'Italiano'], ['fr', 'Français'], ['de', 'Deutsch'], ['en', 'English']] as [Language, string][])
               .filter(([id]) => UI_LANGUAGES.includes(id))).map(([id, label]) => (
               <span key={id} onClick={() => app.setLang(id)} style={{ padding: '8px 16px', cursor: 'pointer', ...(app.lang === id ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}>
                 {label}

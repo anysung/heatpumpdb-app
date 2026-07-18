@@ -6,12 +6,14 @@ import { BRAND_TM } from './config/legal';
 // Auth marketing chip for the market's funding scheme — the auth surface is
 // shared across editions; only this chip names the national scheme.
 const FUNDING_CHIP = ACTIVE_COUNTRY.code === 'GB'
-  ? { en: 'BUS / MCS eligibility', de: 'BUS / MCS eligibility', fr: 'BUS / MCS eligibility', pl: 'BUS / MCS eligibility' }
+  ? { en: 'BUS / MCS eligibility', de: 'BUS / MCS eligibility', fr: 'BUS / MCS eligibility', pl: 'BUS / MCS eligibility', it: 'BUS / MCS eligibility' }
   : ACTIVE_COUNTRY.code === 'FR'
-    ? { en: "MaPrimeRénov' / CEE eligibility", de: "MaPrimeRénov' / CEE eligibility", fr: "Éligibilité MaPrimeRénov' / CEE", pl: "MaPrimeRénov' / CEE eligibility" }
+    ? { en: "MaPrimeRénov' / CEE eligibility", de: "MaPrimeRénov' / CEE eligibility", fr: "Éligibilité MaPrimeRénov' / CEE", pl: "MaPrimeRénov' / CEE eligibility", it: "MaPrimeRénov' / CEE eligibility" }
     : ACTIVE_COUNTRY.code === 'PL'
-      ? { en: 'Czyste Powietrze · Lista ZUM', de: 'Czyste Powietrze · Lista ZUM', fr: 'Czyste Powietrze · Lista ZUM', pl: 'Czyste Powietrze · Lista ZUM' }
-      : { en: 'BAFA / KfW eligibility', de: 'BAFA-/KfW-Förderfähigkeit', fr: 'BAFA / KfW eligibility', pl: 'BAFA / KfW eligibility' };
+      ? { en: 'Czyste Powietrze · Lista ZUM', de: 'Czyste Powietrze · Lista ZUM', fr: 'Czyste Powietrze · Lista ZUM', pl: 'Czyste Powietrze · Lista ZUM', it: 'Czyste Powietrze · Lista ZUM' }
+      : ACTIVE_COUNTRY.code === 'IT'
+        ? { en: 'Conto Termico · Catalogo GSE', de: 'Conto Termico · Catalogo GSE', fr: 'Conto Termico · Catalogo GSE', pl: 'Conto Termico · Catalogo GSE', it: 'Conto Termico · Catalogo GSE' }
+        : { en: 'BAFA / KfW eligibility', de: 'BAFA-/KfW-Förderfähigkeit', fr: 'BAFA / KfW eligibility', pl: 'BAFA / KfW eligibility', it: 'BAFA / KfW eligibility' };
 
 const EN_T = {
     // General / Auth
@@ -541,14 +543,102 @@ const PL_T = {
     noResults: "Brak wyników.",
 };
 
+// Italian auth surface (IT edition) — user-facing auth/footer strings in
+// Italian; admin-console strings intentionally stay English (operator-facing).
+const IT_T = {
+    ...EN_T,
+    termsTitle: "Condizioni di utilizzo dell'account e dei dati",
+    termsIntro: "Si prega di leggere e accettare prima di creare l'account:",
+    termsAccount: "Un account per persona. Ogni account è strettamente personale e può essere utilizzato da una sola persona. In caso di utilizzo da parte di due o più persone, l'account può essere chiuso senza preavviso per violazione contrattuale, senza rimborso del periodo di abbonamento residuo.",
+    termsData: "Nessuna estrazione non autorizzata di dati. Raccogliere, estrarre (scraping) o riutilizzare i contenuti della banca dati al di fuori delle forme di presentazione di questa applicazione — inclusa la raccolta automatizzata o l'addestramento di IA — è vietato e comporta la chiusura dell'account; possono inoltre applicarsi responsabilità civili e penali ai sensi della normativa sulla tutela delle banche dati.",
+    termsAgree: "Accetto — crea l'account",
+    termsCancel: "Annulla",
+    termsDeclined: "Registrazione annullata — per creare un account è necessario accettare le condizioni.",
+
+    // Pausa delle registrazioni (vedi src/config/registration.ts)
+    regPausedTitle: "La registrazione è temporaneamente non disponibile",
+    regPausedBody: "Stiamo attualmente effettuando una revisione del sistema nell'ambito dell'espansione di HeatPump DB in Europa. Durante la revisione non è possibile creare nuovi account.",
+    regPausedReopen: "Riapertura prevista",
+    regPausedExisting: "Hai già un account? I membri esistenti possono accedere come di consueto.",
+    regPausedNotice: "Le nuove registrazioni sono sospese durante la revisione legata alla nostra espansione europea. Gli account esistenti non sono interessati.",
+    subTitle: "La banca dati di pompe di calore più completa — aggiornata regolarmente",
+    welcomeTitle: "Benvenuti nel mondo delle pompe di calore",
+    signup: "Registrati",
+    login: "Accedi",
+    suAccountSection: "Dati dell'account",
+    suCompanySection: "Dati dell'azienda",
+    suCompanyWebsite: "Sito web dell'azienda",
+    suOptional: "facoltativo",
+    suCompanyTypeOther: "Specificare il tipo di azienda",
+    suCompanyGuidance: "Se ti registri per conto di un'azienda, inserisci i dati dell'azienda. I liberi professionisti e le ditte individuali inseriscono il proprio nome o la denominazione commerciale registrata come nome dell'azienda e selezionano «Privato / Ditta individuale».",
+    suIndividualHint: "Inserisci il tuo nome completo o la denominazione commerciale registrata come nome dell'azienda.",
+    suConsentPre: "Accetto le ",
+    suConsentTerms: "Condizioni d'uso",
+    suConsentMid: " e dichiaro di aver preso visione dell'",
+    suConsentPrivacy: "Informativa sulla privacy",
+    suConsentPost: ".",
+    suMarketing: "Desidero ricevere occasionalmente aggiornamenti sul prodotto (facoltativo).",
+    suContinue: "Continua alla scelta del piano",
+    suErrRequired: "Compila tutti i campi obbligatori.",
+    suErrEmail: "Inserisci un indirizzo e-mail valido.",
+    suErrWebsite: "Inserisci un sito web valido, ad esempio esempio.it.",
+    suErrConsent: "Per continuare, accetta le Condizioni d'uso e l'Informativa sulla privacy.",
+    suErrOther: "Specifica il tipo di azienda.",
+    invTitle: "Unisciti al tuo team",
+    invSub: "Sei stato invitato in un team HeatPump DB. Configura il tuo account personale — i dati aziendali provengono dal tuo team.",
+    invEmailFixed: "Questo è l'indirizzo invitato e non può essere modificato.",
+    invContinue: "Crea l'account e unisciti al team",
+    invFailed: "Impossibile unirsi al team — l'invito potrebbe essere stato revocato. Contatta l'amministratore del tuo team.",
+    back: "Indietro",
+    loginTitle: "Accesso",
+    loginSub: "Inserisci le tue credenziali per accedere alla banca dati.",
+    email: "Indirizzo e-mail",
+    password: "Password",
+    forgotPass: "Password dimenticata?",
+    loggingIn: "Accesso in corso…",
+    createAccount: "Crea account",
+    firstName: "Nome",
+    lastName: "Cognome",
+    companyType: "Tipo di azienda",
+    select: "Seleziona…",
+    jobRole: "Ruolo professionale",
+    companyName: "Nome dell'azienda",
+    city: "Città",
+    referralSource: "Come ci hai conosciuto?",
+    registering: "Registrazione in corso…",
+    completeSignup: "Completa la registrazione",
+    searchPlaceholder: "Cerca modello, marca o potenza…",
+    authTagline: "Intelligenza per la transizione del riscaldamento",
+    authHeadline: "La banca dati europea",
+    authHeadlineAccent: "delle pompe di calore",
+    authMarketLabel: "Mercato",
+    authResidentialDesc: "Case unifamiliari e plurifamiliari",
+    authCommercialDesc: "Edifici commerciali e grandi impianti",
+    authChipBafa: FUNDING_CHIP.it,
+    authChipRefrigerant: "R290 e dati sui refrigeranti",
+    authChipScop: "Confronto SCOP, rumorosità e potenza",
+    tabResidential: "Residenziale",
+    tabCommercial: "Commerciale",
+    authEcoLine: "Dati per un parco edilizio climaticamente neutro",
+    authNoAccount: "Non hai ancora un account?",
+    authHaveAccount: "Sei già registrato?",
+    orContinueWith: "oppure continua con",
+    continueGoogle: "Continua con Google",
+    continueApple: "Continua con Apple",
+    legalDisclaimer: "Avvertenza: i dati sono generati automaticamente e possono contenere errori. Verifica sempre le informazioni nelle schede tecniche dei produttori.",
+    loading: "Caricamento…",
+    noResults: "Nessun risultato.",
+};
+
 // SEO paragraph on the auth landing (the only publicly indexable page).
 // Market keywords chosen per edition: DE = BAFA-Liste/Förderung/Luft-Wasser,
 // GB = Ofgem BUS PEL/MCS/air source, FR = comparateur/MaPrimeRénov'/air-eau,
-// PL = Lista ZUM/Czyste Powietrze/Moje Ciepło.
+// PL = Lista ZUM/Czyste Powietrze/Moje Ciepło,
+// IT = Catalogo GSE/Conto Termico/aria-acqua.
 const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
   ? {
       en: 'UK heat pump database & comparison — Ofgem Boiler Upgrade Scheme (BUS) eligibility list, MCS-certified air source heat pumps, SCOP, sound power and refrigerant data.',
-      de: '', fr: '', pl: '',
+      de: '', fr: '', pl: '', it: '',
     }
   : ACTIVE_COUNTRY.code === 'FR'
     ? {
@@ -556,6 +646,7 @@ const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
         de: '',
         fr: 'Base de données et comparateur de pompes à chaleur air/eau — SCOP & COP, puissance acoustique, fluide R290, étiquette énergie UE, repères MaPrimeRénov’ & CEE.',
         pl: '',
+        it: '',
       }
     : ACTIVE_COUNTRY.code === 'PL'
       ? {
@@ -563,18 +654,29 @@ const SEO_LINE = ACTIVE_COUNTRY.code === 'GB'
           de: '',
           fr: '',
           pl: 'Baza danych i porównywarka pomp ciepła dla polskiego rynku — kompletne specyfikacje techniczne modeli powietrze-woda i gruntowych: moc znamionowa, SCOP i COP, czynnik chłodniczy (w tym R290), poziom mocy akustycznej oraz klasy efektywności energetycznej według norm UE. Sprawdzisz status wpisu na liście ZUM, znajdziesz informacje o dofinansowaniu z programów Czyste Powietrze i Moje Ciepło, porównasz modele i wygenerujesz karty danych. Narzędzie dla instalatorów, projektantów, producentów i dystrybutorów — europejskie dane referencyjne z pomiarów zgodnych z normami UE, regularnie aktualizowane.',
+          it: '',
         }
-      : {
-          en: 'Heat pump database & comparison for the German market — BAFA list of eligible heat pumps, SCOP & COP data, sound power, R290 refrigerant and EU energy label classes.',
-          de: 'Wärmepumpen-Datenbank & Vergleich für Deutschland — BAFA-Liste förderfähiger Wärmepumpen, SCOP- & COP-Daten, Schallleistung, R290-Kältemittel und EU-Energielabel.',
-          fr: '',
-          pl: '',
-        };
+      : ACTIVE_COUNTRY.code === 'IT'
+        ? {
+            en: 'Heat pump database & comparison for the Italian market — rated capacity, SCOP & COP, refrigerants, EU energy label classes, GSE Conto Termico catalogue listing status, data sheets for professionals.',
+            de: '',
+            fr: '',
+            pl: '',
+            it: 'Banca dati e comparatore di pompe di calore per il mercato italiano — specifiche tecniche complete dei modelli aria-acqua e geotermici: potenza nominale, SCOP e COP, refrigerante (incluso R290), livello di potenza sonora e classi di efficienza energetica secondo le norme UE. Verifica lo stato di inserimento nel catalogo GSE degli apparecchi prequalificati (Conto Termico), confronta i modelli e genera schede tecniche. Uno strumento per installatori, progettisti, produttori e distributori — dati di riferimento europei basati su misurazioni conformi alle norme UE, aggiornati regolarmente.',
+          }
+        : {
+            en: 'Heat pump database & comparison for the German market — BAFA list of eligible heat pumps, SCOP & COP data, sound power, R290 refrigerant and EU energy label classes.',
+            de: 'Wärmepumpen-Datenbank & Vergleich für Deutschland — BAFA-Liste förderfähiger Wärmepumpen, SCOP- & COP-Daten, Schallleistung, R290-Kältemittel und EU-Energielabel.',
+            fr: '',
+            pl: '',
+            it: '',
+          };
 
 (EN_T as any).authSeoLine = SEO_LINE.en;
 (DE_T as any).authSeoLine = SEO_LINE.de || SEO_LINE.en;
 (FR_T as any).authSeoLine = SEO_LINE.fr || SEO_LINE.en;
 (PL_T as any).authSeoLine = SEO_LINE.pl || SEO_LINE.en;
+(IT_T as any).authSeoLine = SEO_LINE.it || SEO_LINE.en;
 
 // Simple declarative copyright line (public brand mark: BRAND_TM).
 const YEAR = new Date().getFullYear();
@@ -582,13 +684,16 @@ const YEAR = new Date().getFullYear();
 (DE_T as any).authStatsTitle = 'Registrierte Wärmepumpen-Modelle';
 (FR_T as any).authStatsTitle = 'Modèles de pompes à chaleur référencés';
 (PL_T as any).authStatsTitle = 'Zarejestrowane modele pomp ciepła';
+(IT_T as any).authStatsTitle = 'Modelli di pompe di calore registrati';
 (EN_T as any).authStatsTotal = 'Total';
 (DE_T as any).authStatsTotal = 'Gesamt';
 (FR_T as any).authStatsTotal = 'Total';
 (PL_T as any).authStatsTotal = 'Łącznie';
+(IT_T as any).authStatsTotal = 'Totale';
 (EN_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · All rights reserved.`;
 (DE_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Alle Rechte vorbehalten.`;
 (FR_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Tous droits réservés.`;
 (PL_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Wszelkie prawa zastrzeżone.`;
+(IT_T as any).authCopyright = `© ${YEAR} ${BRAND_TM} · Tutti i diritti riservati.`;
 
-export const translations = { en: EN_T, de: DE_T, fr: FR_T, pl: PL_T };
+export const translations = { en: EN_T, de: DE_T, fr: FR_T, pl: PL_T, it: IT_T };

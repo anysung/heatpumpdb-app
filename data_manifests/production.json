@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T11:11:24.663Z",
+  "generated_at": "2026-07-18T03:15:37.110Z",
   "markets": {
     "DE": {
       "products": 7106,
@@ -92,6 +92,29 @@
       "source_snapshot": null,
       "generated_at": null,
       "hash": "83b4a340735ada69"
+    },
+    "IT": {
+      "products": 7106,
+      "data_sheet_eligible": 7106,
+      "with_rated_capacity": 7106,
+      "residential": 5207,
+      "commercial": 1899,
+      "unclassified": 0,
+      "duplicate_source_ids": 0,
+      "invalid_capacities": 0,
+      "missing_model": 0,
+      "manufacturers": 231,
+      "local_confirmed": 425,
+      "local_review_required": 0,
+      "local_verification_required": 6681,
+      "local_ids": 425,
+      "shared_local_ids": 0,
+      "conflicting_local_ids": 0,
+      "ambiguous_confirmed_local_ids": 0,
+      "approved_one_to_many": 0,
+      "source_snapshot": null,
+      "generated_at": null,
+      "hash": "261429c327255352"
     }
   }
 }

@@ -10,7 +10,7 @@ set -uo pipefail
 PORT="${PORT:-5199}"
 
 failed=0
-for cc in DE GB FR PL; do
+for cc in DE GB FR PL IT; do
   pkill -f "vite --port $PORT" 2>/dev/null
   sleep 1
   if [ "$cc" = "DE" ]; then

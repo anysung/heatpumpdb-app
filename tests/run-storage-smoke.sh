@@ -19,6 +19,7 @@ for cc in $MARKETS; do
     GB) build=build:uk; out=dist-uk;;
     FR) build=build:fr; out=dist-fr;;
     PL) build=build:pl; out=dist-pl;;
+    IT) build=build:it; out=dist-it;;
     *) echo "unknown market: $cc" >&2; exit 2;;
   esac
   echo "[$cc] building production bundle ($build)…"

@@ -5,7 +5,7 @@ import { longDate, crossRefId } from '../model';
 import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
-import { IS_GB, IS_PL, SOURCE_ID_ABBR } from '../market';
+import { IS_GB, IS_PL, IS_IT, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 
 const PICKER_LIMIT = 60;
@@ -124,7 +124,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               {/* title card + key stats */}
               <div className="ds-title-card" style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <span className="ds-title-model" style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}</span>
-                <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB || IS_PL ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
+                <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB || IS_PL || IS_IT ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
               </div>
               <div className="ds-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
                 {([

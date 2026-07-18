@@ -24,7 +24,7 @@
 - Entry: `src/index.tsx` → `src/App.tsx`. Views: auth surface (`src/components/auth/AuthShell.tsx`),
   main app (`src/hpiq/HpiqApp.tsx`), admin (`src/components/AdminDashboard.tsx`).
 - Two parallel i18n systems, both live: `src/translations.ts` (auth + admin) and
-  `src/hpiq/i18n.ts` (main app: EN/DE + GB + FR_FR/FR_EN + PL_PL/PL_EN market dictionaries). Add
+  `src/hpiq/i18n.ts` (main app: EN/DE + GB + FR_FR/FR_EN + PL_PL/PL_EN + IT_IT/IT_EN market dictionaries). Add
   strings to the matching one. The GB edition is English-only and always serves the
   GB dictionary — the DE dictionary is Germany-market *content*, not a translation.
 - Country-specific UI semantics in hpiq go through `src/hpiq/market.ts` (derived from
@@ -139,6 +139,26 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   `source_id 'PL-<zum id>'`, admitted ONLY through the shared Data-Sheet eligibility
   rule — never a weaker standard, and they never travel to other markets. ZUM data is
   used facts-only (no IOŚ-PIB logo/branding; source attribution + snapshot dates shown).
+- **IT pipeline** (`scripts/it/`) — canonical baseline + **GSE Conto Termico listing
+  overlay** (PEL rules verbatim): `fetch-gse.mjs` (three public PDF catalogues,
+  III.A/III.B/III.E, stable URLs, facts only) → `parse-gse.mjs` (pdftotext-based
+  tolerant parser; strict accounting on III.A) → `match-canonical-to-gse.mjs` →
+  `build-app-products-it.mjs`. Only catalogue **III.A** can confirm: III.B lists
+  hybrid COMBOS (never evidence for a standalone HP — ODU-overlap rule), III.E
+  (DHW) has no canonical counterpart. Confirming methods only (manufacturer_official,
+  ODU+IDU component identity, monobloc identity — GSE entry AND canonical product
+  both IDU-free, exact model/code, capacity/spec-resolved); fuzzy/family/ODU-only
+  never confirm; voltage/phase/refrigerant variant markers are contradiction guards.
+  States: `confirmed` → "Nel catalogo GSE"; everything else → "Verifica catalogo GSE
+  richiesta" — **never "not in the catalogue"**. The catalogue publishes NO per-row
+  id — `gse_entry_key` is OUR deterministic key (history/integrity only, never shown
+  as an official id) and no listing id is ever displayed. NO IT extension records,
+  deliberately: GSE rows publish no refrigerant/sound data, so they can never pass
+  Data-Sheet eligibility (a model name is not a data sheet). Confirmed mappings
+  persist in committed `data_sources/gse_ct/gse-match-history.json`; official
+  mappings enter via `data_sources/manufacturer_cross_reference/canonical-to-gse.json`.
+  GSE data facts-only (no GSE logo; source attribution + snapshot dates). No
+  "listed only" filter (425/7,106 confirmed would be a discovery trap — GB rule).
 - **FR pipeline** (`scripts/fr/`): `build-app-products-fr.mjs` derives the France
   catalogue from the **built DE datasets** (same hardware sold in both markets — run the
   DE builder first) → `public/data/products-fr*.json`. German type strings are localised
@@ -194,7 +214,7 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   (`HpVM.ratedKw`). **The word "BAFA" — and the source country — may appear only on
   the German site**; elsewhere records are "European reference" (provenance stays
   internal). Local listing status comes only from the market's OWN list via
-  `src/hpiq/listing.ts` (DE→BAFA, GB→PEL, FR→none; never inferred across markets),
+  `src/hpiq/listing.ts` (DE→BAFA, GB→PEL, FR→none, PL→ZUM, IT→GSE Conto Termico catalogue; never inferred across markets),
   and a filter is offered only where it actually divides the catalogue
   (`searchCapabilities.localListingFilter`). Tests: `tests/segmentation.unit.mjs`,
   `tests/products-segmentation.e2e.mjs` (fails if BAFA appears on GB/FR pages).
