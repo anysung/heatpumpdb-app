@@ -15,12 +15,12 @@ const MONO = 'ui-monospace, Menlo, monospace';
 /** Two-column spec cell: label above value — fills the sheet width without
  *  the empty middle a justify-between row leaves. */
 const FieldCell: React.FC<{ label: string; value: string; note?: number; span?: boolean }> = ({ label, value, note, span }) => (
-  <div style={{ gridColumn: span ? '1 / -1' : undefined, display: 'flex', flexDirection: 'column', gap: 4, padding: '11px 0 10px', borderBottom: '1px solid #ececf0', breakInside: 'avoid' }}>
-    <span style={{ fontSize: 10.5, letterSpacing: '.05em', textTransform: 'uppercase', color: '#7a7a7a' }}>
+  <div className="ds-cell" style={{ gridColumn: span ? '1 / -1' : undefined, display: 'flex', flexDirection: 'column', gap: 4, padding: '11px 0 10px', borderBottom: '1px solid #ececf0', breakInside: 'avoid' }}>
+    <span className="ds-cell-label" style={{ fontSize: 10.5, letterSpacing: '.05em', textTransform: 'uppercase', color: '#7a7a7a' }}>
       {note != null && <span style={{ fontFamily: MONO, fontSize: 9.5, color: '#b6b6bc', marginRight: 6 }}>[{note}]</span>}
       {label}
     </span>
-    <span style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.1px' }}>{value}</span>
+    <span className="ds-cell-value" style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.1px' }}>{value}</span>
   </div>
 );
 
@@ -75,7 +75,7 @@ const EnergyScale: React.FC<{ current: string; caption?: string }> = ({ current,
 );
 
 const SectionHead: React.FC<{ title: string; muted?: boolean }> = ({ title, muted }) => (
-  <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.08em', color: muted ? '#7a7a7a' : '#0066cc', borderBottom: '2px solid #1d1d1f', paddingBottom: 8 }}>{title}</span>
+  <span className="ds-section-head" style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.08em', color: muted ? '#7a7a7a' : '#0066cc', borderBottom: '2px solid #1d1d1f', paddingBottom: 8 }}>{title}</span>
 );
 
 /**
@@ -101,7 +101,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
 
   return (
     <div className="hpiq-print-doc" style={{ position: 'relative', width: 680, maxWidth: '100%', background: '#fff', border: '1px solid #e0e0e0', borderRadius: 8, padding: '44px 48px', display: 'flex', flexDirection: 'column', gap: 0, height: 'fit-content', boxSizing: 'content-box', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 20 }}>
+              <div className="ds-doc-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 20 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   {/* The same shared BrandLogo as the header — animated on screen.
                       Print/PDF freeze it: @media print stops the spin at 0deg, and
@@ -122,26 +122,26 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               </div>
 
               {/* title card + key stats */}
-              <div style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
-                <span style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}</span>
+              <div className="ds-title-card" style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <span className="ds-title-model" style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}</span>
                 <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB || IS_PL ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
+              <div className="ds-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
                 {([
                   [dsp.kw, t.ds.stat.kw],
                   [dsp.scop, t.ds.stat.scop],
                   [dsp.cop7, t.ds.stat.cop],
                   [dsp.label, t.ds.stat.cls],
                 ] as [string, string][]).map(([v, l]) => (
-                  <div key={l} style={{ background: '#f5f5f7', borderRadius: 8, padding: '13px 14px', display: 'flex', flexDirection: 'column', gap: 3, breakInside: 'avoid' }}>
-                    <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 700, letterSpacing: '-0.3px' }}>{v}</span>
+                  <div key={l} className="ds-stat" style={{ background: '#f5f5f7', borderRadius: 8, padding: '13px 14px', display: 'flex', flexDirection: 'column', gap: 3, breakInside: 'avoid' }}>
+                    <span className="ds-stat-value" style={{ fontFamily: FD, fontSize: 21, fontWeight: 700, letterSpacing: '-0.3px' }}>{v}</span>
                     <span style={{ fontSize: 10, letterSpacing: '.06em', color: '#7a7a7a', textTransform: 'uppercase' }}>{l}</span>
                   </div>
                 ))}
               </div>
 
               {app.dsSections.identity && (
-                <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headIdentity} />
                   <SectionGrid>
                     <FieldCell label={t.ds.f.manufacturer} value={dsp.mfr} note={n('manufacturer')} />
@@ -157,9 +157,9 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               )}
 
               {isLabelMode && (
-                <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headEuLabel} />
-                  <div style={{ display: 'flex', gap: 22, alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #ececf0' }}>
+                  <div className="ds-eu-row" style={{ display: 'flex', gap: 22, alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #ececf0' }}>
                     <div style={{ flex: '0 0 96px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, border: '1px solid #e0e0e0', borderRadius: 10, padding: '15px 10px' }}>
                       <span style={{ fontSize: 9.5, letterSpacing: '.08em', color: '#7a7a7a' }}>ENERGY</span>
                       <span style={{ fontFamily: FD, fontSize: 32, fontWeight: 700 }}>{dsp.label}</span>
@@ -180,7 +180,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               )}
 
               {app.dsSections.performance && (
-                <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headPerf} />
                   <SectionGrid>
                     <FieldCell label={t.ds.f.kw55} value={dsp.kw === '—' ? '—' : `${dsp.kw} kW`} note={n('kw55')} />
@@ -198,7 +198,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               )}
 
               {app.dsSections.env && (
-                <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headEnv} />
                   <SectionGrid>
                     <FieldCell label={t.ds.f.ref} value={dsp.ref} note={n('ref')} />
@@ -211,7 +211,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               )}
 
               {app.dsSections.bafa && !isLabelMode && (
-                <div style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
+                <div className="ds-section" style={{ display: 'flex', flexDirection: 'column', paddingTop: 24 }}>
                   <SectionHead title={t.ds.headBafa} />
                   <SectionGrid>
                     {/* Listing status only where this market has a national list of its own. */}
@@ -240,11 +240,11 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                   below already covers provenance; it was duplicate wording.) */}
 
               {/* ── Technical explanations — always printed ── */}
-              <div style={{ borderTop: '1px solid #e0e0e0', marginTop: 24, paddingTop: 20, display: 'flex', gap: 28, alignItems: 'flex-start' }}>
+              <div className="ds-notes" style={{ borderTop: '1px solid #e0e0e0', marginTop: 24, paddingTop: 20, display: 'flex', gap: 28, alignItems: 'flex-start' }}>
                 <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 0 }}>
                   <span style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', paddingBottom: 9 }}>{t.ds.techExplanations}</span>
                   {noteOrder.map((key, i) => (
-                    <span key={key} style={{ display: 'flex', gap: 8, fontSize: 11, color: '#7a7a7a', lineHeight: 1.55, padding: '2.5px 0' }}>
+                    <span key={key} className="ds-note-row" style={{ display: 'flex', gap: 8, fontSize: 11, color: '#7a7a7a', lineHeight: 1.55, padding: '2.5px 0' }}>
                       <span style={{ fontFamily: MONO, fontSize: 10, color: '#b6b6bc', flex: 'none', paddingTop: 1 }}>[{i + 1}]</span>
                       <span>{t.ds.notes[key]}</span>
                     </span>
@@ -253,7 +253,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               </div>
 
               {/* ── Legal disclaimer — always printed ── */}
-              <div style={{ borderTop: '1px solid #e0e0e0', marginTop: 18, paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div className="ds-disclaimer" style={{ borderTop: '1px solid #e0e0e0', marginTop: 18, paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a' }}>{t.ds.disclaimerTitle}</span>
                 <span style={{ fontSize: 10, color: '#9a9aa0', lineHeight: 1.6, textAlign: 'justify' }}>
                   {t.ds.disclaimer}

@@ -52,7 +52,30 @@
     padding: 0 !important;
     box-sizing: border-box !important;
   }
-  @page { size: A4; margin: 15mm 12mm; }
+  @page { size: A4; margin: 10mm 12mm; }
+
+  /* ── Print density (data sheet + energy label) ─────────────────────────
+     The on-screen studio preview keeps its airy spacing; on PAPER the same
+     DOM prints at professional data-sheet density: tighter field rows,
+     section gaps and header, so content fills the page instead of floating
+     in whitespace (owner feedback 2026-07-18). Inline styles carry the
+     screen values, hence the !important overrides — scoped to the mount. */
+  #hpiq-print-mount .ds-doc-header { padding-bottom: 10px !important; }
+  #hpiq-print-mount .ds-title-card { padding: 12px 18px !important; border-radius: 8px !important; }
+  #hpiq-print-mount .ds-title-model { font-size: 19px !important; }
+  #hpiq-print-mount .ds-stats { margin-top: 8px !important; gap: 8px !important; }
+  #hpiq-print-mount .ds-stat { padding: 8px 12px !important; }
+  #hpiq-print-mount .ds-stat-value { font-size: 17px !important; }
+  #hpiq-print-mount .ds-section { padding-top: 13px !important; }
+  #hpiq-print-mount .ds-section-head { padding-bottom: 4px !important; font-size: 11px !important; }
+  #hpiq-print-mount .ds-cell { padding: 5px 0 4px !important; gap: 1px !important; }
+  #hpiq-print-mount .ds-cell-label { font-size: 9.5px !important; }
+  #hpiq-print-mount .ds-cell-value { font-size: 12.5px !important; }
+  #hpiq-print-mount .ds-eu-row { padding: 8px 0 !important; }
+  #hpiq-print-mount .ds-notes { margin-top: 13px !important; padding-top: 9px !important; }
+  #hpiq-print-mount .ds-note-row { padding: 1px 0 !important; font-size: 10px !important; line-height: 1.45 !important; }
+  #hpiq-print-mount .ds-disclaimer { margin-top: 10px !important; padding-top: 8px !important; gap: 4px !important; }
+  #hpiq-print-mount .ds-disclaimer > span:last-child { font-size: 9px !important; line-height: 1.5 !important; }
 }
 
 /* ── Copyright watermark (data sheet + comparison) ─────────────────────────
