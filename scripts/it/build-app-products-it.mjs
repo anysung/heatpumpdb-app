@@ -183,20 +183,26 @@ const shortName = mfr => {
 
 /**
  * Provable temperature-basis assignment for the catalogue's rating rows.
- *  - declared_pair: exactly two rows, both with ηs, ≥8 % apart — the low/medium
- *    temperature application pair required by EU 813/2013 (ηs at 35 °C flow is
- *    physically always the higher one).
+ *  - declared_pair: exactly two rows with DISTINCT ηs values — the low/medium
+ *    temperature application pair required by EU 813/2013. ηs at 35 °C flow is
+ *    physically always the higher one (verified on the German canonical data:
+ *    5,698/5,698 pairs, zero inversions, minimum relative gap 9%), so the
+ *    higher-ηs row is the 35 °C application whatever the gap size (owner
+ *    decision 2026-07-18; the earlier ≥8% guard band was removed as redundant
+ *    against the measured distribution). Equal ηs values stay unmapped — there
+ *    is no "higher" row to assign.
  *  - model_label: a single row whose model string carries an explicit LWT
  *    temperature ("… - LWT 55°C").
  *  - null: basis unprovable — values stay in gse_ratings only.
  */
 function assignTemps(z) {
   const rows = z.ratings.filter(r => r.kw > 0 || r.etas != null || r.scop != null);
-  if (rows.length === 2 && rows[0].etas != null && rows[1].etas != null) {
+  if (rows.length === 2 && rows[0].etas != null && rows[1].etas != null
+    && rows[0].etas !== rows[1].etas) {
     const [a, b] = rows;
-    const hi = a.etas >= b.etas ? a : b;
+    const hi = a.etas > b.etas ? a : b;
     const lo = hi === a ? b : a;
-    if (hi.etas >= lo.etas * 1.08) return { mode: 'declared_pair', r35: hi, r55: lo };
+    return { mode: 'declared_pair', r35: hi, r55: lo };
   }
   if (rows.length === 1) {
     if (/LWT\s*55/i.test(z.model ?? '')) return { mode: 'model_label', r55: rows[0] };

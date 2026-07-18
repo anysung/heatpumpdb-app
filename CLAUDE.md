@@ -161,8 +161,9 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   `gseNativeEligibility` (scripts/lib/data-sheet-eligibility.mjs): identity +
   type + capacity + seasonal performance (ηs/SCOP) + provenance — a name alone
   is still refused; the GLOBAL rule is unchanged for every other layer/market.
-  Honest basis mapping: dual rating rows ≥8% apart = the 35/55 °C application
-  pair (physical ordering, EU 813/2013), single rows only via an explicit
+  Honest basis mapping: dual rating rows with DISTINCT ηs = the 35/55 °C
+  application pair (higher ηs = 35 °C — physical ordering verified on 5,698/5,698
+  German pairs, zero inversions; EU 813/2013), single rows only via an explicit
   "LWT 35/55" model label; everything else stays in gse_ratings verbatim with
   declared_capacity_kw (basis unstated) for the 23 kW split — 35/55 fields are
   NEVER fabricated (builder + architecture tests enforce). Refrigerant only when

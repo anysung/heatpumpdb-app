@@ -109,10 +109,12 @@ audit above sized the population; the implementation
 7,106-product European reference catalogue, the **Italy-only GSE-native
 layer: 3,729 products** (in-scope 4,388 − 422 canonical-confirmed − 147
 review-blocked − 90 ineligible), under the Italy-specific tier
-`gseNativeEligibility`. Temperature-basis mapping: 2,581 dual-row entries
-(provable 35/55 °C application pairs) + 240 "LWT"-labelled single rows are
-mapped onto the canonical 35/55 fields; 908 basis-unstated entries keep
-`gse_ratings` + `declared_capacity_kw` only. IT totals: 10,835 products
+`gseNativeEligibility`. Temperature-basis mapping: 2,583 dual-row entries
+(distinct-ηs 35/55 °C application pairs — the initial ≥8% guard band was
+removed the same day after verifying the physical ordering on all 5,698
+German 35/55 pairs with zero inversions and a 9% minimum gap) + 240
+"LWT"-labelled single rows are mapped onto the canonical 35/55 fields; 906
+basis-unstated entries keep `gse_ratings` + `declared_capacity_kw` only. IT totals: 10,835 products
 (residential 8,548 / commercial 2,287 by the shared 23 kW rule). Isolation is
 gate-enforced (GSE_CATALOGUE records outside IT are a blocker) and
 architecture-tested; the one-time count/segment transition is declared in
