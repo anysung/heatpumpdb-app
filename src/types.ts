@@ -240,6 +240,11 @@ export interface NewsItem {
  * inline per locale; at publish they fan out to `countries/{cc}/news/{id}`
  * (the same collection the public site and the auto flow already use).
  */
+/** One cited source row in the manual editor (name optional, url required). */
+export interface NewsSourceInput {
+  name?: string;
+  url: string;
+}
 export interface ManualNewsLocale {
   title: string;
   summary: string;
@@ -268,8 +273,9 @@ export interface ManualNewsArticle {
   imageFlagCountry?: string | null;    // detected national-flag/policy context, if any
   youtubeVideoId?: string;
   // optional metadata
-  sourceName?: string;
-  sourceUrl?: string;
+  sourceName?: string;                 // back-compat mirror of sources[0].name
+  sourceUrl?: string;                  // back-compat mirror of sources[0].url
+  sources?: NewsSourceInput[];         // ordered list of cited sources
   author?: string;
   publicationDate?: string;
   // generated translations (cache; keyed by locale, e.g. 'de-DE')

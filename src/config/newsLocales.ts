@@ -102,9 +102,29 @@ export function safeHttpUrl(input: string | null | undefined): string {
   } catch { return ''; }
 }
 
-/** Article categories — reuse the editorial set the auto flow already uses. */
-export const NEWS_CATEGORIES = ['FUNDING', 'MARKET', 'TECHNOLOGY', 'INSTALLER INSIGHT'] as const;
+/**
+ * The FIVE canonical editorial categories — one per curated news-image pool
+ * (policy / market / tech / install / energy). ENERGY was previously reachable
+ * only by keyword guessing; it is a first-class category so the manual editor
+ * matches the image taxonomy the auto flow already uses.
+ *   FUNDING          → policy·subsidy·regulation
+ *   MARKET           → market·sales·industry
+ *   TECHNOLOGY       → new products·technology
+ *   INSTALLER INSIGHT→ installation·field projects
+ *   ENERGY           → energy transition·environment·industrial
+ */
+export const NEWS_CATEGORIES = ['FUNDING', 'MARKET', 'TECHNOLOGY', 'INSTALLER INSIGHT', 'ENERGY'] as const;
 export type NewsCategory = (typeof NEWS_CATEGORIES)[number];
+
+/** Byline options offered in the editor (canonical brand strings). */
+export const NEWS_AUTHORS = [
+  'HeatPump DataBase Germany Editorial Team',
+  'HeatPump DataBase UK Editorial Team',
+  'HeatPump DataBase France Editorial Team',
+  'HeatPump DataBase Poland Editorial Team',
+  'HeatPump DataBase Italy Editorial Team',
+  'HeatPump DataBase Europe Editorial Team',
+] as const;
 
 /** Manual-article lifecycle. */
 export type ManualNewsStatus = 'draft' | 'translating' | 'published' | 'translation_failed';

@@ -11,14 +11,14 @@
  * This page NEVER asks for translations — the English source is the only input.
  */
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { ManualNewsArticle } from '../../types';
+import { ManualNewsArticle, NewsSourceInput } from '../../types';
 import {
   listArticles, saveDraft, markOutdated, deleteArticle, uploadHeroImage,
   publishArticle, unpublishArticle, retargetArticle, updatePublishedArticle,
   NewsAdminResult,
 } from '../../services/newsAdminService';
 import {
-  NEWS_TARGETS, NEWS_TARGET_BY_COUNTRY, NEWS_CATEGORIES,
+  NEWS_TARGETS, NEWS_TARGET_BY_COUNTRY, NEWS_CATEGORIES, NEWS_AUTHORS,
   parseYouTubeId, youTubeWatchUrl, sanitizeNewsText, safeHttpUrl,
 } from '../../config/newsLocales';
 import { auth } from '../../firebase';
@@ -71,6 +71,26 @@ function emptyDraft(uid: string): ManualNewsArticle {
   };
 }
 
+/** Return a copy with a `sources` array guaranteed to have ≥1 editable row —
+ *  migrating a legacy single sourceName/sourceUrl into the first row. */
+function withSourceRows(a: ManualNewsArticle): ManualNewsArticle {
+  let rows = a.sources && a.sources.length ? a.sources.map(s => ({ name: s.name ?? '', url: s.url ?? '' }))
+    : (a.sourceUrl || a.sourceName ? [{ name: a.sourceName ?? '', url: a.sourceUrl ?? '' }] : []);
+  if (!rows.length) rows = [{ name: '', url: '' }];
+  return { ...a, sources: rows };
+}
+
+/** Drop empty rows, sanitize URLs, preserve order. Also mirrors row 0 into the
+ *  legacy sourceName/sourceUrl for any reader that still uses them. */
+function cleanSources(rows: NewsSourceInput[] | undefined): {
+  sources: NewsSourceInput[]; sourceName: string; sourceUrl: string;
+} {
+  const cleaned = (rows ?? [])
+    .map(r => ({ name: (r.name ?? '').trim() || undefined, url: safeHttpUrl(r.url) }))
+    .filter(r => r.url || r.name);
+  return { sources: cleaned, sourceName: cleaned[0]?.name ?? '', sourceUrl: cleaned[0]?.url ?? '' };
+}
+
 /** True when any English-source field differs between two articles. */
 function sourceChanged(a: ManualNewsArticle, b: ManualNewsArticle): boolean {
   const keys: (keyof ManualNewsArticle)[] = [
@@ -78,6 +98,10 @@ function sourceChanged(a: ManualNewsArticle, b: ManualNewsArticle): boolean {
     'youtubeVideoId', 'sourceName', 'sourceUrl', 'author', 'publicationDate',
   ];
   if (keys.some(k => (a[k] ?? '') !== (b[k] ?? ''))) return true;
+  // Compare NORMALIZED sources so a trailing empty editor row is not "a change".
+  const sa = JSON.stringify(cleanSources(a.sources).sources);
+  const sb = JSON.stringify(cleanSources(b.sources).sources);
+  if (sa !== sb) return true;
   return JSON.stringify(a.targetCountries ?? []) !== JSON.stringify(b.targetCountries ?? []);
 }
 
@@ -161,6 +185,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
   const uid = auth.currentUser?.uid ?? 'admin';
 
   const [view, setView] = useState<View>('list');
+  const [previewReturn, setPreviewReturn] = useState<View>('list'); // where Preview came from
   const [filter, setFilter] = useState<ListFilter>('all');
   const [articles, setArticles] = useState<ManualNewsArticle[] | null>(null);
 
@@ -168,6 +193,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
   const [draft, setDraft] = useState<ManualNewsArticle | null>(null);
   const [original, setOriginal] = useState<ManualNewsArticle | null>(null);
   const [dirty, setDirty] = useState(false);
+  const [authorOther, setAuthorOther] = useState(false); // "Other" author selected
 
   // async / feedback state
   const [saving, setSaving] = useState(false);
@@ -205,19 +231,27 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
   /* ── editor lifecycle ──────────────────────────────────────────────────── */
 
   const openCreate = () => {
-    const d = emptyDraft(uid);
-    setDraft(d); setOriginal(null); setDirty(false);
+    const d = withSourceRows(emptyDraft(uid));
+    setDraft(d); setOriginal(null); setDirty(false); setAuthorOther(false);
     setValidationErrors([]); setUploadError(null); setServerError(null);
     setView('editor');
   };
 
   const openEdit = (a: ManualNewsArticle) => {
-    setDraft({ ...a }); setOriginal(a); setDirty(false);
+    const d = withSourceRows(a);
+    setDraft(d); setOriginal(a); setDirty(false);
+    setAuthorOther(!!a.author && !NEWS_AUTHORS.includes(a.author as typeof NEWS_AUTHORS[number]));
     setValidationErrors([]); setUploadError(null); setServerError(null);
     setView('editor');
   };
 
-  const openPreview = (a: ManualNewsArticle) => { setDraft({ ...a }); setView('preview'); };
+  // Preview from a list row — remember to return to the LIST.
+  const openPreview = (a: ManualNewsArticle) => {
+    setDraft(withSourceRows(a)); setPreviewReturn('list'); setView('preview');
+  };
+  // Preview from inside the editor — remember to return to the EDITOR with the
+  // exact in-progress draft intact (the draft state is never cleared here).
+  const openPreviewFromEditor = () => { setPreviewReturn('editor'); setView('preview'); };
 
   const backToList = () => {
     if (view === 'editor' && dirty && !window.confirm(N.unsavedWarn)) return;
@@ -241,16 +275,34 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
       patch({ imageUrl, imageStoragePath });
     } catch (e) {
       const code = e instanceof Error ? e.message : '';
-      setUploadError(
-        code === 'unsupported-format' ? N.upUnsupported :
-        code === 'file-too-large' ? N.upTooLarge :
-        code === 'image-too-large-after-optimization' ? N.upCannotOptimize :
-        code === 'encode-failed' || code === 'canvas-unavailable' ? N.upEncode :
-        N.upGeneric,
-      );
+      let msg: string;
+      if (code === 'unsupported-format') msg = N.upUnsupported;
+      else if (code === 'file-too-large') msg = N.upTooLarge;
+      else if (code === 'image-too-large-after-optimization') msg = N.upCannotOptimize;
+      else if (code === 'encode-failed' || code === 'canvas-unavailable') msg = N.upEncode;
+      else if (code.startsWith('storage:')) {
+        // Real Firebase Storage error — name the actual cause.
+        const sc = code.slice('storage:'.length);
+        msg = sc === 'storage/unauthorized' ? N.upDenied
+          : (sc === 'storage/retry-limit-exceeded' || sc === 'storage/canceled') ? N.upNetwork
+          : N.upCode(sc);
+      } else msg = N.upGeneric;
+      setUploadError(msg);
     } finally {
       setUploading(false);
     }
+  };
+
+  /* ── sources (multi-row) ───────────────────────────────────────────────── */
+
+  const sourceRows: NewsSourceInput[] = draft?.sources ?? [];
+  const setSourceRows = (rows: NewsSourceInput[]) => patch({ sources: rows });
+  const addSource = () => setSourceRows([...sourceRows, { name: '', url: '' }]);
+  const updateSource = (i: number, field: 'name' | 'url', val: string) =>
+    setSourceRows(sourceRows.map((r, idx) => (idx === i ? { ...r, [field]: val } : r)));
+  const removeSource = (i: number) => {
+    const next = sourceRows.filter((_, idx) => idx !== i);
+    setSourceRows(next.length ? next : [{ name: '', url: '' }]);
   };
 
   /* ── YouTube + source URL live validation ──────────────────────────────── */
@@ -271,7 +323,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ytId]);
 
-  const srcInvalid = !!draft?.sourceUrl?.trim() && !safeHttpUrl(draft.sourceUrl);
+  const rowUrlInvalid = (u: string) => !!u.trim() && !safeHttpUrl(u);
 
   /* ── flag warning ──────────────────────────────────────────────────────── */
 
@@ -297,13 +349,16 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
     if (!draft) return null;
     setSaving(true);
     const cc = detectFlagCountry(`${draft.imageAlt} ${draft.title} ${draft.body}`);
+    const src = cleanSources(draft.sources);
     const cleaned: ManualNewsArticle = {
       ...draft,
       title: sanitizeNewsText(draft.title),
       summary: sanitizeNewsText(draft.summary),
       body: sanitizeNewsText(draft.body),
       imageAlt: sanitizeNewsText(draft.imageAlt),
-      sourceUrl: draft.sourceUrl ? safeHttpUrl(draft.sourceUrl) : draft.sourceUrl,
+      sources: src.sources,
+      sourceName: src.sourceName,
+      sourceUrl: src.sourceUrl,
       imageFlagCountry: cc,
       updatedAt: new Date().toISOString(),
       updatedBy: uid,
@@ -316,7 +371,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
         await markOutdated(cleaned.id, uid);
         cleaned.translationOutdated = true;
       }
-      setDraft(cleaned); setOriginal(cleaned); setDirty(false);
+      setDraft(withSourceRows(cleaned)); setOriginal(cleaned); setDirty(false);
       showToast(N.tSaved);
       refresh();
       return cleaned;
@@ -337,8 +392,10 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
     if (!a.body.trim()) missing.push(N.vBody);
     if (!a.category) missing.push(N.vCategory);
     if (!a.targetCountries.length) missing.push(N.vTargets);
-    if (!a.imageUrl) missing.push(N.fHero);
-    if (!a.imageAlt.trim()) missing.push(N.vHeroAlt);
+    // At least one media source is required — a hero image OR a valid YouTube video.
+    if (!a.imageUrl && !a.youtubeVideoId) missing.push(N.vMedia);
+    // ALT text is required only WHEN a hero image is present (it describes it).
+    if (a.imageUrl && !a.imageAlt.trim()) missing.push(N.vHeroAlt);
     return missing;
   };
 
@@ -452,8 +509,8 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
     return (
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <button onClick={() => setView(original ? 'editor' : 'list')} className="text-sm text-blue-600 hover:underline">
-            {N.btnBack}
+          <button onClick={() => setView(previewReturn)} className="text-sm font-semibold text-blue-600 hover:underline">
+            {previewReturn === 'editor' ? N.btnBackToEditor : N.btnBack}
           </button>
           <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">{N.previewTitle}</span>
         </div>
@@ -486,16 +543,18 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
               {draft.body.split(/\n\s*\n/).filter(Boolean).map((para, i) => (
                 <p key={i} style={{ fontFamily: NEWS_SERIF, fontSize: 17.5, lineHeight: 1.75, color: '#1d1d1f', margin: 0 }}>{para}</p>
               ))}
-              {(draft.sourceName || draft.sourceUrl) && (
+              {cleanSources(draft.sources).sources.length > 0 && (
                 <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: 16, fontSize: 13.5 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', display: 'block', marginBottom: 6 }}>SOURCE</span>
-                  {draft.sourceUrl ? (
-                    <a href={safeHttpUrl(draft.sourceUrl)} target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc' }}>
-                      {draft.sourceName || draft.sourceUrl} ›
-                    </a>
-                  ) : (
-                    <span style={{ color: '#1d1d1f' }}>{draft.sourceName}</span>
-                  )}
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', display: 'block', marginBottom: 6 }}>
+                    {N.previewSources}
+                  </span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    {cleanSources(draft.sources).sources.map((s, i) => (
+                      <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc' }}>
+                        {s.name || s.url} ›
+                      </a>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -513,6 +572,9 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
     const outdated = isPublished && sourceChanged(draft, original!);
     const label = 'block text-xs font-semibold text-gray-600 mb-1';
     const input = 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400';
+    const hint = 'text-xs text-gray-400 mt-1';
+    const req = <span className="text-red-500" title={N.reqNote}>*</span>;
+    const hasImage = !!draft.imageUrl;
 
     return (
       <div>
@@ -521,6 +583,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
           <NewsStatusBadge a={draft} N={N} />
         </div>
         <PageHeader title={original ? N.edEditTitle : N.edCreateTitle} subtitle={N.edSourceNote} />
+        <div className="mb-4 text-xs text-gray-500">{N.reqLegend}</div>
 
         {/* validation + errors */}
         {validationErrors.length > 0 && (
@@ -548,29 +611,34 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
             <SectionCard title={N.secEnglish} icon="📝">
               <div className="space-y-4">
                 <div>
-                  <label className={label}>{N.fTitle}</label>
+                  <label className={label}>{N.fTitle} {req}</label>
                   <input className={input} value={draft.title} onChange={e => patch({ title: e.target.value })} />
                 </div>
                 <div>
-                  <label className={label}>{N.fSummary}</label>
+                  <label className={label}>{N.fSummary} {req}</label>
                   <textarea className={input} rows={2} value={draft.summary} onChange={e => patch({ summary: e.target.value })} />
+                  <div className={hint}>{N.fSummaryHint}</div>
                 </div>
                 <div>
-                  <label className={label}>{N.fBody}</label>
+                  <label className={label}>{N.fBody} {req}</label>
                   <textarea className={`${input} font-mono`} rows={12} value={draft.body} onChange={e => patch({ body: e.target.value })} />
-                  <div className="text-xs text-gray-400 mt-1">{N.fBodyHint}</div>
+                  <div className={hint}>{N.fBodyHint}</div>
                 </div>
                 <div>
-                  <label className={label}>{N.fCategory}</label>
+                  <label className={label}>{N.fCategory} {req}</label>
                   <select className={input} value={draft.category} onChange={e => patch({ category: e.target.value })}>
-                    {NEWS_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    {NEWS_CATEGORIES.map(c => <option key={c} value={c}>{N.catLabels[c] ?? c}</option>)}
                   </select>
+                  <div className={hint}>{N.fCategoryHint}</div>
                 </div>
               </div>
             </SectionCard>
 
             <SectionCard title={N.secMedia} icon="🖼️">
               <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 text-xs text-blue-800">
+                  {N.mediaNote} {req}
+                </div>
                 <div>
                   <label className={label}>{N.fHero}</label>
                   {draft.imageUrl ? (
@@ -587,12 +655,17 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
                         onChange={e => onHeroFile(e.target.files?.[0])} />
                     </label>
                   )}
+                  <div className={hint}>{N.fHeroHint}</div>
                   {uploadError && <div className="text-xs text-red-600 mt-1">{uploadError}</div>}
                 </div>
-                <div>
-                  <label className={label}>{N.fHeroAlt}</label>
-                  <input className={input} value={draft.imageAlt} onChange={e => patch({ imageAlt: e.target.value })} />
-                </div>
+                {hasImage && (
+                  <div>
+                    <label className={label}>{N.fHeroAlt} {req}</label>
+                    <input className={input} value={draft.imageAlt} onChange={e => patch({ imageAlt: e.target.value })}
+                      placeholder={N.fHeroAltPlaceholder} />
+                    <div className={hint}>{N.fHeroAltHint}</div>
+                  </div>
+                )}
                 {flagWarnCountry && (
                   <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 text-sm text-yellow-800 flex items-start gap-2">
                     <span>⚠️</span>
@@ -602,6 +675,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
                 <div>
                   <label className={label}>{N.fYoutube}</label>
                   <input className={input} value={ytRaw} onChange={e => setYtRaw(e.target.value)} placeholder="https://www.youtube.com/watch?v=…" />
+                  <div className={hint}>{N.fYoutubeHint}</div>
                   {ytInvalid
                     ? <div className="text-xs text-red-600 mt-1">{N.ytInvalid}</div>
                     : ytId && <div className="text-xs text-green-600 mt-1">{N.ytValid(ytId)}</div>}
@@ -615,24 +689,54 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
             </SectionCard>
 
             <SectionCard title={N.secOptional} icon="ℹ️">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-5">
+                {/* Sources — multiple rows, name + URL on one line */}
                 <div>
-                  <label className={label}>{N.fSource}</label>
-                  <input className={input} value={draft.sourceName ?? ''} onChange={e => patch({ sourceName: e.target.value })} />
+                  <label className={label}>{N.fSources}</label>
+                  <div className="space-y-2">
+                    {sourceRows.map((row, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <input className={`${input} flex-1`} value={row.name ?? ''} placeholder={N.fSourceNamePh}
+                          onChange={e => updateSource(i, 'name', e.target.value)} />
+                        <div className="flex-1">
+                          <input className={input} value={row.url} placeholder={N.fSourceUrlPh}
+                            onChange={e => updateSource(i, 'url', e.target.value)} />
+                          {rowUrlInvalid(row.url) && <div className="text-xs text-red-600 mt-1">{N.srcInvalid}</div>}
+                        </div>
+                        <button type="button" onClick={() => removeSource(i)} title={N.srcRemove}
+                          className="mt-1.5 px-2 text-gray-400 hover:text-red-600 text-lg leading-none">×</button>
+                      </div>
+                    ))}
+                  </div>
+                  <button type="button" onClick={addSource} className="mt-2 text-sm font-medium text-blue-600 hover:underline">
+                    {N.btnAddSource}
+                  </button>
                 </div>
-                <div>
-                  <label className={label}>{N.fSourceUrl}</label>
-                  <input className={input} value={draft.sourceUrl ?? ''} onChange={e => patch({ sourceUrl: e.target.value })} />
-                  {srcInvalid && <div className="text-xs text-red-600 mt-1">{N.srcInvalid}</div>}
-                </div>
-                <div>
-                  <label className={label}>{N.fAuthor}</label>
-                  <input className={input} value={draft.author ?? ''} onChange={e => patch({ author: e.target.value })} />
-                </div>
-                <div>
-                  <label className={label}>{N.fPubDate}</label>
-                  <input type="date" className={input} value={(draft.publicationDate ?? '').slice(0, 10)}
-                    onChange={e => patch({ publicationDate: e.target.value })} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className={label}>{N.fAuthor}</label>
+                    <select className={input}
+                      value={authorOther ? '__other__' : (draft.author ?? '')}
+                      onChange={e => {
+                        const v = e.target.value;
+                        if (v === '__other__') { setAuthorOther(true); patch({ author: '' }); }
+                        else { setAuthorOther(false); patch({ author: v || undefined }); }
+                      }}>
+                      <option value="">{N.authorDefault}</option>
+                      {NEWS_AUTHORS.map(a => <option key={a} value={a}>{a}</option>)}
+                      <option value="__other__">{N.authorOther}</option>
+                    </select>
+                    {authorOther && (
+                      <input className={`${input} mt-2`} value={draft.author ?? ''} placeholder={N.authorCustomPh}
+                        onChange={e => patch({ author: e.target.value })} />
+                    )}
+                  </div>
+                  <div>
+                    <label className={label}>{N.fPubDate}</label>
+                    <input type="date" className={input} value={(draft.publicationDate ?? '').slice(0, 10)}
+                      onChange={e => patch({ publicationDate: e.target.value })} />
+                    <div className={hint}>{N.fPubDateHint}</div>
+                  </div>
                 </div>
               </div>
             </SectionCard>
@@ -666,7 +770,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
                 className="w-full px-4 py-2.5 rounded-lg bg-slate-800 text-white text-sm font-semibold hover:bg-slate-900 disabled:opacity-50">
                 {saving ? N.btnSaving : N.btnSaveDraft}
               </button>
-              <button onClick={() => setView('preview')}
+              <button onClick={openPreviewFromEditor}
                 className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50">
                 {N.btnPreview}
               </button>

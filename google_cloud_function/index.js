@@ -333,6 +333,7 @@ function newsImageCategory(category = 'MARKET', title = '', summary = '') {
     if (NATIONAL_POLICY_KEYWORDS.some(k => text.includes(k))) return 'policy';
     return EU_POLICY_KEYWORDS.some(k => text.includes(k)) ? 'eu-policy' : 'policy';
   }
+  if (category === 'ENERGY') return 'energy';
   if (category === 'INSTALLER INSIGHT') return 'install';
   if (category === 'TECHNOLOGY') {
     return ENERGY_KEYWORDS.some(k => text.includes(k)) ? 'energy' : 'tech';
@@ -373,7 +374,7 @@ function chooseNewsImage(pool, usedFilesThisMonth, rotationOffset = 0, articleTe
 }
 
 
-const ARTICLE_CATEGORIES = ['FUNDING', 'MARKET', 'TECHNOLOGY', 'INSTALLER INSIGHT'];
+const ARTICLE_CATEGORIES = ['FUNDING', 'MARKET', 'TECHNOLOGY', 'INSTALLER INSIGHT', 'ENERGY'];
 
 /**
  * Google Search grounding returns opaque vertexaisearch redirect URLs.
@@ -477,7 +478,7 @@ exactly as a professional news agency would publish them (publisher:
 - "sources": 2-4 of the real web pages found in STEP 1 that informed the
   article (official or reputable pages only — ${market.reputableSources}).
   Never invent URLs. These are printed under the article as "References".
-- "category": exactly one of FUNDING | MARKET | TECHNOLOGY | INSTALLER INSIGHT.
+- "category": exactly one of FUNDING | MARKET | TECHNOLOGY | INSTALLER INSIGHT | ENERGY.
 ${germanBlock}
 
 Also compile 3-5 current policy/regulation items (${market.policyScope}).
@@ -1033,8 +1034,14 @@ async function translateArticleForCountry(ai, cc, source) {
 // -------------------------------------------------------------------
 function buildCountryNewsDoc(cc, articleId, source, localePayload) {
   const { lang } = COUNTRY_NEWS_META[cc];
-  const sources = [];
-  if (source.sourceUrl) {
+  // Multiple cited sources (new) with a fallback to the legacy single source.
+  let sources = [];
+  if (Array.isArray(source.sources) && source.sources.length) {
+    sources = source.sources
+      .filter(s => s && typeof s.url === 'string' && s.url.trim())
+      .map(s => ({ title: (s.name && s.name.trim()) || s.url, url: s.url }));
+  }
+  if (!sources.length && source.sourceUrl) {
     sources.push({ title: source.sourceName || source.sourceUrl, url: source.sourceUrl });
   }
   const doc = {

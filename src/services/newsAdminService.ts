@@ -89,9 +89,17 @@ export const uploadHeroImage = async (articleId: string, file: File): Promise<Up
   const webp = await optimizeToWebp(file);
   const path = `news/manual/${articleId}/hero.webp`;
   const r = ref(defaultStorage, path);
-  await uploadBytes(r, webp, { contentType: 'image/webp', cacheControl: 'public, max-age=86400' });
-  const imageUrl = await getDownloadURL(r);
-  return { imageUrl, imageStoragePath: path };
+  try {
+    await uploadBytes(r, webp, { contentType: 'image/webp', cacheControl: 'public, max-age=86400' });
+    const imageUrl = await getDownloadURL(r);
+    return { imageUrl, imageStoragePath: path };
+  } catch (e) {
+    // Re-throw with the Firebase Storage code preserved so the UI can explain
+    // the REAL cause (e.g. storage/unauthorized = rules not deployed / not admin)
+    // instead of a blank "try again".
+    const code = (e as { code?: string })?.code;
+    throw new Error(code ? `storage:${code}` : 'upload-failed');
+  }
 };
 
 const SUPPORTED = ['image/jpeg', 'image/png', 'image/webp'];
