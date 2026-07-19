@@ -95,10 +95,17 @@ export const uploadHeroImage = async (articleId: string, file: File): Promise<Up
     return { imageUrl, imageStoragePath: path };
   } catch (e) {
     // Re-throw with the Firebase Storage code preserved so the UI can explain
-    // the REAL cause (e.g. storage/unauthorized = rules not deployed / not admin)
-    // instead of a blank "try again".
-    const code = (e as { code?: string })?.code;
-    throw new Error(code ? `storage:${code}` : 'upload-failed');
+    // the REAL cause (e.g. storage/unauthorized = rules not deployed / not admin).
+    // A CODELESS error (no .code) is not a normal StorageError — surface its
+    // actual name/message so it's never an opaque "try again" (this is how the
+    // cross-service-IAM upload failure hid itself).
+    const err = e as { code?: string; message?: string; name?: string };
+    // eslint-disable-next-line no-console
+    console.error('[hero upload] failed:', err.code, err.name, err.message, e);
+    throw new Error(
+      err.code ? `storage:${err.code}`
+        : `upload-error:${(err.message || err.name || 'unknown').slice(0, 140)}`,
+    );
   }
 };
 

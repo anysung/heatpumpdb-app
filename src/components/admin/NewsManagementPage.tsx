@@ -286,6 +286,9 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
         msg = sc === 'storage/unauthorized' ? N.upDenied
           : (sc === 'storage/retry-limit-exceeded' || sc === 'storage/canceled') ? N.upNetwork
           : N.upCode(sc);
+      } else if (code.startsWith('upload-error:')) {
+        // Codeless failure — show the real underlying error text.
+        msg = N.upCode(code.slice('upload-error:'.length));
       } else msg = N.upGeneric;
       setUploadError(msg);
     } finally {

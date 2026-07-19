@@ -1,6 +1,18 @@
 rules_version = '2';
 // Default bucket. Only the manual-news hero images live here; everything else
 // is locked. Same approval semantics as firestore.rules / the datasets bucket.
+//
+// CROSS-SERVICE LOOKUPS (firestore.get/exists below) need the SAME two grants
+// the datasets bucket documents — and the SECOND one is PER-BUCKET, so it must
+// be applied to THIS bucket too (was missing until 2026-07-19, which made every
+// AUTHENTICATED admin hero upload fail: an unauthenticated write short-circuits
+// isAdmin() before any firestore.get, but a signed-in admin actually runs the
+// cross-service read, and without the grant that read errors and the upload
+// fails with an opaque/codeless error):
+//   service-<num>@firebase-rules.iam.gserviceaccount.com
+//     → roles/firebaserules.firestoreServiceAgent  (project — already granted)
+//   service-<num>@gcp-sa-firebasestorage.iam.gserviceaccount.com
+//     → roles/storage.admin ON gs://gen-lang-client-0324244302.firebasestorage.app
 service firebase.storage {
   match /b/{bucket}/o {
 
