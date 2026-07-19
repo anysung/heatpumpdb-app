@@ -273,6 +273,7 @@ const EN = {
     } as Record<string, string>,
     // media guidance
     mediaNote: 'Add at least one: a hero image or a YouTube video.',
+    mediaOk: 'Media added — this article has a hero image or video.',
     fHeroHint: 'JPG, PNG or WebP. Automatically optimized to WebP under 1 MB.',
     fHeroAltPlaceholder: 'e.g. Technician installing an outdoor heat pump unit',
     fHeroAltHint: 'Describe what the image shows — helps screen readers and search. Example: "Air-source heat pump mounted on an exterior wall."',
@@ -540,6 +541,7 @@ const KO: typeof EN = {
     } as Record<string, string>,
     // media guidance
     mediaNote: '대표 이미지 또는 유튜브 영상 중 최소 하나를 추가하세요.',
+    mediaOk: '미디어가 추가되었습니다 — 대표 이미지 또는 영상이 있습니다.',
     fHeroHint: 'JPG, PNG, WebP. 자동으로 1MB 미만 WebP로 최적화됩니다.',
     fHeroAltPlaceholder: '예: 실외기 히트펌프를 설치하는 기술자',
     fHeroAltHint: '이미지 내용을 설명하세요 — 스크린리더와 검색에 도움이 됩니다. 예: "외벽에 설치된 공기열원 히트펌프."',

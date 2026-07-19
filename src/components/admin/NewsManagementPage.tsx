@@ -320,6 +320,9 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
     if (!draft) return;
     const next = ytId ?? undefined;
     if (draft.youtubeVideoId !== next) patch({ youtubeVideoId: next });
+    // A valid video satisfies the media requirement — clear any stale image
+    // upload error so it no longer reads as "nothing was recognized".
+    if (ytId) setUploadError(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ytId]);
 
@@ -636,9 +639,15 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
 
             <SectionCard title={N.secMedia} icon="🖼️">
               <div className="space-y-4">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 text-xs text-blue-800">
-                  {N.mediaNote} {req}
-                </div>
+                {(hasImage || draft.youtubeVideoId) ? (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-2.5 text-xs text-green-800">
+                    ✓ {N.mediaOk}
+                  </div>
+                ) : (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 text-xs text-blue-800">
+                    {N.mediaNote} {req}
+                  </div>
+                )}
                 <div>
                   <label className={label}>{N.fHero}</label>
                   {draft.imageUrl ? (
