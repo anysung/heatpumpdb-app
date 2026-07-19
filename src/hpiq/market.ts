@@ -104,4 +104,4 @@ export const TECHNICAL_BASELINE = ACTIVE_COUNTRY.technicalBaseline;
  * embed (youtube-nocookie.com), so no YouTube cookies load before the user
  * presses play.
  */
-export const GUIDE_VIDEO_ID: string | null = IS_GB ? '5zkU-KQjzvo' : IS_FR ? 'L8FDkPmjd14' : IS_PL ? '_-2GVNOfQuY' : IS_IT ? null : 'JSkbYarh_iA';
+export const GUIDE_VIDEO_ID: string | null = IS_GB ? '5zkU-KQjzvo' : IS_FR ? 'L8FDkPmjd14' : IS_PL ? '_-2GVNOfQuY' : IS_IT ? 'NV45K9TtuBg' : 'JSkbYarh_iA';
