@@ -30,8 +30,20 @@ service firebase.storage {
              me().get('role', 'user') in ['owner', 'admin', 'support', 'ops'];
     }
 
+    // The user's registered market (authService stamps country = ACTIVE_COUNTRY.code
+    // on every signup). '' when the field is absent on a legacy doc.
+    function myCountry() {
+      return me().get('country', '');
+    }
+
     match /datasets/{country}/{file} {
-      allow read: if isApproved() || isAdmin();
+      // Per-market isolation (2026-07-19 audit follow-up): an approved user may
+      // read ONLY their own registered market's datasets; owner/admin roles read
+      // every market. A legacy doc with no 'country' field is NOT locked out — it
+      // falls through to allowed, so a metadata gap can never deny a legitimate
+      // approved user (new signups always carry country).
+      allow read: if isAdmin() ||
+                     (isApproved() && (myCountry() == '' || myCountry() == country));
       allow write: if false;  // uploads go through gcloud (pipeline), never clients
     }
 
