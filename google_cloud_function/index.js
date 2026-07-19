@@ -176,6 +176,36 @@ function extractJsonObject(text) {
 }
 
 // -------------------------------------------------------------------
+// Small pure helpers shared by the manual news-admin function below.
+// -------------------------------------------------------------------
+/** SEO slug: lowercase, ASCII-folded (accents stripped), hyphen-separated. */
+function slugify(text) {
+  const slug = String(text || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '') // strip combining diacritics
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80)
+    .replace(/-+$/g, '');
+  return slug || 'article';
+}
+
+/** YouTube video ids are exactly 11 chars of [A-Za-z0-9_-]. */
+function validateYouTubeId(id) {
+  return typeof id === 'string' && /^[A-Za-z0-9_-]{11}$/.test(id);
+}
+
+/** Count blank-line-separated paragraphs in a plain-text body. */
+function countParagraphs(text) {
+  return String(text || '')
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean)
+    .length;
+}
+
+// -------------------------------------------------------------------
 // Research products for a single manufacturer using Gemini + Search
 // Priority: 1) BAFA list, 2) Manufacturer site, 3) Retailer sites
 // -------------------------------------------------------------------
@@ -829,5 +859,466 @@ functions.http('autoUpdateDatabase', async (req, res) => {
   } catch (err) {
     console.error('Auto Update Error:', err);
     return res.status(500).json({ status: 'error', message: err.message });
+  }
+});
+
+// ===================================================================
+// Cloud Function: newsAdmin  (admin-authenticated, HTTP)
+//
+// Translates and publishes MANUAL news articles authored in the admin
+// console. The English canonical draft lives in newsArticles/{articleId};
+// on publish this fans out ONE localized doc per selected country into
+// countries/<CC>/news/{articleId} (same id everywhere → idempotent).
+//
+// This function is entirely independent of autoUpdateDatabase and never
+// touches its automated news-generation logic.
+// ===================================================================
+
+// Country → locale / flat-field language / prompt language name.
+// Mirrored here on purpose (do NOT import from src/) — single source in the fn.
+const COUNTRY_NEWS_META = {
+  DE: { locale: 'de-DE', lang: 'de', languageName: 'German' },
+  GB: { locale: 'en-GB', lang: 'en', languageName: 'English' },
+  FR: { locale: 'fr-FR', lang: 'fr', languageName: 'French' },
+  PL: { locale: 'pl-PL', lang: 'pl', languageName: 'Polish' },
+  IT: { locale: 'it-IT', lang: 'it', languageName: 'Italian' },
+};
+const VALID_COUNTRIES = Object.keys(COUNTRY_NEWS_META);
+const NEWS_ADMIN_ROLES = ['owner', 'admin', 'support', 'ops'];
+const TRANSLATION_MODEL = 'gemini-2.5-flash';
+const TRANSLATION_VERSION = '2026-07-manual-v1';
+const DEFAULT_NEWS_AUTHOR = 'HeatPump DataBase (Europe)';
+
+// -------------------------------------------------------------------
+// STRICT server-side translation prompt (key + prompt never leave the fn).
+// -------------------------------------------------------------------
+function buildTranslationPrompt(source, locale, languageName) {
+  return `You are a professional translator for "HeatPump DB", a heat-pump-industry news service. Translate the English heat-pump-industry news article below into ${languageName} (locale ${locale}).
+
+Return ONLY a strict JSON object with EXACTLY these keys and nothing else:
+{"locale":"${locale}","title":"…","summary":"…","body":"…","imageAlt":"…","slug":"…"}
+No markdown fences, no explanation, no prose before or after the JSON object.
+
+TRANSLATION RULES — obey every one:
+- Do not add facts, claims, opinions, explanations, or numbers that are not in the source.
+- Do not remove sentences, paragraphs, list items, or qualifiers.
+- Preserve all numbers, percentages, dates, performance values, capacities and units exactly as written.
+- Do not alter manufacturer, product, model, trademark or brand names.
+- Do not modify any URLs.
+- Preserve headings, paragraphs, lists, links and body structure; keep the SAME blank-line-separated paragraph breaks as the source.
+- Do NOT translate the brand name "HeatPump DataBase" — keep it verbatim.
+- Use the official local names of policy programmes, subsidies and institutions ONLY when you are reliably certain of them; when uncertain, keep the original proper noun unchanged.
+- Do NOT introduce "BAFA" (or any German-specific programme name) for a non-German country unless it is explicitly written in the English source.
+- Do not identify another European country as the source of product information; where such wording is needed, use neutral phrasing such as "European-market information".
+- Do not convert units or values unless the source itself does.
+- No marketing language, no added disclaimers, no commentary.
+- Return only the required JSON object.
+
+For "slug": produce an SEO-friendly slug of the TRANSLATED title in ${languageName} — lowercase, words separated by hyphens, ASCII-folded (no accents or diacritics).
+
+SOURCE ARTICLE (English canonical):
+Title: ${source.title}
+Summary: ${source.summary}
+Image alt text: ${source.imageAlt}
+Body:
+${source.body}
+
+Return the JSON object now:`;
+}
+
+// -------------------------------------------------------------------
+// Validate a Gemini translation payload against the English source.
+// Returns null when valid, otherwise a short failure-reason string.
+// -------------------------------------------------------------------
+function validateTranslation(parsed, source) {
+  if (!parsed || typeof parsed !== 'object') return 'ai-json-parse';
+  for (const k of ['title', 'summary', 'body', 'imageAlt']) {
+    if (typeof parsed[k] !== 'string' || !parsed[k].trim()) return `missing-field:${k}`;
+  }
+  // body paragraph count within ±1 of the source's blank-line paragraph count
+  const srcParas = countParagraphs(source.body);
+  const outParas = countParagraphs(parsed.body);
+  if (Math.abs(srcParas - outParas) > 1) return 'paragraph-count-mismatch';
+  // no dangerous markup / injection substrings
+  const blob = `${parsed.title}\n${parsed.summary}\n${parsed.body}\n${parsed.imageAlt}`.toLowerCase();
+  for (const bad of ['<script', '<iframe', 'javascript:', 'onerror=']) {
+    if (blob.includes(bad)) return `unsafe-content:${bad}`;
+  }
+  // brand name must survive translation if it was present in the source
+  const brand = 'HeatPump DataBase';
+  const srcHasBrand = ['title', 'summary', 'body', 'imageAlt']
+    .some(k => String(source[k] || '').includes(brand));
+  const outHasBrand = ['title', 'summary', 'body', 'imageAlt']
+    .some(k => String(parsed[k] || '').includes(brand));
+  if (srcHasBrand && !outHasBrand) return 'brand-name-dropped';
+  return null;
+}
+
+// -------------------------------------------------------------------
+// Produce the localized payload for ONE country.
+// GB (en-GB) → original English pass-through (translationSource:'original').
+// DE/FR/PL/IT → one Gemini call (translationSource:'ai'), validated.
+// Returns { ok:true, payload } or { ok:false, step, message }.
+// -------------------------------------------------------------------
+async function translateArticleForCountry(ai, cc, source) {
+  const meta = COUNTRY_NEWS_META[cc];
+  const nowIso = new Date().toISOString();
+
+  if (cc === 'GB') {
+    return {
+      ok: true,
+      payload: {
+        title: source.title,
+        summary: source.summary,
+        body: source.body,
+        imageAlt: source.imageAlt,
+        slug: slugify(source.title),
+        translationSource: 'original',
+        translatedAt: nowIso,
+        translationModel: TRANSLATION_MODEL,
+        translationVersion: TRANSLATION_VERSION,
+      },
+    };
+  }
+
+  let parsed;
+  try {
+    const response = await ai.models.generateContent({
+      model: TRANSLATION_MODEL,
+      contents: buildTranslationPrompt(source, meta.locale, meta.languageName),
+    });
+    parsed = extractJsonObject(response.text);
+  } catch (err) {
+    return { ok: false, step: 'ai-call', message: err.message };
+  }
+  if (!parsed) return { ok: false, step: 'ai-parse', message: 'could not parse AI JSON' };
+
+  const reason = validateTranslation(parsed, source);
+  if (reason) return { ok: false, step: 'validation', message: reason };
+
+  return {
+    ok: true,
+    payload: {
+      title: parsed.title.trim(),
+      summary: parsed.summary.trim(),
+      body: parsed.body.trim(),
+      imageAlt: parsed.imageAlt.trim(),
+      slug: slugify(parsed.slug || parsed.title),
+      translationSource: 'ai',
+      translatedAt: nowIso,
+      translationModel: TRANSLATION_MODEL,
+      translationVersion: TRANSLATION_VERSION,
+    },
+  };
+}
+
+// -------------------------------------------------------------------
+// Build the public fan-out doc for countries/<CC>/news/<articleId>.
+// -------------------------------------------------------------------
+function buildCountryNewsDoc(cc, articleId, source, localePayload) {
+  const { lang } = COUNTRY_NEWS_META[cc];
+  const sources = [];
+  if (source.sourceUrl) {
+    sources.push({ title: source.sourceName || source.sourceUrl, url: source.sourceUrl });
+  }
+  const doc = {
+    // base English canonical (the en/GB site reads these directly)
+    title: source.title,
+    summary: source.summary,
+    body: source.body,
+    category: source.category,
+    date: source.publicationDate || new Date().toISOString(),
+    imageUrl: source.imageUrl,
+    imageAlt: localePayload.imageAlt,
+    sources,
+    author: source.author || DEFAULT_NEWS_AUTHOR,
+    original: true,
+    sourceType: 'manual',
+    manualArticleId: articleId,
+    slug: localePayload.slug,
+  };
+  if (source.youtubeVideoId) doc.youtubeVideoId = source.youtubeVideoId;
+  // Non-English editions localize via flat title_<lang>/summary_<lang>/body_<lang>.
+  // GB (en) uses the base fields only.
+  if (lang !== 'en') {
+    doc[`title_${lang}`] = localePayload.title;
+    doc[`summary_${lang}`] = localePayload.summary;
+    doc[`body_${lang}`] = localePayload.body;
+  }
+  return doc;
+}
+
+// -------------------------------------------------------------------
+// Validate that a draft has everything required to be published.
+// Returns null when valid, otherwise a human-readable detail string.
+// -------------------------------------------------------------------
+function validatePublishFields(source) {
+  for (const k of ['title', 'summary', 'body', 'imageAlt', 'category', 'imageUrl']) {
+    if (typeof source[k] !== 'string' || !source[k].trim()) {
+      return `missing or empty required field: ${k}`;
+    }
+  }
+  if (!Array.isArray(source.targetCountries) || source.targetCountries.length === 0) {
+    return 'targetCountries must be a non-empty array';
+  }
+  for (const cc of source.targetCountries) {
+    if (!VALID_COUNTRIES.includes(cc)) return `invalid target country: ${cc}`;
+  }
+  if (source.youtubeVideoId != null && source.youtubeVideoId !== ''
+      && !validateYouTubeId(source.youtubeVideoId)) {
+    return 'invalid youtubeVideoId (must be 11 chars of [A-Za-z0-9_-])';
+  }
+  return null;
+}
+
+// -------------------------------------------------------------------
+// action: publish / updatePublished (same core, all-or-nothing).
+// The live country docs are only ever overwritten in the FINAL batch —
+// if any translation fails, nothing is written and the previous public
+// version (if any) stays untouched.
+// -------------------------------------------------------------------
+async function handleNewsPublish(articleId, draftRef, source, uid, res) {
+  const detail = validatePublishFields(source);
+  if (detail) return res.status(400).json({ error: 'validation', detail });
+
+  if (!process.env.GEMINI_API_KEY) {
+    return res.status(500).json({ error: 'server-error', message: 'GEMINI_API_KEY not set' });
+  }
+
+  const targets = source.targetCountries;
+  await draftRef.update({
+    status: 'translating',
+    updatedAt: new Date().toISOString(),
+    updatedBy: uid,
+  });
+
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const payloadByCountry = {};
+  const localesByLocale = {};
+
+  for (const cc of targets) {
+    const result = await translateArticleForCountry(ai, cc, source);
+    if (!result.ok) {
+      const locale = COUNTRY_NEWS_META[cc].locale;
+      await draftRef.update({
+        status: 'translation_failed',
+        lastTranslationError: `${locale}: ${result.step}: ${result.message}`,
+        updatedAt: new Date().toISOString(),
+        updatedBy: uid,
+      });
+      // All-or-nothing: no country doc has been written.
+      return res.status(200).json({
+        ok: false,
+        error: 'translation-failed',
+        failedLocale: locale,
+        failedStep: result.step,
+      });
+    }
+    payloadByCountry[cc] = result.payload;
+    localesByLocale[COUNTRY_NEWS_META[cc].locale] = result.payload;
+  }
+
+  // All locales succeeded — fan out atomically (fixed ids → idempotent).
+  const batch = firestoreDb.batch();
+  for (const cc of targets) {
+    const ref = firestoreDb.collection(`countries/${cc}/news`).doc(articleId);
+    batch.set(ref, buildCountryNewsDoc(cc, articleId, source, payloadByCountry[cc]));
+  }
+  await batch.commit();
+
+  const nowIso = new Date().toISOString();
+  await draftRef.update({
+    status: 'published',
+    publishedAt: nowIso,
+    publishedBy: uid,
+    publishedCountries: targets,
+    locales: localesByLocale,
+    translationOutdated: false,
+    lastTranslationError: null,
+    updatedAt: nowIso,
+    updatedBy: uid,
+  });
+
+  return res.status(200).json({ ok: true, status: 'published', publishedCountries: targets });
+}
+
+// -------------------------------------------------------------------
+// action: unpublish { articleId, countries? }
+// -------------------------------------------------------------------
+async function handleNewsUnpublish(articleId, draftRef, source, uid, res, body) {
+  const published = Array.isArray(source.publishedCountries) ? source.publishedCountries : [];
+  const toRemove = Array.isArray(body.countries) && body.countries.length
+    ? body.countries.map(c => String(c).toUpperCase())
+    : [...published];
+
+  const batch = firestoreDb.batch();
+  for (const cc of toRemove) {
+    batch.delete(firestoreDb.collection(`countries/${cc}/news`).doc(articleId));
+  }
+  await batch.commit();
+
+  const remaining = published.filter(cc => !toRemove.includes(cc));
+  const update = {
+    publishedCountries: remaining,
+    updatedAt: new Date().toISOString(),
+    updatedBy: uid,
+  };
+  if (remaining.length === 0) {
+    update.status = 'draft';
+    update.publishedAt = null;
+  }
+  await draftRef.update(update);
+
+  return res.status(200).json({ ok: true, publishedCountries: remaining });
+}
+
+// -------------------------------------------------------------------
+// action: retarget { articleId, add:[CC…], remove:[CC…] }
+// Per-country writes only — one country never affects another.
+// -------------------------------------------------------------------
+async function handleNewsRetarget(articleId, draftRef, source, uid, res, body) {
+  const add = Array.isArray(body.add) ? body.add.map(c => String(c).toUpperCase()) : [];
+  const remove = Array.isArray(body.remove) ? body.remove.map(c => String(c).toUpperCase()) : [];
+
+  for (const cc of [...add, ...remove]) {
+    if (!VALID_COUNTRIES.includes(cc)) {
+      return res.status(400).json({ error: 'validation', detail: `invalid target country: ${cc}` });
+    }
+  }
+
+  let publishedCountries = Array.isArray(source.publishedCountries) ? [...source.publishedCountries] : [];
+  let targetCountries = Array.isArray(source.targetCountries) ? [...source.targetCountries] : [];
+  const locales = (source.locales && typeof source.locales === 'object') ? { ...source.locales } : {};
+
+  // 1) Removals — delete each country doc, drop from the tracked lists.
+  if (remove.length) {
+    const batch = firestoreDb.batch();
+    for (const cc of remove) {
+      batch.delete(firestoreDb.collection(`countries/${cc}/news`).doc(articleId));
+    }
+    await batch.commit();
+    publishedCountries = publishedCountries.filter(cc => !remove.includes(cc));
+    targetCountries = targetCountries.filter(cc => !remove.includes(cc));
+    for (const cc of remove) delete locales[COUNTRY_NEWS_META[cc].locale];
+  }
+
+  // 2) Additions — each must be publishable; translate + write that ONE locale.
+  if (add.length) {
+    const detail = validatePublishFields({ ...source, targetCountries: add });
+    if (detail) return res.status(400).json({ error: 'validation', detail });
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'server-error', message: 'GEMINI_API_KEY not set' });
+    }
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    for (const cc of add) {
+      const result = await translateArticleForCountry(ai, cc, source);
+      if (!result.ok) {
+        // Persist the progress already made; other countries are untouched.
+        await draftRef.update({
+          publishedCountries,
+          targetCountries,
+          locales,
+          lastTranslationError: `${COUNTRY_NEWS_META[cc].locale}: ${result.step}: ${result.message}`,
+          updatedAt: new Date().toISOString(),
+          updatedBy: uid,
+        });
+        return res.status(200).json({
+          ok: false,
+          error: 'translation-failed',
+          failedLocale: COUNTRY_NEWS_META[cc].locale,
+          failedStep: result.step,
+        });
+      }
+      await firestoreDb.collection(`countries/${cc}/news`).doc(articleId)
+        .set(buildCountryNewsDoc(cc, articleId, source, result.payload));
+      if (!publishedCountries.includes(cc)) publishedCountries.push(cc);
+      if (!targetCountries.includes(cc)) targetCountries.push(cc);
+      locales[COUNTRY_NEWS_META[cc].locale] = result.payload;
+    }
+  }
+
+  const update = {
+    publishedCountries,
+    targetCountries,
+    locales,
+    updatedAt: new Date().toISOString(),
+    updatedBy: uid,
+  };
+  if (publishedCountries.length === 0) {
+    update.status = 'draft';
+    update.publishedAt = null;
+  } else if (source.status !== 'published') {
+    update.status = 'published';
+  }
+  await draftRef.update(update);
+
+  return res.status(200).json({ ok: true, publishedCountries, targetCountries });
+}
+
+functions.http('newsAdmin', async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
+  // CORS preflight
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    return res.status(204).send('');
+  }
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'method-not-allowed' });
+  }
+
+  // --- AUTH: verified Firebase ID token + admin-tier role ---
+  const authHeader = String(req.headers.authorization || req.headers.Authorization || '');
+  const tokenMatch = /^Bearer\s+(.+)$/i.exec(authHeader);
+  if (!tokenMatch) return res.status(401).json({ error: 'unauthorized' });
+
+  let decoded;
+  try {
+    decoded = await admin.auth().verifyIdToken(tokenMatch[1].trim());
+  } catch (err) {
+    return res.status(401).json({ error: 'unauthorized' });
+  }
+  const uid = decoded.uid;
+
+  let role = null;
+  try {
+    const userSnap = await firestoreDb.collection('users').doc(uid).get();
+    role = userSnap.exists ? userSnap.data().role : null;
+  } catch (err) {
+    return res.status(500).json({ error: 'server-error', message: err.message });
+  }
+  if (!NEWS_ADMIN_ROLES.includes(role)) return res.status(403).json({ error: 'forbidden' });
+
+  // --- Request body ---
+  const body = (req.body && typeof req.body === 'object') ? req.body : {};
+  const action = body.action;
+  const articleId = body.articleId;
+
+  if (typeof articleId !== 'string' || !articleId.trim()) {
+    return res.status(400).json({ error: 'validation', detail: 'articleId is required' });
+  }
+  if (!['publish', 'unpublish', 'retarget', 'updatePublished'].includes(action)) {
+    return res.status(400).json({ error: 'validation', detail: 'invalid action' });
+  }
+
+  const draftRef = firestoreDb.collection('newsArticles').doc(articleId);
+  const draftSnap = await draftRef.get();
+  if (!draftSnap.exists) return res.status(404).json({ error: 'not-found' });
+  const source = draftSnap.data();
+
+  try {
+    if (action === 'publish' || action === 'updatePublished') {
+      return await handleNewsPublish(articleId, draftRef, source, uid, res);
+    }
+    if (action === 'unpublish') {
+      return await handleNewsUnpublish(articleId, draftRef, source, uid, res, body);
+    }
+    if (action === 'retarget') {
+      return await handleNewsRetarget(articleId, draftRef, source, uid, res, body);
+    }
+  } catch (err) {
+    console.error('newsAdmin error:', err);
+    return res.status(500).json({ error: 'server-error', message: err.message });
   }
 });
