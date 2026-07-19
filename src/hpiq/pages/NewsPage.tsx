@@ -162,8 +162,8 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
           {/* masthead — the market's own logo + waving flag, like a nameplate */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '20px 0 14px' }}>
-            <BrandLogo height={34} theme="dark" />
-            <WavingFlag height={28} className="waving-flag" />
+            <BrandLogo height={34} theme="light" />
+            <WavingFlag height={28} onLight className="waving-flag" />
           </div>
           <div style={{ height: 2, background: '#1d1d1f' }} />
           <div style={{ height: 1, background: '#e0e0e0', marginTop: 2 }} />
@@ -187,7 +187,7 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           </div>
 
           {/* action bar ABOVE the hero — PDF · Print · Email · Share */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 22, marginTop: 14, padding: '9px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 22, marginTop: 14, padding: '9px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
             <ActionButton icon="pdf" label={t.news.actionPdf} onClick={() => pdfArticle(reader)} />
             <ActionButton icon="print" label={t.news.actionPrint} onClick={() => printArticle(reader)} />
             <ActionButton icon="email" label={t.news.actionEmail} onClick={() => emailArticle(reader)} />

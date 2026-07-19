@@ -65,11 +65,12 @@
    "desc_ko": "국가간경쟁력_전시회비즈니스경쟁분석"
   },
   {
-   "file": "common-market-02.webp",
+   "file": "common-market-02-factory-layoff.webp",
    "scope": "COMMON",
    "category": "market",
    "topic_ko": "산업일자리감소",
-   "desc_ko": "산업일자리감소_공장밖퇴직과구조조정"
+   "desc_ko": "산업일자리감소_공장밖퇴직과구조조정",
+   "conditional_keywords_note": "Shows workers being laid off outside a factory — ONLY for job-loss/decline stories (gated in code)."
   },
   {
    "file": "common-market-03.webp",

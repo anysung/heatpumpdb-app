@@ -40,7 +40,7 @@ const NEWS_IMAGE_POOLS = {
     EU: ['eu-policy-01.webp', 'eu-policy-02.webp', 'eu-policy-03.webp'],
   },
   install: ['common-install-01.webp', 'common-install-02.webp', 'common-install-03.webp', 'common-install-04.webp', 'common-install-05.webp'],
-  market: ['common-market-01.webp', 'common-market-02.webp', 'common-market-03.webp', 'common-market-04.webp', 'common-market-05.webp', 'common-market-06.webp'],
+  market: ['common-market-01.webp', 'common-market-02-factory-layoff.webp', 'common-market-03.webp', 'common-market-04.webp', 'common-market-05.webp', 'common-market-06.webp'],
   tech: ['common-tech-01.webp', 'common-tech-02.webp', 'common-tech-03.webp', 'common-tech-04.webp', 'common-tech-05.webp', 'common-tech-06.webp'],
   energy: ['common-energy-01.webp', 'common-energy-02.webp', 'common-energy-03.webp', 'common-energy-04.webp', 'common-energy-05.webp'],
 };
@@ -71,7 +71,19 @@ const poolFor = (cc, cat) =>
     : cat === 'policy' ? (NEWS_IMAGE_POOLS.policy[cc] ?? NEWS_IMAGE_POOLS.market)
       : (NEWS_IMAGE_POOLS[cat] ?? NEWS_IMAGE_POOLS.market);
 
-function chooseNewsImage(pool, usedThisMonth, rotationOffset) {
+/** Images whose subject is only appropriate for specific story angles: the
+ *  file is SKIPPED in rotation unless the article text matches its keywords
+ *  (2026-07-19: the factory-layoff photo appeared on a routine DE market
+ *  article — a layoff image belongs only on job-loss/decline stories). */
+const CONDITIONAL_IMAGES = {
+  'common-market-02-factory-layoff.webp': ['layoff', 'lay-off', 'job cut', 'job loss', 'jobs lost',
+    'redundan', 'stellenabbau', 'arbeitsplatzabbau', 'entlassung', 'kurzarbeit',
+    'licenzia', 'esuber', 'zwolnien', 'licenciement', 'suppression d', 'downturn', 'slump', 'insolven'],
+};
+function chooseNewsImage(pool, usedThisMonth, rotationOffset, articleText = '') {
+  const eligible = pool.filter(f => !CONDITIONAL_IMAGES[f]
+    || CONDITIONAL_IMAGES[f].some(k => articleText.includes(k)));
+  pool = eligible.length ? eligible : pool;
   for (let i = 0; i < pool.length; i++) {
     const f = pool[(rotationOffset + i) % pool.length];
     if (!usedThisMonth.includes(f)) return f;
@@ -121,7 +133,8 @@ for (const cc of MARKETS) {
     const cat = newsImageCategory(sv(d, 'category'), sv(d, 'title'), sv(d, 'summary'));
     const pool = poolFor(cc, cat);
     const poolKey = pool[0];
-    const file = chooseNewsImage(pool, usedThisMonth, (rotation[poolKey] ?? 0) % pool.length);
+    const file = chooseNewsImage(pool, usedThisMonth, (rotation[poolKey] ?? 0) % pool.length,
+      `${sv(d, 'title')} ${sv(d, 'summary')}`.toLowerCase());
     rotation[poolKey] = (rotation[poolKey] ?? 0) + 1;
     usedThisMonth.push(file);
     const target = `/news-images/${file}`;

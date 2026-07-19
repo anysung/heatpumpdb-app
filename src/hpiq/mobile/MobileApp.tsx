@@ -394,7 +394,7 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontSize: 12, color: '#7a7a7a', marginTop: 4 }}>{t.news.updated} {shortDate(open.date, t.locale)}</span>
 
         {/* action bar — PDF (share sheet) · Email · Share */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 12, padding: '8px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 20, marginTop: 12, padding: '8px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
           <span style={actionBtn} onClick={() => pdfArticle(open)}><MNewsIcon d={M_NEWS_ICONS.pdf} />{t.news.actionPdf}</span>
           <span style={actionBtn} onClick={() => emailArticle(open)}><MNewsIcon d={M_NEWS_ICONS.email} />{t.news.actionEmail}</span>
           <span style={actionBtn} onClick={() => shareArticle(open)}><MNewsIcon d={M_NEWS_ICONS.share} />{t.news.share}</span>
