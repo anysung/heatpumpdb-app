@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { loginUser, registerUser, registerInvitedMember, logoutUser, onUserChange, loginWithProvider, completeRedirectSignIn, isAdminRole } from './services/authService';
+import { loginUser, registerUser, registerInvitedMember, logoutUser, onUserChange, loginWithProvider, completeRedirectSignIn, isAdminRole, WRONG_COUNTRY_PREFIX, EMAIL_ELSEWHERE } from './services/authService';
 import { HpiqApp } from './hpiq/HpiqApp';
 import { AdminDashboard } from './components/AdminDashboard';
 import {
@@ -9,7 +9,7 @@ import {
 import { HeatPumpDatabase, HeatPump, User, AppMode, Language } from './types';
 import { auth } from './firebase';
 import { translations } from './translations';
-import { DEFAULT_LANGUAGE } from './hpiq/market';
+import { DEFAULT_LANGUAGE, COUNTRY_SITES } from './hpiq/market';
 import { PUBLIC_ENV } from './config/env';
 import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE } from './config/registration';
 import { legalDocForPath, PRICING_ROUTE } from './config/legal';
@@ -23,11 +23,14 @@ const IS_ADMIN_BUILD = PUBLIC_ENV.APP_MODE === 'admin';
 // Use Firestore Service
 import { getProducts, getCommercialProducts, getNews, getPolicies, getBAFA } from './services/dbService';
 
-type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'APP' | 'ADMIN_DASHBOARD';
+type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'APP' | 'ADMIN_DASHBOARD' | 'COUNTRY_MISMATCH';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>(IS_ADMIN_BUILD ? 'LOGIN' : 'LANDING');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // One-email-one-country redirect screen: { country } for a login/social block
+  // (registered elsewhere), or null-country for a signup with an existing email.
+  const [mismatch, setMismatch] = useState<{ country: string | null } | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
@@ -140,6 +143,23 @@ const App: React.FC = () => {
   }, [currentView, datasetsRetryTick]);
 
   // ... (Keep all Handlers: handleLogin, handleSignup, etc. EXACTLY AS THEY WERE) ...
+  /** Route the one-email-one-country sentinels to the mismatch screen. Returns
+   *  true when handled, so callers skip the default alert(). */
+  const routeAuthError = (err: any): boolean => {
+    const msg = String(err?.message ?? '');
+    if (msg.startsWith(WRONG_COUNTRY_PREFIX)) {
+      setMismatch({ country: msg.slice(WRONG_COUNTRY_PREFIX.length) || null });
+      setCurrentView('COUNTRY_MISMATCH');
+      return true;
+    }
+    if (msg === EMAIL_ELSEWHERE) {
+      setMismatch({ country: null });
+      setCurrentView('COUNTRY_MISMATCH');
+      return true;
+    }
+    return false;
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -147,7 +167,7 @@ const App: React.FC = () => {
       await loginUser(loginEmail, loginPass);
       setLoginEmail(''); setLoginPass('');
     } catch (err: any) {
-      alert(err.message);
+      if (!routeAuthError(err)) alert(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +186,7 @@ const App: React.FC = () => {
         setCurrentView('PENDING_APPROVAL');
       }
     } catch (err: any) {
-      alert(err.message);
+      if (!routeAuthError(err)) alert(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -208,7 +228,7 @@ const App: React.FC = () => {
       // User closed/cancelled the popup — not an error worth alerting.
       if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return;
       if (err?.message === 'terms-declined') { alert(t.termsDeclined); return; }
-      alert(err.message);
+      if (!routeAuthError(err)) alert(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -230,7 +250,7 @@ const App: React.FC = () => {
         // 'active' → onUserChange routes into the app; null → nothing pending.
       } catch (err: any) {
         if (err?.message === 'terms-declined') { alert(t.termsDeclined); return; }
-        if (err?.message) alert(err.message);
+        if (!routeAuthError(err) && err?.message) alert(err.message);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -541,6 +561,35 @@ const App: React.FC = () => {
           </div>
           <button onClick={() => setCurrentView('LANDING')} className={ghostBtn}>
             ← Back to Home
+          </button>
+        </GlassCard>
+      </AuthShell>
+    );
+  }
+
+  if (currentView === 'COUNTRY_MISMATCH') {
+    // One email = one country. `mismatch.country` set → login/social from the
+    // wrong market (we know their registered country: offer the correct site).
+    // null → signup with an email already registered somewhere (country unknown
+    // pre-auth): show the generic guidance.
+    const site = mismatch?.country ? COUNTRY_SITES[mismatch.country] : null;
+    const fill = (tpl: string) => (site ? tpl.replace('{country}', site.name) : tpl);
+    return (
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+        <GlassCard className="w-full max-w-md p-10 text-center hp-fade-up">
+          <div className="text-6xl mb-6">🌍</div>
+          <h2 className="text-2xl font-bold text-white mb-3">
+            {site ? t.wrongCountryTitle : t.emailElsewhereTitle}
+          </h2>
+          <p className="text-white/70 mb-2">{site ? fill(t.wrongCountryBody) : t.emailElsewhereBody}</p>
+          <p className="text-white/50 text-sm mb-8">{t.oneAccountOneCountry}</p>
+          {site && (
+            <a href={site.url} className={`${primaryBtn} block mb-3 no-underline`}>
+              {fill(t.wrongCountryCta)}
+            </a>
+          )}
+          <button onClick={() => { setMismatch(null); setCurrentView('LANDING'); }} className={ghostBtn}>
+            ← {t.wrongCountryBack}
           </button>
         </GlassCard>
       </AuthShell>

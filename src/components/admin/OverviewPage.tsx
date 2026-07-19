@@ -104,6 +104,10 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ al, productCount, la
   if (changeCount > 0) alerts.push({ icon: '🔁', tone: 'blue', text: A.ovAlertChanges(changeCount), go: () => openPage('billing') });
   if (grantExpiring > 0) alerts.push({ icon: '🎁', tone: 'orange', text: A.ovAlertGrants(grantExpiring), go: () => openPage('billing') });
 
+  // Approved, non-admin users with no country assigned (one-email-one-country policy).
+  const missingCountry = users.filter(u => (u.status === 'active' || (u.isActive && !u.status)) && !u.country && !['owner', 'admin', 'support', 'ops'].includes(u.role || 'user'));
+  if (missingCountry.length > 0) alerts.push({ icon: '🌍', tone: 'yellow', text: A.ovAlertNoCountry(missingCountry.length), go: () => {} });
+
   return (
     <div>
       <PageHeader title={A.ovTitle} subtitle={A.ovSubtitle} />
@@ -128,6 +132,40 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ al, productCount, la
           </div>
         )}
       </SectionCard>
+
+      {/* Approved users missing a country (one-email-one-country policy) — display only */}
+      {missingCountry.length > 0 && (
+        <SectionCard title={A.ovNoCountryHeading} icon="🌍" className="mb-6">
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="text-left text-[10px] uppercase text-gray-400 font-medium border-b border-gray-100">
+                  <th className="py-2 pr-4">Email</th>
+                  <th className="py-2 pr-4">UID</th>
+                  <th className="py-2 pr-4">Status</th>
+                  <th className="py-2 pr-4">Created</th>
+                  <th className="py-2 pr-4">Last active</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {missingCountry.map(u => (
+                  <tr key={u.id} className="text-gray-700">
+                    <td className="py-2 pr-4 whitespace-nowrap font-medium">{u.email}</td>
+                    <td className="py-2 pr-4 whitespace-nowrap text-xs text-gray-400 font-mono">{u.id}</td>
+                    <td className="py-2 pr-4 whitespace-nowrap">{u.status ?? 'active'}</td>
+                    <td className="py-2 pr-4 whitespace-nowrap text-gray-500">
+                      {u.registeredAt ? new Date(u.registeredAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}
+                    </td>
+                    <td className="py-2 pr-4 whitespace-nowrap text-gray-500">
+                      {u.lastActiveAt ? new Date(u.lastActiveAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </SectionCard>
+      )}
 
       {/* Live per-market status */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">

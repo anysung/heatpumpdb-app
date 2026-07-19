@@ -66,9 +66,11 @@ async function redeemFreeGrantIfAny(user: User): Promise<User | null> {
   }
 }
 
-/** Roles allowed into the admin console — mirrors isAdmin() in firestore.rules. */
-export const isAdminRole = (role?: string): boolean =>
-  !!role && ['owner', 'admin', 'support', 'ops'].includes(role);
+// The one-email-one-country policy lives in a Firebase-free module so it is
+// unit-testable; re-export the pieces the app already imports from here.
+export { isAdminRole, crossCountryBlock } from './accountCountry';
+import { crossCountryBlock as _crossCountryBlock, WRONG_COUNTRY_PREFIX, EMAIL_ELSEWHERE } from './accountCountry';
+export { WRONG_COUNTRY_PREFIX, EMAIL_ELSEWHERE };
 
 // --- Activity Logging (Firestore) ---
 export const logActivity = async (
@@ -124,7 +126,15 @@ const consentFields = () => ({
 // Returns the activated user when a free-access grant applied (no approval
 // wait, stays signed in), or null for the normal pending flow.
 export const registerUser = async (data: SignupData): Promise<User | null> => {
-  const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+  let userCredential;
+  try {
+    userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+  } catch (e: any) {
+    // The email already has an account SOMEWHERE (all markets share one Firebase
+    // Auth project). One email = one country: never create a second account.
+    if (e?.code === 'auth/email-already-in-use') throw new Error(EMAIL_ELSEWHERE);
+    throw e;
+  }
   const uid = userCredential.user?.uid;
   if (!uid) throw new Error('User ID missing');
 
@@ -293,6 +303,14 @@ export const loginUser = async (email: string, pass: string): Promise<User> => {
       } catch { /* non-blocking — will retry on next login */ }
     }
 
+    // One-email-one-country: an approved non-admin user may only sign in on their
+    // own market's site. Read-only — the stored country is never changed here.
+    const wrongCc = _crossCountryBlock(userData, ACTIVE_COUNTRY.code);
+    if (wrongCc) {
+      await signOut(auth);
+      throw new Error(WRONG_COUNTRY_PREFIX + wrongCc);
+    }
+
     await logActivity(userData.id, 'LOGIN', 'User logged in', email, `${userData.firstName} ${userData.lastName}`);
     return userData;
   } catch (error: any) {
@@ -445,6 +463,12 @@ const finishProviderSignIn = async (
     } catch { /* non-blocking */ }
   }
 
+  const wrongCcSocial = _crossCountryBlock(userData, ACTIVE_COUNTRY.code);
+  if (wrongCcSocial) {
+    await signOut(auth);
+    throw new Error(WRONG_COUNTRY_PREFIX + wrongCcSocial);
+  }
+
   await logActivity(userData.id, 'LOGIN', `User logged in via ${providerLabel}`, email, `${userData.firstName} ${userData.lastName}`);
   return 'active';
 };
@@ -493,6 +517,9 @@ export const onUserChange = (callback: (user: User | null) => void) => {
               if (joined) enriched = { ...enriched, orgId: joined.id, orgRole: 'member' };
             } catch { /* non-blocking */ }
           }
+          // One-email-one-country (persistent-session edge, e.g. a session left
+          // on the wrong-origin site): sign out rather than load another market.
+          if (_crossCountryBlock(enriched, ACTIVE_COUNTRY.code)) { await signOut(auth); callback(null); return; }
           callback(enriched);
         } else {
           // Only the owner gets an auto-created profile. All other Firebase Auth users without

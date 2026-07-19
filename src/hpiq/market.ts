@@ -3,7 +3,7 @@
  * registry semantics. Everything derives from ACTIVE_COUNTRY (countryProfiles);
  * do not scatter country checks across pages.
  */
-import { ACTIVE_COUNTRY } from '../config/countryProfiles';
+import { ACTIVE_COUNTRY, COUNTRY_PROFILES } from '../config/countryProfiles';
 import { Language } from '../types';
 
 export const MARKET = ACTIVE_COUNTRY;
@@ -87,6 +87,19 @@ export const MARKET_WEB_DOMAIN = IS_GB ? 'www.heatpumpdb.uk' : IS_FR ? 'www.heat
 
 /** Sign-in entry URL shown on the Account page ("use on the web"). */
 export const MARKET_ENTER_URL = `${MARKET_WEB_DOMAIN}/enter`;
+
+/**
+ * Every market's public site — used by the one-email-one-country redirect
+ * message to point a user at the edition their account actually belongs to.
+ * Display name comes from the country profile; the URL is the owned domain.
+ */
+export const COUNTRY_SITES: Record<string, { name: string; url: string }> = {
+  DE: { name: COUNTRY_PROFILES.DE.name, url: 'https://www.heatpumpdb.de' },
+  GB: { name: COUNTRY_PROFILES.GB.name, url: 'https://www.heatpumpdb.uk' },
+  FR: { name: COUNTRY_PROFILES.FR.name, url: 'https://www.heatpumpdb.fr' },
+  PL: { name: COUNTRY_PROFILES.PL.name, url: 'https://www.heatpumpdb.pl' },
+  IT: { name: COUNTRY_PROFILES.IT.name, url: 'https://www.heatpumpdb.it' },
+};
 
 /**
  * Every market publishes the SAME canonical technical products; a market differs
