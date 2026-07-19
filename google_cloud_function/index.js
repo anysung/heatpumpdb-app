@@ -889,6 +889,22 @@ const TRANSLATION_MODEL = 'gemini-2.5-flash';
 const TRANSLATION_VERSION = '2026-07-manual-v1';
 const DEFAULT_NEWS_AUTHOR = 'HeatPump DataBase (Europe)';
 
+// Article size ceilings. Two independent guards:
+//  1) SOURCE caps (chars) — reject oversized English input BEFORE any AI call,
+//     so we never burn Gemini tokens (or grow the doc) on a runaway paste.
+//  2) A serialized-doc byte ceiling checked on every fan-out doc before it is
+//     written — Firestore hard-limits a document to 1 MiB, and a doc that trips
+//     it would otherwise fail the whole batch.commit() with an opaque 500.
+const NEWS_FIELD_LIMITS = { title: 300, summary: 2000, body: 50000, imageAlt: 400 };
+const NEWS_URL_LIMIT = 2000;
+const NEWS_DOC_MAX_BYTES = 900 * 1024; // safety margin under Firestore's 1 MiB
+function newsDocSizeError(doc) {
+  const bytes = Buffer.byteLength(JSON.stringify(doc), 'utf8');
+  return bytes > NEWS_DOC_MAX_BYTES
+    ? `article too large: ${bytes} bytes serialized (max ${NEWS_DOC_MAX_BYTES})`
+    : null;
+}
+
 // -------------------------------------------------------------------
 // STRICT server-side translation prompt (key + prompt never leave the fn).
 // -------------------------------------------------------------------
@@ -1022,6 +1038,10 @@ function buildCountryNewsDoc(cc, articleId, source, localePayload) {
     sources.push({ title: source.sourceName || source.sourceUrl, url: source.sourceUrl });
   }
   const doc = {
+    // The public renderer reads item.id from the DOCUMENT DATA (getNews does
+    // doc.data(), NOT doc.id) — deep links (/?article=<id>), share/email and
+    // React keys all depend on it, exactly like the auto flow stores it.
+    id: articleId,
     // base English canonical (the en/GB site reads these directly)
     title: source.title,
     summary: source.summary,
@@ -1031,6 +1051,8 @@ function buildCountryNewsDoc(cc, articleId, source, localePayload) {
     imageUrl: source.imageUrl,
     imageAlt: localePayload.imageAlt,
     sources,
+    // Parity with the auto flow: the "open source" action reads sourceUrl.
+    sourceUrl: sources[0] ? sources[0].url : '',
     author: source.author || DEFAULT_NEWS_AUTHOR,
     original: true,
     sourceType: 'manual',
@@ -1057,6 +1079,13 @@ function validatePublishFields(source) {
     if (typeof source[k] !== 'string' || !source[k].trim()) {
       return `missing or empty required field: ${k}`;
     }
+  }
+  for (const [k, max] of Object.entries(NEWS_FIELD_LIMITS)) {
+    if (source[k].length > max) return `field too long: ${k} (${source[k].length} > ${max} chars)`;
+  }
+  if (source.imageUrl.length > NEWS_URL_LIMIT) return `field too long: imageUrl (max ${NEWS_URL_LIMIT} chars)`;
+  if (typeof source.sourceUrl === 'string' && source.sourceUrl.length > NEWS_URL_LIMIT) {
+    return `field too long: sourceUrl (max ${NEWS_URL_LIMIT} chars)`;
   }
   if (!Array.isArray(source.targetCountries) || source.targetCountries.length === 0) {
     return 'targetCountries must be a non-empty array';
@@ -1122,7 +1151,19 @@ async function handleNewsPublish(articleId, draftRef, source, uid, res) {
   const batch = firestoreDb.batch();
   for (const cc of targets) {
     const ref = firestoreDb.collection(`countries/${cc}/news`).doc(articleId);
-    batch.set(ref, buildCountryNewsDoc(cc, articleId, source, payloadByCountry[cc]));
+    const doc = buildCountryNewsDoc(cc, articleId, source, payloadByCountry[cc]);
+    const sizeErr = newsDocSizeError(doc);
+    if (sizeErr) {
+      await draftRef.update({
+        status: 'translation_failed',
+        lastTranslationError: `${COUNTRY_NEWS_META[cc].locale}: doc-size: ${sizeErr}`,
+        updatedAt: new Date().toISOString(),
+        updatedBy: uid,
+      });
+      // Nothing committed yet — the batch is abandoned, previous public docs stay.
+      return res.status(400).json({ error: 'validation', detail: sizeErr, failedLocale: COUNTRY_NEWS_META[cc].locale });
+    }
+    batch.set(ref, doc);
   }
   await batch.commit();
 
@@ -1229,8 +1270,17 @@ async function handleNewsRetarget(articleId, draftRef, source, uid, res, body) {
           failedStep: result.step,
         });
       }
-      await firestoreDb.collection(`countries/${cc}/news`).doc(articleId)
-        .set(buildCountryNewsDoc(cc, articleId, source, result.payload));
+      const doc = buildCountryNewsDoc(cc, articleId, source, result.payload);
+      const sizeErr = newsDocSizeError(doc);
+      if (sizeErr) {
+        await draftRef.update({
+          publishedCountries, targetCountries, locales,
+          lastTranslationError: `${COUNTRY_NEWS_META[cc].locale}: doc-size: ${sizeErr}`,
+          updatedAt: new Date().toISOString(), updatedBy: uid,
+        });
+        return res.status(400).json({ error: 'validation', detail: sizeErr, failedLocale: COUNTRY_NEWS_META[cc].locale });
+      }
+      await firestoreDb.collection(`countries/${cc}/news`).doc(articleId).set(doc);
       if (!publishedCountries.includes(cc)) publishedCountries.push(cc);
       if (!targetCountries.includes(cc)) targetCountries.push(cc);
       locales[COUNTRY_NEWS_META[cc].locale] = result.payload;

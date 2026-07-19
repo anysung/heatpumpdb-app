@@ -10,7 +10,7 @@
  * on the server. This module never imports or knows the AI provider.
  */
 import { doc, setDoc, getDoc, deleteDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, defaultStorage, auth } from '../firebase';
 import { ManualNewsArticle } from '../types';
 
@@ -61,15 +61,32 @@ export const saveDraft = async (article: ManualNewsArticle): Promise<void> => {
 export const markOutdated = async (id: string, uid: string): Promise<void> => {
   await updateDoc(doc(db, 'newsArticles', id), { translationOutdated: true, updatedBy: uid, updatedAt: new Date().toISOString() });
 };
+/**
+ * Permanently delete a draft. Best-effort hero cleanup at the deterministic
+ * path — but only when the article is NOT still published anywhere, because a
+ * published article's public country docs reference the same image URL. Never
+ * blocks the Firestore delete on the storage delete.
+ */
 export const deleteArticle = async (id: string): Promise<void> => {
+  const existing = await getArticle(id);
   await deleteDoc(doc(db, 'newsArticles', id));
+  const stillReferenced = Array.isArray(existing?.publishedCountries) && existing!.publishedCountries.length > 0;
+  if (!stillReferenced) {
+    try { await deleteObject(ref(defaultStorage, `news/manual/${id}/hero.webp`)); } catch { /* no image, ignore */ }
+  }
 };
 
 /* ── Hero image upload (client resize/webp → default bucket) ───────────────── */
 export interface UploadedHero { imageUrl: string; imageStoragePath: string }
-/** Resize (max 1600px wide), convert to WebP, upload to news/manual/<id>/hero.webp. */
+/**
+ * Optimize to WebP and upload to the STABLE path news/manual/<id>/hero.webp
+ * (overwriting any previous hero — no timestamped duplicates). The optimizer
+ * guarantees a final file strictly under 1 MB or throws; the fresh download URL
+ * returned after overwrite carries a new token, so the browser never shows the
+ * stale previous image.
+ */
 export const uploadHeroImage = async (articleId: string, file: File): Promise<UploadedHero> => {
-  const webp = await toWebp(file, 1600, 0.82);
+  const webp = await optimizeToWebp(file);
   const path = `news/manual/${articleId}/hero.webp`;
   const r = ref(defaultStorage, path);
   await uploadBytes(r, webp, { contentType: 'image/webp', cacheControl: 'public, max-age=86400' });
@@ -77,21 +94,48 @@ export const uploadHeroImage = async (articleId: string, file: File): Promise<Up
   return { imageUrl, imageStoragePath: path };
 };
 
-const SUPPORTED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-async function toWebp(file: File, maxW: number, quality: number): Promise<Blob> {
+const SUPPORTED = ['image/jpeg', 'image/png', 'image/webp'];
+const ONE_MB = 1024 * 1024;
+const HARD_MAX = ONE_MB - 1;          // final file must be strictly < 1 MB
+const PREFERRED_MAX = 250 * 1024;     // aim for ≤ 250 KB where practical
+/**
+ * Resize (longest side ≤ 1600 px, aspect preserved — no destructive crop) and
+ * encode to WebP, stepping quality (0.82→0.5) then dimensions (×0.8) down until
+ * the result is < 1 MB. Returns as soon as a candidate is ≤ 250 KB, otherwise
+ * the highest-quality candidate under 1 MB. Throws 'image-too-large-after-
+ * optimization' if nothing fits, so an oversized hero can never be stored.
+ */
+async function optimizeToWebp(file: File): Promise<Blob> {
   if (!SUPPORTED.includes(file.type)) throw new Error('unsupported-format');
   if (file.size > 15 * 1024 * 1024) throw new Error('file-too-large');
-  const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, maxW / bitmap.width);
-  const w = Math.round(bitmap.width * scale), h = Math.round(bitmap.height * scale);
-  const canvas = document.createElement('canvas');
-  canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('canvas-unavailable');
-  ctx.drawImage(bitmap, 0, 0, w, h);
-  const blob: Blob | null = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
-  if (!blob) throw new Error('encode-failed');
-  return blob;
+  let bitmap: ImageBitmap;
+  try { bitmap = await createImageBitmap(file); }   // decodes → also our "is it really an image" check
+  catch { throw new Error('encode-failed'); }
+  try {
+    let maxSide = 1600;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+      const w = Math.max(1, Math.round(bitmap.width * scale));
+      const h = Math.max(1, Math.round(bitmap.height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('canvas-unavailable');
+      ctx.drawImage(bitmap, 0, 0, w, h);
+      let underLimit: Blob | null = null;
+      for (const q of [0.82, 0.74, 0.66, 0.58, 0.5]) {
+        const blob: Blob | null = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', q));
+        if (!blob) continue;
+        if (blob.size <= PREFERRED_MAX) return blob;             // ideal size — ship immediately
+        if (blob.size < HARD_MAX) { underLimit = blob; break; }  // best quality that fits under 1 MB
+      }
+      if (underLimit) return underLimit;
+      maxSide = Math.round(maxSide * 0.8);                       // still too big — shrink and retry
+    }
+    throw new Error('image-too-large-after-optimization');
+  } finally {
+    bitmap.close?.();
+  }
 }
 
 /* ── Server actions ───────────────────────────────────────────────────────── */

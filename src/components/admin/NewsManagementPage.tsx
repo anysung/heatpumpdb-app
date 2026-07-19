@@ -244,6 +244,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
       setUploadError(
         code === 'unsupported-format' ? N.upUnsupported :
         code === 'file-too-large' ? N.upTooLarge :
+        code === 'image-too-large-after-optimization' ? N.upCannotOptimize :
         code === 'encode-failed' || code === 'canvas-unavailable' ? N.upEncode :
         N.upGeneric,
       );
@@ -582,7 +583,7 @@ export const NewsManagementPage: React.FC<{ al: AdminLang }> = ({ al }) => {
                   ) : (
                     <label className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 cursor-pointer hover:bg-gray-50">
                       {uploading ? N.btnUploading : N.btnUploadHero}
-                      <input type="file" accept="image/*" className="hidden" disabled={uploading}
+                      <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" disabled={uploading}
                         onChange={e => onHeroFile(e.target.files?.[0])} />
                     </label>
                   )}

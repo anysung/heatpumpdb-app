@@ -21,12 +21,13 @@ service firebase.storage {
 
     // Manual news hero images: news/manual/<articleId>/<file>.
     // Read: any approved user (news sits behind the approval gate). Write:
-    // admins only, image content type, < 5 MB (the client resizes/webp-
-    // compresses before upload; this is the hard server ceiling).
+    // admins only, image content type, strictly < 1 MB (the client optimizes
+    // to WebP under 1 MB before upload; this is the hard server ceiling that
+    // matches — a 1 MB-or-larger file is rejected).
     match /news/manual/{articleId}/{file} {
       allow read: if isApproved() || isAdmin();
       allow write: if isAdmin() &&
-                      request.resource.size < 5 * 1024 * 1024 &&
+                      request.resource.size < 1024 * 1024 &&
                       request.resource.contentType.matches('image/.*');
     }
 
