@@ -18,6 +18,7 @@
  */
 import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { gzipSync } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -172,19 +173,30 @@ for (const [cc, files] of Object.entries(DATASETS)) {
       // projected too, so every served record has one consistent public shape).
       items: [...data.items, makeCanary(data.items, overrides)].map(projectPublic),
     };
-    const out = join(tmp, `${cc}-${file}`);
-    writeFileSync(out, JSON.stringify(served));
+    const json = JSON.stringify(served);
     const dest = `${BUCKET}/datasets/${cc}/${file}`;
+    // Italy residential only (2026-07-19 audit, Option 2a — scoped): store this
+    // one object gzip'd so its ~22 MB transfers as ~3 MB. GCS serves it with
+    // Content-Encoding: gzip; the browser HTTP stack transparently decompresses
+    // before the app parses it (getBlob → blob.text() sees plain JSON — verified
+    // via decompressive-transcoding round-trip before first deploy). Content
+    // and client behaviour are unchanged after decompression. Reversible: drop
+    // this branch and re-upload (the object goes back to plain JSON).
+    const gzip = (cc === 'IT' && segment === 'residential');
+    const out = join(tmp, `${cc}-${file}${gzip ? '.gz' : ''}`);
+    writeFileSync(out, gzip ? gzipSync(Buffer.from(json)) : json);
     if (DRY) {
-      console.log(`[dry-run] would upload ${served.items.length} items → ${dest}`);
+      console.log(`[dry-run] would upload ${served.items.length} items → ${dest}${gzip ? ' (gzip)' : ''}`);
       continue;
     }
-    execFileSync('gcloud', [
+    const args = [
       'storage', 'cp', out, dest,
       '--cache-control=private, max-age=3600',
       '--content-type=application/json',
-    ], { stdio: ['ignore', 'ignore', 'inherit'] });
-    console.log(`✓ ${dest}  (${served.items.length} items incl. canary)`);
+    ];
+    if (gzip) args.push('--content-encoding=gzip');
+    execFileSync('gcloud', args, { stdio: ['ignore', 'ignore', 'inherit'] });
+    console.log(`✓ ${dest}  (${served.items.length} items incl. canary${gzip ? ', gzip' : ''})`);
   }
 }
 
