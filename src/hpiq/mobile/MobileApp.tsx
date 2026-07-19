@@ -401,7 +401,10 @@ const MobileNews: React.FC<{ app: HpApp }> = ({ app }) => {
         </div>
 
         {/* hero */}
-        {open.imageUrl && <img src={open.imageUrl} alt="" style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 3, marginTop: 16 }} />}
+        {open.imageUrl && <img src={open.imageUrl} alt={open.imageAlt ?? ''} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 3, marginTop: 16 }} />}
+        {open.youtubeVideoId && (
+          <div style={{ marginTop: 16 }}><VideoExplainer videoId={open.youtubeVideoId} onUnavailable={() => {}} /></div>
+        )}
 
         {/* serif body */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 15, marginTop: 18 }}>

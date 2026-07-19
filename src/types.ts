@@ -225,6 +225,65 @@ export interface NewsItem {
   title_it?: string;
   summary_it?: string;
   body_it?: string;
+  /** Manual-CMS articles: a validated YouTube video id (never raw embed HTML),
+   *  rendered as a youtube-nocookie player only when present. */
+  youtubeVideoId?: string;
+  /** 'manual' = created in the admin News Management CMS; else auto-generated. */
+  sourceType?: 'manual' | 'auto';
+  /** Localized hero-image ALT text (per market language), set at publish. */
+  imageAlt?: string;
+}
+
+/**
+ * Manual news article (admin CMS) — the English canonical source + metadata,
+ * stored admin-only in `newsArticles/{id}`. Generated translations are cached
+ * inline per locale; at publish they fan out to `countries/{cc}/news/{id}`
+ * (the same collection the public site and the auto flow already use).
+ */
+export interface ManualNewsLocale {
+  title: string;
+  summary: string;
+  body: string;
+  imageAlt: string;
+  slug: string;
+  translationSource: 'original' | 'ai';
+  translatedAt?: string;
+  translationModel?: string;
+}
+export interface ManualNewsArticle {
+  id: string;
+  sourceType: 'manual';
+  sourceLanguage: 'en';
+  status: 'draft' | 'translating' | 'published' | 'translation_failed';
+  category: string;
+  targetCountries: string[];           // ['DE','IT',…]
+  // English canonical source
+  title: string;
+  summary: string;
+  body: string;
+  imageAlt: string;
+  // media
+  imageUrl?: string;
+  imageStoragePath?: string;
+  imageFlagCountry?: string | null;    // detected national-flag/policy context, if any
+  youtubeVideoId?: string;
+  // optional metadata
+  sourceName?: string;
+  sourceUrl?: string;
+  author?: string;
+  publicationDate?: string;
+  // generated translations (cache; keyed by locale, e.g. 'de-DE')
+  locales?: Record<string, ManualNewsLocale>;
+  publishedCountries?: string[];       // countries whose public doc is currently live
+  // lifecycle / audit
+  translationOutdated?: boolean;
+  lastTranslationError?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string | null;
+  createdBy?: string;
+  updatedBy?: string;
+  publishedBy?: string;
 }
 
 export interface PolicyItem {

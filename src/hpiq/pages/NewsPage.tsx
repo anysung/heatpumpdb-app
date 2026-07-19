@@ -15,7 +15,7 @@ import { HpApp } from '../appState';
 import { NewsItem } from '../../types';
 import { shortDate } from '../model';
 import { tr } from '../i18n';
-import { FD } from '../ui';
+import { FD, VideoExplainer } from '../ui';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 import { MARKET_ICON_32 } from '../market';
 import {
@@ -196,7 +196,14 @@ export const NewsPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
           {/* hero image */}
           {reader.imageUrl && (
-            <img src={reader.imageUrl} alt="" style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 3, marginTop: 22 }} />
+            <img src={reader.imageUrl} alt={reader.imageAlt ?? ''} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 3, marginTop: 22 }} />
+          )}
+
+          {/* YouTube — rendered only when a validated video id exists (no empty slot) */}
+          {reader.youtubeVideoId && (
+            <div style={{ marginTop: 22 }}>
+              <VideoExplainer videoId={reader.youtubeVideoId} onUnavailable={() => {}} />
+            </div>
           )}
 
           {/* body — comfortable serif measure */}

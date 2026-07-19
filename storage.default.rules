@@ -1,7 +1,35 @@
 rules_version = '2';
-// Default bucket — unused by the app; locked down completely.
+// Default bucket. Only the manual-news hero images live here; everything else
+// is locked. Same approval semantics as firestore.rules / the datasets bucket.
 service firebase.storage {
   match /b/{bucket}/o {
+
+    function me() {
+      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data;
+    }
+    function isApproved() {
+      return request.auth != null &&
+             firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+             (me().status == 'active' ||
+              (!('status' in me()) && me().isActive == true));
+    }
+    function isAdmin() {
+      return request.auth != null &&
+             firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+             me().get('role', 'user') in ['owner', 'admin', 'support', 'ops'];
+    }
+
+    // Manual news hero images: news/manual/<articleId>/<file>.
+    // Read: any approved user (news sits behind the approval gate). Write:
+    // admins only, image content type, < 5 MB (the client resizes/webp-
+    // compresses before upload; this is the hard server ceiling).
+    match /news/manual/{articleId}/{file} {
+      allow read: if isApproved() || isAdmin();
+      allow write: if isAdmin() &&
+                      request.resource.size < 5 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*');
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }
