@@ -25,13 +25,15 @@
     "update:all": "node scripts/update-all.mjs",
     "update:all:deploy": "node scripts/update-all.mjs --fetch --fetch-eprel --deploy",
     "test:rules": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/profile-team.rules.mjs\"",
+    "test:paddle": "node tests/paddle-billing.unit.mjs",
+    "test:rules:orgs": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/organization-read.rules.mjs\"",
     "test:rules:storage": "firebase emulators:exec --config firebase.rules-test.json --only firestore,storage --project heatpumpdb-rules-test \"node tests/storage-datasets.rules.mjs\"",
     "test:rules:country": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/users-country.rules.mjs\"",
     "test:account-country": "node tests/account-country.unit.mjs",
     "test:signup": "bash tests/run-signup-account-e2e.sh",
     "test:segmentation": "node tests/segmentation.unit.mjs",
     "test:products": "bash tests/run-products-e2e.sh",
-    "test": "npm run test:segmentation && npm run test:architecture && npm run test:listing && npm run test:matching && npm run test:zum && npm run test:gse && npm run test:routing && npm run test:rules && npm run test:rules:storage && npm run test:rules:country && npm run test:account-country && npm run test:products && npm run test:account && npm run test:account:mobile && npm run test:registration && npm run test:signup",
+    "test": "npm run test:segmentation && npm run test:architecture && npm run test:listing && npm run test:matching && npm run test:zum && npm run test:gse && npm run test:routing && npm run test:paddle && npm run test:paddle:webhook && npm run test:rules && npm run test:rules:orgs && npm run test:rules:storage && npm run test:rules:country && npm run test:account-country && npm run test:products && npm run test:account && npm run test:account:mobile && npm run test:registration && npm run test:signup",
     "test:matching": "node tests/pel-matching.unit.mjs",
     "test:zum": "node tests/zum-matching.unit.mjs",
     "test:gse": "node tests/gse-matching.unit.mjs",
@@ -40,7 +42,8 @@
     "verify:remote": "node scripts/verify-remote-datasets.mjs",
     "test:account": "bash tests/run-account-e2e.sh",
     "test:routing": "node tests/inquiry-routing.contract.mjs",
-    "test:account:mobile": "bash tests/run-account-mobile-e2e.sh"
+    "test:account:mobile": "bash tests/run-account-mobile-e2e.sh",
+    "test:paddle:webhook": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/paddle-webhook.integration.mjs\""
   },
   "dependencies": {
     "@google/genai": "*",
@@ -59,7 +62,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^5.0.1",
+    "@firebase/rules-unit-testing": "^3.0.4",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17"
   }

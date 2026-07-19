@@ -26,10 +26,17 @@
  */
 import { PUBLIC_ENV } from './env';
 import { priceIdFor } from './paddlePrices';
+import { hasPaidAccess } from './entitlementPolicy.js';
 
 export type SubPlanCode = 'professional' | 'team_3' | 'team_5';
 export type BillingTerm = 'monthly' | 'six_months' | 'annual';
-export type SubStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired';
+/**
+ * Paddle's subscription states, plus our terminal 'expired'. 'paused' is a real
+ * Paddle state (the customer or an admin suspends billing) and must be listed
+ * here — it used to be missing while `User.subscriptionStatus` already carried
+ * it, so a paused subscription was only denied access by accident of the union.
+ */
+export type SubStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'paused' | 'expired';
 
 export const TRIAL_DAYS = 7;
 
@@ -130,10 +137,17 @@ export function checkoutConfigured(plan: SubPlanCode, term: BillingTerm): boolea
   return !!(PUBLIC_ENV.PADDLE_CLIENT_TOKEN && paddlePriceId(plan, term));
 }
 
-/** A subscription (or grant) that currently unlocks the product. */
+/**
+ * A subscription (or grant) that currently unlocks the product.
+ *
+ * Thin adapter over the shared policy in `entitlementPolicy.js` — this used to
+ * be a second, subtly different implementation (it granted `past_due` access
+ * forever and had no notion of 'paused'). Prefer `entitlement.entitlementFor()`,
+ * which also accounts for team members whose seat is paid for by their org;
+ * this signature survives for the two account-page call sites that only ever
+ * look at one subscription's own status.
+ */
 export function subscriptionUnlocked(status: SubStatus | undefined | null, periodEndsAt?: string | null): boolean {
-  if (status === 'trialing' || status === 'active' || status === 'past_due') return true;
-  // Cancelled-but-paid: access runs to the end of the paid period.
-  if (status === 'canceled' && periodEndsAt) return new Date(periodEndsAt).getTime() > Date.now();
-  return false;
+  if (!status) return false;
+  return hasPaidAccess({ status, currentPeriodEndsAt: periodEndsAt ?? null });
 }

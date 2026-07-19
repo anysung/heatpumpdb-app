@@ -36,6 +36,56 @@ service firebase.storage {
       return me().get('country', '');
     }
 
+    // ── Paid entitlement ────────────────────────────────────────────────
+    // Approval and payment are SEPARATE axes. isApproved() says the account is
+    // a real, vetted professional; isEntitled() says someone is paying for it.
+    // An expired subscription fails only the second one — the account still
+    // logs in and still reaches Account/Billing to renew.
+    //
+    // Rules cannot compare ISO dates or evaluate a grace window, so they read
+    // `paidAccess`, a boolean written server-side from the shared policy
+    // (src/config/entitlementPolicy.js) by the billing webhook, an admin
+    // assignment, or a rules-validated free-grant redemption. The app
+    // re-evaluates that policy for what it SHOWS; this is what ENFORCES.
+    //
+    // There is NO grandfather clause. An earlier draft allowed any account with
+    // no `subscription` field, which was a standing bypass for every approved
+    // account — including brand-new signups, which would have been born
+    // entitled. Pre-launch there are no paying users to protect, so the correct
+    // rule is simply: pay, be granted, or be an admin.
+    // Ops/test accounts get access the same way a customer does — an admin
+    // assignment or a free-access grant, both of which set paidAccess.
+    function isEntitled() {
+      return me().get('paidAccess', false) == true ||
+             me().get('plan', '') == 'premium' ||          // legacy premium accounts
+             teamEntitled();
+    }
+
+    // A seated team member holds NO subscription of their own — the owner paid
+    // for the seat — so their entitlement is read straight off the organization.
+    //
+    // This is deliberately a live lookup rather than a copy of `paidAccess` onto
+    // every member profile. One org write then governs every seat: expiry, pause
+    // and cancellation take effect for the whole team at once, a member who
+    // joins later is entitled immediately with no back-fill, and a removed
+    // member loses access the moment their `orgId` pointer goes. Fanning the
+    // flag out to member documents would mean N writes per billing event and N
+    // chances for a seat to be left stale.
+    //
+    // The pointer alone is not trusted: `orgId` is client-writable (join/leave),
+    // so firestore.rules only permits setting it to an org whose memberUids
+    // already contain the caller. Both facts are checked again right here.
+    function myOrgId() {
+      return me().get('orgId', '');
+    }
+    function teamEntitled() {
+      return myOrgId() != '' &&
+             firestore.exists(/databases/(default)/documents/organizations/$(myOrgId())) &&
+             firestore.get(/databases/(default)/documents/organizations/$(myOrgId())).data.get('paidAccess', false) == true &&
+             request.auth.uid in
+               firestore.get(/databases/(default)/documents/organizations/$(myOrgId())).data.get('memberUids', []);
+    }
+
     match /datasets/{country}/{file} {
       // Per-market isolation (2026-07-19 audit follow-up): an approved user may
       // read ONLY their own registered market's datasets; owner/admin roles read
@@ -43,7 +93,8 @@ service firebase.storage {
       // falls through to allowed, so a metadata gap can never deny a legitimate
       // approved user (new signups always carry country).
       allow read: if isAdmin() ||
-                     (isApproved() && (myCountry() == '' || myCountry() == country));
+                     (isApproved() && isEntitled() &&
+                      (myCountry() == '' || myCountry() == country));
       allow write: if false;  // uploads go through gcloud (pipeline), never clients
     }
 

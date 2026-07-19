@@ -1,0 +1,41 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for Paddle recurring-price ids. Sandbox and live are SEPARATE Paddle catalogues - a pri_ id from one does not exist in the other. google_cloud_function/paddle-catalogue.json is a deployed copy of this file; tests/paddle-catalogue.unit.mjs fails if the two ever diverge. An empty string means 'not configured yet' and blocks checkout for that plan/term - it is never a fallback to the other environment.",
+  "sandbox": {
+    "EUR": {
+      "professional": {
+        "monthly": "pri_01kxchdg26azdq1przy3hnezff",
+        "six_months": "pri_01kxchdgawhejbptxtdgm6j5wq",
+        "annual": "pri_01kxchdgj2w4gpdmdfbqkhtsqn"
+      },
+      "team_3": {
+        "monthly": "pri_01kxchdh34vrxtxth8bkpzmh8n",
+        "six_months": "pri_01kxchdh7r99cm3fwk1bz1gz0k",
+        "annual": "pri_01kxchdhcm7efjmkh7s1673j82"
+      },
+      "team_5": {
+        "monthly": "pri_01kxchdhrmrtqmhataynyqdcdm",
+        "six_months": "pri_01kxchdj04dzbf9j5s92tkwvvz",
+        "annual": "pri_01kxchdj4rtpj7ndzj30sawddw"
+      }
+    }
+  },
+  "live": {
+    "EUR": {
+      "professional": {
+        "monthly": "pri_01kxxw08bvfz6fe8ke0x4zgnt7",
+        "six_months": "pri_01kxxw3yy10aw2qdy7y64xa0yn",
+        "annual": "pri_01kxxw5qbvmfx75rc7f42p5d50"
+      },
+      "team_3": {
+        "monthly": "pri_01kxxw8xtvk8dvpa60c0dzxyvn",
+        "six_months": "pri_01kxxwbgmpnj9jvcp218evxqfc",
+        "annual": "pri_01kxxwde1bwd4x7tgn6sypkb4g"
+      },
+      "team_5": {
+        "monthly": "pri_01kxxwfm97ve7nfgnggtshfs49",
+        "six_months": "pri_01kxxwhr4xyeq9gwd567j2x7me",
+        "annual": "pri_01kxxwkhfjj3wsy5k7jekt2acn"
+      }
+    }
+  }
+}

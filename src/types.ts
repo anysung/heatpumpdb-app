@@ -339,6 +339,28 @@ export interface User {
   // ── Subscription program (Professional / Team 3 / Team 5) ─────────────────
   /** Written by the billing webhook, an admin, or free-grant redemption — never by plain client code. */
   subscription?: UserSubscription;
+  /**
+   * Entitlement flag for this account's OWN subscription, written server-side
+   * alongside `subscription` from the shared policy (config/entitlementPolicy.js).
+   * It exists because storage.rules must gate the dataset bucket on entitlement,
+   * and security rules cannot compare ISO dates or evaluate a grace window —
+   * only read a boolean.
+   *
+   * Team MEMBERS never carry this: they hold no subscription, and storage.rules
+   * reads their team's entitlement through `orgId` instead. Setting it on a
+   * member profile would be a second, drifting copy of the same fact.
+   *
+   * Distinct from `status` / `isActive`, which remain the admin approval axis —
+   * billing state must never be expressed as account state.
+   */
+  paidAccess?: boolean;
+  // ── Webhook ordering metadata (server-owned; never client-writable) ───────
+  /** `occurred_at` of the last Paddle event applied — guards out-of-order delivery. */
+  lastPaddleEventOccurredAt?: string;
+  /** Its event type, the tie-break when two events share an instant. */
+  lastPaddleEventType?: string;
+  /** Its event id, for tracing a state back to the delivery that caused it. */
+  lastPaddleEventId?: string;
   /** Organization membership (Team 3 / Team 5). */
   orgId?: string;
   orgRole?: 'team_admin' | 'member';
@@ -357,10 +379,16 @@ export interface UserSubscription {
   provider: 'paddle' | 'free_grant';
   planCode: 'professional' | 'team_3' | 'team_5';
   billingTerm?: 'monthly' | 'six_months' | 'annual';
-  status: 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired';
+  status: 'trialing' | 'active' | 'past_due' | 'canceled' | 'paused' | 'expired';
   seatLimit: number;
   trialStartedAt?: string;
   trialEndsAt?: string;
+  /**
+   * When the subscription first went past_due — the anchor for the 7-day
+   * payment-failure grace window (config/entitlementPolicy.js). Written by the
+   * webhook on transaction.payment_failed and cleared when payment recovers.
+   */
+  pastDueSince?: string | null;
   paidPeriodStartsAt?: string | null;
   /** End of the current paid (or granted) period; renewal/expiry anchor. */
   currentPeriodEndsAt?: string | null;
@@ -381,7 +409,17 @@ export interface Organization {
   ownerEmail: string;
   planCode: 'team_3' | 'team_5';
   seatLimit: number;
-  subscriptionStatus: 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired';
+  subscriptionStatus: 'trialing' | 'active' | 'past_due' | 'canceled' | 'paused' | 'expired';
+  /** Grace-window anchor for the team's subscription (see UserSubscription.pastDueSince). */
+  pastDueSince?: string | null;
+  /**
+   * The team's entitlement — the SINGLE source of truth for every seat.
+   * storage.rules follows a member's `orgId` to this field, so one write here
+   * grants or withdraws catalogue access for the whole team at once: no
+   * per-member copies to keep in step, and a member who joins later is
+   * entitled immediately with no back-fill.
+   */
+  paidAccess?: boolean;
   /** Team trial is anchored to the admin's checkout — one date for everyone. */
   trialEndsAt?: string | null;
   currentPeriodEndsAt?: string | null;

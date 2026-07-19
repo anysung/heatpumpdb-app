@@ -25,6 +25,7 @@ import {
 import {
   SubPlanCode, BillingTerm, SUB_PLANS, TERM_MONTHS, isTeamPlan,
 } from '../config/subscriptionPlans';
+import { hasPaidAccess } from '../config/entitlementPolicy.js';
 
 const ORGS = 'organizations';
 const GRANTS = 'freeAccessGrants';
@@ -106,7 +107,11 @@ export async function removeMember(org: Organization, uid: string): Promise<void
     keepMemberUids: arrayRemove(uid),
   });
   // The removed person keeps their personal account — only the team link goes.
-  await updateDoc(doc(db, 'users', uid), { orgId: deleteField(), orgRole: deleteField() }).catch(() => {});
+  // Dropping the pointer IS the withdrawal of access: storage.rules reads the
+  // team's entitlement through orgId, so there is no per-member flag to clear.
+  await updateDoc(doc(db, 'users', uid), {
+    orgId: deleteField(), orgRole: deleteField(),
+  }).catch(() => {});
 }
 
 /**
@@ -122,7 +127,10 @@ export async function leaveTeam(org: Organization, user: User): Promise<void> {
       keepMemberUids: arrayRemove(user.id),
     });
   }
-  await updateDoc(doc(db, 'users', user.id), { orgId: deleteField(), orgRole: deleteField() });
+  // The entitlement went with the seat — the pointer is the entitlement.
+  await updateDoc(doc(db, 'users', user.id), {
+    orgId: deleteField(), orgRole: deleteField(),
+  });
 }
 
 /** Team owner: the company profile the whole team inherits. */
@@ -171,6 +179,10 @@ export async function joinOrg(orgId: string, user: User): Promise<Organization |
     invitedEmails: (org.invitedEmails ?? []).filter(e => e !== key),
     invitedAt,
   });
+  // The seat carries the team's entitlement: storage.rules follows this pointer
+  // to the org, so a member is entitled the moment they hold a seat — and stops
+  // being entitled the moment the team's billing lapses, with no per-member
+  // flag to keep in step.
   await updateDoc(doc(db, 'users', user.id), { orgId: org.id, orgRole: 'member' });
   return { ...org, ...membersPatch(members) };
 }
@@ -212,8 +224,13 @@ export async function adminAssignSubscription(
     currentPeriodEndsAt: periodEnd,
     cancelAtPeriodEnd: false,
   };
+  // paidAccess is the denormalized flag storage.rules gates the dataset bucket
+  // on. Every writer of `subscription` must set it from the same shared policy,
+  // or an admin-assigned plan would grant a subscription with no actual access.
+  const entitled = hasPaidAccess(sub);
   const update: Record<string, any> = {
     subscription: sub,
+    paidAccess: entitled,
     billingChannel: opts.provider === 'free_grant' ? 'admin_grant' : 'paddle',
   };
 
@@ -226,6 +243,7 @@ export async function adminAssignSubscription(
         planCode: plan,
         seatLimit: SUB_PLANS[plan].seatLimit,
         subscriptionStatus: sub.status,
+        paidAccess: entitled,
         currentPeriodEndsAt: periodEnd,
         // Backfill for organizations created before memberUids existed — the
         // security rules read that list, so a missing one would break join/leave.
@@ -241,6 +259,7 @@ export async function adminAssignSubscription(
         planCode: plan,
         seatLimit: SUB_PLANS[plan].seatLimit,
         subscriptionStatus: sub.status,
+        paidAccess: entitled,
         trialEndsAt: sub.trialEndsAt ?? null,
         currentPeriodEndsAt: periodEnd,
         ...membersPatch([{ uid: target.id, email: emailKey(target.email), name: [target.firstName, target.lastName].filter(Boolean).join(' ') }]),
@@ -265,11 +284,15 @@ export async function adminAssignSubscription(
 
 /** Admin: end a subscription immediately (refund handling stays in Paddle). */
 export async function adminClearSubscription(target: User): Promise<void> {
-  const update: Record<string, any> = {};
+  // Ends the ENTITLEMENT, not the account: `status`/`isActive` are untouched, so
+  // the person keeps their login and can re-subscribe from the Account page.
+  const update: Record<string, any> = { paidAccess: false };
   if (target.subscription) update['subscription.status'] = 'expired';
   await updateDoc(doc(db, 'users', target.id), update);
   if (target.orgId && target.orgRole === 'team_admin') {
-    await updateDoc(doc(db, ORGS, target.orgId), { subscriptionStatus: 'expired' });
+    // One write covers every seat — members read the team's entitlement from
+    // this document, so there are no member profiles to chase.
+    await updateDoc(doc(db, ORGS, target.orgId), { subscriptionStatus: 'expired', paidAccess: false });
   }
 }
 
@@ -312,7 +335,7 @@ export async function createGrant(
     };
     await updateDoc(doc(db, 'users', existingUser.id), {
       status: 'active', isActive: true,
-      subscription: sub, billingChannel: 'admin_grant',
+      subscription: sub, paidAccess: hasPaidAccess(sub), billingChannel: 'admin_grant',
     });
   }
 }
@@ -324,7 +347,10 @@ export async function revokeGrant(email: string): Promise<void> {
   const grant = snap.data() as FreeAccessGrant;
   await updateDoc(doc(db, GRANTS, key), { revokedAt: nowIso(), endsAt: nowIso() });
   if (grant.redeemedByUid) {
-    await updateDoc(doc(db, 'users', grant.redeemedByUid), { 'subscription.status': 'expired' });
+    await updateDoc(doc(db, 'users', grant.redeemedByUid), {
+      'subscription.status': 'expired',
+      paidAccess: false,
+    });
   }
 }
 

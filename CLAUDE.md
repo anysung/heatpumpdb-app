@@ -275,8 +275,30 @@ cleaning parsed/raw folders never drops products (regression 2026-07-12).
   distribution. **Subscription program (Jul 2026): Professional / Team 3 /
   Team 5 × monthly / 6 months / annual** — single source of truth is
   `src/config/subscriptionPlans.ts` (prices VAT-excl, 7-day trial on every
-  Paddle price, per-term price ids via `VITE_PADDLE_PRICE_*`; unset =
-  'coming soon'). Operating rules: plan/term/seats are FIXED during a paid
+  Paddle price). **Price ids live in `src/config/paddleCatalogue.json`, NOT in
+  env vars** — `sandbox` / `live` blocks keyed by currency, selected by the
+  client token's prefix via `src/config/paddleEnv.ts` (`test_…` = sandbox,
+  anything else = live, unset = 'coming soon'). Never hostname-based, and a
+  blank id NEVER falls back to the other environment. The billing webhook
+  (`google_cloud_function/paddleWebhook.js`, its own function via
+  `deploy-paddle-webhook.sh`) derives the plan from the verified Price ID ONLY —
+  never from `custom_data`, and never seats from `quantity` (always 1).
+  Entitlement is ONE shared policy, `src/config/entitlementPolicy.js`, MIRRORED
+  byte-for-byte into `google_cloud_function/entitlementPolicy.mjs` (a test fails
+  on drift — same for the catalogue; if you edit one, copy it). Paid access is
+  enforced in `storage.rules` through the server-written `paidAccess` flag —
+  team MEMBERS carry no flag of their own, the rule follows their `orgId` to the
+  organization (one write governs every seat), which is why setting `orgId`
+  requires already holding a seat there. There is NO grandfather clause:
+  approval alone never grants the catalogue. The webhook is signature-gated
+  (4xx on auth failure, 5xx only for real faults), binds a subscription to the
+  first account that claims it (never silently reassigns on later
+  `custom_data`), and drops events older than the state already applied
+  (`lastPaddleEventOccurredAt`);
+  **billing state is NEVER expressed as `status`/`isActive`** — a lapsed card
+  must not lock someone out of the account they need in order to fix it. Full
+  guide: `docs/PADDLE_BILLING.md`.
+  Operating rules: plan/term/seats are FIXED during a paid
   period — changes apply at the NEXT RENEWAL only (`subscriptionChangeRequests`,
   applied from the admin Billing page); team member replacement is always
   allowed and never touches Paddle; team trials are anchored to the admin's

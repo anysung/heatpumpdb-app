@@ -54,7 +54,7 @@ async function redeemFreeGrantIfAny(user: User): Promise<User | null> {
     };
     await updateDoc(doc(db, 'users', user.id), {
       status: 'active', isActive: true,
-      subscription: sub, billingChannel: 'admin_grant',
+      subscription: sub, paidAccess: true, billingChannel: 'admin_grant',
     });
     await updateDoc(doc(db, 'freeAccessGrants', emailKey(user.email)), {
       redeemedByUid: user.id, redeemedAt: new Date().toISOString(),

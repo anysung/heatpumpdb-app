@@ -33,6 +33,19 @@ service cloud.firestore {
       return request.resource.data.members.size() == request.resource.data.memberUids.size();
     }
 
+    // The `orgId` pointer on a profile is what storage.rules follows to read the
+    // team's entitlement, so it is not a harmless bookmark: pointing it at a
+    // paid organization would BE the entitlement. Setting it therefore requires
+    // already holding a seat there — the caller must appear in that org's
+    // memberUids, which only the seat-claim path on the organizations document
+    // can arrange (and that path proves the caller was invited).
+    function seatedInOrg(orgId) {
+      return orgId is string && orgId != '' &&
+             exists(/databases/$(database)/documents/organizations/$(orgId)) &&
+             request.auth.uid in
+               get(/databases/$(database)/documents/organizations/$(orgId)).data.get('memberUids', []);
+    }
+
     // True when the given organization has invited the caller's email. Used to
     // let an invited team member create their profile as an active member of
     // exactly that org (the seat was already bought by the team owner).
@@ -64,7 +77,9 @@ service cloud.firestore {
         // Normal self-registration: pending, inactive, non-privileged.
         (request.resource.data.status == 'pending' &&
          request.resource.data.isActive == false &&
-         request.resource.data.get('role', 'user') == 'user') ||
+         request.resource.data.get('role', 'user') == 'user' &&
+         // A self-registered account cannot hand itself paid entitlement.
+         request.resource.data.get('paidAccess', false) == false) ||
         // Free-access grant registration: created directly active with the
         // granted plan (see grantRedemptionValid below).
         (grantRedemptionValid() &&
@@ -79,7 +94,11 @@ service cloud.firestore {
          request.resource.data.status == 'active' &&
          request.resource.data.isActive == true &&
          request.resource.data.get('role', 'user') == 'user' &&
-         !('subscription' in request.resource.data)) ||
+         !('subscription' in request.resource.data) &&
+         // Their entitlement comes from the ORG at read time (storage.rules
+         // follows orgId), never from a flag on their own profile — so the
+         // profile must not carry one.
+         request.resource.data.get('paidAccess', false) == false) ||
         // Owner bootstrap profile (matched by the authenticated email).
         request.auth.token.email == 'sungyongsoo1976@gmail.com'
       );
@@ -109,19 +128,28 @@ service cloud.firestore {
         (
           grantRedemptionValid() &&
           request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['status', 'isActive', 'subscription', 'billingChannel']) &&
+            .hasOnly(['status', 'isActive', 'subscription', 'billingChannel', 'paidAccess']) &&
           request.resource.data.status == 'active'
         ) ||
         // Team invite acceptance (join) and leaving a team. Membership itself is
         // validated on the organizations doc; here we only move the pointer.
         (
+          // hasOnly already forbids touching paidAccess on this path, so joining
+          // or leaving can never change an entitlement flag — no extra guard is
+          // needed, and adding one would wrongly block a legitimate leave by
+          // someone who holds their own subscription.
           request.resource.data.diff(resource.data).affectedKeys()
             .hasOnly(['orgId', 'orgRole']) &&
           (
-            request.resource.data.get('orgRole', '') == 'member' ||   // join
-            // leave — the client may delete the fields or null them out
-            !('orgRole' in request.resource.data) ||
-            request.resource.data.get('orgRole', '') == null
+            // join — only into an org where the caller ALREADY holds a seat.
+            // Without this check, pointing orgId at any paid team would grant
+            // that team's catalogue access (storage.rules reads through it).
+            (request.resource.data.get('orgRole', '') == 'member' &&
+             seatedInOrg(request.resource.data.get('orgId', ''))) ||
+            // leave — the client may delete the fields or null them out; the
+            // access goes with the pointer, so nothing else needs clearing.
+            (!('orgRole' in request.resource.data) ||
+             request.resource.data.get('orgRole', '') == null)
           )
         )
       );
@@ -164,11 +192,23 @@ service cloud.firestore {
 
     // Team 3 / Team 5 organizations. Created by admin (or billing webhook —
     // Admin SDK bypasses rules). The owner manages seats but never the plan;
-    // an invited user may claim a seat for themselves. Org docs are readable
-    // by any signed-in account (invite lookup queries need it; contents are
-    // seat emails only — all accounts are admin-approved professionals).
+    // an invited user may claim a seat for themselves.
+    //
+    // READ is limited to people with a reason to see the doc: the owner, the
+    // members, and an invited email. It used to be every signed-in account,
+    // which exposed the full seat-email list of every customer team to any
+    // logged-in user. The three clauses below preserve each real workflow —
+    // getOrg/getMyOrg (owner + members), joinOrg and the
+    // `invitedEmails array-contains` lookup in joinOrgIfInvited (invitee).
     match /organizations/{orgId} {
-      allow read: if isSignedIn() || isAdmin();
+      allow read: if isAdmin() || (
+        isSignedIn() && (
+          request.auth.uid == resource.data.ownerUid ||
+          request.auth.uid in resource.data.get('memberUids', []) ||
+          (request.auth.token.email != null &&
+           request.auth.token.email in resource.data.get('invitedEmails', []))
+        )
+      );
       allow create, delete: if isAdmin();
       allow update: if isAdmin() ||
         (
@@ -219,6 +259,20 @@ service cloud.firestore {
       allow read, create, update, delete: if isSignedIn() && request.auth.uid == uid;
     }
 
+    // ── Billing webhook bookkeeping (server-owned) ────────────────────────
+    // Both are written ONLY by the Paddle webhook through the Admin SDK, which
+    // bypasses these rules — so no client write rule is granted at all, on
+    // purpose. Admins read them from the Billing page.
+    //   paddleWebhookEvents — processed event-id ledger (idempotency).
+    //   billingQuarantine   — events we refused to act on (bad quantity,
+    //                         unknown price id, unresolved account …).
+    match /paddleWebhookEvents/{eventId} {
+      allow read: if isAdmin();
+    }
+    match /billingQuarantine/{eventId} {
+      allow read, update: if isAdmin();
+    }
+
     // ── Support tickets (in-app inquiries ↔ admin inbox) ──────────────────
     // Users create tickets for themselves and read/update their own threads
     // (follow-up replies). Admins see and manage everything.
@@ -249,6 +303,5 @@ service cloud.firestore {
         allow write: if isAdmin();
       }
     }
-
   }
 }

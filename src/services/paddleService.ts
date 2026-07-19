@@ -15,6 +15,7 @@
 import { PUBLIC_ENV } from '../config/env';
 import { SubPlanCode, BillingTerm, paddlePriceId, checkoutConfigured } from '../config/subscriptionPlans';
 import { hasPriceCatalogue } from '../config/paddlePrices';
+import { PADDLE_ENV } from '../config/paddleEnv';
 import { User } from '../types';
 
 declare global {
@@ -40,9 +41,11 @@ function loadPaddle(): Promise<any> {
     s.async = true;
     s.onload = () => {
       try {
-        if (PUBLIC_ENV.PADDLE_CLIENT_TOKEN.startsWith('test_')) {
-          window.Paddle.Environment.set('sandbox');
-        }
+        // Same decision that picked the price catalogue (config/paddleEnv.ts),
+        // so the SDK and the ids it is handed can never point at different
+        // Paddle environments. 'live' is Paddle.js's default, set explicitly
+        // here so the intent is readable rather than implied by omission.
+        window.Paddle.Environment.set(PADDLE_ENV === 'sandbox' ? 'sandbox' : 'production');
         window.Paddle.Initialize({ token: PUBLIC_ENV.PADDLE_CLIENT_TOKEN });
         resolve(window.Paddle);
       } catch (e) { reject(e); }
@@ -61,9 +64,16 @@ function loadPaddle(): Promise<any> {
  */
 export async function openCheckout(user: User, plan: SubPlanCode, term: BillingTerm): Promise<void> {
   if (!checkoutConfigured(plan, term)) throw new Error('paddle-not-configured');
+  // Belt-and-braces after the configured check: never hand Paddle an empty id,
+  // and never substitute the other environment's id for a missing one.
+  const priceId = paddlePriceId(plan, term);
+  if (!priceId) throw new Error('paddle-price-missing');
   const paddle = await loadPaddle();
   paddle.Checkout.open({
-    items: [{ priceId: paddlePriceId(plan, term), quantity: 1 }],
+    // quantity is ALWAYS 1: seats are a property of the plan (SUB_PLANS[plan]
+    // .seatLimit), never of the line-item quantity. The webhook rejects any
+    // event whose item quantity is not 1 — see docs/PADDLE_WEBHOOK_REQUIREMENTS.md.
+    items: [{ priceId, quantity: 1 }],
     customer: user.email ? { email: user.email } : undefined,
     customData: { userId: user.id, planCode: plan, billingTerm: term, country: user.country ?? '' },
     settings: { displayMode: 'overlay', theme: 'dark' },

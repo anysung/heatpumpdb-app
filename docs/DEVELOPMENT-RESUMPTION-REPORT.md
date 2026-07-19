@@ -2,6 +2,20 @@
 
 **Date:** 2026-06-12 · **Reviewed commit:** `85142cc` (2026-04-14) · **Build status:** ✅ passes (`vite build`, 3.0s, 348 KB gzip)
 
+> **Historical snapshot — superseded on payments (2026-07-19).** This report is
+> kept as the record of what was true in June 2026 and is deliberately not
+> rewritten. One recommendation is now wrong: it proposes **Stripe** checkout and
+> webhooks (§ "Must-haves", Phase 3, Tier 1 item 5, and the BillingPage row in
+> the file table). The project chose **Paddle** as merchant of record instead —
+> Paddle handles EU VAT and invoicing, which Stripe would have left to us.
+> Read every "Stripe" below as "Paddle", and see
+> [PADDLE_BILLING.md](./PADDLE_BILLING.md) for what actually exists: checkout,
+> the billing webhook, the entitlement policy and the seat model.
+>
+> Also since superseded: payments are no longer "zero integration code", and the
+> pricing engine described here was **removed** in 2026-07 (`068e3ae`) — price
+> logic is permanently out of the product.
+
 ---
 
 ## A. Executive Verdict

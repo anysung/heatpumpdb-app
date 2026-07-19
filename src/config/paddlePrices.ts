@@ -7,68 +7,92 @@
  * lookup below follows that. Never put a price id in a country profile, a market
  * file or a UI component — this module is the only source.
  *
- * ENVIRONMENT: these are SANDBOX ids (Paddle sandbox and live have completely
- * separate catalogues — a `pri_…` from one does not exist in the other). Checkout
- * still cannot open, because it also needs VITE_PADDLE_CLIENT_TOKEN, which is
- * unset; a sandbox token is `test_…`. When the live catalogue is created, add the
- * live ids behind an environment switch here — no other file needs to change.
+ * ENVIRONMENT: the ids themselves live in `paddleCatalogue.json`, split into
+ * `sandbox` and `live` blocks, because Paddle's two environments are separate
+ * catalogues — a `pri_…` created in one does not exist in the other. Which block
+ * is read is decided by `paddleEnv.ts` from the client token, the same decision
+ * that configures Paddle.js, so the SDK and the ids can never disagree.
+ *
+ * A missing id (empty string) is "not configured yet" and blocks checkout for
+ * that plan/term. It NEVER falls back to the other environment: a live build
+ * silently charging against a sandbox price would fail at Paddle, and a sandbox
+ * build reaching for a live price would take real money in a test.
  *
  * ADDING A CURRENCY (e.g. GBP for the UK):
- *   1. create the GBP prices in Paddle (a currency override on the existing
- *      prices, or separate prices — either way you get nine ids);
+ *   1. create the GBP prices in Paddle — in BOTH environments (a currency
+ *      override on the existing prices, or separate prices; either way you get
+ *      nine sandbox ids and nine live ids);
  *   2. add 'GBP' to BillingCurrency;
- *   3. add a GBP block to PADDLE_PRICE_IDS with those ids.
+ *   3. add a GBP block under BOTH `sandbox` and `live` in paddleCatalogue.json;
+ *   4. mirror the file into google_cloud_function/paddle-catalogue.json
+ *      (tests/paddle-catalogue.unit.mjs fails if you forget).
  * The UK build then picks it up automatically, because COUNTRY_PROFILES.GB
  * already declares `currency: 'GBP'`. Until then, GB resolves to no price id and
  * its plans stay "coming soon" — which is the intended, safe default.
  */
 import type { BillingTerm, SubPlanCode } from './subscriptionPlans';
 import { ACTIVE_COUNTRY } from './countryProfiles';
+import { PADDLE_ENV } from './paddleEnv';
+import { priceIdFrom } from './paddleEnvPolicy.js';
+import catalogue from './paddleCatalogue.json';
 
 /** Currencies we hold a Paddle catalogue for. Add a code, then add its block. */
 export type BillingCurrency = 'EUR';
 
 type PriceMatrix = Record<SubPlanCode, Record<BillingTerm, string>>;
+type EnvCatalogue = Record<string, PriceMatrix>;
 
-export const PADDLE_PRICE_IDS: Record<BillingCurrency, PriceMatrix> = {
-  EUR: {
-    professional: {
-      monthly:    'pri_01kxchdg26azdq1przy3hnezff',   // EUR 24.90 / month
-      six_months: 'pri_01kxchdgawhejbptxtdgm6j5wq',   // EUR 139.00 / 6 months
-      annual:     'pri_01kxchdgj2w4gpdmdfbqkhtsqn',   // EUR 249.00 / year
-    },
-    team_3: {
-      monthly:    'pri_01kxchdh34vrxtxth8bkpzmh8n',   // EUR 59.00 / month
-      six_months: 'pri_01kxchdh7r99cm3fwk1bz1gz0k',   // EUR 329.00 / 6 months
-      annual:     'pri_01kxchdhcm7efjmkh7s1673j82',   // EUR 590.00 / year
-    },
-    team_5: {
-      monthly:    'pri_01kxchdhrmrtqmhataynyqdcdm',   // EUR 99.00 / month
-      six_months: 'pri_01kxchdj04dzbf9j5s92tkwvvz',   // EUR 549.00 / 6 months
-      annual:     'pri_01kxchdj4rtpj7ndzj30sawddw',   // EUR 990.00 / year
-    },
-  },
+const CATALOGUE: Record<'sandbox' | 'live', EnvCatalogue> = {
+  sandbox: catalogue.sandbox as EnvCatalogue,
+  live: catalogue.live as EnvCatalogue,
 };
+
+/**
+ * The price matrix for the ACTIVE Paddle environment, by currency.
+ * Empty when no client token is configured — nothing can be bought, by design.
+ */
+export const PADDLE_PRICE_IDS: EnvCatalogue = PADDLE_ENV ? CATALOGUE[PADDLE_ENV] : {};
 
 /** The currency this build bills in, from the active country profile. */
 export function activeBillingCurrency(): string {
   return ACTIVE_COUNTRY.currency;
 }
 
-function hasCatalogue(currency: string): currency is BillingCurrency {
-  return currency in PADDLE_PRICE_IDS;
+/**
+ * Price id for a plan/term in the active market's currency and the active Paddle
+ * environment. '' when it is not configured — callers treat an empty id as
+ * "not available" and show the coming-soon notice instead of opening checkout.
+ */
+export function priceIdFor(plan: SubPlanCode, term: BillingTerm): string {
+  return priceIdFrom(catalogue, PADDLE_ENV, activeBillingCurrency(), plan, term);
 }
 
 /**
- * Price id for a plan/term in the active market's currency.
- * '' when we hold no catalogue for that currency yet (e.g. GBP) — callers treat
- * an empty id as "not configured" and show the coming-soon notice.
+ * True when this build has a usable catalogue: a Paddle environment is selected
+ * AND this market's currency has at least one non-empty price id in it. A
+ * currency block that exists but is entirely blank (the live block before the
+ * live ids are entered) is correctly reported as no catalogue.
  */
-export function priceIdFor(plan: SubPlanCode, term: BillingTerm): string {
-  const currency = activeBillingCurrency();
-  if (!hasCatalogue(currency)) return '';
-  return PADDLE_PRICE_IDS[currency][plan][term] ?? '';
-}
+export const hasPriceCatalogue: boolean = (() => {
+  const matrix = PADDLE_PRICE_IDS[ACTIVE_COUNTRY.currency];
+  if (!matrix) return false;
+  return Object.values(matrix).some(terms => Object.values(terms).some(id => !!id));
+})();
 
-/** True when this build has any price catalogue at all (its currency is covered). */
-export const hasPriceCatalogue = hasCatalogue(ACTIVE_COUNTRY.currency);
+/**
+ * Plan/term combinations with no price id in the active environment — the exact
+ * list of what still has to be created in (or copied from) Paddle. Surfaced in
+ * the dev console rather than failing the build, because "not configured yet"
+ * is a legitimate shipping state for a market whose billing is not switched on.
+ */
+export function missingPriceIds(): Array<{ plan: SubPlanCode; term: BillingTerm }> {
+  const matrix = PADDLE_PRICE_IDS[ACTIVE_COUNTRY.currency];
+  if (!matrix) return [];
+  const missing: Array<{ plan: SubPlanCode; term: BillingTerm }> = [];
+  for (const [plan, terms] of Object.entries(matrix)) {
+    for (const [term, id] of Object.entries(terms)) {
+      if (!id) missing.push({ plan: plan as SubPlanCode, term: term as BillingTerm });
+    }
+  }
+  return missing;
+}

@@ -3,6 +3,13 @@ const admin = require('firebase-admin');
 const { GoogleGenAI } = require('@google/genai');
 
 admin.initializeApp();
+
+// Paddle billing webhook. Registered here so it ships from this same source
+// directory, but deployed as its OWN Cloud Function via --entry-point=paddleWebhook
+// (see deploy-paddle-webhook.sh) — it must not share a URL, secrets or scaling
+// behaviour with the news pipeline.
+const { paddleWebhook } = require('./paddleWebhook');
+functions.http('paddleWebhook', paddleWebhook);
 const firestoreDb = admin.firestore();
 
 // Legacy manufacturer-research loop still writes to the DE product collection.
