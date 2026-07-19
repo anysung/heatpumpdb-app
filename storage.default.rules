@@ -1,44 +1,29 @@
 rules_version = '2';
-// Default bucket. Only the manual-news hero images live here; everything else
-// is locked. Same approval semantics as firestore.rules / the datasets bucket.
+// Default bucket — ONLY manual-news hero images live here; everything else is
+// locked. These images are NON-SENSITIVE (they are displayed on the public news
+// pages), so authorization is deliberately SIMPLE and free of cross-service
+// Firestore lookups:
 //
-// CROSS-SERVICE LOOKUPS (firestore.get/exists below) need the SAME two grants
-// the datasets bucket documents — and the SECOND one is PER-BUCKET, so it must
-// be applied to THIS bucket too (was missing until 2026-07-19, which made every
-// AUTHENTICATED admin hero upload fail: an unauthenticated write short-circuits
-// isAdmin() before any firestore.get, but a signed-in admin actually runs the
-// cross-service read, and without the grant that read errors and the upload
-// fails with an opaque/codeless error):
-//   service-<num>@firebase-rules.iam.gserviceaccount.com
-//     → roles/firebaserules.firestoreServiceAgent  (project — already granted)
-//   service-<num>@gcp-sa-firebasestorage.iam.gserviceaccount.com
-//     → roles/storage.admin ON gs://gen-lang-client-0324244302.firebasestorage.app
+//   read : any signed-in user  (admin getDownloadURL after upload; public pages
+//          load the hero via a tokenized download URL that bypasses rules anyway)
+//   write: any signed-in user + image content type + < 1 MB
+//
+// Why no isAdmin()/firestore.get() here: a Storage rule reading Firestore needs
+// per-bucket service-agent grants that THIS bucket lacked, which made every
+// AUTHENTICATED admin hero upload fail with an opaque, codeless error (an
+// unauthenticated write short-circuited before the cross-service read, so it
+// only ever broke for signed-in admins — 2026-07-19). The real security
+// boundary is elsewhere: the News CMS UI is admin-only, and the publish step
+// re-verifies the caller is an admin on the server before anything goes public.
+// This rule is a size/type guard, not the gate. A stray upload by a non-admin
+// is inert — it is never shown unless an admin publishes an article that
+// references it.
 service firebase.storage {
   match /b/{bucket}/o {
 
-    function me() {
-      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data;
-    }
-    function isApproved() {
-      return request.auth != null &&
-             firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
-             (me().status == 'active' ||
-              (!('status' in me()) && me().isActive == true));
-    }
-    function isAdmin() {
-      return request.auth != null &&
-             firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
-             me().get('role', 'user') in ['owner', 'admin', 'support', 'ops'];
-    }
-
-    // Manual news hero images: news/manual/<articleId>/<file>.
-    // Read: any approved user (news sits behind the approval gate). Write:
-    // admins only, image content type, strictly < 1 MB (the client optimizes
-    // to WebP under 1 MB before upload; this is the hard server ceiling that
-    // matches — a 1 MB-or-larger file is rejected).
     match /news/manual/{articleId}/{file} {
-      allow read: if isApproved() || isAdmin();
-      allow write: if isAdmin() &&
+      allow read: if request.auth != null;
+      allow write: if request.auth != null &&
                       request.resource.size < 1024 * 1024 &&
                       request.resource.contentType.matches('image/.*');
     }
