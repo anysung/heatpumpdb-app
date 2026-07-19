@@ -40,6 +40,58 @@ const DATASETS = {
 };
 
 /**
+ * Browser-payload minimization (2026-07-19 security audit follow-up).
+ *
+ * These fields are internal PIPELINE metadata — matching/normalization internals,
+ * per-snapshot provenance timestamps, physical-specs quarantine/source bookkeeping —
+ * plus the dimensions/weight cluster that was removed from the UI. NONE of them are
+ * referenced anywhere in src/ (verified field-by-field, word-boundary matched), so
+ * removing them from the SERVED bucket copy changes no app behaviour while it stops
+ * shipping internal bookkeeping to every browser.
+ *
+ * This projection applies ONLY to the served copy uploaded here. The committed
+ * build artifacts (public/data/*.json), raw/canonical/intermediate data, provenance
+ * records and the dataset gate all keep the full field set. To revert: delete
+ * PUBLIC_STRIP_FIELDS + the .map(projectPublic) call — nothing else depends on it.
+ *
+ * KEPT deliberately (do not add here): every measured spec even if undisplayed
+ * (noise_indoor_dB, seer, cooling_*, refrigerant_2*, grid_ready_type, cop_A10W35,
+ * temp_diff, defrost_*, drive_type, power_control, num_compressors, max_electric_power_kw),
+ * all registry facts (bafa_listing_status, bafa_foerderung_*, bafa_snapshot_fetched_at,
+ * pel_snapshot_fetched_at, source_snapshot_generated_at), and every field the app reads
+ * (ids, listing status/id, gse_ratings/gse_snapshot/gse_entry_key/gse_match_method,
+ * component models, european_reference_id, bafa_reference_id, …).
+ */
+const PUBLIC_STRIP_FIELDS = new Set([
+  // internal ids / normalization
+  'uuid', 'manufacturer_normalized', 'primary_source', 'market_segment',
+  // matching internals (identity kept: eprel_registration_number, *_id, *_match_status)
+  'eprel_model', 'eprel_match_type',
+  'outdoor_side_identified', 'outdoor_side_display_kind',
+  'european_reference_model', 'european_reference_match_type',
+  'bafa_reference_model', 'bafa_reference_match_type',
+  'gse_temp_assignment', 'gse_catalogue', 'gse_brand', 'gse_model',
+  'gse_match_confidence', 'gse_snapshot_fetched_at', 'gse_first_matched_at', 'gse_last_confirmed_at',
+  'pel_source_id', 'pel_match_method', 'pel_match_confidence',
+  'pel_first_matched_at', 'pel_last_confirmed_at', 'pel_snapshot',
+  'zum_snapshot', 'zum_snapshot_fetched_at', 'zum_first_matched_at', 'zum_last_confirmed_at',
+  'zum_match_confidence', 'zum_match_method', 'zum_product_name', 'zum_category', 'zum_class_55c',
+  // physical-specs provenance bookkeeping (the dimensions themselves are UI-removed)
+  'physical_specs_confidence', 'physical_specs_estimated', 'physical_specs_source_type',
+  'physical_specs_source_note', 'physical_specs_match_type', 'physical_specs_family',
+  'physical_specs_quarantined', 'physical_specs_quarantine_reason', 'physical_specs_last_checked_at',
+  // dimensions / weight (removed from the UI; never reintroduced)
+  'dimensions_raw', 'weight_raw', 'width_mm', 'height_mm', 'depth_mm', 'weight_kg',
+]);
+
+/** Drop internal-only keys from a served record (browser copy only). */
+function projectPublic(record) {
+  const out = {};
+  for (const k of Object.keys(record)) if (!PUBLIC_STRIP_FIELDS.has(k)) out[k] = record[k];
+  return out;
+}
+
+/**
  * Build the canary as a schema-perfect clone of a real record: copy a
  * mid-list record from the same dataset (guarantees every field the app
  * expects exists), then overwrite identity/spec fields and null out any
@@ -116,7 +168,9 @@ for (const [cc, files] of Object.entries(DATASETS)) {
     const served = {
       ...data,
       _meta: { ...data._meta, total_items: (data._meta?.total_items ?? data.items.length) + 1 },
-      items: [...data.items, makeCanary(data.items, overrides)],
+      // Strip internal-only fields from the browser-facing copy (the canary is
+      // projected too, so every served record has one consistent public shape).
+      items: [...data.items, makeCanary(data.items, overrides)].map(projectPublic),
     };
     const out = join(tmp, `${cc}-${file}`);
     writeFileSync(out, JSON.stringify(served));
