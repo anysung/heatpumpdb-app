@@ -57,7 +57,3 @@ export const db = initializeFirestore(app, {
 // 2026-07-12): storage.rules only admits approved accounts; the hosting
 // sites no longer serve /data/*.json publicly.
 export const datasetStorage = getStorage(app, 'gs://heatpumpdb-datasets');
-
-// Default bucket — used only for manual-news hero images (news/manual/…),
-// gated by storage.default.rules (admin write / approved read).
-export const defaultStorage = getStorage(app);

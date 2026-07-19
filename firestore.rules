@@ -250,17 +250,5 @@ service cloud.firestore {
       }
     }
 
-    // ── Manual news CMS (admin only) ──────────────────────────────────────
-    // The English-canonical source + metadata + cached translations for
-    // admin-authored articles. NEVER public: the public site reads only the
-    // per-country `countries/<cc>/news` docs the publish step fans out to
-    // (via the Admin SDK server function). Admins may draft directly here;
-    // publish/translate always go through the authorization-checked function.
-    match /newsArticles/{articleId} {
-      allow read, write: if isAdmin();
-      match /{sub}/{doc} {
-        allow read, write: if isAdmin();
-      }
-    }
   }
 }

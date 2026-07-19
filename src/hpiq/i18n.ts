@@ -371,7 +371,6 @@ const EN = {
       MARKET: 'MARKET',
       TECHNOLOGY: 'TECHNOLOGY',
       'INSTALLER INSIGHT': 'INSTALLER INSIGHT',
-      ENERGY: 'ENERGY',
     } as Record<string, string>,
     fallbackFeatured: {
       badge: 'MARKET',
@@ -978,7 +977,6 @@ const DE: HpStrings = {
       MARKET: 'MARKT',
       TECHNOLOGY: 'TECHNOLOGIE',
       'INSTALLER INSIGHT': 'INSTALLATEUR-WISSEN',
-      ENERGY: 'ENERGIE',
     } as Record<string, string>,
     fallbackFeatured: {
       badge: 'MARKET',
@@ -1945,7 +1943,6 @@ const FR_FR: HpStrings = {
       MARKET: 'MARCHÉ',
       TECHNOLOGY: 'TECHNOLOGIE',
       'INSTALLER INSIGHT': 'MÉTIER',
-      ENERGY: 'ÉNERGIE',
     } as Record<string, string>,
     fallbackFeatured: {
       badge: 'MARKET',
@@ -2743,7 +2740,6 @@ const PL_PL: HpStrings = {
       MARKET: 'RYNEK',
       TECHNOLOGY: 'TECHNOLOGIA',
       'INSTALLER INSIGHT': 'DLA INSTALATORÓW',
-      ENERGY: 'ENERGIA',
     } as Record<string, string>,
     fallbackFeatured: {
       badge: 'MARKET',
@@ -3554,7 +3550,6 @@ const IT_IT: HpStrings = {
       MARKET: 'MERCATO',
       TECHNOLOGY: 'TECNOLOGIA',
       'INSTALLER INSIGHT': 'PER GLI INSTALLATORI',
-      ENERGY: 'ENERGIA',
     } as Record<string, string>,
     fallbackFeatured: {
       badge: 'MARKET',

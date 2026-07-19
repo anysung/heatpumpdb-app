@@ -13,7 +13,6 @@ import { MembersPage } from './admin/MembersPage';
 import { BillingPage } from './admin/BillingPage';
 import { DataPage } from './admin/DataPage';
 import { AuditPage } from './admin/AuditPage';
-import { NewsManagementPage } from './admin/NewsManagementPage';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -160,7 +159,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {activePage === 'billing' && <BillingPage al={al} />}
         {activePage === 'inbox' && <InboxPage al={al} />}
         {activePage === 'members' && <MembersPage al={al} />}
-        {activePage === 'news' && <NewsManagementPage al={al} />}
         {activePage === 'data' && <DataPage al={al} products={cachedDatabase} lastUpdated={lastUpdated} />}
         {activePage === 'audit' && <AuditPage al={al} />}
       </main>

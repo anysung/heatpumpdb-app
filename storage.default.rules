@@ -1,33 +1,7 @@
 rules_version = '2';
-// Default bucket — ONLY manual-news hero images live here; everything else is
-// locked. These images are NON-SENSITIVE (they are displayed on the public news
-// pages), so authorization is deliberately SIMPLE and free of cross-service
-// Firestore lookups:
-//
-//   read : any signed-in user  (admin getDownloadURL after upload; public pages
-//          load the hero via a tokenized download URL that bypasses rules anyway)
-//   write: any signed-in user + image content type + < 1 MB
-//
-// Why no isAdmin()/firestore.get() here: a Storage rule reading Firestore needs
-// per-bucket service-agent grants that THIS bucket lacked, which made every
-// AUTHENTICATED admin hero upload fail with an opaque, codeless error (an
-// unauthenticated write short-circuited before the cross-service read, so it
-// only ever broke for signed-in admins — 2026-07-19). The real security
-// boundary is elsewhere: the News CMS UI is admin-only, and the publish step
-// re-verifies the caller is an admin on the server before anything goes public.
-// This rule is a size/type guard, not the gate. A stray upload by a non-admin
-// is inert — it is never shown unless an admin publishes an article that
-// references it.
+// Default bucket — unused by the app; locked down completely.
 service firebase.storage {
   match /b/{bucket}/o {
-
-    match /news/manual/{articleId}/{file} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null &&
-                      request.resource.size < 1024 * 1024 &&
-                      request.resource.contentType.matches('image/.*');
-    }
-
     match /{allPaths=**} {
       allow read, write: if false;
     }
