@@ -4,6 +4,7 @@
  * do not scatter country checks across pages.
  */
 import { ACTIVE_COUNTRY, COUNTRY_PROFILES } from '../config/countryProfiles';
+import { PUBLIC_ENV } from '../config/env';
 import { Language } from '../types';
 
 export const MARKET = ACTIVE_COUNTRY;
@@ -70,8 +71,16 @@ export const FUNDING_SOURCE_LINKS = IS_GB
  */
 export const UI_LANGUAGES: Language[] = IS_GB ? ['en'] : IS_FR ? ['fr', 'en'] : IS_PL ? ['pl', 'en'] : IS_IT ? ['it', 'en'] : ['de', 'en'];
 
-/** Language the app starts in for this edition. */
-export const DEFAULT_LANGUAGE: Language = IS_FR ? 'fr' : IS_PL ? 'pl' : IS_IT ? 'it' : 'en';
+/**
+ * Language the app starts in for this edition: always the market's OWN language,
+ * i.e. the first entry of UI_LANGUAGES. Derived rather than listed again so a new
+ * market cannot land in English by forgetting a branch — Germany did exactly that
+ * and served German visitors an English first screen until Jul 2026.
+ * The admin console is the one exception: its UI is EN | KO only, so its shared
+ * auth screen must not turn German (see CLAUDE.md).
+ */
+export const DEFAULT_LANGUAGE: Language =
+  PUBLIC_ENV.APP_MODE === 'admin' ? 'en' : UI_LANGUAGES[0];
 
 /**
  * This edition's round country icon (news bylines etc.). NOTE the GB asset
