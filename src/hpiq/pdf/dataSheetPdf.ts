@@ -150,6 +150,21 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   /** Ensure `h` mm fits on the current page; start a new one if not. */
   const need = (h: number) => { if (y + h > PH - M_BOT) newPage(); };
 
+  /**
+   * Height (mm) a `paragraph()` of this text will occupy. Measuring needs the
+   * TARGET font active — splitTextToSize wraps against whatever font is current
+   * — so callers must not rely on the font afterwards.
+   *
+   * Exists so a heading can reserve its BODY as well as itself: reserving only
+   * the heading is what stranded the disclaimer title alone at the foot of page
+   * one with its text on page two (owner report, Jul 2026).
+   */
+  const paragraphH = (text: string, size: number, width = CW) => {
+    setFont(size, false, MUTED);
+    const lines = (doc.splitTextToSize(ascii(text), width) as string[]).length;
+    return lines * (size * 0.48) + 3;
+  };
+
   watermark();
 
   /* ── Header: the real brand lockup + the real waving flag ────────────────
@@ -219,7 +234,9 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
 
   /* ── Section primitives ───────────────────────────────────────────────── */
   const sectionHead = (title: string, muted = false) => {
-    need(9);
+    // 9mm heading + ~11mm for the first single-line field row beneath it: a
+    // section title stranded at the foot of a page reads as a missing section.
+    need(20);
     setFont(8, true, muted ? MUTED : BLUE);
     doc.text(ascii(title), M_X, y);
     doc.setDrawColor(INK[0], INK[1], INK[2]);
@@ -373,7 +390,9 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
 
   /* ── Technical explanations (footnotes, in the order they were used) ───── */
   if (noteOrder.length) {
-    need(10);
+    // Heading + the first footnote, so the heading never ends a page alone.
+    const firstNote = (t.ds.notes as Record<string, string>)[noteOrder[0]] ?? '';
+    need(4 + 3.8 + paragraphH(firstNote, 6.5, CW - 7));
     y += 2;
     doc.setDrawColor(HAIR[0], HAIR[1], HAIR[2]);
     doc.setLineWidth(0.3);
@@ -397,7 +416,11 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   }
 
   /* ── Legal disclaimer ─────────────────────────────────────────────────── */
-  need(12);
+  // Reserve the WHOLE block — rule + title + every wrapped body line — so the
+  // heading can never be published alone at the foot of a page. If the text is
+  // genuinely taller than one page, paragraph() still breaks it line by line.
+  const DISC_SIZE = 6.2;
+  need(4 + 3.5 + paragraphH(t.ds.disclaimer, DISC_SIZE));
   doc.setDrawColor(HAIR[0], HAIR[1], HAIR[2]);
   doc.setLineWidth(0.3);
   doc.line(M_X, y, M_X + CW, y);
@@ -405,7 +428,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   setFont(7.5, true, MUTED);
   doc.text(ascii(t.ds.disclaimerTitle), M_X, y);
   y += 3.5;
-  paragraph(t.ds.disclaimer, 6.2, FAINT);
+  paragraph(t.ds.disclaimer, DISC_SIZE, FAINT);
 
   footer();
   return doc;

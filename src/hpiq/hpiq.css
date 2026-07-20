@@ -76,6 +76,33 @@
   #hpiq-print-mount .ds-note-row { padding: 1px 0 !important; font-size: 10px !important; line-height: 1.45 !important; }
   #hpiq-print-mount .ds-disclaimer { margin-top: 10px !important; padding-top: 8px !important; gap: 4px !important; }
   #hpiq-print-mount .ds-disclaimer > span:last-child { font-size: 9px !important; line-height: 1.5 !important; }
+
+  /* ── Page-break discipline ─────────────────────────────────────────────
+     Without this the browser splits wherever it likes: the disclaimer heading
+     printed at the foot of one page with its text on the next, and field rows
+     were cut through the middle (owner report, Jul 2026). The generated PDF
+     enforces the same rule in dataSheetPdf.ts — keep the two in step.
+     `break-*` is the standard property; the legacy `page-break-*` aliases stay
+     for older WebKit, which is exactly where our print problems come from. */
+  #hpiq-print-mount .ds-disclaimer,
+  #hpiq-print-mount .ds-notes,
+  #hpiq-print-mount .ds-note-row,
+  #hpiq-print-mount .ds-cell,
+  #hpiq-print-mount .ds-eu-row,
+  #hpiq-print-mount .ds-title-card,
+  #hpiq-print-mount .ds-stat {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  /* A section heading must never be the last thing on a page. */
+  #hpiq-print-mount .ds-section-head {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  /* Never leave a single line of a paragraph stranded across the fold. */
+  #hpiq-print-mount .hpiq-print-doc { orphans: 3; widows: 3; }
 }
 
 /* ── Copyright watermark (data sheet + comparison) ─────────────────────────
