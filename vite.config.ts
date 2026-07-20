@@ -144,10 +144,19 @@ export default defineConfig(({ mode }) => {
             );
           }
           return html
-            .replace(/<html lang="[^"]*">/, `<html lang="${m.lang}">`)
+            // translate="no": the browser must not machine-translate this app.
+            // Chrome was rendering the Italian edition into English and turning
+            // "Conto Termico" — the legal name of the GSE programme — into
+            // "Thermal Account", a scheme that does not exist. On a compliance
+            // data product a mistranslated programme name, listing status or
+            // disclaimer is a liability, and every edition already ships its own
+            // curated English through the IT|EN toggle. (Owner report, Jul 2026:
+            // "the Italian site shows English" — the bundle was Italian all along.)
+            .replace(/<html lang="[^"]*">/, `<html lang="${m.lang}" translate="no" class="notranslate">`)
             .replace(
               /<title>.*?<\/title>/,
               `<title>${m.title}</title>\n`
+              + `    <meta name="google" content="notranslate" />\n`
               + `    <meta name="description" content="${m.desc}" />\n`
               + `    <link rel="canonical" href="${m.canonical}" />\n`
               + hreflangLinks() + '\n'

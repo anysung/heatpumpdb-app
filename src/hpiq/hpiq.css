@@ -78,14 +78,15 @@
   #hpiq-print-mount .ds-disclaimer > span:last-child { font-size: 9px !important; line-height: 1.5 !important; }
 
   /* ── Page-break discipline ─────────────────────────────────────────────
-     Without this the browser splits wherever it likes: the disclaimer heading
-     printed at the foot of one page with its text on the next, and field rows
-     were cut through the middle (owner report, Jul 2026). The generated PDF
-     enforces the same rule in dataSheetPdf.ts — keep the two in step.
-     `break-*` is the standard property; the legacy `page-break-*` aliases stay
-     for older WebKit, which is exactly where our print problems come from. */
-  #hpiq-print-mount .ds-disclaimer,
-  #hpiq-print-mount .ds-notes,
+     Goal: never strand a HEADING at the foot of a page, and never cut a small
+     atomic row through the middle. Deliberately NOT applied to the tall blocks
+     (.ds-notes, .ds-disclaimer): keeping those whole makes the browser shunt the
+     entire block to the next sheet, which left the footnotes floating a page
+     below the specs with a half-empty page behind them (owner report, Jul 2026).
+     Long blocks must be free to flow; only their headings are pinned. The
+     generated PDF applies the same rule in dataSheetPdf.ts — keep the two in
+     step. `break-*` is standard; the `page-break-*` aliases stay for older
+     WebKit, which is exactly where our print problems come from. */
   #hpiq-print-mount .ds-note-row,
   #hpiq-print-mount .ds-cell,
   #hpiq-print-mount .ds-eu-row,
@@ -94,8 +95,11 @@
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
-  /* A section heading must never be the last thing on a page. */
-  #hpiq-print-mount .ds-section-head {
+  /* Headings travel with what follows them: section titles, and the titles of
+     the footnotes and disclaimer blocks (each is the block's first span). */
+  #hpiq-print-mount .ds-section-head,
+  #hpiq-print-mount .ds-notes > div > span:first-child,
+  #hpiq-print-mount .ds-disclaimer > span:first-child {
     page-break-after: avoid !important;
     break-after: avoid !important;
     page-break-inside: avoid !important;

@@ -270,7 +270,17 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     y += 2;
   };
 
-  const paragraph = (text: string, size = 7.5, color: [number, number, number] = MUTED) => {
+  /**
+   * @param justify flush both margins, like the on-screen document's
+   *   `text-align: justify`. jsPDF's own 'justify' option is not used: it also
+   *   stretches the closing line of a block into a sparse row of words.
+   */
+  const paragraph = (
+    text: string,
+    size = 7.5,
+    color: [number, number, number] = MUTED,
+    justify = false,
+  ) => {
     // setFont FIRST: splitTextToSize measures with the CURRENT font, so measuring
     // before setting it wraps the text against the previous (larger) size and the
     // paragraph never reaches the right margin.
@@ -278,9 +288,21 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     const lines = doc.splitTextToSize(ascii(text), CW) as string[];
     const lh = size * 0.48;
     need(lines.length * lh + 3);
-    lines.forEach(ln => {
+    lines.forEach((ln, i) => {
       if (y + lh > PH - M_BOT) { newPage(); setFont(size, false, color); }
-      doc.text(ln, M_X, y);
+      const words = justify ? ln.split(' ').filter(Boolean) : [];
+      const wordsW = words.reduce((s, w) => s + doc.getTextWidth(w), 0);
+      // Justify full lines only. The last line, single-word lines and any line
+      // the wrapper left short (a paragraph break) stay flush left — stretching
+      // those is what makes justified text look broken.
+      const stretchable = justify && i < lines.length - 1 && words.length > 1 && wordsW > CW * 0.8;
+      if (!stretchable) {
+        doc.text(ln, M_X, y);
+      } else {
+        const gap = (CW - wordsW) / (words.length - 1);
+        let x = M_X;
+        words.forEach(w => { doc.text(w, x, y); x += doc.getTextWidth(w) + gap; });
+      }
       y += lh;
     });
     y += 2;
@@ -428,7 +450,8 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   setFont(7.5, true, MUTED);
   doc.text(ascii(t.ds.disclaimerTitle), M_X, y);
   y += 3.5;
-  paragraph(t.ds.disclaimer, DISC_SIZE, FAINT);
+  // Justified, matching the on-screen/printed document (textAlign: 'justify').
+  paragraph(t.ds.disclaimer, DISC_SIZE, FAINT, true);
 
   footer();
   return doc;
