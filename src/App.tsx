@@ -25,6 +25,16 @@ import { getProducts, getCommercialProducts, getNews, getPolicies, getBAFA } fro
 
 type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'APP' | 'ADMIN_DASHBOARD' | 'COUNTRY_MISMATCH';
 
+/** Landing-page link to the public pricing page. Typed as a full Record so a new
+ *  UI language cannot silently fall back to English (the IT edition did — 03f92c0). */
+const VIEW_PRICING: Record<Language, string> = {
+  en: 'View plans & pricing',
+  de: 'Tarife & Preise ansehen',
+  fr: 'Voir les offres et tarifs',
+  pl: 'Zobacz plany i cennik',
+  it: 'Scopri piani e prezzi',
+};
+
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>(IS_ADMIN_BUILD ? 'LOGIN' : 'LANDING');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -322,7 +332,7 @@ const App: React.FC = () => {
     );
   }
 
-  if (authLoading) return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-400">Loading App...</div>;
+  if (authLoading) return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-400">{t.loading}</div>;
 
 
   // ... (Return JSX - Keep exactly the same structure as before) ...
@@ -422,7 +432,7 @@ const App: React.FC = () => {
             {/* Public, read-only plans & pricing (no login required to view) */}
             <div className="mt-4 text-center">
               <a href={PRICING_ROUTE} className="text-emerald-300/90 text-sm font-medium hover:text-emerald-200 transition-colors">
-                {{ en: 'View plans & pricing', de: 'Tarife & Preise ansehen', fr: 'Voir les offres et tarifs', pl: 'Zobacz plany i cennik' }[language] ?? 'View plans & pricing'} ›
+                {VIEW_PRICING[language]} ›
               </a>
             </div>
             <div className="mt-6 text-center">
@@ -546,21 +556,21 @@ const App: React.FC = () => {
       <AuthShell t={t} language={language} setLanguage={setLanguage}>
         <GlassCard className="w-full max-w-md p-10 text-center hp-fade-up">
           <div className="text-6xl mb-6">⏳</div>
-          <h2 className="text-2xl font-bold text-white mb-3">Registration Submitted</h2>
-          <p className="text-white/70 mb-2">Your application is <span className="font-semibold text-amber-300">pending approval</span>.</p>
+          <h2 className="text-2xl font-bold text-white mb-3">{t.pendingTitle}</h2>
+          <p className="text-white/70 mb-2">{t.pendingSubPre}<span className="font-semibold text-amber-300">{t.pendingSubEm}</span>.</p>
           <p className="text-white/50 text-sm mb-8">
-            An administrator will review your registration and notify you by email once your account is activated. This typically takes 1–2 business days.
+            {t.pendingBody}
           </p>
           <div className="bg-emerald-400/10 border border-emerald-400/20 rounded-xl p-4 text-sm text-emerald-200 mb-8 text-left">
-            <p className="font-bold mb-1">What happens next?</p>
+            <p className="font-bold mb-1">{t.pendingNextTitle}</p>
             <ol className="list-decimal list-inside space-y-1 text-emerald-200/80">
-              <li>Admin reviews your profile</li>
-              <li>Account is approved &amp; activated</li>
-              <li>You can log in with your credentials</li>
+              <li>{t.pendingNext1}</li>
+              <li>{t.pendingNext2}</li>
+              <li>{t.pendingNext3}</li>
             </ol>
           </div>
           <button onClick={() => setCurrentView('LANDING')} className={ghostBtn}>
-            ← Back to Home
+            {t.pendingBackHome}
           </button>
         </GlassCard>
       </AuthShell>
@@ -632,6 +642,6 @@ const App: React.FC = () => {
     );
   }
 
-  return <div>Loading View...</div>;
+  return <div>{t.loading}</div>;
 };
 export default App;

@@ -308,7 +308,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
           {/* table */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, borderRight: '1px solid rgba(0,0,0,.08)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: '0 12px', alignItems: 'center', padding: '10px 20px', borderBottom: '1px solid rgba(0,0,0,.08)', fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', color: '#7a7a7a', flex: 'none' }}>
-              <span /><span>MODEL</span><span>{t.products.manufacturer}</span>
+              <span /><span>{t.products.th.model}</span><span>{t.products.manufacturer}</span>
               <span style={sort === 'kwAsc' || sort === 'kwDesc' ? { color: '#1d1d1f' } : undefined}>{t.products.th.kw}{sort === 'kwDesc' ? ' ↓' : sort === 'kwAsc' ? ' ↑' : ''}</span>
               <span style={sort === 'cop2' ? { color: '#1d1d1f' } : undefined}>{t.products.th.cop2}{sort === 'cop2' ? ' ↓' : ''}</span>
               <span style={sort === 'scop' ? { color: '#1d1d1f' } : undefined}>{t.products.th.scop}{sort === 'scop' ? ' ↓' : ''}</span>
