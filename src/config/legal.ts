@@ -47,8 +47,8 @@ export const SUPPORT_EMAIL = 'support@heatpumpdb.eu';
 export const MARKETING_EMAIL = 'marketing@heatpumpdb.eu';
 
 /** Bump when the wording changes materially; stamped on the profile at signup. */
-export const TERMS_VERSION = '2026-07-14';
-export const PRIVACY_VERSION = '2026-07-14';
+export const TERMS_VERSION = '2026-07-22';
+export const PRIVACY_VERSION = '2026-07-22';
 
 export const LEGAL_ROUTES = {
   privacy: '/privacy',

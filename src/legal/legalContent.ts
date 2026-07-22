@@ -149,6 +149,7 @@ const EN = {
         h: 'International processing',
         p: [
           'Our providers may process data outside the EEA. Where that happens, transfers rely on the safeguards those providers offer (including EU Standard Contractual Clauses).',
+          'Our operator is established in the Republic of Korea and may process your personal data there. Such transfers of EEA and UK user data rely on appropriate safeguards recognised under EU and UK data-protection law — including the adequacy decisions for the Republic of Korea and, where applicable, Standard Contractual Clauses. You can request details of these safeguards using the contact below.',
         ],
       },
       { h: 'Contact', p: [`Use New inquiry on the Account page, or email ${SUPPORT_EMAIL}.`] },
@@ -220,6 +221,7 @@ const EN = {
     sections: [
       { h: 'During the free trial', p: ['Every subscription begins with a 7-day free trial. Nothing is charged during the trial. Cancel before the trial ends and no payment is taken.'] },
       { h: 'After the trial', p: ['If you do not cancel before the trial ends, the first payment is taken and the paid period begins.'] },
+      { h: '14-day refund on your first payment', p: [`If your first payment is taken after the free trial, you may request a full refund of that first payment within 14 days of the charge, for any reason. Send a New inquiry from the Account page or email ${SUPPORT_EMAIL}, and we will process it with Paddle. This 14-day right applies to the first payment only; later renewals are governed by the sections below.`] },
       {
         h: 'Cancelling a paid subscription',
         p: [
@@ -334,7 +336,10 @@ const DE = {
       },
       {
         h: 'Internationale Verarbeitung',
-        p: ['Unsere Dienstleister können Daten außerhalb des EWR verarbeiten. Übermittlungen stützen sich in diesem Fall auf die Garantien dieser Anbieter (u. a. EU-Standardvertragsklauseln).'],
+        p: [
+          'Unsere Dienstleister können Daten außerhalb des EWR verarbeiten. Übermittlungen stützen sich in diesem Fall auf die Garantien dieser Anbieter (u. a. EU-Standardvertragsklauseln).',
+          'Unser Betreiber hat seinen Sitz in der Republik Korea und kann Ihre personenbezogenen Daten dort verarbeiten. Solche Übermittlungen von Daten von Nutzern aus dem EWR und dem Vereinigten Königreich stützen sich auf geeignete Garantien nach EU- und UK-Datenschutzrecht — einschließlich der Angemessenheitsbeschlüsse für die Republik Korea und, soweit einschlägig, Standardvertragsklauseln. Einzelheiten zu diesen Garantien können Sie über den unten genannten Kontakt anfordern.',
+        ],
       },
       { h: 'Kontakt', p: [`Nutzen Sie „Neue Anfrage“ auf der Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL}.`] },
     ],
@@ -403,6 +408,7 @@ const DE = {
     sections: [
       { h: 'Während der Testphase', p: ['Jedes Abonnement beginnt mit einer 7-tägigen kostenlosen Testphase. Während der Testphase erfolgt keine Abbuchung. Bei Kündigung vor Ablauf der Testphase wird nichts berechnet.'] },
       { h: 'Nach der Testphase', p: ['Wird nicht vor Ablauf der Testphase gekündigt, erfolgt die erste Zahlung und die bezahlte Periode beginnt.'] },
+      { h: '14-tägiges Rückerstattungsrecht für Ihre erste Zahlung', p: [`Erfolgt Ihre erste Zahlung nach der kostenlosen Testphase, können Sie innerhalb von 14 Tagen nach der Abbuchung ohne Angabe von Gründen die vollständige Erstattung dieser ersten Zahlung verlangen. Senden Sie eine „Neue Anfrage“ über die Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL} — wir wickeln die Erstattung gemeinsam mit Paddle ab. Dieses 14-Tage-Recht gilt nur für die erste Zahlung; spätere Verlängerungen richten sich nach den nachstehenden Abschnitten.`] },
       {
         h: 'Kündigung eines bezahlten Abonnements',
         p: [
@@ -517,7 +523,10 @@ const FR = {
       },
       {
         h: 'Traitements internationaux',
-        p: ["Nos prestataires peuvent traiter des données en dehors de l'EEE. Le cas échéant, les transferts s'appuient sur les garanties offertes par ces prestataires (notamment les clauses contractuelles types de l'UE)."],
+        p: [
+          "Nos prestataires peuvent traiter des données en dehors de l'EEE. Le cas échéant, les transferts s'appuient sur les garanties offertes par ces prestataires (notamment les clauses contractuelles types de l'UE).",
+          "Notre exploitant est établi en République de Corée et peut y traiter vos données personnelles. Ces transferts de données d'utilisateurs de l'EEE et du Royaume-Uni reposent sur des garanties appropriées reconnues par le droit de la protection des données de l'UE et du Royaume-Uni — notamment les décisions d'adéquation concernant la République de Corée et, le cas échéant, les clauses contractuelles types. Vous pouvez demander le détail de ces garanties via le contact ci-dessous.",
+        ],
       },
       { h: 'Contact', p: [`Utilisez « Nouvelle demande » sur la page Compte, ou écrivez à ${SUPPORT_EMAIL}.`] },
     ],
@@ -586,6 +595,7 @@ const FR = {
     sections: [
       { h: "Pendant l'essai gratuit", p: ["Chaque abonnement commence par un essai gratuit de 7 jours. Aucun débit n'a lieu pendant l'essai. Résiliez avant la fin de l'essai et aucun paiement n'est prélevé."] },
       { h: "Après l'essai", p: ["Sans résiliation avant la fin de l'essai, le premier paiement est prélevé et la période payée commence."] },
+      { h: 'Remboursement sous 14 jours de votre premier paiement', p: [`Si votre premier paiement est prélevé après l'essai gratuit, vous pouvez demander le remboursement intégral de ce premier paiement dans les 14 jours suivant le débit, pour tout motif. Envoyez une « Nouvelle demande » depuis la page Compte ou écrivez à ${SUPPORT_EMAIL} ; nous procéderons au remboursement avec Paddle. Ce droit de 14 jours ne s'applique qu'au premier paiement ; les renouvellements ultérieurs sont régis par les sections ci-dessous.`] },
       {
         h: "Résilier un abonnement payant",
         p: [
@@ -715,6 +725,7 @@ const PL = {
         h: 'Przetwarzanie międzynarodowe',
         p: [
           'Nasi dostawcy mogą przetwarzać dane poza EOG. W takim przypadku przekazywanie danych opiera się na zabezpieczeniach oferowanych przez tych dostawców (w tym na standardowych klauzulach umownych UE).',
+          'Nasz operator ma siedzibę w Republice Korei i może tam przetwarzać Państwa dane osobowe. Takie przekazywanie danych użytkowników z EOG i Wielkiej Brytanii opiera się na odpowiednich zabezpieczeniach uznanych w prawie ochrony danych UE i Wielkiej Brytanii — w tym na decyzjach stwierdzających odpowiedni stopień ochrony dla Republiki Korei oraz, w stosownych przypadkach, na standardowych klauzulach umownych. Szczegóły tych zabezpieczeń można uzyskać, korzystając z kontaktu podanego poniżej.',
         ],
       },
       { h: 'Kontakt', p: [`Prosimy skorzystać z opcji „Nowe zapytanie” na stronie Konto lub napisać na adres ${SUPPORT_EMAIL}.`] },
@@ -786,6 +797,7 @@ const PL = {
     sections: [
       { h: 'W trakcie bezpłatnego okresu próbnego', p: ['Każda subskrypcja rozpoczyna się 7-dniowym bezpłatnym okresem próbnym. W okresie próbnym nie są pobierane żadne opłaty. Jeżeli anulują Państwo subskrypcję przed końcem okresu próbnego, żadna płatność nie zostanie pobrana.'] },
       { h: 'Po okresie próbnym', p: ['Jeżeli subskrypcja nie zostanie anulowana przed końcem okresu próbnego, pobierana jest pierwsza płatność i rozpoczyna się opłacony okres.'] },
+      { h: 'Zwrot pierwszej płatności w ciągu 14 dni', p: [`Jeżeli pierwsza płatność zostanie pobrana po bezpłatnym okresie próbnym, mogą Państwo zażądać pełnego zwrotu tej pierwszej płatności w ciągu 14 dni od obciążenia, z dowolnego powodu. Prosimy wysłać „Nowe zapytanie” ze strony Konto lub napisać na adres ${SUPPORT_EMAIL} — zrealizujemy zwrot wspólnie z Paddle. To 14-dniowe prawo dotyczy wyłącznie pierwszej płatności; późniejsze odnowienia regulują poniższe sekcje.`] },
       {
         h: 'Anulowanie płatnej subskrypcji',
         p: [
@@ -915,6 +927,7 @@ const IT = {
         h: 'Trattamenti internazionali',
         p: [
           'I nostri fornitori possono trattare dati al di fuori del SEE. In tal caso i trasferimenti si basano sulle garanzie offerte da tali fornitori (comprese le clausole contrattuali standard dell’UE).',
+          'Il nostro operatore ha sede nella Repubblica di Corea e può trattarvi i vostri dati personali. Tali trasferimenti di dati degli utenti del SEE e del Regno Unito si basano su garanzie adeguate riconosciute dal diritto dell’UE e del Regno Unito in materia di protezione dei dati — comprese le decisioni di adeguatezza relative alla Repubblica di Corea e, ove applicabile, le clausole contrattuali standard. Potete richiedere i dettagli di tali garanzie utilizzando il contatto indicato di seguito.',
         ],
       },
       { h: 'Contatto', p: [`Utilizzate «Nuova richiesta» sulla pagina Account oppure scrivete a ${SUPPORT_EMAIL}.`] },
@@ -986,6 +999,7 @@ const IT = {
     sections: [
       { h: 'Durante la prova gratuita', p: ['Ogni abbonamento inizia con una prova gratuita di 7 giorni. Durante la prova non viene addebitato nulla. Se disdite prima della fine della prova, nessun pagamento viene prelevato.'] },
       { h: 'Dopo la prova', p: ['Se non disdite prima della fine della prova, viene prelevato il primo pagamento e inizia il periodo pagato.'] },
+      { h: 'Rimborso entro 14 giorni sul primo pagamento', p: [`Se il primo pagamento viene prelevato dopo la prova gratuita, potete richiedere il rimborso completo di tale primo pagamento entro 14 giorni dall'addebito, per qualsiasi motivo. Inviate una «Nuova richiesta» dalla pagina Account oppure scrivete a ${SUPPORT_EMAIL}: procederemo al rimborso insieme a Paddle. Questo diritto di 14 giorni si applica solo al primo pagamento; i rinnovi successivi sono disciplinati dalle sezioni seguenti.`] },
       {
         h: 'Disdire un abbonamento a pagamento',
         p: [
