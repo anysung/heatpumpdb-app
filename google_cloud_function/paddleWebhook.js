@@ -136,6 +136,103 @@ function signingSecrets() {
   return [process.env.PADDLE_WEBHOOK_SECRET, process.env.PADDLE_WEBHOOK_SECRET_PREVIOUS].filter(Boolean);
 }
 
+// ── Source-IP allowlist (defence in depth, NOT the authentication) ────────────
+/**
+ * Paddle publishes the IPs its webhooks originate from at
+ * https://api.paddle.com/ips (`data.ipv4_cidrs`, currently /32s). We allowlist
+ * those and reject anything else — a cheap first-line filter in front of the
+ * expensive HMAC check. It is explicitly NOT a replacement for the signature:
+ * the signature is what authenticates, this only trims obvious noise.
+ *
+ * The list is the SOURCE OF TRUTH and Paddle can change it, so it is fetched at
+ * runtime and cached — never hardcoded here. Two deliberate fail-OPEN cases, so
+ * this layer can never be the thing that silently drops an authentic event:
+ *   - the endpoint is unreachable / malformed  → allow (signature still gates);
+ *   - running against the Firestore emulator    → allow (tests build bare req
+ *     objects with no client IP, and there is no Paddle front end in front).
+ */
+const PADDLE_IPS_URL = 'https://api.paddle.com/ips';
+const IP_CACHE_TTL_MS = 60 * 60 * 1000; // refresh hourly; the list changes rarely
+let ipCache = { cidrs: null, fetchedAt: 0, inflight: null };
+
+async function paddleAllowedCidrs() {
+  const now = Date.now();
+  if (ipCache.cidrs && now - ipCache.fetchedAt < IP_CACHE_TTL_MS) return ipCache.cidrs;
+  if (ipCache.inflight) return ipCache.inflight;
+  ipCache.inflight = (async () => {
+    try {
+      const resp = await fetch(PADDLE_IPS_URL, { method: 'GET' });
+      if (!resp.ok) throw new Error(`status ${resp.status}`);
+      const body = await resp.json();
+      const cidrs = body && body.data && Array.isArray(body.data.ipv4_cidrs) ? body.data.ipv4_cidrs : null;
+      if (!cidrs || !cidrs.length) throw new Error('no ipv4_cidrs in response');
+      ipCache = { cidrs, fetchedAt: Date.now(), inflight: null };
+      return cidrs;
+    } catch (err) {
+      // Keep any previously cached list (stale is better than nothing); a null
+      // list makes the caller fail open.
+      ipCache.inflight = null;
+      console.warn(JSON.stringify({ severity: 'WARNING', msg: 'paddle-ips-fetch-failed', error: err.message }));
+      return ipCache.cidrs;
+    }
+  })();
+  return ipCache.inflight;
+}
+
+function ipv4ToInt(ip) {
+  const m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(String(ip).trim());
+  if (!m) return null;
+  let n = 0;
+  for (let i = 1; i <= 4; i++) {
+    const octet = Number(m[i]);
+    if (octet > 255) return null;
+    n = n * 256 + octet;
+  }
+  return n >>> 0;
+}
+
+/** IPv4-only CIDR membership. A bare address is treated as /32. */
+function ipInCidr(ip, cidr) {
+  const [range, bitsRaw] = String(cidr).split('/');
+  const bits = bitsRaw === undefined ? 32 : Number(bitsRaw);
+  const ipInt = ipv4ToInt(ip);
+  const rangeInt = ipv4ToInt(range);
+  if (ipInt === null || rangeInt === null || !Number.isInteger(bits) || bits < 0 || bits > 32) return false;
+  if (bits === 0) return true;
+  const mask = (0xffffffff << (32 - bits)) >>> 0;
+  return ((ipInt & mask) >>> 0) === ((rangeInt & mask) >>> 0);
+}
+
+/**
+ * Candidate client IPs for the request. X-Forwarded-For entries are included as
+ * well as req.ip / the socket address; IPv4-mapped IPv6 (`::ffff:1.2.3.4`) is
+ * normalised. We match against ANY candidate rather than trying to single out
+ * "the real one": the exact XFF position is platform-specific, and a false
+ * REJECT here would silently break billing, which is far worse than this filter
+ * being permissive — the signature is the real gate behind it.
+ */
+function candidateClientIps(req) {
+  const ips = [];
+  const xff = typeof req.get === 'function' ? req.get('x-forwarded-for') : (req.headers && req.headers['x-forwarded-for']);
+  if (xff) for (const part of String(xff).split(',')) ips.push(part.trim());
+  if (req.ip) ips.push(String(req.ip).trim());
+  if (req.socket && req.socket.remoteAddress) ips.push(String(req.socket.remoteAddress).trim());
+  return ips.map((ip) => ip.replace(/^::ffff:/i, '')).filter(Boolean);
+}
+
+async function paddleSourceAllowed(req) {
+  if (process.env.FIRESTORE_EMULATOR_HOST) return { allowed: true, reason: 'emulator' };
+  const cidrs = await paddleAllowedCidrs();
+  if (!cidrs || !cidrs.length) return { allowed: true, reason: 'allowlist-unavailable' };
+  const candidates = candidateClientIps(req);
+  for (const ip of candidates) {
+    for (const cidr of cidrs) {
+      if (ipInCidr(ip, cidr)) return { allowed: true, reason: 'ip-allowed' };
+    }
+  }
+  return { allowed: false, reason: 'ip-not-allowed', candidates };
+}
+
 // ── Price id → plan/term ─────────────────────────────────────────────────────
 
 /**
@@ -725,6 +822,16 @@ async function paddleWebhook(req, res) {
     return;
   }
 
+  // Source-IP allowlist — a cheap filter in front of the signature check. Fails
+  // OPEN if Paddle's ip list can't be fetched, so it can never be the thing that
+  // drops an authentic event; the HMAC below is the actual authentication.
+  const source = await paddleSourceAllowed(req);
+  if (!source.allowed) {
+    console.warn(JSON.stringify({ severity: 'WARNING', msg: 'paddle-ip-rejected', candidates: source.candidates }));
+    res.status(403).send('forbidden');
+    return;
+  }
+
   // rawBody is the exact bytes Paddle signed. Anything derived from req.body has
   // already been through JSON.parse and cannot reproduce the signature.
   const rawBody = req.rawBody;
@@ -801,4 +908,7 @@ module.exports = {
   EVENT_RANK,
   SEAT_LIMITS,
   MAX_SIGNATURE_AGE_MS,
+  // Source-IP allowlist (defence in depth) — exported for tests, no network.
+  ipInCidr,
+  candidateClientIps,
 };
