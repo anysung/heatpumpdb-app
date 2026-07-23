@@ -29,4 +29,4 @@ export const REGISTRATION_OPEN =
   (import.meta.env.DEV && import.meta.env.VITE_REGISTRATION_OPEN === 'true');
 
 /** Expected reopening date, shown to visitors. Informational only. */
-export const REGISTRATION_REOPEN_DATE = '2026-07-24';
+export const REGISTRATION_REOPEN_DATE = '2026-08-03';
