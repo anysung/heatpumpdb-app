@@ -17,6 +17,8 @@ import { LegalPage, LegalFooter } from './legal/LegalPage';
 import { PublicPricingPage } from './pricing/PublicPricingPage';
 import { SignupForm, SignupFormValues } from './components/auth/SignupForm';
 import { previewUserPatch } from './hpiq/devPreview';
+import { AdminLogin } from './components/admin/AdminLogin';
+import { AdminLang, loadAdminLang, saveAdminLang } from './components/admin/adminI18n';
 
 // Unified operations console build (own hosting site, all markets, admin-only).
 const IS_ADMIN_BUILD = PUBLIC_ENV.APP_MODE === 'admin';
@@ -44,6 +46,10 @@ const App: React.FC = () => {
   const [authLoading, setAuthLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
+  // Operations-console language (EN | KO only) — separate from the country
+  // Language type, persisted so the choice carries into the dashboard.
+  const [adminLang, setAdminLangState] = useState<AdminLang>(loadAdminLang());
+  const setAdminLang = (l: AdminLang) => { setAdminLangState(l); saveAdminLang(l); };
 
   const [fullDatabase, setFullDatabase] = useState<HeatPumpDatabase | null>(null);
   // Dataset download failure (Storage/network/access layer) — surfaced as a
@@ -447,8 +453,20 @@ const App: React.FC = () => {
     );
   }
   if (currentView === 'LOGIN') {
+    // Operations console (heatpumpdb-hub): its own EN|KO sign-in, no country
+    // chrome, no social/sign-up — the console is admin-only.
+    if (IS_ADMIN_BUILD) {
+      return (
+        <AdminLogin
+          email={loginEmail} setEmail={setLoginEmail}
+          password={loginPass} setPassword={setLoginPass}
+          onSubmit={handleLogin} isLoading={isLoading}
+          lang={adminLang} setLang={setAdminLang}
+        />
+      );
+    }
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
         {termsModal}
         <GlassCard className="w-full max-w-md p-8 hp-fade-up">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
@@ -492,7 +510,7 @@ const App: React.FC = () => {
   }
   if (isInvite && !currentUser) {
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
         <GlassCard className="w-full max-w-xl p-8 hp-fade-up" >
           <h2 className="text-2xl font-bold text-white mb-1" data-testid="invite-title">{t.invTitle}</h2>
           <p className="text-white/50 text-sm mb-6">{t.invSub}</p>
@@ -513,7 +531,7 @@ const App: React.FC = () => {
       { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
     );
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
         <GlassCard className="w-full max-w-md p-10 text-center hp-fade-up">
           <div data-testid="registration-paused">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
@@ -534,7 +552,7 @@ const App: React.FC = () => {
 
   if (currentView === 'SIGNUP') {
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage}>
         <GlassCard className="w-full max-w-2xl p-8 hp-fade-up">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
           <h2 className="text-2xl font-bold text-white mb-1">{t.createAccount}</h2>

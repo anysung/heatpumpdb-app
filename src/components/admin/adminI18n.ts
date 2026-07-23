@@ -19,6 +19,20 @@ export const saveAdminLang = (lang: AdminLang): void => {
 const EN = {
   console: 'Operations Console',
   logout: 'Log out',
+  // Admin sign-in screen (EN | KO only — never German; see market.ts).
+  login: {
+    title: 'Sign in',
+    subtitle: 'Administrator access only.',
+    email: 'Email',
+    password: 'Password',
+    signIn: 'Sign in',
+    signingIn: 'Signing in…',
+    forgot: 'Forgot password?',
+    privacy: 'Privacy Policy',
+    terms: 'Terms of Use',
+    refund: 'Refund Policy',
+    imprint: 'Legal Notice',
+  },
   // Sidebar
   menuOverview: 'Overview',
   menuMarkets: 'MARKETS',
@@ -150,6 +164,19 @@ const EN = {
 const KO: typeof EN = {
   console: '운영 콘솔',
   logout: '로그아웃',
+  login: {
+    title: '로그인',
+    subtitle: '관리자 전용 접근입니다.',
+    email: '이메일',
+    password: '비밀번호',
+    signIn: '로그인',
+    signingIn: '로그인 중…',
+    forgot: '비밀번호를 잊으셨나요?',
+    privacy: '개인정보 처리방침',
+    terms: '이용약관',
+    refund: '환불 정책',
+    imprint: '법적 고지',
+  },
   menuOverview: '대시보드',
   menuMarkets: '국가별 관리',
   menuBilling: '구독 · 결제',
