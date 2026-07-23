@@ -103,12 +103,16 @@ export const LegalFooter: React.FC<{ language: Language; current?: LegalDoc; dar
   <div
     style={{
       borderTop: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid #e8e8ed',
-      padding: '18px 24px',
-      display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center',
-      fontSize: 12.5,
+      padding: '14px 6px',
+      display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center',
+      fontSize: 10,
     }}
   >
-    <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', justifyContent: 'center' }}>
+    {/* Small font + tight gap so all four fit ONE row on the login/signup card
+        (verified for German, the longest set). flexWrap 'wrap' + per-link nowrap:
+        stays one line where there's room, degrades to a compact wrap on a phone
+        instead of overflowing — never breaks a label mid-word. */}
+    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', maxWidth: '100%' }}>
       {(Object.keys(LEGAL_ROUTES) as LegalDoc[]).map(d => (
         <a
           key={d}
@@ -117,6 +121,7 @@ export const LegalFooter: React.FC<{ language: Language; current?: LegalDoc; dar
             color: d === current ? (dark ? '#fff' : '#1d1d1f') : dark ? 'rgba(255,255,255,0.55)' : '#7a7a7a',
             textDecoration: 'none',
             fontWeight: d === current ? 600 : 400,
+            whiteSpace: 'nowrap',
           }}
         >
           {LEGAL_NAV[language][d]}

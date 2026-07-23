@@ -479,8 +479,12 @@ export const AuthShell: React.FC<{
   t: any;
   language: Language;
   setLanguage: (l: Language) => void;
+  /** When provided, a compact "Admin" button appears in the header next to the
+   *  language pill. Passed on the login/signup shells only — the landing page
+   *  omits it so its entry card stays clean (admin access moved here Jul 2026). */
+  onAdminAccess?: () => void;
   children: React.ReactNode;
-}> = ({ t, language, setLanguage, children }) => (
+}> = ({ t, language, setLanguage, onAdminAccess, children }) => (
   <div
     className="min-h-screen relative overflow-hidden text-white font-sans flex flex-col"
     style={{ background: `radial-gradient(120% 100% at 30% 20%, ${BG.baseMid} 0%, ${BG.base} 55%, ${BG.baseDeep} 100%)` }}
@@ -501,7 +505,19 @@ export const AuthShell: React.FC<{
         <Wordmark />
         <MarketBadge t={t} />
       </div>
-      <LanguagePill language={language} setLanguage={setLanguage} />
+      {/* Language pill, then a small gap, then the Admin entrance (login/signup
+          only). The gap-3 flex row shifts the pill left to make room. */}
+      <div className="flex items-center gap-3">
+        <LanguagePill language={language} setLanguage={setLanguage} />
+        {onAdminAccess && (
+          <button
+            onClick={onAdminAccess}
+            className="px-3 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur text-xs font-semibold text-white/55 hover:text-white hover:border-white/30 transition-colors"
+          >
+            Admin
+          </button>
+        )}
+      </div>
     </header>
 
     {/* items-start + small top padding keeps content high so the bottom

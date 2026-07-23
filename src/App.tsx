@@ -435,23 +435,20 @@ const App: React.FC = () => {
                 {VIEW_PRICING[language]} ›
               </a>
             </div>
-            <div className="mt-6 text-center">
-              <button onClick={handleAdminAccess} className="text-white/30 text-xs hover:text-white/70 underline transition-colors">
-                {t.adminAccess}
-              </button>
-            </div>
+            {/* Admin access + legal links are intentionally NOT on the landing
+                page — they live on the login/signup pages (header Admin button +
+                their footer). The legal PAGES stay public at /terms etc.; Paddle
+                needs them publicly reachable and linked, which the auth pages do. */}
           </GlassCard>
           </div>
         </div>
-        {/* Public legal links on the entry page — reachable without any login */}
-        <LegalFooter language={language} dark />
         </div>
       </AuthShell>
     );
   }
   if (currentView === 'LOGIN') {
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
         {termsModal}
         <GlassCard className="w-full max-w-md p-8 hp-fade-up">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
@@ -495,7 +492,7 @@ const App: React.FC = () => {
   }
   if (isInvite && !currentUser) {
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
         <GlassCard className="w-full max-w-xl p-8 hp-fade-up" >
           <h2 className="text-2xl font-bold text-white mb-1" data-testid="invite-title">{t.invTitle}</h2>
           <p className="text-white/50 text-sm mb-6">{t.invSub}</p>
@@ -516,7 +513,7 @@ const App: React.FC = () => {
       { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
     );
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
         <GlassCard className="w-full max-w-md p-10 text-center hp-fade-up">
           <div data-testid="registration-paused">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
@@ -537,7 +534,7 @@ const App: React.FC = () => {
 
   if (currentView === 'SIGNUP') {
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage} onAdminAccess={handleAdminAccess}>
         <GlassCard className="w-full max-w-2xl p-8 hp-fade-up">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
           <h2 className="text-2xl font-bold text-white mb-1">{t.createAccount}</h2>
