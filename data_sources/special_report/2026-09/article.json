@@ -1,0 +1,442 @@
+{
+ "_readme": "Special Report edition content store. The owner writes the report (report.html, self-contained, 5 languages) and the English article pack (article-source-en.md); this file is the PUBLISHED copy, one object per UI language, and is the review point for what goes on the sites. Figures are transcribed from report-contents.md verbatim — never re-derived, never rounded. Build: scripts/build-special-report.mjs.",
+ "edition": "2026-09",
+ "published": "2026-09-08",
+ "reportFile": "report.html",
+ "reportPages": 14,
+ "reportLangs": [
+  "en",
+  "de",
+  "fr",
+  "pl",
+  "it"
+ ],
+ "downloadName": "HeatPumpDB-Europe-Special-Report-2026-09.html",
+ "copy": {
+  "en": {
+   "eyebrow": "Special Report · September 2026",
+   "title": "Same Heatpump. Why you pay more?",
+   "standfirst": "One product, five countries — an expense gap that engineering cannot explain.",
+   "lead": [
+    "A four-person household in an existing house needs roughly 8 kW of heating with hot water. That requirement does not change at a border. This report asks what does.",
+    "We chose one product — Daikin Altherma 3 R F, 8 kW with a 230-litre cylinder, Europe's highest-volume air/water heat pump, neither a budget import nor a premium line — and followed it through five markets. Our own catalogue shows it registered in all five with the same specification: 8.3 kW rated, SCOP 4.95, R32, 56 dB(A). From there, every euro comes from a named source.",
+    "The household's bill runs from €11,829 in Britain to €34,053 in Germany — 2.9 times. Of the €22,224 between them, the heat pump accounts for €37. Installation accounts for €16,750; VAT for €5,437."
+   ],
+   "bulletsTitle": "One heat pump, five bills",
+   "bullets": [
+    {
+     "cc": "GB",
+     "label": "United Kingdom",
+     "text": "Heat pump €7,579 · installation €4,250 · VAT 0% · the household pays €11,829."
+    },
+    {
+     "cc": "PL",
+     "label": "Poland",
+     "text": "Heat pump €8,630 · installation €5,500 · VAT 8% · €15,260."
+    },
+    {
+     "cc": "IT",
+     "label": "Italy",
+     "text": "Heat pump €6,656 · installation €6,980 · VAT 10% · €15,000."
+    },
+    {
+     "cc": "FR",
+     "label": "France",
+     "text": "Heat pump €6,352 · installation €9,500 · VAT 5.5% · €16,724."
+    },
+    {
+     "cc": "DE",
+     "label": "Germany",
+     "text": "Heat pump €7,616 · installation €21,000 · VAT 19% · €34,053."
+    }
+   ],
+   "sections": [
+    {
+     "h": "The heat pump costs the same. The installation does not.",
+     "p": [
+      "Net of tax, the identical heat pump costs between €6,352 and €8,630 across the five markets — a spread of ±18%. Germany sits in the middle. There is no German equipment premium on this product.",
+      "Installation is another matter: €4,250 in Britain, €21,000 in Germany, a factor of 4.9. Germany's installation cost alone exceeds the complete installed system in every other market. The reference cost analysis (Miara, heatpumpswatch.org, February 2026) itemises why: 110 technician hours against 36 for a gas boiler, a poured foundation, a three-phase connection with grid-control hardware, water treatment, balancing and paperwork. The items are real. Their sum is what a German household is asked to pay."
+     ]
+    },
+    {
+     "h": "Tax, and the shape of support",
+     "p": [
+      "Germany is the only market of the five at the full standard VAT rate. Britain applies zero; France 5.5%; Italy 10%; Poland 8% — unless the outdoor unit stands outside the building, in which case 23%. An air/water heat pump's outdoor unit is outside by definition.",
+      "After support, the gap does not close. A British household with the fixed £7,500 Boiler Upgrade Scheme grant is left with roughly €3,100. A German household at 50% funding is left with roughly €20,000; at the maximum 70%, roughly €14,500. A percentage of the invoice rewards a higher invoice. A fixed sum does not."
+     ]
+    },
+    {
+     "h": "What we found that the reference could not",
+     "p": [
+      "The reference analysis attributes part of Germany's price to premium brands dominating the market. Our register says otherwise: in Germany's 8–10 kW class, Asian manufacturers outnumber European premium brands two to one — 426 registered models against 203. The cheaper heat pump is not missing from Germany. It is registered, BAFA-listed and eligible at the same net price as anywhere else. It is a fact about what gets fitted, not about what can be bought."
+     ]
+    },
+    {
+     "h": "Five proposals — and one of our own",
+     "p": [
+      "Germany: change the form of the subsidy, not the size — a fixed amount per kW removes the incentive to quote high at no extra cost; apply the reduced VAT rate every neighbour applies; standardise the grid-integration package. United Kingdom: the cost side is solved; July's record 8,150 applications against 2,500 redemptions says the constraint is installer throughput, and the 0% VAT reverting to 5% in March 2027 is a scheduled price rise at the wrong moment. France: the September quality tightening is right; without certification throughput it lowers the count rather than raising the floor. Poland: fix one sentence — taxing the technology's normal configuration at three times the rate of the exception is drafting, not policy. Italy: Europe's second-largest market has no authoritative installed-cost series; policy is set against an impression.",
+      "And ours: the same heat pump at the same price is registered in every one of these markets. Put the register in front of the household before the quote arrives. It is the cheapest intervention available and needs no legislation. This is also what HeatPump DB does, and readers should weigh the proposal knowing that."
+     ]
+    }
+   ],
+   "metaTitle": "Same Heatpump. Why you pay more? | HeatPump DB Special Report, September 2026",
+   "metaDesc": "One Daikin 8 kW heat pump followed through Germany, the UK, France, Poland and Italy: identical heat pump, €11,829 to €34,053 installed. Where the 2.9× gap comes from and what each market should change. Interactive, five languages, free.",
+   "byline": "HeatPump DataBase Europe Editorial Team",
+   "openLabel": "Open the interactive report",
+   "downloadLabel": "Download the report",
+   "downloadNote": "Single self-contained HTML file — opens in any browser, works offline. Use the report's own “Print / Save PDF” button to keep a PDF copy.",
+   "seriesTitle": "Special Reports",
+   "seriesSub": "Monthly European market intelligence from HeatPump DataBase Europe.",
+   "backLabel": "All Special Reports",
+   "editionLabel": "September 2026 edition",
+   "langNote": "The report itself can be read in English, German, French, Polish and Italian — switch language inside the report.",
+   "ctaTitle": "Read the full interactive Special Report",
+   "ctaSub": "14 pages · one product followed through five markets · sources on every page · English, German, French, Polish and Italian.",
+   "productCta": {
+    "h": "The data behind the numbers",
+    "p": "Every heat pump model with SCOP, sound power, refrigerant and local listing status — searchable, comparable, printable as a quote-ready data sheet.",
+    "b": "Join free — 15 days, no card"
+   }
+  },
+  "de": {
+   "eyebrow": "Special Report · September 2026",
+   "title": "Gleiche Wärmepumpe. Warum zahlen Sie mehr?",
+   "standfirst": "Ein Produkt, fünf Länder — eine Kostenlücke, die die Technik nicht erklärt.",
+   "lead": [
+    "Ein Vier-Personen-Haushalt im Bestandshaus braucht rund 8 kW Heizleistung mit Warmwasser. Diese Anforderung ändert sich an keiner Grenze. Dieser Report fragt, was sich ändert.",
+    "Wir haben ein Produkt gewählt — Daikin Altherma 3 R F, 8 kW mit 230-Liter-Speicher, die meistverkaufte Luft/Wasser-Wärmepumpe Europas, weder Billigimport noch Premiumlinie — und es durch fünf Märkte verfolgt. Unser Katalog zeigt es in allen fünf Registern mit identischer Spezifikation: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Von da an stammt jeder Euro aus einer benannten Quelle.",
+    "Die Rechnung des Haushalts reicht von 11.829 € in Großbritannien bis 34.053 € in Deutschland — das 2,9-Fache. Von den 22.224 € dazwischen entfallen 37 € auf die Wärmepumpe. 16.750 € auf die Installation, 5.437 € auf die Mehrwertsteuer."
+   ],
+   "bulletsTitle": "Eine Wärmepumpe, fünf Rechnungen",
+   "bullets": [
+    {
+     "cc": "GB",
+     "label": "Großbritannien",
+     "text": "Wärmepumpe 7.579 € · Installation 4.250 € · MwSt 0 % · der Haushalt zahlt 11.829 €."
+    },
+    {
+     "cc": "PL",
+     "label": "Polen",
+     "text": "Wärmepumpe 8.630 € · Installation 5.500 € · MwSt 8 % · 15.260 €."
+    },
+    {
+     "cc": "IT",
+     "label": "Italien",
+     "text": "Wärmepumpe 6.656 € · Installation 6.980 € · MwSt 10 % · 15.000 €."
+    },
+    {
+     "cc": "FR",
+     "label": "Frankreich",
+     "text": "Wärmepumpe 6.352 € · Installation 9.500 € · MwSt 5,5 % · 16.724 €."
+    },
+    {
+     "cc": "DE",
+     "label": "Deutschland",
+     "text": "Wärmepumpe 7.616 € · Installation 21.000 € · MwSt 19 % · 34.053 €."
+    }
+   ],
+   "sections": [
+    {
+     "h": "Die Wärmepumpe kostet überall gleich viel. Die Installation nicht.",
+     "p": [
+      "Netto kostet die identische Wärmepumpe in den fünf Märkten zwischen 6.352 € und 8.630 € — eine Streuung von ±18 %. Deutschland liegt in der Mitte. Einen deutschen Geräteaufschlag gibt es bei diesem Produkt nicht.",
+      "Die Installation ist eine andere Sache: 4.250 € in Großbritannien, 21.000 € in Deutschland — Faktor 4,9. Allein die deutschen Installationskosten übersteigen in jedem anderen Markt die komplette installierte Anlage. Die Referenzanalyse (Miara, heatpumpswatch.org, Februar 2026) schlüsselt auf, warum: 110 Monteurstunden gegenüber 36 für einen Gaskessel, ein gegossenes Fundament, ein Drehstromanschluss mit §14a-Steuerbox, Wasseraufbereitung, hydraulischer Abgleich und Förderdokumentation. Die Posten sind real. Ihre Summe ist das, was ein deutscher Haushalt zahlen soll."
+     ]
+    },
+    {
+     "h": "Steuer — und die Form der Förderung",
+     "p": [
+      "Deutschland ist als einziger der fünf Märkte beim vollen Regelsteuersatz. Großbritannien null; Frankreich 5,5 %; Italien 10 %; Polen 8 % — außer das Außengerät steht außerhalb des Gebäudes, dann 23 %. Das Außengerät einer Luft/Wasser-Wärmepumpe steht per Definition außerhalb.",
+      "Nach der Förderung schließt sich die Lücke nicht. Ein britischer Haushalt mit dem festen Zuschuss von 7.500 £ behält rund 3.100 € Eigenanteil. Ein deutscher Haushalt mit 50 % Förderung rund 20.000 €; mit maximal 70 % rund 14.500 €. Ein Prozentsatz der Rechnung belohnt eine höhere Rechnung. Ein Festbetrag tut das nicht."
+     ]
+    },
+    {
+     "h": "Was wir gefunden haben, was die Referenz nicht konnte",
+     "p": [
+      "Die Referenzanalyse führt einen Teil des deutschen Preisniveaus auf marktbeherrschende Premiummarken zurück. Unser Register sagt etwas anderes: In der deutschen 8–10-kW-Klasse stehen asiatischen Herstellern doppelt so viele registrierte Modelle zu wie europäischen Premiummarken — 426 gegen 203. Die günstigere Wärmepumpe fehlt in Deutschland nicht. Sie ist registriert, BAFA-gelistet und förderfähig, zum gleichen Nettopreis wie überall. Es ist eine Tatsache über das, was eingebaut wird — nicht über das, was gekauft werden kann."
+     ]
+    },
+    {
+     "h": "Fünf Vorschläge — und einer von uns",
+     "p": [
+      "Deutschland: die Form der Förderung ändern, nicht die Höhe — ein Festbetrag pro kW nimmt den Anreiz zum hohen Angebot, ohne einen Euro mehr zu kosten; den ermäßigten Steuersatz anwenden, den jeder Nachbar anwendet; das §14a-Paket standardisieren. Großbritannien: die Kostenseite ist gelöst; 8.150 Anträge gegen 2.500 eingelöste Gutscheine im Juli sagen, dass die Installationskapazität die Grenze ist — und die Rückkehr von 0 auf 5 % Mehrwertsteuer im März 2027 ist eine geplante Preiserhöhung zum falschen Zeitpunkt. Frankreich: die Qualitätsverschärfung vom September ist richtig; ohne Zertifizierungskapazität senkt sie die Zahl statt das Niveau. Polen: einen Satz korrigieren — die Normalkonfiguration der Technik mit dem dreifachen Satz der Ausnahme zu besteuern, ist Redaktion, nicht Politik. Italien: Europas zweitgrößter Markt hat keine belastbare Kostenstatistik; Politik wird nach Eindruck gemacht.",
+      "Und unserer: Die gleiche Wärmepumpe zum gleichen Preis ist in jedem dieser Märkte registriert. Das Register vor dem Angebot vor den Haushalt zu stellen, ist die günstigste verfügbare Maßnahme und braucht kein Gesetz. Das ist auch, was HeatPump DB tut — Leser sollten den Vorschlag in diesem Wissen abwägen."
+     ]
+    }
+   ],
+   "metaTitle": "Gleiche Wärmepumpe. Warum zahlen Sie mehr? | HeatPump DB Special Report, September 2026",
+   "metaDesc": "Eine Daikin-Wärmepumpe mit 8 kW durch Deutschland, Großbritannien, Frankreich, Polen und Italien verfolgt: identische Wärmepumpe, 11.829 € bis 34.053 € installiert. Woher die 2,9-fache Lücke kommt und was jeder Markt ändern sollte. Interaktiv, fünf Sprachen, kostenlos.",
+   "byline": "HeatPump DataBase Europe Redaktion",
+   "openLabel": "Interaktiven Report öffnen",
+   "downloadLabel": "Report herunterladen",
+   "downloadNote": "Eine einzelne, in sich geschlossene HTML-Datei — öffnet in jedem Browser, funktioniert offline. Über den Button „Drucken / PDF speichern“ im Report lässt sich eine PDF-Kopie sichern.",
+   "seriesTitle": "Special Reports",
+   "seriesSub": "Monatliche europäische Marktanalysen von HeatPump DataBase Europe.",
+   "backLabel": "Alle Special Reports",
+   "editionLabel": "Ausgabe September 2026",
+   "langNote": "Der Report selbst ist auf Englisch, Deutsch, Französisch, Polnisch und Italienisch lesbar — Sprache im Report umschalten.",
+   "ctaTitle": "Den vollständigen interaktiven Special Report lesen",
+   "ctaSub": "14 Seiten · ein Produkt durch fünf Märkte verfolgt · Quellen auf jeder Seite · Englisch, Deutsch, Französisch, Polnisch, Italienisch.",
+   "productCta": {
+    "h": "Die Daten hinter den Zahlen",
+    "p": "Jedes Wärmepumpenmodell mit SCOP, Schallleistung, Kältemittel und lokalem Listungsstatus — durchsuchbar, vergleichbar, als angebotsfertiges Datenblatt druckbar.",
+    "b": "Kostenlos starten — 15 Tage, ohne Karte"
+   }
+  },
+  "fr": {
+   "eyebrow": "Rapport spécial · Septembre 2026",
+   "title": "Même pompe à chaleur. Pourquoi payez-vous plus ?",
+   "standfirst": "Un produit, cinq pays — un écart de coût que la technique n’explique pas.",
+   "lead": [
+    "Un ménage de quatre personnes dans une maison existante a besoin d’environ 8 kW de chauffage avec eau chaude. Ce besoin ne change pas à la frontière. Ce rapport demande ce qui change.",
+    "Nous avons choisi un produit — Daikin Altherma 3 R F, 8 kW avec ballon de 230 litres, la pompe à chaleur air/eau la plus vendue d’Europe, ni import à bas coût ni gamme premium — et l’avons suivi dans cinq marchés. Notre catalogue le montre inscrit dans les cinq registres avec la même spécification : 8,3 kW, SCOP 4,95, R32, 56 dB(A). À partir de là, chaque euro provient d’une source nommée.",
+    "La facture du ménage va de 11 829 € en Grande-Bretagne à 34 053 € en Allemagne — 2,9 fois. Sur les 22 224 € d’écart, la pompe à chaleur compte pour 37 €. L’installation pour 16 750 € ; la TVA pour 5 437 €."
+   ],
+   "bulletsTitle": "Une pompe à chaleur, cinq factures",
+   "bullets": [
+    {
+     "cc": "GB",
+     "label": "Royaume-Uni",
+     "text": "Pompe à chaleur 7 579 € · installation 4 250 € · TVA 0 % · le ménage paie 11 829 €."
+    },
+    {
+     "cc": "PL",
+     "label": "Pologne",
+     "text": "Pompe à chaleur 8 630 € · installation 5 500 € · TVA 8 % · 15 260 €."
+    },
+    {
+     "cc": "IT",
+     "label": "Italie",
+     "text": "Pompe à chaleur 6 656 € · installation 6 980 € · TVA 10 % · 15 000 €."
+    },
+    {
+     "cc": "FR",
+     "label": "France",
+     "text": "Pompe à chaleur 6 352 € · installation 9 500 € · TVA 5,5 % · 16 724 €."
+    },
+    {
+     "cc": "DE",
+     "label": "Allemagne",
+     "text": "Pompe à chaleur 7 616 € · installation 21 000 € · TVA 19 % · 34 053 €."
+    }
+   ],
+   "sections": [
+    {
+     "h": "La pompe à chaleur coûte le même prix. L’installation, non.",
+     "p": [
+      "Hors taxes, la pompe à chaleur identique coûte entre 6 352 € et 8 630 € selon le marché — une dispersion de ±18 %. L’Allemagne est au milieu. Il n’y a pas de surcoût allemand sur ce produit.",
+      "L’installation, c’est autre chose : 4 250 € en Grande-Bretagne, 21 000 € en Allemagne — un facteur 4,9. Le seul coût de pose allemand dépasse le système complet installé dans chacun des autres marchés. L’analyse de référence (Miara, heatpumpswatch.org, février 2026) détaille pourquoi : 110 heures de technicien contre 36 pour une chaudière gaz, une dalle coulée, un raccordement triphasé avec boîtier de pilotage réseau, traitement de l’eau, équilibrage, dossiers. Les postes sont réels. Leur somme est ce qu’on demande à un ménage allemand de payer."
+     ]
+    },
+    {
+     "h": "La taxe, et la forme de l’aide",
+     "p": [
+      "L’Allemagne est le seul des cinq marchés au taux normal de TVA. La Grande-Bretagne applique zéro ; la France 5,5 % ; l’Italie 10 % ; la Pologne 8 % — sauf si l’unité extérieure est hors du bâtiment, auquel cas 23 %. L’unité extérieure d’une PAC air/eau est dehors par définition.",
+      "Après aide, l’écart ne se referme pas. Un ménage britannique avec la prime fixe de 7 500 £ conserve environ 3 100 € à sa charge. Un ménage allemand aidé à 50 % conserve environ 20 000 € ; à 70 % au maximum, environ 14 500 €. Un pourcentage de la facture récompense une facture plus élevée. Un montant fixe, non."
+     ]
+    },
+    {
+     "h": "Ce que nous avons trouvé et que la référence ne pouvait pas",
+     "p": [
+      "L’analyse de référence attribue une part du prix allemand à la domination des marques premium. Notre registre dit autre chose : dans la classe 8–10 kW allemande, les fabricants asiatiques comptent deux fois plus de modèles inscrits que les marques premium européennes — 426 contre 203. La pompe à chaleur moins chère ne manque pas en Allemagne. Elle est inscrite, listée BAFA et éligible, au même prix net que partout. C’est un fait sur ce qui est posé, pas sur ce qui peut être acheté."
+     ]
+    },
+    {
+     "h": "Cinq propositions — et une de notre part",
+     "p": [
+      "Allemagne : changer la forme de l’aide, pas son montant — un forfait par kW supprime l’incitation à surfacturer sans coûter un euro de plus ; appliquer le taux réduit que tous les voisins appliquent ; standardiser le paquet §14a. Royaume-Uni : le coût est réglé ; 8 150 demandes contre 2 500 bons utilisés en juillet disent que la contrainte est la capacité d’installation — et le retour de 0 à 5 % de TVA en mars 2027 est une hausse programmée au mauvais moment. France : le durcissement qualité de septembre est juste ; sans capacité de certification il réduit le nombre plutôt que d’élever le niveau. Pologne : corriger une phrase — taxer la configuration normale de la technologie au triple du taux de l’exception relève de la rédaction, pas de la politique. Italie : le deuxième marché européen n’a pas de série de coûts fiable ; la politique se décide sur une impression.",
+      "Et la nôtre : la même pompe à chaleur au même prix est inscrite dans chacun de ces marchés. Mettre le registre sous les yeux du ménage avant le devis est l’intervention la moins coûteuse et ne demande aucune loi. C’est aussi ce que fait HeatPump DB — le lecteur jugera la proposition en le sachant."
+     ]
+    }
+   ],
+   "metaTitle": "Même pompe à chaleur. Pourquoi payez-vous plus ? | Rapport spécial HeatPump DB, septembre 2026",
+   "metaDesc": "Une pompe à chaleur Daikin 8 kW suivie en Allemagne, au Royaume-Uni, en France, en Pologne et en Italie : pompe à chaleur identique, de 11 829 € à 34 053 € installée. D’où vient l’écart de 2,9× et ce que chaque marché devrait changer. Interactif, cinq langues, gratuit.",
+   "byline": "Rédaction HeatPump DataBase Europe",
+   "openLabel": "Ouvrir le rapport interactif",
+   "downloadLabel": "Télécharger le rapport",
+   "downloadNote": "Un seul fichier HTML autonome — s’ouvre dans tout navigateur, fonctionne hors ligne. Utilisez le bouton « Imprimer / Enregistrer en PDF » du rapport pour en garder une copie.",
+   "seriesTitle": "Rapports spéciaux",
+   "seriesSub": "L’intelligence de marché européenne mensuelle de HeatPump DataBase Europe.",
+   "backLabel": "Tous les rapports spéciaux",
+   "editionLabel": "Édition de septembre 2026",
+   "langNote": "Le rapport est lisible en anglais, allemand, français, polonais et italien — changez de langue dans le rapport.",
+   "ctaTitle": "Lire le rapport spécial interactif complet",
+   "ctaSub": "14 pages · un produit suivi dans cinq marchés · sources à chaque page · anglais, allemand, français, polonais et italien.",
+   "productCta": {
+    "h": "Les données derrière les chiffres",
+    "p": "Chaque modèle de pompe à chaleur avec SCOP, puissance acoustique, fluide frigorigène et statut de référencement local — consultable, comparable, imprimable en fiche technique prête pour le devis.",
+    "b": "Essai gratuit — 15 jours, sans carte"
+   }
+  },
+  "pl": {
+   "eyebrow": "Raport specjalny · Wrzesień 2026",
+   "title": "Ta sama pompa ciepła. Dlaczego płacisz więcej?",
+   "standfirst": "Jeden produkt, pięć krajów — różnica w kosztach, której technika nie tłumaczy.",
+   "lead": [
+    "Czteroosobowe gospodarstwo w istniejącym domu potrzebuje około 8 kW mocy grzewczej z ciepłą wodą. Ta potrzeba nie zmienia się na granicy. Ten raport pyta, co się zmienia.",
+    "Wybraliśmy jeden produkt — Daikin Altherma 3 R F, 8 kW z zasobnikiem 230 l, najczęściej sprzedawaną pompę powietrze/woda w Europie, ani tani import, ani linię premium — i prześledziliśmy go na pięciu rynkach. Nasz katalog pokazuje go we wszystkich pięciu rejestrach z tą samą specyfikacją: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Od tego miejsca każde euro pochodzi z nazwanego źródła.",
+    "Rachunek gospodarstwa wynosi od 11 829 € w Wielkiej Brytanii do 34 053 € w Niemczech — 2,9 razy. Z 22 224 € różnicy pompa ciepła odpowiada za 37 €. Montaż za 16 750 €; VAT za 5 437 €."
+   ],
+   "bulletsTitle": "Jedna pompa ciepła, pięć rachunków",
+   "bullets": [
+    {
+     "cc": "GB",
+     "label": "Wielka Brytania",
+     "text": "Pompa ciepła 7 579 € · montaż 4 250 € · VAT 0% · gospodarstwo płaci 11 829 €."
+    },
+    {
+     "cc": "PL",
+     "label": "Polska",
+     "text": "Pompa ciepła 8 630 € · montaż 5 500 € · VAT 8% · 15 260 €."
+    },
+    {
+     "cc": "IT",
+     "label": "Włochy",
+     "text": "Pompa ciepła 6 656 € · montaż 6 980 € · VAT 10% · 15 000 €."
+    },
+    {
+     "cc": "FR",
+     "label": "Francja",
+     "text": "Pompa ciepła 6 352 € · montaż 9 500 € · VAT 5,5% · 16 724 €."
+    },
+    {
+     "cc": "DE",
+     "label": "Niemcy",
+     "text": "Pompa ciepła 7 616 € · montaż 21 000 € · VAT 19% · 34 053 €."
+    }
+   ],
+   "sections": [
+    {
+     "h": "Pompa ciepła kosztuje tyle samo. Montaż — nie.",
+     "p": [
+      "Netto identyczna pompa ciepła kosztuje na pięciu rynkach od 6 352 € do 8 630 € — rozrzut ±18%. Niemcy są pośrodku. Na tym produkcie nie ma niemieckiej marży sprzętowej.",
+      "Montaż to inna sprawa: 4 250 € w Wielkiej Brytanii, 21 000 € w Niemczech — 4,9 razy. Sam niemiecki koszt montażu przewyższa kompletny zainstalowany system na każdym innym rynku. Analiza referencyjna (Miara, heatpumpswatch.org, luty 2026) wylicza dlaczego: 110 roboczogodzin wobec 36 dla kotła gazowego, wylewany fundament, przyłącze trójfazowe ze skrzynką sterowania siecią, uzdatnianie wody, równoważenie, dokumentacja. Pozycje są realne. Ich suma to to, co ma zapłacić niemieckie gospodarstwo."
+     ]
+    },
+    {
+     "h": "Podatek — i kształt wsparcia",
+     "p": [
+      "Niemcy jako jedyne z pięciu rynków stosują pełną stawkę VAT. Wielka Brytania zero; Francja 5,5%; Włochy 10%; Polska 8% — chyba że jednostka zewnętrzna stoi poza budynkiem, wtedy 23%. Jednostka zewnętrzna pompy powietrze/woda z definicji stoi na zewnątrz.",
+      "Po wsparciu luka się nie zamyka. Brytyjskie gospodarstwo ze stałą dotacją 7 500 £ zostaje z około 3 100 €. Niemieckie przy 50% dofinansowania — z około 20 000 €; przy maksymalnych 70% — około 14 500 €. Procent od faktury nagradza wyższą fakturę. Kwota stała — nie."
+     ]
+    },
+    {
+     "h": "Co znaleźliśmy, czego referencja nie mogła",
+     "p": [
+      "Analiza referencyjna przypisuje część niemieckiej ceny dominacji marek premium. Nasz rejestr mówi co innego: w niemieckiej klasie 8–10 kW producenci azjatyccy mają dwa razy więcej zarejestrowanych modeli niż europejskie marki premium — 426 wobec 203. Tańsza pompa ciepła nie brakuje w Niemczech. Jest zarejestrowana, na liście BAFA i kwalifikowalna, w tej samej cenie netto co wszędzie. To fakt o tym, co się montuje — nie o tym, co można kupić."
+     ]
+    },
+    {
+     "h": "Pięć propozycji — i jedna nasza",
+     "p": [
+      "Niemcy: zmienić formę dotacji, nie jej wysokość — stała kwota za kW usuwa zachętę do wysokiej wyceny bez dodatkowego kosztu; zastosować obniżoną stawkę VAT, jak każdy sąsiad; ustandaryzować pakiet §14a. Wielka Brytania: strona kosztowa jest rozwiązana; 8 150 wniosków wobec 2 500 zrealizowanych bonów w lipcu mówi, że ograniczeniem jest przepustowość instalatorów — a powrót z 0 do 5% VAT w marcu 2027 to zaplanowana podwyżka w złym momencie. Francja: wrześniowe zaostrzenie jakościowe jest słuszne; bez przepustowości certyfikacji obniża liczbę zamiast podnosić poziom. Polska: poprawić jedno zdanie — opodatkowanie normalnej konfiguracji technologii trzykrotnie wyższą stawką niż wyjątek to redakcja, nie polityka. Włochy: drugi rynek Europy nie ma wiarygodnej serii kosztów; politykę ustala się na podstawie wrażenia.",
+      "I nasza: ta sama pompa ciepła w tej samej cenie jest zarejestrowana na każdym z tych rynków. Pokazanie rejestru gospodarstwu, zanim przyjdzie oferta, to najtańsza dostępna interwencja i nie wymaga ustawy. To także to, co robi HeatPump DB — czytelnik powinien ważyć propozycję, wiedząc o tym."
+     ]
+    }
+   ],
+   "metaTitle": "Ta sama pompa ciepła. Dlaczego płacisz więcej? | Raport specjalny HeatPump DB, wrzesień 2026",
+   "metaDesc": "Jedna pompa ciepła Daikin 8 kW prześledzona w Niemczech, Wielkiej Brytanii, Francji, Polsce i we Włoszech: identyczna pompa ciepła, od 11 829 € do 34 053 € z montażem. Skąd bierze się 2,9-krotna różnica i co każdy rynek powinien zmienić. Interaktywny, pięć języków, bezpłatny.",
+   "byline": "Zespół redakcyjny HeatPump DataBase Europe",
+   "openLabel": "Otwórz raport interaktywny",
+   "downloadLabel": "Pobierz raport",
+   "downloadNote": "Jeden samodzielny plik HTML — otwiera się w każdej przeglądarce, działa offline. Przycisk „Drukuj / Zapisz PDF” w raporcie pozwala zachować kopię PDF.",
+   "seriesTitle": "Raporty specjalne",
+   "seriesSub": "Comiesięczna europejska analiza rynku od HeatPump DataBase Europe.",
+   "backLabel": "Wszystkie raporty specjalne",
+   "editionLabel": "Wydanie wrzesień 2026",
+   "langNote": "Sam raport można czytać po angielsku, niemiecku, francusku, polsku i włosku — język przełącza się w raporcie.",
+   "ctaTitle": "Przeczytaj pełny interaktywny raport specjalny",
+   "ctaSub": "14 stron · jeden produkt śledzony na pięciu rynkach · źródła na każdej stronie · angielski, niemiecki, francuski, polski i włoski.",
+   "productCta": {
+    "h": "Dane, które stoją za liczbami",
+    "p": "Każdy model pompy ciepła ze SCOP, mocą akustyczną, czynnikiem i lokalnym statusem na liście — do wyszukania, porównania i wydruku jako karta danych gotowa do oferty.",
+    "b": "Dołącz bezpłatnie — 15 dni, bez karty"
+   }
+  },
+  "it": {
+   "eyebrow": "Report speciale · Settembre 2026",
+   "title": "Stessa pompa di calore. Perché paghi di più?",
+   "standfirst": "Un prodotto, cinque paesi — un divario di costo che la tecnica non spiega.",
+   "lead": [
+    "Una famiglia di quattro persone in una casa esistente ha bisogno di circa 8 kW di riscaldamento con acqua calda. Questo bisogno non cambia al confine. Questo report chiede che cosa cambia.",
+    "Abbiamo scelto un prodotto — Daikin Altherma 3 R F, 8 kW con accumulo da 230 litri, la pompa di calore aria/acqua più venduta in Europa, né import economico né linea premium — e lo abbiamo seguito in cinque mercati. Il nostro catalogo lo mostra registrato in tutti e cinque i registri con la stessa specifica: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Da lì in poi, ogni euro viene da una fonte citata.",
+    "Il conto della famiglia va da 11 829 € in Gran Bretagna a 34 053 € in Germania — 2,9 volte. Dei 22 224 € di differenza, la pompa di calore pesa per 37 €. L’installazione per 16 750 €; l’IVA per 5 437 €."
+   ],
+   "bulletsTitle": "Una pompa di calore, cinque conti",
+   "bullets": [
+    {
+     "cc": "GB",
+     "label": "Regno Unito",
+     "text": "Pompa di calore 7 579 € · installazione 4 250 € · IVA 0% · la famiglia paga 11 829 €."
+    },
+    {
+     "cc": "PL",
+     "label": "Polonia",
+     "text": "Pompa di calore 8 630 € · installazione 5 500 € · IVA 8% · 15 260 €."
+    },
+    {
+     "cc": "IT",
+     "label": "Italia",
+     "text": "Pompa di calore 6 656 € · installazione 6 980 € · IVA 10% · 15 000 €."
+    },
+    {
+     "cc": "FR",
+     "label": "Francia",
+     "text": "Pompa di calore 6 352 € · installazione 9 500 € · IVA 5,5% · 16 724 €."
+    },
+    {
+     "cc": "DE",
+     "label": "Germania",
+     "text": "Pompa di calore 7 616 € · installazione 21 000 € · IVA 19% · 34 053 €."
+    }
+   ],
+   "sections": [
+    {
+     "h": "La pompa di calore costa uguale. L’installazione no.",
+     "p": [
+      "Al netto delle tasse la pompa di calore identica costa nei cinque mercati tra 6 352 € e 8 630 € — una dispersione di ±18%. La Germania è nel mezzo. Su questo prodotto non esiste un sovrapprezzo tedesco.",
+      "L’installazione è un’altra cosa: 4 250 € in Gran Bretagna, 21 000 € in Germania — un fattore 4,9. Il solo costo di posa tedesco supera l’intero sistema installato in ogni altro mercato. L’analisi di riferimento (Miara, heatpumpswatch.org, febbraio 2026) spiega perché: 110 ore di tecnico contro 36 per una caldaia a gas, un basamento gettato, un allacciamento trifase con centralina di controllo rete, trattamento dell’acqua, bilanciamento, pratiche. Le voci sono reali. La loro somma è ciò che si chiede di pagare a una famiglia tedesca."
+     ]
+    },
+    {
+     "h": "La tassa, e la forma del sostegno",
+     "p": [
+      "La Germania è l’unico dei cinque mercati all’aliquota IVA ordinaria. La Gran Bretagna applica zero; la Francia 5,5%; l’Italia 10%; la Polonia 8% — a meno che l’unità esterna stia fuori dall’edificio, nel qual caso 23%. L’unità esterna di una pompa aria/acqua sta fuori per definizione.",
+      "Dopo il sostegno il divario non si chiude. Una famiglia britannica con il contributo fisso di 7 500 £ resta con circa 3 100 € a carico. Una famiglia tedesca al 50% resta con circa 20 000 €; al massimo del 70%, circa 14 500 €. Una percentuale della fattura premia una fattura più alta. Un importo fisso no."
+     ]
+    },
+    {
+     "h": "Ciò che abbiamo trovato e che il riferimento non poteva",
+     "p": [
+      "L’analisi di riferimento attribuisce parte del prezzo tedesco al dominio dei marchi premium. Il nostro registro dice altro: nella classe tedesca 8–10 kW i produttori asiatici contano il doppio dei modelli registrati rispetto ai marchi premium europei — 426 contro 203. La pompa di calore meno cara non manca in Germania. È registrata, in lista BAFA e ammissibile, allo stesso prezzo netto di ovunque. È un fatto su ciò che viene installato, non su ciò che si può comprare."
+     ]
+    },
+    {
+     "h": "Cinque proposte — e una nostra",
+     "p": [
+      "Germania: cambiare la forma dell’incentivo, non l’importo — una somma fissa per kW toglie l’incentivo a quotare alto senza costare un euro in più; applicare l’aliquota ridotta che ogni vicino applica; standardizzare il pacchetto §14a. Regno Unito: il lato costi è risolto; 8 150 domande contro 2 500 voucher riscossi a luglio dicono che il vincolo è la capacità installativa — e il ritorno dallo 0 al 5% di IVA nel marzo 2027 è un rincaro programmato nel momento sbagliato. Francia: la stretta qualitativa di settembre è giusta; senza capacità di certificazione riduce il numero invece di alzare il livello. Polonia: correggere una frase — tassare la configurazione normale della tecnologia al triplo dell’eccezione è redazione, non politica. Italia: il secondo mercato d’Europa non ha una serie di costi affidabile; la politica si decide su un’impressione.",
+      "E la nostra: la stessa pompa di calore allo stesso prezzo è registrata in ognuno di questi mercati. Mettere il registro davanti alla famiglia prima del preventivo è l’intervento meno costoso disponibile e non richiede alcuna legge. È anche ciò che fa HeatPump DB — il lettore valuti la proposta sapendolo."
+     ]
+    }
+   ],
+   "metaTitle": "Stessa pompa di calore. Perché paghi di più? | Report speciale HeatPump DB, settembre 2026",
+   "metaDesc": "Una pompa di calore Daikin 8 kW seguita in Germania, Regno Unito, Francia, Polonia e Italia: pompa di calore identica, da 11 829 € a 34 053 € installata. Da dove viene il divario di 2,9× e cosa dovrebbe cambiare ogni mercato. Interattivo, cinque lingue, gratuito.",
+   "byline": "Redazione HeatPump DataBase Europe",
+   "openLabel": "Apri il report interattivo",
+   "downloadLabel": "Scarica il report",
+   "downloadNote": "Un unico file HTML autonomo — si apre in qualsiasi browser, funziona offline. Il pulsante «Stampa / Salva PDF» del report consente di conservarne una copia.",
+   "seriesTitle": "Report speciali",
+   "seriesSub": "Analisi mensile del mercato europeo a cura di HeatPump DataBase Europe.",
+   "backLabel": "Tutti i report speciali",
+   "editionLabel": "Edizione settembre 2026",
+   "langNote": "Il report è leggibile in inglese, tedesco, francese, polacco e italiano — la lingua si cambia all’interno del report.",
+   "ctaTitle": "Leggi il report speciale interattivo completo",
+   "ctaSub": "14 pagine · un prodotto seguito in cinque mercati · fonti in ogni pagina · inglese, tedesco, francese, polacco e italiano.",
+   "productCta": {
+    "h": "I dati dietro i numeri",
+    "p": "Ogni modello di pompa di calore con SCOP, potenza sonora, refrigerante e stato di inserimento locale — ricercabile, confrontabile, stampabile come scheda tecnica pronta per il preventivo.",
+    "b": "Prova gratuita — 15 giorni, senza carta"
+   }
+  }
+ }
+}

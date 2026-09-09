@@ -1,7 +1,37 @@
 {
   "market": "PL",
-  "generatedAt": "2026-09-07T20:34:08.640Z",
+  "generatedAt": "2026-09-09T20:45:26.562Z",
   "items": [
+    {
+      "id": "news-20260908-pl-sr1",
+      "date": "2026-09-08T00:00:00Z",
+      "category": "MARKET",
+      "title": "Ta sama pompa ciepła. Dlaczego płacisz więcej?",
+      "summary": "HeatPump DataBase Europe śledzi jedną pompę ciepła Daikin 8 kW na pięciu rynkach: identyczna pompa ciepła, od 11 829 € do 34 053 € z montażem — i pokazuje, skąd naprawdę bierze się 2,9-krotna różnica.",
+      "body": "HeatPump DataBase Europe opublikowało wrześniowy raport specjalny, który śledzi jedną pompę ciepła — Daikin Altherma 3 R F, 8 kW z zasobnikiem 230 l — w Niemczech, Wielkiej Brytanii, Francji, Polsce i we Włoszech, od półki po gotową instalację.\n\nPompa ciepła jest identyczna we wszystkich pięciu rejestrach krajowych: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Jej cena netto, odczytana u dwóch dostawców na każdym rynku, wynosi od 6 352 € do 8 630 € — rozrzut ±18%. Montaż kosztuje od 4 250 € w Wielkiej Brytanii do 21 000 € w Niemczech. Rachunek gospodarstwa: od 11 829 € do 34 053 €, czyli 2,9 razy.\n\nZ 22 224 € różnicy między brytyjskim a niemieckim gospodarstwem pompa ciepła odpowiada za 37 €. Montaż za 16 750 €; VAT za 5 437 €.\n\nRaport kończy propozycja dla każdego rynku — i jedno nasze ustalenie: w niemieckim rejestrze producenci azjatyccy mają w tej klasie mocy dwa razy więcej modeli niż europejskie marki premium. Tańsza pompa ciepła nie brakuje w Niemczech. Jest zarejestrowana, na liście i kwalifikowalna. Po prostu nie jest tą, którą się montuje.",
+      "titleEn": "Same Heatpump. Why you pay more?",
+      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
+      "imageUrl": "/special-report/img/special-report-2026-09-pl.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": true,
+      "ctaUrl": "https://www.heatpumpdb.pl/special-report/2026-09/",
+      "ctaLabel": "Przeczytaj raport specjalny",
+      "sources": [
+        {
+          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
+          "url": "https://heatpumpswatch.org/"
+        },
+        {
+          "title": "NFOŚiGW — Czyste Powietrze, zmiany od 20 lipca 2026 (HeatPump DB)",
+          "url": "https://www.heatpumpdb.pl/news/news-20260901-pl-001.html"
+        },
+        {
+          "title": "Stawka VAT 8% / 23% dla montażu pompy ciepła — art. 41 ust. 12 ustawy o VAT",
+          "url": "https://www.podatki.gov.pl/"
+        }
+      ]
+    },
     {
       "id": "news-20260816-pl-sr1",
       "date": "2026-08-16T00:00:00Z",
