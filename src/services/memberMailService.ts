@@ -76,3 +76,44 @@ export const listMemberEmails = (uid: string): Promise<{ ok: true; items: SentMe
  *  drift apart. Images come back inlined; a real send still uses attachments. */
 export const previewMemberEmail = (uid: string, body: string): Promise<{ ok: true; html: string }> =>
   call('previewMemberEmail', { uid, body });
+
+/* ── Bulk send ──────────────────────────────────────────────────────────────
+   The browser names an AUDIENCE, never a list of addresses: the server
+   resolves the rule against the accounts, applies the marketing opt-in where
+   the message is marketing, and refuses anything but the three kinds that can
+   sensibly go to a crowd. A run is a batchId and is sent a chunk at a time —
+   this client loops until `done`, so a dropped call is a retry rather than a
+   second copy in someone's inbox. */
+export type BulkAudience = 'marketing' | 'active' | 'trialing' | 'pending';
+export const BULK_AUDIENCES: BulkAudience[] = ['marketing', 'active', 'trialing', 'pending'];
+/** Kinds the server accepts for a bulk run — a suspension or a support reply
+ *  is addressed to one person by definition and is not offered. */
+export const BULK_EMAIL_KINDS: MemberEmailKind[] = ['announcement', 'notice', 'trial'];
+
+export interface BulkAudiencePreview {
+  ok: true;
+  count: number;
+  max: number;
+  chunk: number;
+  sample: string[];
+  skipped: { notInAudience: number; noConsent: number; noEmail: number; duplicate: number; otherMarket: number };
+}
+
+export const previewBulkAudience = (
+  audience: BulkAudience, country?: string,
+): Promise<BulkAudiencePreview> => call('bulkAudience', { audience, country: country ?? null });
+
+export interface BulkChunkResult {
+  ok: true;
+  sent: number; failed: number; remaining: number; total: number;
+  done: boolean; failedEmails: string[];
+}
+
+export const sendBulkChunk = (args: {
+  audience: BulkAudience; country?: string; subject: string; body: string;
+  kind: MemberEmailKind; batchId: string; expectedCount: number;
+}): Promise<BulkChunkResult> => call('bulkMemberEmail', { ...args, country: args.country ?? null });
+
+/** A run id that is readable in the audit log and unique per attempt. */
+export const newBatchId = (): string =>
+  `b${new Date().toISOString().replace(/[-:TZ.]/g, '').slice(0, 14)}-${Math.random().toString(36).slice(2, 8)}`;

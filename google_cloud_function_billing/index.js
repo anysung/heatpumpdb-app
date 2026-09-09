@@ -1639,7 +1639,7 @@ const plainBody = (bodyText) => String(bodyText).split(CTA_MARK).join('').replac
 /** `cta` (optional): { label, url } — see withCta for placement.
  *  The URL must ALSO appear in bodyText, because a reader whose client strips
  *  the button still has to be able to copy the address. */
-function letterhead(bodyText, to, cta) {
+function letterhead(bodyText, to, cta, opts) {
   const INK = '#1d1d1f', MUTED = '#6e6e73', FAINT = '#9a9aa0', LINE = '#ececf0';
   return `<!doctype html>
 <html><head><meta charset="utf-8">
@@ -1678,7 +1678,9 @@ function letterhead(bodyText, to, cta) {
   </td></tr>
   <tr><td style="padding:16px 32px 26px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11.5px;line-height:1.6;color:${FAINT};">
     Germany · France · United Kingdom · Poland · Italy<br>
-    This message was sent to ${esc(to)} about that HeatPump DB account. Replies reach our support team.
+    ${opts && opts.marketing
+      ? `You receive this because you opted in to product news when you created your HeatPump DB account. Reply &ldquo;unsubscribe&rdquo; and we will stop sending it.`
+      : `This message was sent to ${esc(to)} about that HeatPump DB account. Replies reach our support team.`}
   </td></tr>
 </table>
 </td></tr></table>
@@ -1758,6 +1760,196 @@ async function previewMemberEmail(req, res) {
     if (snap.exists && snap.data().email) to = String(snap.data().email);
   }
   return res.status(200).json({ ok: true, html: inlineAssets(letterhead(text, to)) });
+}
+
+
+/* ── Bulk member email ───────────────────────────────────────────────────────
+   One message to many members. Three things separate it from the single send,
+   and each is a rule rather than a convenience.
+
+   THE AUDIENCE IS A NAMED RULE, NOT A LIST FROM THE BROWSER. The console sends
+   an audience KEY; the server resolves it against the accounts. A browser can
+   ask for "everyone who opted in to product news"; it can never hand over a
+   list of addresses, and it can never reach an account the rule excludes —
+   suspended, deleted, or without a usable address.
+
+   MARKETING NEEDS CONSENT; A SERVICE NOTICE DOES NOT. `marketingConsent` is a
+   separate opt-in at signup that is never bundled with the Terms, so an
+   announcement goes only to the accounts that ticked it and carries an
+   unsubscribe route in the header and the footer. An operational notice about
+   someone's own account goes to active accounts and does not dress itself up
+   as marketing.
+
+   IT SENDS IN CHUNKS AND REMEMBERS WHAT IT SENT. A run is a batchId: every
+   call sends the next few and records them under that id, so a timeout, a
+   closed tab or a retry costs another call — never a second copy in someone's
+   inbox. A recipient the relay refuses is marked done and reported back rather
+   than retried forever; the admin resends that one from the member's own page.
+*/
+const BULK_KINDS = ['announcement', 'notice', 'trial'];
+const BULK_AUDIENCES = ['marketing', 'active', 'trialing', 'pending'];
+const BULK_MAX = 1000;   // beyond this a mailing needs a real campaign tool, not this console
+const BULK_CHUNK = 20;   // per call: the function's own timeout is the ceiling
+const UNSUB_TEXT = `
+
+You receive this because you opted in to product news. Reply "unsubscribe" and we will stop sending it.`;
+
+const bulkMs = (v) => {
+  if (v == null) return null;
+  if (typeof v === 'string') { const t = Date.parse(v); return Number.isNaN(t) ? null : t; }
+  if (typeof v.toMillis === 'function') return v.toMillis();
+  if (typeof v.seconds === 'number') return v.seconds * 1000;
+  return null;
+};
+
+/** Resolve an audience key to the accounts it names, in a stable order.
+ *  Returns the reasons for every exclusion too — an operator who sees
+ *  "412 accounts, 289 without consent" understands the number they are about
+ *  to mail; a bare count invites the wrong assumption. */
+async function bulkRecipients(audience, country) {
+  const snap = await db.collection('users').get();
+  const seen = new Set();
+  const list = [];
+  const skipped = { notInAudience: 0, noConsent: 0, noEmail: 0, duplicate: 0, otherMarket: 0 };
+  const now = Date.now();
+  snap.forEach((doc) => {
+    const u = doc.data() || {};
+    if (country && String(u.country || 'DE') !== country) { skipped.otherMarket++; return; }
+    const status = u.status || (u.isActive ? 'active' : 'disabled');
+    if (audience === 'pending') {
+      if (status !== 'pending') { skipped.notInAudience++; return; }
+    } else if (status !== 'active') {
+      skipped.notInAudience++; return;
+    }
+    if (audience === 'trialing') {
+      const ends = bulkMs(u.trialEndsAt);
+      if (!ends || ends < now) { skipped.notInAudience++; return; }
+    }
+    if (audience === 'marketing' && u.marketingConsent !== true) { skipped.noConsent++; return; }
+    const email = String(u.email || '').trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { skipped.noEmail++; return; }
+    const key = email.toLowerCase();
+    if (seen.has(key)) { skipped.duplicate++; return; }
+    seen.add(key);
+    list.push({
+      uid: doc.id, email,
+      firstName: String(u.firstName || '').trim(),
+      lastName: String(u.lastName || '').trim(),
+    });
+  });
+  list.sort((a, b) => (a.uid < b.uid ? -1 : a.uid > b.uid ? 1 : 0));
+  return { list, skipped };
+}
+
+/** What an audience resolves to right now — the console shows this BEFORE the
+ *  composer will send, and sends the count back with the run so a list that
+ *  changed underneath is a refusal rather than a surprise. */
+async function bulkAudience(req, res) {
+  const admin = await verifyAdmin(req);
+  if (!admin) return sendErr(res, 403, 'admin-only');
+  const { audience, country } = req.body || {};
+  if (!BULK_AUDIENCES.includes(audience)) return sendErr(res, 400, 'bad-audience');
+  const cc = /^[A-Z]{2}$/.test(String(country || '')) ? String(country) : null;
+  const { list, skipped } = await bulkRecipients(audience, cc);
+  return res.status(200).json({
+    ok: true, count: list.length, skipped, max: BULK_MAX, chunk: BULK_CHUNK,
+    sample: list.slice(0, 25).map((r) => r.email),
+  });
+}
+
+async function bulkMemberEmail(req, res) {
+  const admin = await verifyAdmin(req);
+  if (!admin) return sendErr(res, 403, 'admin-only');
+
+  const { audience, country, subject, body, kind, batchId, expectedCount } = req.body || {};
+  if (!BULK_AUDIENCES.includes(audience)) return sendErr(res, 400, 'bad-audience');
+  // Deliberately narrow: a suspension, a verification request or a support
+  // reply is addressed to one person by definition. They are not offered here.
+  if (!BULK_KINDS.includes(kind)) return sendErr(res, 400, 'bad-kind');
+  if (!/^[A-Za-z0-9_-]{8,64}$/.test(String(batchId || ''))) return sendErr(res, 400, 'bad-batch');
+  const subj = String(subject || '').trim();
+  const text = String(body || '').trim();
+  if (subj.length < 3 || subj.length > 200) return sendErr(res, 400, 'bad-subject');
+  if (text.length < 10 || text.length > 20000) return sendErr(res, 400, 'bad-body');
+  const cc = /^[A-Z]{2}$/.test(String(country || '')) ? String(country) : null;
+
+  const { list } = await bulkRecipients(audience, cc);
+  if (!list.length) return sendErr(res, 400, 'no-recipients');
+  if (list.length > BULK_MAX) return sendErr(res, 400, 'audience-too-large');
+  if (Number(expectedCount) !== list.length) return sendErr(res, 409, 'audience-changed');
+
+  const tx = transport();
+  if (!tx) return sendErr(res, 503, 'smtp-not-configured');
+
+  const marketing = kind === 'announcement';
+  const runRef = db.collection('bulkEmailRuns').doc(String(batchId));
+  const runSnap = await runRef.get();
+  if (!runSnap.exists) {
+    await runRef.set({
+      audience, country: cc, kind, subject: subj, total: list.length,
+      startedAt: nowIso(), by: admin.email || admin.uid, done: {}, failures: {},
+    });
+    await db.collection('opsAuditLog').add({
+      action: 'bulkMemberEmailStart', batchId: String(batchId), audience, kind,
+      subject: subj, total: list.length, by: admin.email || admin.uid, at: nowIso(),
+    });
+  } else if (String(runSnap.data().subject || '') !== subj) {
+    // A different message under the same run id would file the two together and
+    // skip whoever already had the first one. A new message needs a new run.
+    return sendErr(res, 409, 'batch-subject-mismatch');
+  }
+  const done = (runSnap.exists && runSnap.data().done) || {};
+  const failures = (runSnap.exists && runSnap.data().failures) || {};
+
+  const queue = list.filter((r) => !done[r.uid]).slice(0, BULK_CHUNK);
+  let sent = 0, failed = 0;
+  for (const r of queue) {
+    const personal = text
+      .replace(/\{\{\s*firstName\s*\}\}/g, r.firstName)
+      .replace(/\{\{\s*lastName\s*\}\}/g, r.lastName);
+    const record = {
+      uid: r.uid, to: r.email, subject: subj, body: personal, kind,
+      sentByUid: admin.uid, sentByEmail: admin.email || null,
+      at: nowIso(), batchId: String(batchId),
+    };
+    try {
+      const info = await tx.sendMail({
+        from: `HeatPump DB Support <${SUPPORT_FROM}>`,
+        to: r.email, replyTo: SUPPORT_FROM, subject: subj,
+        text: personal + TEXT_SIGNATURE + (marketing ? UNSUB_TEXT : ''),
+        html: letterhead(personal, r.email, undefined, { marketing }),
+        attachments: mailAttachments(),
+        ...(marketing ? { headers: { 'List-Unsubscribe': `<mailto:${SUPPORT_FROM}?subject=unsubscribe>` } } : {}),
+      });
+      await db.collection('memberEmails').add({ ...record, ok: true, messageId: info.messageId || null });
+      done[r.uid] = true; sent++;
+    } catch (e) {
+      const err = String((e && e.message) || e).slice(0, 500);
+      await db.collection('memberEmails').add({ ...record, ok: false, error: err });
+      done[r.uid] = true; failures[r.uid] = err; failed++;
+    }
+  }
+
+  const remaining = list.filter((r) => !done[r.uid]).length;
+  await runRef.set({
+    done, failures, updatedAt: nowIso(),
+    sent: Object.keys(done).length - Object.keys(failures).length,
+    failed: Object.keys(failures).length,
+    ...(remaining === 0 ? { finishedAt: nowIso() } : {}),
+  }, { merge: true });
+  if (remaining === 0) {
+    await db.collection('opsAuditLog').add({
+      action: 'bulkMemberEmailDone', batchId: String(batchId), audience, kind, subject: subj,
+      total: list.length, failed: Object.keys(failures).length,
+      by: admin.email || admin.uid, at: nowIso(),
+    });
+  }
+  return res.status(200).json({
+    ok: true, sent, failed, remaining, total: list.length, done: remaining === 0,
+    failedEmails: Object.keys(failures).slice(0, 50).map((uid) => {
+      const hit = list.find((r) => r.uid === uid); return hit ? hit.email : uid;
+    }),
+  });
 }
 
 /* ── Verification email, on our own letterhead ────────────────────────────────
@@ -2173,6 +2365,8 @@ functions.http('accountBilling', async (req, res) => {
     if (path.endsWith('/sendMemberEmail')) return await sendMemberEmail(req, res);
     if (path.endsWith('/listMemberEmails')) return await listMemberEmails(req, res);
     if (path.endsWith('/previewMemberEmail')) return await previewMemberEmail(req, res);
+    if (path.endsWith('/bulkAudience')) return await bulkAudience(req, res);
+    if (path.endsWith('/bulkMemberEmail')) return await bulkMemberEmail(req, res);
     if (path.endsWith('/runTrialReminders')) return await runTrialReminders(req, res);
     if (path.endsWith('/cancelSubscription')) return await cancelSubscription(req, res);
     if (path.endsWith('/billingPortal')) return await billingPortal(req, res);

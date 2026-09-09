@@ -3,6 +3,7 @@ import * as XLSX from 'xlsx';
 import { getUsers, approveUser, rejectUser, suspendUser, reactivateUser, disableUser, deleteUser } from '../../services/authService';
 import { sendMemberEmail, listMemberEmails, previewMemberEmail, MEMBER_EMAIL_KIND_OPTIONS, type SentMemberEmail, type MemberEmailKind } from '../../services/memberMailService';
 import { MEMBER_EMAIL_TEMPLATES } from '../../config/memberEmailTemplates';
+import { BulkMemberEmail } from './BulkMemberEmail';
 import { TRIAL_FLOW_ENABLED, adminFinalizeSignupFn } from '../../services/billingFnService';
 import { requestDeletion, updateAdminNotes, setUserCountry } from '../../services/adminService';
 import { adminClearSessions } from '../../services/opsService';
@@ -53,6 +54,7 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
   const [detailTab, setDetailTab] = useState<'profile' | 'subscription' | 'notes'>('profile');
   const [adminNotes, setAdminNotes] = useState('');
   const [notesSaved, setNotesSaved] = useState(false);
+  const [bulkOpen, setBulkOpen] = useState(false);
 
   const load = () => getUsers().then(u => setUsers(u.filter(x => matchesCountry(x, country))));
   useEffect(() => { load(); setSelectedUser(null); }, [country]);
@@ -150,9 +152,14 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
           title={A.mbTitle}
           subtitle={`${filtered.length} ${A.mbOf} ${users.length}`}
           action={
-            <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow-sm text-sm font-bold flex items-center gap-2">
-              📥 {A.mbExport}
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setBulkOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm text-sm font-bold flex items-center gap-2">
+                ✉️ {A.bkOpen}
+              </button>
+              <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow-sm text-sm font-bold flex items-center gap-2">
+                📥 {A.mbExport}
+              </button>
+            </div>
           }
         />
       )}
@@ -196,9 +203,14 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
           {COMPANY_TYPES.map(c => <option key={c} value={c}>{COMPANY_TYPE_LABELS[c]}</option>)}
         </select>
         {embedded && (
-          <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded shadow-sm text-sm font-bold">
-            📥 {A.mbExport}
-          </button>
+          <>
+            <button onClick={() => setBulkOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded shadow-sm text-sm font-bold">
+              ✉️ {A.bkOpen}
+            </button>
+            <button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded shadow-sm text-sm font-bold">
+              📥 {A.mbExport}
+            </button>
+          </>
         )}
       </div>
 
@@ -374,6 +386,8 @@ export const MembersPage: React.FC<MembersPageProps> = ({ al, country, embedded 
           </div>
         )}
       </div>
+
+      {bulkOpen && <BulkMemberEmail al={al} country={country} onClose={() => setBulkOpen(false)} />}
     </div>
   );
 };
