@@ -598,10 +598,11 @@ function gapBar(w,h,o){
       s+=`<text x="${cx}" y="${top+barH/2-5}" text-anchor="middle" font-size="13" fill="#fff" font-weight="800">${esc(p.name)}</text>`
         +`<text x="${cx}" y="${top+barH/2+14}" text-anchor="middle" font-size="12.5" fill="#fff" opacity=".92">${esc(o.fmtV(p.v))} · ${esc(pct(Math.round(share*10)/10))}</text>`;
     }else{
-      const ly=top+barH+30;
+      /* a sliver at the very edge: keep its label inside the box */
+      const ly=top+barH+30, lx=Math.min(Math.max(cx,L+52),R-52);
       s+=`<line x1="${cx}" x2="${cx}" y1="${top+barH}" y2="${ly-16}" stroke="#94a3b8"/>`
-        +`<text x="${cx}" y="${ly-3}" text-anchor="middle" font-size="11.5" fill="#172c49" font-weight="700">${esc(p.name)}</text>`
-        +`<text x="${cx}" y="${ly+12}" text-anchor="middle" font-size="11" fill="${MUT}">${esc(o.fmtV(p.v))} · ${esc(pct(Math.round(share*10)/10))}</text>`;
+        +`<text x="${lx}" y="${ly-3}" text-anchor="middle" font-size="11.5" fill="#172c49" font-weight="700">${esc(p.name)}</text>`
+        +`<text x="${lx}" y="${ly+12}" text-anchor="middle" font-size="11" fill="${MUT}">${esc(o.fmtV(p.v))} · ${esc(pct(Math.round(share*10)/10))}</text>`;
     }
     x+=wpx});
   return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${s}</svg>`;
