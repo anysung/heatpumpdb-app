@@ -341,7 +341,11 @@ feed.sort((a, b) => String(b.date).localeCompare(String(a.date)));
 mkdirSync(join(OUT_DIR, 'market-trends', 'img'), { recursive: true });
 const { copyFileSync } = await import('node:fs');
 for (const c of feed) {
-  for (const f of [c.image, c.image.replace(/\.webp$/, '.jpg')]) {
+  // `images` (a deck) ships alongside `image` (the card that represents it in
+  // the feed and in a share preview) — every file of both, plus the JPEG twin
+  // the link scrapers need.
+  const wanted = [c.image, ...(c.images ?? [])];
+  for (const f of wanted.flatMap((x) => [x, x.replace(/\.webp$/, '.jpg')])) {
     const src = join(ROOT, 'data_sources', 'market_trends', 'images', f);
     if (existsSync(src)) copyFileSync(src, join(OUT_DIR, 'market-trends', 'img', f));
   }
@@ -518,6 +522,9 @@ writeFileSync(join(OUT_DIR, 'market-trends', 'feed.json'), JSON.stringify({
   items: feed.map((c) => ({
     slug: c.slug, date: c.date, title: c.title, excerpt: c.excerpt ?? '',
     image: `/market-trends/img/${c.image}`, body: c.body ?? [],
+    // A deck: the reader pages through these with arrows. Absent on a
+    // single-card entry, and the app falls back to `image`.
+    ...(c.images?.length ? { images: c.images.map((f) => `/market-trends/img/${f}`) } : {}),
     sourceNote: c.sourceNote ?? '',
     // The English article travels with the card: the app's EN toggle switches
     // the text, never the infographic (which stays in the market language).

@@ -1,0 +1,112 @@
+#!/usr/bin/env node
+/**
+ * build-trends-deck.mjs — render a SWIPEABLE deck of Market & Trends cards
+ * from one spec: card 1 carries the headline and the key figure, the cards
+ * after it carry one idea each, and the last one carries the address.
+ *
+ * WHY A DECK AND NOT A LONGER CARD
+ * A single card has to choose between saying enough and staying readable on a
+ * phone. A deck does not: each card holds ONE idea at full size, and the
+ * reader decides how far to go. It is also the only format that behaves the
+ * same on both surfaces we publish to — the feed on our own site pages
+ * through it with arrows, and LinkedIn pages through the identical images as
+ * a carousel.
+ *
+ * WHAT THE REFERENCE DECKS DO, AND WHAT WE TOOK (owner brief 2026-09-11)
+ *   · portrait 4:5, because the feed gives a portrait card more screen than a
+ *     square one — square stays available for the site's own square feed;
+ *   · one dominant element per card: a headline over a ground, a stack of
+ *     three chips, a grid of tiles, a number;
+ *   · a one-line caption UNDER each card (LinkedIn shows it beneath the
+ *     image) — written here, published with the images;
+ *   · the last card is the offer, with the address readable as text and a QR
+ *     for the phone, because a carousel is not clickable.
+ * What we did NOT take: their stock photography. Our cards are data furniture
+ * on the market's own palette, and a photo would make them look like an ad.
+ *
+ * SPEC  (data_sources/market_trends/decks/<cc>-<slug>.deck.json)
+ *   { country, countryLabel, month, footer, ratio?: '4:5'|'1:1',
+ *     slug, cards: [ { title[2], sub?, caption, motif?, titleSize?,
+ *                      sections: [ block | [block, block] ] } ] }
+ * Everything the cards share (country, month, footer …) is written once and
+ * inherited; a card may override any of it.
+ *
+ * OUT  <outDir>/<slug>-1.png … -N.png   (2× masters)
+ *      <outDir>/<slug>-captions.txt     (the per-card lines, in order)
+ *      <outDir>/<slug>-carousel.pdf     (LinkedIn document post, one card/page)
+ *
+ * Run:  node scripts/build-trends-deck.mjs <deck.json> [outDir]
+ */
+import { chromium } from 'playwright';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { join, basename, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { deckDoc, RATIOS } from './lib/trends-card-frame.mjs';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const specPath = process.argv[2];
+if (!specPath) { console.error('Usage: build-trends-deck.mjs <deck.json> [outDir]'); process.exit(1); }
+const D = JSON.parse(readFileSync(specPath, 'utf8'));
+const slug = D.slug ?? basename(specPath).replace(/\.deck\.json$/, '');
+const outDir = process.argv[3] ?? join(ROOT, 'data_sources', 'market_trends', 'images');
+mkdirSync(outDir, { recursive: true });
+
+const ratio = D.ratio ?? '4:5';
+const [W, H] = RATIOS[ratio] ?? RATIOS['4:5'];
+
+/* Shared fields are written once at the top of the deck; a card overrides
+   what it needs. The pips and the swipe hint are frame furniture, not content,
+   so the spec never carries them. */
+const cards = D.cards.map((c, i) => ({
+  country: D.country, countryLabel: D.countryLabel, month: D.month, footer: D.footer,
+  ...c,
+  __w: W, __h: H, __ratio: ratio,
+  __pips: D.cards.length > 1 ? D.cards.map((_, j) => j === i) : null,
+  __swipe: i === 0 && D.cards.length > 1 ? (D.swipeHint ?? '') : '',
+}));
+
+const browser = await chromium.launch();
+const page = await (await browser.newContext({
+  viewport: { width: W, height: H }, deviceScaleFactor: 2,
+})).newPage();
+await page.setContent(deckDoc(cards), { waitUntil: 'networkidle' });
+await page.waitForTimeout(300);
+
+/* A card that overflows its own frame ships a cut-off panel. Check every card
+   BEFORE writing any file, and name the ones that need shortening — a deck
+   where card 3 is clipped is worse than no deck. */
+const overflows = await page.evaluate(() => [...document.querySelectorAll('.band')].map((band, i) => {
+  const f = band.querySelector('.flow');
+  return { i, over: f.scrollHeight - f.clientHeight };
+}));
+const bad = overflows.filter((o) => o.over > 2);
+for (const o of bad) console.error(`✗ card ${o.i + 1} overflows by ${o.over}px — shorten a block or drop a row`);
+
+const files = [];
+for (let i = 0; i < cards.length; i++) {
+  const out = join(outDir, `${slug}-${i + 1}.png`);
+  await page.locator(`#band${i}`).screenshot({ path: out });
+  files.push(out);
+}
+
+/* The captions travel with the images: LinkedIn asks for one line per card
+   when the carousel is uploaded, and writing them at render time keeps them
+   in step with the cards they describe. */
+const captions = cards.map((c, i) => `${i + 1}. ${c.caption ?? ''}`).join('\n');
+writeFileSync(join(outDir, `${slug}-captions.txt`), `${captions}\n`);
+
+/* The LinkedIn document post wants a PDF; each page is exactly one card. */
+const pdfDoc = `<!doctype html><meta charset="utf-8"><style>
+  @page { size: ${W}px ${H}px; margin: 0 }
+  html,body { margin:0; padding:0 }
+  img { display:block; width:${W}px; height:${H}px; page-break-after:always; break-after:page }
+  img:last-child { page-break-after:auto; break-after:auto }
+</style>${files.map((f) => `<img src="file://${f}">`).join('')}`;
+const pdfPage = await (await browser.newContext()).newPage();
+await pdfPage.setContent(pdfDoc, { waitUntil: 'networkidle' });
+await pdfPage.pdf({ path: join(outDir, `${slug}-carousel.pdf`), width: `${W}px`, height: `${H}px`, printBackground: true, pageRanges: `1-${cards.length}` });
+
+await browser.close();
+console.log(`→ ${cards.length} cards ${W * 2}×${H * 2} (${ratio}, ${String(D.country).toUpperCase()} palette)`);
+console.log(`   ${outDir}/${slug}-1…${cards.length}.png · ${slug}-captions.txt · ${slug}-carousel.pdf`);
+if (bad.length) console.log(`   ⚠ ${bad.length} card(s) overflow — fix before publishing`);

@@ -31,7 +31,11 @@ interface TrendsText {
 interface TrendsCard extends TrendsText {
   slug: string;
   date: string;      // YYYY-MM-DD
-  image: string;     // root-relative WebP, market language
+  image: string;     // root-relative WebP, market language — the feed thumbnail
+  /** A DECK: the same story told over several cards, paged with arrows.
+   *  Card 1 carries the headline and the key figure; the rest carry one idea
+   *  each. Absent on a single-card entry, and the reader falls back to `image`. */
+  images?: string[];
   en: TrendsText;    // falls back to the market-language text if untranslated
 }
 
@@ -66,6 +70,75 @@ const PAGE_TITLE: React.CSSProperties = {
 const PILL: React.CSSProperties = {
   fontSize: 12.5, color: '#7a7a7a', border: '1px solid #e0e0e0', borderRadius: 999,
   padding: '4px 13px', whiteSpace: 'nowrap',
+};
+
+/**
+ * CardDeck — the swipeable card reader.
+ *
+ * A trends story used to be one square card, which forced every figure onto a
+ * single surface. A deck lets each card hold ONE idea at full size and lets
+ * the reader decide how far to go — and it is the same set of images LinkedIn
+ * pages through as a carousel, so the two surfaces cannot drift apart.
+ *
+ * Arrows, keyboard and touch all move the same index. A one-card deck renders
+ * as a plain image with no furniture at all, which is what every entry
+ * published before this was.
+ */
+const CardDeck: React.FC<{ images: string[]; alt: string }> = ({ images, alt }) => {
+  const [i, setI] = useState(0);
+  const touch = React.useRef<number | null>(null);
+  const n = images.length;
+  const go = (d: number) => setI(k => Math.min(Math.max(k + d, 0), n - 1));
+
+  // A new story resets the deck: reading card 3 of one and opening the next
+  // should not land on its card 3.
+  const first = images[0];
+  useEffect(() => { setI(0); }, [first]);
+
+  if (n === 1) {
+    return <img src={images[0]} alt={alt} style={{ width: '100%', borderRadius: 18, display: 'block', marginBottom: 26 }} />;
+  }
+
+  const ARROW: React.CSSProperties = {
+    position: 'absolute', top: '50%', transform: 'translateY(-50%)',
+    width: 44, height: 44, borderRadius: '50%', border: '1px solid #e0e0e0',
+    background: 'rgba(255,255,255,.92)', color: '#1d1d1f', fontSize: 22, lineHeight: 1,
+    display: 'grid', placeItems: 'center', cursor: 'pointer', boxShadow: '0 4px 14px rgba(0,0,0,.12)',
+  };
+
+  return (
+    <div style={{ marginBottom: 26 }}>
+      <div
+        style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', outline: 'none' }}
+        onTouchStart={e => { touch.current = e.touches[0].clientX; }}
+        onTouchEnd={e => {
+          if (touch.current == null) return;
+          const dx = e.changedTouches[0].clientX - touch.current;
+          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+          touch.current = null;
+        }}
+        onKeyDown={e => { if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1); }}
+        tabIndex={0}
+      >
+        <img src={images[i]} alt={`${alt} — ${i + 1}/${n}`} style={{ width: '100%', display: 'block' }} />
+        {i > 0 && <div className="hp-press" onClick={() => go(-1)} style={{ ...ARROW, left: 12 }}>‹</div>}
+        {i < n - 1 && <div className="hp-press" onClick={() => go(1)} style={{ ...ARROW, right: 12 }}>›</div>}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 12 }}>
+        {images.map((_, k) => (
+          <span
+            key={k}
+            onClick={() => setI(k)}
+            className="hp-press"
+            style={{
+              width: k === i ? 22 : 8, height: 8, borderRadius: 4, cursor: 'pointer',
+              background: k === i ? '#1d1d1f' : '#d2d2d7', transition: 'width .18s, background .18s',
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export const TrendsPage: React.FC<{ app: HpApp }> = ({ app }) => {
@@ -135,11 +208,7 @@ export const TrendsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div style={{ color: '#7a7a7a', fontSize: 13.5, marginBottom: 22 }}>
               {fmtDate(open.date)} · HeatPump DB
             </div>
-            <img
-              src={open.image}
-              alt={v.title}
-              style={{ width: '100%', borderRadius: 18, display: 'block', marginBottom: 26 }}
-            />
+            <CardDeck images={open.images?.length ? open.images : [open.image]} alt={v.title} />
             {v.body.map((p, i) => (
               <p key={i} style={{ fontSize: 16, lineHeight: 1.7, color: '#2a2a2c', margin: '0 0 15px' }}>{p}</p>
             ))}

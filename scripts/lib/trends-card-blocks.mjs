@@ -210,7 +210,34 @@ const fazit = (b, T) => `
     ${b.icon ? `<span class="fmotif">${IC(b.icon, T.a, 108)}</span>` : ''}
   </div>`;
 
-const RENDER = { hero, stats, bars, series, table, list, checks, timeline, compare, fazit };
+
+/* ── chips ────────────────────────────────────────────────────────────────
+   Icon + a bold line + a muted line, stacked. The deck's workhorse for the
+   "here is what is wrong" card: three short facts read faster stacked than
+   written as prose, and each one can carry its own colour. */
+const chips = (b, T) => `<div class="chips">
+  ${(b.rows ?? []).map((r) => `<div class="chip">
+    <span class="chic" style="border-color:${r.accent === 2 ? T.b : T.a}33;background:${r.accent === 2 ? T.b : T.a}14">
+      ${IC(r.icon ?? 'doc', r.accent === 2 ? T.b : T.a, 30)}</span>
+    <span class="chtx"><b>${esc(r.label)}</b>${r.note ? `<i>${esc(r.note)}</i>` : ''}</span>
+    ${r.value ? `<span class="chv" style="color:${r.accent === 2 ? T.b : T.a}">${esc(r.value)}</span>` : ''}
+  </div>`).join('')}
+</div>`;
+
+/* ── cta ──────────────────────────────────────────────────────────────────
+   The closing card. One number the reader leaves with, and one address they
+   can act on — a carousel is not clickable, so the URL has to be legible as
+   text and the QR has to be scannable from a phone held at arm's length. */
+const cta = (b, T) => `<div class="ctablk">
+  ${b.big ? `<div class="ctabig" style="color:${T.a}">${esc(b.big)}</div>` : ''}
+  ${b.line ? `<div class="ctaline">${esc(b.line)}</div>` : ''}
+  <div class="ctabox">
+    ${b.qr ? `<span class="ctaqr">${b.qr}</span>` : ''}
+    <span class="ctatx"><b>${esc(b.host ?? '')}</b>${b.note ? `<i>${esc(b.note)}</i>` : ''}</span>
+  </div>
+</div>`;
+
+const RENDER = { hero, stats, bars, series, table, list, checks, timeline, compare, fazit, chips, cta };
 
 /** Render one section: either a single block or a row of blocks side by side. */
 export function renderSection(section, T) {
