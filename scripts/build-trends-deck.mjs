@@ -46,9 +46,9 @@
  * Run:  node scripts/build-trends-deck.mjs <deck.json> [outDir]
  */
 import { chromium } from 'playwright';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { join, basename, dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { deckDoc, RATIOS } from './lib/trends-card-frame.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -111,16 +111,27 @@ for (let i = 0; i < cards.length; i++) {
 const captions = cards.map((c, i) => `${i + 1}. ${c.caption ?? ''}`).join('\n');
 writeFileSync(join(outDir, `${slug}-captions.txt`), `${captions}\n`);
 
-/* The LinkedIn document post wants a PDF; each page is exactly one card. */
-const pdfDoc = `<!doctype html><meta charset="utf-8"><style>
+/* The LinkedIn document post wants a PDF; each page is exactly one card.
+   The page is WRITTEN TO DISK and opened as a file, not fed to setContent: a
+   setContent document has an about:blank origin and the browser refuses its
+   file:// images — which produced a five-page PDF carrying two of them and no
+   error at all. It is loaded from the image directory so the <img> sources are
+   plain relative names. */
+const deckHtmlPath = join(outDir, `${slug}-carousel.tmp.html`);
+writeFileSync(deckHtmlPath, `<!doctype html><meta charset="utf-8"><style>
   @page { size: ${W}px ${H}px; margin: 0 }
   html,body { margin:0; padding:0 }
   img { display:block; width:${W}px; height:${H}px; page-break-after:always; break-after:page }
   img:last-child { page-break-after:auto; break-after:auto }
-</style>${files.map((f) => `<img src="file://${f}">`).join('')}`;
+</style>${files.map((f) => `<img src="${basename(f)}">`).join('')}`);
 const pdfPage = await (await browser.newContext()).newPage();
-await pdfPage.setContent(pdfDoc, { waitUntil: 'networkidle' });
-await pdfPage.pdf({ path: join(outDir, `${slug}-carousel.pdf`), width: `${W}px`, height: `${H}px`, printBackground: true, pageRanges: `1-${cards.length}` });
+await pdfPage.goto(pathToFileURL(deckHtmlPath).href, { waitUntil: 'networkidle' });
+const drawn = await pdfPage.evaluate(() => [...document.images].filter((im) => im.naturalWidth > 0).length);
+if (drawn !== files.length) console.error(`✗ carousel PDF: ${drawn}/${files.length} cards loaded — not written`);
+else {
+  await pdfPage.pdf({ path: join(outDir, `${slug}-carousel.pdf`), width: `${W}px`, height: `${H}px`, printBackground: true, pageRanges: `1-${cards.length}` });
+}
+rmSync(deckHtmlPath, { force: true });
 
 await browser.close();
 console.log(`→ ${cards.length} cards ${W * 2}×${H * 2} (${ratio}, ${String(D.country).toUpperCase()} palette)`);

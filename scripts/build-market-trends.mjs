@@ -68,7 +68,7 @@ const M = {
       'Förderung & Regulierung — zentrale Entwicklungen', 'Gebäudemarkt — Neubau vs. Sanierung',
       'Technologie-Trends — R290, Effizienz, Elektrifizierung'],
     source: 'Quelle: HeatPump DB Katalogdaten (BAFA-Liste), Snapshot',
-    cta: { h: 'Die Daten hinter den Zahlen', p: 'Jedes Modell mit SCOP, Schallleistung, Kältemittel und BAFA-Status — kostenlos registrieren, 7 Tage voller Zugang.', b: 'Kostenlos registrieren' },
+    cta: { h: 'Die Daten hinter den Zahlen', p: 'Jedes Modell mit SCOP, Schallleistung, Kältemittel und BAFA-Status — kostenlos registrieren, 15 Tage voller Zugang.', b: 'Kostenlos registrieren' },
     back: 'Zur Wärmepumpen-Datenbank', guide: 'Förder-Leitfaden', news: 'Nachrichten',
   },
   GB: {
@@ -89,7 +89,7 @@ const M = {
       'Funding & regulation — key developments', 'Building market — new build vs. renovation',
       'Technology trends — R290, efficiency, electrification'],
     source: 'Source: HeatPump DB catalogue data (European reference), snapshot',
-    cta: { h: 'The data behind the numbers', p: 'Every model with SCOP, sound power, refrigerant and PEL status — join free, 7 days of full access.', b: 'Join free' },
+    cta: { h: 'The data behind the numbers', p: 'Every model with SCOP, sound power, refrigerant and PEL status — join free, 15 days of full access.', b: 'Join free' },
     back: 'To the heat pump database', guide: 'Funding guide', news: 'News',
   },
   FR: {
@@ -110,7 +110,7 @@ const M = {
       'Aides & réglementation — évolutions clés', 'Marché du bâtiment — neuf vs rénovation',
       'Tendances technologiques — R290, efficacité, électrification'],
     source: 'Source : données du catalogue HeatPump DB (référence européenne), snapshot',
-    cta: { h: 'Les données derrière les chiffres', p: 'Chaque modèle avec SCOP, puissance acoustique et fluide — inscription gratuite, 7 jours d’accès complet.', b: 'Inscription gratuite' },
+    cta: { h: 'Les données derrière les chiffres', p: 'Chaque modèle avec SCOP, puissance acoustique et fluide — inscription gratuite, 15 jours d’accès complet.', b: 'Inscription gratuite' },
     back: 'Vers la base de données', guide: 'Guide des aides', news: 'Actualités',
   },
   PL: {
@@ -131,7 +131,7 @@ const M = {
       'Dofinansowanie i regulacje — kluczowe zmiany', 'Rynek budowlany — nowe budynki vs modernizacja',
       'Trendy technologiczne — R290, efektywność, elektryfikacja'],
     source: 'Źródło: dane katalogu HeatPump DB (referencja europejska), snapshot',
-    cta: { h: 'Dane stojące za liczbami', p: 'Każdy model ze SCOP, mocą akustyczną, czynnikiem i statusem ZUM — dołącz za darmo, 7 dni pełnego dostępu.', b: 'Dołącz za darmo' },
+    cta: { h: 'Dane stojące za liczbami', p: 'Każdy model ze SCOP, mocą akustyczną, czynnikiem i statusem ZUM — dołącz za darmo, 15 dni pełnego dostępu.', b: 'Dołącz za darmo' },
     back: 'Do bazy pomp ciepła', guide: 'Przewodnik po dofinansowaniu', news: 'Aktualności',
   },
   IT: {
@@ -152,7 +152,7 @@ const M = {
       'Incentivi e regolazione — sviluppi chiave', 'Mercato edilizio — nuove costruzioni vs ristrutturazione',
       'Tendenze tecnologiche — R290, efficienza, elettrificazione'],
     source: 'Fonte: dati catalogo HeatPump DB (riferimento europeo), snapshot',
-    cta: { h: 'I dati dietro i numeri', p: 'Ogni modello con SCOP, potenza sonora, refrigerante e stato GSE — registrati gratis, 7 giorni di accesso completo.', b: 'Registrati gratis' },
+    cta: { h: 'I dati dietro i numeri', p: 'Ogni modello con SCOP, potenza sonora, refrigerante e stato GSE — registrati gratis, 15 giorni di accesso completo.', b: 'Registrati gratis' },
     back: 'Al database delle pompe di calore', guide: 'Guida agli incentivi', news: 'Notizie',
   },
 }[MARKET];
@@ -373,7 +373,7 @@ const EN_UI = {
   back: 'Market & Trends',
   cta: {
     h: 'The data behind the numbers',
-    p: 'Every model with SCOP, sound power, refrigerant and local listing status — join free, 7 days of full access.',
+    p: 'Every model with SCOP, sound power, refrigerant and local listing status — join free, 15 days of full access.',
     b: 'Join free',
   },
 };
@@ -468,6 +468,24 @@ function renderCard(c, english) {
   h1{font-size:28px;letter-spacing:-.5px;line-height:1.25;margin:14px 0 6px}
   .meta{color:#7a7a7a;font-size:13.5px;margin:0 0 20px}
   .card-img{width:100%;height:auto;border-radius:18px;display:block;margin-bottom:26px}
+  /* Deck: the cards sit on one track and the SELECTED card is centred, its
+     neighbours showing at the edges — the peek is what tells a reader there is
+     more. Native scrolling, so a phone keeps its own momentum and snapping.
+     Without JS the track is still a readable, scrollable strip of cards. */
+  .deck{position:relative;margin-bottom:26px}
+  .deck-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 13% 12px;scrollbar-width:none}
+  .deck-track::-webkit-scrollbar{display:none}
+  .deck-track img{flex:none;width:74%;max-width:560px;height:auto;border-radius:16px;display:block;
+    scroll-snap-align:center;opacity:.5;transform:scale(.965);transition:opacity .25s,transform .25s;cursor:pointer}
+  .deck-track img.on{opacity:1;transform:none;cursor:default}
+  .deck-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:44px;height:44px;border-radius:50%;
+    border:1px solid #e0e0e0;background:rgba(255,255,255,.94);color:#1d1d1f;font-size:21px;line-height:1;
+    display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.14)}
+  .deck-btn[hidden]{display:none}
+  .deck-prev{left:6px} .deck-next{right:6px}
+  .deck-dots{display:flex;justify-content:center;gap:7px;margin-top:2px}
+  .deck-dots b{width:8px;height:8px;border-radius:4px;background:#d2d2d7;cursor:pointer;transition:width .18s,background .18s}
+  .deck-dots b.on{width:22px;background:#1d1d1f}
   .body p{margin:0 0 15px;font-size:16px;color:#2a2a2c}
   .src{margin-top:18px;font-size:12.5px;color:#7a7a7a;border-top:1px solid #f0f0f0;padding-top:12px}
   .cta{margin-top:30px;background:#f5f5f7;border-radius:18px;padding:24px 28px}
@@ -479,12 +497,53 @@ function renderCard(c, english) {
   <div class="top"><a class="crumb" href="/market-trends/">← ${esc(ui.back)}</a>${toggle}</div>
   <h1>${esc(v.title)}</h1>
   <p class="meta">${esc(date)} · HeatPump DB</p>
-  <img class="card-img" src="/market-trends/img/${c.image}" alt="${esc(v.title)}">
+  ${(c.images?.length ?? 0) > 1 ? `<div class="deck">
+    <div class="deck-track" id="dk">${c.images.map((f, k) => `<img src="/market-trends/img/${f}" alt="${esc(v.title)} — ${k + 1}/${c.images.length}"${k === 0 ? ' class="on"' : ''}>`).join('')}</div>
+    <button class="deck-btn deck-prev" id="dkP" aria-label="◀" hidden>‹</button>
+    <button class="deck-btn deck-next" id="dkN" aria-label="▶">›</button>
+    <div class="deck-dots" id="dkD">${c.images.map((_, k) => `<b${k === 0 ? ' class="on"' : ''}></b>`).join('')}</div>
+  </div>` : `<img class="card-img" src="/market-trends/img/${c.image}" alt="${esc(v.title)}">`}
   <div class="body">${v.body.map((p) => `<p>${esc(p)}</p>`).join('')}</div>
   ${v.sourceNote ? `<p class="src">${esc(v.sourceNote)}</p>` : ''}
   <div class="cta"><h2>${esc(ui.cta.h)}</h2><p>${esc(ui.cta.p)}</p>
     <a class="btn" href="/?ref=trends">${esc(ui.cta.b)} ›</a></div>
-</div></body></html>
+</div>${(c.images?.length ?? 0) > 1 ? `
+<script>
+/* Deck reader. The arrows move the selection and the track scrolls itself to
+   centre it; dragging the track updates the selection the same way, so the
+   dots never disagree with what is on screen. */
+(function () {
+  var t = document.getElementById('dk'), dots = document.getElementById('dkD').children;
+  var p = document.getElementById('dkP'), n = document.getElementById('dkN'), i = 0;
+  var cards = t.children, last = cards.length - 1;
+  function mark(k) {
+    i = k;
+    for (var j = 0; j < cards.length; j++) {
+      cards[j].className = j === k ? 'on' : '';
+      dots[j].className = j === k ? 'on' : '';
+    }
+    p.hidden = k === 0; n.hidden = k === last;
+  }
+  function centre(k) { cards[k].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); mark(k); }
+  p.onclick = function () { centre(Math.max(i - 1, 0)); };
+  n.onclick = function () { centre(Math.min(i + 1, last)); };
+  for (var j = 0; j < dots.length; j++) (function (k) { dots[k].onclick = function () { centre(k); }; cards[k].onclick = function () { centre(k); }; })(j);
+  var tm; t.addEventListener('scroll', function () {
+    clearTimeout(tm); tm = setTimeout(function () {
+      var mid = t.scrollLeft + t.clientWidth / 2, best = 0, bd = 1e9;
+      for (var k = 0; k < cards.length; k++) {
+        var d = Math.abs(cards[k].offsetLeft + cards[k].offsetWidth / 2 - mid);
+        if (d < bd) { bd = d; best = k; }
+      }
+      if (best !== i) mark(best);
+    }, 90);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') centre(Math.min(i + 1, last));
+    if (e.key === 'ArrowLeft') centre(Math.max(i - 1, 0));
+  });
+})();
+</script>` : ''}</body></html>
 `;
 }
 

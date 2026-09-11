@@ -1,9 +1,23 @@
 # Trends deck — the swipeable card format
 
-**Decided 2026-09-11 (owner brief).** A trends story is no longer one square
-card. It is a DECK: card 1 carries the headline and the key figure, the cards
+**Decided 2026-09-11, settled 2026-09-12 (owner brief).** A trends story is no
+longer one square card. It is a DECK: the cover carries the subject, the cards
 after it carry one idea each, and the reader pages through with arrows — on our
 own site and, with the identical images, as a LinkedIn carousel.
+
+**From October 2026 every new trends story is made as a deck.** The single-card
+path stays in the code because the six cards already published use it, and
+because a one-figure story does not need five cards; but the default is a deck,
+and the deck is the same file set for both surfaces. No separate LinkedIn
+artwork is produced — if the two ever need to differ, the format is wrong.
+
+**Size is already LinkedIn's.** 1:1 is a format LinkedIn accepts for both a
+document post and a multi-image post, and 1254 px exceeds its 1200 px
+recommendation, so nothing is resized on the way out: the file on the site and
+the file in the carousel are the same file. 4:5 remains available through
+`ratio` for a deck written only for the feed, where portrait wins more screen
+on a phone — that is the only case where the two surfaces diverge, and it is a
+deliberate choice, not a default.
 
 ---
 
@@ -111,7 +125,16 @@ with a clipped third card is worse than no deck.
 ## Publishing
 
 **Site** — add `images: ["<slug>-1.webp", …]` next to the existing `image` in
-`<CC>.json`. `image` stays: it is the feed thumbnail and the share preview.
+`<CC>.json`, and point `image` at the cover (`-1.webp`): it is the feed
+thumbnail and the share preview. The share preview also needs a JPEG twin of
+the cover (`-1.jpg`) — LinkedIn's link scraper does not render WebP.
+
+Both surfaces read the same array:
+* the **public card page** `/market-trends/<slug>.html` — the page a LinkedIn
+  link lands on — renders the track with arrows, dots and native scrolling, in
+  ~30 lines of vanilla JS; without JS it degrades to a scrollable strip of
+  cards rather than to nothing;
+* the **in-app Trends page**.
 
 The in-app reader puts the cards on one track and **centres the selected
 card**, with its neighbours showing at the edges — that peek is what tells a
