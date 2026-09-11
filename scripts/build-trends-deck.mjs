@@ -13,8 +13,11 @@
  * a carousel.
  *
  * WHAT THE REFERENCE DECKS DO, AND WHAT WE TOOK (owner brief 2026-09-11)
- *   · portrait 4:5, because the feed gives a portrait card more screen than a
- *     square one — square stays available for the site's own square feed;
+ *   · one idea per card and a caption under each — taken;
+ *   · their portrait 4:5 — NOT taken (owner 2026-09-12): our cards are square
+ *     and the feed they live in is square, so a deck that changed shape would
+ *     have made the archive look like two products. 4:5 stays available via
+ *     `ratio` for a LinkedIn-only deck;
  *   · one dominant element per card: a headline over a ground, a stack of
  *     three chips, a grid of tiles, a number;
  *   · a one-line caption UNDER each card (LinkedIn shows it beneath the
@@ -30,6 +33,11 @@
  *                      sections: [ block | [block, block] ] } ] }
  * Everything the cards share (country, month, footer …) is written once and
  * inherited; a card may override any of it.
+ *
+ * LENGTH  3-6 cards for a story, 8 maximum. Card 1 is the SUBJECT — title,
+ *         sub, a line of situation and a mark that stands for it (the `lead`
+ *         block); the key chart or illustration opens card 2. A cover that
+ *         leads with the number has already spent the story's one surprise.
  *
  * OUT  <outDir>/<slug>-1.png … -N.png   (2× masters)
  *      <outDir>/<slug>-captions.txt     (the per-card lines, in order)
@@ -51,8 +59,16 @@ const slug = D.slug ?? basename(specPath).replace(/\.deck\.json$/, '');
 const outDir = process.argv[3] ?? join(ROOT, 'data_sources', 'market_trends', 'images');
 mkdirSync(outDir, { recursive: true });
 
-const ratio = D.ratio ?? '4:5';
-const [W, H] = RATIOS[ratio] ?? RATIOS['4:5'];
+const ratio = D.ratio ?? '1:1';
+const [W, H] = RATIOS[ratio] ?? RATIOS['1:1'];
+
+/* A deck is 3 to 6 cards; 8 is the ceiling. Below three there is nothing to
+   swipe through, and past six the last card is read by almost nobody — the
+   limit is a content rule, so the renderer states it rather than silently
+   producing a deck no one finishes. */
+if (D.cards.length < 2) { console.error('✗ a deck needs at least 2 cards'); process.exit(1); }
+if (D.cards.length > 8) { console.error(`✗ ${D.cards.length} cards — 8 is the ceiling; split the story`); process.exit(1); }
+if (D.cards.length > 6) console.error(`note: ${D.cards.length} cards — 3 to 6 is the range that gets read to the end`);
 
 /* Shared fields are written once at the top of the deck; a card overrides
    what it needs. The pips and the swipe hint are frame furniture, not content,

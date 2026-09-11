@@ -202,3 +202,7 @@
 @media (prefers-reduced-motion: reduce) {
   .hp-tour-spot, .hp-tour-tip, .hp-tour-check, .hp-tour-nudge { animation: none; }
 }
+
+/* The trends deck scrolls horizontally; the bar under it would sit between the
+   cards and the dots and read as a second control. */
+.hp-deck-track::-webkit-scrollbar { display: none; }

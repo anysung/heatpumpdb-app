@@ -199,6 +199,17 @@ export const cardCss = (T, S = {}) => `
   .cmpr { display: flex; justify-content: space-between; gap: 12px; font-size: 17.5px; color: rgba(255,255,255,.72); }
   .cmpr b { font-size: 19px; white-space: nowrap; }
 
+  /* lead — the cover card: a mark that stands for the subject, a line of
+     situation, and at most three points on what follows */
+  .lead { display: flex; align-items: center; gap: 56px; flex: 1; padding: 0 10px; }
+  .leadmark { flex: none; width: 330px; height: 330px; border: 2px solid; border-radius: 56px;
+    display: grid; place-items: center; }
+  .leadtx { flex: 1; min-width: 0; }
+  .leadp { color: rgba(255,255,255,.88); font-size: 36px; line-height: 1.46; }
+  .leadpts { margin-top: 32px; display: flex; flex-direction: column; gap: 18px; }
+  .leadpts span { display: flex; align-items: center; gap: 16px; color: rgba(255,255,255,.72); font-size: 28px; line-height: 1.3; }
+  .leadpts i { flex: none; width: 12px; height: 12px; border-radius: 50%; display: block; }
+
   /* chips — icon + bold line + muted line, the deck's "what is wrong" list */
   .chips { display: flex; flex-direction: column; gap: 16px; justify-content: center; flex: 1; }
   .chip { display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,.055);
@@ -281,8 +292,9 @@ export function deckDoc(cards) {
   const css = cards.map((c, i) => c.titleSize
     ? `#band${i} h1 { font-size: ${c.titleSize}px; }` : '').join('\n');
   const [W, H] = RATIOS[cards[0].__ratio ?? '1:1'] ?? RATIOS['1:1'];
+  const portrait = (cards[0].__ratio ?? '1:1') !== '1:1';
   const bands = cards.map((c, i) =>
-    `<div class="band" id="band${i}">${cardBody(c)}</div>`).join('');
+    `<div class="band${portrait ? ' portrait' : ''}" id="band${i}">${cardBody(c)}</div>`).join('');
   return `<!doctype html><html><head><meta charset="utf-8"><style>${cardCss(T, cards[0])}
   body { width: ${W}px; height: auto; padding: 0; }
   .band { width: ${W}px; height: ${H}px; padding: 26px; background: ${T.deep}; }
@@ -297,26 +309,26 @@ export function deckDoc(cards) {
      reads as unfinished. What changes is the TYPE: a number that filled a
      square panel is lost in a portrait one, so the deck scales it up rather
      than shrinking the panel down. */
-  .band .flow { gap: 24px; }
-  .band .flow > * { flex: 1 1 auto; }
-  .band .flow > .fazit { flex: 0 0 auto; }
+  .band.portrait .flow { gap: 24px; }
+  .band.portrait .flow > * { flex: 1 1 auto; }
+  .band.portrait .flow > .fazit { flex: 0 0 auto; }
   /* Three figures side by side fit a square; in portrait the same three
      columns are 310px wide and every number breaks across two lines. The deck
      lays them out as three ROWS instead — the number keeps its size, the
      label sits beside it, and the group fills the height it was given. */
-  .band .stats { flex-direction: column; gap: 18px; }
-  .band .stat { flex-direction: row; align-items: center; justify-content: flex-start;
+  .band.portrait .stats { flex-direction: column; gap: 18px; }
+  .band.portrait .stat { flex-direction: row; align-items: center; justify-content: flex-start;
     text-align: left; gap: 30px; padding: 28px 38px; }
-  .band .sv { font-size: 76px; min-width: 340px; }
-  .band .sl { font-size: 30px; line-height: 1.25; }
-  .band .sn { font-size: 21px; margin-top: 0; }
+  .band.portrait .sv { font-size: 76px; min-width: 340px; }
+  .band.portrait .sl { font-size: 30px; line-height: 1.25; }
+  .band.portrait .sn { font-size: 21px; margin-top: 0; }
   .band .chips { gap: 22px; }
   .band .chip { padding: 34px 34px; }
   .band .chtx b { font-size: 36px; }
   .band .chtx i { font-size: 25px; }
   .band .chic { width: 76px; height: 76px; }
-  .band .ctabig { font-size: 190px; }
-  .band .ctaline { font-size: 46px; }
+  .band.portrait .ctabig { font-size: 190px; }
+  .band.portrait .ctaline { font-size: 46px; }
   .band .ctabox { padding: 26px 32px; }
   .band .ctaqr { width: 128px; height: 128px; }
   .band .ctatx b { font-size: 36px; }

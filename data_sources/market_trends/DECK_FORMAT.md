@@ -19,10 +19,10 @@ From the screenshots, the pattern was consistent and worth copying:
 
 | Observed | What we took |
 |---|---|
-| Portrait cards, roughly 4:5, two visible side by side in the desktop feed | **4:5 (1254×1568 → 2508×3136)** is the deck default |
+| Portrait cards, roughly 4:5, two visible side by side in the desktop feed | **not taken** (owner 2026-09-12): our cards are square and so is the feed they live in, so a deck that changed shape would make the archive look like two products. 4:5 stays available via `ratio` for a LinkedIn-only deck. |
 | Circular ‹ › arrows on the card edges | arrows on our own reader too, plus swipe and arrow keys |
 | A one-line caption UNDER each card | `caption` per card, written at render time into `<slug>-captions.txt` |
-| Card 1: brand strip, big headline over a ground | our cover card: market label, headline, sub, key figures |
+| Card 1: brand strip, big headline over a ground | our cover card carries the SUBJECT, not the data: headline, sub, a line of situation and a mark that stands for the story (the `lead` block) |
 | Card 2: dark ground, headline, three icon+bold+muted rows | the new **`chips`** block |
 | Card 3: a grid of small tiles with status badges | our existing `checks` / `compare` / `table` blocks |
 | Card 4: one huge number and an offer box | the new **`cta`** block, with a QR because a carousel is not clickable |
@@ -32,23 +32,32 @@ From the screenshots, the pattern was consistent and worth copying:
 
 ## The format
 
-**Canvas** `4:5` = 1254×1568, rendered at 2× (2508×3136).
-`1:1` = 1254×1254 stays available for the square feed and is what every card
-published before this is.
+**Canvas** `1:1` = 1254×1254, rendered at 2× (2508×2508) — the ratio every
+trends card has always had, so a deck sits in the existing feed without
+announcing itself as a different kind of object. `4:5` (1254×1568) stays
+available through `ratio` for a deck written only for LinkedIn.
 
-**Length** 3–5 cards. Below three there is no reason to swipe; above five the
-drop-off makes the last card pointless.
+**Length** 3–6 cards, **8 maximum** — the renderer refuses above 8 and says so
+above 6. Below three there is nothing to swipe through; past six the last card
+is read by almost nobody. The number follows the material, not a template: a
+two-figure story is three cards, a reform with phases is six.
 
 **Card roles** — one idea per card, in this order:
 
-1. **cover** — the headline and the figure the story is about. Never more than
-   three figures; they are laid out as three ROWS in portrait (a square's three
-   columns break every number across two lines at 4:5).
-2. **caveat / evidence** — what the number is not, or what stands behind it.
+1. **cover — the SUBJECT, not the data.** Title, sub, one sentence of
+   situation, and a mark that stands for the story, plus up to three short
+   points naming what follows. The `lead` block renders exactly this. A cover
+   that opens with the big number has already spent the story's one surprise —
+   and a reader who has seen the number has no reason to swipe.
+2. **the key chart or illustration.** This is where the figures land:
+   `stats`, `bars`, `series`, `compare`.
+3. **caveat / evidence** — what the number is not, or what stands behind it.
    `chips` is the workhorse here.
-3. **context** — the second dimension: who carries it, what it costs, what
-   changes. `stats`, `compare`, `timeline`, `table`.
-4. **cta** — one number the reader leaves with, the address as text, and a QR.
+4. **context** — the second dimension: who carries it, what it costs, what
+   changes. `stats`, `timeline`, `table`, `checks`.
+5. **cta** — one number the reader leaves with, the address as text, and a QR.
+
+Cards 3 and 4 repeat as the material needs; the cover and the cta do not.
 
 **Frame** — unchanged brand furniture on every card: market-tinted ground, side
 rail with the domain, flag badge, month, footer lockup. Added for decks: the
@@ -103,8 +112,13 @@ with a clipped third card is worse than no deck.
 
 **Site** — add `images: ["<slug>-1.webp", …]` next to the existing `image` in
 `<CC>.json`. `image` stays: it is the feed thumbnail and the share preview.
-The in-app reader (`TrendsPage`) pages through `images` with arrows, keyboard
-and swipe; an entry without `images` renders exactly as before.
+
+The in-app reader puts the cards on one track and **centres the selected
+card**, with its neighbours showing at the edges — that peek is what tells a
+reader there is more, without a caption saying so. Arrows move the selection,
+the track scrolls itself to centre it, and dragging the track by hand updates
+the selection the same way. An entry without `images` renders exactly as it did
+before decks existed.
 
 **LinkedIn** — upload `<slug>-carousel.pdf` as a *document* post (composer →
 `+` / more → Add a document), or the PNGs as a multi-image post if the document

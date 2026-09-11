@@ -237,7 +237,21 @@ const cta = (b, T) => `<div class="ctablk">
   </div>
 </div>`;
 
-const RENDER = { hero, stats, bars, series, table, list, checks, timeline, compare, fazit, chips, cta };
+/* ── lead ─────────────────────────────────────────────────────────────────
+   The cover card's body. Not the data — the SUBJECT. A mark that stands for
+   the story, a sentence of situation, and at most three short points that say
+   what the reader is about to be shown. The figures come on the next card:
+   a cover that opens with a number has already spent the story's one surprise.
+*/
+const lead = (b, T) => `<div class="lead">
+  <div class="leadmark" style="border-color:${T.a}40;background:${T.a}12">${IC(b.icon ?? 'bulb', T.a, 128)}</div>
+  <div class="leadtx">
+    ${b.text ? `<p class="leadp">${esc(b.text)}</p>` : ''}
+    ${(b.points ?? []).length ? `<div class="leadpts">${b.points.map((pt) => `<span><i style="background:${T.a}"></i>${esc(pt)}</span>`).join('')}</div>` : ''}
+  </div>
+</div>`;
+
+const RENDER = { hero, stats, bars, series, table, list, checks, timeline, compare, fazit, chips, cta, lead };
 
 /** Render one section: either a single block or a row of blocks side by side. */
 export function renderSection(section, T) {

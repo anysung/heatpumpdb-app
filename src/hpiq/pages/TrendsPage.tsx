@@ -73,62 +73,104 @@ const PILL: React.CSSProperties = {
 };
 
 /**
- * CardDeck — the swipeable card reader.
+ * CardDeck — the card reader: one card at a time, centred.
  *
- * A trends story used to be one square card, which forced every figure onto a
- * single surface. A deck lets each card hold ONE idea at full size and lets
- * the reader decide how far to go — and it is the same set of images LinkedIn
- * pages through as a carousel, so the two surfaces cannot drift apart.
+ * A deck is 3 to 6 cards (8 at the most), so the reader has to make where it
+ * is obvious. The cards sit on one track and the SELECTED card is centred in
+ * the frame, with its neighbours showing at the edges — that peek is what
+ * tells a reader there is more without a caption saying so. The arrows move
+ * the selection; the track scrolls itself to centre it.
  *
- * Arrows, keyboard and touch all move the same index. A one-card deck renders
- * as a plain image with no furniture at all, which is what every entry
- * published before this was.
+ * Native scrolling does the work rather than a transform: a phone then gets
+ * its own momentum and snapping for free, and dragging the track by hand
+ * updates the selection the same way the arrows do.
+ *
+ * A one-card entry renders as a plain image with no furniture at all, which
+ * is what every card published before decks existed is.
  */
 const CardDeck: React.FC<{ images: string[]; alt: string }> = ({ images, alt }) => {
   const [i, setI] = useState(0);
-  const touch = React.useRef<number | null>(null);
+  const track = React.useRef<HTMLDivElement>(null);
   const n = images.length;
-  const go = (d: number) => setI(k => Math.min(Math.max(k + d, 0), n - 1));
+
+  const centre = (k: number) => {
+    const el = track.current?.children[k] as HTMLElement | undefined;
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  };
+  const go = (d: number) => {
+    const k = Math.min(Math.max(i + d, 0), n - 1);
+    setI(k); centre(k);
+  };
 
   // A new story resets the deck: reading card 3 of one and opening the next
   // should not land on its card 3.
   const first = images[0];
-  useEffect(() => { setI(0); }, [first]);
+  useEffect(() => { setI(0); track.current?.scrollTo({ left: 0 }); }, [first]);
 
   if (n === 1) {
     return <img src={images[0]} alt={alt} style={{ width: '100%', borderRadius: 18, display: 'block', marginBottom: 26 }} />;
   }
 
+  /** Which card is nearest the centre — the selection follows a hand-drag as
+   *  well as the arrows, so the dots never disagree with what is on screen. */
+  const onScroll = () => {
+    const t = track.current; if (!t) return;
+    const mid = t.scrollLeft + t.clientWidth / 2;
+    let best = 0, bestD = Infinity;
+    [...t.children].forEach((c, k) => {
+      const el = c as HTMLElement;
+      const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid);
+      if (d < bestD) { bestD = d; best = k; }
+    });
+    if (best !== i) setI(best);
+  };
+
   const ARROW: React.CSSProperties = {
-    position: 'absolute', top: '50%', transform: 'translateY(-50%)',
-    width: 44, height: 44, borderRadius: '50%', border: '1px solid #e0e0e0',
-    background: 'rgba(255,255,255,.92)', color: '#1d1d1f', fontSize: 22, lineHeight: 1,
-    display: 'grid', placeItems: 'center', cursor: 'pointer', boxShadow: '0 4px 14px rgba(0,0,0,.12)',
+    position: 'absolute', top: '50%', transform: 'translateY(-50%)', zIndex: 2,
+    width: 46, height: 46, borderRadius: '50%', border: '1px solid #e0e0e0',
+    background: 'rgba(255,255,255,.94)', color: '#1d1d1f', fontSize: 22, lineHeight: 1,
+    display: 'grid', placeItems: 'center', cursor: 'pointer', boxShadow: '0 4px 16px rgba(0,0,0,.14)',
   };
 
   return (
     <div style={{ marginBottom: 26 }}>
-      <div
-        style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', outline: 'none' }}
-        onTouchStart={e => { touch.current = e.touches[0].clientX; }}
-        onTouchEnd={e => {
-          if (touch.current == null) return;
-          const dx = e.changedTouches[0].clientX - touch.current;
-          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
-          touch.current = null;
-        }}
-        onKeyDown={e => { if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1); }}
-        tabIndex={0}
-      >
-        <img src={images[i]} alt={`${alt} — ${i + 1}/${n}`} style={{ width: '100%', display: 'block' }} />
-        {i > 0 && <div className="hp-press" onClick={() => go(-1)} style={{ ...ARROW, left: 12 }}>‹</div>}
-        {i < n - 1 && <div className="hp-press" onClick={() => go(1)} style={{ ...ARROW, right: 12 }}>›</div>}
+      <div style={{ position: 'relative' }}>
+        <div
+          ref={track}
+          onScroll={onScroll}
+          onKeyDown={e => { if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1); }}
+          tabIndex={0}
+          className="hp-deck-track"
+          style={{
+            display: 'flex', gap: 14, overflowX: 'auto', scrollSnapType: 'x mandatory',
+            // The side padding is what lets the FIRST and LAST card reach the
+            // centre; without it the deck would stop one half-card short.
+            padding: '4px 13% 10px', outline: 'none', scrollbarWidth: 'none',
+          }}
+        >
+          {images.map((src, k) => (
+            <img
+              key={src}
+              src={src}
+              alt={`${alt} — ${k + 1}/${n}`}
+              onClick={() => { setI(k); centre(k); }}
+              style={{
+                flex: 'none', width: '74%', maxWidth: 560, borderRadius: 18, display: 'block',
+                scrollSnapAlign: 'center', cursor: k === i ? 'default' : 'pointer',
+                opacity: k === i ? 1 : 0.5, transition: 'opacity .25s, transform .25s',
+                transform: k === i ? 'none' : 'scale(.965)',
+              }}
+            />
+          ))}
+        </div>
+        {i > 0 && <div className="hp-press" onClick={() => go(-1)} style={{ ...ARROW, left: 6 }}>‹</div>}
+        {i < n - 1 && <div className="hp-press" onClick={() => go(1)} style={{ ...ARROW, right: 6 }}>›</div>}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 12 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 10 }}>
         {images.map((_, k) => (
           <span
             key={k}
-            onClick={() => setI(k)}
+            onClick={() => { setI(k); centre(k); }}
             className="hp-press"
             style={{
               width: k === i ? 22 : 8, height: 8, borderRadius: 4, cursor: 'pointer',

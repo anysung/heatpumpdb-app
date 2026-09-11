@@ -4,19 +4,42 @@
  "countryLabel": "Deutschland",
  "month": "SEPTEMBER 2026",
  "footer": "HeatPump DB Germany Editorial Team",
- "ratio": "4:5",
+ "ratio": "1:1",
  "swipeHint": "weiterblättern",
  "cards": [
   {
-   "role": "cover",
+   "_role": "cover",
    "motif": "chart",
-   "titleSize": 58,
+   "titleSize": 52,
    "title": [
     "195.000 Wärmepumpen",
     "im ersten Halbjahr"
    ],
-   "sub": "+40 % gegenüber dem Vorjahreszeitraum — und drei Zahlen, die dabei meist untergehen.",
+   "sub": "Der Absatz zieht wieder an — die Frage ist, was die Zahl über den Markt sagt.",
    "caption": "Der Markt wächst wieder. Was die Zahl sagt — und was nicht.",
+   "sections": [
+    {
+     "type": "lead",
+     "icon": "chart",
+     "text": "Die Absatzstatistik für das erste Halbjahr 2026 liegt vor. Sie ist die meistzitierte Zahl der Branche — und die am häufigsten falsch gelesene.",
+     "points": [
+      "Woher die Zahl kommt",
+      "Was sie nicht misst",
+      "Wer das Wachstum tragen muss"
+     ]
+    }
+   ]
+  },
+  {
+   "_role": "chart",
+   "motif": "chart",
+   "titleSize": 50,
+   "title": [
+    "Der Absatz",
+    "in Zahlen"
+   ],
+   "sub": "Halbjahreswerte im Vergleich — und der Bestand, auf den sie treffen.",
+   "caption": "+40 % gegenüber H1 2025 — bei rund 2 Mio. Geräten im Bestand.",
    "sections": [
     {
      "type": "stats",
@@ -39,9 +62,9 @@
    ]
   },
   {
-   "role": "caveat",
+   "_role": "caveat",
    "motif": "doc",
-   "titleSize": 52,
+   "titleSize": 50,
    "title": [
     "Was diese Zahl",
     "nicht ist"
@@ -73,9 +96,9 @@
    ]
   },
   {
-   "role": "context",
-   "motif": "euro-hand",
-   "titleSize": 52,
+   "_role": "context",
+   "motif": "people",
+   "titleSize": 50,
    "title": [
     "Die Branche",
     "dahinter"
@@ -112,8 +135,8 @@
    ]
   },
   {
-   "role": "cta",
-   "titleSize": 52,
+   "_role": "cta",
+   "titleSize": 50,
    "title": [
     "Jede gelistete",
     "Wärmepumpe."
