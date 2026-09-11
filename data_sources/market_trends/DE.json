@@ -46,7 +46,7 @@
  {
   "slug": "2026-09-halbjahr",
   "date": "2026-08-25",
-  "image": "de-2026-09-halbjahr-deck-1.webp",
+  "image": "de-2026-09-halbjahr.webp",
   "title": "195.000 Wärmepumpen im ersten Halbjahr",
   "excerpt": "Der Absatz stieg im ersten Halbjahr 2026 um 40 Prozent auf 195.000 Geräte. Entscheidend für die Einordnung: es sind Absatzzahlen an den Handel, keine Installationszahlen.",
   "body": [
@@ -64,14 +64,7 @@
    "For context, the association puts the installed base at just under two million heat pumps in Germany, the sector at around 100,000 people and roughly €3.5bn in annual turnover across some 1,400 member companies.",
    "BWP attributes the growth to awareness of fossil-supply risk and to the federal building-efficiency programme, whose reliable continuation to 2030 the association explicitly welcomes."
   ],
-  "sourceNoteEn": "Source: BWP press release of 06.08.2026, BWP/BDH sales statistics. Sales to the trade, not installation figures.",
-  "images": [
-   "de-2026-09-halbjahr-deck-1.webp",
-   "de-2026-09-halbjahr-deck-2.webp",
-   "de-2026-09-halbjahr-deck-3.webp",
-   "de-2026-09-halbjahr-deck-4.webp",
-   "de-2026-09-halbjahr-deck-5.webp"
-  ]
+  "sourceNoteEn": "Source: BWP press release of 06.08.2026, BWP/BDH sales statistics. Sales to the trade, not installation figures."
  },
  {
   "slug": "2026-08-heizungsmarkt",
