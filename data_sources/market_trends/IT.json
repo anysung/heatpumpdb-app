@@ -1,5 +1,34 @@
 [
  {
+  "slug": "2026-09-refrigeranti",
+  "date": "2026-09-12",
+  "image": "it-2026-09-refrigerants-1.webp",
+  "images": [
+   "it-2026-09-refrigerants-1.webp",
+   "it-2026-09-refrigerants-2.webp",
+   "it-2026-09-refrigerants-3.webp",
+   "it-2026-09-refrigerants-4.webp"
+  ],
+  "title": "Quale refrigerante è davvero in catalogo? Cinque mercati, una sola data",
+  "excerpt": "L’R290 rappresenta il 32–37% delle pompe di calore registrate nei cinque cataloghi nazionali, l’R410A ancora il 12–14%. Sono quote di modelli registrati, non di unità vendute.",
+  "body": [
+   "Della transizione dei refrigeranti si parla da anni in termini di scadenze e quote. Quello che è effettivamente registrato nei cataloghi nazionali si mostra più di rado — così lo abbiamo contato, a una data di rilevazione, per tutti e cinque i mercati che pubblichiamo.",
+   "Tra i modelli che dichiarano un refrigerante, l’R290 (propano) è il 36% in Germania e Regno Unito, il 37% in Francia, il 35% in Italia e il 32% in Polonia. L’R32 resta ovunque il gruppo più numeroso, tra il 38% e il 43%. L’R454x si colloca al 7–9%, e l’R410A — quello a cui punta il phase-down — vale ancora il 12–14% dei modelli elencati.",
+   "La conseguenza pratica non è nella tabella ma dietro: il propano è un refrigerante A3, e questo sposta il requisito dalla macchina all’esercizio. Circa un modello elencato su tre richiede già manutenzione con personale certificato, e quella competenza deve esistere prima che il parco installato chieda il primo intervento, non dopo.",
+   "Una riserva accompagna i numeri: sono quote di MODELLI REGISTRATI, non di unità vendute o installate. Un catalogo dice cosa può essere offerto, non cosa è stato montato. Dove un mercato porta voci di registro senza indicazione del refrigerante — l’Italia, dove lo dichiara il 73% dei modelli elencati — la quota è calcolata sui modelli che lo indicano."
+  ],
+  "sourceNote": "Base: cataloghi HeatPump DB, rilevazione 01/09/2026. Attribuzione del refrigerante per sottostringa (R290, R32, R454x, R410A); il complemento a 100% sono altri refrigeranti. Quote di modelli registrati — non dati di vendita o installazione.",
+  "titleEn": "Which refrigerant is actually listed? Five markets, one snapshot",
+  "excerptEn": "R290 accounts for 32–37% of the heat pumps registered in the five national catalogues, R410A still 12–14%. The figures are shares of registered models, not of units sold.",
+  "bodyEn": [
+   "The refrigerant transition has been discussed for years in terms of deadlines and quotas. What is actually registered in the national catalogues is shown less often — so we counted it, on one snapshot date, for all five markets we publish.",
+   "Of the models that declare a refrigerant, R290 (propane) accounts for 36% in Germany and the United Kingdom, 37% in France, 35% in Italy and 32% in Poland. R32 remains the largest single group everywhere, between 38% and 43%. R454x sits at 7–9%, and R410A — the refrigerant the phase-down is aimed at — still accounts for 12–14% of listed models.",
+   "The practical consequence is not in the table but behind it: propane is an A3 refrigerant, which moves the requirement from the machine to the operation. Roughly one in three listed models already needs certified handling in service, and that competence has to exist before the installed base asks for its first maintenance visit, not after.",
+   "A caveat that belongs with the numbers: these are shares of REGISTERED MODELS, not of units sold or installed. A catalogue says what may be offered, not what was fitted. Where a market carries registry-native records that do not print a refrigerant — Italy, where 73% of listed models declare one — the share is calculated on the models that do."
+  ],
+  "sourceNoteEn": "Basis: HeatPump DB catalogues, snapshot 2026-09-01. Refrigerant assigned by substring match (R290, R32, R454x, R410A); the remainder to 100% is other refrigerants. Shares of registered models — not sales or installation figures."
+ },
+ {
   "slug": "2026-09-conto-termico-3-0",
   "date": "2026-09-01",
   "image": "it-2026-09-conto-termico-3-0.webp",

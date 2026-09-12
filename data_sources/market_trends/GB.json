@@ -1,5 +1,25 @@
 [
  {
+  "slug": "2026-09-refrigerants",
+  "date": "2026-09-12",
+  "image": "gb-2026-09-refrigerants-1.webp",
+  "images": [
+   "gb-2026-09-refrigerants-1.webp",
+   "gb-2026-09-refrigerants-2.webp",
+   "gb-2026-09-refrigerants-3.webp",
+   "gb-2026-09-refrigerants-4.webp"
+  ],
+  "title": "Which refrigerant is actually listed? Five markets, one snapshot",
+  "excerpt": "R290 accounts for 32–37% of the heat pumps registered in the five national catalogues, R410A still 12–14%. The figures are shares of registered models, not of units sold.",
+  "body": [
+   "The refrigerant transition has been discussed for years in terms of deadlines and quotas. What is actually registered in the national catalogues is shown less often — so we counted it, on one snapshot date, for all five markets we publish.",
+   "Of the models that declare a refrigerant, R290 (propane) accounts for 36% in Germany and the United Kingdom, 37% in France, 35% in Italy and 32% in Poland. R32 remains the largest single group everywhere, between 38% and 43%. R454x sits at 7–9%, and R410A — the refrigerant the phase-down is aimed at — still accounts for 12–14% of listed models.",
+   "The practical consequence is not in the table but behind it: propane is an A3 refrigerant, which moves the requirement from the machine to the operation. Roughly one in three listed models already needs certified handling in service, and that competence has to exist before the installed base asks for its first maintenance visit, not after.",
+   "A caveat that belongs with the numbers: these are shares of REGISTERED MODELS, not of units sold or installed. A catalogue says what may be offered, not what was fitted. Where a market carries registry-native records that do not print a refrigerant — Italy, where 73% of listed models declare one — the share is calculated on the models that do."
+  ],
+  "sourceNote": "Basis: HeatPump DB catalogues, snapshot 2026-09-01. Refrigerant assigned by substring match (R290, R32, R454x, R410A); the remainder to 100% is other refrigerants. Shares of registered models — not sales or installation figures."
+ },
+ {
   "slug": "2026-09-bus-grants-expanded",
   "date": "2026-09-01",
   "image": "gb-2026-09-bus-grants-expanded.webp",

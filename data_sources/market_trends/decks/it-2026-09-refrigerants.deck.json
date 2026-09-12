@@ -1,0 +1,157 @@
+{
+ "slug": "it-2026-09-refrigerants",
+ "country": "IT",
+ "countryLabel": "Italia",
+ "month": "SETTEMBRE 2026",
+ "footer": "HeatPump DB Italy Editorial Team",
+ "ratio": "1:1",
+ "swipeHint": "scorri",
+ "cards": [
+  {
+   "motif": "bulb",
+   "titleSize": 50,
+   "title": [
+    "Quale refrigerante",
+    "è davvero in catalogo?"
+   ],
+   "sub": "Cinque mercati, una sola data — e una quota che non compare in nessuna statistica di vendita.",
+   "caption": "La transizione dei refrigeranti in numeri — cinque mercati a confronto.",
+   "sections": [
+    {
+     "type": "lead",
+     "icon": "bulb",
+     "text": "Della transizione dei refrigeranti si parla da anni. Quello che è effettivamente registrato nei cataloghi nazionali si vede di rado.",
+     "points": [
+      "La quota in ogni mercato",
+      "Cosa comporta l’R290",
+      "Cosa questi numeri non sono"
+     ]
+    }
+   ]
+  },
+  {
+   "motif": "chart",
+   "titleSize": 48,
+   "title": [
+    "Refrigeranti in catalogo",
+    "per mercato"
+   ],
+   "sub": "Quota dei modelli che dichiarano un refrigerante.",
+   "caption": "L’R290 si colloca tra il 32% e il 37% in tutti e cinque i mercati.",
+   "sections": [
+    {
+     "type": "matrix",
+     "icon": "chart",
+     "title": "Quota dei modelli registrati",
+     "rowHead": "MERCATO",
+     "cols": [
+      "R290",
+      "R32",
+      "R454x",
+      "R410A"
+     ],
+     "rows": [
+      {
+       "label": "Germania",
+       "cells": [
+        "36 %",
+        "38 %",
+        "9 %",
+        "13 %"
+       ]
+      },
+      {
+       "label": "Regno Unito",
+       "cells": [
+        "36 %",
+        "38 %",
+        "9 %",
+        "13 %"
+       ]
+      },
+      {
+       "label": "Francia",
+       "cells": [
+        "37 %",
+        "39 %",
+        "9 %",
+        "13 %"
+       ]
+      },
+      {
+       "label": "Polonia",
+       "cells": [
+        "32 %",
+        "43 %",
+        "7 %",
+        "14 %"
+       ]
+      },
+      {
+       "label": "Italia",
+       "cells": [
+        "35 %",
+        "41 %",
+        "9 %",
+        "12 %"
+       ]
+      }
+     ],
+     "note": "Base: modelli nel catalogo di ciascun mercato, rilevazione 01/09/2026, che dichiarano un refrigerante — non dati di vendita né di installazione. Attribuzione per sottostringa (R290, R32, R454x, R410A); il complemento a 100% sono altri refrigeranti. In Italia dichiara un refrigerante il 73% dei modelli elencati, negli altri mercati quasi tutti."
+    }
+   ]
+  },
+  {
+   "motif": "scales",
+   "titleSize": 48,
+   "title": [
+    "Che cosa",
+    "significa"
+   ],
+   "sub": "Il propano è un refrigerante A3 — il requisito si sposta dalla macchina all’esercizio.",
+   "caption": "Ogni impianto R290 richiede personale certificato — adesso, non alla scadenza.",
+   "sections": [
+    {
+     "type": "chips",
+     "rows": [
+      {
+       "icon": "bulb",
+       "label": "Circa un terzo è già R290",
+       "note": "A3: infiammabile, manutenzione con personale certificato"
+      },
+      {
+       "icon": "chart",
+       "label": "L’R32 resta il gruppo più numeroso",
+       "note": "38–43% a seconda del mercato"
+      },
+      {
+       "icon": "doc",
+       "label": "L’R410A non è sparito",
+       "note": "12–14% dei modelli elencati",
+       "accent": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "titleSize": 48,
+   "title": [
+    "Ogni pompa di calore",
+    "in lista."
+   ],
+   "sub": "Refrigerante, SCOP, potenza sonora e stato — in un unico posto.",
+   "caption": "I dati dietro la tabella: heatpumpdb.it",
+   "sections": [
+    {
+     "type": "cta",
+     "big": "11.065",
+     "line": "modelli nel catalogo italiano",
+     "host": "heatpumpdb.it",
+     "note": "15 giorni gratis — senza dati di pagamento",
+     "qr": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 33 33\" shape-rendering=\"crispEdges\"><path stroke=\"#0b1220\" d=\"M0 0.5h7m1 0h1m1 0h1m2 0h2m2 0h2m3 0h1m3 0h7M0 1.5h1m5 0h1m1 0h1m4 0h2m3 0h3m1 0h1m1 0h1m1 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m1 0h1m4 0h2m1 0h1m2 0h3m2 0h1m1 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m2 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m2 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m1 0h2m2 0h2m1 0h3m3 0h1m2 0h1m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m2 0h5m1 0h2m1 0h2m3 0h2m1 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 7.5h1m3 0h1m1 0h2m1 0h1m3 0h2M0 8.5h1m2 0h7m4 0h1m2 0h2m5 0h2m2 0h1m1 0h3M1 9.5h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h3m1 0h3m4 0h4M0 10.5h1m3 0h3m2 0h1m2 0h2m1 0h2m3 0h5m1 0h1m1 0h5M3 11.5h2m2 0h2m1 0h1m1 0h2m2 0h1m1 0h1m3 0h1m2 0h3m2 0h2M2 12.5h1m1 0h5m3 0h2m1 0h1m1 0h1m1 0h1m4 0h3M0 13.5h1m1 0h4m2 0h3m1 0h1m1 0h1m2 0h4m2 0h1m1 0h1m1 0h1m1 0h2M0 14.5h3m1 0h5m2 0h1m2 0h2m1 0h1m1 0h4m3 0h3m1 0h1M0 15.5h1m2 0h2m2 0h2m2 0h1m1 0h2m1 0h1m1 0h1m1 0h1m4 0h1m1 0h4m1 0h1M0 16.5h4m2 0h1m1 0h2m1 0h2m1 0h2m6 0h7M0 17.5h1m1 0h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h5m2 0h3m1 0h1m1 0h1m1 0h1M1 18.5h1m1 0h4m1 0h1m2 0h2m1 0h2m1 0h3m1 0h3m3 0h1m1 0h4M0 19.5h3m4 0h5m2 0h1m1 0h1m2 0h1m2 0h2m4 0h5M2 20.5h1m1 0h1m1 0h1m1 0h2m2 0h2m2 0h1m1 0h1m2 0h2m1 0h2m1 0h1m1 0h1M0 21.5h3m2 0h1m2 0h4m1 0h2m2 0h1m4 0h2m1 0h1m1 0h2m1 0h1M0 22.5h1m1 0h2m1 0h3m1 0h2m6 0h13m1 0h2M0 23.5h1m3 0h2m1 0h1m1 0h4m1 0h2m1 0h1m1 0h2m1 0h1m1 0h4m2 0h3M0 24.5h2m2 0h5m4 0h2m1 0h1m3 0h1m2 0h7M8 25.5h3m1 0h2m1 0h3m3 0h4m3 0h1m1 0h1M0 26.5h7m1 0h1m1 0h1m3 0h2m1 0h1m1 0h2m2 0h2m1 0h1m1 0h1m1 0h1M0 27.5h1m5 0h1m1 0h1m1 0h3m1 0h2m1 0h2m2 0h4m3 0h5M0 28.5h1m1 0h3m1 0h1m1 0h1m3 0h1m3 0h2m3 0h8m2 0h2M0 29.5h1m1 0h3m1 0h1m1 0h1m2 0h2m1 0h1m1 0h3m3 0h1m2 0h1m1 0h1m2 0h1m1 0h1M0 30.5h1m1 0h3m1 0h1m2 0h1m1 0h2m2 0h1m1 0h1m1 0h1m1 0h2m1 0h1m2 0h2m1 0h3M0 31.5h1m5 0h1m4 0h2m1 0h1m3 0h3m2 0h1m3 0h6M0 32.5h7m1 0h3m1 0h1m2 0h6m2 0h2m1 0h3\"/></svg>"
+    }
+   ]
+  }
+ ]
+}

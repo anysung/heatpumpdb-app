@@ -1,5 +1,34 @@
 [
  {
+  "slug": "2026-09-fluides",
+  "date": "2026-09-12",
+  "image": "fr-2026-09-refrigerants-1.webp",
+  "images": [
+   "fr-2026-09-refrigerants-1.webp",
+   "fr-2026-09-refrigerants-2.webp",
+   "fr-2026-09-refrigerants-3.webp",
+   "fr-2026-09-refrigerants-4.webp"
+  ],
+  "title": "Quel fluide frigorigène est réellement référencé ? Cinq marchés, une même date",
+  "excerpt": "Le R290 représente 32 à 37 % des pompes à chaleur inscrites aux cinq catalogues nationaux, le R410A encore 12 à 14 %. Ce sont des parts de modèles référencés, pas d’unités vendues.",
+  "body": [
+   "La transition des fluides frigorigènes se discute depuis des années en échéances et en quotas. Ce qui est réellement inscrit dans les catalogues nationaux se montre plus rarement — nous l’avons donc compté, à une date de relevé, pour les cinq marchés que nous publions.",
+   "Parmi les modèles qui déclarent un fluide, le R290 (propane) représente 36 % en Allemagne et au Royaume-Uni, 37 % en France, 35 % en Italie et 32 % en Pologne. Le R32 reste partout le premier groupe, entre 38 % et 43 %. Le R454x se situe à 7–9 %, et le R410A — celui que vise la réduction progressive — compte encore pour 12 à 14 % des modèles listés.",
+   "La conséquence pratique n’est pas dans le tableau mais derrière : le propane est un fluide A3, ce qui déplace l’exigence de l’appareil vers l’exploitation. Près d’un modèle listé sur trois demande déjà une manipulation certifiée en SAV, et cette compétence doit exister avant que le parc installé ne demande son premier entretien, pas après.",
+   "Une réserve accompagne ces chiffres : ce sont des parts de MODÈLES RÉFÉRENCÉS, pas d’unités vendues ou posées. Un catalogue dit ce qui peut être proposé, pas ce qui a été installé. Là où un marché porte des entrées issues du registre sans mention de fluide — l’Italie, où 73 % des modèles listés en déclarent un — la part est calculée sur les modèles qui en déclarent un."
+  ],
+  "sourceNote": "Base : catalogues HeatPump DB, relevé du 01/09/2026. Affectation du fluide par sous-chaîne (R290, R32, R454x, R410A) ; le complément à 100 % correspond aux autres fluides. Parts de modèles référencés — ni ventes ni installations.",
+  "titleEn": "Which refrigerant is actually listed? Five markets, one snapshot",
+  "excerptEn": "R290 accounts for 32–37% of the heat pumps registered in the five national catalogues, R410A still 12–14%. The figures are shares of registered models, not of units sold.",
+  "bodyEn": [
+   "The refrigerant transition has been discussed for years in terms of deadlines and quotas. What is actually registered in the national catalogues is shown less often — so we counted it, on one snapshot date, for all five markets we publish.",
+   "Of the models that declare a refrigerant, R290 (propane) accounts for 36% in Germany and the United Kingdom, 37% in France, 35% in Italy and 32% in Poland. R32 remains the largest single group everywhere, between 38% and 43%. R454x sits at 7–9%, and R410A — the refrigerant the phase-down is aimed at — still accounts for 12–14% of listed models.",
+   "The practical consequence is not in the table but behind it: propane is an A3 refrigerant, which moves the requirement from the machine to the operation. Roughly one in three listed models already needs certified handling in service, and that competence has to exist before the installed base asks for its first maintenance visit, not after.",
+   "A caveat that belongs with the numbers: these are shares of REGISTERED MODELS, not of units sold or installed. A catalogue says what may be offered, not what was fitted. Where a market carries registry-native records that do not print a refrigerant — Italy, where 73% of listed models declare one — the share is calculated on the models that do."
+  ],
+  "sourceNoteEn": "Basis: HeatPump DB catalogues, snapshot 2026-09-01. Refrigerant assigned by substring match (R290, R32, R454x, R410A); the remainder to 100% is other refrigerants. Shares of registered models — not sales or installation figures."
+ },
+ {
   "slug": "2026-09-aides-pac-france",
   "date": "2026-09-01",
   "image": "fr-2026-09-aides-pac-france.webp",

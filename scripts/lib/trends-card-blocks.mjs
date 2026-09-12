@@ -251,7 +251,27 @@ const lead = (b, T) => `<div class="lead">
   </div>
 </div>`;
 
-const RENDER = { hero, stats, bars, series, table, list, checks, timeline, compare, fazit, chips, cta, lead };
+/* ── matrix ───────────────────────────────────────────────────────────────
+   A real table: rows down the side, measures across the top. The deck needed
+   one the first time five markets had to stand side by side WITHOUT being
+   merged — two markets showing the same number is itself a finding, and a
+   table that collapsed them into one row would have hidden it. The first
+   column is the one the card is about and carries the accent; the rest stay
+   quiet. `note` is the basis, set small under the rule. */
+const matrix = (b, T) => panel(`
+  ${head(b.icon, b.title, T)}
+  <div class="mx">
+    <div class="mxh"><span class="mxl">${esc(b.rowHead ?? '')}</span>${(b.cols ?? []).map((c, i) =>
+      `<span class="mxc"${i === 0 ? ` style="color:${T.a}"` : ''}>${esc(c)}</span>`).join('')}</div>
+    ${(b.rows ?? []).map((r) => `<div class="mxr">
+      <span class="mxl">${esc(r.label)}</span>
+      ${(r.cells ?? []).map((c, i) => `<span class="mxc"${i === 0
+        ? ` style="color:${T.a};font-weight:800"` : ''}>${esc(c)}</span>`).join('')}
+    </div>`).join('')}
+  </div>
+  ${b.note ? `<p class="mxn">${esc(b.note)}</p>` : ''}`, T);
+
+const RENDER = { hero, stats, bars, series, table, list, checks, timeline, compare, fazit, chips, cta, lead, matrix };
 
 /** Render one section: either a single block or a row of blocks side by side. */
 export function renderSection(section, T) {

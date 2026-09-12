@@ -1,0 +1,157 @@
+{
+ "slug": "pl-2026-09-refrigerants",
+ "country": "PL",
+ "countryLabel": "Polska",
+ "month": "WRZESIEŃ 2026",
+ "footer": "HeatPump DB Poland Editorial Team",
+ "ratio": "1:1",
+ "swipeHint": "przewiń dalej",
+ "cards": [
+  {
+   "motif": "bulb",
+   "titleSize": 50,
+   "title": [
+    "Jaki czynnik chłodniczy",
+    "jest naprawdę na liście?"
+   ],
+   "sub": "Pięć rynków, jedna data — i udział, którego nie ma w żadnej statystyce sprzedaży.",
+   "caption": "Zmiana czynników w liczbach — pięć rynków obok siebie.",
+   "sections": [
+    {
+     "type": "lead",
+     "icon": "bulb",
+     "text": "O zmianie czynników chłodniczych mówi się od lat. To, co faktycznie jest zarejestrowane w katalogach krajowych, pokazuje się rzadko.",
+     "points": [
+      "Udział na każdym rynku",
+      "Co R290 oznacza w praktyce",
+      "Czym te liczby nie są"
+     ]
+    }
+   ]
+  },
+  {
+   "motif": "chart",
+   "titleSize": 48,
+   "title": [
+    "Czynniki w katalogu",
+    "według rynku"
+   ],
+   "sub": "Udział modeli, które deklarują czynnik chłodniczy.",
+   "caption": "R290 mieści się między 32% a 37% na wszystkich pięciu rynkach.",
+   "sections": [
+    {
+     "type": "matrix",
+     "icon": "chart",
+     "title": "Udział zarejestrowanych modeli",
+     "rowHead": "RYNEK",
+     "cols": [
+      "R290",
+      "R32",
+      "R454x",
+      "R410A"
+     ],
+     "rows": [
+      {
+       "label": "Niemcy",
+       "cells": [
+        "36 %",
+        "38 %",
+        "9 %",
+        "13 %"
+       ]
+      },
+      {
+       "label": "Wielka Brytania",
+       "cells": [
+        "36 %",
+        "38 %",
+        "9 %",
+        "13 %"
+       ]
+      },
+      {
+       "label": "Francja",
+       "cells": [
+        "37 %",
+        "39 %",
+        "9 %",
+        "13 %"
+       ]
+      },
+      {
+       "label": "Polska",
+       "cells": [
+        "32 %",
+        "43 %",
+        "7 %",
+        "14 %"
+       ]
+      },
+      {
+       "label": "Włochy",
+       "cells": [
+        "35 %",
+        "41 %",
+        "9 %",
+        "12 %"
+       ]
+      }
+     ],
+     "note": "Podstawa: modele w katalogu danego rynku, stan na 01.09.2026, które deklarują czynnik — nie dane sprzedażowe ani montażowe. Przypisanie po fragmencie nazwy (R290, R32, R454x, R410A); dopełnienie do 100% to pozostałe czynniki. We Włoszech czynnik deklaruje 73% modeli, na pozostałych rynkach niemal wszystkie."
+    }
+   ]
+  },
+  {
+   "motif": "scales",
+   "titleSize": 48,
+   "title": [
+    "Co to",
+    "oznacza"
+   ],
+   "sub": "Propan to czynnik A3 — wymóg przenosi się z urządzenia na eksploatację.",
+   "caption": "Każda instalacja R290 wymaga certyfikowanego personelu — już teraz.",
+   "sections": [
+    {
+     "type": "chips",
+     "rows": [
+      {
+       "icon": "bulb",
+       "label": "Około jedna trzecia to już R290",
+       "note": "A3: palny, serwis wymaga uprawnień"
+      },
+      {
+       "icon": "chart",
+       "label": "R32 pozostaje największą grupą",
+       "note": "38–43% w zależności od rynku"
+      },
+      {
+       "icon": "doc",
+       "label": "R410A nie zniknął",
+       "note": "12–14% modeli na listach",
+       "accent": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "titleSize": 48,
+   "title": [
+    "Każda pompa ciepła",
+    "z listy."
+   ],
+   "sub": "Czynnik, SCOP, moc akustyczna i status — w jednym miejscu.",
+   "caption": "Dane stojące za tabelą: heatpumpdb.pl",
+   "sections": [
+    {
+     "type": "cta",
+     "big": "9 383",
+     "line": "modeli w katalogu polskim",
+     "host": "heatpumpdb.pl",
+     "note": "15 dni bezpłatnie — bez danych płatniczych",
+     "qr": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 33 33\" shape-rendering=\"crispEdges\"><path stroke=\"#0b1220\" d=\"M0 0.5h7m3 0h3m3 0h1m1 0h3m2 0h1m2 0h7M0 1.5h1m5 0h1m2 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h1m1 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h1m1 0h3m2 0h1m2 0h1m3 0h2m2 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m1 0h1m2 0h6m3 0h2m1 0h2m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m1 0h2m2 0h2m3 0h3m1 0h2m1 0h1m1 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h1m5 0h1m1 0h1m1 0h6M0 8.5h1m1 0h5m3 0h1m1 0h3m1 0h4m2 0h1m1 0h1m1 0h5M4 9.5h2m1 0h1m1 0h2m1 0h2m2 0h5m2 0h1m2 0h2m1 0h4M0 10.5h1m2 0h2m1 0h2m1 0h1m1 0h7m3 0h2m1 0h1m3 0h1m1 0h2M2 11.5h2m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h1m1 0h2m1 0h4M1 12.5h2m3 0h1m3 0h1m1 0h1m1 0h3m3 0h1m1 0h3m3 0h2m1 0h2M0 13.5h2m3 0h1m1 0h1m2 0h1m1 0h1m2 0h1m1 0h2m2 0h1m1 0h1m2 0h1m2 0h4M0 14.5h3m2 0h2m1 0h1m1 0h2m2 0h4m2 0h2m3 0h3m2 0h2M0 15.5h3m2 0h1m1 0h1m3 0h1m1 0h1m1 0h1m2 0h1m2 0h2m2 0h2m2 0h2M1 16.5h1m4 0h1m1 0h1m1 0h1m1 0h4m1 0h1m2 0h1m1 0h1m1 0h2m1 0h3m2 0h1M0 17.5h1m3 0h1m3 0h1m3 0h2m2 0h1m2 0h2m1 0h6m1 0h2m1 0h1M3 18.5h1m2 0h3m1 0h1m2 0h1m1 0h2m1 0h1m1 0h2m3 0h4m1 0h1M0 19.5h1m1 0h2m6 0h4m1 0h2m3 0h4m1 0h6M1 20.5h1m4 0h1m1 0h5m5 0h2m1 0h1m2 0h1m2 0h3m1 0h1M0 21.5h2m1 0h3m5 0h1m3 0h2m3 0h2m1 0h1m1 0h2m3 0h1m1 0h1M0 22.5h1m2 0h1m1 0h7m2 0h1m3 0h2m1 0h2m1 0h2m1 0h2m2 0h1M0 23.5h1m2 0h1m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h4m1 0h4m1 0h5M0 24.5h1m1 0h3m1 0h1m2 0h1m1 0h1m5 0h1m1 0h1m2 0h1m1 0h5m2 0h2M8 25.5h1m1 0h1m1 0h1m1 0h1m1 0h5m1 0h3m3 0h1m1 0h3M0 26.5h7m4 0h1m1 0h5m2 0h1m1 0h3m1 0h1m1 0h1m1 0h2M0 27.5h1m5 0h1m1 0h2m6 0h3m1 0h1m2 0h2m3 0h4M0 28.5h1m1 0h3m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m3 0h3m1 0h6m1 0h1M0 29.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h2m2 0h1m1 0h1m1 0h1m2 0h3m1 0h1M0 30.5h1m1 0h3m1 0h1m1 0h3m1 0h1m2 0h2m3 0h2m1 0h5m1 0h2M0 31.5h1m5 0h1m2 0h5m1 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h3M0 32.5h7m1 0h3m1 0h4m1 0h2m1 0h1m1 0h6m3 0h1\"/></svg>"
+    }
+   ]
+  }
+ ]
+}

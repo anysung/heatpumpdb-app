@@ -199,6 +199,17 @@ export const cardCss = (T, S = {}) => `
   .cmpr { display: flex; justify-content: space-between; gap: 12px; font-size: 17.5px; color: rgba(255,255,255,.72); }
   .cmpr b { font-size: 19px; white-space: nowrap; }
 
+  /* matrix — rows down the side, measures across the top */
+  .mx { display: flex; flex-direction: column; }
+  .mxh { display: flex; align-items: flex-end; padding: 0 4px 12px; border-bottom: 1px solid rgba(255,255,255,.14); }
+  .mxh .mxc { font-size: 19px; letter-spacing: .06em; color: rgba(255,255,255,.5); font-weight: 700; }
+  .mxr { display: flex; align-items: center; padding: 17px 4px; border-bottom: 1px solid rgba(255,255,255,.07); }
+  .mxr:last-child { border-bottom: none; }
+  .mxl { flex: 1; min-width: 0; color: #fff; font-size: 26px; font-weight: 650; }
+  .mxh .mxl { color: rgba(255,255,255,.5); font-size: 19px; font-weight: 700; letter-spacing: .06em; }
+  .mxc { width: 146px; text-align: right; color: rgba(255,255,255,.8); font-size: 26px; font-weight: 650; }
+  .mxn { margin-top: 16px; color: rgba(255,255,255,.42); font-size: 16px; line-height: 1.45; }
+
   /* lead — the cover card: a mark that stands for the subject, a line of
      situation, and at most three points on what follows */
   .lead { display: flex; align-items: center; gap: 56px; flex: 1; padding: 0 10px; }

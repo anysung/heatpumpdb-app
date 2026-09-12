@@ -172,10 +172,19 @@ const all = [...res, ...com];
 if (!all.length) { console.error(`build-market-trends (${MARKET}): datasets missing — page not written`); process.exit(0); }
 
 const has = (p, r) => String(p.refrigerant ?? '').toUpperCase().includes(r);   // contains, never equals
-const nR290 = all.filter((p) => has(p, 'R290')).length;
-const nR32 = all.filter((p) => !has(p, 'R290') && has(p, 'R32')).length;
-const nR410 = all.filter((p) => has(p, 'R410')).length;
-const nOther = all.length - nR290 - nR32 - nR410;
+/* The mix is counted over the models that DECLARE a refrigerant, not over the
+   whole catalogue. A record with no refrigerant is unknown, not "other", and
+   folding the unknowns into the denominator understates every named
+   refrigerant — visibly so in Italy, where registry-native rows carry a
+   refrigerant only when the catalogue printed one: on the old base R290 read
+   26%, on this one 35%, and the trends card published the second. Two numbers
+   for the same thing on the same site is the bug; this is the side that is
+   right. */
+const declared = all.filter((p) => String(p.refrigerant ?? '').trim());
+const nR290 = declared.filter((p) => has(p, 'R290')).length;
+const nR32 = declared.filter((p) => !has(p, 'R290') && has(p, 'R32')).length;
+const nR410 = declared.filter((p) => has(p, 'R410')).length;
+const nOther = declared.length - nR290 - nR32 - nR410;
 
 const scops = all.map((p) => Number(p.scop)).filter((v) => v > 1 && v < 9).sort((a, b) => a - b);
 const scopMed = scops.length ? scops[Math.floor(scops.length / 2)] : 0;
@@ -191,6 +200,8 @@ const mfrs = new Set(all.map((p) => p.manufacturer_short || p.manufacturer_norma
 const snapshot = String(all[0]?.source_snapshot_generated_at ?? '').slice(0, 10) || new Date().toISOString().slice(0, 10);
 
 const pct = (n) => Math.round((n / all.length) * 100);
+/** Refrigerant shares have their own base: the models that declare one. */
+const pctRef = (n) => Math.round((n / Math.max(declared.length, 1)) * 100);
 const nf = (n) => n.toLocaleString(HREFLANG[MARKET].replace('-', '-'));
 
 /* ── The infographic (inline SVG — crisp, no JS, brand palette) ──────────── */
@@ -225,11 +236,11 @@ const svg = `<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" role=
 
   <!-- refrigerant mix -->
   <text x="40" y="238" fill="#fff" font-size="17" font-weight="700">${S.refrig}</text>
-  ${bar(40, 262, 320, 'R290', nf(nR290), pct(nR290), RED_D)}
-  ${bar(40, 306, 320, 'R32', nf(nR32), pct(nR32), BLUE_D)}
-  ${bar(40, 350, 320, 'R410A', nf(nR410), pct(nR410), '#8a8a8f')}
-  ${bar(40, 394, 320, '—', nf(nOther), pct(nOther), '#5a5a5f')}
-  <text x="40" y="438" fill="${RED_D}" font-size="13" font-weight="600">▲ ${pct(nR290)}% ${S.natural}</text>
+  ${bar(40, 262, 320, 'R290', nf(nR290), pctRef(nR290), RED_D)}
+  ${bar(40, 306, 320, 'R32', nf(nR32), pctRef(nR32), BLUE_D)}
+  ${bar(40, 350, 320, 'R410A', nf(nR410), pctRef(nR410), '#8a8a8f')}
+  ${bar(40, 394, 320, '—', nf(nOther), pctRef(nOther), '#5a5a5f')}
+  <text x="40" y="438" fill="${RED_D}" font-size="13" font-weight="600">▲ ${pctRef(nR290)}% ${S.natural}</text>
 
   <!-- efficiency + noise -->
   <text x="520" y="238" fill="#fff" font-size="17" font-weight="700">${S.scop}</text>
@@ -590,4 +601,4 @@ writeFileSync(join(OUT_DIR, 'market-trends', 'feed.json'), JSON.stringify({
     en: enOf(c),
   })),
 }) + '\n');
-console.log(`market-trends (${MARKET}): ${nf(all.length)} models · R290 ${pct(nR290)}% · SCOP med ${scopMed.toFixed(2)} · quiet ${Math.round((quiet / noises.length) * 100)}%`);
+console.log(`market-trends (${MARKET}): ${nf(all.length)} models · R290 ${pctRef(nR290)}% · SCOP med ${scopMed.toFixed(2)} · quiet ${Math.round((quiet / noises.length) * 100)}%`);
