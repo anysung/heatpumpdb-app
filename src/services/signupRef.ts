@@ -33,6 +33,16 @@ const KNOWN = new Set([
   'li-report-de', 'li-report-gb', 'li-report-fr', 'li-report-pl', 'li-report-it',
   // Organic arrivals on a /special-report/ page that then click into the app.
   'report',
+  // Paid search. Germany only for now (2026-09) — registered BEFORE the ads go
+  // live, because a ref that arrives unregistered is filed as 'other' and the
+  // first campaign's signups would be indistinguishable from everything else.
+  // Google's own conversion tag is deliberately NOT installed: it needs an
+  // advertising cookie, which needs a consent banner on every page for every
+  // visitor, and at this signup volume Google could not model anything useful
+  // from it anyway. This ref costs nothing and works whether or not a visitor
+  // would have consented. Split into 'gads-de', 'gads-fr'… if a second market
+  // starts advertising.
+  'gads',
 ]);
 
 /** Call once on boot, before any routing. Idempotent; never throws. */

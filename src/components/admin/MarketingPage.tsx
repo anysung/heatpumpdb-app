@@ -31,6 +31,7 @@ const CHANNELS: { key: string; label: string; icon: string }[] = [
   { key: 'yt', label: 'YouTube', icon: '▶️' },
   { key: 'news', label: 'News/SEO', icon: '📰' },
   { key: 'guide', label: 'Guide/SEO', icon: '📖' },
+  { key: 'gads', label: 'Google Ads', icon: '🎯' },
   { key: 'other', label: 'Other', icon: '🔗' },
 ];
 
