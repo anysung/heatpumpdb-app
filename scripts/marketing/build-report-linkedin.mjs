@@ -28,7 +28,7 @@
  * li-report — and anything outside it is filed as 'other'. They are already
  * registered; a new one must be added and deployed BEFORE a link goes out.
  *
- * Run:  node scripts/marketing/build-report-linkedin.mjs [edition]
+ * Run:  node scripts/marketing/build-report-linkedin.mjs [edition] [outDir]
  *       (defaults to the newest edition in data_sources/special_report/)
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
@@ -38,13 +38,19 @@ import { fileURLToPath } from 'node:url';
 import { editions } from '../lib/special-report-store.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-const OUT = join(ROOT, 'linkedin_report_posts');
-
 const all = editions(ROOT);
 if (!all.length) { console.error('No Special Report edition found.'); process.exit(1); }
 const wanted = process.argv[2];
 const ed = wanted ? all.find((e) => e.id === wanted) : all[0];
 if (!ed) { console.error(`Edition ${wanted} not found. Have: ${all.map((e) => e.id).join(', ')}`); process.exit(1); }
+
+/* Marketing deliverables do not live in the repository — same rule as
+   build-linkedin-posts.mjs (2026-09-19). Default is the Downloads folder,
+   named by edition; pass a path as the second argument to send a batch
+   somewhere it will be kept, such as the marketing workspace. */
+const OUT = process.argv[3]
+  ? resolve(process.argv[3])
+  : join(process.env.HOME ?? ROOT, 'Downloads', `HeatPumpDB_LinkedIn_report_${ed.id}`);
 
 const meta = ed.meta;
 const copy = meta.copy ?? {};
