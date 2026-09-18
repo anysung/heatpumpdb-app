@@ -29,7 +29,10 @@
  *
  * Run:  node scripts/build-linkedin-posts.mjs            # all markets
  *       node scripts/build-linkedin-posts.mjs PL         # one market
- * Out:  linkedin_posts/  (gitignored — regenerate any time)
+ *       node scripts/build-linkedin-posts.mjs ALL <dir>  # somewhere else
+ * Out:  ~/Downloads/HeatPumpDB_LinkedIn_posts_<YYYY-MM>/  — never the repo.
+ *       Regenerate any time; the snapshot in data_sources/news_public is the
+ *       only thing that has to survive.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -39,7 +42,15 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SNAP = join(ROOT, 'data_sources', 'news_public');
 const IMAGES = join(ROOT, 'public', 'news-images');
-const OUT = join(ROOT, 'linkedin_posts');
+/* The packages are marketing deliverables, not build output, so they do NOT
+   land in the repository — they went to ~/Downloads until 2026-09-19, when a
+   run left 85 folders and 26 MB sitting in the working tree (owner: "코드에다
+   저장하면 어떻게해"). Default is the Downloads folder, where the owner opens
+   them; pass a path as the second argument to put them elsewhere, e.g. a
+   dated folder in the marketing workspace when a batch is worth keeping. */
+const OUT = process.argv[3]
+  ? resolve(process.argv[3])
+  : join(process.env.HOME ?? ROOT, 'Downloads', `HeatPumpDB_LinkedIn_posts_${new Date().toISOString().slice(0, 7)}`);
 
 // `adj` is the adjective ("the German market"), `tag` the label and hashtag.
 const MARKETS = {
@@ -60,7 +71,10 @@ const TAGS_BY_CATEGORY = {
   POLICY: ['HeatPumps', 'EnergyPolicy', 'EnergyTransition'],
 };
 
-const only = (process.argv[2] || '').toUpperCase();
+/* "ALL" is how you reach the output-directory argument without narrowing the
+   markets — it means the same as passing nothing. */
+const arg2 = (process.argv[2] || '').toUpperCase();
+const only = arg2 === 'ALL' ? '' : arg2;
 const codes = only ? [only] : Object.keys(MARKETS);
 
 /** Collapse whitespace and drop the trailing period a hook does not need. */
@@ -235,10 +249,10 @@ const lines = [
 ];
 writeFileSync(join(OUT, 'QUEUE.md'), lines.join('\n') + '\n');
 
-console.log(`\nlinkedin_posts/  ${queue.length} packages` + (noImage ? `  (${noImage} without an image)` : '')
+console.log(`\n${OUT}  ${queue.length} packages` + (noImage ? `  (${noImage} without an image)` : '')
   + (dropped ? `  · ${dropped} repeated headline(s) dropped` : ''));
-console.log(`launch batch: ${launchOrdered.length} posts — see linkedin_posts/launch-batch.json`);
-console.log(`queue: ${ordered.length} posts, markets interleaved — see linkedin_posts/QUEUE.md\n`);
+console.log(`launch batch: ${launchOrdered.length} posts — see launch-batch.json`);
+console.log(`queue: ${ordered.length} posts, markets interleaved — see QUEUE.md\n`);
 for (const cc of codes) {
   const n = queue.filter((q) => q.market === cc).length;
   if (n) console.log(`  ${cc}: ${n}`);
