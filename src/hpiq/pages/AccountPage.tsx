@@ -15,7 +15,7 @@ import {
 } from '../../services/subscriptionService';
 import { HpApp } from '../appState';
 import { UI_LANGUAGES } from '../market';
-import { tr } from '../i18n';
+import { tr, type HpStrings } from '../i18n';
 import { Language, Organization, SubscriptionChangeRequest } from '../../types';
 import {
   SubPlanCode, BillingTerm, SUB_PLANS, SUB_PLAN_CODES, BILLING_TERMS,
@@ -67,6 +67,68 @@ const DangerStepModal: React.FC<{
     </div>
   </div>
 );
+
+/**
+ * Account deletion — one modal, gated by a TYPED confirmation.
+ *
+ * WHY TYPED AND NOT A SECOND CLICK
+ * Deletion here is immediate and irreversible: the subscription is cancelled
+ * at Paddle, the profile is stripped to a PII-free skeleton and the Auth user
+ * is removed, all in one server call. The flow used to be two "are you sure"
+ * buttons, which a determined mis-click passes in under a second and which
+ * carry no evidence that anything was read. Typing the word cannot be done by
+ * accident, and it is the same friction the admin bulk-mail sender uses before
+ * an equally unrecallable action.
+ *
+ * The list of what is removed lives in the CARD, not in here — it has to be
+ * readable before the button is pressed, not after. This modal only carries
+ * the part that a reader must not miss: there is no restore.
+ *
+ * Comparison is case-insensitive and trimmed: the point is deliberate intent,
+ * not typing accuracy, and the confirmation word is localised (LÖSCHEN,
+ * SUPPRIMER, USUŃ, ELIMINA) so nobody is asked to type a foreign word.
+ */
+const DeleteAccountModal: React.FC<{
+  t: HpStrings; busy: boolean; onConfirm: () => void; onBack: () => void;
+}> = ({ t, busy, onConfirm, onBack }) => {
+  const a = t.account;
+  const [typed, setTyped] = useState('');
+  const ok = typed.trim().toLocaleUpperCase() === a.delTypeWord.toLocaleUpperCase();
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+      <div style={{ background: '#fff', borderRadius: 18, padding: '26px 26px 22px', maxWidth: 480, width: '100%', display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 24px 60px rgba(0,0,0,.25)' }} data-testid="delete-account-modal">
+        <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 700, color: '#b3261e' }}>{a.del}</span>
+        <span style={{ fontSize: 13.5, color: '#333', lineHeight: 1.65 }}>{a.delConfirm}</span>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+          <span style={{ fontSize: 12.5, color: '#555', fontWeight: 600 }}>{a.delTypeLabel(a.delTypeWord)}</span>
+          <input
+            value={typed} onChange={e => setTyped(e.target.value)} placeholder={a.delTypePh}
+            autoFocus autoComplete="off" spellCheck={false} disabled={busy}
+            data-testid="delete-confirm-input"
+            style={{ border: `1px solid ${ok ? '#b3261e' : '#d2d2d7'}`, borderRadius: 10, padding: '11px 14px', fontSize: 15, outline: 'none', letterSpacing: '.04em' }}
+          />
+        </label>
+
+        <div style={{ display: 'flex', gap: 10, marginTop: 2, flexWrap: 'wrap' }}>
+          <span className="hp-press" onClick={busy ? undefined : onBack}
+            style={{ flex: 1, textAlign: 'center', border: '1px solid #d2d2d7', borderRadius: 999, padding: '11px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer', background: '#fff' }}
+            data-testid="danger-back">
+            {a.delKeepBtn}
+          </span>
+          {/* Stays inert until the word matches — a disabled-looking button that
+              silently does nothing on click is worse than one that cannot be
+              clicked, so the cursor changes too. */}
+          <span className={ok && !busy ? 'hp-press' : undefined} onClick={ok && !busy ? onConfirm : undefined}
+            style={{ flex: 1, textAlign: 'center', borderRadius: 999, padding: '11px 16px', fontSize: 13.5, fontWeight: 700, background: ok ? '#b3261e' : '#e3e3e6', color: ok ? '#fff' : '#9a9aa0', cursor: ok && !busy ? 'pointer' : 'not-allowed', opacity: busy ? .6 : 1 }}
+            data-testid="danger-confirm">
+            {busy ? '…' : t.sub.delFinal}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 /**
  * Two-step plan picker: (1) who — Professional / Team 3 / Team 5,
@@ -716,7 +778,7 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
       .catch(() => app.notify(t.account.linkFailed));
   };
 
-  const [delStep, setDelStep] = useState<0 | 1 | 2>(0);
+  const [delOpen, setDelOpen] = useState(false);
   const [delBusy, setDelBusy] = useState(false);
 
   const deleteAccount = () => {
@@ -727,7 +789,10 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
       app.notify(t.account.delOwnerBlocked);
       return;
     }
-    setDelStep(1);   // two-step warning (owner spec 2026-08-03)
+    // One modal with a typed confirmation, replacing the two click-through
+    // warnings of 2026-08-03 (owner spec). The warning itself now sits in the
+    // card above, where it is read before the button rather than after it.
+    setDelOpen(true);
   };
 
   const runDelete = async () => {
@@ -748,13 +813,13 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
         await requestDeletion(user.id, 'Self-service request from Account page', displayName);
       }
       app.notify(t.account.delDone);
-      setDelStep(0);
+      setDelOpen(false);
       setTimeout(app.onLogout, 1800);
     } catch {
       app.notify(t.account.delFailed);
     } finally {
       setDelBusy(false);
-      setDelStep(0);
+      setDelOpen(false);
     }
   };
 
@@ -764,15 +829,8 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontFamily: FD, fontSize: 34, fontWeight: 600, letterSpacing: '-0.374px' }}>{t.account.heroTitle}</span>
         <span style={{ fontSize: 17, color: '#7a7a7a', letterSpacing: '-0.374px' }}>{t.account.heroSub}</span>
       </div>
-      {delStep === 1 && (
-        <DangerStepModal title={t.account.del} body={t.account.delConfirm.replace(/\n\n/g, ' ')}
-          confirmLabel={t.sub.cxContinue} backLabel={t.sub.cxBack}
-          onConfirm={() => setDelStep(2)} onBack={() => setDelStep(0)} />
-      )}
-      {delStep === 2 && (
-        <DangerStepModal final busy={delBusy} title={t.sub.delWarn2Title} body={t.sub.delWarn2Body}
-          confirmLabel={t.sub.delFinal} backLabel={t.sub.cxBack}
-          onConfirm={runDelete} onBack={() => setDelStep(0)} />
+      {delOpen && (
+        <DeleteAccountModal t={t} busy={delBusy} onConfirm={runDelete} onBack={() => setDelOpen(false)} />
       )}
       <div style={{ maxWidth: 1160, width: '100%', margin: '0 auto', padding: '28px 48px 48px', display: 'flex', flexDirection: 'column', gap: 20, boxSizing: 'border-box' }}>
         {children}
@@ -893,8 +951,29 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <Card style={{ gap: 10 }}>
               <CardTitle>{t.account.del}</CardTitle>
               <span style={{ fontSize: 13, color: '#333', lineHeight: 1.5 }}>{t.account.delText}</span>
-              <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.55, border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', background: '#f5f5f7' }}>
-                {t.account.delStoreNote}
+
+              {/* What actually goes. Itemised rather than summarised, because
+                  "your account and settings" hides the two consequences people
+                  are most surprised by: the subscription ends with no refund,
+                  and a sole owner's team closes with them. Each line matches a
+                  real step in /deleteAccount — nothing here is decorative. */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 2 }} data-testid="delete-consequences">
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: '#8a2a20' }}>{t.account.delRemoves}</span>
+                {[t.account.delItemLogin, t.account.delItemData, t.account.delItemSub,
+                  t.account.delItemTeam, t.account.delItemTickets].map((line, i) => (
+                  <span key={i} style={{ display: 'flex', gap: 9, alignItems: 'flex-start', border: '1px solid #f0d9d6', background: '#fdf6f5', borderRadius: 8, padding: '8px 12px' }}>
+                    <span aria-hidden style={{ color: '#b3261e', fontSize: 13, lineHeight: 1.5, flex: 'none' }}>✕</span>
+                    <span style={{ fontSize: 12.5, color: '#4a3a38', lineHeight: 1.55 }}>{line}</span>
+                  </span>
+                ))}
+              </div>
+
+              {/* The one thing that is NOT deleted. It is disclosed in the
+                  privacy policy, but the moment of decision is here — a reader
+                  who deletes to start a fresh trial should learn that it will
+                  not work before pressing the button, not a month later. */}
+              <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.55, border: '1px solid #e0e0e0', borderRadius: 8, padding: '10px 14px', background: '#f5f5f7' }} data-testid="delete-retention">
+                {t.account.delRetention}
               </span>
               {isOwner && org && org.members.length > 1 && (
                 <span style={{ fontSize: 12, color: '#9a6b00', lineHeight: 1.55, border: '1px solid #e8d9b5', borderRadius: 8, padding: '10px 14px', background: '#fdf8ec' }} data-testid="owner-delete-blocked">
