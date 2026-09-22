@@ -121,6 +121,22 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
       />
     </div>
 
+    {/* Floor darkening (owner 2026-09-23): the studio floor's lit sheen ends
+        in a soft band at ~78 % of the frame that reads as a line on mid-size
+        screens. A gradient from 70 % of the stage to the page bottom melts it
+        and grounds the counts. Starts at zero where the parts end (73 %). */}
+    {stage && (
+      <div
+        className="hidden lg:block absolute inset-x-0 bottom-0 z-[1] pointer-events-none"
+        aria-hidden="true"
+        style={{
+          top: stage.top + stage.height * 0.70,
+          background: 'linear-gradient(to bottom, rgba(3,13,12,0) 0%, rgba(3,13,12,0.32) 38%, rgba(3,13,12,0.62) 100%)',
+        }}
+        data-testid="floor-shade"
+      />
+    )}
+
     <header className="order-1 relative z-20 flex items-center justify-between gap-2 sm:gap-4 px-4 sm:px-6 md:px-10 py-4 sm:py-5">
       <div className="flex items-center gap-2 sm:gap-4 min-w-0">
         <Wordmark />

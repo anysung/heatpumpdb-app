@@ -4,9 +4,8 @@
  * The clip is shown at its native aspect, so on most screens it does not
  * fill the page. A CSS gradient behind it never quite matched the studio
  * (the floor's glow ended in a visible line under the stage). Instead, this
- * canvas paints the poster frame in the stage box and STRETCHES its outer
- * 2 % rows/columns — plain studio, no part — outward to the page edges, then
- * a blur smooths the join. The result is one continuous studio whatever the
+ * canvas paints the frame in the stage box and STRETCHES its outermost
+ * rows/columns — plain studio, no part — outward to the page edges. The result is one continuous studio whatever the
  * viewport, and the video sits exactly on top of its own frame.
  *
  * Cheap: drawn once per stage-box change (and once when frames arrive) at
@@ -56,7 +55,10 @@ export const StageCanvas: React.FC<{ box: StageBox | null; className?: string }>
       ctx.scale(scale, scale);
       ctx.fillStyle = HERO_VIDEO.edge;
       ctx.fillRect(0, 0, W, H);
-      const ex = Math.max(2, Math.round(sw * 0.02)), ey = Math.max(2, Math.round(sh * 0.02));
+      // Only the outermost few source pixels are stretched: a wider strip
+      // would put a pixel from INSIDE the frame against the video's true
+      // edge and draw a faint step there (measured: 5 levels with 2 %).
+      const ex = 3, ey = 3;
       const { top, left, width, height } = box;
       const bottom = top + height, right = left + width;
       try {
@@ -97,9 +99,9 @@ export const StageCanvas: React.FC<{ box: StageBox | null; className?: string }>
     <canvas
       ref={ref}
       className={`absolute inset-0 w-full h-full pointer-events-none ${className}`}
-      // No transform: the painted frame must sit exactly under the video —
-      // a scale to hide the blurred border shifted it and drew the box back in.
-      style={{ filter: 'blur(14px)' }}
+      // No blur and no transform: the stretched strips are already smooth along
+      // the stretch, and any blur at the box edge mixes the brighter interior
+      // into the strip and draws a faint outline where it meets the sharp video.
       aria-hidden="true"
       data-testid="stage-canvas"
     />
