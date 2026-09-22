@@ -274,6 +274,51 @@ const HTML = `<!doctype html>
     color:var(--ink); min-height:100dvh; -webkit-font-smoothing:antialiased; }
   .wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
 
+  /* ── Video backdrop (owner preview 2026-09-23) ──
+     The assembly clip from the market sites, fixed behind the page: it keeps
+     its native aspect (contain, centred — never cropped), so it is sized by
+     the viewport and re-fits on resize regardless of page scroll. Blurred and
+     heavily dimmed: an atmosphere, not a hero — the cards must stay first.
+     Decorative only (aria-hidden, no pointer events). Reduced motion → the
+     poster frame instead of the clip. */
+  .backdrop { position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; background:var(--bg); }
+  .backdrop video, .backdrop img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+    filter:saturate(1) brightness(.92); transform:scale(1.02); }
+  /* Radial focus (owner 2026-09-23): the clip is sharpest at the viewport
+     edges and softest behind the text in the middle. One clip; a blurring
+     pane on top is MASKED with a radial gradient centred on the viewport
+     (so it follows the screen, not the page), fully applied in the centre and
+     fading to nothing toward the corners. The dim below does the same. */
+  .backdrop .focus { position:absolute; inset:0; backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    -webkit-mask-image:radial-gradient(ellipse 62% 58% at 50% 50%, #000 0%, #000 30%, rgba(0,0,0,.55) 62%, transparent 100%);
+            mask-image:radial-gradient(ellipse 62% 58% at 50% 50%, #000 0%, #000 30%, rgba(0,0,0,.55) 62%, transparent 100%); }
+  .backdrop::after { content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(255,107,82,.12), transparent 60%),
+      radial-gradient(1000px 640px at 8% 108%, rgba(41,151,255,.12), transparent 60%),
+      radial-gradient(ellipse 70% 66% at 50% 50%, rgba(11,22,38,.58) 0%, rgba(11,22,38,.50) 35%, rgba(11,22,38,.30) 68%, rgba(11,22,38,.14) 100%); }
+  .backdrop img { display:none; }
+  @media (prefers-reduced-motion:reduce) { .backdrop video { display:none; } .backdrop img { display:block; } }
+
+  /* Over the clip, text gets a faint dark edge (owner 2026-09-23: "테두리 효과를
+     살짝만") so the parts behind never eat into the letters, and every content
+     box gets a visible border + a darker, blurred pane. Layered shadows read
+     as a soft outline, not a stroke. */
+  h1, .sub, .band p, .srtxt, .card, .fchip {
+    text-shadow: 0 1px 2px rgba(3,9,20,.85), 0 0 8px rgba(3,9,20,.55); }
+  .sect, .feat-label { text-shadow: 0 1px 2px rgba(3,9,20,.7); }
+  /* Gradient text is a transparent fill over a clipped background: a
+     text-shadow paints INSIDE it (a black slab). Outline it with a filter on
+     the element instead, which shadows the visible glyphs only. */
+  h1 .grad { text-shadow:none; filter: drop-shadow(0 1px 1px rgba(3,9,20,.85)) drop-shadow(0 0 6px rgba(3,9,20,.5)); }
+  h1 .brandline { text-shadow: 0 1px 2px rgba(3,9,20,.7); }
+  .fchip { border-color:rgba(255,255,255,.28); background:linear-gradient(180deg, rgba(16,31,54,.78), rgba(16,31,54,.62)); backdrop-filter:blur(10px); }
+  .card { border-color:rgba(255,255,255,.22); background:rgba(16,31,54,.86); backdrop-filter:blur(10px); box-shadow:0 10px 30px rgba(0,0,0,.35); }
+  .srcard { border-color:rgba(255,255,255,.22) !important; box-shadow:0 10px 30px rgba(0,0,0,.35); }
+  .srcard .srtxt { background:rgba(16,31,54,.86); }
+  .band { background:rgba(11,22,38,.55); backdrop-filter:blur(8px); border-color:rgba(255,255,255,.18); }
+  .langbar { background:rgba(11,22,38,.85); border-color:rgba(255,255,255,.2); }
+
   /* ── Hero ── */
   header { padding:clamp(48px,9vh,92px) 0 clamp(30px,5vh,52px); text-align:center; }
   .logo { width:min(300px,66vw); height:auto; margin:0 auto 30px; display:block; }
@@ -392,6 +437,11 @@ const HTML = `<!doctype html>
 </style>
 </head>
 <body>
+  <div class="backdrop" aria-hidden="true">
+    <video src="/media/heatpump-assembly-loop-v2.mp4" poster="/media/heatpump-assembly-loop-v2-poster.jpg" muted loop playsinline autoplay preload="metadata" disablepictureinpicture></video>
+    <img src="/media/heatpump-assembly-loop-v2-poster.jpg" alt="">
+    <div class="focus"></div>
+  </div>
   <div class="wrap">
     <div class="langbar" role="group" aria-label="Language">
       ${LANG_FLAGS.map(([lang, f]) => `<button class="langbtn" data-lang="${lang}" aria-label="${lang}">${f}</button>`).join('')}
@@ -422,6 +472,11 @@ ${SR_HTML}
   </footer>
 
 <script>
+  // Backdrop clip: always silent; paused while the tab is hidden.
+  (function(){ var v=document.querySelector('.backdrop video'); if(!v) return; v.muted=true; v.defaultMuted=true;
+    var play=function(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); };
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches) play();
+    document.addEventListener('visibilitychange',function(){ if(document.hidden) v.pause(); else if(!matchMedia('(prefers-reduced-motion: reduce)').matches) play(); }); })();
   // Cursor-following glow per card (sets the radial-gradient origin).
   document.getElementById('grid').addEventListener('pointermove', e => {
     for (const c of e.currentTarget.children) {
@@ -730,6 +785,12 @@ writeFileSync(join(OUT, 'index.html'), HTML);
 // favicon.ico is not decoration: Google's favicon fetcher checks the /favicon.ico
 // fallback, and the hub 404ing there is why the Search Console property kept
 // showing a stale icon (found 2026-08-08).
+/* Hero clip + poster — the same derivatives the market sites ship
+   (public/media/hero/, made from the owner's HeatPump_DB_Assembly_Loop.mp4). */
+mkdirSync(join(OUT, 'media'), { recursive: true });
+for (const f of ['heatpump-assembly-loop-v2.mp4', 'heatpump-assembly-loop-v2-poster.jpg']) {
+  copyFileSync(join(ROOT, 'public/media/hero', f), join(OUT, 'media', f));
+}
 for (const [src, dst] of [['eu-48.png', 'appicon-48.png'], ['eu-192.png', 'appicon-192.png'],
   ['eu-180.png', 'appicon-180.png'], ['eu-512.png', 'appicon-512.png'], ['eu.ico', 'favicon.ico']]) {
   copyFileSync(join(ROOT, 'public/icons', src), join(OUT, dst));

@@ -35,6 +35,51 @@
     color:var(--ink); min-height:100dvh; -webkit-font-smoothing:antialiased; }
   .wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
 
+  /* ── Video backdrop (owner preview 2026-09-23) ──
+     The assembly clip from the market sites, fixed behind the page: it keeps
+     its native aspect (contain, centred — never cropped), so it is sized by
+     the viewport and re-fits on resize regardless of page scroll. Blurred and
+     heavily dimmed: an atmosphere, not a hero — the cards must stay first.
+     Decorative only (aria-hidden, no pointer events). Reduced motion → the
+     poster frame instead of the clip. */
+  .backdrop { position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; background:var(--bg); }
+  .backdrop video, .backdrop img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+    filter:saturate(1) brightness(.92); transform:scale(1.02); }
+  /* Radial focus (owner 2026-09-23): the clip is sharpest at the viewport
+     edges and softest behind the text in the middle. One clip; a blurring
+     pane on top is MASKED with a radial gradient centred on the viewport
+     (so it follows the screen, not the page), fully applied in the centre and
+     fading to nothing toward the corners. The dim below does the same. */
+  .backdrop .focus { position:absolute; inset:0; backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    -webkit-mask-image:radial-gradient(ellipse 62% 58% at 50% 50%, #000 0%, #000 30%, rgba(0,0,0,.55) 62%, transparent 100%);
+            mask-image:radial-gradient(ellipse 62% 58% at 50% 50%, #000 0%, #000 30%, rgba(0,0,0,.55) 62%, transparent 100%); }
+  .backdrop::after { content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(255,107,82,.12), transparent 60%),
+      radial-gradient(1000px 640px at 8% 108%, rgba(41,151,255,.12), transparent 60%),
+      radial-gradient(ellipse 70% 66% at 50% 50%, rgba(11,22,38,.58) 0%, rgba(11,22,38,.50) 35%, rgba(11,22,38,.30) 68%, rgba(11,22,38,.14) 100%); }
+  .backdrop img { display:none; }
+  @media (prefers-reduced-motion:reduce) { .backdrop video { display:none; } .backdrop img { display:block; } }
+
+  /* Over the clip, text gets a faint dark edge (owner 2026-09-23: "테두리 효과를
+     살짝만") so the parts behind never eat into the letters, and every content
+     box gets a visible border + a darker, blurred pane. Layered shadows read
+     as a soft outline, not a stroke. */
+  h1, .sub, .band p, .srtxt, .card, .fchip {
+    text-shadow: 0 1px 2px rgba(3,9,20,.85), 0 0 8px rgba(3,9,20,.55); }
+  .sect, .feat-label { text-shadow: 0 1px 2px rgba(3,9,20,.7); }
+  /* Gradient text is a transparent fill over a clipped background: a
+     text-shadow paints INSIDE it (a black slab). Outline it with a filter on
+     the element instead, which shadows the visible glyphs only. */
+  h1 .grad { text-shadow:none; filter: drop-shadow(0 1px 1px rgba(3,9,20,.85)) drop-shadow(0 0 6px rgba(3,9,20,.5)); }
+  h1 .brandline { text-shadow: 0 1px 2px rgba(3,9,20,.7); }
+  .fchip { border-color:rgba(255,255,255,.28); background:linear-gradient(180deg, rgba(16,31,54,.78), rgba(16,31,54,.62)); backdrop-filter:blur(10px); }
+  .card { border-color:rgba(255,255,255,.22); background:rgba(16,31,54,.86); backdrop-filter:blur(10px); box-shadow:0 10px 30px rgba(0,0,0,.35); }
+  .srcard { border-color:rgba(255,255,255,.22) !important; box-shadow:0 10px 30px rgba(0,0,0,.35); }
+  .srcard .srtxt { background:rgba(16,31,54,.86); }
+  .band { background:rgba(11,22,38,.55); backdrop-filter:blur(8px); border-color:rgba(255,255,255,.18); }
+  .langbar { background:rgba(11,22,38,.85); border-color:rgba(255,255,255,.2); }
+
   /* ── Hero ── */
   header { padding:clamp(48px,9vh,92px) 0 clamp(30px,5vh,52px); text-align:center; }
   .logo { width:min(300px,66vw); height:auto; margin:0 auto 30px; display:block; }
@@ -153,6 +198,11 @@
 </style>
 </head>
 <body>
+  <div class="backdrop" aria-hidden="true">
+    <video src="/media/heatpump-assembly-loop-v2.mp4" poster="/media/heatpump-assembly-loop-v2-poster.jpg" muted loop playsinline autoplay preload="metadata" disablepictureinpicture></video>
+    <img src="/media/heatpump-assembly-loop-v2-poster.jpg" alt="">
+    <div class="focus"></div>
+  </div>
   <div class="wrap">
     <div class="langbar" role="group" aria-label="Language">
       <button class="langbtn" data-lang="en" aria-label="en"><svg class="lf" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 66" width="96" height="66" fill="none"><g><clipPath id="pdfclip"><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z"/></clipPath><g clip-path="url(#pdfclip)"><rect x="0" y="0" width="96" height="66" fill="#012169"/><path d="M0 0 C16 5 32 28 48 33 C64 38 80 61 96 66 M0 66 C16 49 32 50 48 33 C64 16 80 17 96 0" stroke="#fff" stroke-width="13" fill="none"/><path d="M0 0 C16 5 32 28 48 33 C64 38 80 61 96 66 M0 66 C16 49 32 50 48 33 C64 16 80 17 96 0" stroke="#C8102E" stroke-width="5" fill="none"/><path d="M48 0 V66 M0 33 C16 27 32 39 48 33 C64 27 80 39 96 33" stroke="#fff" stroke-width="20" fill="none"/><path d="M48 0 V66 M0 33 C16 27 32 39 48 33 C64 27 80 39 96 33" stroke="#C8102E" stroke-width="11" fill="none"/></g><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/></g></svg></button><button class="langbtn" data-lang="de" aria-label="de"><svg class="lf" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 66" width="96" height="66" fill="none"><g><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 24 C80 30 64 18 48 24 C32 30 16 18 0 24 Z" fill="#1a1a1a"/><path d="M0 24 C16 18 32 30 48 24 C64 18 80 30 96 24 L96 42 C80 48 64 36 48 42 C32 48 16 36 0 42 Z" fill="#dd0000"/><path d="M0 42 C16 36 32 48 48 42 C64 36 80 48 96 42 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z" fill="#ffcc00"/><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/></g></svg></button><button class="langbtn" data-lang="fr" aria-label="fr"><svg class="lf" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 66" width="96" height="66" fill="none"><g><clipPath id="pdfclip"><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z"/></clipPath><g clip-path="url(#pdfclip)"><rect x="0" y="0" width="32" height="66" fill="#000091"/><rect x="32" y="0" width="32" height="66" fill="#ffffff"/><rect x="64" y="0" width="32" height="66" fill="#E1000F"/></g><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/></g></svg></button><button class="langbtn" data-lang="pl" aria-label="pl"><svg class="lf" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 66" width="96" height="66" fill="none"><g><clipPath id="pdfclip"><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z"/></clipPath><g clip-path="url(#pdfclip)"><rect x="0" y="0" width="96" height="33" fill="#ffffff"/><rect x="0" y="33" width="96" height="33" fill="#D4213D"/></g><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/></g></svg></button><button class="langbtn" data-lang="it" aria-label="it"><svg class="lf" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 66" width="96" height="66" fill="none"><g><clipPath id="pdfclip"><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z"/></clipPath><g clip-path="url(#pdfclip)"><rect x="0" y="0" width="32" height="66" fill="#008C45"/><rect x="32" y="0" width="32" height="66" fill="#F4F9FF"/><rect x="64" y="0" width="32" height="66" fill="#CD212A"/></g><path d="M0 6 C16 0 32 12 48 6 C64 0 80 12 96 6 L96 60 C80 66 64 54 48 60 C32 66 16 54 0 60 Z" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/></g></svg></button>
@@ -289,6 +339,11 @@
   </footer>
 
 <script>
+  // Backdrop clip: always silent; paused while the tab is hidden.
+  (function(){ var v=document.querySelector('.backdrop video'); if(!v) return; v.muted=true; v.defaultMuted=true;
+    var play=function(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); };
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches) play();
+    document.addEventListener('visibilitychange',function(){ if(document.hidden) v.pause(); else if(!matchMedia('(prefers-reduced-motion: reduce)').matches) play(); }); })();
   // Cursor-following glow per card (sets the radial-gradient origin).
   document.getElementById('grid').addEventListener('pointermove', e => {
     for (const c of e.currentTarget.children) {
