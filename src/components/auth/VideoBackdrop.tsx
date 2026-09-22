@@ -38,7 +38,7 @@ export const VideoBackdrop: React.FC = () => {
         </div>
       )}
       {/* Dim so the card, not the clip, is what the eye lands on. */}
-      <div className="absolute inset-0" style={{ background: 'rgba(3, 13, 12, 0.58)' }} />
+      <div className="absolute inset-0" style={{ background: 'rgba(3, 13, 12, 0.45)' }} />
     </div>
   );
 };
