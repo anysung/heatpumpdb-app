@@ -8,71 +8,79 @@ market is switched to the new cover; GB/FR/PL/IT still render the classic cover.
 
 | File | Kind | Purpose |
 |---|---|---|
-| `src/config/landingHero.ts` | new · common | Per-market switch `LANDING_HERO` (`'classic' \| 'video'`) + the shared clip paths/size. DE = `video`, others `classic`. |
-| `src/components/auth/HeroVideo.tsx` | new · common | The clip: muted/inline/loop autoplay, native aspect (never cropped), play/pause `<button>` (keyboard-operable), pause when offscreen or tab hidden, never auto-resumes over the visitor's own pause, reduced-motion → poster until pressed, poster before load / autoplay refusal / load failure. |
-| `src/App.tsx` | modified · common | New `LANDING` branch used only when the market's switch is `video`: headline + one service line, the clip, counts (Total / Residential \| Commercial), compact Sign up / Log in pair, the three public-page links, the indexable keyword line. The classic branch is untouched. |
-| `src/translations.ts` | modified · 5 languages | `authHeroLine`, `authVideoPlay`, `authVideoPause`, `authVideoAlt` in EN/DE/FR/PL/IT. |
-| `public/media/hero/heatpump-hero-v1.mp4` | new asset | Web copy of the owner's clip (H.264, crf 22, faststart, no audio track) — 378 KB, 5 s, 1864×968. |
-| `public/media/hero/heatpump-hero-v1-pingpong.mp4` | new asset | Forward + reversed concatenation (10 s, 733 KB) for comparison only; dev preview `?hero=pingpong`. Not used in production. |
-| `public/media/hero/heatpump-hero-v1-poster.jpg` | new asset | First frame (assembled unit), 27 KB. |
+| `src/config/landingHero.ts` | new · common | Per-market switch `LANDING_HERO` (`'classic' \| 'video'`) + the shared clip paths, native size and edge colour. DE = `video`, others `classic`. |
+| `src/components/auth/VideoCover.tsx` | new · common | The cover itself (design reference: headline on top, the clip as the full-width stage, counts + compact Sign up / Log in below, public-page links bottom-left, play/pause bottom-right). Desktop: one viewport; the stage box is **measured** so the band the moving parts occupy (28 %–73 % of the clip height) always lies between the headline and the counts, at every viewport height — no overlay ever sits on a part. Phones/tablets: ordinary flow (headline → clip at its aspect → counts → entry → links). Reuses the classic header pieces (logo, market badge, language pill, social links). |
+| `src/components/auth/HeroVideo.tsx` | new · common | The clip: muted/inline/loop autoplay (force-muted before every play), object-fit contain (never cropped), keyboard-operable play/pause `<button>`, pause when offscreen or tab hidden, never auto-resumes a visitor's own pause, reduced-motion → poster until pressed, poster before load / on autoplay refusal / on load failure. Edge vignette in the clip's own edge colour (outer ~5 % only). |
+| `src/components/auth/AuthShell.tsx` | modified · common | `Wordmark`, `MarketBadge`, `LanguagePill`, `SocialLinks` exported (no behaviour change). |
+| `src/App.tsx` | modified · common | `LANDING` renders `VideoCover` when the market's switch is `video`; the classic branch is untouched. |
+| `src/translations.ts` | modified · 5 languages | `authHeroLine`, `authVideoPlay`, `authVideoPause`, `authVideoAlt`. |
+| `public/media/hero/heatpump-assembly-loop-v2.mp4` | new asset | Web copy of the owner's clip: H.264 crf 24, faststart, no audio — 1.84 MB, 10.17 s, 1998×1038, 24 fps. |
+| `public/media/hero/heatpump-assembly-loop-v2-poster.jpg` | new asset | First frame (assembled unit in the studio), 72 KB. |
 | `docs/LANDING_VIDEO_HERO.md` | new | This record. |
 
-Source: `/Users/christophersung/Downloads/3d-jutsu-heatpump-hero-de-v1-2026-09-22-00-53-54.mp4`
-(1,026,061 bytes, H.264 1864×968, 30 fps, 150 frames, 5.000 s, **no audio stream**,
-opaque background `#757a82`). Untouched; all three assets above were generated
-from it with ffmpeg.
+Source: `/Users/christophersung/Downloads/HeatPump_DB_Assembly_Loop.mp4` (4,356,860 bytes,
+H.264 1998×1038, 24 fps, 244 frames, 10.167 s, **no audio stream**). Untouched;
+both assets were generated from it with ffmpeg. Measured facts used by the
+layout: background is a dark studio (edges ≈ `#051a18`–`#000d0c`, lit mist at
+top centre `#1e423c`); moving parts occupy 28.3 %–~73 % of the frame height
+(bright pixels reach 79.8 % — the last ~7 % is the front grille's floor
+reflection) and 5.5 %–92.7 % of the width; first ↔ last frame mean difference
+0.2/255 → the loop is seamless (assembled → exploded → reassembled).
 
 Removed from the DE cover (still present on the classic cover): tagline pill,
 the large Residential/Commercial tiles and their descriptions, the three chips,
-the "Willkommen" card. The tiles had no handlers — they were decorative — so no
-access path was lost. Legal links were never on the landing page (they live on
-the login/signup pages); nothing removed there.
+the "Willkommen" card. The tiles had no handlers — decorative — so no access
+path was lost. Legal links were never on the landing page (they live on the
+login/signup pages); nothing removed there. The indexable keyword line stays in
+the document (visually hidden).
 
 ## Counts
 
 `__MARKET_STATS__` is injected at build time by `vite.config.ts → marketStats()`
 from the market's two dataset files (`res` = residential file length, `com` =
 commercial file length). Total is `res + com` — there is no separate total
-source, so the total and the two parts cannot disagree. Values are build-time
-constants (no loading state); the block is hidden when `res` is 0 (datasets
-absent). Number formatting is the existing `toLocaleString()` (browser locale),
+source, so the total and the two parts cannot disagree. Build-time constants
+(no loading state); the block is hidden when `res` is 0 (datasets absent).
+Number formatting is the existing `toLocaleString()` (browser locale),
 unchanged from the classic cover. DE at build: 7,336 = 5,330 + 2,006.
+
+## Verified (Playwright, real Chromium playback)
+
+- 1440×900, 1920×1080, 1280×720, 1440×768: plays, muted, one screen (no page
+  scroll), no horizontal overflow; headline ends above the parts band and the
+  counts start below it at every size (on 720/768-high screens the counts sit
+  over the floor reflection, as in the design reference).
+- 390×844 phone and 820×1180 tablet: order headline → clip → counts → buttons →
+  links, clip at native aspect, no overflow, 52 px buttons.
+- Play/pause button (click, Enter), visitor pause survives scroll-away/return,
+  offscreen auto-pause + resume, hidden-tab pause + resume, reduced motion
+  (poster, `preload=none`, plays on press), mp4 404 → poster fallback,
+  DE→EN switch, Sign up → signup form, Log in → login form, no console errors.
 
 ## Rollback
 
 *Preview stage (now):* nothing is on `main`. `git checkout main` shows the
-untouched site; delete the branch with `git branch -D feat/landing-video-de`
-and the tag with `git tag -d landing-v1-before-video` if the work is dropped.
-The assets live only on the branch.
+untouched site; `git branch -D feat/landing-video-de` and
+`git tag -d landing-v1-before-video` drop the work entirely. Assets live only
+on the branch.
 
 *One market back to classic (before or after deploy):* set that market to
 `'classic'` in `src/config/landingHero.ts`, build and deploy that market's
-target (`npm run build:de && npm run deploy:de`, etc.). Nothing else changes.
+target only (`npm run build:de && npm run deploy:de`, etc.).
 
 *Whole change back after a merge:* `git revert <merge or squash commit>` on
 `main` and redeploy the affected market(s). Assets under `public/media/hero/`
-are removed by the revert; leaving them would be harmless (public static files,
-~1.1 MB).
+are removed by the revert; leaving them would be harmless (~1.9 MB static).
 
 *Unrelated work:* the branch was cut from `main` @ `1f85088` with a clean tree;
-no other work is on it, so removing it touches nothing else.
+nothing else is on it.
 
-## Known limitations (source clip)
+## Known limitations
 
-1. **Background is opaque mid-grey (`#757a82`)**, not the dark studio of the
-   design reference. The product is rendered near-black, so it reads as a dark
-   object on a light-grey slab; the page frames it as a rounded stage with a
-   1 px border (the "deliberate boundary" the brief allows). A key-out would not
-   help: the near-black parts would vanish into the dark page. The clean fix is a
-   re-export from the 3D tool with a dark (or transparent) background and
-   brighter product lighting — nothing in this implementation would change.
-2. **The clip does not reassemble.** 0–2 s explode, 2–5 s hold with a slow
-   rotation; the loop is a hard cut from exploded back to assembled. A
-   forward+reverse comparison copy is provided (`?hero=pingpong` in dev); it is a
-   presentation derivative, no new motion.
-3. **The clip's own framing crops parts** in the exploded phase (top panel at
-   the top edge, fan blade at the left edge from ~1.5 s). The layout shows the
-   full frame; the cropping is inside the source.
-4. At 1280×720 the clip floors at 560×291 and the Sign up / Log in pair sits
-   ~80 px below the fold (visible at the slightest scroll); at ≥900 px height
-   everything is on the first screen.
+1. On short desktop viewports (≤ 768 px high) the stage shrinks (e.g. 868×451
+   at 1280×720) so nothing overlaps; the clip is smaller than on a 900 px+
+   screen.
+2. Social icons remain in the header (the reference omits them) — kept
+   because they are existing functionality.
+3. The clip is 1.84 MB; the headline and buttons render before it (poster
+   shows meanwhile).

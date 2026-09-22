@@ -38,7 +38,7 @@ import { legalDocForPath, PRICING_ROUTE } from './config/legal';
 import { LegalPage, LegalFooter } from './legal/LegalPage';
 import { PublicPricingPage } from './pricing/PublicPricingPage';
 import { SignupForm, SignupFormValues } from './components/auth/SignupForm';
-import { HeroVideo } from './components/auth/HeroVideo';
+import { VideoCover } from './components/auth/VideoCover';
 import { LANDING_HERO } from './config/landingHero';
 import { ACTIVE_COUNTRY } from './config/countryProfiles';
 import { previewUserPatch } from './hpiq/devPreview';
@@ -793,73 +793,25 @@ const AppInner: React.FC = () => {
 
   // Video cover (owner brief 2026-09-22) — per-market switch in
   // src/config/landingHero.ts; the classic cover below is untouched and is
-  // what every market not switched over still renders.
+  // what every market not switched over still renders. Counts are the
+  // build-time market totals (vite.config.ts marketStats) — never typed in.
   if (currentView === 'LANDING' && LANDING_HERO[ACTIVE_COUNTRY.code] === 'video') {
-    const total = __MARKET_STATS__.res + __MARKET_STATS__.com;
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage} showSocial>
-        <div className="w-full max-w-[1400px] flex flex-col items-center gap-5 md:gap-6" data-testid="landing-video">
-          {sessionNoticeEl}
-
-          {/* Headline + one service line. Nothing else competes with the clip. */}
-          <div className="text-center hp-fade-up px-1">
-            <h1 className="text-[1.9rem] sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.08]">
-              {t.authHeadline}
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-                {t.authHeadlineAccent}
-              </span>
-            </h1>
-            <p className="mt-3 text-white/65 text-[15px] sm:text-base md:text-xl">{t.authHeroLine}</p>
-          </div>
-
-          {/* The clip at its native aspect. Width follows the viewport HEIGHT
-              so the headline, counts and entry stay on the first screen of a
-              desktop; on a phone it is simply full width. Never cropped. */}
-          <div
-            className="w-full hp-fade-up-delay"
-            style={{ width: 'min(100%, max(560px, calc((100vh - 480px) * 1.9256)))' }}
-          >
-            <HeroVideo s={{ play: t.authVideoPlay, pause: t.authVideoPause, alt: t.authVideoAlt }} />
-          </div>
-
-          {/* Counts + entry as ONE small block. Counts are the build-time
-              market totals (vite.config.ts marketStats) — never typed in. */}
-          <div className="flex flex-col items-center gap-3 hp-fade-up-delay" data-testid="landing-entry">
-            {__MARKET_STATS__.res > 0 && (
-              <div className="text-center flex flex-col gap-1" data-testid="landing-stats">
-                <p className="text-[11px] tracking-[0.18em] uppercase text-white/50">{(t as any).authStatsTitle}</p>
-                <p className="text-4xl md:text-[2.6rem] font-bold leading-none text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300">
-                  {(t as any).authStatsTotal} {total.toLocaleString()}
-                </p>
-                <p className="text-[12.5px] text-white/60">
-                  {t.tabResidential} <span className="font-semibold text-white/85">{__MARKET_STATS__.res.toLocaleString()}</span>
-                  <span className="mx-2 text-white/30">|</span>
-                  {t.tabCommercial} <span className="font-semibold text-white/85">{__MARKET_STATS__.com.toLocaleString()}</span>
-                </p>
-              </div>
-            )}
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-2.5 flex flex-col sm:flex-row gap-2.5 w-full max-w-sm sm:max-w-none sm:w-auto">
-              <button onClick={() => setCurrentView('SIGNUP')} className={`${primaryBtn} sm:w-auto sm:px-9`}>{t.signup}</button>
-              <button onClick={() => setCurrentView('LOGIN')} className={`${ghostBtn} sm:w-auto sm:px-9`}>{t.login}</button>
-            </div>
-            <p className="text-center text-[13px] leading-relaxed text-emerald-200/90" data-testid="free-signup-note">
-              {FREE_SIGNUP_NOTE[language]}
-            </p>
-          </div>
-
-          {/* Public, indexable pages — same three links as the classic cover. */}
-          <div className="flex flex-wrap justify-center gap-2.5" data-testid="public-pages">
-            <a href="/guide/" className={publicPill}>{PUBLIC_GUIDE[language]}</a>
-            <a href="/news/" className={publicPill}>{PUBLIC_NEWS[language]}</a>
-            <a href="/market-trends/" className={publicPill}>{PUBLIC_TRENDS[language]}</a>
-          </div>
-          {/* Indexable market keywords (search visibility) — kept, quiet. */}
-          {(t as any).authSeoLine && (
-            <p className="text-[11px] leading-relaxed text-white/35 text-center max-w-2xl">{(t as any).authSeoLine}</p>
-          )}
-        </div>
-      </AuthShell>
+      <VideoCover
+        t={t}
+        language={language}
+        setLanguage={setLanguage}
+        stats={__MARKET_STATS__.res > 0 ? { res: __MARKET_STATS__.res, com: __MARKET_STATS__.com } : null}
+        freeNote={FREE_SIGNUP_NOTE[language]}
+        links={[
+          { href: '/guide/', label: PUBLIC_GUIDE[language] },
+          { href: '/news/', label: PUBLIC_NEWS[language] },
+          { href: '/market-trends/', label: PUBLIC_TRENDS[language] },
+        ]}
+        onSignup={() => setCurrentView('SIGNUP')}
+        onLogin={() => setCurrentView('LOGIN')}
+        notice={sessionNoticeEl}
+      />
     );
   }
 

@@ -1,12 +1,13 @@
 /**
- * HeroVideo — the product disassembly clip on the video cover.
+ * HeroVideo — the product assembly/disassembly clip on the video cover.
  *
  * Rules it implements (owner brief 2026-09-22):
  *  - silent, inline, looping autoplay; the element is force-muted before every
  *    play() so a source with sound could never make noise;
- *  - native aspect, never cropped: the box is sized by the parent, the clip
- *    letterboxes inside it (object-fit: contain);
- *  - a real play/pause button (a <button>, so keyboard-operable);
+ *  - native aspect, never cropped: the clip letterboxes inside whatever box
+ *    the parent gives it (object-fit: contain);
+ *  - a real play/pause button (a <button>, so keyboard-operable); the parent
+ *    positions it (page corner on desktop, clip corner on phones);
  *  - paused when scrolled out of view or the tab is hidden, resumed after —
  *    but never over a pause the visitor made themselves;
  *  - prefers-reduced-motion: the poster is shown and nothing moves until the
@@ -15,6 +16,10 @@
  *    (the assembled unit, first frame of the clip) is what the visitor sees;
  *  - the headline and the entry buttons live outside this component, so a
  *    slow clip never delays them.
+ *
+ * The edge vignette only touches the outermost few percent of the frame,
+ * where the clip is plain studio background (measured: moving parts stay
+ * ≥5 % from the left/right edges, ≥28 % from the top, ≥11 % from the bottom).
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { HERO_VIDEO } from '../../config/landingHero';
@@ -38,7 +43,13 @@ const PauseIcon = () => (
   </svg>
 );
 
-export const HeroVideo: React.FC<{ s: HeroVideoStrings }> = ({ s }) => {
+export const HeroVideo: React.FC<{
+  s: HeroVideoStrings;
+  /** Box the clip fills (letterboxed inside). */
+  className?: string;
+  /** Where the play/pause button sits inside that box. */
+  buttonClassName?: string;
+}> = ({ s, className = '', buttonClassName = 'bottom-3 right-3' }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playback, setPlayback] = useState<Playback>('idle');
   // Read once: a visitor who has motion reduced gets a still by default.
@@ -48,12 +59,6 @@ export const HeroVideo: React.FC<{ s: HeroVideoStrings }> = ({ s }) => {
   const userPaused = useRef(false);   // their pause — never auto-resumed
   const autoPaused = useRef(false);   // our pause (offscreen / hidden tab) — resumed
   const inView = useRef(true);
-
-  // Dev-only comparison switch for the owner's preview (?hero=pingpong).
-  const src =
-    import.meta.env.DEV && new URLSearchParams(window.location.search).get('hero') === 'pingpong'
-      ? HERO_VIDEO.pingpongSrc
-      : HERO_VIDEO.src;
 
   const tryPlay = useCallback(() => {
     const v = videoRef.current;
@@ -82,16 +87,19 @@ export const HeroVideo: React.FC<{ s: HeroVideoStrings }> = ({ s }) => {
   /* Autoplay ONCE, when the clip can first play — unless motion is reduced.
      'canplay' also fires after every seek and buffer stall, so the listener
      removes itself: a later canplay must never restart a clip that is
-     deliberately paused (verification caught seeks resuming playback). */
+     deliberately paused. */
   useEffect(() => {
     const v = videoRef.current;
     if (!v || reducedMotion) return;
     v.muted = true;
     v.defaultMuted = true;
+    // Play as soon as possible; if the clip is actually offscreen the
+    // IntersectionObserver below pauses it and resumes it later. (Deciding
+    // here from a not-yet-delivered observer state left the clip idle.)
     const start = () => {
       v.removeEventListener('canplay', start);
-      if (inView.current && !document.hidden) tryPlay();
-      else autoPaused.current = true;   // start later, when it scrolls into view
+      if (!document.hidden) tryPlay();
+      else autoPaused.current = true;
     };
     if (v.readyState >= 3) start();
     else v.addEventListener('canplay', start);
@@ -130,12 +138,7 @@ export const HeroVideo: React.FC<{ s: HeroVideoStrings }> = ({ s }) => {
   const failed = playback === 'error';
 
   return (
-    <div
-      className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#757a82]"
-      style={{ aspectRatio: `${HERO_VIDEO.width} / ${HERO_VIDEO.height}` }}
-      data-testid="hero-video"
-      data-playback={playback}
-    >
+    <div className={`relative overflow-hidden ${className}`} data-testid="hero-video" data-playback={playback}>
       {failed ? (
         <img
           src={HERO_VIDEO.poster}
@@ -149,7 +152,7 @@ export const HeroVideo: React.FC<{ s: HeroVideoStrings }> = ({ s }) => {
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-contain"
-          src={src}
+          src={HERO_VIDEO.src}
           poster={HERO_VIDEO.poster}
           width={HERO_VIDEO.width}
           height={HERO_VIDEO.height}
@@ -167,13 +170,21 @@ export const HeroVideo: React.FC<{ s: HeroVideoStrings }> = ({ s }) => {
         />
       )}
 
+      {/* Edge vignette in the clip's own edge colour: the letterbox boundary
+          melts into the page. Inset shadow only — nothing over the parts. */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{ boxShadow: `inset 0 0 7vw 1.6vw ${HERO_VIDEO.edge}` }}
+      />
+
       {!failed && (
         <button
           type="button"
           onClick={toggle}
           aria-label={playing ? s.pause : s.play}
           aria-pressed={playing}
-          className="absolute bottom-3 right-3 w-10 h-10 rounded-full grid place-items-center border border-white/25 bg-black/45 text-white/90 backdrop-blur-sm hover:bg-black/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300 transition-colors"
+          className={`absolute ${buttonClassName} w-11 h-11 rounded-full grid place-items-center border border-white/30 bg-black/35 text-white/90 backdrop-blur-sm hover:bg-black/55 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300 transition-colors`}
           data-testid="hero-video-toggle"
         >
           {playing ? <PauseIcon /> : <PlayIcon />}

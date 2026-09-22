@@ -436,7 +436,7 @@ const SpacetimeField: React.FC = () => (
  * fixed 40px logo plus a 36px flag is 300px of a 390px phone header, which is
  * how the language switch ended up off-screen.
  */
-const Wordmark: React.FC = () => (
+export const Wordmark: React.FC = () => (
   <span className="inline-flex items-center gap-2 sm:gap-4 select-none flex-none">
     <BrandLogo height={40} theme="dark" className="h-[26px] sm:h-9 md:h-10 w-auto" />
     {/* Below ~380px there is not room for wordmark + flag + social + language
@@ -451,7 +451,7 @@ const Wordmark: React.FC = () => (
 
 /** Country-profile-driven market identity — swaps automatically per deployment.
  *  Admin build gets a cross-market ops-console badge instead. */
-const MarketBadge: React.FC<{ t: any }> = ({ t }) =>
+export const MarketBadge: React.FC<{ t: any }> = ({ t }) =>
   IS_ADMIN_BUILD ? (
     <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur text-xs font-medium text-white/80">
       <span className="text-sm leading-none">🛠️</span>
@@ -467,7 +467,7 @@ const MarketBadge: React.FC<{ t: any }> = ({ t }) =>
   </span>
 );
 
-const LanguagePill: React.FC<{ language: Language; setLanguage: (l: Language) => void }> = ({
+export const LanguagePill: React.FC<{ language: Language; setLanguage: (l: Language) => void }> = ({
   language,
   setLanguage,
 }) => (
@@ -516,7 +516,7 @@ const YouTubeIcon: React.FC<{ className?: string }> = ({ className = 'w-[20px] h
  * deliberately in a new tab: the signal works by existing, and a visitor who
  * clicks must not lose the page they were about to sign up on.
  */
-const SocialLinks: React.FC = () => (
+export const SocialLinks: React.FC = () => (
   <div className="flex items-center gap-0.5 sm:gap-1 flex-none">
     {[
       { href: SOCIAL_LINKS.linkedin, label: 'LinkedIn', Icon: LinkedInIcon },
