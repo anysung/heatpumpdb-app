@@ -209,12 +209,12 @@
 
 /* ── Auth cards over the video backdrop (2026-09-23) ─────────────────────────
    Login / signup keep GlassCard but must read clearly over the moving clip:
-   a dark pane with a strong blur behind it. Opacity 0.69 (owner 2026-09-23:
-   15 % more see-through than the first 0.84) so the clip's motion shows
+   a dark pane with a strong blur behind it. Opacity 0.56 (owner 2026-09-23, two steps down:
+   0.84 → 0.69 → 0.56) so the clip's motion shows
    faintly through the blur. !important beats GlassCard's own utility
    background. */
 .hp-card-solid {
-  background: rgba(6, 23, 22, 0.69) !important;
+  background: rgba(6, 23, 22, 0.56) !important;
   border-color: rgba(255, 255, 255, 0.16) !important;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
