@@ -250,11 +250,11 @@ async function finalizeSignup(req, res) {
  * "approve" button only flipped Firestore flags: the account worked for seven
  * days and then hit entitlement rules with no window and no history.
  */
-async function activateAccount(uid, email, consent) {
+async function activateAccount(uid, email, consent, source = 'self') {
   const userRef = db.collection('users').doc(uid);
   const regRef = db.collection('emailRegistry').doc(email);
 
-  return db.runTransaction(async (tx) => {
+  const result = await db.runTransaction(async (tx) => {
     const [userSnap, regSnap] = await Promise.all([tx.get(userRef), tx.get(regRef)]);
     if (!userSnap.exists) return { error: 'no-profile' };
     const user = userSnap.data();
@@ -321,8 +321,30 @@ async function activateAccount(uid, email, consent) {
 
     tx.set(regRef, regPatch, { merge: true });
     tx.update(userRef, patch);
-    return { ok: true, activated: true, trial: grantTrial, trialDays: TRIAL_DAYS };
+    return {
+      ok: true, activated: true, trial: grantTrial, trialDays: TRIAL_DAYS,
+      _name: `${user.firstName || ''} ${user.lastName || ''}`.trim(), _member: isMember,
+    };
   });
+
+  // Close the loop in the admin audit log. The client writes REGISTER_PENDING
+  // when the profile is created; until 2026-09-23 nothing wrote the
+  // activation, so every successful signup looked stuck at "pending" in the
+  // console. Same collection/shape as the client's logActivity. Best-effort:
+  // a logging failure must never fail an activation.
+  if (result && result.activated) {
+    const detail = result.trial
+      ? `Account activated (${source}) — ${TRIAL_DAYS}-day trial granted`
+      : result._member
+        ? `Account activated (${source}) — team member, access follows the organisation`
+        : `Account activated (${source}) — trial already used, window closed`;
+    await db.collection('activityLogs').add({
+      userId: uid, userEmail: email, userName: result._name, action: 'REGISTER_ACTIVATED',
+      details: detail, timestamp: nowIso(),
+    }).catch((e) => console.error('activityLogs write failed', e));
+  }
+  if (result) { delete result._name; delete result._member; }
+  return result;
 }
 
 // ---------------------------------------------------------------------------
@@ -366,7 +388,7 @@ async function adminFinalizeSignup(req, res) {
     return res.status(200).json({ ok: false, error: 'consent-missing' });
   }
 
-  const result = await activateAccount(uid, email, consent);
+  const result = await activateAccount(uid, email, consent, 'admin');
   await db.collection('opsAuditLog').add({
     action: 'adminFinalizeSignup', targetUid: uid, targetEmail: email,
     result: result.error ?? (result.activated ? 'activated' : 'already-active'),
