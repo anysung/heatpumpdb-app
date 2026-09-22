@@ -18,7 +18,8 @@
  */
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Language } from '../../types';
-import { HERO_VIDEO } from '../../config/landingHero';
+import { HERO_VIDEO, HERO_ASPECT, StageBox } from '../../config/landingHero';
+import { StageCanvas } from './StageCanvas';
 import {
   Wordmark, MarketBadge, LanguagePill, SocialLinks, primaryBtn, ghostBtn,
 } from './AuthShell';
@@ -37,9 +38,7 @@ const COVER_BG =
  *  so this band falls between the headline and the counts. */
 const PARTS_TOP = 0.28;
 const PARTS_BOTTOM = 0.73;
-const ASPECT = HERO_VIDEO.width / HERO_VIDEO.height;
-
-type StageBox = { top: number; left: number; width: number; height: number };
+const ASPECT = HERO_ASPECT;
 
 /** Desktop stage geometry: as large as the page allows, never cropped, and
  *  with the parts band clear of both text bands. Re-measured on resize. */
@@ -104,21 +103,10 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
     style={{ background: COVER_BG }}
     data-testid="landing-video"
   >
-    {/* Halo behind a stage smaller than the page (short viewports): the
-        studio's mist continues past the clip's edge, so the box dissolves
-        into the page instead of reading as a framed rectangle. */}
-    {stage && (
-      <div
-        className="hidden lg:block absolute z-0 pointer-events-none"
-        aria-hidden="true"
-        style={{
-          top: stage.top - stage.height * 0.16, left: stage.left - stage.width * 0.08,
-          width: stage.width * 1.16, height: stage.height * 1.32,
-          background: 'radial-gradient(ellipse at 50% 42%, rgba(30,66,60,0.55) 0%, rgba(22,41,40,0.35) 40%, rgba(6,23,22,0) 72%)',
-          filter: 'blur(28px)',
-        }}
-      />
-    )}
+    {/* Studio continuation behind the stage (desktop): the poster's edge
+        strips stretched to the page edges, so the clip's floor and mist run
+        on to the viewport border at every size instead of ending in a line. */}
+    {stage && <StageCanvas box={stage} className="hidden lg:block z-0" />}
     {/* Stage — measured box behind everything on desktop, in flow on phones. */}
     <div
       className={`order-3 lg:order-none w-full px-3 sm:px-4 mt-4 lg:px-0 lg:mt-0 lg:z-0 ${stage ? 'lg:absolute' : 'relative'}`}
@@ -129,6 +117,7 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
         s={{ play: t.authVideoPlay, pause: t.authVideoPause, alt: t.authVideoAlt }}
         className={`w-full rounded-2xl ${stage ? 'h-full rounded-none' : 'aspect-[1998/1038]'}`}
         buttonClassName="bottom-3 right-3"
+        edgeFade={!stage}
       />
     </div>
 

@@ -11,6 +11,8 @@
  * subsidy label here with zero component changes.
  */
 import React from 'react';
+import { HERO_VIDEO } from '../../config/landingHero';
+import { VideoBackdrop } from './VideoBackdrop';
 import { Language } from '../../types';
 import { ACTIVE_COUNTRY } from '../../config/countryProfiles';
 import { PUBLIC_ENV } from '../../config/env';
@@ -545,12 +547,18 @@ export const AuthShell: React.FC<{
   /** Landing and login only. On the signup form, the invite screen or the
    *  pause notice, an outbound link is a way to lose someone mid-task. */
   showSocial?: boolean;
-}> = ({ t, language, setLanguage, children, showSocial }) => (
+  /** 'video' = the landing clip, dimmed, behind login/signup (video-cover
+   *  markets only — src/config/landingHero.ts). Header and content are
+   *  unchanged; only the decorative layer is swapped. */
+  backdrop?: 'video';
+}> = ({ t, language, setLanguage, children, showSocial, backdrop }) => (
   <div
     className="min-h-screen relative overflow-hidden text-white font-sans flex flex-col"
-    style={{ background: `radial-gradient(120% 100% at 30% 20%, ${BG.baseMid} 0%, ${BG.base} 55%, ${BG.baseDeep} 100%)` }}
+    style={{ background: backdrop === 'video' ? HERO_VIDEO.edge : `radial-gradient(120% 100% at 30% 20%, ${BG.baseMid} 0%, ${BG.base} 55%, ${BG.baseDeep} 100%)` }}
   >
+    {backdrop === 'video' && <VideoBackdrop />}
     {/* Circulation-field background (market-tinted; rollback tag: auth-bg-v1) */}
+    {backdrop !== 'video' && (
     <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
       <div className="hp-aurora-a absolute -top-40 -left-40 w-[42rem] h-[42rem] rounded-full blur-[120px]" style={{ background: `${BG.glowA}2e` }} />
       <div className="hp-aurora-b absolute top-1/3 -right-52 w-[40rem] h-[40rem] rounded-full blur-[120px]" style={{ background: `${BG.glowB}24` }} />
@@ -560,6 +568,7 @@ export const AuthShell: React.FC<{
       <ResidentialInstallScene />
       <CommercialInstallScene />
     </div>
+    )}
 
     <header className="relative z-20 flex items-center justify-between gap-2 sm:gap-4 px-4 sm:px-6 md:px-10 py-4 sm:py-5">
       <div className="flex items-center gap-2 sm:gap-4 min-w-0">

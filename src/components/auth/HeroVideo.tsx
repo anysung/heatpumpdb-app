@@ -49,7 +49,13 @@ export const HeroVideo: React.FC<{
   className?: string;
   /** Where the play/pause button sits inside that box. */
   buttonClassName?: string;
-}> = ({ s, className = '', buttonClassName = 'bottom-3 right-3' }) => {
+  /** false = decorative backdrop use: no button. */
+  control?: boolean;
+  /** Darken the clip's own edges. Only wanted when the clip sits as a
+   *  rounded box on the page (phones); when StageCanvas continues the studio
+   *  around it, any edge darkening draws the box outline back in. */
+  edgeFade?: boolean;
+}> = ({ s, className = '', buttonClassName = 'bottom-3 right-3', control = true, edgeFade = true }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playback, setPlayback] = useState<Playback>('idle');
   // Read once: a visitor who has motion reduced gets a still by default.
@@ -170,28 +176,31 @@ export const HeroVideo: React.FC<{
         />
       )}
 
-      {/* Edge vignette in the clip's own edge colour: the letterbox boundary
-          melts into the page. Inset shadow only — nothing over the parts. */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-        style={{ boxShadow: `inset 0 0 7vw 1.6vw ${HERO_VIDEO.edge}` }}
-      />
-      {/* Top/bottom fades over empty studio only: the parts never rise above
-          28 % of the frame and the floor reflection ends by ~89 %, so a 20 %
-          fade at the top and a 6 % fade at the bottom touch no part. */}
-      <div
-        className="absolute inset-x-0 top-0 h-[20%] pointer-events-none"
-        aria-hidden="true"
-        style={{ background: `linear-gradient(to bottom, ${HERO_VIDEO.edge} 0%, rgba(6,23,22,0.55) 45%, rgba(6,23,22,0) 100%)` }}
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 h-[6%] pointer-events-none"
-        aria-hidden="true"
-        style={{ background: `linear-gradient(to top, ${HERO_VIDEO.edge} 0%, rgba(6,23,22,0) 100%)` }}
-      />
+      {edgeFade && (
+        <>
+          {/* Edge vignette in the clip's own edge colour (rounded-box use).
+              Inset shadow only — nothing over the parts. */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            aria-hidden="true"
+            style={{ boxShadow: `inset 0 0 7vw 1.6vw ${HERO_VIDEO.edge}` }}
+          />
+          {/* Top/bottom fades over empty studio only: the parts never rise
+              above 28 % of the frame and the floor reflection ends by ~89 %. */}
+          <div
+            className="absolute inset-x-0 top-0 h-[20%] pointer-events-none"
+            aria-hidden="true"
+            style={{ background: `linear-gradient(to bottom, ${HERO_VIDEO.edge} 0%, rgba(6,23,22,0.55) 45%, rgba(6,23,22,0) 100%)` }}
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 h-[6%] pointer-events-none"
+            aria-hidden="true"
+            style={{ background: `linear-gradient(to top, ${HERO_VIDEO.edge} 0%, rgba(6,23,22,0) 100%)` }}
+          />
+        </>
+      )}
 
-      {!failed && (
+      {!failed && control && (
         <button
           type="button"
           onClick={toggle}

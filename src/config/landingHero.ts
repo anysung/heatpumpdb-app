@@ -37,3 +37,9 @@ export const HERO_VIDEO = {
    *  vignette use it so the frame boundary disappears into the page. */
   edge: '#061716',
 } as const;
+
+/** Native aspect of the clip (width / height). */
+export const HERO_ASPECT = HERO_VIDEO.width / HERO_VIDEO.height;
+
+/** A stage box in page pixels: where the clip is shown, at its native aspect. */
+export type StageBox = { top: number; left: number; width: number; height: number };

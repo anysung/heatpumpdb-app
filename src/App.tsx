@@ -41,6 +41,10 @@ import { SignupForm, SignupFormValues } from './components/auth/SignupForm';
 import { VideoCover } from './components/auth/VideoCover';
 import { LANDING_HERO } from './config/landingHero';
 import { ACTIVE_COUNTRY } from './config/countryProfiles';
+
+// Video cover market: the landing shows the clip and login/signup carry it as
+// a dimmed backdrop (src/config/landingHero.ts).
+const VIDEO_COVER = LANDING_HERO[ACTIVE_COUNTRY.code] === 'video';
 import { previewUserPatch } from './hpiq/devPreview';
 import { AdminLogin } from './components/admin/AdminLogin';
 import { AdminLang, ADMIN_I18N, loadAdminLang, saveAdminLang } from './components/admin/adminI18n';
@@ -937,11 +941,11 @@ const AppInner: React.FC = () => {
       );
     }
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage} showSocial>
+      <AuthShell t={t} language={language} setLanguage={setLanguage} showSocial backdrop={VIDEO_COVER ? 'video' : undefined}>
         {termsModal}
         <div className="w-full flex flex-col items-center">
         {sessionNoticeEl}
-        <GlassCard className="w-full max-w-md p-8 hp-fade-up">
+        <GlassCard className={`w-full max-w-md p-8 hp-fade-up ${VIDEO_COVER ? 'hp-card-solid' : ''}`}>
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-4 transition-colors">← {t.back}</button>
           <h2 className="text-2xl font-bold text-white mb-1">{t.loginTitle}</h2>
           <p className="text-white/50 text-sm mb-4">{t.loginSub}</p>
@@ -1016,8 +1020,8 @@ const AppInner: React.FC = () => {
       { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
     );
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage}>
-        <GlassCard className="w-full max-w-md p-10 text-center hp-fade-up">
+      <AuthShell t={t} language={language} setLanguage={setLanguage} backdrop={VIDEO_COVER ? 'video' : undefined}>
+        <GlassCard className={`w-full max-w-md p-10 text-center hp-fade-up ${VIDEO_COVER ? 'hp-card-solid' : ''}`}>
           <div data-testid="registration-paused">
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
           <h2 className="text-2xl font-bold text-white mb-4">{(t as any).regPausedTitle}</h2>
@@ -1037,9 +1041,9 @@ const AppInner: React.FC = () => {
 
   if (currentView === 'SIGNUP') {
     return (
-      <AuthShell t={t} language={language} setLanguage={setLanguage}>
+      <AuthShell t={t} language={language} setLanguage={setLanguage} backdrop={VIDEO_COVER ? 'video' : undefined}>
         {termsModal}
-        <GlassCard className="w-full max-w-2xl p-8 hp-fade-up">
+        <GlassCard className={`w-full max-w-2xl p-8 hp-fade-up ${VIDEO_COVER ? 'hp-card-solid' : ''}`}>
           <button onClick={() => setCurrentView('LANDING')} className="text-white/40 hover:text-white text-sm mb-6 transition-colors">← {t.back}</button>
           <h2 className="text-2xl font-bold text-white mb-1">{t.createAccount}</h2>
           {/* Providers first. Both return a verified email, so these paths skip

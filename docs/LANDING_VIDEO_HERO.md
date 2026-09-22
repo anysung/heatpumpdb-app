@@ -10,9 +10,12 @@ market is switched to the new cover; GB/FR/PL/IT still render the classic cover.
 |---|---|---|
 | `src/config/landingHero.ts` | new · common | Per-market switch `LANDING_HERO` (`'classic' \| 'video'`) + the shared clip paths, native size and edge colour. DE = `video`, others `classic`. |
 | `src/components/auth/VideoCover.tsx` | new · common | The cover itself (design reference: headline on top, the clip as the full-width stage, counts + compact Sign up / Log in below, public-page links bottom-left, play/pause bottom-right). Desktop: one viewport; the stage box is **measured** so the band the moving parts occupy (28 %–73 % of the clip height) always lies between the headline and the counts, at every viewport height — no overlay ever sits on a part. Phones/tablets: ordinary flow (headline → clip at its aspect → counts → entry → links). Reuses the classic header pieces (logo, market badge, language pill, social links). |
+| `src/components/auth/StageCanvas.tsx` | new · common | Studio continuation (2026-09-23): paints the poster frame in the stage box and stretches its outer 2 % rows/columns (plain studio) to the page edges, blurred — so the clip's floor and mist run on to the viewport border at every window size instead of ending in a line under the stage. Redrawn on every resize. |
+| `src/components/auth/VideoBackdrop.tsx` | new · common | Login / signup backdrop (2026-09-23): the same clip, fixed full-viewport, contained + centred, StageCanvas behind, no control, dimmed (`rgba(3,13,12,.58)`). Decorative (`aria-hidden`), reduced motion → still poster. |
 | `src/components/auth/HeroVideo.tsx` | new · common | The clip: muted/inline/loop autoplay (force-muted before every play), object-fit contain (never cropped), keyboard-operable play/pause `<button>`, pause when offscreen or tab hidden, never auto-resumes a visitor's own pause, reduced-motion → poster until pressed, poster before load / on autoplay refusal / on load failure. Edge vignette in the clip's own edge colour (outer ~5 % only). |
-| `src/components/auth/AuthShell.tsx` | modified · common | `Wordmark`, `MarketBadge`, `LanguagePill`, `SocialLinks` exported (no behaviour change). |
-| `src/App.tsx` | modified · common | `LANDING` renders `VideoCover` when the market's switch is `video`; the classic branch is untouched. |
+| `src/components/auth/AuthShell.tsx` | modified · common | `Wordmark`, `MarketBadge`, `LanguagePill`, `SocialLinks` exported; new `backdrop='video'` prop swaps the decorative layer for `VideoBackdrop` (header, content, footer unchanged). |
+| `src/index.css` | modified · common | `.hp-card-solid` — the login/signup card over the backdrop: dark 84 % pane + 22 px blur so the form reads first. |
+| `src/App.tsx` | modified · common | `LANDING` renders `VideoCover` when the market's switch is `video`; the classic branch is untouched. Login, signup and the registration-paused screen pass `backdrop='video'` + `hp-card-solid` in video-cover markets only. |
 | `src/translations.ts` | modified · 5 languages | `authHeroLine`, `authVideoPlay`, `authVideoPause`, `authVideoAlt`. |
 | `public/media/hero/heatpump-assembly-loop-v2.mp4` | new asset | Web copy of the owner's clip: H.264 crf 24, faststart, no audio — 1.84 MB, 10.17 s, 1998×1038, 24 fps. |
 | `public/media/hero/heatpump-assembly-loop-v2-poster.jpg` | new asset | First frame (assembled unit in the studio), 72 KB. |
@@ -79,7 +82,8 @@ nothing else is on it.
 
 1. On short desktop viewports (≤ 768 px high) the stage shrinks (e.g. 868×451
    at 1280×720) so nothing overlaps; the clip is smaller than on a 900 px+
-   screen.
+   screen. The studio around it is continued by StageCanvas, so there is no
+   visible box — but the parts are correspondingly smaller.
 2. Social icons remain in the header (the reference omits them) — kept
    because they are existing functionality.
 3. The clip is 1.84 MB; the headline and buttons render before it (poster

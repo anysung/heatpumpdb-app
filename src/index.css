@@ -206,3 +206,14 @@
 /* The trends deck scrolls horizontally; the bar under it would sit between the
    cards and the dots and read as a second control. */
 .hp-deck-track::-webkit-scrollbar { display: none; }
+
+/* ── Auth cards over the video backdrop (2026-09-23) ─────────────────────────
+   Login / signup keep GlassCard but must read clearly over the moving clip:
+   a dark, mostly opaque pane with a strong blur behind it. !important beats
+   GlassCard's own utility background. */
+.hp-card-solid {
+  background: rgba(6, 23, 22, 0.84) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
