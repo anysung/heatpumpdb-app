@@ -10,16 +10,15 @@ import { CountryCode } from './countryProfiles';
  *                Log in pair below.
  *
  * Both layouts stay in App.tsx, so switching a market back is this one line.
- * Only the German market is switched over for the owner's preview; the other
- * four stay classic until they are approved one by one — approval of DE is
- * never approval of the rest.
+ * DE was previewed first; the owner approved the video cover for all five
+ * markets on 2026-09-23.
  */
 export const LANDING_HERO: Record<CountryCode, 'classic' | 'video'> = {
   DE: 'video',
-  GB: 'classic',
-  FR: 'classic',
-  PL: 'classic',
-  IT: 'classic',
+  GB: 'video',   // owner approval 2026-09-23: all five markets
+  FR: 'video',
+  PL: 'video',
+  IT: 'video',
 };
 
 /** The one hero clip, shared by every market that uses the video cover.
