@@ -177,6 +177,19 @@ export const HeroVideo: React.FC<{
         aria-hidden="true"
         style={{ boxShadow: `inset 0 0 7vw 1.6vw ${HERO_VIDEO.edge}` }}
       />
+      {/* Top/bottom fades over empty studio only: the parts never rise above
+          28 % of the frame and the floor reflection ends by ~89 %, so a 20 %
+          fade at the top and a 6 % fade at the bottom touch no part. */}
+      <div
+        className="absolute inset-x-0 top-0 h-[20%] pointer-events-none"
+        aria-hidden="true"
+        style={{ background: `linear-gradient(to bottom, ${HERO_VIDEO.edge} 0%, rgba(6,23,22,0.55) 45%, rgba(6,23,22,0) 100%)` }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-[6%] pointer-events-none"
+        aria-hidden="true"
+        style={{ background: `linear-gradient(to top, ${HERO_VIDEO.edge} 0%, rgba(6,23,22,0) 100%)` }}
+      />
 
       {!failed && (
         <button
