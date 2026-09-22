@@ -214,6 +214,10 @@
    faintly through the blur. !important beats GlassCard's own utility
    background. */
 .hp-card-solid {
+  /* Tighter vertical padding than GlassCard's p-8 so the login card fits an
+     837 px-high laptop viewport under the video backdrop. */
+  padding-top: 1.5rem !important;
+  padding-bottom: 1.5rem !important;
   background: rgba(6, 23, 22, 0.56) !important;
   border-color: rgba(255, 255, 255, 0.16) !important;
   backdrop-filter: blur(22px);

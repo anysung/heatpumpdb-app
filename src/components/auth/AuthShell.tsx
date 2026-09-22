@@ -583,7 +583,7 @@ export const AuthShell: React.FC<{
 
     {/* items-start + small top padding keeps content high so the bottom
         installation scenes stay visible on laptop-height screens */}
-    <main className="relative z-20 flex-1 flex items-start justify-center px-4 pt-[4vh] md:pt-[5vh] pb-8">
+    <main className={`relative z-20 flex-1 flex items-start justify-center px-4 pb-8 ${backdrop === 'video' ? 'pt-[2vh]' : 'pt-[4vh] md:pt-[5vh]'}`}>
       {children}
     </main>
 

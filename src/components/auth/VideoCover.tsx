@@ -148,17 +148,20 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
       </div>
     </header>
 
-    {/* Headline band — top of the stage, above where any part travels. */}
+    {/* Headline band — top of the stage, above where any part travels.
+        Desktop type scales with the window (vw/vh caps) so the composition the
+        owner approved on a wide window holds on a 1400 px laptop too — rem-only
+        sizes made the headline crowd the stage there (2026-09-23). */}
     <div ref={headRef} className="order-2 relative z-10 pointer-events-none text-center px-4 pt-1 lg:pt-2 hp-fade-up">
       {notice && <div className="pointer-events-auto mb-3">{notice}</div>}
-      <h1 className="text-[1.9rem] sm:text-4xl md:text-5xl lg:text-[3.35rem] font-bold tracking-tight leading-[1.08] drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+      <h1 className="text-[1.9rem] sm:text-4xl md:text-5xl lg:text-[min(3.35rem,3.05vw,5.4vh)] font-bold tracking-tight leading-[1.08] drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
         {t.authHeadline}
         <br />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
           {t.authHeadlineAccent}
         </span>
       </h1>
-      <p className="mt-2.5 text-white/75 text-[15px] sm:text-lg md:text-[1.35rem] drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+      <p className="mt-2.5 text-white/75 text-[15px] sm:text-lg md:text-[1.35rem] lg:text-[min(1.35rem,1.3vw,2.4vh)] drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
         {t.authHeroLine}
       </p>
     </div>
@@ -170,7 +173,7 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
       {stats && (
         <div className="text-center flex flex-col gap-1 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)]" data-testid="landing-stats">
           <p className="text-[11px] tracking-[0.2em] uppercase text-white/60">{t.authStatsTitle}</p>
-          <p className="text-4xl md:text-[2.6rem] font-bold leading-none text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300">
+          <p className="text-4xl md:text-[2.6rem] lg:text-[min(2.6rem,2.5vw,4.4vh)] font-bold leading-none text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300">
             {t.authStatsTotal} {(stats.res + stats.com).toLocaleString()}
           </p>
           <p className="text-[12.5px] text-white/65">
