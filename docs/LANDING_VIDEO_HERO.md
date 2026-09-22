@@ -1,8 +1,12 @@
 # Landing video cover — change record & rollback (2026-09-22)
 
-Status: **preview complete · NOT deployed · not merged**. Branch `feat/landing-video-de`,
-baseline tag `landing-v1-before-video` (= `main` @ `1f85088`). Only the German
-market is switched to the new cover; GB/FR/PL/IT still render the classic cover.
+Status: **approved by the owner 2026-09-23 for all five markets; merged to `main`
+and deployed to DE/GB/FR/PL/IT the same day** (deploy log in the final report).
+Baseline tag `landing-v1-before-video` (= `main` @ `1f85088`) marks the last
+classic-cover state. Per-market verification before deploy: clip plays muted,
+headline/service line/counts/links in each language, one screen at 1440×900,
+no horizontal overflow on phones, no BAFA wording outside DE, header-fit e2e
+36/36 in every market.
 
 ## What changed
 
@@ -63,10 +67,7 @@ unchanged from the classic cover. DE at build: 7,336 = 5,330 + 2,006.
 
 ## Rollback
 
-*Preview stage (now):* nothing is on `main`. `git checkout main` shows the
-untouched site; `git branch -D feat/landing-video-de` and
-`git tag -d landing-v1-before-video` drop the work entirely. Assets live only
-on the branch.
+*Before the merge (historic):* the work lived only on `feat/landing-video-de`.
 
 *One market back to classic (before or after deploy):* set that market to
 `'classic'` in `src/config/landingHero.ts`, build and deploy that market's
