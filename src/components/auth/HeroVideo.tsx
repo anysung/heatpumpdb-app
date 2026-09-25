@@ -112,10 +112,30 @@ export const HeroVideo: React.FC<{
     // up on every phone (owner 2026-09-26). Ask to play immediately — a
     // muted inline play() is allowed without a gesture — and keep the
     // canplay path for browsers that refuse until data is buffered.
+    // The muted ATTRIBUTE, not just the property: React sets `muted` as a
+    // property only, and WebKit's autoplay policy looks at the attribute
+    // when the element is inserted.
+    v.setAttribute('muted', '');
     if (!document.hidden) tryPlay();
     if (v.readyState >= 3) start();
     else v.addEventListener('canplay', start);
-    return () => v.removeEventListener('canplay', start);
+    v.addEventListener('loadedmetadata', start);
+    // Last resort on a phone that refused autoplay (iOS accessibility
+    // "auto-play video previews" off, or a policy we cannot see): the first
+    // touch or scroll anywhere on the page counts as the gesture. Only
+    // while the clip is still not playing and not paused by the visitor.
+    const gesture = () => {
+      if (!userPaused.current && v.paused) tryPlay();
+      if (!v.paused) { window.removeEventListener('touchstart', gesture); window.removeEventListener('scroll', gesture); }
+    };
+    window.addEventListener('touchstart', gesture, { passive: true });
+    window.addEventListener('scroll', gesture, { passive: true });
+    return () => {
+      v.removeEventListener('canplay', start);
+      v.removeEventListener('loadedmetadata', start);
+      window.removeEventListener('touchstart', gesture);
+      window.removeEventListener('scroll', gesture);
+    };
   }, [reducedMotion, tryPlay]);
 
   /* Offscreen + hidden tab. */
@@ -171,6 +191,9 @@ export const HeroVideo: React.FC<{
           muted
           loop
           playsInline
+          // Native autoplay attribute as well: WebKit handles the
+          // muted+playsinline+autoplay combination itself, before any script.
+          autoPlay={!reducedMotion}
           // Reduced motion: nothing is fetched until the visitor asks for it.
           preload={reducedMotion ? 'none' : 'auto'}
           disablePictureInPicture
