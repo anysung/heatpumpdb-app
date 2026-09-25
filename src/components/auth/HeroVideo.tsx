@@ -107,6 +107,12 @@ export const HeroVideo: React.FC<{
       if (!document.hidden) tryPlay();
       else autoPaused.current = true;
     };
+    // iOS Safari ignores preload and fetches nothing until play() is
+    // called, so 'canplay' never arrives on its own and the poster stayed
+    // up on every phone (owner 2026-09-26). Ask to play immediately — a
+    // muted inline play() is allowed without a gesture — and keep the
+    // canplay path for browsers that refuse until data is buffered.
+    if (!document.hidden) tryPlay();
     if (v.readyState >= 3) start();
     else v.addEventListener('canplay', start);
     return () => v.removeEventListener('canplay', start);

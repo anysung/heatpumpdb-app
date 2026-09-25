@@ -10,8 +10,10 @@
  * parts stay below 28 % and above the floor reflection). Bottom row: the
  * public pages on the left, the play/pause control on the right.
  *
- * Phones / tablets (< lg): ordinary flow — headline, the clip full width at
- * its aspect, counts, entry, links — nothing is forced into one screen.
+ * Phones / tablets: the SAME composition (owner 2026-09-26 — the earlier
+ * in-flow rounded box read as a separate window). The clip is narrower, the
+ * studio continuation fills the screen around it, the bands sit above and
+ * below it; very short screens scroll.
  *
  * Header pieces are the same components the classic cover renders, so logo,
  * market badge, language switch and social links behave exactly as before.
@@ -52,7 +54,6 @@ function useStageBox(
     const measure = () => {
       const r = root.current, h = head.current, e = entry.current;
       if (!r || !h || !e) return;
-      if (!window.matchMedia('(min-width: 1024px)').matches) { setBox(null); return; }
       // Layout positions (offset*), not client rects: the fade-up entrance
       // animations translate these blocks for a moment and would otherwise
       // be measured mid-flight.
@@ -60,9 +61,15 @@ function useStageBox(
       const headBottom = h.offsetTop + h.offsetHeight + 10;
       const entryTop = e.offsetTop - 6;
       const byText = (entryTop - headBottom) / (PARTS_BOTTOM - PARTS_TOP);
-      let height = Math.max(240, Math.min(W / ASPECT, H, byText));
+      // On a phone the width is the binding limit (a 390 px screen gives a
+      // 202 px clip); the studio continuation fills the rest of the screen,
+      // so the picture reads the same as on desktop, only smaller.
+      const minH = W < 1024 ? 120 : 240;
+      let height = Math.max(minH, Math.min(W / ASPECT, H, byText));
       let top = Math.max(0, headBottom - PARTS_TOP * height);
-      if (top + height > H) height = Math.max(240, H - top);
+      if (top + height > H) height = Math.max(minH, H - top);
+      // Centre the clip in the free band when the text bands leave room.
+      if (height < byText) top = Math.max(0, headBottom + (entryTop - headBottom - height) / 2);
       const width = height * ASPECT;
       setBox({ top: Math.round(top), left: Math.round((W - width) / 2), width: Math.round(width), height: Math.round(height) });
     };
@@ -99,23 +106,23 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
   return (
   <div
     ref={rootRef}
-    className="relative min-h-screen text-white font-sans flex flex-col overflow-hidden"
+    className="relative min-h-[100dvh] text-white font-sans flex flex-col overflow-hidden"
     style={{ background: COVER_BG }}
     data-testid="landing-video"
   >
     {/* Studio continuation behind the stage (desktop): the poster's edge
         strips stretched to the page edges, so the clip's floor and mist run
         on to the viewport border at every size instead of ending in a line. */}
-    {stage && <StageCanvas box={stage} className="hidden lg:block z-0" />}
+    {stage && <StageCanvas box={stage} className="z-0" />}
     {/* Stage — measured box behind everything on desktop, in flow on phones. */}
     <div
-      className={`order-3 lg:order-none w-full px-3 sm:px-4 mt-4 lg:px-0 lg:mt-0 lg:z-0 ${stage ? 'lg:absolute' : 'relative'}`}
+      className={`order-3 lg:order-none w-full z-0 ${stage ? 'absolute' : 'relative px-3 mt-4'}`}
       style={stage ? { top: stage.top, left: stage.left, width: stage.width, height: stage.height } : undefined}
       data-testid="hero-stage"
     >
       <HeroVideo
         s={{ play: t.authVideoPlay, pause: t.authVideoPause, alt: t.authVideoAlt }}
-        className={`w-full rounded-2xl ${stage ? 'h-full rounded-none' : 'aspect-[1998/1038]'}`}
+        className={`w-full ${stage ? 'h-full' : 'aspect-[1998/1038] rounded-2xl'}`}
         buttonClassName="bottom-3 right-3"
         edgeFade={!stage}
       />
@@ -127,7 +134,7 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
         and grounds the counts. Starts at zero where the parts end (73 %). */}
     {stage && (
       <div
-        className="hidden lg:block absolute inset-x-0 bottom-0 z-[1] pointer-events-none"
+        className="absolute inset-x-0 bottom-0 z-[1] pointer-events-none"
         aria-hidden="true"
         style={{
           top: stage.top + stage.height * 0.70,
@@ -166,10 +173,14 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
       </p>
     </div>
 
-    <div className="order-4 flex-1" aria-hidden="true" />
+    {/* Free band for the clip. On short phones (iPhone SE: 667 px) the text
+        bands would otherwise meet and squeeze the clip to nothing — a minimum
+        here lets the page scroll a little instead (the brief: never force
+        everything into one small screen). */}
+    <div className="order-4 flex-1 min-h-[170px] lg:min-h-0" aria-hidden="true" />
 
     {/* Counts + entry — one small block over the floor, never over a part. */}
-    <div ref={entryRef} className="order-5 relative z-10 pointer-events-none flex flex-col items-center gap-3 px-4 pt-6 lg:pt-0 hp-fade-up-delay" data-testid="landing-entry">
+    <div ref={entryRef} className="order-5 relative z-10 pointer-events-none flex flex-col items-center gap-3 px-4 hp-fade-up-delay" data-testid="landing-entry">
       {stats && (
         <div className="text-center flex flex-col gap-1 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)]" data-testid="landing-stats">
           <p className="text-[11px] tracking-[0.2em] uppercase text-white/60">{t.authStatsTitle}</p>
