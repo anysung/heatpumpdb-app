@@ -80,6 +80,15 @@ are removed by the revert; leaving them would be harmless (~1.9 MB static).
 *Unrelated work:* the branch was cut from `main` @ `1f85088` with a clean tree;
 nothing else is on it.
 
+## Mobile (2026-09-26)
+
+Phones and tablets use the same composition as desktop: measured stage box,
+studio continuation and floor shade at every width (the earlier in-flow
+rounded card read as a separate window). iOS fix: `play()` is called on
+mount — iOS Safari loads nothing until then, so the `canplay`-gated autoplay
+never started and the poster stayed up. Short phones keep a 170 px minimum
+band for the clip and scroll a little.
+
 ## Known limitations
 
 1. On short desktop viewports (≤ 768 px high) the stage shrinks (e.g. 868×451
