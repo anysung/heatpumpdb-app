@@ -89,6 +89,16 @@ mount — iOS Safari loads nothing until then, so the `canplay`-gated autoplay
 never started and the poster stayed up. Short phones keep a 170 px minimum
 band for the clip and scroll a little.
 
+## iOS playback — the real cause (2026-09-26, second pass)
+
+The clip fell under the global `**` → `Cache-Control: no-cache` hosting rule,
+and Firebase Hosting answers Range requests on no-cache paths with **200 +
+the whole file**; iOS Safari will not play a video without 206 byte-range
+responses. `/media/**` now has its own cacheable rule on every target
+(verified 206 after deploy). Any new video path must get the same rule.
+The React `muted` prop sets only the property — the attribute is set
+explicitly too, and the first touch/scroll is a play() fallback.
+
 ## Known limitations
 
 1. On short desktop viewports (≤ 768 px high) the stage shrinks (e.g. 868×451
