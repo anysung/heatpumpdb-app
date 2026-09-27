@@ -66,7 +66,7 @@ export const UpgradePage: React.FC<{ app: HpApp }> = ({ app }) => {
 
   /* ── cards ── */
   const standardCard = (
-    <div className="hp-up-card" style={{ ...cardBase, background: 'rgba(255,255,255,.04)' }}>
+    <div className="hp-up-card hp-up-std" style={{ ...cardBase, background: 'rgba(255,255,255,.04)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, minHeight: 24 }}>
         <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 700 }}>{t.tier.free}</span>
         {!app.premium && <span style={badge('rgba(255,255,255,.14)', '#fff')}>{u.currentPlan}</span>}
@@ -204,7 +204,7 @@ export const UpgradePage: React.FC<{ app: HpApp }> = ({ app }) => {
         <h2 style={{ fontFamily: FD, fontSize: 'clamp(24px,3vw,32px)', fontWeight: 700, margin: '0 0 18px', color: '#1d1d1f', textAlign: 'center' }}>{u.faqTitle}</h2>
         {u.faq.map(([q, a], i) => (
           <div key={q} style={{ border: '1px solid #e8e8ed', borderRadius: 14, marginBottom: 10, overflow: 'hidden' }}>
-            <div className="hp-row" onClick={() => setFaqOpen(faqOpen === i ? null : i)} style={{ padding: '16px 18px', display: 'flex', justifyContent: 'space-between', gap: 12, cursor: 'pointer', fontSize: 15, fontWeight: 600, color: '#1d1d1f' }}>
+            <div onClick={() => setFaqOpen(faqOpen === i ? null : i)} style={{ padding: '16px 18px', display: 'flex', justifyContent: 'space-between', gap: 12, cursor: 'pointer', fontSize: 15, fontWeight: 600, color: '#1d1d1f' }}>
               {q}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86868b" strokeWidth="2" strokeLinecap="round" style={{ flex: 'none', transform: faqOpen === i ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}><path d="M6 9l6 6 6-6" /></svg>
             </div>

@@ -605,6 +605,10 @@ const AppInner: React.FC = () => {
       companyWebsite: 'sung-haustechnik.example',
       isActive: true, registeredAt: new Date().toISOString(),
       ...previewUserPatch(),        // ?as=owner | member → team account shapes
+      // ?welcome=1 — an account in its Premium trial (welcome notice layout check).
+      ...(new URLSearchParams(window.location.search).get('welcome') === '1'
+        ? { trialEndsAt: new Date(Date.now() + 15 * 86_400_000).toISOString(), accessUntilTs: new Date(Date.now() + 15 * 86_400_000).toISOString() }
+        : {}),
     };
     return (
       <>

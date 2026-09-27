@@ -479,7 +479,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   // Trial welcome notice — once per account per device, after the profile step.
   const welcomeKey = `hpdb.trialWelcome.${user.id}`;
   const [welcomeSeen, setWelcomeSeen] = useState(() => { try { return !!localStorage.getItem(welcomeKey); } catch { return false; } });
-  const welcomeOpen = access.state === 'trial' && !welcomeSeen && !tourHold && user.id !== 'preview';
+  const welcomeOpen = access.state === 'trial' && !welcomeSeen && !tourHold && (user.id !== 'preview' || (import.meta.env.DEV && new URLSearchParams(window.location.search).get('welcome') === '1'));
   const closeWelcome = () => { try { localStorage.setItem(welcomeKey, new Date().toISOString()); } catch { /* private mode */ } setWelcomeSeen(true); };
   const welcomeModal = welcomeOpen && access.state === 'trial'
     ? <WelcomeTrialModal app={app} trialEndsMs={access.trialEndsMs} onClose={closeWelcome} /> : null;

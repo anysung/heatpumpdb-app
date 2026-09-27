@@ -308,3 +308,6 @@
 /* Sign-out keeps only its icon below 1760px — the room goes to the nav row
    (FR/PL/IT labels are the longest; measured 2026-09-28). */
 @media screen and (max-width: 1760px) { .hp-gnav .hp-signout .hp-btn-label { display: none; } }
+
+/* Phones: the Premium card leads, Standard follows. */
+@media screen and (max-width: 700px) { .hp-up-std { order: 2; } }

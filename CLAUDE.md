@@ -300,7 +300,9 @@ assumption that gitignored means disposable — keep at least the newest seed.
   stamps `unavailableSince`, never deletes; removal is editorial).
 - Refrigerant filtering always uses `.includes()` contains logic (values like
   `R290(estimated)` must match), never exact match.
-- **Free + Premium (2026-09-27 — docs/FREE_PREMIUM_PROGRAM_PLAN.md).** The app is
+- **Standard + Premium (2026-09-27 — docs/FREE_PREMIUM_PROGRAM_PLAN.md).** The free
+  tier is called **"Standard"** in every user-facing text (code identifiers stay
+  'free'); plans live on the Upgrade page (header button, `upgrade` page). The app is
   FREE by default; a closed window means the FREE tier, never a lockout
   (`tierOf()` in src/config/entitlement.ts; `accessUntilTs` reads as "Premium
   until"). Free reads the BASIC dataset objects (`*.basic.json`, allowlist

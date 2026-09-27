@@ -99,6 +99,9 @@ export const finalizeSignupFn = (): Promise<FinalizeResult> =>
     termsVersion: TERMS_VERSION,
     privacyVersion: PRIVACY_VERSION,
     dataUseVersion: DATA_USE_VERSION,
+    // UI language for the welcome mail (App keeps auth.languageCode in step
+    // with the language toggle); the server falls back to the market language.
+    lang: auth.languageCode || undefined,
   });
 
 /** Start a trialing team (window anchored to the caller — the team admin). */
