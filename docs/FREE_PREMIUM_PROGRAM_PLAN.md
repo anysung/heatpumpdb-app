@@ -113,3 +113,20 @@ Order matters: rules first (old clients keep working — full objects keep
    audience `active`, copy in google_cloud_function_billing/mail-assets/free-tier-launch-notice.json.
 7. From the October edition on: `node scripts/upload-special-report.mjs --edition 2026-10`
    before the site build that publishes its article page.
+
+## Live checkout test (2026-09-28) — PASSED, cleaned up
+
+Owner test account (DE) bought Professional monthly (new price
+`pri_01m3h46e1q42yg7rt4rq0fn004`) with a 100% recurring coupon
+(`HPDBTEST100`, `dsc_01m3jjaypcdb0y4cafr6a7at7v`): transaction
+`txn_01m3jjq3fbvzp97z77r73ybrmz`, €0.00 incl. 19% VAT line, Paddle receipt +
+tax invoice received. Webhooks `subscription.created` / `.activated` /
+`transaction.completed` processed with no error; the profile got
+`subscription = professional / monthly / active` and `accessUntilTs` extended
+to the period end — new price ids resolve correctly end to end.
+Cleanup: subscription `sub_01m3jjz24kb5msscw9k70n617n` canceled immediately
+(webhook recorded `canceled`), coupon archived; 0 active subscriptions remain.
+Per the fail-open rule the canceled test account keeps Premium until
+2026-10-27 (natural expiry), then drops to Standard.
+Lesson: a test coupon must be `recur: true` with no interval cap — a
+first-payment-only 100% coupon leaves a real renewal charge scheduled.
