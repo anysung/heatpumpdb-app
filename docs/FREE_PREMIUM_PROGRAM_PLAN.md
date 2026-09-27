@@ -1,13 +1,29 @@
-# Free + Premium Program (plan, 2026-09-27)
+# Standard + Premium Program (plan, 2026-09-27)
 
-Owner decision 2026-09-27: the service becomes **Free by default**; a much
-cheaper **Premium** subscription unlocks everything. Status: PLAN — nothing
+Owner decision 2026-09-27: the service becomes **free by default**; a much
+cheaper **Premium** subscription unlocks everything.
+
+Naming (owner decision 2026-09-28): the free-of-charge tier is called
+**"Standard"** in every piece of copy — never "Free". Pattern at first
+mention: EN "Standard (free)", DE "Standard (kostenlos)", FR "Standard
+(gratuit)", PL "Standard (bezpłatny)", IT "Standard (gratuito)", then just
+"Standard". Premium plans stay Professional / Team 3 / Team 5. The trial is
+a "15-day Premium trial", after which the account "continues on Standard".
+Code identifiers are unchanged (tier values stay `'free'` / `'premium'`,
+file names such as `free-tier-launch-notice.json` stay).
+
+Welcome notice (owner decision 2026-09-28): every account activated WITH a
+fresh trial receives a welcome mail from `finalizeSignup`
+(`google_cloud_function_billing/welcomeMailCopy.js`; 15-day Premium trial
+active, full app unlocked, end date, continues on Standard, no payment
+method, nothing charged automatically). Fail-open and idempotent
+(`welcomeMailSentAt` / `welcomeMailError` on the user doc). Status: PLAN — nothing
 below is live except the Special Report menu split (code, not yet deployed)
 and the new Paddle prices (created, not yet referenced by code).
 
 ## Tiers
 
-| Area | Free | Premium |
+| Area | Standard (free) | Premium |
 |---|---|---|
 | Find product (search) | ✓ | ✓ |
 | Products — residential (≤ 23 kW), basic columns, listing status + id | ✓ | ✓ |
@@ -46,15 +62,15 @@ Live Paddle had exactly one subscription (a go-live test, canceled
 ## Trial
 
 15-day Premium trial at signup stays (one per email, emailRegistry). On expiry
-the account drops to **Free**, not to a lock screen. `accessUntilTs` then means
+the account continues on **Standard**, not on a lock screen. `accessUntilTs` then means
 "Premium until", no longer "access until". `runTrialReminders` copy must change
-accordingly ("moves to Free", not "access closes").
+accordingly ("continues on Standard", not "access closes").
 
 ## Existing members (2026-09-27 count, excl. admin + e2e)
 
 9 accounts: 3 trial running, 4 trial expired never subscribed, 2 suspended,
 0 paid, 0 grants. **0 have `marketingConsent`** — the launch mail goes out as
-a factual service notice (account now has Free access) to the 7 active
+a factual service notice (account now has Standard, free of charge) to the 7 active
 accounts, never as marketing; suspended accounts are excluded.
 
 ## Scraping notice (owner wording, 2026-09-27)
@@ -77,7 +93,7 @@ article page stays as the teaser.
 ## Phases
 
 P0 decisions · P1 dataset split + gate + canaries · P2 rules + client tiers +
-upgrade prompts + trial→Free + 1-device Free + notice · P3 price-id switch +
+upgrade prompts + trial→Standard + 1-device Standard + notice · P3 price-id switch +
 i18n + terms/legal + archive old prices · P4 launch (never on the 1st —
 monthly window) + service-notice mail.
 

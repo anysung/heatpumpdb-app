@@ -6,7 +6,7 @@ sharing of ONE personal account. Explicitly NOT an anti-scraping control
 
 ## Policy
 
-Free + Premium program (owner decision 2026-09-27): the limit follows the
+Standard + Premium program (owner decision 2026-09-27; the free tier is named "Standard" since 2026-09-28, tier value stays `free`): the limit follows the
 account's TIER, read server-side from the same window the rules use.
 
 | Tier | How it is decided (server) | Registered devices | Concurrently ACTIVE sessions | Over limit |
@@ -14,23 +14,23 @@ account's TIER, read server-side from the same window the rules use.
 | Premium — trial, paid Professional, free grant | own `accessUntilTs` in the future (or a live `grant.endsAt`) | unlimited | 2 | 30-min grace, then LRU eviction |
 | Premium — team member / team admin | the organization's `accessUntilTs` in the future (members carry no personal window) | unlimited (per member) | 2 per member | same |
 | Legacy account | NO `accessUntilTs` field (not window-gated, as in firestore.rules) | unlimited | 2 | same |
-| **Free** | `accessUntilTs` present AND passed, no open team window or grant | unlimited | **1** | same |
+| **Standard** (free) | `accessUntilTs` present AND passed, no open team window or grant | unlimited | **1** | same |
 | Owner/admin roles | role / owner token | unlimited | unlimited | exempt (server-side) |
 
 - **Fail-open:** if the window cannot be read (unparseable value, org doc
   read fails), the account gets the Premium limit. A data problem can only
   ever give someone MORE devices, never cut a paying user down to one.
 - Limits live in `opsConfig/sessions` as `activeLimit` (Premium, default 2)
-  and `freeActiveLimit` (Free, default 1; clamped to 1..activeLimit).
+  and `freeActiveLimit` (Standard, default 1; clamped to 1..activeLimit).
   Tier logic: `google_cloud_function_billing/sessionLimits.js`
   (tests: `tests/session-limits.unit.mjs`).
-- A Free account with two devices active sees the same grace countdown and,
+- A Standard account with two devices active sees the same grace countdown and,
   after 30 minutes, the least-recently-active device is signed out — the
   mechanics below are identical for both tiers; only the number differs.
 
 - **Active session** = `revokedAt` absent AND server-written `lastSeenAt`
   within the last 10 minutes.
-- **One session over the limit** (3rd on Premium, 2nd on Free): NOT blocked. A 30-minute grace starts
+- **One session over the limit** (3rd on Premium, 2nd on Standard): NOT blocked. A 30-minute grace starts
   (`graceUntil`); every signed-in device shows a live countdown banner.
   If active sessions drop back to the limit before expiry the grace cancels silently —
   normal device switching (old device idles out of the 10-min window)

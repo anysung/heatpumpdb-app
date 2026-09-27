@@ -204,7 +204,7 @@ ${signOff}`,
       subject: 'HeatPump DB — your Premium trial ends on [DATE]',
       body: `${salutation(u)}
 
-Your Premium trial runs until [DATE]. After that your account simply continues on Free — search, the residential catalogue with basic specifications, subsidies, news and market trends stay open, and your settings stay exactly as you left them. Nothing is charged unless you choose a plan yourself.
+Your Premium trial runs until [DATE]. After that your account simply continues on Standard (free) — search, the residential catalogue with basic specifications, subsidies, news and market trends stay open, and your settings stay exactly as you left them. Nothing is charged unless you choose a plan yourself.
 
 If you have questions before deciding — about coverage, a particular manufacturer, or what a data sheet contains — reply here and we will answer them directly.
 

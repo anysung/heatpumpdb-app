@@ -9,9 +9,15 @@
  *   POST /paddleWebhook    (signature) — Paddle Billing events → entitlements
  *   GET  /health
  *
- * FREE + PREMIUM (owner decision 2026-09-27): every active account can use
- * the app on the Free plan. accessUntilTs now means "PREMIUM until" — when it
- * passes, the account drops to Free; expiry never locks an account out.
+ * STANDARD + PREMIUM (owner decision 2026-09-27; the free tier is named
+ * "Standard" since 2026-09-28 — tier value stays 'free'): every active account
+ * can use the app on Standard. accessUntilTs now means "PREMIUM until" — when
+ * it passes, the account continues on Standard; expiry never locks anyone out.
+ *
+ * WELCOME NOTICE (owner decision 2026-09-28): an account activated WITH a
+ * fresh trial gets one welcome mail (welcomeMailCopy.js) — fail-open (a mail
+ * problem never blocks or fails activation) and idempotent
+ * (welcomeMailClaimedAt / welcomeMailSentAt / welcomeMailError on the user).
  *
  * SYSTEM PRINCIPLE (owner decision 2026-07-27): never wrongly block a paying
  * user. Automatic PREMIUM termination ("access" below = Premium access)
@@ -214,7 +220,9 @@ async function finalizeSignup(req, res) {
     return sendErr(res, 400, 'consent-required');
   }
 
-  const result = await activateAccount(uid, email, consent);
+  // Optional UI language for the welcome mail (bilingual editions); anything
+  // unknown falls back to the market language inside sendWelcomeMail.
+  const result = await activateAccount(uid, email, consent, 'self', String(body.lang || ''));
 
   if (result.error) return res.status(200).json({ ok: false, error: result.error });
   return res.status(200).json(result);
@@ -228,7 +236,7 @@ async function finalizeSignup(req, res) {
  * "approve" button only flipped Firestore flags: the account worked for seven
  * days and then hit entitlement rules with no window and no history.
  */
-async function activateAccount(uid, email, consent, source = 'self') {
+async function activateAccount(uid, email, consent, source = 'self', mailLang = '') {
   const userRef = db.collection('users').doc(uid);
   const regRef = db.collection('emailRegistry').doc(email);
 
@@ -283,9 +291,11 @@ async function activateAccount(uid, email, consent, source = 'self') {
       status: 'active',
       isActive: true,
     };
+    let trialEndsMs = null;
     if (grantTrial) {
       // First activation anywhere in the service → the one free trial.
       const ends = addDays(now, TRIAL_DAYS);
+      trialEndsMs = ends.toMillis();
       patch.trialStartedAt = nowTs;
       patch.trialEndsAt = ends;
       patch.accessUntilTs = ends;
@@ -293,8 +303,8 @@ async function activateAccount(uid, email, consent, source = 'self') {
     } else if (!isMember) {
       // Known email (trial already used — e.g. re-registration within the
       // emailRegistry year, or a team-history email signing up solo): the
-      // account becomes ACTIVE on the Free plan with its Premium window
-      // already closed (Free + Premium program, 2026-09-27). A closed window
+      // account becomes ACTIVE on Standard with its Premium window
+      // already closed (Standard + Premium program, 2026-09-27). A closed window
       // is no longer a lockout — it only means "not Premium"; upgrading is a
       // normal purchase from the Plans page.
       patch.accessUntilTs = nowTs;
@@ -306,6 +316,7 @@ async function activateAccount(uid, email, consent, source = 'self') {
     return {
       ok: true, activated: true, trial: grantTrial, trialDays: TRIAL_DAYS,
       _name: `${user.firstName || ''} ${user.lastName || ''}`.trim(), _member: isMember,
+      _trialEndsMs: trialEndsMs, _country: String(user.country || '').toUpperCase(),
     };
   });
 
@@ -319,14 +330,102 @@ async function activateAccount(uid, email, consent, source = 'self') {
       ? `Account activated (${source}) — ${TRIAL_DAYS}-day trial granted`
       : result._member
         ? `Account activated (${source}) — team member, access follows the organisation`
-        : `Account activated (${source}) — trial already used, Free plan (Premium window closed)`;
+        : `Account activated (${source}) — trial already used, Standard (Premium window closed)`;
     await db.collection('activityLogs').add({
       userId: uid, userEmail: email, userName: result._name, action: 'REGISTER_ACTIVATED',
       details: detail, timestamp: nowIso(),
     }).catch((e) => console.error('activityLogs write failed', e));
   }
-  if (result) { delete result._name; delete result._member; }
+  // Welcome notice — ONLY for an activation that granted a fresh trial (never
+  // a re-registration whose window is already closed, never a team member).
+  // Fail-open: sendWelcomeMail never throws and is time-boxed, so the
+  // activation response cannot be held up or failed by SMTP.
+  if (result && result.activated && result.trial && result._trialEndsMs) {
+    const welcome = await sendWelcomeMail({
+      uid, email, name: result._name, country: result._country,
+      endsMs: result._trialEndsMs, lang: mailLang, source,
+    });
+    result.welcomeMail = welcome;
+  }
+  if (result) { delete result._name; delete result._member; delete result._trialEndsMs; delete result._country; }
   return result;
+}
+
+// ---------------------------------------------------------------------------
+// Welcome / Premium-trial activation notice (owner decision 2026-09-28).
+//
+// Sent once per account, right after activateAccount granted a fresh trial.
+//   IDEMPOTENT: a transaction claims the send (welcomeMailClaimedAt) before
+//     any mail leaves; an account that was ever claimed or sent is never
+//     mailed again — not on a retry, a double call, or an admin re-run.
+//   FAIL-OPEN: nothing here throws. SMTP missing, a send error or a timeout
+//     is recorded (welcomeMailError on the user + a memberEmails row) and
+//     the activation result stays exactly what it was.
+// Returns a short status string for the caller's JSON: 'sent' | 'skipped' |
+// 'failed' | 'not-configured'.
+// ---------------------------------------------------------------------------
+const { buildWelcomeMail, welcomeMailDue } = require('./welcomeMailCopy');
+const WELCOME_SEND_TIMEOUT_MS = 10000;
+
+async function sendWelcomeMail({ uid, email, name, country, endsMs, lang, source }) {
+  const userRef = db.collection('users').doc(uid);
+  try {
+    const claimed = await db.runTransaction(async (t) => {
+      const snap = await t.get(userRef);
+      if (!snap.exists || !welcomeMailDue(snap.data())) return false;
+      t.update(userRef, { welcomeMailClaimedAt: nowIso() });
+      return true;
+    });
+    if (!claimed) return 'skipped';
+  } catch (e) {
+    console.error('welcome mail claim failed', uid, e);
+    return 'failed';                                   // no claim → no send, activation unaffected
+  }
+
+  const cc = String(country || 'DE').toUpperCase();
+  const L = String(lang || '').toLowerCase();
+  const msg = buildWelcomeMail({
+    lang: ['en', 'de', 'fr', 'pl', 'it'].includes(L) ? L : (MARKET_LANG[cc] || 'en'),
+    name, endsMs, site: MARKET_SITE[cc] || MARKET_SITE.DE, days: TRIAL_DAYS,
+  });
+  const record = {
+    uid, to: email, subject: msg.subject, body: msg.body, kind: 'welcome',
+    sentByUid: 'system', sentByEmail: null, at: nowIso(), source, lang: msg.lang,
+  };
+  const fail = async (error) => {
+    const err = String(error).slice(0, 500);
+    await userRef.set({ welcomeMailError: err, welcomeMailErrorAt: nowIso() }, { merge: true })
+      .catch((e) => console.error('welcomeMailError write failed', uid, e));
+    await db.collection('memberEmails').add({ ...record, ok: false, error: err })
+      .catch((e) => console.error('memberEmails write failed', uid, e));
+  };
+
+  const tx = transport();
+  if (!tx) { await fail('smtp-not-configured'); return 'not-configured'; }
+  let timer;
+  try {
+    const info = await Promise.race([
+      tx.sendMail({
+        from: `HeatPump DB Support <${SUPPORT_FROM}>`,
+        to: email, replyTo: SUPPORT_FROM, subject: msg.subject,
+        text: plainBody(msg.body) + TEXT_SIGNATURE,
+        html: letterhead(msg.body, email, msg.cta),
+        attachments: mailAttachments(),
+      }),
+      new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('timeout (send may still complete)')), WELCOME_SEND_TIMEOUT_MS); }),
+    ]);
+    clearTimeout(timer);
+    await userRef.set({ welcomeMailSentAt: nowIso() }, { merge: true })
+      .catch((e) => console.error('welcomeMailSentAt write failed', uid, e));
+    await db.collection('memberEmails').add({ ...record, ok: true, messageId: (info && info.messageId) || null })
+      .catch((e) => console.error('memberEmails write failed', uid, e));
+    return 'sent';
+  } catch (e) {
+    clearTimeout(timer);
+    console.error('welcome mail failed', uid, e);
+    await fail(e && e.message || e);
+    return 'failed';
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -2221,8 +2320,9 @@ async function sendVerificationEmail(req, res) {
    2026-08-19.
 
    FREE + PREMIUM (2026-09-27): the trial is now a PREMIUM trial and its end
-   drops the account to the Free plan instead of locking it. The messages say
-   exactly that — what stays on Free, what needs Premium, and a link to the
+   leaves the account on Standard (the free tier; named "Standard" since
+   2026-09-28) instead of locking it. The messages say
+   exactly that — what stays on Standard, what needs Premium, and a link to the
    plans — and never that access closes. Cadence is unchanged.
 
    Three messages, and no more than three. Each one is sent AT MOST ONCE per
@@ -2256,7 +2356,7 @@ const MARKET_SITE = {
 };
 const MARKET_LANG = { DE: 'de', FR: 'fr', PL: 'pl', IT: 'it', GB: 'en' };
 
-// Messages live in trialReminderCopy.js (Premium trial -> continues on Free).
+// Messages live in trialReminderCopy.js (Premium trial -> continues on Standard).
 const { TRIAL_COPY } = require('./trialReminderCopy');
 
 const LOCALE_FOR = { en: 'en-GB', de: 'de-DE', fr: 'fr-FR', pl: 'pl-PL', it: 'it-IT' };

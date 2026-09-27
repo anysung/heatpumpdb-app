@@ -84,7 +84,7 @@
       "productCta": {
         "h": "The data behind the numbers",
         "p": "Every heat pump model with SCOP, sound power, refrigerant and local listing status — searchable, comparable, printable as a quote-ready data sheet.",
-        "b": "Join free — 15 days of Premium included"
+        "b": "Join free — 15-day Premium trial included"
       }
     },
     "de": {
@@ -158,7 +158,7 @@
       "productCta": {
         "h": "Die Daten hinter den Zahlen",
         "p": "Jede Wärmepumpe mit SCOP, Schallleistung, Kältemittel und Listenstatus — durchsuchbar, vergleichbar, als angebotsfertiges Datenblatt druckbar.",
-        "b": "Kostenlos registrieren — inkl. 15 Tage Premium"
+        "b": "Kostenlos registrieren — inkl. 15 Tage Premium-Test"
       }
     },
     "fr": {
@@ -232,7 +232,7 @@
       "productCta": {
         "h": "Les données derrière les chiffres",
         "p": "Chaque pompe à chaleur avec SCOP, puissance acoustique et fluide frigorigène — recherchable, comparable, imprimable en fiche prête pour le devis.",
-        "b": "Inscription gratuite — 15 jours de Premium inclus"
+        "b": "Inscription gratuite — essai Premium de 15 jours inclus"
       }
     },
     "pl": {
@@ -306,7 +306,7 @@
       "productCta": {
         "h": "Dane stojące za liczbami",
         "p": "Każda pompa ciepła z SCOP, mocą akustyczną, czynnikiem chłodniczym i statusem na liście ZUM — wyszukiwalna, porównywalna, gotowa do wydruku jako karta do oferty.",
-        "b": "Dołącz bezpłatnie — z 15 dniami Premium"
+        "b": "Dołącz bezpłatnie — z 15-dniowym okresem próbnym Premium"
       }
     },
     "it": {
@@ -380,7 +380,7 @@
       "productCta": {
         "h": "I dati dietro i numeri",
         "p": "Ogni pompa di calore con SCOP, potenza sonora, refrigerante e stato nel catalogo GSE — ricercabile, confrontabile, stampabile come scheda pronta per il preventivo.",
-        "b": "Iscriviti gratis — 15 giorni di Premium inclusi"
+        "b": "Iscriviti gratis — prova Premium di 15 giorni inclusa"
       }
     }
   }
