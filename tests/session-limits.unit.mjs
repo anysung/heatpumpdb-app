@@ -28,6 +28,9 @@ const DAY = 86400000;
 const iso = (ms) => new Date(ms).toISOString();
 const ts = (ms) => ({ toMillis: () => ms });          // Firestore Timestamp shape
 const CFG = { activeLimit: 2, freeActiveLimit: 1 };
+// Default with no ops override: Premium 3 (raised from 2 on 2026-09-28), Standard 1.
+is('default Premium limit is 3', activeLimitFor({}, undefined, NOW, {}), 3);
+is('default Standard limit stays 1', activeLimitFor({ accessUntilTs: ts(NOW - DAY) }, undefined, NOW, {}), 1);
 
 console.log('\nSession limit — tier\n');
 is('legacy account (no accessUntilTs) → Premium 2', activeLimitFor({}, undefined, NOW, CFG), 2);
@@ -56,7 +59,7 @@ is('null window → Premium', activeLimitFor({ accessUntilTs: null }, undefined,
 is('org doc unreadable (null) → Premium',
   activeLimitFor({ accessUntilTs: ts(NOW - DAY), orgId: 'o1' }, null, NOW, CFG), 2);
 is('no config → defaults (Free 1)', activeLimitFor({ accessUntilTs: ts(NOW - DAY) }, undefined, NOW, undefined), 1);
-is('no config → defaults (Premium 2)', activeLimitFor({}, undefined, NOW, undefined), 2);
+is('no config → defaults (Premium 3)', activeLimitFor({}, undefined, NOW, undefined), 3);
 is('free limit misconfigured to 0 → clamped to 1',
   activeLimitFor({ accessUntilTs: ts(NOW - DAY) }, undefined, NOW, { activeLimit: 2, freeActiveLimit: 0 }), 1);
 is('free limit misconfigured above Premium → clamped to Premium',

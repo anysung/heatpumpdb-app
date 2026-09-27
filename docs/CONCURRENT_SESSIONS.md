@@ -11,8 +11,8 @@ account's TIER, read server-side from the same window the rules use.
 
 | Tier | How it is decided (server) | Registered devices | Concurrently ACTIVE sessions | Over limit |
 |---|---|---|---|---|
-| Premium — trial, paid Professional, free grant | own `accessUntilTs` in the future (or a live `grant.endsAt`) | unlimited | 2 | 30-min grace, then LRU eviction |
-| Premium — team member / team admin | the organization's `accessUntilTs` in the future (members carry no personal window) | unlimited (per member) | 2 per member | same |
+| Premium — trial, paid Professional, free grant | own `accessUntilTs` in the future (or a live `grant.endsAt`) | unlimited | 3 | 30-min grace, then LRU eviction |
+| Premium — team member / team admin | the organization's `accessUntilTs` in the future (members carry no personal window) | unlimited (per member) | 3 per member | same |
 | Legacy account | NO `accessUntilTs` field (not window-gated, as in firestore.rules) | unlimited | 2 | same |
 | **Standard** (free) | `accessUntilTs` present AND passed, no open team window or grant | unlimited | **1** | same |
 | Owner/admin roles | role / owner token | unlimited | unlimited | exempt (server-side) |
@@ -110,3 +110,6 @@ natural drop to 2 during grace → cancel · grace expiry → LRU eviction
 (caller survives) · mobile-sleep resume heartbeat · sign-out-others keeps
 caller · sign-out-everywhere revokes refresh tokens · kill switch off →
 no eviction · owner exemption · function-failure fail-open.
+
+
+2026-09-28: Premium limit raised from 2 to 3 concurrently active sessions (owner decision; `SESSION_DEFAULTS.activeLimit`, sessionLimits.js default). Standard stays at 1.

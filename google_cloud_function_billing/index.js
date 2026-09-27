@@ -669,7 +669,7 @@ async function deleteAccount(req, res) {
 
 // activeLimit = Premium (open window / legacy / fail-open); freeActiveLimit =
 // Free (window present and closed). Both overridable in opsConfig/sessions.
-const SESSION_DEFAULTS = { enabled: true, activeLimit: 2, freeActiveLimit: 1, activeWindowMin: 10, graceMin: 30 };
+const SESSION_DEFAULTS = { enabled: true, activeLimit: 3, freeActiveLimit: 1, activeWindowMin: 10, graceMin: 30 };
 let _sessCfgCache = { at: 0, val: SESSION_DEFAULTS };
 
 /** opsConfig/sessions with a 60 s in-memory cache — the no-redeploy kill switch. */

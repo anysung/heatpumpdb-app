@@ -501,7 +501,7 @@ const SubscriptionAdminPanel: React.FC<{ al: AdminLang; user: User; onChanged: (
 /**
  * SupportTools — the two member problems that actually generate tickets.
  *
- * 1. LOCKED OUT BY THE DEVICE LIMIT. Two active devices are allowed, so a member
+ * 1. LOCKED OUT BY THE DEVICE LIMIT. Three active devices (Premium) are allowed, so a member
  *    who replaces a laptop (or clears storage) can be refused. Their own
  *    "sign out everywhere" cannot help: it requires being signed in, which is
  *    precisely what fails. The server clears session documents only — never

@@ -2,7 +2,7 @@
  * sessionLimits — how many concurrently ACTIVE sessions an account may keep.
  *
  * Free + Premium program (2026-09-27, docs/CONCURRENT_SESSIONS.md):
- *   Premium (open window: trial, paid, grant or the team's window) → 2
+ *   Premium (open window: trial, paid, grant or the team's window) → 3 (was 2 until 2026-09-28)
  *   Free    (window present AND closed)                            → 1
  *
  * Mirrors firestore.rules windowOpen(): an account WITHOUT accessUntilTs is
@@ -60,7 +60,7 @@ function isPremium(user, org, nowMs) {
 
 /** The active-session limit for this account given the ops config. */
 function activeLimitFor(user, org, nowMs, cfg) {
-  const premium = Number.isFinite(cfg && cfg.activeLimit) ? cfg.activeLimit : 2;
+  const premium = Number.isFinite(cfg && cfg.activeLimit) ? cfg.activeLimit : 3;
   const free = Number.isFinite(cfg && cfg.freeActiveLimit) ? cfg.freeActiveLimit : 1;
   let p = true;
   try { p = isPremium(user, org, nowMs); } catch { p = true; }

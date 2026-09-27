@@ -311,7 +311,7 @@ assumption that gitignored means disposable — keep at least the newest seed.
   samples. Premium (trial/paid/grant/team window, storage `isEntitled`) adds
   full datasets, commercial range, compare, PDF/print, Premium Special Reports
   (from 2026-10: file only in `gs://heatpumpdb-datasets/special-report/`,
-  `scripts/upload-special-report.mjs`, never on hosting) and 2 devices (Free 1).
+  `scripts/upload-special-report.mjs`, never on hosting) and 3 devices (Free 1; was 2 until 2026-09-28).
   Enforcement is by FILE/rules — UI locks are UX only. Prices EUR (every
   market), VAT excl., monthly + annual only (6-month retired). The profile step
   (name, company name, company type) is REQUIRED at first sign-in.

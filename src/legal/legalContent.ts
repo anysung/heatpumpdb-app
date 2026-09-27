@@ -194,7 +194,7 @@ const EN = {
         h: 'Standard and Premium',
         p: [
           'Standard is available to every registered account at no charge and without a time limit. It includes product search, the residential catalogue (up to 23 kW) with basic specifications (rated capacity, SCOP, energy class, refrigerant type) and local listing status, the subsidy pages and funding guide, news, Market & Trends, installation videos and the on-screen data sheet preview. A Standard account can be active on one device at a time.',
-          'Premium unlocks the full service: complete specifications (for example COP values, sound power and refrigerant charge), side-by-side comparison, the commercial range (above 23 kW), PDF and print data sheets and EU label sheets, and the monthly Special Report (from the October 2026 edition). A Premium account can be active on up to two devices at a time. Team plans additionally include team management.',
+          'Premium unlocks the full service: complete specifications (for example COP values, sound power and refrigerant charge), side-by-side comparison, the commercial range (above 23 kW), PDF and print data sheets and EU label sheets, and the monthly Special Report (from the October 2026 edition). A Premium account can be active on up to three devices at a time. Team plans additionally include team management.',
         ],
       },
       {
@@ -398,7 +398,7 @@ const DE = {
         h: 'Standard und Premium',
         p: [
           'Standard steht jedem registrierten Konto kostenlos und ohne zeitliche Begrenzung zur Verfügung. Enthalten sind die Produktsuche, der Wohngebäude-Katalog (bis 23 kW) mit den wichtigsten technischen Daten (Nennleistung, SCOP, Energieeffizienzklasse, Kältemittel) und dem lokalen Listungsstatus, die Förderseiten und der Förderleitfaden, News, Markt & Trends, Installationsvideos sowie die Datenblatt-Vorschau am Bildschirm. Ein Standard-Konto kann jeweils auf einem Gerät aktiv sein.',
-          'Premium schaltet den vollen Funktionsumfang frei: vollständige technische Daten (zum Beispiel COP-Werte, Schallleistung und Kältemittelfüllmenge), den direkten Produktvergleich, das Gewerbesegment (über 23 kW), PDF- und Druck-Datenblätter sowie EU-Label-Blätter und den monatlichen Special Report (ab der Ausgabe Oktober 2026). Ein Premium-Konto kann auf bis zu zwei Geräten gleichzeitig aktiv sein. Team-Tarife umfassen zusätzlich die Teamverwaltung.',
+          'Premium schaltet den vollen Funktionsumfang frei: vollständige technische Daten (zum Beispiel COP-Werte, Schallleistung und Kältemittelfüllmenge), den direkten Produktvergleich, das Gewerbesegment (über 23 kW), PDF- und Druck-Datenblätter sowie EU-Label-Blätter und den monatlichen Special Report (ab der Ausgabe Oktober 2026). Ein Premium-Konto kann auf bis zu drei Geräten gleichzeitig aktiv sein. Team-Tarife umfassen zusätzlich die Teamverwaltung.',
         ],
       },
       {
@@ -600,7 +600,7 @@ const FR = {
         h: 'Standard et Premium',
         p: [
           "Standard est accessible gratuitement et sans limite de durée à tout compte inscrit. Il comprend la recherche de produits, le catalogue résidentiel (jusqu'à 23 kW) avec les caractéristiques essentielles (puissance nominale, SCOP, classe énergétique, type de fluide frigorigène) et le statut de référencement local, les pages d'aides et le guide des financements, les actualités, Marché & Tendances, les vidéos d'installation ainsi que l'aperçu à l'écran des fiches techniques. Un compte Standard peut être actif sur un seul appareil à la fois.",
-          "Premium débloque l'ensemble du service : les caractéristiques complètes (par exemple les valeurs de COP, la puissance acoustique et la charge de fluide frigorigène), la comparaison côte à côte, la gamme tertiaire (au-delà de 23 kW), les fiches techniques et fiches d'étiquette énergie UE en PDF et à l'impression, ainsi que le Special Report mensuel (à partir de l'édition d'octobre 2026). Un compte Premium peut être actif sur deux appareils à la fois. Les offres Team incluent en outre la gestion d'équipe.",
+          "Premium débloque l'ensemble du service : les caractéristiques complètes (par exemple les valeurs de COP, la puissance acoustique et la charge de fluide frigorigène), la comparaison côte à côte, la gamme tertiaire (au-delà de 23 kW), les fiches techniques et fiches d'étiquette énergie UE en PDF et à l'impression, ainsi que le Special Report mensuel (à partir de l'édition d'octobre 2026). Un compte Premium peut être actif sur trois appareils à la fois. Les offres Team incluent en outre la gestion d'équipe.",
         ],
       },
       {
@@ -816,7 +816,7 @@ const PL = {
         h: 'Standard i Premium',
         p: [
           'Plan Standard jest dostępny dla każdego zarejestrowanego konta bezpłatnie i bez ograniczenia czasowego. Obejmuje wyszukiwarkę produktów, katalog urządzeń do budynków mieszkalnych (do 23 kW) z podstawowymi danymi technicznymi (moc znamionowa, SCOP, klasa energetyczna, rodzaj czynnika chłodniczego) i lokalnym statusem na liście, strony dotacji i przewodnik po finansowaniu, aktualności, Rynek i trendy, filmy instalacyjne oraz podgląd karty katalogowej na ekranie. Konto Standard może być aktywne jednocześnie na jednym urządzeniu.',
-          'Plan Premium odblokowuje pełny zakres usługi: kompletne dane techniczne (na przykład wartości COP, moc akustyczną i ilość czynnika chłodniczego), porównanie produktów obok siebie, segment komercyjny (powyżej 23 kW), karty katalogowe i karty etykiet energetycznych UE w PDF i do druku oraz comiesięczny Special Report (od wydania z października 2026 r.). Konto Premium może być aktywne jednocześnie na maksymalnie dwóch urządzeniach. Plany Team obejmują dodatkowo zarządzanie zespołem.',
+          'Plan Premium odblokowuje pełny zakres usługi: kompletne dane techniczne (na przykład wartości COP, moc akustyczną i ilość czynnika chłodniczego), porównanie produktów obok siebie, segment komercyjny (powyżej 23 kW), karty katalogowe i karty etykiet energetycznych UE w PDF i do druku oraz comiesięczny Special Report (od wydania z października 2026 r.). Konto Premium może być aktywne jednocześnie na maksymalnie trzech urządzeniach. Plany Team obejmują dodatkowo zarządzanie zespołem.',
         ],
       },
       {
@@ -1034,7 +1034,7 @@ const IT = {
         h: 'Standard e Premium',
         p: [
           'Standard è disponibile gratuitamente e senza limiti di tempo per ogni account registrato. Comprende la ricerca prodotti, il catalogo residenziale (fino a 23 kW) con le specifiche di base (potenza nominale, SCOP, classe energetica, tipo di refrigerante) e lo stato di iscrizione negli elenchi locali, le pagine sugli incentivi e la guida ai finanziamenti, le notizie, Mercato e tendenze, i video di installazione e l’anteprima a schermo della scheda tecnica. Un account Standard può essere attivo su un solo dispositivo alla volta.',
-          'Premium sblocca il servizio completo: le specifiche complete (ad esempio i valori COP, la potenza sonora e la carica di refrigerante), il confronto affiancato, la gamma commerciale (oltre 23 kW), le schede tecniche e le schede dell’etichetta energetica UE in PDF e in stampa, e lo Special Report mensile (a partire dall’edizione di ottobre 2026). Un account Premium può essere attivo su un massimo di due dispositivi contemporaneamente. I piani Team includono inoltre la gestione del team.',
+          'Premium sblocca il servizio completo: le specifiche complete (ad esempio i valori COP, la potenza sonora e la carica di refrigerante), il confronto affiancato, la gamma commerciale (oltre 23 kW), le schede tecniche e le schede dell’etichetta energetica UE in PDF e in stampa, e lo Special Report mensile (a partire dall’edizione di ottobre 2026). Un account Premium può essere attivo su un massimo di tre dispositivi contemporaneamente. I piani Team includono inoltre la gestione del team.',
         ],
       },
       {

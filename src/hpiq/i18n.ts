@@ -55,7 +55,7 @@ const EN = {
   session: {
     banner: (t: string) => `Device limit exceeded — the least-used session signs out in ${t}. Unused devices clear automatically.`,
     cardTitle: 'Devices & sessions',
-    cardText: 'Premium allows two concurrently active devices, the Standard plan one. Signing in on more starts a 30-minute grace period, then the least recently used session is signed out.',
+    cardText: 'Premium allows three concurrently active devices, the Standard plan one. Signing in on more starts a 30-minute grace period, then the least recently used session is signed out.',
     thisDevice: 'This device',
     lastSeen: (s: string) => `Last active ${s}`,
     signOutOne: 'Sign out',
@@ -128,7 +128,7 @@ const EN = {
     premium: 'Premium',
     lockTitle: 'Premium feature',
     lockBody: 'Full specifications, side-by-side comparison, the commercial range, PDF data sheets and the monthly Special Report are part of Premium.',
-    benefits: ['Full specifications — COP values, sound power, refrigerant charge', 'Compare up to 4 models side by side', 'Commercial range above 23 kW', 'Print-ready PDF data sheets and EU label sheets', 'The monthly Special Report', 'Two devices'] as string[],
+    benefits: ['Full specifications — COP values, sound power, refrigerant charge', 'Compare up to 4 models side by side', 'Commercial range above 23 kW', 'Print-ready PDF data sheets and EU label sheets', 'The monthly Special Report', 'Three devices'] as string[],
     price: 'From €9.90 per month or €99 per year, excl. VAT.',
     cta: 'View Premium plans ›',
     later: 'Not now',
@@ -181,7 +181,7 @@ const EN = {
           "Commercial range above 23 kW",
           "Print-ready PDF data sheets and EU label sheets",
           "The monthly Special Report",
-          "2 devices"
+          "3 devices"
       ],
       "teamFeatures": [
           "Everything in Professional, for every seat",
@@ -247,7 +247,7 @@ const EN = {
           [
               "Devices at the same time",
               "1",
-              "2"
+              "3"
           ]
       ],
       "sampleCell": "Free samples",
@@ -1009,7 +1009,7 @@ const DE: HpStrings = {
   session: {
     banner: (t: string) => `Gerätelimit überschritten — die am längsten ungenutzte Sitzung wird in ${t} abgemeldet. Ungenutzte Geräte werden automatisch bereinigt.`,
     cardTitle: 'Geräte & Sitzungen',
-    cardText: 'Premium erlaubt zwei gleichzeitig aktive Geräte, der Standard-Tarif eines. Bei mehr beginnt eine 30-minütige Karenzzeit, danach wird die am längsten ungenutzte Sitzung abgemeldet.',
+    cardText: 'Premium erlaubt drei gleichzeitig aktive Geräte, der Standard-Tarif eines. Bei mehr beginnt eine 30-minütige Karenzzeit, danach wird die am längsten ungenutzte Sitzung abgemeldet.',
     thisDevice: 'Dieses Gerät',
     lastSeen: (s: string) => `Zuletzt aktiv ${s}`,
     signOutOne: 'Abmelden',
@@ -1076,7 +1076,7 @@ const DE: HpStrings = {
     premium: 'Premium',
     lockTitle: 'Premium-Funktion',
     lockBody: 'Vollständige technische Daten, Direktvergleich, das Gewerbesegment, PDF-Datenblätter und der monatliche Special Report sind Teil von Premium.',
-    benefits: ['Vollständige Daten — COP-Werte, Schallleistung, Kältemittelmenge', 'Bis zu 4 Modelle direkt vergleichen', 'Gewerbesegment über 23 kW', 'Druckfertige PDF-Datenblätter und EU-Label-Blätter', 'Der monatliche Special Report', 'Zwei Geräte'] as string[],
+    benefits: ['Vollständige Daten — COP-Werte, Schallleistung, Kältemittelmenge', 'Bis zu 4 Modelle direkt vergleichen', 'Gewerbesegment über 23 kW', 'Druckfertige PDF-Datenblätter und EU-Label-Blätter', 'Der monatliche Special Report', 'Drei Geräte'] as string[],
     price: 'Ab 9,90 € pro Monat oder 99 € pro Jahr, zzgl. MwSt.',
     cta: 'Premium-Tarife ansehen ›',
     later: 'Nicht jetzt',
@@ -1128,7 +1128,7 @@ const DE: HpStrings = {
           "Gewerbesegment über 23 kW",
           "Druckfertige PDF-Datenblätter und EU-Label-Blätter",
           "Der monatliche Special Report",
-          "2 Geräte"
+          "3 Geräte"
       ],
       "teamFeatures": [
           "Alles aus Professional, für jeden Platz",
@@ -1194,7 +1194,7 @@ const DE: HpStrings = {
           [
               "Gleichzeitige Geräte",
               "1",
-              "2"
+              "3"
           ]
       ],
       "sampleCell": "Kostenlose Ausgaben",
@@ -2331,7 +2331,7 @@ const FR_FR: HpStrings = {
   session: {
     banner: (t: string) => `Limite d’appareils dépassée — la session la moins utilisée sera déconnectée dans ${t}. Les appareils inutilisés sont libérés automatiquement.`,
     cardTitle: 'Appareils et sessions',
-    cardText: 'Premium autorise deux appareils actifs simultanément, l’offre Standard un seul. Au-delà, un délai de 30 minutes s’applique, puis la session la moins récemment utilisée est déconnectée.',
+    cardText: 'Premium autorise trois appareils actifs simultanément, l’offre Standard un seul. Au-delà, un délai de 30 minutes s’applique, puis la session la moins récemment utilisée est déconnectée.',
     thisDevice: 'Cet appareil',
     lastSeen: (s: string) => `Dernière activité ${s}`,
     signOutOne: 'Déconnecter',
@@ -2398,7 +2398,7 @@ const FR_FR: HpStrings = {
     premium: 'Premium',
     lockTitle: 'Fonctionnalité Premium',
     lockBody: 'Les caractéristiques complètes, la comparaison côte à côte, la gamme tertiaire, les fiches PDF et le rapport spécial mensuel font partie de Premium.',
-    benefits: ['Caractéristiques complètes — COP, puissance acoustique, charge de fluide', 'Comparer jusqu’à 4 modèles côte à côte', 'Gamme tertiaire au-delà de 23 kW', 'Fiches techniques et fiches étiquette UE en PDF, prêtes à imprimer', 'Le rapport spécial mensuel', 'Deux appareils'] as string[],
+    benefits: ['Caractéristiques complètes — COP, puissance acoustique, charge de fluide', 'Comparer jusqu’à 4 modèles côte à côte', 'Gamme tertiaire au-delà de 23 kW', 'Fiches techniques et fiches étiquette UE en PDF, prêtes à imprimer', 'Le rapport spécial mensuel', 'Trois appareils'] as string[],
     price: 'À partir de 9,90 € par mois ou 99 € par an, HT.',
     cta: 'Voir les offres Premium ›',
     later: 'Plus tard',
@@ -2450,7 +2450,7 @@ const FR_FR: HpStrings = {
           "Gamme tertiaire au-delà de 23 kW",
           "Fiches techniques et fiches étiquette UE en PDF",
           "Le rapport spécial mensuel",
-          "2 appareils"
+          "3 appareils"
       ],
       "teamFeatures": [
           "Tout Professional, pour chaque place",
@@ -2516,7 +2516,7 @@ const FR_FR: HpStrings = {
           [
               "Appareils simultanés",
               "1",
-              "2"
+              "3"
           ]
       ],
       "sampleCell": "Éditions gratuites",
@@ -3459,7 +3459,7 @@ const PL_PL: HpStrings = {
   session: {
     banner: (t: string) => `Przekroczono limit urządzeń — najdłużej nieużywana sesja zostanie wylogowana za ${t}. Nieużywane urządzenia są zwalniane automatycznie.`,
     cardTitle: 'Urządzenia i sesje',
-    cardText: 'Premium pozwala na dwa jednocześnie aktywne urządzenia, plan Standard na jedno. Po przekroczeniu obowiązuje 30-minutowy okres karencji, a następnie wylogowywana jest najdłużej nieużywana sesja.',
+    cardText: 'Premium pozwala na trzy jednocześnie aktywne urządzenia, plan Standard na jedno. Po przekroczeniu obowiązuje 30-minutowy okres karencji, a następnie wylogowywana jest najdłużej nieużywana sesja.',
     thisDevice: 'To urządzenie',
     lastSeen: (s: string) => `Ostatnia aktywność ${s}`,
     signOutOne: 'Wyloguj',
@@ -3526,7 +3526,7 @@ const PL_PL: HpStrings = {
     premium: 'Premium',
     lockTitle: 'Funkcja Premium',
     lockBody: 'Pełne dane techniczne, porównanie modeli, segment komercyjny, karty PDF i miesięczny Raport specjalny są częścią Premium.',
-    benefits: ['Pełne dane — wartości COP, moc akustyczna, ilość czynnika', 'Porównanie do 4 modeli obok siebie', 'Segment komercyjny powyżej 23 kW', 'Gotowe do druku karty danych i karty etykiety UE w PDF', 'Miesięczny Raport specjalny', 'Dwa urządzenia'] as string[],
+    benefits: ['Pełne dane — wartości COP, moc akustyczna, ilość czynnika', 'Porównanie do 4 modeli obok siebie', 'Segment komercyjny powyżej 23 kW', 'Gotowe do druku karty danych i karty etykiety UE w PDF', 'Miesięczny Raport specjalny', 'Trzy urządzenia'] as string[],
     price: 'Od 9,90 € miesięcznie lub 99 € rocznie, netto (bez VAT).',
     cta: 'Zobacz plany Premium ›',
     later: 'Nie teraz',
@@ -3578,7 +3578,7 @@ const PL_PL: HpStrings = {
           "Segment komercyjny powyżej 23 kW",
           "Karty danych i karty etykiety UE w PDF",
           "Miesięczny Raport specjalny",
-          "2 urządzenia"
+          "3 urządzenia"
       ],
       "teamFeatures": [
           "Wszystko z Professional, dla każdego miejsca",
@@ -3644,7 +3644,7 @@ const PL_PL: HpStrings = {
           [
               "Urządzenia jednocześnie",
               "1",
-              "2"
+              "3"
           ]
       ],
       "sampleCell": "Bezpłatne wydania",
@@ -4593,7 +4593,7 @@ const IT_IT: HpStrings = {
   session: {
     banner: (t: string) => `Limite di dispositivi superato — la sessione meno utilizzata verrà disconnessa tra ${t}. I dispositivi inutilizzati si liberano automaticamente.`,
     cardTitle: 'Dispositivi e sessioni',
-    cardText: 'Premium consente due dispositivi attivi contemporaneamente, il piano Standard uno. Oltre questo limite parte un periodo di tolleranza di 30 minuti, poi la sessione usata meno di recente viene disconnessa.',
+    cardText: 'Premium consente tre dispositivi attivi contemporaneamente, il piano Standard uno. Oltre questo limite parte un periodo di tolleranza di 30 minuti, poi la sessione usata meno di recente viene disconnessa.',
     thisDevice: 'Questo dispositivo',
     lastSeen: (s: string) => `Ultima attività ${s}`,
     signOutOne: 'Disconnetti',
@@ -4660,7 +4660,7 @@ const IT_IT: HpStrings = {
     premium: 'Premium',
     lockTitle: 'Funzione Premium',
     lockBody: 'Le specifiche complete, il confronto affiancato, la gamma commerciale, le schede PDF e il Report speciale mensile fanno parte di Premium.',
-    benefits: ['Specifiche complete — valori COP, potenza sonora, carica di refrigerante', 'Confronto fino a 4 modelli affiancati', 'Gamma commerciale oltre 23 kW', 'Schede tecniche e schede etichetta UE in PDF pronte per la stampa', 'Il Report speciale mensile', 'Due dispositivi'] as string[],
+    benefits: ['Specifiche complete — valori COP, potenza sonora, carica di refrigerante', 'Confronto fino a 4 modelli affiancati', 'Gamma commerciale oltre 23 kW', 'Schede tecniche e schede etichetta UE in PDF pronte per la stampa', 'Il Report speciale mensile', 'Tre dispositivi'] as string[],
     price: 'Da 9,90 € al mese o 99 € all’anno, IVA esclusa.',
     cta: 'Vedi i piani Premium ›',
     later: 'Non ora',
@@ -4712,7 +4712,7 @@ const IT_IT: HpStrings = {
           "Gamma commerciale oltre 23 kW",
           "Schede tecniche e schede etichetta UE in PDF",
           "Il Report speciale mensile",
-          "2 dispositivi"
+          "3 dispositivi"
       ],
       "teamFeatures": [
           "Tutto Professional, per ogni posto",
@@ -4778,7 +4778,7 @@ const IT_IT: HpStrings = {
           [
               "Dispositivi contemporanei",
               "1",
-              "2"
+              "3"
           ]
       ],
       "sampleCell": "Edizioni gratuite",
