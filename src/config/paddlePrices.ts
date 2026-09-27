@@ -38,23 +38,30 @@ export type BillingCurrency = 'EUR';
 
 type PriceMatrix = Record<SubPlanCode, Record<BillingTerm, string>>;
 
+/**
+ * 2026-10 program (owner, 2026-09-27): monthly + annual only — the 6-month
+ * term is retired, so `six_months` resolves to '' (not offered). The previous
+ * catalogue (EUR 24.90/139/249 · 59/329/590 · 99/549/990) stays in Paddle
+ * only so historical webhooks still resolve in the billing function; archive
+ * it once this build is live.
+ */
 /** LIVE catalogue (production Paddle account) — no Paddle-side trial. */
 const LIVE_PRICE_IDS: Record<BillingCurrency, PriceMatrix> = {
   EUR: {
     professional: {
-      monthly:    'pri_01kxxw08bvfz6fe8ke0x4zgnt7',   // EUR 24.90 / month
-      six_months: 'pri_01kxxw3yy10aw2qdy7y64xa0yn',   // EUR 139.00 / 6 months
-      annual:     'pri_01kxxw5qbvmfx75rc7f42p5d50',   // EUR 249.00 / year
+      monthly:    'pri_01m3h46e1q42yg7rt4rq0fn004',   // EUR 9.90 / month
+      six_months: '',
+      annual:     'pri_01m3h46e2xsenv086wg3h2k04t',   // EUR 99.00 / year
     },
     team_3: {
-      monthly:    'pri_01kxxw8xtvk8dvpa60c0dzxyvn',   // EUR 59.00 / month
-      six_months: 'pri_01kxxwbgmpnj9jvcp218evxqfc',   // EUR 329.00 / 6 months
-      annual:     'pri_01kxxwde1bwd4x7tgn6sypkb4g',   // EUR 590.00 / year
+      monthly:    'pri_01m3h46e42h9b3077z9j63tgrq',   // EUR 24.90 / month
+      six_months: '',
+      annual:     'pri_01m3h46e58n1e935wb88vnwcwz',   // EUR 249.00 / year
     },
     team_5: {
-      monthly:    'pri_01kxxwfm97ve7nfgnggtshfs49',   // EUR 99.00 / month
-      six_months: 'pri_01kxxwhr4xyeq9gwd567j2x7me',   // EUR 549.00 / 6 months
-      annual:     'pri_01kxxwkhfjj3wsy5k7jekt2acn',   // EUR 990.00 / year
+      monthly:    'pri_01m3h46e6jg424g9txe6m5ta8w',   // EUR 39.00 / month
+      six_months: '',
+      annual:     'pri_01m3h46e84mkaxbxkcvqgdg7qm',   // EUR 390.00 / year
     },
   },
 };
@@ -63,19 +70,19 @@ const LIVE_PRICE_IDS: Record<BillingCurrency, PriceMatrix> = {
 const SANDBOX_PRICE_IDS: Record<BillingCurrency, PriceMatrix> = {
   EUR: {
     professional: {
-      monthly:    'pri_01kxchdg26azdq1przy3hnezff',   // EUR 24.90 / month
-      six_months: 'pri_01kxchdgawhejbptxtdgm6j5wq',   // EUR 139.00 / 6 months
-      annual:     'pri_01kxchdgj2w4gpdmdfbqkhtsqn',   // EUR 249.00 / year
+      monthly:    'pri_01m3h4754c2s68w460vnd7cpz4',   // EUR 9.90 / month
+      six_months: '',
+      annual:     'pri_01m3h475d9r9kt9sv4cwfwt5ff',   // EUR 99.00 / year
     },
     team_3: {
-      monthly:    'pri_01kxchdh34vrxtxth8bkpzmh8n',   // EUR 59.00 / month
-      six_months: 'pri_01kxchdh7r99cm3fwk1bz1gz0k',   // EUR 329.00 / 6 months
-      annual:     'pri_01kxchdhcm7efjmkh7s1673j82',   // EUR 590.00 / year
+      monthly:    'pri_01m3h475q5q01jrzrw8xjj4hza',   // EUR 24.90 / month
+      six_months: '',
+      annual:     'pri_01m3h475zgd1fnznkxb97en0xr',   // EUR 249.00 / year
     },
     team_5: {
-      monthly:    'pri_01kxchdhrmrtqmhataynyqdcdm',   // EUR 99.00 / month
-      six_months: 'pri_01kxchdj04dzbf9j5s92tkwvvz',   // EUR 549.00 / 6 months
-      annual:     'pri_01kxchdj4rtpj7ndzj30sawddw',   // EUR 990.00 / year
+      monthly:    'pri_01m3h4767dnyesd7aqhx94e9kq',   // EUR 39.00 / month
+      six_months: '',
+      annual:     'pri_01m3h476fvzz7m22wfja8ypets',   // EUR 390.00 / year
     },
   },
 };

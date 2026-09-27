@@ -343,6 +343,11 @@ export interface User {
   companyCity?: string;
   /** Optional; stored normalized as a bare domain/URL without a scheme. */
   companyWebsite?: string;
+  /** Optional postal address (profile step, 2026-09-27). */
+  companyStreet?: string;
+  companyPostalCode?: string;
+  /** Optional second contact address (profile step, 2026-09-27) — never a login. */
+  secondaryEmail?: string;
   /** Registration country — taken from the country edition, never asked for. */
   country?: string;
   /** @deprecated No longer collected at signup; kept so legacy documents still load. */
@@ -483,6 +488,9 @@ export interface Organization {
   companyTypeOther?: string;
   companyCity?: string;
   companyWebsite?: string;
+  /** Optional postal address (profile step, 2026-09-27). */
+  companyStreet?: string;
+  companyPostalCode?: string;
   createdAt: string;
 }
 

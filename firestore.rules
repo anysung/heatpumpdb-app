@@ -169,7 +169,10 @@ service cloud.firestore {
                       'companyTypeOther', 'companyCity', 'companyWebsite',
                       // Job function, asked in the onboarding sheet and
                       // editable on the Account page (2026-08-31).
-                      'jobRole'])
+                      'jobRole',
+                      // Profile step (2026-09-27): optional address + a
+                      // secondary contact email (never a login identity).
+                      'companyStreet', 'companyPostalCode', 'secondaryEmail'])
         ) ||
         // Free-access grant redemption: an admin-issued grant for this email
         // may self-activate the account with exactly the granted plan/window.
@@ -320,7 +323,7 @@ service cloud.firestore {
           request.resource.data.diff(resource.data).affectedKeys()
             .hasOnly(['members', 'memberUids', 'invitedEmails', 'invitedAt', 'keepMemberUids',
                       'name', 'companyName', 'companyType', 'companyTypeOther',
-                      'companyCity', 'companyWebsite']) &&
+                      'companyCity', 'companyWebsite', 'companyStreet', 'companyPostalCode']) &&
           // Seats: taken seats AND open invitations must fit the plan.
           request.resource.data.members.size()
             + request.resource.data.invitedEmails.size() <= resource.data.seatLimit &&
@@ -421,14 +424,16 @@ service cloud.firestore {
     }
 
     // ── Country data (news, policies, BAFA, metadata) ─────────────────────
-    // Entitled users (open trial/subscription window — see isEntitled) and
-    // admins can read. Writes go through the Cloud Function (Firebase Admin
+    // Free + Premium (owner, 2026-09-27): news, policies and metadata are part
+    // of the FREE tier, so any approved (active) account reads them — the
+    // Premium window (isEntitled) no longer applies here. Suspended/pending
+    // accounts stay out. Writes go through the Cloud Function (Firebase Admin
     // SDK), which bypasses these rules — but admin users can also write from
     // the UI if needed.
     match /countries/{countryCode} {
-      allow read: if isEntitled();
+      allow read: if isAdmin() || isApproved();
       match /{subcollection}/{docId} {
-        allow read: if isEntitled();
+        allow read: if isAdmin() || isApproved();
         allow write: if isAdmin();
       }
     }

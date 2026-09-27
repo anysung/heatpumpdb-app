@@ -53,10 +53,11 @@ export class ProductStore {
   /** Whole-kW rated-capacity bounds across the catalog, or null if no record publishes one. */
   readonly kwBounds: { min: number; max: number } | null;
 
-  constructor(products: HeatPump[]) {
+  /** `lock`: Free-tier label for Premium-only values (see toVM). */
+  constructor(products: HeatPump[], lock?: string) {
     // Sorted by COP A2/W35 descending, nulls last — the list's fixed sort.
     this.all = products
-      .map(toVM)
+      .map(p => toVM(p, lock))
       .sort((a, b) => (b.cop2Num ?? -Infinity) - (a.cop2Num ?? -Infinity));
     this.total = this.all.length;
     this.byId = new Map(this.all.map(v => [v.id, v]));

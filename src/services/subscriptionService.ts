@@ -129,7 +129,7 @@ export async function leaveTeam(org: Organization, user: User): Promise<void> {
 /** Team owner: the company profile the whole team inherits. */
 export async function updateOrgCompany(
   org: Organization,
-  company: Pick<Organization, 'companyName' | 'companyType' | 'companyTypeOther' | 'companyCity' | 'companyWebsite'>,
+  company: Pick<Organization, 'companyName' | 'companyType' | 'companyTypeOther' | 'companyCity' | 'companyWebsite' | 'companyStreet' | 'companyPostalCode'>,
 ): Promise<void> {
   const patch: Record<string, any> = {};
   for (const [k, v] of Object.entries(company)) if (v !== undefined) patch[k] = v;

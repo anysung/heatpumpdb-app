@@ -83,7 +83,12 @@ export function crossRefId(p: HeatPump): string | null {
   return null;
 }
 
-export function toVM(p: HeatPump): HpVM {
+/**
+ * `lock` (Free tier, 2026-09-27): the label shown in place of Premium-only
+ * values. Free accounts download the BASIC dataset, which does not carry these
+ * fields at all — the label only says why the cell is empty, it hides nothing.
+ */
+export function toVM(p: HeatPump, lock?: string): HpVM {
   const id = p.source_id || p.bafa_id || p.european_reference_id;
   const mfr = p.manufacturer_short || p.manufacturer;
   const eprel = !!p.eprel_registration_number;
@@ -97,16 +102,16 @@ export function toVM(p: HeatPump): HpVM {
     kw: fmt(p.power_55C_kw, 1),
     ratedKw: fmt(ratedCapacityKw(p), 1),
     ratedKwNum: ratedCapacityKw(p),
-    cop7: fmt(p.cop_A7W35, 2),
-    cop2: fmt(p.cop_A2W35, 2),
-    copm7: fmt(p.cop_AMinus7W35, 2),
+    cop7: lock ?? fmt(p.cop_A7W35, 2),
+    cop2: lock ?? fmt(p.cop_A2W35, 2),
+    copm7: lock ?? fmt(p.cop_AMinus7W35, 2),
     cop2Num: p.cop_A2W35 ?? null,
     scop: fmt(p.scop, 2),
-    noise: p.noise_outdoor_dB == null ? '—' : String(Math.round(p.noise_outdoor_dB)),
+    noise: lock ?? (p.noise_outdoor_dB == null ? '—' : String(Math.round(p.noise_outdoor_dB))),
     label: energyClass(eta35),
     labelMed: energyClass(eta55),
     ref: p.refrigerant || '—',
-    refKg: fmt(p.refrigerant_amount_kg, 1),
+    refKg: lock ?? fmt(p.refrigerant_amount_kg, 1),
     bafaId: p.bafa_id,
     // Prefer the raw MCS number (GB duplicates carry a '#n' suffix on source_id
     // for key uniqueness — the suffix must not print on sheets).

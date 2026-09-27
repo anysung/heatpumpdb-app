@@ -4,6 +4,7 @@
  *  refrigerant and capacity. */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
+import { DataNotice, PremiumPill } from '../Premium';
 import { HpVM } from '../model';
 import { FD, CheckBox, KwRangeSlider, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { ManufacturerFacet } from '../MfrFacet';
@@ -198,6 +199,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
               {visible < records.length && <div ref={sentinelRef} style={{ height: 1 }} />}
               <div style={{ padding: '11px 20px', fontSize: 12, color: '#7a7a7a' }}>
                 {t.label.hint}
+                <DataNotice app={app} style={{ marginTop: 6 }} />
               </div>
             </div>
           </div>

@@ -1,9 +1,12 @@
 /**
  * subscriptionPlans.ts — the HeatPump DB subscription program (single source of truth).
  *
- * Program (decided 2026-07-12; trial model revised 2026-07-27):
+ * Program (decided 2026-07-12; trial model revised 2026-07-27; FREE + PREMIUM
+ * repricing 2026-09-27 — docs/FREE_PREMIUM_PROGRAM_PLAN.md):
+ *   Free tier by default; Premium = any of the plans below.
  *   Professional (1 user) / Team 3 (admin + 2) / Team 5 (admin + 4)
- *   Terms: monthly / 6 months (~7% off) / annual (~17% off, "12 for the price of 10")
+ *   Terms: monthly / annual (~17% off). The 6-month term is retired.
+ *   Billing currency: EUR in every market (GB/PL included), VAT-exclusive.
  *
  *   FREE TRIAL = the IN-APP signup trial: 15 days of full access with NO
  *   payment method, granted server-side (finalizeSignup) at the account's
@@ -49,22 +52,26 @@ export interface SubPlanDef {
 }
 
 export const SUB_PLANS: Record<SubPlanCode, SubPlanDef> = {
+  // 2026-10 program (owner, 2026-09-27). six_months is RETIRED — not offered
+  // (absent from BILLING_TERMS, no price id); the figure is kept only so a
+  // legacy record carrying that term still renders a number.
   professional: {
     code: 'professional', seatLimit: 1, sortOrder: 1,
-    prices: { monthly: 24.90, six_months: 139, annual: 249 },
+    prices: { monthly: 9.90, six_months: 59.40, annual: 99 },
   },
   team_3: {
     code: 'team_3', seatLimit: 3, sortOrder: 2,
-    prices: { monthly: 59, six_months: 329, annual: 590 },
+    prices: { monthly: 24.90, six_months: 149.40, annual: 249 },
   },
   team_5: {
     code: 'team_5', seatLimit: 5, sortOrder: 3,
-    prices: { monthly: 99, six_months: 549, annual: 990 },
+    prices: { monthly: 39, six_months: 234, annual: 390 },
   },
 };
 
 export const SUB_PLAN_CODES: SubPlanCode[] = ['professional', 'team_3', 'team_5'];
-export const BILLING_TERMS: BillingTerm[] = ['monthly', 'six_months', 'annual'];
+/** Terms OFFERED to buyers: monthly + annual (6 months retired 2026-09-27). */
+export const BILLING_TERMS: BillingTerm[] = ['monthly', 'annual'];
 
 /** English display names (admin console + fallbacks; app UI uses i18n keys). */
 export const SUB_PLAN_NAMES: Record<SubPlanCode, string> = {

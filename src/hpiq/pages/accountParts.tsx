@@ -72,7 +72,12 @@ export interface CompanyFields {
   companyTypeOther?: string;
   companyCity?: string;
   companyWebsite?: string;
+  companyStreet?: string;
+  companyPostalCode?: string;
 }
+
+/** Loose e-mail shape check for the optional secondary address. */
+export const looksLikeEmail = (s: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
 
 /** Shared company-fields form (user profile AND organization settings use it). */
 export const CompanyForm: React.FC<{
@@ -81,10 +86,13 @@ export const CompanyForm: React.FC<{
   onSave: (fields: CompanyFields) => Promise<void>;
   onCancel: () => void;
   extra?: React.ReactNode;
-}> = ({ app, initial, onSave, onCancel, extra }) => {
+  /** Personal secondary email, edited alongside (user profile only — never org). */
+  secondaryEmail?: { initial: string; onSave: (v: string) => Promise<void> };
+}> = ({ app, initial, onSave, onCancel, extra, secondaryEmail }) => {
   const t = tr(app.lang);
   const [f, setF] = useState<CompanyFields>({ ...initial, companyType: normalizeCompanyType(initial.companyType) ?? '' });
   const [busy, setBusy] = useState(false);
+  const [second, setSecond] = useState(secondaryEmail?.initial ?? '');
   const isOther = f.companyType === 'other';
   const isIndividual = f.companyType === 'individual';
 
@@ -94,14 +102,18 @@ export const CompanyForm: React.FC<{
     if (isOther && !trim(f.companyTypeOther)) { app.notify(t.company.otherLabel); return; }
     const site = normalizeWebsite(f.companyWebsite);
     if (site === null) { app.notify(t.account.saveFailed); return; }
+    if (secondaryEmail && trim(second) && !looksLikeEmail(trim(second))) { app.notify(t.account.fSecondaryEmail); return; }
     setBusy(true);
     try {
+      if (secondaryEmail) await secondaryEmail.onSave(trim(second));
       await onSave({
         companyName: trim(f.companyName),
         companyType: f.companyType,
         companyTypeOther: isOther ? trim(f.companyTypeOther).slice(0, COMPANY_TYPE_OTHER_MAX) : '',
         companyCity: trim(f.companyCity),
         companyWebsite: site,
+        companyStreet: trim(f.companyStreet),
+        companyPostalCode: trim(f.companyPostalCode),
       });
       app.notify(t.account.savedOk);
     } catch {
@@ -129,11 +141,24 @@ export const CompanyForm: React.FC<{
         </>
       )}
 
+      <label style={sectionLabel}>{t.account.fStreet}</label>
+      <input style={input} value={f.companyStreet ?? ''} onChange={e => setF({ ...f, companyStreet: e.target.value })} data-testid="company-street" />
+
+      <label style={sectionLabel}>{t.account.fPostal}</label>
+      <input style={input} value={f.companyPostalCode ?? ''} onChange={e => setF({ ...f, companyPostalCode: e.target.value })} />
+
       <label style={sectionLabel}>{t.account.fCity}</label>
       <input style={input} value={f.companyCity ?? ''} onChange={e => setF({ ...f, companyCity: e.target.value })} />
 
       <label style={sectionLabel}>{t.account.fWebsite}</label>
       <input style={input} placeholder="example.com" value={f.companyWebsite ?? ''} onChange={e => setF({ ...f, companyWebsite: e.target.value })} />
+
+      {secondaryEmail && (
+        <>
+          <label style={sectionLabel}>{t.account.fSecondaryEmail}</label>
+          <input style={input} type="email" value={second} onChange={e => setSecond(e.target.value)} data-testid="secondary-email" />
+        </>
+      )}
 
       <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
         <span className="hp-press" onClick={save} style={{ ...btn(true), opacity: busy ? 0.6 : 1 }}>{t.account.saveBtn}</span>
@@ -163,6 +188,8 @@ export const CompanyProfileCard: React.FC<{
         companyTypeOther: org.companyTypeOther,
         companyCity: org.companyCity,
         companyWebsite: org.companyWebsite,
+        companyStreet: org.companyStreet,
+        companyPostalCode: org.companyPostalCode,
       }
     : {
         companyName: user.companyName ?? '',
@@ -170,6 +197,8 @@ export const CompanyProfileCard: React.FC<{
         companyTypeOther: user.companyTypeOther,
         companyCity: user.companyCity,
         companyWebsite: user.companyWebsite,
+        companyStreet: user.companyStreet,
+        companyPostalCode: user.companyPostalCode,
       };
 
   const typeCode = normalizeCompanyType(source.companyType);
@@ -200,8 +229,11 @@ export const CompanyProfileCard: React.FC<{
           <Row label={t.account.fCompanyName} value={source.companyName} />
           <Row label={t.account.fCompanyType} value={typeLabel} />
           {typeCode === 'other' && <Row label={t.account.fCompanyTypeOther} value={source.companyTypeOther} />}
+          <Row label={t.account.fStreet} value={source.companyStreet} />
+          <Row label={t.account.fPostal} value={source.companyPostalCode} />
           <Row label={t.account.fCity} value={source.companyCity} />
-          <Row label={t.account.fWebsite} value={source.companyWebsite} href={websiteHref(source.companyWebsite)} last />
+          <Row label={t.account.fWebsite} value={source.companyWebsite} href={websiteHref(source.companyWebsite)} />
+          <Row label={t.account.fSecondaryEmail} value={user.secondaryEmail} last />
           <span className="hp-press" onClick={() => setEditing(true)} style={{ fontSize: 12.5, color: '#0066cc', cursor: 'pointer', marginTop: 8 }} data-testid="edit-company">
             {t.account.editProfile}
           </span>
@@ -214,6 +246,14 @@ export const CompanyProfileCard: React.FC<{
           onCancel={() => setEditing(false)}
           onSave={save}
           extra={isOwner ? <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.team.companyNote}</span> : undefined}
+          secondaryEmail={{
+            initial: user.secondaryEmail ?? '',
+            onSave: async (v) => {
+              if (isPreview || v === (user.secondaryEmail ?? '')) return;
+              await updateMyProfile(user.id, { secondaryEmail: v });
+              app.patchUser({ secondaryEmail: v });
+            },
+          }}
         />
       )}
     </Card>
@@ -548,6 +588,8 @@ export const TeamManagementView: React.FC<{
               companyTypeOther: org.companyTypeOther,
               companyCity: org.companyCity,
               companyWebsite: org.companyWebsite,
+              companyStreet: org.companyStreet,
+              companyPostalCode: org.companyPostalCode,
             }}
             extra={<span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.team.companyNote}</span>}
             onCancel={() => setEditingCompany(false)}

@@ -37,6 +37,7 @@ import { NewsPage } from './pages/NewsPage';
 import { TrendsPage } from './pages/TrendsPage';
 import { ReportPage } from './pages/ReportPage';
 import { isSpecialReportItem } from './newsModel';
+import { UpsellModal, DataNotice } from './Premium';
 import { InstallPage } from './pages/InstallPage';
 import { AccountPage } from './pages/AccountPage';
 
@@ -55,6 +56,8 @@ interface Props {
   sessionGraceUntil?: number | null;
   /** First-run onboarding sheet is on screen — the tour invite waits for it. */
   tourHold?: boolean;
+  /** Free + Premium (2026-09-27): false = Free tier. Default Premium (fail-open). */
+  premium?: boolean;
 }
 
 type NavPage = Exclude<HpPage, 'account'>;
@@ -85,7 +88,7 @@ const groupTarget = (g: { id: string; pages: NavPage[] }): NavPage => {
 };
 
 
-export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAccess, dbData, datasetsFailed, onRetryDatasets, language, setLanguage, sessionGraceUntil, tourHold }) => {
+export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAccess, dbData, datasetsFailed, onRetryDatasets, language, setLanguage, sessionGraceUntil, tourHold, premium = true }) => {
   // Profile edits are written to Firestore; this overlay reflects them at once
   // (the auth listener would only refresh the profile on the next sign-in).
   const [userPatch, setUserPatch] = useState<Partial<User>>({});
@@ -226,26 +229,32 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
    * Records with no published capacity are unclassified: they are counted and
    * disclosed, never quietly filed as residential.
    */
+  // Free tier: Premium-only values render as a "Premium" label (the basic
+  // dataset does not carry them — see toVM).
+  const lock = premium ? undefined : t.tier.cell;
+  const [upsellOpen, setUpsellOpen] = useState(false);
+  const upsell = () => { track('upsell_shown' as any, { page }); setUpsellOpen(true); };
+
   const segments = useMemo(() => {
     const pool = [...(dbData?.products ?? []), ...(dbData?.commercialProducts ?? [])];
     return splitBySegment(pool);
   }, [dbData?.products, dbData?.commercialProducts]);
 
   const resStore = useMemo(
-    () => (segments.residential.length ? new ProductStore(segments.residential) : null),
-    [segments],
+    () => (segments.residential.length ? new ProductStore(segments.residential, lock) : null),
+    [segments, lock],
   );
   const comStore = useMemo(
-    () => (segments.commercial.length ? new ProductStore(segments.commercial) : null),
-    [segments],
+    () => (segments.commercial.length ? new ProductStore(segments.commercial, lock) : null),
+    [segments, lock],
   );
   const unclassifiedCount = segments.unclassified.length;
   const store = segment === 'commercial' ? comStore : resStore;
   // Full catalog for the EU energy label page — every downloaded product, both segments.
   const allStore = useMemo(() => {
     const src = [...(dbData?.products ?? []), ...(dbData?.commercialProducts ?? [])];
-    return src.length ? new ProductStore(src) : null;
-  }, [dbData?.products, dbData?.commercialProducts]);
+    return src.length ? new ProductStore(src, lock) : null;
+  }, [dbData?.products, dbData?.commercialProducts, lock]);
 
   /** Which segment dataset a product id belongs to (label page spans both). */
   const segmentOf = (id: string): HpSegment | null =>
@@ -256,6 +265,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   // default-selection effect below refills it from the new store).
   const switchSegment = (s: HpSegment) => {
     if (s === segment) return;
+    if (s === 'commercial' && !premium) { upsell(); return; }
     setSegment(s);
     setSelectedId(null);
     setLabelSelId(null);
@@ -317,6 +327,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   const totalListed = (dbData?.products?.length ?? 0) + (dbData?.commercialProducts?.length ?? 0);
 
   const toggleCompare = (id: string) => {
+    if (!premium) { upsell(); return; }
     setCompare(prev => {
       const has = prev.includes(id);
       if (!has && prev.length >= 4) return prev;
@@ -352,6 +363,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
    * "Print" — the only reliable way to reach a printer with the right geometry.
    */
   const printSheet = () => {
+    if (!premium) { upsell(); return; }
     track('datasheet_exported', { via: 'print', mode: dsMode });
     if (!isIos()) { window.print(); return; }
     const made = makePdf();
@@ -361,6 +373,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
 
   /** PDF DOWNLOAD: always just saves the generated file. Never a share sheet. */
   const downloadSheetPdf = () => {
+    if (!premium) { upsell(); return; }
     track('datasheet_exported', { via: 'pdf', mode: dsMode });
     const made = makePdf();
     if (!made) return;
@@ -386,6 +399,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     policies: dbData?.policySummary ?? [],
     dataStatusDate, bafaSnapshotDate, eprelSyncDate, totalListed,
     page, go: setPage,
+    premium, upsell,
     query, setQuery,
     compare, toggleCompare,
     selectedId, setSelectedId,
@@ -499,6 +513,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         )}
         <OnboardingTour app={app} viewport="phone" hold={tourHold} />
         <MobileApp app={app} viewport={viewport} />
+        {upsellOpen && <UpsellModal app={app} onClose={() => setUpsellOpen(false)} />}
         {notice && (
           <div style={{ position: 'fixed', bottom: 84, left: '50%', transform: 'translateX(-50%)', zIndex: 100, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '11px 22px', fontSize: 13.5, boxShadow: '0 8px 24px rgba(0,0,0,.22)', maxWidth: '86vw' }}>
             {notice}
@@ -512,6 +527,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
       {printPortal}
       <OnboardingTour app={app} viewport="desktop" hold={tourHold} />
+      {upsellOpen && <UpsellModal app={app} onClose={() => setUpsellOpen(false)} />}
 
       {/* ============ Global nav ============ */}
       <div className="hp-gnav" style={{ background: '#000', color: '#fff', display: 'flex', alignItems: 'center', gap: 28, padding: '0 28px', height: 60, position: 'sticky', top: 0, zIndex: 50, flex: 'none' }}>
@@ -691,6 +707,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         <span>{t.footer.edition}</span>
         <span>{t.footer.copyright(new Date().getFullYear())}</span>
         <span style={{ marginLeft: 'auto' }}>{t.footer.note}</span>
+        <DataNotice app={app} style={{ flexBasis: '100%', fontSize: 11 }} />
       </div>
     </div>
   );

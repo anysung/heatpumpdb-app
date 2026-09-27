@@ -36,6 +36,11 @@ export interface HpApp {
   page: HpPage;
   go: (p: HpPage) => void;
 
+  /** Free + Premium (2026-09-27): false = Free tier (basic dataset). */
+  premium: boolean;
+  /** Open the upgrade prompt — every Premium-only action routes here. */
+  upsell: () => void;
+
   query: string;
   setQuery: (q: string) => void;
 

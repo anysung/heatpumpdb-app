@@ -11,6 +11,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { HpApp, HpPage } from '../appState';
+import { DataNotice, PremiumPill } from '../Premium';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS, MARKET_ICON_32 } from '../market';
 import { LEGAL_ROUTES, LegalDoc, MARKETING_EMAIL } from '../../config/legal';
@@ -249,8 +250,8 @@ const MobileDataSheet: React.FC<{ app: HpApp }> = ({ app }) => {
         )}
         {dsp ? (
           <div style={{ display: 'flex', gap: 9 }}>
-            <span className="hp-press" onClick={app.downloadSheetPdf} style={actionBtn(t.m.mdsPdf, true)}>⬇ {t.m.mdsPdf}</span>
-            <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPrint, false)}>🖨 {t.m.mdsPrint}</span>
+            <span className="hp-press" onClick={app.downloadSheetPdf} style={actionBtn(t.m.mdsPdf, true)}>⬇ {t.m.mdsPdf}{!app.premium && <PremiumPill app={app} />}</span>
+            <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPrint, false)}>🖨 {t.m.mdsPrint}{!app.premium && <PremiumPill app={app} />}</span>
           </div>
         ) : (
           <span className="hp-press" onClick={() => app.go('products')} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>{t.m.mdsPick}</span>
@@ -337,6 +338,7 @@ const MobileLabel: React.FC<{ app: HpApp }> = ({ app }) => {
       </div>
 
       <span style={{ fontSize: 10.5, color: '#9a9aa0', lineHeight: 1.5 }}>{t.label.aboutText}</span>
+      <DataNotice app={app} />
     </div>
   );
 };

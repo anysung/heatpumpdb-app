@@ -8,7 +8,7 @@ import {
 } from './services/authService';
 import { TRIAL_FLOW_ENABLED } from './services/billingFnService';
 import { startSessionTracking } from './services/sessionService';
-import { accessExpired } from './config/entitlement';
+import { tierOf } from './config/entitlement';
 import { getMyOrg } from './services/subscriptionService';
 import { Organization } from './types';
 import {
@@ -30,7 +30,7 @@ import { PUBLIC_ENV } from './config/env';
 import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE } from './config/registration';
 import { captureSignupRef } from './services/signupRef';
 import { MaintenanceGate } from './components/MaintenanceGate';
-import { TeamNameGate, nameNeededForCheckout, OnboardingSheet, hasDisplayName } from './components/OnboardingSheet';
+import { TeamNameGate, nameNeededForCheckout, OnboardingSheet, hasDisplayName, profileIncomplete } from './components/OnboardingSheet';
 
 // Attribution: catch ?ref= before any routing can strip it.
 captureSignupRef();
@@ -98,128 +98,6 @@ const VIEW_PRICING: Record<Language, string> = {
   it: 'Scopri piani e prezzi',
 };
 
-/**
- * Day-8 gate: the trial (or subscription) window is closed — the server rules
- * already refuse product/news/dataset reads, so the app is replaced by this
- * subscribe screen. Payment is the only way forward (immediate charge — no
- * Paddle trial); the webhook re-opens the window and "I've paid" refreshes.
- */
-const SubscribeGate: React.FC<{
-  t: any;
-  language: Language;
-  setLanguage: (l: Language) => void;
-  user: User;
-  isMemberOfTeam: boolean;
-  onRefreshed: (u: User) => void;
-  onLogout: () => void;
-}> = ({ t, language, setLanguage, user, isMemberOfTeam, onRefreshed, onLogout }) => {
-  const [term, setTerm] = useState<BillingTerm>('monthly');
-  const [busy, setBusy] = useState(false);
-  const hadTrial = !!user.trialEndsAt;
-
-  // The only thing that may still stop a checkout: a Team plan bought by
-  // someone with no name on file (see nameNeededForCheckout). Everything else
-  // Paddle collects itself.
-  const [profileFor, setProfileFor] = useState<SubPlanCode | null>(null);
-
-  const subscribe = async (plan: SubPlanCode) => {
-    if (nameNeededForCheckout(user, isTeamPlan(plan))) { setProfileFor(plan); return; }
-    try { await openCheckout(user, plan, term); }
-    catch { alert(t.subReqComingSoon); }
-  };
-
-  const refresh = async () => {
-    setBusy(true);
-    try {
-      const fresh = await refetchSessionUser();
-      if (fresh) onRefreshed(fresh);
-    } finally { setBusy(false); }
-  };
-
-  return (
-    <AuthShell t={t} language={language} setLanguage={setLanguage}>
-      <GlassCard className="w-full max-w-3xl p-8 hp-fade-up">
-        <div data-testid="subscribe-gate">
-          <h2 className="text-2xl font-bold text-white mb-2">{t.subReqTitle}</h2>
-          <p className="text-white/70 mb-1">{hadTrial ? t.subReqBodyTrialEnded : t.subReqBodyNoTrial}</p>
-          {isMemberOfTeam && (
-            <p className="text-amber-300/90 text-sm mb-2" data-testid="subscribe-gate-team">{t.subReqTeamNote}</p>
-          )}
-          <p className="text-white/45 text-sm mb-6">{t.subReqAfterPay}</p>
-
-          {/* Billing term */}
-          <div className="flex gap-2 mb-5">
-            {BILLING_TERMS.map(bt => (
-              <button
-                key={bt}
-                onClick={() => setTerm(bt)}
-                className={`px-4 py-2 rounded-full text-sm border transition-colors ${
-                  term === bt
-                    ? 'bg-emerald-400/20 border-emerald-400/60 text-emerald-200 font-semibold'
-                    : 'border-white/15 text-white/60 hover:bg-white/5'
-                }`}
-              >
-                {TERM_NAMES[bt]}
-              </button>
-            ))}
-          </div>
-
-          {/* Plans */}
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
-            {SUB_PLAN_CODES.map(code => {
-              const plan = SUB_PLANS[code];
-              const configured = checkoutConfigured(code, term);
-              return (
-                <div key={code} className="rounded-2xl border border-white/12 bg-white/5 p-5 flex flex-col gap-2">
-                  <p className="text-white font-semibold">{SUB_PLAN_NAMES[code]}</p>
-                  <p className="text-2xl font-bold text-white">{formatEur(plan.prices[term])}</p>
-                  <p className="text-white/45 text-xs">
-                    {t.subReqPerMonth.replace('{v}', formatEur(Math.round(perMonth(code, term) * 100) / 100))}
-                    {' · '}{t.subReqVatNote}
-                  </p>
-                  <button
-                    onClick={() => subscribe(code)}
-                    disabled={!configured}
-                    className={`${primaryBtn} mt-auto ${configured ? '' : 'opacity-40 cursor-not-allowed'}`}
-                    data-testid={`subscribe-${code}`}
-                  >
-                    {configured ? t.subReqSubscribe : t.subReqComingSoon}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button onClick={refresh} disabled={busy} className={ghostBtn} data-testid="subscribe-refresh">
-              {busy ? t.loading : t.subReqRefresh}
-            </button>
-            <button onClick={onLogout} className="text-white/45 hover:text-white text-sm transition-colors ml-auto">
-              {t.subReqSignOut}
-            </button>
-          </div>
-        </div>
-        <LegalFooter language={language} dark />
-      </GlassCard>
-      {profileFor && (
-        <TeamNameGate
-          language={language}
-          user={user}
-          onSaved={(patch) => {
-            const plan = profileFor;
-            setProfileFor(null);
-            // Keep the screen's own copy in step, then continue where the
-            // person was going — they clicked a plan, not a form.
-            onRefreshed({ ...user, ...patch } as typeof user);
-            openCheckout({ ...user, ...patch } as typeof user, plan, term)
-              .catch(() => alert(t.subReqComingSoon));
-          }}
-          onCancel={() => setProfileFor(null)}
-        />
-      )}
-    </AuthShell>
-  );
-};
 
 const AppInner: React.FC = () => {
   /* Returning from the confirmation link (?verified=1) opens the LOGIN screen
@@ -316,6 +194,11 @@ const AppInner: React.FC = () => {
   // window is the org's). Loaded lazily; while null the check can only be
   // MORE permissive (fail-open), never lock anyone out.
   const [myOrg, setMyOrg] = useState<Organization | null>(null);
+  /* Free + Premium (2026-09-27): which dataset objects this session may read.
+     Signed-out / unknown → 'premium' is only a request; the storage rules
+     decide, and a Free account asking for full objects would simply fail —
+     so the tier is derived from the same window the rules read. */
+  const datasetTier = currentUser ? tierOf(currentUser, myOrg) : 'premium';
 
   // After a completed Paddle checkout the profile changes SERVER-side (the
   // webhook writes the subscription and, for team plans, creates the org).
@@ -1182,34 +1065,18 @@ const AppInner: React.FC = () => {
       />
     );
   }
-  /* Show it when the account has answered NOTHING yet — a profile filled by
-     an invitation or an earlier session is left alone. */
-  const onboardingKey = currentUser ? `hpdb.onboarded.${currentUser.id}` : '';
+  /* Profile step (2026-09-27): REQUIRED — shown whenever name / company /
+     company type are missing (admins exempt, team members name only). No
+     per-device "seen" mark any more: an incomplete profile is asked again. */
   const onboardingDue = !!currentUser
     && currentView === 'APP'
     && !onboardingClosed
-    && !hasDisplayName(currentUser)
-    && !currentUser.companyType
-    && !currentUser.jobRole
-    && (() => { try { return !localStorage.getItem(onboardingKey); } catch { return false; } })();
+    && profileIncomplete(currentUser);
 
   if (currentView === 'APP' && currentUser) {
-    // Day-8 gate (data-driven: only accounts the server stamped with a window
-    // can ever expire; admins and legacy accounts never see this). The server
-    // rules already deny data reads — this screen is the honest UI for it.
-    if (accessExpired(currentUser, myOrg)) {
-      return (
-        <SubscribeGate
-          t={t}
-          language={language}
-          setLanguage={setLanguage}
-          user={currentUser}
-          isMemberOfTeam={currentUser.orgRole === 'member'}
-          onRefreshed={setCurrentUser}
-          onLogout={handleLogout}
-        />
-      );
-    }
+    // Free + Premium (2026-09-27): a closed window no longer replaces the app
+    // with a subscribe screen — the account continues on the FREE tier
+    // (basic dataset, Premium actions open the upgrade prompt).
     // HeatPump DB shell owns its own language toggle (DE|EN in the global nav) —
     // no floating switcher overlay here.
     return (
@@ -1225,22 +1092,18 @@ const AppInner: React.FC = () => {
         setLanguage={setLanguage}
         sessionGraceUntil={sessionGraceUntil}
         tourHold={showOnboarding || onboardingDue}
+        premium={datasetTier === 'premium'}
       />
       {(showOnboarding || onboardingDue) && (
         <OnboardingSheet
           language={language}
           user={currentUser}
           onDone={(patch) => {
-            try { localStorage.setItem(onboardingKey, '1'); } catch { /* private mode */ }
             setShowOnboarding(false);
             setOnboardingClosed(true);
             setCurrentUser({ ...currentUser, ...patch } as User);
           }}
-          onSkip={() => {
-            try { localStorage.setItem(onboardingKey, '1'); } catch { /* private mode */ }
-            setShowOnboarding(false);
-            setOnboardingClosed(true);
-          }}
+          onSignOut={handleLogout}
         />
       )}
       </>

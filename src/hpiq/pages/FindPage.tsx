@@ -1,6 +1,7 @@
 /** Find product — fast model lookup (search-first page). */
 import React, { useRef } from 'react';
 import { HpApp } from '../appState';
+import { DataNotice, PremiumPill } from '../Premium';
 import { tr } from '../i18n';
 import { LOCAL_LISTING_SOURCE } from '../listing';
 import { ListingChip } from '../ListingChip';
@@ -127,6 +128,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
               );
             })}
           </div>
+          <DataNotice app={app} style={{ padding: '0 48px 32px' }} />
         </>
       )}
     </div>

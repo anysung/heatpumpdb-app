@@ -10,6 +10,7 @@
  */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
+import { DataNotice, PremiumPill } from '../Premium';
 import { HpVM, crossRefId } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
@@ -138,6 +139,7 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
       )}
 
       <span style={{ fontSize: 10.5, color: '#b6b6bc', lineHeight: 1.5, padding: '0 2px' }}>{t.m.mDetailNote}</span>
+      <DataNotice app={app} style={{ padding: '0 2px' }} />
     </>
   );
 
@@ -201,6 +203,7 @@ export const MobileFind: React.FC<{ app: HpApp; viewport: Viewport; onOpen: (id:
           <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 10 }}>
             {res.items.map(v => <ProductCard key={v.id} v={v} t={t} onOpen={() => onOpen(v.id)} />)}
           </div>
+          <DataNotice app={app} />
         </>
       )}
     </div>
@@ -277,6 +280,7 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
               {(['residential', 'commercial'] as const).map(s => (
                 <span key={s} onClick={() => app.setSegment(s)} style={{ padding: '7px 13px', cursor: 'pointer', textAlign: 'center', whiteSpace: 'nowrap', ...(app.segment === s ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}>
                   {s === 'residential' ? t.products.residential : t.products.commercial}
+                  {s === 'commercial' && !app.premium && <PremiumPill app={app} />}
                 </span>
               ))}
             </div>
@@ -298,6 +302,7 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
           </div>
           {list.length < filteredTotal && <div ref={sentinelRef} style={{ height: 40 }} />}
           <div style={{ paddingTop: 14, fontSize: 11, color: '#b6b6bc', textAlign: 'center' }}>{t.products.listDisclaimer}</div>
+          <DataNotice app={app} style={{ paddingTop: 8, justifyContent: 'center' }} />
         </div>
       </div>
 

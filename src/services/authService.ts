@@ -370,7 +370,7 @@ export const registerInvitedMember = async (
 /** Self-service profile edit (own document, whitelisted fields only). */
 export const updateMyProfile = async (
   uid: string,
-  patch: Partial<Pick<User, 'firstName' | 'lastName' | 'companyName' | 'companyType' | 'companyTypeOther' | 'companyCity' | 'companyWebsite' | 'jobRole'>>,
+  patch: Partial<Pick<User, 'firstName' | 'lastName' | 'companyName' | 'companyType' | 'companyTypeOther' | 'companyCity' | 'companyWebsite' | 'jobRole' | 'companyStreet' | 'companyPostalCode' | 'secondaryEmail'>>,
 ): Promise<void> => {
   // Send '' rather than dropping cleared optional fields, so the user can empty them.
   const clean: Record<string, any> = {};

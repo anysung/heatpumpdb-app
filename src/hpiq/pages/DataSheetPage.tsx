@@ -1,6 +1,7 @@
 /** Data sheet studio — two modes, model picker, section toggles, live preview. */
 import React, { useMemo, useState } from 'react';
 import { HpApp, DsSectionKey } from '../appState';
+import { DataNotice, PremiumPill } from '../Premium';
 import { longDate, crossRefId } from '../model';
 import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
@@ -432,10 +433,11 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
             {/* Equal-width buttons: flex:1 so they size to the row, not to their
                 labels; border-box so the outlined one isn't 2px wider. */}
             <div style={{ display: 'flex', gap: 9 }}>
-              <span className="hp-press" onClick={app.printSheet} style={{ ...pillPrimary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box', border: '1px solid transparent' }}>{t.ds.printBtn}</span>
-              <span className="hp-press" onClick={app.downloadSheetPdf} style={{ ...pillSecondary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box' }}>{t.ds.pdfBtn}</span>
+              <span className="hp-press" onClick={app.printSheet} style={{ ...pillPrimary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box', border: '1px solid transparent' }}>{t.ds.printBtn}{!app.premium && <PremiumPill app={app} style={{ background: 'rgba(255,255,255,.9)' }} />}</span>
+              <span className="hp-press" onClick={app.downloadSheetPdf} style={{ ...pillSecondary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box' }}>{t.ds.pdfBtn}{!app.premium && <PremiumPill app={app} />}</span>
             </div>
-            <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{t.ds.exportNote}</span>
+            <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{app.premium ? t.ds.exportNote : t.tier.previewNote}</span>
+            <DataNotice app={app} />
           </div>
         </div>
 

@@ -39,7 +39,7 @@ export type AccessState =
   | { state: 'trial'; trialEndsMs: number; daysLeft: number }
   /** Window open via subscription/team — normal paid use. */
   | { state: 'active'; untilMs: number | null }
-  /** Window closed: show the subscribe screen (server rules block data too). */
+  /** Window closed: the account is on the FREE tier (basic data only). */
   | { state: 'expired' };
 
 /** Whole days (ceil) from now until `ms`; never below 0. */
@@ -76,6 +76,21 @@ export function accessInfo(user: User, org?: Organization | null, now = Date.now
   return { state: 'active', untilMs: until };
 }
 
-/** True when the subscribe-required screen must replace the app. */
+/**
+ * Free + Premium program (owner, 2026-09-27): a closed window no longer locks
+ * the account out — it drops to FREE. `accessUntilTs` therefore reads as
+ * "Premium until". The server mirrors this: basic datasets and countries/**
+ * need an approved account only; full datasets and Premium Special Reports
+ * need the open window (storage.rules / firestore.rules `isEntitled()`).
+ *
+ * Fail-open as before: anything that is not a definite 'expired' is Premium.
+ */
+export type Tier = 'premium' | 'free';
+
+export const tierOf = (user: User, org?: Organization | null, now = Date.now()): Tier =>
+  accessInfo(user, org, now).state === 'expired' ? 'free' : 'premium';
+
+/** @deprecated Since the Free tier there is no subscribe-required screen; kept
+ *  for callers that only need the "window closed" fact. */
 export const accessExpired = (user: User, org?: Organization | null): boolean =>
   accessInfo(user, org).state === 'expired';

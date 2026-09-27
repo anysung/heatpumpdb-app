@@ -1,6 +1,7 @@
 /** Products — main catalog: filter rail + dense table + inspector + compare tray. */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
+import { DataNotice, PremiumPill } from '../Premium';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
@@ -190,6 +191,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 }}
               >
                 {s === 'residential' ? t.products.residential : t.products.commercial}
+                {s === 'commercial' && !app.premium && <PremiumPill app={app} />}
               </span>
             );
           })}
@@ -220,7 +222,12 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 {(Object.keys(SORT_LABELS) as ProductSort[]).map(key => (
                   <span
                     key={key}
-                    onClick={() => { setSort(key); setSortOpen(false); }}
+                    onClick={() => {
+                      setSortOpen(false);
+                      // COP and sound power are Premium fields — Free records carry none.
+                      if (!app.premium && (key === 'cop2' || key === 'noise')) { app.upsell(); return; }
+                      setSort(key);
+                    }}
                     className="hp-row"
                     data-testid="sort-option"
                     style={{ display: 'block', padding: '8px 16px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', ...(key === sort ? { fontWeight: 600, color: '#0066cc' } : {}) }}
@@ -498,6 +505,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
               )}
               <div style={{ padding: '11px 20px', fontSize: 12, color: '#7a7a7a' }}>
                 {t.products.streamNote}
+                <DataNotice app={app} style={{ marginTop: 6 }} />
               </div>
 
             </div>

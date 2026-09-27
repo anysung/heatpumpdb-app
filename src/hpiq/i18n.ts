@@ -119,11 +119,32 @@ const EN = {
     earlier: 'Earlier editions',
   },
 
+  /** Free + Premium program (owner, 2026-09-27) — upgrade prompt, lock
+   *  labels and the data-protection notice. */
+  tier: {
+    free: 'Free',
+    premium: 'Premium',
+    lockTitle: 'Premium feature',
+    lockBody: 'Full specifications, side-by-side comparison, the commercial range, PDF data sheets and the monthly Special Report are part of Premium.',
+    benefits: ['Full specifications — COP values, sound power, refrigerant charge', 'Compare up to 4 models side by side', 'Commercial range above 23 kW', 'Print-ready PDF data sheets and EU label sheets', 'The monthly Special Report', 'Two devices'] as string[],
+    price: 'From €9.90 per month or €99 per year, excl. VAT.',
+    cta: 'View Premium plans ›',
+    later: 'Not now',
+    cell: 'Premium',
+    previewNote: 'Preview — values marked Premium, PDF export and printing are included with Premium.',
+    commercialLocked: 'The commercial range (> 23 kW) is part of Premium.',
+    sampleBadge: 'Free sample',
+    reportLocked: 'This edition is part of Premium. The August and September 2026 editions are free samples.',
+    freePlanTitle: 'You are on the Free plan.',
+    freePlanBody: 'Search, basic specifications, listing status, subsidies, news and installation videos stay free. Upgrade any time for the full database.',
+    notice: 'Data provided through this site is protected by encryption and access control. An unauthorised-use detection system is in operation.',
+  },
+
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Your free trial ends today. Subscribe to keep full access.'
-        : `Your free trial ends in ${d} days. Subscribe to keep full access.`,
+        ? 'Your Premium trial ends today — afterwards you continue on the Free plan.'
+        : `Your Premium trial ends in ${d} days — then you continue on the Free plan.`,
     bannerCta: 'View plans',
     // Team-during-trial: the org is created BEFORE payment; every member
     // shares the team admin's trial end date (one date for everyone).
@@ -551,6 +572,9 @@ const EN = {
     fCompanyType: 'Company type',
     fCompanyTypeOther: 'Company type detail',
     fCity: 'City',
+    fStreet: 'Street and number',
+    fPostal: 'Postal code',
+    fSecondaryEmail: 'Secondary email (optional)',
     fWebsite: 'Website',
     editProfile: 'Edit profile ›',
     editBtn: 'Edit',
@@ -703,7 +727,7 @@ const EN = {
   /** Subscription program — Professional / Team 3 / Team 5 (config: subscriptionPlans.ts). */
   sub: {
     pickTitle: 'Choose your plan.',
-    pickSub: 'Subscribing starts your paid plan immediately — the free 15 days are already included with every new account.',
+    pickSub: 'Subscribing starts Premium immediately. New accounts include a 15-day Premium trial; after that the account continues on the Free plan.',
     currentTitle: 'Your subscription.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 user', team_3: 'Up to 3 users', team_5: 'Up to 5 users' } as Record<string, string>,
@@ -750,7 +774,7 @@ const EN = {
     eurBillingNote: 'All subscriptions are billed in euro (EUR) in every market. If your card is issued in another currency, your bank converts the amount and may add its own foreign-transaction fee.',
     notConfigured: 'Web checkout for this plan is being finalized — it opens here shortly.',
     // Current subscription
-    statusTrialing: (d: string) => `Free access until ${d}`,
+    statusTrialing: (d: string) => `Premium trial until ${d}`,
     statusActive: (d: string) => `Active until ${d}`,
     statusCanceled: (d: string) => `Auto-renewal off — access until ${d}`,
     statusPastDue: 'Payment issue — please update your payment method via Manage billing.',
@@ -904,11 +928,30 @@ const DE: HpStrings = {
     earlier: 'Frühere Ausgaben',
   },
 
+  tier: {
+    free: 'Free',
+    premium: 'Premium',
+    lockTitle: 'Premium-Funktion',
+    lockBody: 'Vollständige technische Daten, Direktvergleich, das Gewerbesegment, PDF-Datenblätter und der monatliche Special Report sind Teil von Premium.',
+    benefits: ['Vollständige Daten — COP-Werte, Schallleistung, Kältemittelmenge', 'Bis zu 4 Modelle direkt vergleichen', 'Gewerbesegment über 23 kW', 'Druckfertige PDF-Datenblätter und EU-Label-Blätter', 'Der monatliche Special Report', 'Zwei Geräte'] as string[],
+    price: 'Ab 9,90 € pro Monat oder 99 € pro Jahr, zzgl. MwSt.',
+    cta: 'Premium-Tarife ansehen ›',
+    later: 'Nicht jetzt',
+    cell: 'Premium',
+    previewNote: 'Vorschau — mit „Premium“ markierte Werte sowie PDF-Export und Druck sind in Premium enthalten.',
+    commercialLocked: 'Das Gewerbesegment (> 23 kW) ist Teil von Premium.',
+    sampleBadge: 'Kostenlose Ausgabe',
+    reportLocked: 'Diese Ausgabe ist Teil von Premium. Die Ausgaben August und September 2026 sind kostenlose Leseproben.',
+    freePlanTitle: 'Sie nutzen den Free-Tarif.',
+    freePlanBody: 'Suche, Basisdaten, Listungsstatus, Förderung, News und Installationsvideos bleiben kostenlos. Für die vollständige Datenbank jederzeit upgraden.',
+    notice: 'Über diese Website bereitgestellte Daten sind durch Verschlüsselung und Zugriffskontrolle geschützt. Ein System zur Erkennung unbefugter Nutzung ist aktiv.',
+  },
+
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Ihre kostenlose Testphase endet heute. Abonnieren Sie, um den vollen Zugriff zu behalten.'
-        : `Ihre kostenlose Testphase endet in ${d} Tagen. Abonnieren Sie, um den vollen Zugriff zu behalten.`,
+        ? 'Ihre Premium-Testphase endet heute — danach nutzen Sie den Free-Tarif weiter.'
+        : `Ihre Premium-Testphase endet in ${d} Tagen — danach nutzen Sie den Free-Tarif weiter.`,
     bannerCta: 'Tarife ansehen',
     teamStartTitle: 'Ein Team aufbauen?',
     teamStartBody: 'Sie können Ihr Team bereits während der Testphase einrichten und sofort Mitglieder einladen — alle teilen Ihr Testphasen-Enddatum, und eine Zahlung am Ende deckt das gesamte Team ab.',
@@ -1305,6 +1348,9 @@ const DE: HpStrings = {
     fCompanyType: 'Unternehmensart',
     fCompanyTypeOther: 'Unternehmensart (Angabe)',
     fCity: 'Ort',
+    fStreet: 'Straße und Hausnummer',
+    fPostal: 'PLZ',
+    fSecondaryEmail: 'Zweite E-Mail-Adresse (optional)',
     fWebsite: 'Website',
     editProfile: 'Profil bearbeiten ›',
     editBtn: 'Bearbeiten',
@@ -1453,7 +1499,7 @@ const DE: HpStrings = {
   },
   sub: {
     pickTitle: 'Wählen Sie Ihren Tarif.',
-    pickSub: 'Mit dem Abschluss beginnt Ihr kostenpflichtiger Tarif sofort — die 15 kostenlosen Tage sind bei jedem neuen Konto bereits enthalten.',
+    pickSub: 'Mit dem Abschluss startet Premium sofort. Neue Konten enthalten eine 15-tägige Premium-Testphase; danach läuft das Konto im Free-Tarif weiter.',
     currentTitle: 'Ihr Abonnement.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 Nutzer', team_3: 'Bis zu 3 Nutzer', team_5: 'Bis zu 5 Nutzer' } as Record<string, string>,
@@ -1499,7 +1545,7 @@ const DE: HpStrings = {
     vatNote: 'Alle Preise zzgl. MwSt. Die MwSt. wird beim Checkout von Paddle.com (unserem Merchant of Record) anhand Ihres Landes und Ihrer Unternehmensdaten berechnet.',
     eurBillingNote: 'Alle Abonnements werden in allen Märkten in Euro (EUR) abgerechnet. Ist Ihre Karte auf eine andere Währung ausgestellt, rechnet Ihre Bank um und kann eigene Fremdwährungsgebühren erheben.',
     notConfigured: 'Der Web-Checkout für diesen Tarif wird gerade finalisiert — er öffnet sich hier in Kürze.',
-    statusTrialing: (d: string) => `Kostenloser Zugang bis ${d}`,
+    statusTrialing: (d: string) => `Premium-Testphase bis ${d}`,
     statusActive: (d: string) => `Aktiv bis ${d}`,
     statusCanceled: (d: string) => `Automatische Verlängerung aus — Zugang bis ${d}`,
     statusPastDue: 'Zahlungsproblem — bitte aktualisieren Sie Ihre Zahlungsmethode über „Abrechnung verwalten“.',
@@ -2064,11 +2110,30 @@ const FR_FR: HpStrings = {
     earlier: 'Éditions précédentes',
   },
 
+  tier: {
+    free: 'Free',
+    premium: 'Premium',
+    lockTitle: 'Fonctionnalité Premium',
+    lockBody: 'Les caractéristiques complètes, la comparaison côte à côte, la gamme tertiaire, les fiches PDF et le rapport spécial mensuel font partie de Premium.',
+    benefits: ['Caractéristiques complètes — COP, puissance acoustique, charge de fluide', 'Comparer jusqu’à 4 modèles côte à côte', 'Gamme tertiaire au-delà de 23 kW', 'Fiches techniques et fiches étiquette UE en PDF, prêtes à imprimer', 'Le rapport spécial mensuel', 'Deux appareils'] as string[],
+    price: 'À partir de 9,90 € par mois ou 99 € par an, HT.',
+    cta: 'Voir les offres Premium ›',
+    later: 'Plus tard',
+    cell: 'Premium',
+    previewNote: 'Aperçu — les valeurs marquées Premium, l’export PDF et l’impression sont inclus dans Premium.',
+    commercialLocked: 'La gamme tertiaire (> 23 kW) fait partie de Premium.',
+    sampleBadge: 'Échantillon gratuit',
+    reportLocked: 'Cette édition fait partie de Premium. Les éditions d’août et de septembre 2026 sont des échantillons gratuits.',
+    freePlanTitle: 'Vous utilisez l’offre Free.',
+    freePlanBody: 'La recherche, les caractéristiques de base, le statut de liste, les aides, les actualités et les vidéos d’installation restent gratuits. Passez à Premium à tout moment pour la base complète.',
+    notice: 'Les données fournies par ce site sont protégées par chiffrement et contrôle d’accès. Un système de détection des utilisations non autorisées est en service.',
+  },
+
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Votre essai gratuit se termine aujourd’hui. Abonnez-vous pour conserver l’accès complet.'
-        : `Votre essai gratuit se termine dans ${d} jours. Abonnez-vous pour conserver l’accès complet.`,
+        ? 'Votre essai Premium se termine aujourd’hui — vous continuez ensuite avec l’offre Free.'
+        : `Votre essai Premium se termine dans ${d} jours — vous continuez ensuite avec l’offre Free.`,
     bannerCta: 'Voir les offres',
     teamStartTitle: 'Créer une équipe ?',
     teamStartBody: 'Vous pouvez créer votre équipe pendant l’essai gratuit et inviter des membres immédiatement — tous partagent votre date de fin d’essai, et un seul paiement à la fin couvre toute l’équipe.',
@@ -2515,6 +2580,9 @@ const FR_FR: HpStrings = {
     fCompanyType: 'Type d’entreprise',
     fCompanyTypeOther: 'Précision du type',
     fCity: 'Ville',
+    fStreet: 'Rue et numéro',
+    fPostal: 'Code postal',
+    fSecondaryEmail: 'E-mail secondaire (facultatif)',
     fWebsite: 'Site web',
     editBtn: 'Modifier',
     saveBtn: 'Enregistrer',
@@ -2612,7 +2680,7 @@ const FR_FR: HpStrings = {
   },
   sub: {
     pickTitle: 'Choisissez votre offre.',
-    pickSub: 'La souscription démarre immédiatement votre offre payante — les 15 jours gratuits sont déjà inclus avec chaque nouveau compte.',
+    pickSub: 'La souscription active Premium immédiatement. Les nouveaux comptes incluent un essai Premium de 15 jours ; le compte continue ensuite avec l’offre Free.',
     currentTitle: 'Votre abonnement.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 utilisateur', team_3: 'Jusqu’à 3 utilisateurs', team_5: 'Jusqu’à 5 utilisateurs' } as Record<string, string>,
@@ -2658,7 +2726,7 @@ const FR_FR: HpStrings = {
     vatNote: 'Tous les prix s’entendent hors TVA. La TVA est calculée au paiement par Paddle.com (notre revendeur officiel) selon votre pays et vos informations professionnelles.',
     eurBillingNote: 'Tous les abonnements sont facturés en euros (EUR) sur tous les marchés. Si votre carte est libellée dans une autre devise, votre banque effectue la conversion et peut appliquer ses propres frais de transaction à l’étranger.',
     notConfigured: 'Le paiement web pour cette offre est en cours de finalisation — il s’ouvrira ici prochainement.',
-    statusTrialing: (d: string) => `Accès gratuit jusqu’au ${d}`,
+    statusTrialing: (d: string) => `Essai Premium jusqu’au ${d}`,
     statusActive: (d: string) => `Actif jusqu’au ${d}`,
     statusCanceled: (d: string) => `Renouvellement automatique désactivé — accès jusqu’au ${d}`,
     statusPastDue: 'Problème de paiement — mettez à jour votre moyen de paiement via « Gérer la facturation ».',
@@ -3030,11 +3098,30 @@ const PL_PL: HpStrings = {
     earlier: 'Wcześniejsze wydania',
   },
 
+  tier: {
+    free: 'Free',
+    premium: 'Premium',
+    lockTitle: 'Funkcja Premium',
+    lockBody: 'Pełne dane techniczne, porównanie modeli, segment komercyjny, karty PDF i miesięczny Raport specjalny są częścią Premium.',
+    benefits: ['Pełne dane — wartości COP, moc akustyczna, ilość czynnika', 'Porównanie do 4 modeli obok siebie', 'Segment komercyjny powyżej 23 kW', 'Gotowe do druku karty danych i karty etykiety UE w PDF', 'Miesięczny Raport specjalny', 'Dwa urządzenia'] as string[],
+    price: 'Od 9,90 € miesięcznie lub 99 € rocznie, netto (bez VAT).',
+    cta: 'Zobacz plany Premium ›',
+    later: 'Nie teraz',
+    cell: 'Premium',
+    previewNote: 'Podgląd — wartości oznaczone Premium, eksport PDF i drukowanie są dostępne w Premium.',
+    commercialLocked: 'Segment komercyjny (> 23 kW) jest częścią Premium.',
+    sampleBadge: 'Bezpłatny egzemplarz',
+    reportLocked: 'To wydanie jest częścią Premium. Wydania z sierpnia i września 2026 są bezpłatnymi egzemplarzami.',
+    freePlanTitle: 'Korzystasz z planu Free.',
+    freePlanBody: 'Wyszukiwarka, podstawowe dane, status na liście, dofinansowania, aktualności i filmy instalacyjne pozostają bezpłatne. W każdej chwili możesz przejść na Premium, aby uzyskać pełną bazę.',
+    notice: 'Dane udostępniane przez tę stronę są chronione szyfrowaniem i kontrolą dostępu. Działa system wykrywania nieuprawnionego wykorzystania.',
+  },
+
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Twój bezpłatny okres próbny kończy się dzisiaj. Wykup subskrypcję, aby zachować pełny dostęp.'
-        : `Twój bezpłatny okres próbny kończy się za ${d} dni. Wykup subskrypcję, aby zachować pełny dostęp.`,
+        ? 'Twój okres próbny Premium kończy się dzisiaj — potem korzystasz dalej z planu Free.'
+        : `Twój okres próbny Premium kończy się za ${d} dni — potem korzystasz dalej z planu Free.`,
     bannerCta: 'Zobacz plany',
     teamStartTitle: 'Tworzysz zespół?',
     teamStartBody: 'Zespół możesz założyć już w okresie próbnym i od razu zapraszać członków — wszyscy dzielą Twoją datę końca okresu próbnego, a jedna płatność na końcu obejmuje cały zespół.',
@@ -3497,6 +3584,9 @@ const PL_PL: HpStrings = {
     fCompanyType: 'Rodzaj firmy',
     fCompanyTypeOther: 'Doprecyzowanie rodzaju firmy',
     fCity: 'Miejscowość',
+    fStreet: 'Ulica i numer',
+    fPostal: 'Kod pocztowy',
+    fSecondaryEmail: 'Dodatkowy e-mail (opcjonalnie)',
     fWebsite: 'Strona internetowa',
     editProfile: 'Edytuj profil ›',
     editBtn: 'Edytuj',
@@ -3580,7 +3670,7 @@ const PL_PL: HpStrings = {
 
   sub: {
     pickTitle: 'Wybierz swój plan.',
-    pickSub: 'Subskrypcja rozpoczyna płatny plan od razu — bezpłatne 15 dni jest już zawarte w każdym nowym koncie.',
+    pickSub: 'Subskrypcja uruchamia Premium od razu. Nowe konta mają 15-dniowy okres próbny Premium; potem konto działa dalej w planie Free.',
     currentTitle: 'Twoja subskrypcja.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 użytkownik', team_3: 'Do 3 użytkowników', team_5: 'Do 5 użytkowników' } as Record<string, string>,
@@ -3626,7 +3716,7 @@ const PL_PL: HpStrings = {
     vatNote: 'Wszystkie ceny nie zawierają VAT. VAT jest naliczany przy płatności przez Paddle.com (naszego sprzedawcę rejestrowego) na podstawie kraju i danych firmy.',
     eurBillingNote: 'Wszystkie subskrypcje są rozliczane w euro (EUR) na wszystkich rynkach. Jeśli Twoja karta jest wydana w innej walucie, bank dokona przeliczenia i może doliczyć własną prowizję za transakcję zagraniczną.',
     notConfigured: 'Płatność online dla tego planu jest finalizowana — wkrótce będzie dostępna w tym miejscu.',
-    statusTrialing: (d: string) => `Bezpłatny dostęp do ${d}`,
+    statusTrialing: (d: string) => `Okres próbny Premium do ${d}`,
     statusActive: (d: string) => `Aktywna do ${d}`,
     statusCanceled: (d: string) => `Automatyczne odnowienie wyłączone — dostęp do ${d}`,
     statusPastDue: 'Problem z płatnością — zaktualizuj metodę płatności przez „Zarządzaj rozliczeniami”.',
@@ -4002,11 +4092,30 @@ const IT_IT: HpStrings = {
     earlier: 'Edizioni precedenti',
   },
 
+  tier: {
+    free: 'Free',
+    premium: 'Premium',
+    lockTitle: 'Funzione Premium',
+    lockBody: 'Le specifiche complete, il confronto affiancato, la gamma commerciale, le schede PDF e il Report speciale mensile fanno parte di Premium.',
+    benefits: ['Specifiche complete — valori COP, potenza sonora, carica di refrigerante', 'Confronto fino a 4 modelli affiancati', 'Gamma commerciale oltre 23 kW', 'Schede tecniche e schede etichetta UE in PDF pronte per la stampa', 'Il Report speciale mensile', 'Due dispositivi'] as string[],
+    price: 'Da 9,90 € al mese o 99 € all’anno, IVA esclusa.',
+    cta: 'Vedi i piani Premium ›',
+    later: 'Non ora',
+    cell: 'Premium',
+    previewNote: 'Anteprima — i valori contrassegnati Premium, l’esportazione PDF e la stampa sono inclusi in Premium.',
+    commercialLocked: 'La gamma commerciale (> 23 kW) fa parte di Premium.',
+    sampleBadge: 'Campione gratuito',
+    reportLocked: 'Questa edizione fa parte di Premium. Le edizioni di agosto e settembre 2026 sono campioni gratuiti.',
+    freePlanTitle: 'Stai usando il piano Free.',
+    freePlanBody: 'Ricerca, specifiche di base, stato di iscrizione, incentivi, notizie e video di installazione restano gratuiti. Passa a Premium quando vuoi per il database completo.',
+    notice: 'I dati forniti tramite questo sito sono protetti da crittografia e controllo degli accessi. È attivo un sistema di rilevamento degli usi non autorizzati.',
+  },
+
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'La tua prova gratuita termina oggi. Abbonati per mantenere l’accesso completo.'
-        : `La tua prova gratuita termina tra ${d} giorni. Abbonati per mantenere l’accesso completo.`,
+        ? 'La tua prova Premium termina oggi — poi continui con il piano Free.'
+        : `La tua prova Premium termina tra ${d} giorni — poi continui con il piano Free.`,
     bannerCta: 'Vedi i piani',
     teamStartTitle: 'Vuoi creare un team?',
     teamStartBody: 'Puoi configurare il tuo team già durante la prova gratuita e invitare subito i membri — tutti condividono la tua data di fine prova, e un unico pagamento finale copre l’intero team.',
@@ -4475,6 +4584,9 @@ const IT_IT: HpStrings = {
     fCompanyType: 'Tipo di azienda',
     fCompanyTypeOther: 'Dettaglio del tipo di azienda',
     fCity: 'Città',
+    fStreet: 'Via e numero civico',
+    fPostal: 'CAP',
+    fSecondaryEmail: 'E-mail secondaria (facoltativa)',
     fWebsite: 'Sito web',
     editProfile: 'Modifica profilo ›',
     editBtn: 'Modifica',
@@ -4558,7 +4670,7 @@ const IT_IT: HpStrings = {
 
   sub: {
     pickTitle: 'Scegli il tuo piano.',
-    pickSub: 'L’abbonamento avvia subito il piano a pagamento — i 15 giorni gratuiti sono già inclusi in ogni nuovo account.',
+    pickSub: 'L’abbonamento attiva subito Premium. I nuovi account includono una prova Premium di 15 giorni; poi l’account continua con il piano Free.',
     currentTitle: 'Il tuo abbonamento.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 utente', team_3: 'Fino a 3 utenti', team_5: 'Fino a 5 utenti' } as Record<string, string>,
@@ -4604,7 +4716,7 @@ const IT_IT: HpStrings = {
     vatNote: 'Tutti i prezzi sono IVA esclusa. L’IVA è calcolata al pagamento da Paddle.com (il nostro merchant of record) in base al paese e ai dati aziendali.',
     eurBillingNote: 'Tutti gli abbonamenti sono fatturati in euro (EUR) in tutti i mercati. Se la tua carta è emessa in un’altra valuta, la banca effettua la conversione e può applicare una propria commissione per transazioni estere.',
     notConfigured: 'Il pagamento online per questo piano è in fase di finalizzazione — sarà presto disponibile qui.',
-    statusTrialing: (d: string) => `Prova gratuita fino al ${d}`,
+    statusTrialing: (d: string) => `Prova Premium fino al ${d}`,
     statusActive: (d: string) => `Attivo fino al ${d}`,
     statusCanceled: (d: string) => `Rinnovo automatico disattivato — accesso fino al ${d}`,
     statusPastDue: 'Problema di pagamento — aggiorna il metodo di pagamento tramite «Gestisci fatturazione».',
