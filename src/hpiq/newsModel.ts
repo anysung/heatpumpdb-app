@@ -38,6 +38,14 @@ export function localizedNews(item: NewsItem, lang: Language): { title: string; 
   return { title: item.title, summary: item.summary, body: item.body ?? '' };
 }
 
+/** A Special Report announcement (publish-special-report-news.mjs: id
+ *  `news-YYYYMMDD-<cc>-sr1`, CTA to /special-report/<edition>/). Since
+ *  2026-09-27 the report has its own menu, so the in-app News feed leaves
+ *  these out; the documents stay in Firestore untouched (news is append-only)
+ *  and the public archive export is unaffected. */
+export const isSpecialReportItem = (item: NewsItem): boolean =>
+  /-sr\d+$/.test(item.id ?? '') || (item.ctaUrl ?? '').includes('/special-report/');
+
 /** The call-to-action an article can carry — used by the Special Report
  *  pieces, which exist to send the reader to the report itself. Returns null
  *  for ordinary articles, so the reader renders unchanged for them. */

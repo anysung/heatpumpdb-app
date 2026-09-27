@@ -35,6 +35,8 @@ import { BafaPage } from './pages/BafaPage';
 import { GuidePage } from './pages/GuidePage';
 import { NewsPage } from './pages/NewsPage';
 import { TrendsPage } from './pages/TrendsPage';
+import { ReportPage } from './pages/ReportPage';
+import { isSpecialReportItem } from './newsModel';
 import { InstallPage } from './pages/InstallPage';
 import { AccountPage } from './pages/AccountPage';
 
@@ -70,6 +72,9 @@ const NAV_GROUPS: { id: string; pages: NavPage[] }[] = [
   { id: 'datasheet', pages: ['datasheet'] },
   { id: 'funding', pages: ['bafa', 'guide'] },
   { id: 'newsTrends', pages: ['news', 'trends'] },
+  // Special Report: its own destination since 2026-09-27 (it used to ride the
+  // top of the News feed as a pinned announcement).
+  { id: 'report', pages: ['report'] },
   { id: 'install', pages: ['install'] },
 ];
 const groupOf = (page: HpPage) => NAV_GROUPS.find(g => (g.pages as HpPage[]).includes(page));
@@ -363,9 +368,21 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     catch { notify(t.ds.pdfFailed); }
   };
 
+  // News without the Special Report announcements — the report has its own menu.
+  const newsFeed = useMemo(
+    () => (dbData?.newsFeed ?? []).filter(n => !isSpecialReportItem(n)),
+    [dbData?.newsFeed]);
+  // A shared link to a Special Report announcement (?article=…-sr1) predates
+  // the menu split: land it on the Special Report page instead of an empty News.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('article');
+    const hit = id ? (dbData?.newsFeed ?? []).find(n => n.id === id) : undefined;
+    if (hit && isSpecialReportItem(hit)) setPage('report');
+  }, [dbData?.newsFeed]);
+
   const app: HpApp = {
     store, allStore, user, patchUser,
-    news: dbData?.newsFeed ?? [],
+    news: newsFeed,
     policies: dbData?.policySummary ?? [],
     dataStatusDate, bafaSnapshotDate, eprelSyncDate, totalListed,
     page, go: setPage,
@@ -657,6 +674,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
       {page === 'guide' && <GuidePage app={app} />}
       {page === 'news' && <NewsPage app={app} />}
       {page === 'trends' && <TrendsPage app={app} />}
+      {page === 'report' && <ReportPage app={app} />}
       {page === 'install' && <InstallPage app={app} />}
       {page === 'account' && <AccountPage app={app} />}
 

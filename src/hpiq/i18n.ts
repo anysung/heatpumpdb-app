@@ -37,6 +37,7 @@ const EN = {
     // keep their registry names as sub-tabs.
     funding: 'Subsidies',
     newsTrends: 'News & Trends',
+    report: 'Special Report',
     install: 'Installation',
     account: 'Account',
     signOut: 'Sign out',
@@ -106,6 +107,16 @@ const EN = {
       { title: 'From product to paper', body: 'Tap the Data sheet button — every product view ends in a print-ready document with its official listing status.' },
       { title: 'Installation, on video', body: 'Official manufacturer installation and commissioning videos for this market \u2014 leading brands first, in the market language where the manufacturer provides it.' },
     ] as { title: string; body: string }[],
+  },
+
+  /** Special Report menu (owner, 2026-09-27) — the edition copy itself comes
+   *  from /special-report/feed.json in the market's languages; these are the
+   *  page's own chrome strings only. */
+  report: {
+    empty: 'The first Special Report is on its way — it appears here as soon as it is published.',
+    pages: (n: number) => `${n} pages`,
+    latest: 'Latest edition',
+    earlier: 'Earlier editions',
   },
 
   trial: {
@@ -795,6 +806,7 @@ const DE: HpStrings = {
     trends: 'Markt & Trends',
     funding: 'Förderung',
     newsTrends: 'News & Trends',
+    report: 'Special Report',
     install: 'Installation',
     account: 'Konto',
     signOut: 'Abmelden',
@@ -883,6 +895,13 @@ const DE: HpStrings = {
       { title: 'Vom Produkt zum Papier', body: 'Tippen Sie auf den Datenblatt-Button — jede Produktansicht endet in einem druckfertigen Dokument mit offiziellem Listenstatus.' },
       { title: 'Installation im Video', body: 'Offizielle Installations- und Inbetriebnahme-Videos der Hersteller f\u00fcr diesen Markt \u2014 f\u00fchrende Marken zuerst, auf Deutsch, wo der Hersteller es anbietet.' },
     ] as { title: string; body: string }[],
+  },
+
+  report: {
+    empty: 'Der erste Special Report ist in Arbeit — er erscheint hier, sobald er veröffentlicht ist.',
+    pages: (n: number) => `${n} Seiten`,
+    latest: 'Aktuelle Ausgabe',
+    earlier: 'Frühere Ausgaben',
   },
 
   trial: {
@@ -1970,6 +1989,7 @@ const FR_FR: HpStrings = {
     trends: 'Marché & Tendances',
     funding: 'Aides',
     newsTrends: 'Actus & Tendances',
+    report: 'Rapport spécial',
     install: 'Installation',
     account: 'Compte',
     signOut: 'Se déconnecter',
@@ -2035,6 +2055,13 @@ const FR_FR: HpStrings = {
       { title: 'Du produit au papier', body: 'Touchez le bouton Fiche technique — chaque vue produit aboutit à un document prêt à imprimer avec son statut officiel.' },
       { title: 'L\u2019installation en vid\u00e9o', body: 'Vid\u00e9os officielles d\u2019installation et de mise en service des fabricants pour ce march\u00e9 \u2014 grandes marques d\u2019abord, en fran\u00e7ais lorsque le fabricant le propose.' },
     ] as { title: string; body: string }[],
+  },
+
+  report: {
+    empty: 'Le premier rapport spécial est en préparation — il apparaîtra ici dès sa publication.',
+    pages: (n: number) => `${n} pages`,
+    latest: 'Dernière édition',
+    earlier: 'Éditions précédentes',
   },
 
   trial: {
@@ -2928,6 +2955,7 @@ const PL_PL: HpStrings = {
     trends: 'Rynek i Trendy',
     funding: 'Dofinansowanie',
     newsTrends: 'Aktualności i trendy',
+    report: 'Raport specjalny',
     install: 'Montaż',
     account: 'Konto',
     signOut: 'Wyloguj się',
@@ -2993,6 +3021,13 @@ const PL_PL: HpStrings = {
       { title: 'Od produktu do dokumentu', body: 'Dotknij przycisku Karta danych — każdy widok produktu kończy się dokumentem gotowym do druku ze statusem ZUM.' },
       { title: 'Monta\u017c na filmie', body: 'Oficjalne filmy producent\u00f3w o monta\u017cu i uruchomieniu dla tego rynku \u2014 najpierw wiod\u0105ce marki, po polsku tam, gdzie producent je udost\u0119pnia.' },
     ] as { title: string; body: string }[],
+  },
+
+  report: {
+    empty: 'Pierwszy raport specjalny jest w przygotowaniu — pojawi się tutaj zaraz po publikacji.',
+    pages: (n: number) => `${n} stron`,
+    latest: 'Najnowsze wydanie',
+    earlier: 'Wcześniejsze wydania',
   },
 
   trial: {
@@ -3892,6 +3927,7 @@ const IT_IT: HpStrings = {
     trends: 'Mercato & Trend',
     funding: 'Incentivi',
     newsTrends: 'Notizie e tendenze',
+    report: 'Report speciale',
     install: 'Installazione',
     account: 'Account',
     signOut: 'Esci',
@@ -3957,6 +3993,13 @@ const IT_IT: HpStrings = {
       { title: 'Dal prodotto alla carta', body: 'Tocca il pulsante Scheda tecnica — ogni vista prodotto termina in un documento pronto da stampare con lo stato a catalogo.' },
       { title: 'L\u2019installazione in video', body: 'Video ufficiali dei produttori su installazione e messa in servizio per questo mercato \u2014 prima i marchi principali, in italiano dove il produttore li offre.' },
     ] as { title: string; body: string }[],
+  },
+
+  report: {
+    empty: 'Il primo report speciale è in preparazione — apparirà qui non appena pubblicato.',
+    pages: (n: number) => `${n} pagine`,
+    latest: 'Ultima edizione',
+    earlier: 'Edizioni precedenti',
   },
 
   trial: {

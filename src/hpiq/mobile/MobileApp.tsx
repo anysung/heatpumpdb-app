@@ -33,11 +33,12 @@ import { shortDate } from '../model';
 import { NEWS_SERIF, localizedNews, newsEyebrow, articleDeepLink, emailArticleHref, makeArticlePdf } from '../newsModel';
 import { NewsGallery, galleryOf } from '../NewsGallery';
 import { TrendsPage } from '../pages/TrendsPage';
+import { ReportPage } from '../pages/ReportPage';
 import { InstallPage } from '../pages/InstallPage';
 import { SubTabs, recallSubTab } from '../ui';
 import { printPdfViaShareSheet } from '../pdf/deliverPdf';
 
-type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account' | 'label' | 'trends' | 'install'> | 'guide';
+type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account' | 'label' | 'trends' | 'report' | 'install'> | 'guide';
 
 /* ── Tiny tab icons (stroke style matching the desktop icon set) ─────────── */
 
@@ -60,6 +61,8 @@ const ICONS: Record<MTab, string> = {
   trends: 'M4 20V10M10 20V4M16 20v-7M20 20H2M20 8l-4-4-3 3-3-3',
   // Installation videos: play button in a frame
   install: 'M3 5h18v14H3zM10 9l5 3-5 3z',
+  // Special Report: bound report with a bookmark ribbon
+  report: 'M5 3h11l3 3v15H5zM9 3v7l2-1.5L13 10V3M8 14h8M8 17h6',
 };
 
 /* ── PWA install (mobile browsers never volunteer the prompt themselves) ── */
@@ -876,13 +879,13 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
      news tab (news + trends the same way). The freed slots put the EU label
      into the header menu next to the new Installation page. */
   const MOBILE_TABS: MTab[] = ['find', 'products', 'bafa', 'news', 'account'];
-  const MENU_PAGES: MTab[] = ['label', 'install'];
-  const VALID_PAGES = ['find', 'products', 'datasheet', 'guide', 'bafa', 'news', 'trends', 'install', 'account', 'label'];
+  const MENU_PAGES: MTab[] = ['report', 'label', 'install'];
+  const VALID_PAGES = ['find', 'products', 'datasheet', 'guide', 'bafa', 'news', 'trends', 'report', 'install', 'account', 'label'];
   const page: MTab = VALID_PAGES.includes(app.page) ? (app.page as MTab) : 'find';
   const tabLabel: Record<MTab, string> = {
     find: t.m.tabSearch, products: t.products.title, datasheet: t.m.mdsTitle,
     bafa: t.m.tabFunding, news: t.nav.news, guide: t.nav.guide, account: t.nav.account,
-    label: t.nav.label, trends: t.nav.trends, install: t.nav.install,
+    label: t.nav.label, trends: t.nav.trends, report: t.nav.report, install: t.nav.install,
   };
   /** A grouped tab lands on the sub-page the person used last (same memory the
    *  desktop nav reads — localStorage survives shell switches). */
@@ -918,7 +921,7 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
         <WavingFlag height={20} />
         {isTablet && (
           <div style={{ display: 'flex', gap: 3, fontSize: 13, marginLeft: 10, overflowX: 'auto' }}>
-            {(['find', 'products', 'label', 'bafa', 'news', 'install'] as MTab[]).map(id => (
+            {(['find', 'products', 'label', 'bafa', 'news', 'report', 'install'] as MTab[]).map(id => (
               <span key={id} onClick={() => { groupGo(id); }} style={{ padding: '6px 12px', borderRadius: 999, cursor: 'pointer', whiteSpace: 'nowrap', ...((page === id || (id === 'bafa' && page === 'guide') || (id === 'news' && page === 'trends')) ? { color: '#fff', fontWeight: 600, background: 'rgba(255,255,255,.12)' } : { color: 'rgba(255,255,255,.65)' }) }}>
                 {tabLabel[id]}
               </span>
@@ -999,6 +1002,7 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
         {page === 'guide' && <MobileGuide app={app} />}
         {page === 'news' && <MobileNews app={app} />}
         {page === 'trends' && <TrendsPage app={app} />}
+        {page === 'report' && <ReportPage app={app} />}
         {page === 'install' && <InstallPage app={app} />}
         {page === 'account' && <MobileAccount app={app} />}
       </div>

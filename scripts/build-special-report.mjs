@@ -347,6 +347,31 @@ for (const lang of langs) {
   writeFileSync(join(outRoot, file), html);
 }
 
+/* The in-app Special Report menu (owner, 2026-09-27: the report moved out of
+   News into its own destination). The app renders the SAME editions natively
+   from this feed — one content source, two surfaces, exactly like
+   /market-trends/feed.json. Only the copy the app shows is carried, in the
+   market's languages. */
+const FEED_KEYS = ['eyebrow', 'title', 'standfirst', 'lead', 'bulletsTitle', 'bullets',
+  'byline', 'openLabel', 'downloadLabel', 'downloadNote', 'editionLabel', 'langNote'];
+const pick = (c) => Object.fromEntries(FEED_KEYS.filter((k) => c[k] !== undefined).map((k) => [k, c[k]]));
+const feed = {
+  series: Object.fromEntries(langs.map((l) => {
+    const c = copyOf(editions[0], l);
+    return [l, { title: c.seriesTitle, sub: c.seriesSub }];
+  })),
+  items: editions.map((ed) => ({
+    id: ed.id,
+    published: ed.meta.published,
+    pages: ed.meta.reportPages ?? null,
+    reportUrl: `/special-report/${ed.id}/${ed.meta.reportFile}`,
+    downloadName: ed.meta.downloadName ?? ed.meta.reportFile,
+    cover: Object.fromEntries(langs.map((l) => [l, `/special-report/img/${coverFile(ed, l)}`])),
+    copy: Object.fromEntries(langs.map((l) => [l, pick(copyOf(ed, l))])),
+  })),
+};
+writeFileSync(join(outRoot, 'feed.json'), JSON.stringify(feed));
+
 const kb = (p) => (statSync(p).size / 1024).toFixed(0);
 console.log(`special report (${MARKET}): ${editions.length} edition(s), languages ${langs.join('+')} — ` +
   editions.map((e) => `${e.id} (report ${kb(join(outRoot, e.id, e.meta.reportFile))} kB)`).join(', '));
