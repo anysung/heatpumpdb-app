@@ -117,7 +117,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{t.find.soundPower}</span>
-                      <span style={{ fontSize: 16, fontWeight: 600 }}>{p.noise === '—' ? '—' : `${p.noise} dB(A)`}</span>
+                      <span style={{ fontSize: 16, fontWeight: 600 }}>{(/^\d/.test(p.noise) ? `${p.noise} dB(A)` : p.noise)}</span>
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 2 }}>

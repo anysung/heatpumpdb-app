@@ -486,7 +486,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span data-testid="row-kw" style={{ whiteSpace: 'nowrap' }}>{r.ratedKw}</span>
                     <span style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>{r.cop2}</span>
                     <span style={{ whiteSpace: 'nowrap' }}>{r.scop}</span>
-                    <span style={{ whiteSpace: 'nowrap' }}>{r.noise === '—' ? '—' : `${r.noise} dB`}</span>
+                    <span style={{ whiteSpace: 'nowrap' }}>{(/^\d/.test(r.noise) ? `${r.noise} dB` : r.noise)}</span>
                     <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                       {/* No national list in this market → say nothing about listing. */}
                       <ListingChip raw={r.raw} t={t} />
@@ -532,7 +532,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     [t.products.inspSpecs.cop2, sel.cop2],
                     [t.products.inspSpecs.copm7, sel.copm7],
                     [t.products.inspSpecs.ref, sel.ref],
-                    [t.products.inspSpecs.noise, sel.noise === '—' ? '—' : `${sel.noise} dB(A)`],
+                    [t.products.inspSpecs.noise, (/^\d/.test(sel.noise) ? `${sel.noise} dB(A)` : sel.noise)],
                     [t.products.inspSpecs.type, sel.installType],
                   ] as [string, string][]).map(([label, value]) => (
                     <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -630,8 +630,8 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   { label: L[1], value: c => c.cop7, metric: c => num(c.cop7), dir: 1 },
                   { label: L[2], value: c => c.cop2, metric: c => num(c.cop2), dir: 1 },
                   { label: L[3], value: c => c.scop, metric: c => num(c.scop), dir: 1 },
-                  { label: L[4], value: c => (c.noise === '—' ? '—' : `${c.noise} dB(A)`), metric: c => num(c.noise), dir: -1 },
-                  { label: L[5], value: c => (c.refKg === '—' ? c.ref : `${c.ref} · ${c.refKg} kg`) },
+                  { label: L[4], value: c => ((/^\d/.test(c.noise) ? `${c.noise} dB(A)` : c.noise)), metric: c => num(c.noise), dir: -1 },
+                  { label: L[5], value: c => (/^\d/.test(c.refKg) ? `${c.ref} · ${c.refKg} kg` : c.ref) },
                   { label: L[6], value: c => c.label },
                   { label: L[7], value: c => c.sourceId, dim: true },
                 ];

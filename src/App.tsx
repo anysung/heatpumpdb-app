@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   loginUser, registerUser, registerInvitedMember, logoutUser, onUserChange,
   loginWithProvider, completeRedirectSignIn, isAdminRole,
@@ -62,11 +62,11 @@ type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'VERIFY_E
  *  that signing up is free and card-less BEFORE choosing a button — the
  *  industry-standard trust phrase is "no credit card required". */
 const FREE_SIGNUP_NOTE: Record<Language, string> = {
-  en: 'Free to join — 15 days of full access, no credit card required.',
-  de: 'Kostenlos registrieren — 15 Tage voller Zugang, keine Kreditkarte erforderlich.',
-  fr: 'Inscription gratuite — 15 jours d’accès complet, sans carte bancaire.',
-  pl: 'Dołącz za darmo — 15 dni pełnego dostępu, bez karty płatniczej.',
-  it: 'Registrazione gratuita — 15 giorni di accesso completo, senza carta di credito.',
+  en: 'Free to use — 15 days of Premium included, no credit card required.',
+  de: 'Kostenlos nutzen — 15 Tage Premium inklusive, keine Kreditkarte erforderlich.',
+  fr: 'Utilisation gratuite — 15 jours de Premium inclus, sans carte bancaire.',
+  pl: 'Korzystaj za darmo — 15 dni Premium w cenie, bez karty płatniczej.',
+  it: 'Uso gratuito — 15 giorni di Premium inclusi, senza carta di credito.',
 };
 
 /** The two public, indexable pages, labelled as signposts rather than as calls
@@ -198,7 +198,14 @@ const AppInner: React.FC = () => {
      Signed-out / unknown → 'premium' is only a request; the storage rules
      decide, and a Free account asking for full objects would simply fail —
      so the tier is derived from the same window the rules read. */
-  const datasetTier = currentUser ? tierOf(currentUser, myOrg) : 'premium';
+  const datasetTier = currentUser ? tierOf(currentUser, myOrg)
+    // Dev preview only: ?preview=hpiq&tier=free renders the Free tier on basic data.
+    : (import.meta.env.DEV && new URLSearchParams(window.location.search).get('tier') === 'free' ? 'free' : 'premium');
+  const datasetTierRef = useRef(datasetTier);
+  datasetTierRef.current = datasetTier;
+  /* A tier change (e.g. a team org arriving after sign-in, or a payment)
+     re-runs the load; only the newest run may write state. */
+  const loadSeqRef = useRef(0);
 
   // After a completed Paddle checkout the profile changes SERVER-side (the
   // webhook writes the subscription and, for team plans, creates the org).
@@ -292,6 +299,7 @@ const AppInner: React.FC = () => {
 
     // 2. Load Data from Firestore
     const loadData = async () => {
+      const seq = ++loadSeqRef.current;
       try {
         // Dataset fetches report failure (banner + retry) but never abort the
         // rest of the load — news/policies still render.
@@ -299,11 +307,14 @@ const AppInner: React.FC = () => {
         const orEmpty = <T,>(p: Promise<T[]>): Promise<T[]> =>
           p.catch(err => { console.error('Dataset load failed:', err); productsFailed = true; return []; });
         const [products, commercialProducts, news, policies] = await Promise.all([
-            orEmpty(getProducts()),
-            orEmpty(getCommercialProducts()),
+            // Free tier reads the BASIC objects (no premium fields); the
+            // storage rules refuse a Free account the full ones.
+            orEmpty(getProducts(datasetTierRef.current === 'premium' ? 'full' : 'basic')),
+            orEmpty(getCommercialProducts(datasetTierRef.current === 'premium' ? 'full' : 'basic')),
             getNews(),
             getPolicies()
         ]);
+        if (seq !== loadSeqRef.current) return;   // a newer load superseded this one
         setDatasetsFailed(productsFailed);
 
         const dbData: HeatPumpDatabase = {
@@ -327,7 +338,7 @@ const AppInner: React.FC = () => {
     if (import.meta.env.DEV || auth.currentUser) loadData();
 
     return () => unsubscribe();
-  }, [currentView, datasetsRetryTick]);
+  }, [currentView, datasetsRetryTick, datasetTier]);
 
   // ... (Keep all Handlers: handleLogin, handleSignup, etc. EXACTLY AS THEY WERE) ...
   /** Route the one-email-one-country sentinels to the mismatch screen. Returns
@@ -596,6 +607,7 @@ const AppInner: React.FC = () => {
       ...previewUserPatch(),        // ?as=owner | member → team account shapes
     };
     return (
+      <>
       <HpiqApp
         user={previewUser}
         onLogout={() => {}}
@@ -604,7 +616,13 @@ const AppInner: React.FC = () => {
         onRetryDatasets={() => setDatasetsRetryTick(n => n + 1)}
         language={language}
         setLanguage={setLanguage}
+        premium={datasetTier === 'premium'}
       />
+      {/* ?profile=1 — the required profile step over the preview (layout check). */}
+      {new URLSearchParams(window.location.search).get('profile') === '1' && (
+        <OnboardingSheet language={language} user={{ ...previewUser, companyName: '', companyType: '' }} onDone={() => {}} onSignOut={() => {}} />
+      )}
+      </>
     );
   }
 

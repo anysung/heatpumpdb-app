@@ -587,6 +587,12 @@ const SubscriptionSection: React.FC<{
         <CardTitle style={{ fontSize: 21 }}>{s.pickTitle}</CardTitle>
         <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>{s.pickSub}</span>
       </div>
+      {!app.premium && (
+        <div data-testid="free-plan-card" style={{ background: '#f5f5f7', borderRadius: 14, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <span style={{ fontSize: 14, fontWeight: 650, color: '#1d1d1f' }}>{t.tier.freePlanTitle}</span>
+          <span style={{ fontSize: 13, color: '#6e6e73', lineHeight: 1.55 }}>{t.tier.freePlanBody}</span>
+        </div>
+      )}
       <PlanPicker app={app} mode="checkout" />
       {/* Team during the free trial: create the org now (no payment), invite
           members right away — everyone runs on the admin's trial end date. */}

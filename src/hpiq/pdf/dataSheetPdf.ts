@@ -386,8 +386,8 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     sectionHead(t.ds.headEnv);
     fieldGrid([
       [t.ds.f.ref, v.ref, n('ref')],
-      [t.ds.f.refKg, v.refKg === '—' ? '—' : `${v.refKg} kg`, n('refKg')],
-      [t.ds.f.noise, v.noise === '—' ? '—' : `${v.noise} dB(A)`, n('noise')],
+      [t.ds.f.refKg, /^\d/.test(v.refKg) ? `${v.refKg} kg` : v.refKg, n('refKg')],
+      [t.ds.f.noise, (/^\d/.test(v.noise) ? `${v.noise} dB(A)` : v.noise), n('noise')],
       [t.ds.f.grid, isGb || v.raw.grid_ready == null ? '—' : v.raw.grid_ready ? t.ds.f.yes : t.ds.f.no, n('grid')],
     ]);
   }

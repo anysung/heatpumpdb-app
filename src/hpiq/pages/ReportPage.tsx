@@ -10,16 +10,22 @@
  * the owner's self-contained interactive HTML; we open or download it as is,
  * never re-render it.
  *
- * Tiering: the Free/Premium program (2026-09 plan) puts this menu in Premium.
- * The lock is added with the tier layer itself (entitlement tiers + upgrade
- * prompt), not here ad hoc — until then every entitled member sees it.
+ * Tiering (owner, 2026-09-27): the August and September 2026 editions are
+ * FREE SAMPLES (public hosting URL). From October 2026 an edition is PREMIUM:
+ * its report file exists only in the protected datasets bucket
+ * (special-report/<edition>/<file>, storage.rules isEntitled) and is fetched
+ * with the Storage SDK — a Free account gets the upgrade prompt instead, and
+ * could not read the object anyway.
  *
  * The dev server has no built feed; the page then shows the quiet empty state.
  */
 import React, { useEffect, useState } from 'react';
+import { ref, getBlob } from 'firebase/storage';
+import { datasetStorage } from '../../firebase';
 import { HpApp } from '../appState';
 import { tr } from '../i18n';
 import { FD } from '../ui';
+import { PremiumPill } from '../Premium';
 
 interface ReportCopy {
   eyebrow?: string;
@@ -40,7 +46,10 @@ interface ReportEdition {
   id: string;            // YYYY-MM
   published: string;     // YYYY-MM-DD
   pages: number | null;
-  reportUrl: string;     // root-relative, same origin
+  /** Premium edition (2026-10 on) — file in the protected bucket, not on hosting. */
+  premium?: boolean;
+  reportUrl: string | null;     // free samples: root-relative, same origin
+  storagePath?: string | null;  // premium: object path in the datasets bucket
   downloadName: string;
   cover: Record<string, string>;
   copy: Record<string, ReportCopy>;
@@ -87,6 +96,34 @@ export const ReportPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const items = feed?.items ?? [];
   const sel = items.find(e => e.id === selId) ?? items[0] ?? null;
   const earlier = items.filter(e => e !== sel);
+  const [busy, setBusy] = useState(false);
+
+  /** Premium edition → the file from the protected bucket, as a blob URL. */
+  const premiumBlobUrl = async (e: ReportEdition): Promise<string> => {
+    const blob = await getBlob(ref(datasetStorage, e.storagePath!));
+    return URL.createObjectURL(new Blob([blob], { type: 'text/html;charset=utf-8' }));
+  };
+  const openEdition = async (e: ReportEdition) => {
+    if (e.reportUrl) { window.open(e.reportUrl, '_blank', 'noopener'); return; }
+    if (!app.premium) { app.upsell(); return; }
+    // Open the tab inside the click (popup blockers), fill it when the file arrives.
+    const w = window.open('', '_blank');
+    setBusy(true);
+    try { const url = await premiumBlobUrl(e); if (w) w.location.href = url; else window.location.href = url; }
+    catch { w?.close(); app.notify(t.products.loadError); }
+    finally { setBusy(false); }
+  };
+  const downloadEdition = async (e: ReportEdition) => {
+    if (!e.reportUrl && !app.premium) { app.upsell(); return; }
+    setBusy(true);
+    try {
+      const url = e.reportUrl ?? await premiumBlobUrl(e);
+      const a = document.createElement('a');
+      a.href = url; a.download = e.downloadName;
+      document.body.appendChild(a); a.click(); a.remove();
+    } catch { app.notify(t.products.loadError); }
+    finally { setBusy(false); }
+  };
 
   return (
     <div style={PAGE}>
@@ -106,14 +143,17 @@ export const ReportPage: React.FC<{ app: HpApp }> = ({ app }) => {
           return (
             <div data-testid="report-featured" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(340px, 100%), 1fr))', gap: 'clamp(20px, 3vw, 40px)', alignItems: 'start' }}>
               {cover && (
-                <a href={sel.reportUrl} target="_blank" rel="noopener" style={{ display: 'block' }}>
+                <span className="hp-press" onClick={() => openEdition(sel)} style={{ display: 'block', cursor: 'pointer' }}>
                   <img src={cover} alt={c.title} style={{ width: '100%', borderRadius: 14, border: '1px solid #e8e8ed', display: 'block' }} />
-                </a>
+                </span>
               )}
               <div>
                 <div style={{ fontSize: 12.5, fontWeight: 600, letterSpacing: '.04em', color: '#86868b', textTransform: 'uppercase' }}>
                   {sel === items[0] ? t.report.latest : c.editionLabel ?? sel.id}
                   {sel.pages ? ` · ${t.report.pages(sel.pages)}` : ''}
+                  {sel.premium
+                    ? <PremiumPill app={app} style={{ marginLeft: 8 }} />
+                    : <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, color: '#0055aa', background: '#eef4ff', borderRadius: 999, padding: '2px 7px' }}>{t.tier.sampleBadge}</span>}
                 </div>
                 <h1 style={{ fontFamily: FD, fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 600, lineHeight: 1.2, letterSpacing: '-0.3px', margin: '8px 0 10px', color: '#1d1d1f' }}>
                   {c.title}
@@ -132,16 +172,25 @@ export const ReportPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     ))}
                   </div>
                 )}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-                  <a href={sel.reportUrl} target="_blank" rel="noopener" data-testid="report-open"
-                    style={{ ...BTN, background: '#0071e3', color: '#fff' }}>
-                    {c.openLabel ?? c.title} ›
-                  </a>
-                  <a href={sel.reportUrl} download={sel.downloadName}
-                    style={{ ...BTN, background: '#f5f5f7', color: '#1d1d1f', border: '1px solid #e0e0e0' }}>
-                    ⬇ {c.downloadLabel ?? sel.downloadName}
-                  </a>
-                </div>
+                {sel.premium && !app.premium ? (
+                  <div data-testid="report-locked" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <span style={{ fontSize: 13.5, color: '#3a3a3c', lineHeight: 1.55 }}>{t.tier.reportLocked}</span>
+                    <span className="hp-press" onClick={app.upsell} style={{ ...BTN, background: '#0071e3', color: '#fff', alignSelf: 'flex-start' }}>
+                      {t.tier.cta}
+                    </span>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, opacity: busy ? 0.6 : 1 }}>
+                    <span className="hp-press" onClick={() => openEdition(sel)} data-testid="report-open"
+                      style={{ ...BTN, background: '#0071e3', color: '#fff' }}>
+                      {c.openLabel ?? c.title} ›
+                    </span>
+                    <span className="hp-press" onClick={() => downloadEdition(sel)}
+                      style={{ ...BTN, background: '#f5f5f7', color: '#1d1d1f', border: '1px solid #e0e0e0' }}>
+                      ⬇ {c.downloadLabel ?? sel.downloadName}
+                    </span>
+                  </div>
+                )}
                 {(c.downloadNote || c.langNote) && (
                   <p style={{ fontSize: 12.5, color: '#86868b', margin: '12px 0 0', lineHeight: 1.5 }}>
                     {[c.langNote, c.downloadNote].filter(Boolean).join(' ')}
@@ -164,7 +213,10 @@ export const ReportPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     style={{ cursor: 'pointer', border: '1px solid #e8e8ed', borderRadius: 16, overflow: 'hidden', background: '#fff' }}>
                     {cover && <img src={cover} alt={c.title} loading="lazy" style={{ width: '100%', display: 'block', aspectRatio: '16 / 10', objectFit: 'cover' }} />}
                     <div style={{ padding: '12px 14px 16px' }}>
-                      <div style={{ fontSize: 12.5, color: '#86868b', marginBottom: 4 }}>{c.editionLabel ?? e.id}</div>
+                      <div style={{ fontSize: 12.5, color: '#86868b', marginBottom: 4 }}>
+                        {c.editionLabel ?? e.id}
+                        {e.premium ? <PremiumPill app={app} /> : null}
+                      </div>
                       <div style={{ fontWeight: 650, fontSize: 15.5, color: '#1d1d1f', lineHeight: 1.3 }}>{c.title}</div>
                     </div>
                   </div>

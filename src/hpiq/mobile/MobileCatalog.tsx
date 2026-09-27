@@ -73,8 +73,8 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
     [t.products.inspSpecs.cop7, v.cop7],
     [t.products.inspSpecs.cop2, v.cop2],
     [t.products.inspSpecs.copm7, v.copm7],
-    [t.products.inspSpecs.ref, v.refKg === '—' ? v.ref : `${v.ref} · ${v.refKg} kg`],
-    [t.products.inspSpecs.noise, v.noise === '—' ? '—' : `${v.noise} dB(A)`],
+    [t.products.inspSpecs.ref, /^\d/.test(v.refKg) ? `${v.ref} · ${v.refKg} kg` : v.ref],
+    [t.products.inspSpecs.noise, (/^\d/.test(v.noise) ? `${v.noise} dB(A)` : v.noise)],
     [t.products.inspSpecs.type, v.installType],
   ];
   const listingStatus = localListingStatus(v.raw);

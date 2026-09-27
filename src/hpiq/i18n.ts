@@ -55,7 +55,7 @@ const EN = {
   session: {
     banner: (t: string) => `Device limit exceeded — the least-used session signs out in ${t}. Unused devices clear automatically.`,
     cardTitle: 'Devices & sessions',
-    cardText: 'Your plan allows two concurrently active devices. Signing in on more starts a 30-minute grace period, then the least recently used session is signed out.',
+    cardText: 'Premium allows two concurrently active devices, the Free plan one. Signing in on more starts a 30-minute grace period, then the least recently used session is signed out.',
     thisDevice: 'This device',
     lastSeen: (s: string) => `Last active ${s}`,
     signOutOne: 'Sign out',
@@ -868,7 +868,7 @@ const DE: HpStrings = {
   session: {
     banner: (t: string) => `Gerätelimit überschritten — die am längsten ungenutzte Sitzung wird in ${t} abgemeldet. Ungenutzte Geräte werden automatisch bereinigt.`,
     cardTitle: 'Geräte & Sitzungen',
-    cardText: 'Ihr Tarif erlaubt zwei gleichzeitig aktive Geräte. Bei mehr beginnt eine 30-minütige Karenzzeit, danach wird die am längsten ungenutzte Sitzung abgemeldet.',
+    cardText: 'Premium erlaubt zwei gleichzeitig aktive Geräte, der Free-Tarif eines. Bei mehr beginnt eine 30-minütige Karenzzeit, danach wird die am längsten ungenutzte Sitzung abgemeldet.',
     thisDevice: 'Dieses Gerät',
     lastSeen: (s: string) => `Zuletzt aktiv ${s}`,
     signOutOne: 'Abmelden',
@@ -2050,7 +2050,7 @@ const FR_FR: HpStrings = {
   session: {
     banner: (t: string) => `Limite d’appareils dépassée — la session la moins utilisée sera déconnectée dans ${t}. Les appareils inutilisés sont libérés automatiquement.`,
     cardTitle: 'Appareils et sessions',
-    cardText: 'Votre offre autorise deux appareils actifs simultanément. Au-delà, un délai de 30 minutes s’applique, puis la session la moins récemment utilisée est déconnectée.',
+    cardText: 'Premium autorise deux appareils actifs simultanément, l’offre Free un seul. Au-delà, un délai de 30 minutes s’applique, puis la session la moins récemment utilisée est déconnectée.',
     thisDevice: 'Cet appareil',
     lastSeen: (s: string) => `Dernière activité ${s}`,
     signOutOne: 'Déconnecter',
@@ -3038,7 +3038,7 @@ const PL_PL: HpStrings = {
   session: {
     banner: (t: string) => `Przekroczono limit urządzeń — najdłużej nieużywana sesja zostanie wylogowana za ${t}. Nieużywane urządzenia są zwalniane automatycznie.`,
     cardTitle: 'Urządzenia i sesje',
-    cardText: 'Twój plan pozwala na dwa jednocześnie aktywne urządzenia. Po przekroczeniu obowiązuje 30-minutowy okres karencji, a następnie wylogowywana jest najdłużej nieużywana sesja.',
+    cardText: 'Premium pozwala na dwa jednocześnie aktywne urządzenia, plan Free na jedno. Po przekroczeniu obowiązuje 30-minutowy okres karencji, a następnie wylogowywana jest najdłużej nieużywana sesja.',
     thisDevice: 'To urządzenie',
     lastSeen: (s: string) => `Ostatnia aktywność ${s}`,
     signOutOne: 'Wyloguj',
@@ -4032,7 +4032,7 @@ const IT_IT: HpStrings = {
   session: {
     banner: (t: string) => `Limite di dispositivi superato — la sessione meno utilizzata verrà disconnessa tra ${t}. I dispositivi inutilizzati si liberano automaticamente.`,
     cardTitle: 'Dispositivi e sessioni',
-    cardText: 'Il tuo piano consente due dispositivi attivi contemporaneamente. Oltre questo limite parte un periodo di tolleranza di 30 minuti, poi la sessione usata meno di recente viene disconnessa.',
+    cardText: 'Premium consente due dispositivi attivi contemporaneamente, il piano Free uno. Oltre questo limite parte un periodo di tolleranza di 30 minuti, poi la sessione usata meno di recente viene disconnessa.',
     thisDevice: 'Questo dispositivo',
     lastSeen: (s: string) => `Ultima attività ${s}`,
     signOutOne: 'Disconnetti',

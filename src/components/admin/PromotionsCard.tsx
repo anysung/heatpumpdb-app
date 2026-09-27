@@ -19,7 +19,7 @@ import React, { useEffect, useState } from 'react';
 import { listPromotions, savePromotion, archivePromotion } from '../../services/subscriptionService';
 import { createDiscountFn, archiveDiscountFn, TRIAL_FLOW_ENABLED } from '../../services/billingFnService';
 import { Promotion } from '../../types';
-import { SUB_PLAN_CODES, SUB_PLAN_NAMES, SubPlanCode } from '../../config/subscriptionPlans';
+import { SUB_PLAN_CODES, SUB_PLAN_NAMES, SubPlanCode, BILLING_TERMS } from '../../config/subscriptionPlans';
 import { COUNTRY_PROFILES } from '../../config/countryProfiles';
 import { SectionCard } from './shared';
 import { AdminLang, ADMIN_I18N } from './adminI18n';
@@ -70,7 +70,7 @@ export const PromotionsCard: React.FC<{ al: AdminLang }> = ({ al }) => {
       if (!discountId && amount.trim()) {
         if (!TRIAL_FLOW_ENABLED) { flash(A.pmFnMissing); setBusy(false); return; }
         const restrictToPlans = plans.length
-          ? plans.flatMap(pl => ['monthly', 'six_months', 'annual'].map(tm => `${pl}/${tm}`))
+          ? plans.flatMap(pl => BILLING_TERMS.map(tm => `${pl}/${tm}`))
           : undefined;
         const r = await createDiscountFn({
           description: description.trim(), type: dType, amount: amount.trim(),

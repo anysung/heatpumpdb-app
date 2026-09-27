@@ -274,8 +274,8 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                   <SectionHead title={t.ds.headEnv} />
                   <SectionGrid>
                     <FieldCell label={t.ds.f.ref} value={dsp.ref} note={n('ref')} />
-                    <FieldCell label={t.ds.f.refKg} value={dsp.refKg === '—' ? '—' : `${dsp.refKg} kg`} note={n('refKg')} />
-                    <FieldCell label={t.ds.f.noise} value={dsp.noise === '—' ? '—' : `${dsp.noise} dB(A)`} note={n('noise')} />
+                    <FieldCell label={t.ds.f.refKg} value={/^\d/.test(dsp.refKg) ? `${dsp.refKg} kg` : dsp.refKg} note={n('refKg')} />
+                    <FieldCell label={t.ds.f.noise} value={(/^\d/.test(dsp.noise) ? `${dsp.noise} dB(A)` : dsp.noise)} note={n('noise')} />
                     {/* GB: SG-Ready is not recorded on the PEL — unknown, not "No". */}
                     <FieldCell label={t.ds.f.grid} value={IS_GB || dsp.raw.grid_ready == null ? '—' : dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
                   </SectionGrid>

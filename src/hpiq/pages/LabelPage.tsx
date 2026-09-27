@@ -192,7 +192,7 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span>{lr.mfr}</span>
                     <span style={{ fontWeight: 600 }}>{lr.label}</span>
                     <span>{lr.labelMed}</span>
-                    <span>{lr.noise === '—' ? '—' : `${lr.noise} dB(A)`}</span>
+                    <span>{(/^\d/.test(lr.noise) ? `${lr.noise} dB(A)` : lr.noise)}</span>
                   </div>
                 );
               })}
@@ -221,8 +221,8 @@ export const LabelPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, minWidth: 0 }}>
                     <span><span style={{ color: '#7a7a7a' }}>{t.label.w35}</span> <strong style={{ fontWeight: 600 }}>{lsel.label}</strong> · <span style={{ color: '#7a7a7a' }}>{t.label.w55}</span> <strong style={{ fontWeight: 600 }}>{lsel.labelMed}</strong></span>
                     <span><span style={{ color: '#7a7a7a' }}>{t.label.ratedOutput}</span> <strong style={{ fontWeight: 600 }}>{lsel.ratedKw === '—' ? '—' : `${lsel.ratedKw} kW`}</strong></span>
-                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ color: '#7a7a7a' }}>{t.label.soundPower}</span> <strong style={{ fontWeight: 600 }}>{lsel.noise === '—' ? '—' : `${lsel.noise} dB(A)`}</strong></span>
-                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ color: '#7a7a7a' }}>{t.label.refrigerantRow}</span> <strong style={{ fontWeight: 600 }}>{lsel.refKg === '—' ? lsel.ref : `${lsel.ref} · ${lsel.refKg} kg`}</strong></span>
+                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ color: '#7a7a7a' }}>{t.label.soundPower}</span> <strong style={{ fontWeight: 600 }}>{(/^\d/.test(lsel.noise) ? `${lsel.noise} dB(A)` : lsel.noise)}</strong></span>
+                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ color: '#7a7a7a' }}>{t.label.refrigerantRow}</span> <strong style={{ fontWeight: 600 }}>{/^\d/.test(lsel.refKg) ? `${lsel.ref} · ${lsel.refKg} kg` : lsel.ref}</strong></span>
                   </div>
                 </div>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 8, fontSize: 12.5 }}>

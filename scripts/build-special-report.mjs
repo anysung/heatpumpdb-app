@@ -33,6 +33,7 @@
 import { mkdirSync, writeFileSync, readFileSync, copyFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isPremiumEdition, premiumReportPath } from './lib/special-report-store.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const MARKET = (process.argv[2] || 'DE').toUpperCase();
@@ -236,6 +237,8 @@ function renderEdition(ed, lang) {
     publisher: { '@type': 'Organization', name: 'HeatPump DataBase (Europe)' },
   };
 
+  const premium = isPremiumEdition(ed);
+  const pc = PREMIUM_CTA[lang] ?? PREMIUM_CTA.en;
   const html = head({
     title: t.metaTitle, desc: t.metaDesc, canonical, ogImage, lang,
     alternates, ld,
@@ -246,7 +249,7 @@ function renderEdition(ed, lang) {
   <p class="stand">${esc(t.standfirst)}</p>
   <p class="meta">${esc(t.byline)} · ${esc(fmtDate(ed.meta.published, lang))}</p>
 
-  <a href="${base}${ed.meta.reportFile}"><img class="hero" src="/special-report/img/${cover}" alt="${esc(t.title)}"></a>
+  <a href="${premium ? '/' : `${base}${ed.meta.reportFile}`}"><img class="hero" src="/special-report/img/${cover}" alt="${esc(t.title)}"></a>
   <p class="herocap">${esc(t.ctaSub)}</p>
 
   <div class="body">
@@ -260,7 +263,13 @@ function renderEdition(ed, lang) {
     ${t.sections.map((s) => `<h2>${esc(s.h)}</h2>\n    ${s.p.map((p) => `<p>${esc(p)}</p>`).join('\n    ')}`).join('\n\n    ')}
   </div>
 
-  <div class="cta">
+  ${premium ? `<div class="cta">
+    <h2>${esc(pc.h)}</h2>
+    <p>${esc(pc.p)}</p>
+    <div class="acts">
+      <a class="btn p" href="/">${esc(pc.b)}</a>
+    </div>
+  </div>` : `<div class="cta">
     <h2>${esc(t.ctaTitle)}</h2>
     <p>${esc(t.ctaSub)}</p>
     <div class="acts">
@@ -268,12 +277,22 @@ function renderEdition(ed, lang) {
       <a class="btn s" href="${base}${ed.meta.reportFile}" download="${esc(ed.meta.downloadName)}">${esc(t.downloadLabel)}</a>
     </div>
     <p class="dlnote">${esc(t.downloadNote)}</p>
-  </div>
+  </div>`}
 ${productCta(t)}
 ` + foot(t);
 
   return { file, html };
 }
+
+/* Premium editions (2026-10 on): the public page is the teaser; the report
+   itself opens in the app for Premium members. Copy per market language. */
+const PREMIUM_CTA = {
+  en: { h: 'The full interactive report is part of Premium', p: 'Premium members open it in the app, under Special Report. New accounts include 15 days of Premium — free, no credit card.', b: 'Open HeatPump DB' },
+  de: { h: 'Der vollständige interaktive Report ist Teil von Premium', p: 'Premium-Mitglieder öffnen ihn in der App unter „Special Report“. Neue Konten enthalten 15 Tage Premium — kostenlos, ohne Kreditkarte.', b: 'HeatPump DB öffnen' },
+  fr: { h: 'Le rapport interactif complet fait partie de Premium', p: 'Les membres Premium l’ouvrent dans l’application, rubrique « Rapport spécial ». Les nouveaux comptes incluent 15 jours de Premium — gratuitement, sans carte bancaire.', b: 'Ouvrir HeatPump DB' },
+  pl: { h: 'Pełny interaktywny raport jest częścią Premium', p: 'Członkowie Premium otwierają go w aplikacji, w zakładce „Raport specjalny”. Nowe konta mają 15 dni Premium — bezpłatnie, bez karty.', b: 'Otwórz HeatPump DB' },
+  it: { h: 'Il report interattivo completo fa parte di Premium', p: 'I membri Premium lo aprono nell’app, alla voce “Report speciale”. I nuovi account includono 15 giorni di Premium — gratis, senza carta di credito.', b: 'Apri HeatPump DB' },
+};
 
 /* ── the series index ────────────────────────────────────────────────────── */
 
@@ -328,7 +347,11 @@ for (const ed of editions) {
   mkdirSync(edOut, { recursive: true });
 
   // The report ships byte-for-byte — it is the owner's document, not ours to rebuild.
-  copyFileSync(join(ed.dir, ed.meta.reportFile), join(edOut, ed.meta.reportFile));
+  // Premium editions never reach public hosting: the file goes to the protected
+  // bucket (scripts/upload-special-report.mjs) and the app serves it to members.
+  if (!isPremiumEdition(ed)) {
+    copyFileSync(join(ed.dir, ed.meta.reportFile), join(edOut, ed.meta.reportFile));
+  }
 
   for (const lang of langs) {
     const { file, html } = renderEdition(ed, lang);
@@ -367,7 +390,11 @@ const feed = {
     id: ed.id,
     published: ed.meta.published,
     pages: ed.meta.reportPages ?? null,
-    reportUrl: `/special-report/${ed.id}/${ed.meta.reportFile}`,
+    premium: isPremiumEdition(ed),
+    // Free samples: a public hosting URL. Premium: null — the app reads
+    // `storagePath` from the protected bucket instead.
+    reportUrl: isPremiumEdition(ed) ? null : `/special-report/${ed.id}/${ed.meta.reportFile}`,
+    storagePath: isPremiumEdition(ed) ? premiumReportPath(ed) : null,
     downloadName: ed.meta.downloadName ?? ed.meta.reportFile,
     cover: Object.fromEntries(langs.map((l) => [l, `/special-report/img/${coverFile(ed, l)}`])),
     copy: Object.fromEntries(langs.map((l) => [l, pick(copyOf(ed, l))])),
@@ -377,4 +404,6 @@ writeFileSync(join(outRoot, 'feed.json'), JSON.stringify(feed));
 
 const kb = (p) => (statSync(p).size / 1024).toFixed(0);
 console.log(`special report (${MARKET}): ${editions.length} edition(s), languages ${langs.join('+')} — ` +
-  editions.map((e) => `${e.id} (report ${kb(join(outRoot, e.id, e.meta.reportFile))} kB)`).join(', '));
+  editions.map((e) => (isPremiumEdition(e)
+    ? `${e.id} (PREMIUM — report in bucket, not on hosting)`
+    : `${e.id} (report ${kb(join(outRoot, e.id, e.meta.reportFile))} kB)`)).join(', '));

@@ -73,3 +73,20 @@ export const pinnedThrough = (editionId) => {
  */
 export const isPinnedOn = (pinned, pinnedUntil, today) =>
   pinned === true && (!pinnedUntil || pinnedUntil >= today);
+
+/**
+ * PREMIUM EDITIONS (owner, 2026-09-27). The August and September 2026 editions
+ * stay public free samples; from October 2026 the report FILE is a Premium
+ * member benefit. A Premium edition still gets its public article page (the
+ * SEO landing and teaser) but the interactive report is NOT copied to hosting
+ * — it lives in the auth-protected datasets bucket
+ * (gs://heatpumpdb-datasets/special-report/<edition>/<reportFile>, storage.rules:
+ * isEntitled) and the app downloads it for Premium members only.
+ * `article.json` may set `"premium": true|false` to override the date rule.
+ */
+export const PREMIUM_FROM_EDITION = '2026-10';
+export const isPremiumEdition = (edition) =>
+  typeof edition.meta?.premium === 'boolean' ? edition.meta.premium : edition.id >= PREMIUM_FROM_EDITION;
+
+/** Bucket object path of a Premium edition's report file. */
+export const premiumReportPath = (edition) => `special-report/${edition.id}/${edition.meta.reportFile}`;

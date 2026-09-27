@@ -300,6 +300,19 @@ assumption that gitignored means disposable — keep at least the newest seed.
   stamps `unavailableSince`, never deletes; removal is editorial).
 - Refrigerant filtering always uses `.includes()` contains logic (values like
   `R290(estimated)` must match), never exact match.
+- **Free + Premium (2026-09-27 — docs/FREE_PREMIUM_PROGRAM_PLAN.md).** The app is
+  FREE by default; a closed window means the FREE tier, never a lockout
+  (`tierOf()` in src/config/entitlement.ts; `accessUntilTs` reads as "Premium
+  until"). Free reads the BASIC dataset objects (`*.basic.json`, allowlist
+  `src/config/datasetBasicFields.json` — no COP/sound/refrigerant charge/…),
+  news/policies (firestore `isApproved`), and the Aug/Sep 2026 Special Report
+  samples. Premium (trial/paid/grant/team window, storage `isEntitled`) adds
+  full datasets, commercial range, compare, PDF/print, Premium Special Reports
+  (from 2026-10: file only in `gs://heatpumpdb-datasets/special-report/`,
+  `scripts/upload-special-report.mjs`, never on hosting) and 2 devices (Free 1).
+  Enforcement is by FILE/rules — UI locks are UX only. Prices EUR (every
+  market), VAT excl., monthly + annual only (6-month retired). The profile step
+  (name, company name, company type) is REQUIRED at first sign-in.
 - **Auth flow (2026-07-27 program): 15-day in-app free trial, no payment method**
   (7 days until 2026-09-07; the length lives in `TRIAL_DAYS`, client + function).**
   Two modes, switched by `VITE_BILLING_FN_URL` (src/config/env.ts):
