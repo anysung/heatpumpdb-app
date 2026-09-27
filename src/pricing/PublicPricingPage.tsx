@@ -32,28 +32,28 @@ const SUBSCRIBE_NOTE: Record<Language, string> = {
   pl: 'Aby rozpocząć subskrypcję Premium, zaloguj się na swoje konto.',
   it: 'Per attivare un abbonamento Premium, accedi al tuo account.',
 };
-/** Free + Premium program (owner 2026-09-27): what Free already includes and
+/** Standard + Premium program (owner 2026-09-27/28): what Standard already includes and
  *  what the plans below add — the same scope as the Terms of Use. */
 const TIER_NOTE: Record<Language, { free: string; premium: string }> = {
   en: {
-    free: 'Free — for every registered account, no time limit: product search, the residential catalogue with basic specifications and local listing status, subsidy pages and funding guide, news, Market & Trends, installation videos and the on-screen data sheet preview (one active device).',
-    premium: 'Premium — everything in Free, plus full specifications (COP values, sound power, refrigerant charge …), side-by-side comparison, the commercial range (above 23 kW), PDF and print data sheets and EU label sheets, the monthly Special Report and two active devices. Team plans add team management.',
+    free: 'Standard (free) — for every registered account, no time limit: product search, the residential catalogue with basic specifications and local listing status, subsidy pages and funding guide, news, Market & Trends, installation videos and the on-screen data sheet preview (one active device).',
+    premium: 'Premium — everything in Standard, plus full specifications (COP values, sound power, refrigerant charge …), side-by-side comparison, the commercial range (above 23 kW), PDF and print data sheets and EU label sheets, the monthly Special Report and two active devices. Team plans add team management.',
   },
   de: {
-    free: 'Free — für jedes registrierte Konto, ohne zeitliche Begrenzung: Produktsuche, Wohngebäude-Katalog mit den wichtigsten technischen Daten und lokalem Listungsstatus, Förderseiten und Förderleitfaden, News, Markt & Trends, Installationsvideos und die Datenblatt-Vorschau am Bildschirm (ein aktives Gerät).',
-    premium: 'Premium — alles aus Free, dazu vollständige technische Daten (COP-Werte, Schallleistung, Kältemittelfüllmenge …), direkter Produktvergleich, das Gewerbesegment (über 23 kW), PDF- und Druck-Datenblätter sowie EU-Label-Blätter, der monatliche Special Report und zwei aktive Geräte. Team-Tarife umfassen zusätzlich die Teamverwaltung.',
+    free: 'Standard (kostenlos) — für jedes registrierte Konto, ohne zeitliche Begrenzung: Produktsuche, Wohngebäude-Katalog mit den wichtigsten technischen Daten und lokalem Listungsstatus, Förderseiten und Förderleitfaden, News, Markt & Trends, Installationsvideos und die Datenblatt-Vorschau am Bildschirm (ein aktives Gerät).',
+    premium: 'Premium — alles aus Standard, dazu vollständige technische Daten (COP-Werte, Schallleistung, Kältemittelfüllmenge …), direkter Produktvergleich, das Gewerbesegment (über 23 kW), PDF- und Druck-Datenblätter sowie EU-Label-Blätter, der monatliche Special Report und zwei aktive Geräte. Team-Tarife umfassen zusätzlich die Teamverwaltung.',
   },
   fr: {
-    free: "Free — pour tout compte inscrit, sans limite de durée : recherche de produits, catalogue résidentiel avec les caractéristiques essentielles et le statut de référencement local, pages d'aides et guide des financements, actualités, Marché & Tendances, vidéos d'installation et aperçu à l'écran des fiches techniques (un appareil actif).",
-    premium: "Premium — tout Free, plus les caractéristiques complètes (valeurs de COP, puissance acoustique, charge de fluide frigorigène…), la comparaison côte à côte, la gamme tertiaire (au-delà de 23 kW), les fiches techniques et fiches d'étiquette énergie UE en PDF et à l'impression, le Special Report mensuel et deux appareils actifs. Les offres Team incluent en outre la gestion d'équipe.",
+    free: "Standard (gratuit) — pour tout compte inscrit, sans limite de durée : recherche de produits, catalogue résidentiel avec les caractéristiques essentielles et le statut de référencement local, pages d'aides et guide des financements, actualités, Marché & Tendances, vidéos d'installation et aperçu à l'écran des fiches techniques (un appareil actif).",
+    premium: "Premium — tout Standard, plus les caractéristiques complètes (valeurs de COP, puissance acoustique, charge de fluide frigorigène…), la comparaison côte à côte, la gamme tertiaire (au-delà de 23 kW), les fiches techniques et fiches d'étiquette énergie UE en PDF et à l'impression, le Special Report mensuel et deux appareils actifs. Les offres Team incluent en outre la gestion d'équipe.",
   },
   pl: {
-    free: 'Free — dla każdego zarejestrowanego konta, bez limitu czasu: wyszukiwarka produktów, katalog urządzeń do budynków mieszkalnych z podstawowymi danymi technicznymi i lokalnym statusem na liście, strony dotacji i przewodnik po finansowaniu, aktualności, Rynek i trendy, filmy instalacyjne oraz podgląd karty katalogowej na ekranie (jedno aktywne urządzenie).',
-    premium: 'Premium — wszystko z planu Free, a do tego pełne dane techniczne (wartości COP, moc akustyczna, ilość czynnika chłodniczego …), porównanie produktów obok siebie, segment komercyjny (powyżej 23 kW), karty katalogowe i karty etykiet energetycznych UE w PDF i do druku, comiesięczny Special Report oraz dwa aktywne urządzenia. Plany Team obejmują dodatkowo zarządzanie zespołem.',
+    free: 'Standard (bezpłatny) — dla każdego zarejestrowanego konta, bez limitu czasu: wyszukiwarka produktów, katalog urządzeń do budynków mieszkalnych z podstawowymi danymi technicznymi i lokalnym statusem na liście, strony dotacji i przewodnik po finansowaniu, aktualności, Rynek i trendy, filmy instalacyjne oraz podgląd karty katalogowej na ekranie (jedno aktywne urządzenie).',
+    premium: 'Premium — wszystko z planu Standard, a do tego pełne dane techniczne (wartości COP, moc akustyczna, ilość czynnika chłodniczego …), porównanie produktów obok siebie, segment komercyjny (powyżej 23 kW), karty katalogowe i karty etykiet energetycznych UE w PDF i do druku, comiesięczny Special Report oraz dwa aktywne urządzenia. Plany Team obejmują dodatkowo zarządzanie zespołem.',
   },
   it: {
-    free: 'Free — per ogni account registrato, senza limiti di tempo: ricerca prodotti, catalogo residenziale con le specifiche di base e lo stato negli elenchi locali, pagine sugli incentivi e guida ai finanziamenti, notizie, Mercato e tendenze, video di installazione e anteprima a schermo della scheda tecnica (un dispositivo attivo).',
-    premium: 'Premium — tutto quanto incluso in Free, più le specifiche complete (valori COP, potenza sonora, carica di refrigerante …), il confronto affiancato, la gamma commerciale (oltre 23 kW), le schede tecniche e le schede dell’etichetta energetica UE in PDF e in stampa, lo Special Report mensile e due dispositivi attivi. I piani Team includono inoltre la gestione del team.',
+    free: 'Standard (gratuito) — per ogni account registrato, senza limiti di tempo: ricerca prodotti, catalogo residenziale con le specifiche di base e lo stato negli elenchi locali, pagine sugli incentivi e guida ai finanziamenti, notizie, Mercato e tendenze, video di installazione e anteprima a schermo della scheda tecnica (un dispositivo attivo).',
+    premium: 'Premium — tutto quanto incluso in Standard, più le specifiche complete (valori COP, potenza sonora, carica di refrigerante …), il confronto affiancato, la gamma commerciale (oltre 23 kW), le schede tecniche e le schede dell’etichetta energetica UE in PDF e in stampa, lo Special Report mensile e due dispositivi attivi. I piani Team includono inoltre la gestione del team.',
   },
 };
 
