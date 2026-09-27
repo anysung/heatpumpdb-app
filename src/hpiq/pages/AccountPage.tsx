@@ -1,4 +1,5 @@
 /** Account — subscription program, team seats, profile, language, legal. */
+import { UpgradePromoCard } from '../Premium';
 import React, { useEffect, useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { collection, onSnapshot } from 'firebase/firestore';
@@ -584,8 +585,7 @@ const SubscriptionSection: React.FC<{
   return (
     <div style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: '26px 28px', display: 'flex', flexDirection: 'column', gap: 14 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <CardTitle style={{ fontSize: 21 }}>{s.pickTitle}</CardTitle>
-        <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>{s.pickSub}</span>
+        <CardTitle style={{ fontSize: 21 }}>{t.up.nav}</CardTitle>
       </div>
       {!app.premium && (
         <div data-testid="free-plan-card" style={{ background: '#f5f5f7', borderRadius: 14, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -593,7 +593,8 @@ const SubscriptionSection: React.FC<{
           <span style={{ fontSize: 13, color: '#6e6e73', lineHeight: 1.55 }}>{t.tier.freePlanBody}</span>
         </div>
       )}
-      <PlanPicker app={app} mode="checkout" />
+      {/* Plans live on the Upgrade page since 2026-09-28. */}
+      <UpgradePromoCard app={app} />
       {/* Team during the free trial: create the org now (no payment), invite
           members right away — everyone runs on the admin's trial end date. */}
       {TRIAL_FLOW_ENABLED && inOwnTrial && !org && (

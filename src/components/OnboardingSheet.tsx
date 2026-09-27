@@ -31,42 +31,42 @@ import { normalizeWebsite, trim } from '../utils/profile';
  *  the auth surface AND from inside the app, which carry different `t`. */
 type Copy = {
   title: string; sub: string; required: string; optional: string;
-  name: string; namePh: string; companyName: string; companyType: string; other: string;
+  first: string; last: string; firstPh: string; lastPh: string; companyName: string; companyType: string; other: string;
   role: string; street: string; postal: string; city: string; website: string; secondEmail: string; secondHint: string;
   choose: string; save: string; saving: string; signOut: string; missing: string; badEmail: string; badSite: string;
 };
 const COPY: Record<string, Copy> = {
   en: { title: 'Complete your profile', sub: 'Your free account is ready. Tell us who you are — fields marked * are required.',
         required: 'Required', optional: 'Optional',
-        name: 'Your name *', namePh: 'e.g. Alex Schneider', companyName: 'Company name *', companyType: 'Type of company *', other: 'Please describe *',
+        first: 'First name *', last: 'Last name *', firstPh: 'e.g. Alex', lastPh: 'e.g. Schneider', companyName: 'Company name *', companyType: 'Type of company *', other: 'Please describe *',
         role: 'Your role', street: 'Street and number', postal: 'Postal code', city: 'City', website: 'Company website',
         secondEmail: 'Secondary email', secondHint: 'An extra contact address — it is never used to sign in.',
         choose: 'Select…', save: 'Save and continue', saving: 'Saving…', signOut: 'Sign out',
         missing: 'Please fill in the required fields.', badEmail: 'The secondary email does not look valid.', badSite: 'The website does not look valid.' },
   de: { title: 'Profil vervollständigen', sub: 'Ihr kostenloses Konto ist bereit. Sagen Sie uns, wer Sie sind — Felder mit * sind Pflichtfelder.',
         required: 'Pflichtangaben', optional: 'Optional',
-        name: 'Ihr Name *', namePh: 'z. B. Alex Schneider', companyName: 'Firmenname *', companyType: 'Art des Unternehmens *', other: 'Bitte beschreiben *',
+        first: 'Vorname *', last: 'Nachname *', firstPh: 'z. B. Alex', lastPh: 'z. B. Schneider', companyName: 'Firmenname *', companyType: 'Art des Unternehmens *', other: 'Bitte beschreiben *',
         role: 'Ihre Funktion', street: 'Straße und Hausnummer', postal: 'PLZ', city: 'Ort', website: 'Website des Unternehmens',
         secondEmail: 'Zweite E-Mail-Adresse', secondHint: 'Eine zusätzliche Kontaktadresse — sie wird nie zur Anmeldung verwendet.',
         choose: 'Bitte wählen…', save: 'Speichern und weiter', saving: 'Wird gespeichert…', signOut: 'Abmelden',
         missing: 'Bitte füllen Sie die Pflichtfelder aus.', badEmail: 'Die zweite E-Mail-Adresse scheint ungültig zu sein.', badSite: 'Die Website-Adresse scheint ungültig zu sein.' },
   fr: { title: 'Complétez votre profil', sub: 'Votre compte gratuit est prêt. Dites-nous qui vous êtes — les champs marqués * sont obligatoires.',
         required: 'Obligatoire', optional: 'Facultatif',
-        name: 'Votre nom *', namePh: 'p. ex. Alex Schneider', companyName: 'Nom de l’entreprise *', companyType: 'Type d’entreprise *', other: 'Précisez *',
+        first: 'Prénom *', last: 'Nom *', firstPh: 'p. ex. Alex', lastPh: 'p. ex. Schneider', companyName: 'Nom de l’entreprise *', companyType: 'Type d’entreprise *', other: 'Précisez *',
         role: 'Votre fonction', street: 'Rue et numéro', postal: 'Code postal', city: 'Ville', website: 'Site web de l’entreprise',
         secondEmail: 'E-mail secondaire', secondHint: 'Une adresse de contact supplémentaire — jamais utilisée pour la connexion.',
         choose: 'Sélectionner…', save: 'Enregistrer et continuer', saving: 'Enregistrement…', signOut: 'Se déconnecter',
         missing: 'Veuillez remplir les champs obligatoires.', badEmail: 'L’e-mail secondaire ne semble pas valide.', badSite: 'L’adresse du site ne semble pas valide.' },
   pl: { title: 'Uzupełnij profil', sub: 'Twoje bezpłatne konto jest gotowe. Powiedz nam, kim jesteś — pola oznaczone * są wymagane.',
         required: 'Wymagane', optional: 'Opcjonalne',
-        name: 'Imię i nazwisko *', namePh: 'np. Alex Schneider', companyName: 'Nazwa firmy *', companyType: 'Typ firmy *', other: 'Opisz *',
+        first: 'Imię *', last: 'Nazwisko *', firstPh: 'np. Alex', lastPh: 'np. Schneider', companyName: 'Nazwa firmy *', companyType: 'Typ firmy *', other: 'Opisz *',
         role: 'Twoja rola', street: 'Ulica i numer', postal: 'Kod pocztowy', city: 'Miejscowość', website: 'Strona internetowa firmy',
         secondEmail: 'Dodatkowy e-mail', secondHint: 'Dodatkowy adres kontaktowy — nigdy nie służy do logowania.',
         choose: 'Wybierz…', save: 'Zapisz i kontynuuj', saving: 'Zapisywanie…', signOut: 'Wyloguj',
         missing: 'Uzupełnij wymagane pola.', badEmail: 'Dodatkowy e-mail wygląda na nieprawidłowy.', badSite: 'Adres strony wygląda na nieprawidłowy.' },
   it: { title: 'Completa il profilo', sub: 'Il tuo account gratuito è pronto. Dicci chi sei — i campi con * sono obbligatori.',
         required: 'Obbligatori', optional: 'Facoltativi',
-        name: 'Il tuo nome *', namePh: 'es. Alex Schneider', companyName: 'Ragione sociale *', companyType: 'Tipo di azienda *', other: 'Specifica *',
+        first: 'Nome *', last: 'Cognome *', firstPh: 'es. Alex', lastPh: 'es. Schneider', companyName: 'Ragione sociale *', companyType: 'Tipo di azienda *', other: 'Specifica *',
         role: 'Il tuo ruolo', street: 'Via e numero civico', postal: 'CAP', city: 'Città', website: 'Sito web aziendale',
         secondEmail: 'E-mail secondaria', secondHint: 'Un indirizzo di contatto aggiuntivo — non viene mai usato per l’accesso.',
         choose: 'Seleziona…', save: 'Salva e continua', saving: 'Salvataggio…', signOut: 'Esci',
@@ -108,13 +108,14 @@ export const nameNeededForCheckout = (u: User | null | undefined, isTeam: boolea
 const isTeamMember = (u: User): boolean => u.orgRole === 'member';
 
 /**
- * Does this account still owe the profile step? Required: a name, and — for
+ * Does this account still owe the profile step? Required: first AND last
+ * name (separate fields, owner 2026-09-28), and — for
  * everyone except team members — company name + type (+ description for
  * "other"). Admin roles are exempt.
  */
 export const profileIncomplete = (u: User | null | undefined): boolean => {
   if (!u || isAdminRole(u.role)) return false;
-  if (!hasDisplayName(u)) return true;
+  if (!hasDisplayName(u) || !trim(u.lastName ?? '')) return true;
   if (isTeamMember(u)) return false;
   const type = normalizeCompanyType(u.companyType);
   if (!trim(u.companyName ?? '') || !type) return true;
@@ -132,7 +133,8 @@ export const OnboardingSheet: React.FC<{
   const typeLabels = COMPANY_TYPE_LABELS_I18N[language] ?? COMPANY_TYPE_LABELS_I18N.en;
   const member = isTeamMember(user);
 
-  const [name, setName] = useState([user.firstName, user.lastName].filter(Boolean).join(' '));
+  const [firstName, setFirstName] = useState(user.firstName ?? '');
+  const [lastName, setLastName] = useState(user.lastName ?? '');
   const [companyName, setCompanyName] = useState(user.companyName ?? '');
   const [companyType, setCompanyType] = useState(normalizeCompanyType(user.companyType) ?? '');
   const [companyTypeOther, setCompanyTypeOther] = useState(user.companyTypeOther ?? '');
@@ -145,7 +147,7 @@ export const OnboardingSheet: React.FC<{
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
 
-  const requiredOk = !!trim(name) && (member || (
+  const requiredOk = !!trim(firstName) && !!trim(lastName) && (member || (
     !!trim(companyName) && !!companyType && (companyType !== 'other' || !!trim(companyTypeOther))));
 
   const save = async () => {
@@ -156,7 +158,7 @@ export const OnboardingSheet: React.FC<{
     if (site === null) { setErr(c.badSite); return; }
     setBusy(true); setErr('');
     try {
-      const patch: Partial<User> = { ...splitName(name) };
+      const patch: Partial<User> = { firstName: trim(firstName), lastName: trim(lastName) };
       if (jobRole) patch.jobRole = jobRole as User['jobRole'];
       if (trim(second)) patch.secondaryEmail = trim(second);
       if (!member) {
@@ -191,9 +193,15 @@ export const OnboardingSheet: React.FC<{
 
         <div className="mt-5 space-y-3.5">
           <div className={group}>{c.required}</div>
-          <div>
-            <label className={label}>{c.name}</label>
-            <input className={field} value={name} placeholder={c.namePh} onChange={e => setName(e.target.value)} autoFocus data-testid="profile-name" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={label}>{c.first}</label>
+              <input className={field} value={firstName} placeholder={c.firstPh} onChange={e => setFirstName(e.target.value)} autoFocus autoComplete="given-name" data-testid="profile-first-name" />
+            </div>
+            <div>
+              <label className={label}>{c.last}</label>
+              <input className={field} value={lastName} placeholder={c.lastPh} onChange={e => setLastName(e.target.value)} autoComplete="family-name" data-testid="profile-last-name" />
+            </div>
           </div>
           {!member && (
             <>

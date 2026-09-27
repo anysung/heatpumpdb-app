@@ -17,6 +17,9 @@ export type CompanyTypeCode =
   | 'esco_utility'
   | 'housing'
   | 'public_research'
+  | 'student'
+  | 'academic'
+  | 'university'
   | 'individual'
   | 'other';
 
@@ -30,6 +33,10 @@ export const COMPANY_TYPES: CompanyTypeCode[] = [
   'esco_utility',
   'housing',
   'public_research',
+  // Academia (owner, 2026-09-28): students, researchers/professors, institutions.
+  'student',
+  'academic',
+  'university',
   'individual',
   'other',
 ];

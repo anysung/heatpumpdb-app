@@ -32,7 +32,7 @@ const nameNeededForCheckout = (u, isTeam) => isTeam && !hasDisplayName(u);
 const ADMIN_ROLES = ['owner', 'admin', 'support', 'ops'];
 const profileIncomplete = (u) => {
   if (!u || ADMIN_ROLES.includes(u.role)) return false;
-  if (!hasDisplayName(u)) return true;
+  if (!hasDisplayName(u) || !trim(u.lastName)) return true;
   if (u.orgRole === 'member') return false;
   if (!trim(u.companyName) || !u.companyType) return true;
   return u.companyType === 'other' && !trim(u.companyTypeOther);
@@ -57,7 +57,8 @@ ok('a name of only spaces still counts as missing',
    nameNeededForCheckout({ ...blank, firstName: '   ' }, true) === true);
 
 /* ── The profile step (required since 2026-09-27) ───────────────────── */
-const complete = { firstName: 'Alex', companyName: 'Schneider GmbH', companyType: 'installer' };
+const complete = { firstName: 'Alex', lastName: 'Schneider', companyName: 'Schneider GmbH', companyType: 'installer' };
+ok('first name without last name → asked',   profileIncomplete({ ...complete, lastName: '' }) === true);
 ok('brand-new account is asked',               profileIncomplete(blank) === true);
 ok('a name alone is not enough',               profileIncomplete(named) === true);
 ok('name + company but no type → asked',       profileIncomplete({ ...named, companyName: 'X' }) === true);
@@ -66,7 +67,7 @@ ok('complete required fields → not asked',     profileIncomplete(complete) ===
 ok('optional fields never force it',           profileIncomplete({ ...complete, jobRole: '', companyCity: '' }) === false);
 ok('"other" needs its description',            profileIncomplete({ ...complete, companyType: 'other' }) === true);
 ok('"other" with a description is complete',   profileIncomplete({ ...complete, companyType: 'other', companyTypeOther: 'Utility' }) === false);
-ok('team member: the name is enough',          profileIncomplete({ ...named, orgRole: 'member' }) === false);
+ok('team member: the name is enough',          profileIncomplete({ ...named, lastName: 'S', orgRole: 'member' }) === false);
 ok('team member without a name is asked',      profileIncomplete({ ...blank, orgRole: 'member' }) === true);
 ok('admins are never asked',                   profileIncomplete({ ...blank, role: 'admin' }) === false);
 ok('the owner is never asked',                 profileIncomplete({ ...blank, role: 'owner' }) === false);

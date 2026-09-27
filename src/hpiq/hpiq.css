@@ -156,11 +156,13 @@
    the row scrolls, which is the honest fallback at that size. */
 @media screen and (max-width: 1600px) {
   .hp-gnav { gap: 16px !important; padding: 0 18px !important; }
-  .hp-gnav-links > span { padding: 8px 8px !important; font-size: 13.5px; }
+  .hp-gnav-links > span { padding: 8px 8px !important; font-size: 13px; }
 }
 @media screen and (max-width: 1440px) {
-  .hp-gnav-links > span { padding: 8px 7px !important; font-size: 13px; }
+  .hp-gnav-links > span { padding: 7px 6px !important; font-size: 12.5px; }
   .hp-gnav .hp-btn-label { display: none; }
+  /* The Upgrade button keeps its word — it is the one conversion entry. */
+  .hp-gnav .hp-upbtn .hp-btn-label { display: inline; }
 }
 
 /* ── Tablet tolerance (700–1099px, SCREEN ONLY): the FULL desktop UI runs
@@ -269,3 +271,40 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
 }
 .hp-info:hover .hp-info-tip { display: block; }
+
+/* ── Upgrade page (2026-09-28) ─────────────────────────────────────────── */
+.hp-up-hero {
+  background:
+    radial-gradient(900px 420px at 15% -10%, rgba(34,197,94,.28), transparent 60%),
+    radial-gradient(800px 420px at 90% 0%, rgba(6,182,212,.22), transparent 60%),
+    radial-gradient(700px 500px at 50% 120%, rgba(99,102,241,.20), transparent 60%),
+    #07090d;
+}
+/* Animated gradient ring around the highlighted plan. */
+.hp-up-glow {
+  background: linear-gradient(120deg, #22c55e, #06b6d4, #6366f1, #22c55e);
+  background-size: 300% 300%;
+  animation: hp-up-shift 6s linear infinite;
+  box-shadow: 0 0 0 1px rgba(34,197,94,.25), 0 18px 60px -12px rgba(34,197,94,.45);
+}
+@keyframes hp-up-shift { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+.hp-up-card { transition: transform .22s ease, box-shadow .22s ease; }
+.hp-up-glow:hover .hp-up-card, .hp-up-card:hover { transform: translateY(-3px); }
+.hp-up-cta { transition: transform .15s ease, filter .15s ease, box-shadow .2s ease; }
+.hp-up-cta:hover { filter: brightness(1.08); box-shadow: 0 8px 24px -6px rgba(34,197,94,.55); }
+@media (prefers-reduced-motion: reduce) { .hp-up-glow { animation: none; } }
+
+/* ── Header buttons: every control lights up on hover (2026-09-28) ──────── */
+.hp-hbtn { transition: background-color .16s, color .16s, border-color .16s, transform .16s, box-shadow .16s; }
+.hp-hbtn:hover { background-color: rgba(255,255,255,.16) !important; color: #fff !important; border-color: rgba(255,255,255,.7) !important; transform: translateY(-1px); }
+.hp-hbtn-light:hover { background-color: #fff !important; color: #1d1d1f !important; }
+/* The Upgrade button keeps its gradient; it only glows. */
+.hp-upbtn { transition: transform .16s, box-shadow .2s, filter .16s; }
+.hp-upbtn:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 0 0 1px rgba(190,242,100,.6), 0 6px 20px -4px rgba(34,197,94,.7); }
+/* Nav links: compact by default, grow + highlight under the cursor. */
+.hp-gnav-links > span.hp-navlink { transition: color .16s, background-color .16s, transform .16s; transform-origin: center; }
+.hp-gnav-links > span.hp-navlink:hover { color: #fff; background-color: rgba(255,255,255,.12); transform: scale(1.12); }
+
+/* Sign-out keeps only its icon below 1760px — the room goes to the nav row
+   (FR/PL/IT labels are the longest; measured 2026-09-28). */
+@media screen and (max-width: 1760px) { .hp-gnav .hp-signout .hp-btn-label { display: none; } }

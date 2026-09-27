@@ -129,9 +129,23 @@ export const PlayIcon: React.FC = () => (
 );
 
 /** Person silhouette — the global-nav Account button. */
-export const AccountIcon: React.FC<{ size?: number }> = ({ size = 13 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+export const AccountIcon: React.FC<{ size?: number; strokeWidth?: number }> = ({ size = 13, strokeWidth = 1.9 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" />
+  </svg>
+);
+
+/** Header "Upgrade" rocket (owner 2026-09-28). */
+export const RocketIcon: React.FC<{ size?: number }> = ({ size = 15 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 15c-1.5 1.3-2 4-2 6 2 0 4.7-.5 6-2" /><path d="M9 18l-3-3c1-4.5 4.5-10 12-11 0 0 .5 7.5-6 12z" /><circle cx="14.5" cy="9.5" r="1.6" />
+  </svg>
+);
+
+/** App-tour replay icon: a play button in a ring — the tour is a guided walkthrough (replaced the mortarboard, 2026-09-28). */
+export const TourIcon: React.FC<{ size?: number }> = ({ size = 19 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="9.2" /><path d="M10 8.6v6.8l5.6-3.4z" fill="currentColor" />
   </svg>
 );
 

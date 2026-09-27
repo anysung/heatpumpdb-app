@@ -21,7 +21,8 @@ import { preloadBrandArtwork } from './pdf/brandArtwork';
 import { preloadPdfFonts } from './pdf/pdfFonts';
 import { downloadPdf, printPdfViaShareSheet } from './pdf/deliverPdf';
 import { isIos } from './pwaInstall';
-import { FD, SignOutIcon, AccountIcon } from './ui';
+import { FD, SignOutIcon, AccountIcon, RocketIcon, TourIcon } from './ui';
+import { sharedTermDiscountPct } from '../config/subscriptionPlans';
 import { BrandLogo, WavingFlag } from '../components/BrandLogo';
 import { useViewport } from './useViewport';
 import { MobileApp } from './mobile/MobileApp';
@@ -36,8 +37,9 @@ import { GuidePage } from './pages/GuidePage';
 import { NewsPage } from './pages/NewsPage';
 import { TrendsPage } from './pages/TrendsPage';
 import { ReportPage } from './pages/ReportPage';
+import { UpgradePage } from './pages/UpgradePage';
 import { isSpecialReportItem } from './newsModel';
-import { UpsellModal, DataNotice } from './Premium';
+import { UpsellModal, DataNotice, WelcomeTrialModal } from './Premium';
 import { InstallPage } from './pages/InstallPage';
 import { AccountPage } from './pages/AccountPage';
 
@@ -209,7 +211,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
 
   const navOverflowActive = NAV_GROUPS.slice(navVisible).some(g => (g.pages as HpPage[]).includes(page));
   const navLinkStyle = (active: boolean): React.CSSProperties => ({
-    padding: '8px 14px', borderRadius: 999, cursor: 'pointer', whiteSpace: 'nowrap',
+    padding: '8px 11px', borderRadius: 999, cursor: 'pointer', whiteSpace: 'nowrap',
     ...(active
       ? { color: '#fff', fontWeight: 600, background: 'rgba(255,255,255,.12)' }
       : { color: 'rgba(255,255,255,.65)' }),
@@ -474,11 +476,18 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   // every app entry, linking to the Account subscription section. Pure UX —
   // the server rules close the window when it ends regardless.
   const access = accessInfo(user);
+  // Trial welcome notice — once per account per device, after the profile step.
+  const welcomeKey = `hpdb.trialWelcome.${user.id}`;
+  const [welcomeSeen, setWelcomeSeen] = useState(() => { try { return !!localStorage.getItem(welcomeKey); } catch { return false; } });
+  const welcomeOpen = access.state === 'trial' && !welcomeSeen && !tourHold && user.id !== 'preview';
+  const closeWelcome = () => { try { localStorage.setItem(welcomeKey, new Date().toISOString()); } catch { /* private mode */ } setWelcomeSeen(true); };
+  const welcomeModal = welcomeOpen && access.state === 'trial'
+    ? <WelcomeTrialModal app={app} trialEndsMs={access.trialEndsMs} onClose={closeWelcome} /> : null;
   const trialBanner = access.state === 'trial' && access.daysLeft <= 3 ? (
     <div data-testid="trial-banner" style={{ background: '#0a6847', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '9px 20px', fontSize: 13.5, flex: 'none' }}>
       <span>{t.trial.banner(access.daysLeft)}</span>
       <button
-        onClick={() => setPage('account')}
+        onClick={() => setPage('upgrade')}
         style={{ background: '#fff', color: '#0a6847', border: 'none', borderRadius: 999, padding: '5px 15px', fontWeight: 600, cursor: 'pointer', fontSize: 12.5 }}
       >
         {t.trial.bannerCta}
@@ -511,7 +520,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         {(dataBanner || sessionBanner || trialBanner) && (
           <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 120 }}>{dataBanner}{sessionBanner || trialBanner}</div>
         )}
-        <OnboardingTour app={app} viewport="phone" hold={tourHold} />
+        <OnboardingTour app={app} viewport="phone" hold={tourHold || welcomeOpen} />
+        {welcomeModal}
         <MobileApp app={app} viewport={viewport} />
         {upsellOpen && <UpsellModal app={app} onClose={() => setUpsellOpen(false)} />}
         {notice && (
@@ -526,7 +536,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   return (
     <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
       {printPortal}
-      <OnboardingTour app={app} viewport="desktop" hold={tourHold} />
+      <OnboardingTour app={app} viewport="desktop" hold={tourHold || welcomeOpen} />
+      {welcomeModal}
       {upsellOpen && <UpsellModal app={app} onClose={() => setUpsellOpen(false)} />}
 
       {/* ============ Global nav ============ */}
@@ -538,7 +549,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
           <BrandLogo height={30} theme="dark" />
           <WavingFlag height={26} className="waving-flag" />
         </span>
-        <div ref={navRowRef} className="hp-gnav-links" style={{ display: 'flex', gap: 5, fontSize: 14, position: 'relative' }}>
+        <div ref={navRowRef} className="hp-gnav-links" style={{ display: 'flex', gap: 5, fontSize: 13.5, position: 'relative' }}>
           {NAV_GROUPS.slice(0, navVisible).map(g => {
             const on = (g.pages as HpPage[]).includes(page);
             return (
@@ -581,7 +592,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
             ref={navSizerRef}
             aria-hidden
             className="hp-gnav-links"
-            style={{ position: 'absolute', left: 0, top: 0, display: 'flex', gap: 5, fontSize: 14, visibility: 'hidden', pointerEvents: 'none', overflow: 'visible' }}
+            style={{ position: 'absolute', left: 0, top: 0, display: 'flex', gap: 5, fontSize: 13.5, visibility: 'hidden', pointerEvents: 'none', overflow: 'visible' }}
           >
             {/* Measured in the ACTIVE weight (600) on purpose: the selected item
                 renders bold, so measuring the lighter weight under-reserves by a
@@ -630,6 +641,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
                 <span
                   key={l}
                   onClick={() => setLanguage(l)}
+                  className={language === l ? undefined : 'hp-hbtn'}
                   style={{
                     padding: '6px 12px', cursor: 'pointer',
                     ...(language === l ? { background: '#fff', color: '#1d1d1f', fontWeight: 600 } : { color: 'rgba(255,255,255,.75)' }),
@@ -640,34 +652,57 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
               ))}
             </div>
           )}
-          {/* Tutor icon — replay the interactive tour any time (owner 2026-07-31). */}
+          {/* Upgrade — plans page (owner 2026-09-28). Always visible; the badge
+              is the real annual saving from the configured prices. */}
           <span
+            className="hp-upbtn"
+            onClick={() => setPage('upgrade')}
+            data-testid="nav-upgrade"
+            style={{
+              position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: 999, padding: '7px 15px',
+              fontSize: 13, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap', flex: 'none',
+              ...(page === 'upgrade'
+                ? { background: '#fff', color: '#0a3d2a' }
+                : { background: 'linear-gradient(90deg, rgba(34,197,94,.22), rgba(6,182,212,.22))', color: '#eafff3', border: '1px solid rgba(134,239,172,.55)' }),
+            }}
+          >
+            <RocketIcon />
+            <span className="hp-btn-label">{t.up.nav}</span>
+            {sharedTermDiscountPct('annual') > 0 && (
+              <span style={{ position: 'absolute', bottom: -9, left: '50%', transform: 'translateX(-50%)', fontSize: 9.5, fontWeight: 800, background: '#e11d48', color: '#fff', borderRadius: 999, padding: '1px 6px', whiteSpace: 'nowrap', lineHeight: 1.4 }}>
+                -{sharedTermDiscountPct('annual')}%
+              </span>
+            )}
+          </span>
+          {/* Tour replay — play-in-a-ring (replaced the mortarboard, 2026-09-28). */}
+          <span
+            className="hp-hbtn"
             onClick={() => window.dispatchEvent(new CustomEvent('hpdb-tour-open'))}
             title={t.tour.accountReplay}
             data-testid="nav-tutor"
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: '50%', cursor: 'pointer', flex: 'none', color: 'rgba(255,255,255,.75)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,.75)')}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, borderRadius: '50%', cursor: 'pointer', flex: 'none', color: 'rgba(255,255,255,.85)', border: '1.5px solid transparent' }}
           >
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9l10-4.5L22 9l-10 4.5zM6.5 11v4.4c0 1.2 2.5 2.6 5.5 2.6s5.5-1.4 5.5-2.6V11M22 9v5" /></svg>
+            <TourIcon />
           </span>
+          {/* Account — a round, high-contrast avatar button (owner 2026-09-28). */}
           <span
+            className={page === 'account' ? 'hp-hbtn-light' : 'hp-hbtn'}
             onClick={() => setPage('account')}
             title={t.nav.account}
+            aria-label={t.nav.account}
             style={{
-              display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: 999, padding: '6px 14px',
-              fontSize: 12.5, cursor: 'pointer', whiteSpace: 'nowrap', flex: 'none', boxSizing: 'border-box',
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, borderRadius: '50%',
+              cursor: 'pointer', flex: 'none', boxSizing: 'border-box',
               ...(page === 'account'
-                ? { background: '#fff', color: '#1d1d1f', border: '1px solid #fff', fontWeight: 600 }
-                : { background: '#2a2a2c', color: '#fff', border: '1px solid rgba(255,255,255,.3)' }),
+                ? { background: '#fff', color: '#1d1d1f', border: '2px solid #fff' }
+                : { background: '#2a2a2c', color: '#fff', border: '2px solid rgba(255,255,255,.75)' }),
             }}
             data-testid="nav-account"
           >
-            <AccountIcon />
-            <span className="hp-btn-label">{t.nav.account}</span>
+            <AccountIcon size={18} strokeWidth={2.6} />
           </span>
           <span
-            className="hp-press"
+            className="hp-press hp-hbtn hp-signout"
             onClick={onLogout}
             title="Sign out"
             style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,.3)', borderRadius: 999, padding: '6px 14px', fontSize: 12.5, color: 'rgba(255,255,255,.85)', cursor: 'pointer', whiteSpace: 'nowrap', flex: 'none' }}
@@ -691,6 +726,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
       {page === 'news' && <NewsPage app={app} />}
       {page === 'trends' && <TrendsPage app={app} />}
       {page === 'report' && <ReportPage app={app} />}
+      {page === 'upgrade' && <UpgradePage app={app} />}
       {page === 'install' && <InstallPage app={app} />}
       {page === 'account' && <AccountPage app={app} />}
 

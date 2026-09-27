@@ -9,9 +9,10 @@
  *             detail panel.
  *   desktop — the full dense UI in HpiqApp.tsx (unchanged).
  */
+import { RocketIcon } from '../ui';
 import React, { useState, useEffect } from 'react';
 import { HpApp, HpPage } from '../appState';
-import { DataNotice, PremiumPill } from '../Premium';
+import { DataNotice, PremiumPill, UpgradePromoCard } from '../Premium';
 import { tr } from '../i18n';
 import { UI_LANGUAGES, FUNDING_SOURCE_LINKS, MARKET_ICON_32 } from '../market';
 import { LEGAL_ROUTES, LegalDoc, MARKETING_EMAIL } from '../../config/legal';
@@ -35,11 +36,12 @@ import { NEWS_SERIF, localizedNews, newsEyebrow, articleDeepLink, emailArticleHr
 import { NewsGallery, galleryOf } from '../NewsGallery';
 import { TrendsPage } from '../pages/TrendsPage';
 import { ReportPage } from '../pages/ReportPage';
+import { UpgradePage } from '../pages/UpgradePage';
 import { InstallPage } from '../pages/InstallPage';
 import { SubTabs, recallSubTab } from '../ui';
 import { printPdfViaShareSheet } from '../pdf/deliverPdf';
 
-type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account' | 'label' | 'trends' | 'report' | 'install'> | 'guide';
+type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account' | 'label' | 'trends' | 'report' | 'install' | 'upgrade'> | 'guide';
 
 /* ── Tiny tab icons (stroke style matching the desktop icon set) ─────────── */
 
@@ -64,6 +66,8 @@ const ICONS: Record<MTab, string> = {
   install: 'M3 5h18v14H3zM10 9l5 3-5 3z',
   // Special Report: bound report with a bookmark ribbon
   report: 'M5 3h11l3 3v15H5zM9 3v7l2-1.5L13 10V3M8 14h8M8 17h6',
+  // Upgrade: rocket
+  upgrade: 'M5 15c-1.5 1.3-2 4-2 6 2 0 4.7-.5 6-2M9 18l-3-3c1-4.5 4.5-10 12-11 0 0 .5 7.5-6 12zM14.5 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3',
 };
 
 /* ── PWA install (mobile browsers never volunteer the prompt themselves) ── */
@@ -692,74 +696,8 @@ const MobileAccount: React.FC<{ app: HpApp }> = ({ app }) => {
         )}
       </div>
 
-      {/* Plan picker (no subscription yet) — team seats are managed on desktop */}
-      {!isPro && !isTeamMember && (
-        <div style={card}>
-          <span style={sectionLabel}>{s.pickTitle}</span>
-          <span style={{ fontSize: 12, color: '#7a7a7a', lineHeight: 1.5 }}>{s.pickSub}</span>
-          {/* Billing-term selector — three EQUAL segments (grid minmax(0,1fr) so a
-              nowrap label can't widen a column past its 1/3 share; min-width:0 lets
-              it shrink). Compact two-line layout: term label above, real discount
-              badge below. The percentage is sharedTermDiscountPct — the LOWEST
-              saving across all active plans for the term (same source as desktop,
-              never overstates), rendered with the localized s.termSavePct. */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', border: '1px solid #d2d2d7', borderRadius: 14, overflow: 'hidden', fontSize: 12.5 }}>
-            {BILLING_TERMS.map(tm => {
-              const pct = sharedTermDiscountPct(tm);
-              const selected = term === tm;
-              return (
-                <span
-                  key={tm}
-                  role="button"
-                  tabIndex={0}
-                  aria-pressed={selected}
-                  onClick={() => setTerm(tm)}
-                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTerm(tm); } }}
-                  style={{ padding: '7px 6px', cursor: 'pointer', minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, textAlign: 'center', ...(selected ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}
-                >
-                  <span style={{ whiteSpace: 'nowrap' }}>{s.termNames[tm]}</span>
-                  {pct > 0 && (
-                    <span style={{ fontSize: 9, fontWeight: 700, borderRadius: 999, padding: '1px 6px', lineHeight: 1.35, background: selected ? 'rgba(255,255,255,.18)' : '#e7f6ee', color: selected ? '#fff' : '#0a7a43' }}>
-                      {s.termSavePct(pct)}
-                    </span>
-                  )}
-                </span>
-              );
-            })}
-          </div>
-          {/* Plan cards — ONE fixed anatomy for every plan (owner report
-              2026-07-31: Professional and Team rows wrapped differently and
-              looked unprofessional). Row 1 name+badge, row 2 price line,
-              row 3 full-width CTA: nothing wraps, nothing shifts between
-              plans, the popular pick is marked instead of implied. */}
-          {SUB_PLAN_CODES.map(code => {
-            const popular = code === 'team_3' && term === 'monthly';   // owner call 2026-08-04: monthly first — annual sticker price scared first-time visitors
-            return (
-              <div key={code} style={{ position: 'relative', border: popular ? '2px solid #0066cc' : '1px solid #e0e0e0', borderRadius: 12, padding: '13px 14px 12px', display: 'flex', flexDirection: 'column', gap: 9 }}>
-                {popular && (
-                  <span style={{ position: 'absolute', top: -9, left: 14, fontSize: 9.5, fontWeight: 700, letterSpacing: '.04em', borderRadius: 999, padding: '2px 9px', background: '#0066cc', color: '#fff' }}>{s.mostPopular}</span>
-                )}
-                {/* No trial badge — checkout charges immediately; the free first
-                    week is granted at signup, not by a plan (2026-07-31). */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
-                  <span style={{ fontSize: 14.5, fontWeight: 600 }}>{s.planNames[code]}</span>
-                  <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{s.planUsers[code]}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
-                  <span style={{ fontFamily: FD, fontSize: 20, fontWeight: 700, letterSpacing: '-0.3px' }}>{formatEur(SUB_PLANS[code].prices[term])}</span>
-                  <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{s.perTerm[term]}{isTeamPlan(code) ? ` ${s.forWholeTeam}` : ''}</span>
-                  <span style={{ fontSize: 10, fontWeight: 600, color: '#9a9aa0' }}>{s.exclVat}</span>
-                </div>
-                <span className="hp-press" onClick={() => startCheckout(code)}
-                  style={{ display: 'block', textAlign: 'center', background: popular ? '#0066cc' : '#1d1d1f', color: '#fff', borderRadius: 999, padding: '11px 0', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-                  {s.startTrial.replace(' ›', '')}
-                </span>
-              </div>
-            );
-          })}
-          <span style={{ fontSize: 10.5, color: '#9a9aa0', lineHeight: 1.5 }}>{s.trialNote} {s.vatNote} {s.eurBillingNote}</span>
-        </div>
-      )}
+      {/* Plans live on the Upgrade page since 2026-09-28. */}
+      {!isPro && !isTeamMember && <UpgradePromoCard app={app} compact />}
 
       {showInstallUi() && (
         <div style={card}>
@@ -881,13 +819,13 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
      news tab (news + trends the same way). The freed slots put the EU label
      into the header menu next to the new Installation page. */
   const MOBILE_TABS: MTab[] = ['find', 'products', 'bafa', 'news', 'account'];
-  const MENU_PAGES: MTab[] = ['report', 'label', 'install'];
-  const VALID_PAGES = ['find', 'products', 'datasheet', 'guide', 'bafa', 'news', 'trends', 'report', 'install', 'account', 'label'];
+  const MENU_PAGES: MTab[] = ['upgrade', 'report', 'label', 'install'];
+  const VALID_PAGES = ['find', 'products', 'datasheet', 'guide', 'bafa', 'news', 'trends', 'report', 'install', 'upgrade', 'account', 'label'];
   const page: MTab = VALID_PAGES.includes(app.page) ? (app.page as MTab) : 'find';
   const tabLabel: Record<MTab, string> = {
     find: t.m.tabSearch, products: t.products.title, datasheet: t.m.mdsTitle,
     bafa: t.m.tabFunding, news: t.nav.news, guide: t.nav.guide, account: t.nav.account,
-    label: t.nav.label, trends: t.nav.trends, report: t.nav.report, install: t.nav.install,
+    label: t.nav.label, trends: t.nav.trends, report: t.nav.report, install: t.nav.install, upgrade: t.up.nav,
   };
   /** A grouped tab lands on the sub-page the person used last (same memory the
    *  desktop nav reads — localStorage survives shell switches). */
@@ -958,6 +896,16 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9l10-4.5L22 9l-10 4.5zM6.5 11v4.4c0 1.2 2.5 2.6 5.5 2.6s5.5-1.4 5.5-2.6V11M22 9v5" /></svg>
             </span>
           )}
+          {/* Upgrade — same entry as the desktop header (2026-09-28). */}
+          <span
+            className="hp-upbtn"
+            onClick={() => { setMenuOpen(false); app.go('upgrade'); }}
+            data-testid="m-nav-upgrade"
+            aria-label={t.up.nav}
+            style={{ width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, cursor: 'pointer', color: page === 'upgrade' ? '#0a3d2a' : '#eafff3', background: page === 'upgrade' ? '#fff' : 'linear-gradient(90deg, rgba(34,197,94,.3), rgba(6,182,212,.3))', border: '1px solid rgba(134,239,172,.55)' }}
+          >
+            <RocketIcon size={16} />
+          </span>
           {viewport === 'phone' && (
             <span
               onClick={() => setMenuOpen(o => !o)}
@@ -1005,6 +953,7 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
         {page === 'news' && <MobileNews app={app} />}
         {page === 'trends' && <TrendsPage app={app} />}
         {page === 'report' && <ReportPage app={app} />}
+        {page === 'upgrade' && <UpgradePage app={app} />}
         {page === 'install' && <InstallPage app={app} />}
         {page === 'account' && <MobileAccount app={app} />}
       </div>

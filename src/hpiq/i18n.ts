@@ -55,7 +55,7 @@ const EN = {
   session: {
     banner: (t: string) => `Device limit exceeded — the least-used session signs out in ${t}. Unused devices clear automatically.`,
     cardTitle: 'Devices & sessions',
-    cardText: 'Premium allows two concurrently active devices, the Free plan one. Signing in on more starts a 30-minute grace period, then the least recently used session is signed out.',
+    cardText: 'Premium allows two concurrently active devices, the Standard plan one. Signing in on more starts a 30-minute grace period, then the least recently used session is signed out.',
     thisDevice: 'This device',
     lastSeen: (s: string) => `Last active ${s}`,
     signOutOne: 'Sign out',
@@ -106,6 +106,8 @@ const EN = {
       { title: 'Your monthly briefing', body: 'Curated funding, market and technology news for this market — published with every monthly update. Open any story for sources and a shareable link \u2014 the Market & Trends tab adds monthly infographic briefings.' },
       { title: 'From product to paper', body: 'Tap the Data sheet button — every product view ends in a print-ready document with its official listing status.' },
       { title: 'Installation, on video', body: 'Official manufacturer installation and commissioning videos for this market \u2014 leading brands first, in the market language where the manufacturer provides it.' },
+      { title: 'The monthly Special Report', body: 'A European market analysis every month, in its own menu. The August and September 2026 editions are free samples; from October it is part of Premium.' },
+      { title: 'Standard or Premium', body: 'Standard stays free. Premium unlocks full specifications, comparison, the commercial range, PDF data sheets and the Special Report — the Upgrade button in the header shows the plans for individuals and teams.' },
     ] as { title: string; body: string }[],
   },
 
@@ -122,7 +124,7 @@ const EN = {
   /** Free + Premium program (owner, 2026-09-27) — upgrade prompt, lock
    *  labels and the data-protection notice. */
   tier: {
-    free: 'Free',
+    free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Premium feature',
     lockBody: 'Full specifications, side-by-side comparison, the commercial range, PDF data sheets and the monthly Special Report are part of Premium.',
@@ -135,16 +137,152 @@ const EN = {
     commercialLocked: 'The commercial range (> 23 kW) is part of Premium.',
     sampleBadge: 'Free sample',
     reportLocked: 'This edition is part of Premium. The August and September 2026 editions are free samples.',
-    freePlanTitle: 'You are on the Free plan.',
+    freePlanTitle: 'You are on Standard (free).',
     freePlanBody: 'Search, basic specifications, listing status, subsidies, news and installation videos stay free. Upgrade any time for the full database.',
     notice: 'Data provided through this site is protected by encryption and access control. An unauthorised-use detection system is in operation.',
+    welcomeTitle: 'Welcome to HeatPump DB!',
+    welcomeLines: (d: string) => ['Your 15-day free Premium pass is now active.', `You can use every feature of the app without limits until ${d}.`, 'After the 15 free days, the Standard service stays available at no cost. No payment method is needed and nothing is charged automatically.'],
+    welcomeOk: 'Start exploring ›',
+  },
+
+  /** Upgrade page (owner, 2026-09-28) — Personal / Business plans, Standard vs Premium. */
+  up: {
+      "nav": "Upgrade",
+      "heroEyebrow": "HeatPump DB Premium",
+      "heroTitle": "Unlock the full heat pump database.",
+      "heroSub": "Standard stays free forever. Premium adds full specifications, side-by-side comparison, the commercial range, print-ready data sheets and the monthly Special Report.",
+      "tabPersonal": "Personal plans",
+      "tabBusiness": "Business plans",
+      "standardSub": "For looking things up",
+      "standardPrice": "€0",
+      "standardPer": "free forever",
+      "standardCta": "Included for everyone",
+      "currentPlan": "Your current plan",
+      "trialActive": "Premium trial active",
+      "upgradeTo": "Upgrade to {plan} ›",
+      "manageCta": "Manage in Account ›",
+      "mostPopular": "Most popular",
+      "bestValue": "Best value",
+      "annualEq": "{pm} per month, billed yearly",
+      "perUser": "{p} per user / month",
+      "instead": "instead of {p}",
+      "standardFeatures": [
+          "Instant model search",
+          "Residential catalogue with key specs",
+          "Local listing status and registry ID",
+          "Subsidies, funding guide and news",
+          "Installation videos",
+          "1 device"
+      ],
+      "proFeatures": [
+          "Everything in Standard",
+          "Full specifications — COP, sound power, refrigerant charge",
+          "Compare up to 4 models side by side",
+          "Commercial range above 23 kW",
+          "Print-ready PDF data sheets and EU label sheets",
+          "The monthly Special Report",
+          "2 devices"
+      ],
+      "teamFeatures": [
+          "Everything in Professional, for every seat",
+          "{n} users — one admin invites the team",
+          "Members can be replaced at any time",
+          "One invoice for the whole team"
+      ],
+      "team5Extra": "Priority email support",
+      "compareTitle": "Standard vs Premium",
+      "compareSub": "Everything a professional needs, side by side.",
+      "colFeature": "Feature",
+      "rows": [
+          [
+              "Model search and residential catalogue",
+              "y",
+              "y"
+          ],
+          [
+              "Capacity, SCOP, energy class, refrigerant",
+              "y",
+              "y"
+          ],
+          [
+              "Local listing status and registry ID",
+              "y",
+              "y"
+          ],
+          [
+              "Subsidies, funding guide, news, Market & Trends",
+              "y",
+              "y"
+          ],
+          [
+              "Installation videos",
+              "y",
+              "y"
+          ],
+          [
+              "COP values, sound power, refrigerant charge",
+              "n",
+              "y"
+          ],
+          [
+              "Compare up to 4 models",
+              "n",
+              "y"
+          ],
+          [
+              "Commercial range (> 23 kW)",
+              "n",
+              "y"
+          ],
+          [
+              "PDF / print data sheets and EU label sheets",
+              "n",
+              "y"
+          ],
+          [
+              "Monthly Special Report",
+              "sample",
+              "y"
+          ],
+          [
+              "Devices at the same time",
+              "1",
+              "2"
+          ]
+      ],
+      "sampleCell": "Free samples",
+      "faqTitle": "Frequently asked questions",
+      "faq": [
+          [
+              "Do I keep Standard for free?",
+              "Yes. Standard is free with no time limit and needs no payment method. New accounts start with 15 days of Premium; afterwards the account simply continues on Standard."
+          ],
+          [
+              "Is anything charged automatically after the trial?",
+              "No. Nothing is charged unless you choose a plan and complete the checkout."
+          ],
+          [
+              "How is the subscription billed?",
+              "In euro in every market, excluding VAT. VAT is added at checkout by Paddle.com, our merchant of record, based on your country and business details. Cards in other currencies are converted by your bank."
+          ],
+          [
+              "Can I cancel?",
+              "Yes — stop the next renewal at any time in the billing portal. Premium runs to the end of the paid period, then the account continues on Standard."
+          ],
+          [
+              "How do team plans work?",
+              "The team admin subscribes once and invites colleagues by email. Seats can be reassigned at any time; plan and seat changes apply at the next renewal."
+          ]
+      ],
+      "bottomTitle": "Ready for the full database?",
+      "bottomCta": "See plans"
   },
 
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Your Premium trial ends today — afterwards you continue on the Free plan.'
-        : `Your Premium trial ends in ${d} days — then you continue on the Free plan.`,
+        ? 'Your Premium trial ends today — afterwards you continue on Standard (free).'
+        : `Your Premium trial ends in ${d} days — then you continue on Standard (free).`,
     bannerCta: 'View plans',
     // Team-during-trial: the org is created BEFORE payment; every member
     // shares the team admin's trial end date (one date for everyone).
@@ -667,6 +805,9 @@ const EN = {
       esco_utility: 'Energy Service Company / Utility',
       housing: 'Housing Association / Property Management',
       public_research: 'Public Sector / Research / Industry Association',
+      student: 'Student',
+      academic: 'Researcher / Professor',
+      university: 'University / Research institute',
       individual: 'Individual / Sole Trader',
       other: 'Other',
     } as Record<string, string>,
@@ -727,7 +868,7 @@ const EN = {
   /** Subscription program — Professional / Team 3 / Team 5 (config: subscriptionPlans.ts). */
   sub: {
     pickTitle: 'Choose your plan.',
-    pickSub: 'Subscribing starts Premium immediately. New accounts include a 15-day Premium trial; after that the account continues on the Free plan.',
+    pickSub: 'Subscribing starts Premium immediately. New accounts include a 15-day Premium trial; after that the account continues on Standard (free).',
     currentTitle: 'Your subscription.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 user', team_3: 'Up to 3 users', team_5: 'Up to 5 users' } as Record<string, string>,
@@ -868,7 +1009,7 @@ const DE: HpStrings = {
   session: {
     banner: (t: string) => `Gerätelimit überschritten — die am längsten ungenutzte Sitzung wird in ${t} abgemeldet. Ungenutzte Geräte werden automatisch bereinigt.`,
     cardTitle: 'Geräte & Sitzungen',
-    cardText: 'Premium erlaubt zwei gleichzeitig aktive Geräte, der Free-Tarif eines. Bei mehr beginnt eine 30-minütige Karenzzeit, danach wird die am längsten ungenutzte Sitzung abgemeldet.',
+    cardText: 'Premium erlaubt zwei gleichzeitig aktive Geräte, der Standard-Tarif eines. Bei mehr beginnt eine 30-minütige Karenzzeit, danach wird die am längsten ungenutzte Sitzung abgemeldet.',
     thisDevice: 'Dieses Gerät',
     lastSeen: (s: string) => `Zuletzt aktiv ${s}`,
     signOutOne: 'Abmelden',
@@ -918,6 +1059,8 @@ const DE: HpStrings = {
       { title: 'Ihr Monats-Briefing', body: 'Kuratierte Förder-, Markt- und Technik-Nachrichten für diesen Markt — mit jedem Monats-Update. Jeder Artikel mit Quellen und teilbarem Link \u2014 der Tab \u201eMarkt & Trends\u201c erg\u00e4nzt monatliche Infografik-Briefings.' },
       { title: 'Vom Produkt zum Papier', body: 'Tippen Sie auf den Datenblatt-Button — jede Produktansicht endet in einem druckfertigen Dokument mit offiziellem Listenstatus.' },
       { title: 'Installation im Video', body: 'Offizielle Installations- und Inbetriebnahme-Videos der Hersteller f\u00fcr diesen Markt \u2014 f\u00fchrende Marken zuerst, auf Deutsch, wo der Hersteller es anbietet.' },
+      { title: 'Der monatliche Special Report', body: 'Jeden Monat eine europäische Marktanalyse, mit eigenem Menüpunkt. Die Ausgaben August und September 2026 sind kostenlose Leseproben; ab Oktober ist er Teil von Premium.' },
+      { title: 'Standard oder Premium', body: 'Standard bleibt kostenlos. Premium schaltet vollständige Daten, Vergleich, das Gewerbesegment, PDF-Datenblätter und den Special Report frei — der Upgrade-Button oben zeigt die Tarife für Einzelne und Teams.' },
     ] as { title: string; body: string }[],
   },
 
@@ -929,7 +1072,7 @@ const DE: HpStrings = {
   },
 
   tier: {
-    free: 'Free',
+    free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Premium-Funktion',
     lockBody: 'Vollständige technische Daten, Direktvergleich, das Gewerbesegment, PDF-Datenblätter und der monatliche Special Report sind Teil von Premium.',
@@ -942,16 +1085,151 @@ const DE: HpStrings = {
     commercialLocked: 'Das Gewerbesegment (> 23 kW) ist Teil von Premium.',
     sampleBadge: 'Kostenlose Ausgabe',
     reportLocked: 'Diese Ausgabe ist Teil von Premium. Die Ausgaben August und September 2026 sind kostenlose Leseproben.',
-    freePlanTitle: 'Sie nutzen den Free-Tarif.',
+    freePlanTitle: 'Sie nutzen Standard (kostenlos).',
     freePlanBody: 'Suche, Basisdaten, Listungsstatus, Förderung, News und Installationsvideos bleiben kostenlos. Für die vollständige Datenbank jederzeit upgraden.',
     notice: 'Über diese Website bereitgestellte Daten sind durch Verschlüsselung und Zugriffskontrolle geschützt. Ein System zur Erkennung unbefugter Nutzung ist aktiv.',
+    welcomeTitle: 'Herzlich willkommen bei HeatPump DB!',
+    welcomeLines: (d: string) => ['Ihr 15-tägiger kostenloser Premium-Zugang ist jetzt aktiv.', `Bis zum ${d} nutzen Sie alle Funktionen der App ohne Einschränkung.`, 'Nach den 15 kostenlosen Tagen bleibt der Standard-Service weiterhin kostenlos nutzbar. Es ist keine Zahlungsmethode nötig und es wird nichts automatisch berechnet.'],
+    welcomeOk: 'Jetzt loslegen ›',
+  },
+
+  up: {
+      "nav": "Upgrade",
+      "heroEyebrow": "HeatPump DB Premium",
+      "heroTitle": "Die vollständige Wärmepumpen-Datenbank freischalten.",
+      "heroSub": "Standard bleibt dauerhaft kostenlos. Premium ergänzt vollständige technische Daten, Direktvergleich, das Gewerbesegment, druckfertige Datenblätter und den monatlichen Special Report.",
+      "tabPersonal": "Einzeltarife",
+      "tabBusiness": "Business-Tarife",
+      "standardSub": "Zum Nachschlagen",
+      "standardPrice": "0 €",
+      "standardPer": "dauerhaft kostenlos",
+      "standardCta": "Für alle enthalten",
+      "currentPlan": "Ihr aktueller Tarif",
+      "trialActive": "Premium-Testphase aktiv",
+      "upgradeTo": "Upgrade auf {plan} ›",
+      "manageCta": "Im Konto verwalten ›",
+      "mostPopular": "Am beliebtesten",
+      "bestValue": "Bestes Preis-Leistungs-Verhältnis",
+      "annualEq": "{pm} pro Monat, jährlich abgerechnet",
+      "perUser": "{p} pro Nutzer / Monat",
+      "instead": "statt {p}",
+      "standardFeatures": [
+          "Sofortige Modellsuche",
+          "Wohngebäude-Katalog mit Kerndaten",
+          "Listungsstatus und Register-ID",
+          "Förderung, Förderleitfaden und News",
+          "Installationsvideos",
+          "1 Gerät"
+      ],
+      "proFeatures": [
+          "Alles aus Standard",
+          "Vollständige Daten — COP, Schallleistung, Kältemittelmenge",
+          "Bis zu 4 Modelle direkt vergleichen",
+          "Gewerbesegment über 23 kW",
+          "Druckfertige PDF-Datenblätter und EU-Label-Blätter",
+          "Der monatliche Special Report",
+          "2 Geräte"
+      ],
+      "teamFeatures": [
+          "Alles aus Professional, für jeden Platz",
+          "{n} Nutzer — ein Admin lädt das Team ein",
+          "Mitglieder jederzeit austauschbar",
+          "Eine Rechnung für das ganze Team"
+      ],
+      "team5Extra": "Bevorzugter E-Mail-Support",
+      "compareTitle": "Standard vs. Premium",
+      "compareSub": "Alles, was Profis brauchen, im direkten Vergleich.",
+      "colFeature": "Funktion",
+      "rows": [
+          [
+              "Modellsuche und Wohngebäude-Katalog",
+              "y",
+              "y"
+          ],
+          [
+              "Leistung, SCOP, Effizienzklasse, Kältemittel",
+              "y",
+              "y"
+          ],
+          [
+              "Listungsstatus und Register-ID",
+              "y",
+              "y"
+          ],
+          [
+              "Förderung, Leitfaden, News, Markt & Trends",
+              "y",
+              "y"
+          ],
+          [
+              "Installationsvideos",
+              "y",
+              "y"
+          ],
+          [
+              "COP-Werte, Schallleistung, Kältemittelmenge",
+              "n",
+              "y"
+          ],
+          [
+              "Bis zu 4 Modelle vergleichen",
+              "n",
+              "y"
+          ],
+          [
+              "Gewerbesegment (> 23 kW)",
+              "n",
+              "y"
+          ],
+          [
+              "PDF-/Druck-Datenblätter und EU-Label-Blätter",
+              "n",
+              "y"
+          ],
+          [
+              "Monatlicher Special Report",
+              "sample",
+              "y"
+          ],
+          [
+              "Gleichzeitige Geräte",
+              "1",
+              "2"
+          ]
+      ],
+      "sampleCell": "Kostenlose Ausgaben",
+      "faqTitle": "Häufige Fragen",
+      "faq": [
+          [
+              "Bleibt Standard kostenlos?",
+              "Ja. Standard ist zeitlich unbegrenzt kostenlos und braucht keine Zahlungsmethode. Neue Konten starten mit 15 Tagen Premium; danach läuft das Konto einfach mit Standard weiter."
+          ],
+          [
+              "Wird nach der Testphase automatisch etwas berechnet?",
+              "Nein. Es wird nur etwas berechnet, wenn Sie einen Tarif wählen und den Checkout abschließen."
+          ],
+          [
+              "Wie wird abgerechnet?",
+              "In Euro in allen Märkten, zzgl. MwSt. Die MwSt. berechnet Paddle.com (unser Merchant of Record) beim Checkout anhand Ihres Landes und Ihrer Unternehmensdaten. Karten in anderen Währungen rechnet Ihre Bank um."
+          ],
+          [
+              "Kann ich kündigen?",
+              "Ja — die nächste Verlängerung lässt sich jederzeit im Abrechnungsportal stoppen. Premium läuft bis zum Ende des bezahlten Zeitraums, danach geht das Konto auf Standard über."
+          ],
+          [
+              "Wie funktionieren Team-Tarife?",
+              "Der Team-Admin schließt einmal ab und lädt Kolleginnen und Kollegen per E-Mail ein. Plätze sind jederzeit neu vergebbar; Tarif- und Platzänderungen gelten ab der nächsten Verlängerung."
+          ]
+      ],
+      "bottomTitle": "Bereit für die vollständige Datenbank?",
+      "bottomCta": "Tarife ansehen"
   },
 
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Ihre Premium-Testphase endet heute — danach nutzen Sie den Free-Tarif weiter.'
-        : `Ihre Premium-Testphase endet in ${d} Tagen — danach nutzen Sie den Free-Tarif weiter.`,
+        ? 'Ihre Premium-Testphase endet heute — danach nutzen Sie Standard (kostenlos) weiter.'
+        : `Ihre Premium-Testphase endet in ${d} Tagen — danach nutzen Sie Standard (kostenlos) weiter.`,
     bannerCta: 'Tarife ansehen',
     teamStartTitle: 'Ein Team aufbauen?',
     teamStartBody: 'Sie können Ihr Team bereits während der Testphase einrichten und sofort Mitglieder einladen — alle teilen Ihr Testphasen-Enddatum, und eine Zahlung am Ende deckt das gesamte Team ab.',
@@ -1442,6 +1720,9 @@ const DE: HpStrings = {
       esco_utility: 'Energiedienstleister / Versorger',
       housing: 'Wohnungswirtschaft / Hausverwaltung',
       public_research: 'Öffentliche Hand / Forschung / Verband',
+      student: 'Student/in',
+      academic: 'Forschende / Professor/in',
+      university: 'Hochschule / Forschungseinrichtung',
       individual: 'Einzelperson / Einzelunternehmer',
       other: 'Sonstige',
     } as Record<string, string>,
@@ -1499,7 +1780,7 @@ const DE: HpStrings = {
   },
   sub: {
     pickTitle: 'Wählen Sie Ihren Tarif.',
-    pickSub: 'Mit dem Abschluss startet Premium sofort. Neue Konten enthalten eine 15-tägige Premium-Testphase; danach läuft das Konto im Free-Tarif weiter.',
+    pickSub: 'Mit dem Abschluss startet Premium sofort. Neue Konten enthalten eine 15-tägige Premium-Testphase; danach läuft das Konto mit Standard (kostenlos) weiter.',
     currentTitle: 'Ihr Abonnement.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 Nutzer', team_3: 'Bis zu 3 Nutzer', team_5: 'Bis zu 5 Nutzer' } as Record<string, string>,
@@ -2050,7 +2331,7 @@ const FR_FR: HpStrings = {
   session: {
     banner: (t: string) => `Limite d’appareils dépassée — la session la moins utilisée sera déconnectée dans ${t}. Les appareils inutilisés sont libérés automatiquement.`,
     cardTitle: 'Appareils et sessions',
-    cardText: 'Premium autorise deux appareils actifs simultanément, l’offre Free un seul. Au-delà, un délai de 30 minutes s’applique, puis la session la moins récemment utilisée est déconnectée.',
+    cardText: 'Premium autorise deux appareils actifs simultanément, l’offre Standard un seul. Au-delà, un délai de 30 minutes s’applique, puis la session la moins récemment utilisée est déconnectée.',
     thisDevice: 'Cet appareil',
     lastSeen: (s: string) => `Dernière activité ${s}`,
     signOutOne: 'Déconnecter',
@@ -2100,6 +2381,8 @@ const FR_FR: HpStrings = {
       { title: 'Votre briefing mensuel', body: 'Actualités curées — aides, marché, technologies — pour ce marché, publiées à chaque mise à jour mensuelle. Chaque article avec sources et lien partageable \u2014 l\u2019onglet March\u00e9 & Tendances ajoute des infographies mensuelles.' },
       { title: 'Du produit au papier', body: 'Touchez le bouton Fiche technique — chaque vue produit aboutit à un document prêt à imprimer avec son statut officiel.' },
       { title: 'L\u2019installation en vid\u00e9o', body: 'Vid\u00e9os officielles d\u2019installation et de mise en service des fabricants pour ce march\u00e9 \u2014 grandes marques d\u2019abord, en fran\u00e7ais lorsque le fabricant le propose.' },
+      { title: 'Le rapport spécial mensuel', body: 'Chaque mois une analyse du marché européen, dans son propre menu. Les éditions d’août et de septembre 2026 sont des échantillons gratuits ; à partir d’octobre, il fait partie de Premium.' },
+      { title: 'Standard ou Premium', body: 'Standard reste gratuit. Premium débloque les caractéristiques complètes, la comparaison, la gamme tertiaire, les fiches PDF et le rapport spécial — le bouton de l’en-tête présente les offres individuelles et entreprise.' },
     ] as { title: string; body: string }[],
   },
 
@@ -2111,7 +2394,7 @@ const FR_FR: HpStrings = {
   },
 
   tier: {
-    free: 'Free',
+    free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Fonctionnalité Premium',
     lockBody: 'Les caractéristiques complètes, la comparaison côte à côte, la gamme tertiaire, les fiches PDF et le rapport spécial mensuel font partie de Premium.',
@@ -2124,16 +2407,151 @@ const FR_FR: HpStrings = {
     commercialLocked: 'La gamme tertiaire (> 23 kW) fait partie de Premium.',
     sampleBadge: 'Échantillon gratuit',
     reportLocked: 'Cette édition fait partie de Premium. Les éditions d’août et de septembre 2026 sont des échantillons gratuits.',
-    freePlanTitle: 'Vous utilisez l’offre Free.',
+    freePlanTitle: 'Vous utilisez l’offre Standard (gratuite).',
     freePlanBody: 'La recherche, les caractéristiques de base, le statut de liste, les aides, les actualités et les vidéos d’installation restent gratuits. Passez à Premium à tout moment pour la base complète.',
     notice: 'Les données fournies par ce site sont protégées par chiffrement et contrôle d’accès. Un système de détection des utilisations non autorisées est en service.',
+    welcomeTitle: 'Bienvenue sur HeatPump DB !',
+    welcomeLines: (d: string) => ['Votre accès Premium gratuit de 15 jours est activé.', `Vous pouvez utiliser toutes les fonctionnalités de l’application sans limite jusqu’au ${d}.`, 'Après les 15 jours gratuits, le service Standard reste disponible gratuitement. Aucun moyen de paiement n’est requis et rien n’est facturé automatiquement.'],
+    welcomeOk: 'Commencer ›',
+  },
+
+  up: {
+      "nav": "Premium",
+      "heroEyebrow": "HeatPump DB Premium",
+      "heroTitle": "Débloquez toute la base de données PAC.",
+      "heroSub": "Standard reste gratuit à vie. Premium ajoute les caractéristiques complètes, la comparaison côte à côte, la gamme tertiaire, les fiches prêtes à imprimer et le rapport spécial mensuel.",
+      "tabPersonal": "Offres individuelles",
+      "tabBusiness": "Offres entreprise",
+      "standardSub": "Pour consulter",
+      "standardPrice": "0 €",
+      "standardPer": "gratuit à vie",
+      "standardCta": "Inclus pour tous",
+      "currentPlan": "Votre offre actuelle",
+      "trialActive": "Essai Premium actif",
+      "upgradeTo": "Passer à {plan} ›",
+      "manageCta": "Gérer dans le compte ›",
+      "mostPopular": "Le plus choisi",
+      "bestValue": "Meilleur rapport qualité-prix",
+      "annualEq": "{pm} par mois, facturé annuellement",
+      "perUser": "{p} par utilisateur / mois",
+      "instead": "au lieu de {p}",
+      "standardFeatures": [
+          "Recherche instantanée de modèles",
+          "Catalogue résidentiel avec données clés",
+          "Statut de liste et identifiant",
+          "Aides, guide des aides et actualités",
+          "Vidéos d’installation",
+          "1 appareil"
+      ],
+      "proFeatures": [
+          "Tout Standard",
+          "Caractéristiques complètes — COP, puissance acoustique, charge de fluide",
+          "Comparer jusqu’à 4 modèles côte à côte",
+          "Gamme tertiaire au-delà de 23 kW",
+          "Fiches techniques et fiches étiquette UE en PDF",
+          "Le rapport spécial mensuel",
+          "2 appareils"
+      ],
+      "teamFeatures": [
+          "Tout Professional, pour chaque place",
+          "{n} utilisateurs — un administrateur invite l’équipe",
+          "Membres remplaçables à tout moment",
+          "Une seule facture pour toute l’équipe"
+      ],
+      "team5Extra": "Support e-mail prioritaire",
+      "compareTitle": "Standard ou Premium",
+      "compareSub": "Tout ce dont un professionnel a besoin, côte à côte.",
+      "colFeature": "Fonctionnalité",
+      "rows": [
+          [
+              "Recherche et catalogue résidentiel",
+              "y",
+              "y"
+          ],
+          [
+              "Puissance, SCOP, classe énergétique, fluide",
+              "y",
+              "y"
+          ],
+          [
+              "Statut de liste et identifiant",
+              "y",
+              "y"
+          ],
+          [
+              "Aides, guide, actualités, Marché & Tendances",
+              "y",
+              "y"
+          ],
+          [
+              "Vidéos d’installation",
+              "y",
+              "y"
+          ],
+          [
+              "COP, puissance acoustique, charge de fluide",
+              "n",
+              "y"
+          ],
+          [
+              "Comparer jusqu’à 4 modèles",
+              "n",
+              "y"
+          ],
+          [
+              "Gamme tertiaire (> 23 kW)",
+              "n",
+              "y"
+          ],
+          [
+              "Fiches PDF / impression et fiches étiquette UE",
+              "n",
+              "y"
+          ],
+          [
+              "Rapport spécial mensuel",
+              "sample",
+              "y"
+          ],
+          [
+              "Appareils simultanés",
+              "1",
+              "2"
+          ]
+      ],
+      "sampleCell": "Éditions gratuites",
+      "faqTitle": "Questions fréquentes",
+      "faq": [
+          [
+              "Standard reste-t-il gratuit ?",
+              "Oui. Standard est gratuit sans limite de durée et sans moyen de paiement. Les nouveaux comptes commencent avec 15 jours de Premium ; ensuite, le compte continue simplement avec Standard."
+          ],
+          [
+              "Quelque chose est-il facturé automatiquement après l’essai ?",
+              "Non. Rien n’est facturé tant que vous ne choisissez pas une offre et ne finalisez pas le paiement."
+          ],
+          [
+              "Comment l’abonnement est-il facturé ?",
+              "En euros dans tous les marchés, hors TVA. La TVA est ajoutée au paiement par Paddle.com, notre revendeur officiel, selon votre pays et vos informations professionnelles. Les cartes dans une autre devise sont converties par votre banque."
+          ],
+          [
+              "Puis-je résilier ?",
+              "Oui — arrêtez le prochain renouvellement à tout moment dans le portail de facturation. Premium court jusqu’à la fin de la période payée, puis le compte passe à Standard."
+          ],
+          [
+              "Comment fonctionnent les offres équipe ?",
+              "L’administrateur de l’équipe souscrit une fois et invite ses collègues par e-mail. Les places peuvent être réattribuées à tout moment ; les changements d’offre ou de places s’appliquent au prochain renouvellement."
+          ]
+      ],
+      "bottomTitle": "Prêt pour la base complète ?",
+      "bottomCta": "Voir les offres"
   },
 
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Votre essai Premium se termine aujourd’hui — vous continuez ensuite avec l’offre Free.'
-        : `Votre essai Premium se termine dans ${d} jours — vous continuez ensuite avec l’offre Free.`,
+        ? 'Votre essai Premium se termine aujourd’hui — vous continuez ensuite avec l’offre Standard (gratuite).'
+        : `Votre essai Premium se termine dans ${d} jours — vous continuez ensuite avec l’offre Standard (gratuite).`,
     bannerCta: 'Voir les offres',
     teamStartTitle: 'Créer une équipe ?',
     teamStartBody: 'Vous pouvez créer votre équipe pendant l’essai gratuit et inviter des membres immédiatement — tous partagent votre date de fin d’essai, et un seul paiement à la fin couvre toute l’équipe.',
@@ -2512,6 +2930,9 @@ const FR_FR: HpStrings = {
       esco_utility: 'Société de services énergétiques / Fournisseur',
       housing: 'Bailleur social / Gestion immobilière',
       public_research: 'Secteur public / Recherche / Fédération',
+      student: 'Étudiant(e)',
+      academic: 'Chercheur / Professeur',
+      university: 'Université / Institut de recherche',
       individual: 'Particulier / Indépendant',
       other: 'Autre',
     } as Record<string, string>,
@@ -2680,7 +3101,7 @@ const FR_FR: HpStrings = {
   },
   sub: {
     pickTitle: 'Choisissez votre offre.',
-    pickSub: 'La souscription active Premium immédiatement. Les nouveaux comptes incluent un essai Premium de 15 jours ; le compte continue ensuite avec l’offre Free.',
+    pickSub: 'La souscription active Premium immédiatement. Les nouveaux comptes incluent un essai Premium de 15 jours ; le compte continue ensuite avec l’offre Standard (gratuite).',
     currentTitle: 'Votre abonnement.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 utilisateur', team_3: 'Jusqu’à 3 utilisateurs', team_5: 'Jusqu’à 5 utilisateurs' } as Record<string, string>,
@@ -3038,7 +3459,7 @@ const PL_PL: HpStrings = {
   session: {
     banner: (t: string) => `Przekroczono limit urządzeń — najdłużej nieużywana sesja zostanie wylogowana za ${t}. Nieużywane urządzenia są zwalniane automatycznie.`,
     cardTitle: 'Urządzenia i sesje',
-    cardText: 'Premium pozwala na dwa jednocześnie aktywne urządzenia, plan Free na jedno. Po przekroczeniu obowiązuje 30-minutowy okres karencji, a następnie wylogowywana jest najdłużej nieużywana sesja.',
+    cardText: 'Premium pozwala na dwa jednocześnie aktywne urządzenia, plan Standard na jedno. Po przekroczeniu obowiązuje 30-minutowy okres karencji, a następnie wylogowywana jest najdłużej nieużywana sesja.',
     thisDevice: 'To urządzenie',
     lastSeen: (s: string) => `Ostatnia aktywność ${s}`,
     signOutOne: 'Wyloguj',
@@ -3088,6 +3509,8 @@ const PL_PL: HpStrings = {
       { title: 'Twój miesięczny briefing', body: 'Wyselekcjonowane wiadomości o dotacjach, rynku i technologii dla Polski — z każdą comiesięczną aktualizacją. Ka\u017cdy artyku\u0142 ze \u017ar\u00f3d\u0142ami i linkiem do udost\u0119pnienia \u2014 zak\u0142adka Rynek i Trendy dodaje comiesi\u0119czne infografiki.' },
       { title: 'Od produktu do dokumentu', body: 'Dotknij przycisku Karta danych — każdy widok produktu kończy się dokumentem gotowym do druku ze statusem ZUM.' },
       { title: 'Monta\u017c na filmie', body: 'Oficjalne filmy producent\u00f3w o monta\u017cu i uruchomieniu dla tego rynku \u2014 najpierw wiod\u0105ce marki, po polsku tam, gdzie producent je udost\u0119pnia.' },
+      { title: 'Miesięczny Raport specjalny', body: 'Co miesiąc europejska analiza rynku, w osobnym menu. Wydania z sierpnia i września 2026 są bezpłatnymi egzemplarzami; od października raport jest częścią Premium.' },
+      { title: 'Standard czy Premium', body: 'Standard pozostaje bezpłatny. Premium odblokowuje pełne dane, porównanie, segment komercyjny, karty PDF i Raport specjalny — przycisk Ulepsz w nagłówku pokazuje plany indywidualne i dla firm.' },
     ] as { title: string; body: string }[],
   },
 
@@ -3099,7 +3522,7 @@ const PL_PL: HpStrings = {
   },
 
   tier: {
-    free: 'Free',
+    free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Funkcja Premium',
     lockBody: 'Pełne dane techniczne, porównanie modeli, segment komercyjny, karty PDF i miesięczny Raport specjalny są częścią Premium.',
@@ -3112,16 +3535,151 @@ const PL_PL: HpStrings = {
     commercialLocked: 'Segment komercyjny (> 23 kW) jest częścią Premium.',
     sampleBadge: 'Bezpłatny egzemplarz',
     reportLocked: 'To wydanie jest częścią Premium. Wydania z sierpnia i września 2026 są bezpłatnymi egzemplarzami.',
-    freePlanTitle: 'Korzystasz z planu Free.',
+    freePlanTitle: 'Korzystasz z planu Standard (bezpłatnego).',
     freePlanBody: 'Wyszukiwarka, podstawowe dane, status na liście, dofinansowania, aktualności i filmy instalacyjne pozostają bezpłatne. W każdej chwili możesz przejść na Premium, aby uzyskać pełną bazę.',
     notice: 'Dane udostępniane przez tę stronę są chronione szyfrowaniem i kontrolą dostępu. Działa system wykrywania nieuprawnionego wykorzystania.',
+    welcomeTitle: 'Witamy w HeatPump DB!',
+    welcomeLines: (d: string) => ['Twój bezpłatny 15-dniowy dostęp Premium jest aktywny.', `Do ${d} możesz korzystać ze wszystkich funkcji aplikacji bez ograniczeń.`, 'Po 15 bezpłatnych dniach usługa Standard pozostaje dostępna bez opłat. Nie potrzebujesz metody płatności i nic nie zostanie pobrane automatycznie.'],
+    welcomeOk: 'Zaczynamy ›',
+  },
+
+  up: {
+      "nav": "Ulepsz",
+      "heroEyebrow": "HeatPump DB Premium",
+      "heroTitle": "Odblokuj pełną bazę pomp ciepła.",
+      "heroSub": "Standard pozostaje bezpłatny na zawsze. Premium dodaje pełne dane techniczne, porównanie modeli, segment komercyjny, karty gotowe do druku i miesięczny Raport specjalny.",
+      "tabPersonal": "Plany indywidualne",
+      "tabBusiness": "Plany dla firm",
+      "standardSub": "Do wyszukiwania",
+      "standardPrice": "0 €",
+      "standardPer": "bezpłatnie na zawsze",
+      "standardCta": "W cenie dla wszystkich",
+      "currentPlan": "Twój obecny plan",
+      "trialActive": "Okres próbny Premium aktywny",
+      "upgradeTo": "Przejdź na {plan} ›",
+      "manageCta": "Zarządzaj w koncie ›",
+      "mostPopular": "Najpopularniejszy",
+      "bestValue": "Najlepsza wartość",
+      "annualEq": "{pm} miesięcznie, rozliczane rocznie",
+      "perUser": "{p} na użytkownika / miesiąc",
+      "instead": "zamiast {p}",
+      "standardFeatures": [
+          "Błyskawiczne wyszukiwanie modeli",
+          "Katalog mieszkaniowy z kluczowymi danymi",
+          "Status na liście i identyfikator",
+          "Dofinansowania, poradnik i aktualności",
+          "Filmy instalacyjne",
+          "1 urządzenie"
+      ],
+      "proFeatures": [
+          "Wszystko ze Standard",
+          "Pełne dane — COP, moc akustyczna, ilość czynnika",
+          "Porównanie do 4 modeli obok siebie",
+          "Segment komercyjny powyżej 23 kW",
+          "Karty danych i karty etykiety UE w PDF",
+          "Miesięczny Raport specjalny",
+          "2 urządzenia"
+      ],
+      "teamFeatures": [
+          "Wszystko z Professional, dla każdego miejsca",
+          "{n} użytkowników — administrator zaprasza zespół",
+          "Członków można wymieniać w każdej chwili",
+          "Jedna faktura dla całego zespołu"
+      ],
+      "team5Extra": "Priorytetowe wsparcie e-mail",
+      "compareTitle": "Standard czy Premium",
+      "compareSub": "Wszystko, czego potrzebuje profesjonalista, obok siebie.",
+      "colFeature": "Funkcja",
+      "rows": [
+          [
+              "Wyszukiwarka i katalog mieszkaniowy",
+              "y",
+              "y"
+          ],
+          [
+              "Moc, SCOP, klasa energetyczna, czynnik",
+              "y",
+              "y"
+          ],
+          [
+              "Status na liście i identyfikator",
+              "y",
+              "y"
+          ],
+          [
+              "Dofinansowania, poradnik, aktualności, Rynek i Trendy",
+              "y",
+              "y"
+          ],
+          [
+              "Filmy instalacyjne",
+              "y",
+              "y"
+          ],
+          [
+              "Wartości COP, moc akustyczna, ilość czynnika",
+              "n",
+              "y"
+          ],
+          [
+              "Porównanie do 4 modeli",
+              "n",
+              "y"
+          ],
+          [
+              "Segment komercyjny (> 23 kW)",
+              "n",
+              "y"
+          ],
+          [
+              "Karty PDF / druk i karty etykiety UE",
+              "n",
+              "y"
+          ],
+          [
+              "Miesięczny Raport specjalny",
+              "sample",
+              "y"
+          ],
+          [
+              "Urządzenia jednocześnie",
+              "1",
+              "2"
+          ]
+      ],
+      "sampleCell": "Bezpłatne wydania",
+      "faqTitle": "Najczęstsze pytania",
+      "faq": [
+          [
+              "Czy Standard pozostaje bezpłatny?",
+              "Tak. Standard jest bezpłatny bez limitu czasu i nie wymaga metody płatności. Nowe konta zaczynają od 15 dni Premium; potem konto po prostu działa dalej w planie Standard."
+          ],
+          [
+              "Czy po okresie próbnym coś zostanie pobrane automatycznie?",
+              "Nie. Nic nie jest pobierane, dopóki nie wybierzesz planu i nie dokończysz płatności."
+          ],
+          [
+              "Jak rozliczana jest subskrypcja?",
+              "W euro na wszystkich rynkach, bez VAT. VAT dolicza przy płatności Paddle.com, nasz sprzedawca rejestrowy, na podstawie kraju i danych firmy. Karty w innej walucie przelicza Twój bank."
+          ],
+          [
+              "Czy mogę zrezygnować?",
+              "Tak — w portalu rozliczeń możesz w każdej chwili zatrzymać kolejne odnowienie. Premium działa do końca opłaconego okresu, potem konto przechodzi na Standard."
+          ],
+          [
+              "Jak działają plany zespołowe?",
+              "Administrator zespołu wykupuje plan raz i zaprasza współpracowników e-mailem. Miejsca można przydzielać ponownie w każdej chwili; zmiany planu i liczby miejsc obowiązują od kolejnego odnowienia."
+          ]
+      ],
+      "bottomTitle": "Gotowy na pełną bazę?",
+      "bottomCta": "Zobacz plany"
   },
 
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'Twój okres próbny Premium kończy się dzisiaj — potem korzystasz dalej z planu Free.'
-        : `Twój okres próbny Premium kończy się za ${d} dni — potem korzystasz dalej z planu Free.`,
+        ? 'Twój okres próbny Premium kończy się dzisiaj — potem korzystasz dalej z planu Standard (bezpłatnego).'
+        : `Twój okres próbny Premium kończy się za ${d} dni — potem korzystasz dalej z planu Standard (bezpłatnego).`,
     bannerCta: 'Zobacz plany',
     teamStartTitle: 'Tworzysz zespół?',
     teamStartBody: 'Zespół możesz założyć już w okresie próbnym i od razu zapraszać członków — wszyscy dzielą Twoją datę końca okresu próbnego, a jedna płatność na końcu obejmuje cały zespół.',
@@ -3501,6 +4059,9 @@ const PL_PL: HpStrings = {
       esco_utility: 'Firma usług energetycznych / Przedsiębiorstwo energetyczne',
       housing: 'Spółdzielnia mieszkaniowa / Zarządzanie nieruchomościami',
       public_research: 'Sektor publiczny / Nauka / Organizacja branżowa',
+      student: 'Student',
+      academic: 'Naukowiec / Profesor',
+      university: 'Uczelnia / Instytut badawczy',
       individual: 'Osoba fizyczna / Jednoosobowa działalność',
       other: 'Inne',
     } as Record<string, string>,
@@ -3670,7 +4231,7 @@ const PL_PL: HpStrings = {
 
   sub: {
     pickTitle: 'Wybierz swój plan.',
-    pickSub: 'Subskrypcja uruchamia Premium od razu. Nowe konta mają 15-dniowy okres próbny Premium; potem konto działa dalej w planie Free.',
+    pickSub: 'Subskrypcja uruchamia Premium od razu. Nowe konta mają 15-dniowy okres próbny Premium; potem konto działa dalej w planie Standard (bezpłatnym).',
     currentTitle: 'Twoja subskrypcja.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 użytkownik', team_3: 'Do 3 użytkowników', team_5: 'Do 5 użytkowników' } as Record<string, string>,
@@ -4032,7 +4593,7 @@ const IT_IT: HpStrings = {
   session: {
     banner: (t: string) => `Limite di dispositivi superato — la sessione meno utilizzata verrà disconnessa tra ${t}. I dispositivi inutilizzati si liberano automaticamente.`,
     cardTitle: 'Dispositivi e sessioni',
-    cardText: 'Premium consente due dispositivi attivi contemporaneamente, il piano Free uno. Oltre questo limite parte un periodo di tolleranza di 30 minuti, poi la sessione usata meno di recente viene disconnessa.',
+    cardText: 'Premium consente due dispositivi attivi contemporaneamente, il piano Standard uno. Oltre questo limite parte un periodo di tolleranza di 30 minuti, poi la sessione usata meno di recente viene disconnessa.',
     thisDevice: 'Questo dispositivo',
     lastSeen: (s: string) => `Ultima attività ${s}`,
     signOutOne: 'Disconnetti',
@@ -4082,6 +4643,8 @@ const IT_IT: HpStrings = {
       { title: 'Il tuo briefing mensile', body: 'Notizie curate su incentivi, mercato e tecnologia per l’Italia — con ogni aggiornamento mensile. Ogni articolo con fonti e link condivisibile \u2014 la scheda Mercato & Trend aggiunge infografiche mensili.' },
       { title: 'Dal prodotto alla carta', body: 'Tocca il pulsante Scheda tecnica — ogni vista prodotto termina in un documento pronto da stampare con lo stato a catalogo.' },
       { title: 'L\u2019installazione in video', body: 'Video ufficiali dei produttori su installazione e messa in servizio per questo mercato \u2014 prima i marchi principali, in italiano dove il produttore li offre.' },
+      { title: 'Il Report speciale mensile', body: 'Ogni mese un’analisi del mercato europeo, con un menu dedicato. Le edizioni di agosto e settembre 2026 sono campioni gratuiti; da ottobre fa parte di Premium.' },
+      { title: 'Standard o Premium', body: 'Standard resta gratuito. Premium sblocca specifiche complete, confronto, la gamma commerciale, le schede PDF e il Report speciale — il pulsante Upgrade nell’intestazione mostra i piani individuali e aziendali.' },
     ] as { title: string; body: string }[],
   },
 
@@ -4093,7 +4656,7 @@ const IT_IT: HpStrings = {
   },
 
   tier: {
-    free: 'Free',
+    free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Funzione Premium',
     lockBody: 'Le specifiche complete, il confronto affiancato, la gamma commerciale, le schede PDF e il Report speciale mensile fanno parte di Premium.',
@@ -4106,16 +4669,151 @@ const IT_IT: HpStrings = {
     commercialLocked: 'La gamma commerciale (> 23 kW) fa parte di Premium.',
     sampleBadge: 'Campione gratuito',
     reportLocked: 'Questa edizione fa parte di Premium. Le edizioni di agosto e settembre 2026 sono campioni gratuiti.',
-    freePlanTitle: 'Stai usando il piano Free.',
+    freePlanTitle: 'Stai usando il piano Standard (gratuito).',
     freePlanBody: 'Ricerca, specifiche di base, stato di iscrizione, incentivi, notizie e video di installazione restano gratuiti. Passa a Premium quando vuoi per il database completo.',
     notice: 'I dati forniti tramite questo sito sono protetti da crittografia e controllo degli accessi. È attivo un sistema di rilevamento degli usi non autorizzati.',
+    welcomeTitle: 'Benvenuto in HeatPump DB!',
+    welcomeLines: (d: string) => ['Il tuo accesso Premium gratuito di 15 giorni è ora attivo.', `Puoi usare tutte le funzioni dell’app senza limiti fino al ${d}.`, 'Dopo i 15 giorni gratuiti il servizio Standard resta disponibile gratuitamente. Non serve alcun metodo di pagamento e non viene addebitato nulla automaticamente.'],
+    welcomeOk: 'Inizia ›',
+  },
+
+  up: {
+      "nav": "Upgrade",
+      "heroEyebrow": "HeatPump DB Premium",
+      "heroTitle": "Sblocca l’intero database delle pompe di calore.",
+      "heroSub": "Standard resta gratuito per sempre. Premium aggiunge specifiche complete, confronto affiancato, la gamma commerciale, schede pronte per la stampa e il Report speciale mensile.",
+      "tabPersonal": "Piani individuali",
+      "tabBusiness": "Piani aziendali",
+      "standardSub": "Per consultare",
+      "standardPrice": "0 €",
+      "standardPer": "gratis per sempre",
+      "standardCta": "Incluso per tutti",
+      "currentPlan": "Il tuo piano attuale",
+      "trialActive": "Prova Premium attiva",
+      "upgradeTo": "Passa a {plan} ›",
+      "manageCta": "Gestisci nell’account ›",
+      "mostPopular": "Il più scelto",
+      "bestValue": "Miglior rapporto qualità-prezzo",
+      "annualEq": "{pm} al mese, fatturato annualmente",
+      "perUser": "{p} per utente / mese",
+      "instead": "invece di {p}",
+      "standardFeatures": [
+          "Ricerca immediata dei modelli",
+          "Catalogo residenziale con dati chiave",
+          "Stato di iscrizione e codice",
+          "Incentivi, guida agli incentivi e notizie",
+          "Video di installazione",
+          "1 dispositivo"
+      ],
+      "proFeatures": [
+          "Tutto Standard",
+          "Specifiche complete — COP, potenza sonora, carica di refrigerante",
+          "Confronto fino a 4 modelli affiancati",
+          "Gamma commerciale oltre 23 kW",
+          "Schede tecniche e schede etichetta UE in PDF",
+          "Il Report speciale mensile",
+          "2 dispositivi"
+      ],
+      "teamFeatures": [
+          "Tutto Professional, per ogni posto",
+          "{n} utenti — un amministratore invita il team",
+          "Membri sostituibili in qualsiasi momento",
+          "Un’unica fattura per tutto il team"
+      ],
+      "team5Extra": "Supporto e-mail prioritario",
+      "compareTitle": "Standard o Premium",
+      "compareSub": "Tutto ciò che serve a un professionista, a confronto.",
+      "colFeature": "Funzione",
+      "rows": [
+          [
+              "Ricerca e catalogo residenziale",
+              "y",
+              "y"
+          ],
+          [
+              "Potenza, SCOP, classe energetica, refrigerante",
+              "y",
+              "y"
+          ],
+          [
+              "Stato di iscrizione e codice",
+              "y",
+              "y"
+          ],
+          [
+              "Incentivi, guida, notizie, Mercato & Trend",
+              "y",
+              "y"
+          ],
+          [
+              "Video di installazione",
+              "y",
+              "y"
+          ],
+          [
+              "Valori COP, potenza sonora, carica di refrigerante",
+              "n",
+              "y"
+          ],
+          [
+              "Confronto fino a 4 modelli",
+              "n",
+              "y"
+          ],
+          [
+              "Gamma commerciale (> 23 kW)",
+              "n",
+              "y"
+          ],
+          [
+              "Schede PDF / stampa e schede etichetta UE",
+              "n",
+              "y"
+          ],
+          [
+              "Report speciale mensile",
+              "sample",
+              "y"
+          ],
+          [
+              "Dispositivi contemporanei",
+              "1",
+              "2"
+          ]
+      ],
+      "sampleCell": "Edizioni gratuite",
+      "faqTitle": "Domande frequenti",
+      "faq": [
+          [
+              "Standard resta gratuito?",
+              "Sì. Standard è gratuito senza limiti di tempo e non richiede alcun metodo di pagamento. I nuovi account iniziano con 15 giorni di Premium; poi l’account continua semplicemente con Standard."
+          ],
+          [
+              "Dopo la prova viene addebitato qualcosa automaticamente?",
+              "No. Non viene addebitato nulla finché non scegli un piano e completi il pagamento."
+          ],
+          [
+              "Come viene fatturato l’abbonamento?",
+              "In euro in tutti i mercati, IVA esclusa. L’IVA viene aggiunta al pagamento da Paddle.com, il nostro merchant of record, in base al paese e ai dati aziendali. Le carte in altre valute vengono convertite dalla tua banca."
+          ],
+          [
+              "Posso disdire?",
+              "Sì — puoi interrompere il rinnovo successivo in qualsiasi momento dal portale di fatturazione. Premium resta attivo fino alla fine del periodo pagato, poi l’account passa a Standard."
+          ],
+          [
+              "Come funzionano i piani team?",
+              "L’amministratore del team si abbona una volta e invita i colleghi via e-mail. I posti possono essere riassegnati in qualsiasi momento; le modifiche a piano e posti valgono dal rinnovo successivo."
+          ]
+      ],
+      "bottomTitle": "Pronto per il database completo?",
+      "bottomCta": "Vedi i piani"
   },
 
   trial: {
     banner: (d: number) =>
       d <= 1
-        ? 'La tua prova Premium termina oggi — poi continui con il piano Free.'
-        : `La tua prova Premium termina tra ${d} giorni — poi continui con il piano Free.`,
+        ? 'La tua prova Premium termina oggi — poi continui con il piano Standard (gratuito).'
+        : `La tua prova Premium termina tra ${d} giorni — poi continui con il piano Standard (gratuito).`,
     bannerCta: 'Vedi i piani',
     teamStartTitle: 'Vuoi creare un team?',
     teamStartBody: 'Puoi configurare il tuo team già durante la prova gratuita e invitare subito i membri — tutti condividono la tua data di fine prova, e un unico pagamento finale copre l’intero team.',
@@ -4501,6 +5199,9 @@ const IT_IT: HpStrings = {
       esco_utility: 'ESCo / Utility energetica',
       housing: 'Cooperativa edilizia / Amministrazione immobiliare',
       public_research: 'Settore pubblico / Ricerca / Associazione di categoria',
+      student: 'Studente',
+      academic: 'Ricercatore / Professore',
+      university: 'Università / Istituto di ricerca',
       individual: 'Persona fisica / Ditta individuale',
       other: 'Altro',
     } as Record<string, string>,
@@ -4670,7 +5371,7 @@ const IT_IT: HpStrings = {
 
   sub: {
     pickTitle: 'Scegli il tuo piano.',
-    pickSub: 'L’abbonamento attiva subito Premium. I nuovi account includono una prova Premium di 15 giorni; poi l’account continua con il piano Free.',
+    pickSub: 'L’abbonamento attiva subito Premium. I nuovi account includono una prova Premium di 15 giorni; poi l’account continua con il piano Standard (gratuito).',
     currentTitle: 'Il tuo abbonamento.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 utente', team_3: 'Fino a 3 utenti', team_5: 'Fino a 5 utenti' } as Record<string, string>,

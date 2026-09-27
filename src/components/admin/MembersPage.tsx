@@ -27,6 +27,9 @@ const COMPANY_TYPE_LABELS: Record<string, string> = {
   esco_utility: 'Energy Service Company / Utility',
   housing: 'Housing Association / Property Management',
   public_research: 'Public Sector / Research / Industry Association',
+  student: 'Student',
+  academic: 'Researcher / Professor',
+  university: 'University / Research institute',
   individual: 'Individual / Sole Trader',
   other: 'Other',
 };

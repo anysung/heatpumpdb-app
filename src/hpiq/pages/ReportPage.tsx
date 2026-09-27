@@ -128,7 +128,7 @@ export const ReportPage: React.FC<{ app: HpApp }> = ({ app }) => {
   return (
     <div style={PAGE}>
       <div style={WRAP}>
-        <div style={PAGE_TITLE}>{t.nav.report}</div>
+        <div data-tour="report" style={PAGE_TITLE}>{t.nav.report}</div>
         {series?.sub && <p style={{ color: '#6e6e73', fontSize: 15.5, margin: '10px 0 28px', maxWidth: 720 }}>{series.sub}</p>}
 
         {!sel && (
