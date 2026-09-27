@@ -84,8 +84,8 @@ export const previewMemberEmail = (uid: string, body: string): Promise<{ ok: tru
    sensibly go to a crowd. A run is a batchId and is sent a chunk at a time —
    this client loops until `done`, so a dropped call is a retry rather than a
    second copy in someone's inbox. */
-export type BulkAudience = 'marketing' | 'active' | 'trialing' | 'pending';
-export const BULK_AUDIENCES: BulkAudience[] = ['marketing', 'active', 'trialing', 'pending'];
+export type BulkAudience = 'marketing' | 'active' | 'trialing' | 'expired' | 'pending';
+export const BULK_AUDIENCES: BulkAudience[] = ['marketing', 'active', 'trialing', 'expired', 'pending'];
 /** Kinds the server accepts for a bulk run — a suspension or a support reply
  *  is addressed to one person by definition and is not offered. */
 export const BULK_EMAIL_KINDS: MemberEmailKind[] = ['announcement', 'notice', 'trial'];

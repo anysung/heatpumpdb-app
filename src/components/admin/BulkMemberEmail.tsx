@@ -100,7 +100,7 @@ export const BulkMemberEmail: React.FC<Props> = ({ al, country, onClose }) => {
   const sk = audienceInfo?.skipped;
   const AUD_LABEL: Record<BulkAudience, string> = {
     marketing: A.bkAud_marketing, active: A.bkAud_active,
-    trialing: A.bkAud_trialing, pending: A.bkAud_pending,
+    trialing: A.bkAud_trialing, expired: A.bkAud_expired, pending: A.bkAud_pending,
   };
 
   return (

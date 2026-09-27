@@ -1960,7 +1960,9 @@ const BULK_KINDS = ['announcement', 'notice', 'trial'];
 // the Free plan since 2026-09-27) — with no marketingConsent requirement;
 // suspended / disabled / deleted / pending never match. Launch notice copy:
 // mail-assets/free-tier-launch-notice.json (send with kind 'notice').
-const BULK_AUDIENCES = ['marketing', 'active', 'trialing', 'pending'];
+// 'expired' (2026-09-28): active accounts whose Premium trial has ENDED and
+// that hold no running paid subscription — the Standard-conversion notice.
+const BULK_AUDIENCES = ['marketing', 'active', 'trialing', 'expired', 'pending'];
 const BULK_MAX = 1000;   // beyond this a mailing needs a real campaign tool, not this console
 const BULK_CHUNK = 20;   // per call: the function's own timeout is the ceiling
 const UNSUB_TEXT = `
@@ -1997,6 +1999,12 @@ async function bulkRecipients(audience, country) {
     if (audience === 'trialing') {
       const ends = bulkMs(u.trialEndsAt);
       if (!ends || ends < now) { skipped.notInAudience++; return; }
+    }
+    if (audience === 'expired') {
+      const ends = bulkMs(u.trialEndsAt);
+      const sub = u.subscription || {};
+      const paidRunning = sub.provider === 'paddle' && ['active', 'trialing', 'past_due'].includes(sub.status);
+      if (!ends || ends >= now || paidRunning) { skipped.notInAudience++; return; }
     }
     if (audience === 'marketing' && u.marketingConsent !== true) { skipped.noConsent++; return; }
     const email = String(u.email || '').trim();
