@@ -80,3 +80,20 @@ P0 decisions · P1 dataset split + gate + canaries · P2 rules + client tiers +
 upgrade prompts + trial→Free + 1-device Free + notice · P3 price-id switch +
 i18n + terms/legal + archive old prices · P4 launch (never on the 1st —
 monthly window) + service-notice mail.
+
+## Launch runbook (before 2026-10-01 00:00 Berlin — never inside the monthly window)
+
+Order matters: rules first (old clients keep working — full objects keep
+`isEntitled`), then the function, then the data, then the clients.
+
+1. Rules: `npx firebase deploy --only firestore:rules,storage --project gen-lang-client-0324244302`
+2. Billing function: `cd google_cloud_function_billing && ./deploy.sh && cd ..`
+   (update-env-vars only; copies canary + datasetBasicFields.json)
+3. Datasets (full + basic, gate runs inside): `node scripts/upload-datasets.mjs`
+   then `node scripts/dataset-gate.mjs --approve` and `node scripts/verify-serving.mjs`
+4. Hosting: `npm run deploy:de && npm run deploy:uk && npm run deploy:fr && npm run deploy:pl && npm run deploy:it && npm run deploy:admin && npm run deploy:eu`
+5. Paddle: archive the nine old prices (only after step 4 is live).
+6. Service notice (owner confirms first): admin bulk mailer, kind `notice`,
+   audience `active`, copy in google_cloud_function_billing/mail-assets/free-tier-launch-notice.json.
+7. From the October edition on: `node scripts/upload-special-report.mjs --edition 2026-10`
+   before the site build that publishes its article page.
