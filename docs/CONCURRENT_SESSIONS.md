@@ -6,20 +6,36 @@ sharing of ONE personal account. Explicitly NOT an anti-scraping control
 
 ## Policy
 
-| Plan | Registered devices | Concurrently ACTIVE sessions | Over limit |
-|---|---|---|---|
-| Professional | unlimited | 2 | 30-min grace, then LRU eviction |
-| Team member | unlimited (per member) | 2 per member | same |
-| Owner/admin roles | unlimited | unlimited | exempt (server-side) |
+Free + Premium program (owner decision 2026-09-27): the limit follows the
+account's TIER, read server-side from the same window the rules use.
+
+| Tier | How it is decided (server) | Registered devices | Concurrently ACTIVE sessions | Over limit |
+|---|---|---|---|---|
+| Premium — trial, paid Professional, free grant | own `accessUntilTs` in the future (or a live `grant.endsAt`) | unlimited | 2 | 30-min grace, then LRU eviction |
+| Premium — team member / team admin | the organization's `accessUntilTs` in the future (members carry no personal window) | unlimited (per member) | 2 per member | same |
+| Legacy account | NO `accessUntilTs` field (not window-gated, as in firestore.rules) | unlimited | 2 | same |
+| **Free** | `accessUntilTs` present AND passed, no open team window or grant | unlimited | **1** | same |
+| Owner/admin roles | role / owner token | unlimited | unlimited | exempt (server-side) |
+
+- **Fail-open:** if the window cannot be read (unparseable value, org doc
+  read fails), the account gets the Premium limit. A data problem can only
+  ever give someone MORE devices, never cut a paying user down to one.
+- Limits live in `opsConfig/sessions` as `activeLimit` (Premium, default 2)
+  and `freeActiveLimit` (Free, default 1; clamped to 1..activeLimit).
+  Tier logic: `google_cloud_function_billing/sessionLimits.js`
+  (tests: `tests/session-limits.unit.mjs`).
+- A Free account with two devices active sees the same grace countdown and,
+  after 30 minutes, the least-recently-active device is signed out — the
+  mechanics below are identical for both tiers; only the number differs.
 
 - **Active session** = `revokedAt` absent AND server-written `lastSeenAt`
   within the last 10 minutes.
-- **3rd active session**: NOT blocked. A 30-minute grace starts
+- **One session over the limit** (3rd on Premium, 2nd on Free): NOT blocked. A 30-minute grace starts
   (`graceUntil`); every signed-in device shows a live countdown banner.
-  If active sessions drop to ≤2 before expiry the grace cancels silently —
+  If active sessions drop back to the limit before expiry the grace cancels silently —
   normal device switching (old device idles out of the 10-min window)
   resolves itself with no eviction.
-- **At expiry, still ≥3 active**: the server revokes the session with the
+- **At expiry, still over the limit**: the server revokes the session with the
   oldest `lastSeenAt` (ties → oldest `createdAt`). The judging caller is
   structurally never evicted (it just heartbeated). The evicted device shows
   a reason notice, then signs out. Re-login is allowed (a new grace cycle
@@ -53,7 +69,7 @@ client is never trusted with limit state:
 
 `opsConfig/sessions` Firestore doc — owner-writable from the console
 (rules: read isAdmin, write ownerToken), function reads with a 60 s
-in-memory cache: `{ enabled, activeLimit: 2, activeWindowMin: 10,
+in-memory cache: `{ enabled, activeLimit: 2, freeActiveLimit: 1, activeWindowMin: 10,
 graceMin: 30 }`. `enabled: false` = heartbeats still record sessions
 (visibility survives) but no grace/eviction ever runs.
 

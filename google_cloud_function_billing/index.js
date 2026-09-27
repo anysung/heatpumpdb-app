@@ -9,8 +9,13 @@
  *   POST /paddleWebhook    (signature) — Paddle Billing events → entitlements
  *   GET  /health
  *
+ * FREE + PREMIUM (owner decision 2026-09-27): every active account can use
+ * the app on the Free plan. accessUntilTs now means "PREMIUM until" — when it
+ * passes, the account drops to Free; expiry never locks an account out.
+ *
  * SYSTEM PRINCIPLE (owner decision 2026-07-27): never wrongly block a paying
- * user. Automatic access termination happens ONLY through (a) natural expiry
+ * user. Automatic PREMIUM termination ("access" below = Premium access)
+ * happens ONLY through (a) natural expiry
  * of accessUntilTs with no renewal, or (b) a clearly confirmed final
  * `subscription.canceled` — and even then access runs to the paid period end.
  * Refunds (requested / pending / approved / partial), past_due, chargebacks
@@ -52,40 +57,12 @@ const PLAN_SEATS = { professional: 1, team_3: 3, team_5: 5 };
 const PADDLE_ENV = (process.env.PADDLE_ENV || 'live').toLowerCase();
 const PADDLE_API_BASE = PADDLE_ENV === 'sandbox' ? 'https://sandbox-api.paddle.com' : 'https://api.paddle.com';
 
-const PRICE_CATALOGUE = {
-  live: {
-    pri_01kxxw08bvfz6fe8ke0x4zgnt7: ['professional', 'monthly'],
-    pri_01kxxw3yy10aw2qdy7y64xa0yn: ['professional', 'six_months'],
-    pri_01kxxw5qbvmfx75rc7f42p5d50: ['professional', 'annual'],
-    pri_01kxxw8xtvk8dvpa60c0dzxyvn: ['team_3', 'monthly'],
-    pri_01kxxwbgmpnj9jvcp218evxqfc: ['team_3', 'six_months'],
-    pri_01kxxwde1bwd4x7tgn6sypkb4g: ['team_3', 'annual'],
-    pri_01kxxwfm97ve7nfgnggtshfs49: ['team_5', 'monthly'],
-    pri_01kxxwhr4xyeq9gwd567j2x7me: ['team_5', 'six_months'],
-    pri_01kxxwkhfjj3wsy5k7jekt2acn: ['team_5', 'annual'],
-  },
-  sandbox: {
-    pri_01kxchdg26azdq1przy3hnezff: ['professional', 'monthly'],
-    pri_01kxchdgawhejbptxtdgm6j5wq: ['professional', 'six_months'],
-    pri_01kxchdgj2w4gpdmdfbqkhtsqn: ['professional', 'annual'],
-    pri_01kxchdh34vrxtxth8bkpzmh8n: ['team_3', 'monthly'],
-    pri_01kxchdh7r99cm3fwk1bz1gz0k: ['team_3', 'six_months'],
-    pri_01kxchdhcm7efjmkh7s1673j82: ['team_3', 'annual'],
-    pri_01kxchdhrmrtqmhataynyqdcdm: ['team_5', 'monthly'],
-    pri_01kxchdj04dzbf9j5s92tkwvvz: ['team_5', 'six_months'],
-    pri_01kxchdj4rtpj7ndzj30sawddw: ['team_5', 'annual'],
-  },
-};
-/** price_id → [planCode, billingTerm], searching both environments (webhooks
- *  from either environment must resolve; ids are globally unique). */
-function planFromPriceId(priceId) {
-  return PRICE_CATALOGUE.live[priceId] || PRICE_CATALOGUE.sandbox[priceId] || null;
-}
-function priceIdFor(planCode, billingTerm) {
-  const cat = PRICE_CATALOGUE[PADDLE_ENV] || PRICE_CATALOGUE.live;
-  for (const [id, [p, t]] of Object.entries(cat)) if (p === planCode && t === billingTerm) return id;
-  return null;
-}
+// Current (monthly/annual, 2026-10-free-tier) + legacy (kept mapped forever)
+// price ids live in priceCatalogue.js; new purchases/changes resolve only to
+// CURRENT ids for this function's PADDLE_ENV.
+const { OFFERED_TERMS, planFromPriceId, priceIdFor: priceIdForEnv } = require('./priceCatalogue');
+const priceIdFor = (planCode, billingTerm) => priceIdForEnv(planCode, billingTerm, PADDLE_ENV);
+
 /** Derive [planCode, billingTerm] from subscription items; null when unknown. */
 function planFromItems(sub) {
   for (const item of (sub && sub.items) || []) {
@@ -313,8 +290,12 @@ async function activateAccount(uid, email, consent, source = 'self') {
       patch.accessUntilTs = ends;
       regPatch.trialUsedAt = nowTs;
     } else if (!isMember) {
-      // Known email (or team-history email signing up solo): active but the
-      // window is already closed → the app routes straight to checkout.
+      // Known email (trial already used — e.g. re-registration within the
+      // emailRegistry year, or a team-history email signing up solo): the
+      // account becomes ACTIVE on the Free plan with its Premium window
+      // already closed (Free + Premium program, 2026-09-27). A closed window
+      // is no longer a lockout — it only means "not Premium"; upgrading is a
+      // normal purchase from the Plans page.
       patch.accessUntilTs = nowTs;
     }
     // Team members carry no personal window — access follows the org's.
@@ -337,7 +318,7 @@ async function activateAccount(uid, email, consent, source = 'self') {
       ? `Account activated (${source}) — ${TRIAL_DAYS}-day trial granted`
       : result._member
         ? `Account activated (${source}) — team member, access follows the organisation`
-        : `Account activated (${source}) — trial already used, window closed`;
+        : `Account activated (${source}) — trial already used, Free plan (Premium window closed)`;
     await db.collection('activityLogs').add({
       userId: uid, userEmail: email, userName: result._name, action: 'REGISTER_ACTIVATED',
       details: detail, timestamp: nowIso(),
@@ -586,7 +567,9 @@ async function deleteAccount(req, res) {
 // never trusted with lastSeenAt, grace state or revocation.
 // ---------------------------------------------------------------------------
 
-const SESSION_DEFAULTS = { enabled: true, activeLimit: 2, activeWindowMin: 10, graceMin: 30 };
+// activeLimit = Premium (open window / legacy / fail-open); freeActiveLimit =
+// Free (window present and closed). Both overridable in opsConfig/sessions.
+const SESSION_DEFAULTS = { enabled: true, activeLimit: 2, freeActiveLimit: 1, activeWindowMin: 10, graceMin: 30 };
 let _sessCfgCache = { at: 0, val: SESSION_DEFAULTS };
 
 /** opsConfig/sessions with a 60 s in-memory cache — the no-redeploy kill switch. */
@@ -601,6 +584,7 @@ async function sessionConfig() {
   return _sessCfgCache.val;
 }
 
+const { windowOpen, activeLimitFor } = require('./sessionLimits');
 const ADMIN_ROLES = ['owner', 'admin', 'support', 'ops'];
 const SESSION_ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 
@@ -628,6 +612,17 @@ async function sessionHeartbeat(req, res) {
     const user = userSnap.exists ? userSnap.data() : {};
     const now = Date.now();
     const nowTs = Timestamp.fromMillis(now);
+
+    // Tier limit (Free + Premium, 2026-09-27): Premium 2, Free 1. The team
+    // window only matters when the personal one is closed; still a READ, so
+    // it happens before any write. Unreadable org → null → Premium (fail-open).
+    let org;
+    if (user.orgId && !windowOpen(user, now)) {
+      org = await tx.get(db.collection('organizations').doc(String(user.orgId)))
+        .then(s => (s.exists ? s.data() : undefined))
+        .catch(() => null);
+    }
+    const limit = activeLimitFor(user, org, now, cfg);
 
     // Exemption: owner token, or any admin-role profile — unlimited sessions.
     const exempt =
@@ -679,10 +674,10 @@ async function sessionHeartbeat(req, res) {
       return { activeCount: active.length, limit: null, graceUntil: null, revokedSelf: !!(self && self.data().revokedAt) };
     }
 
-    if (active.length <= cfg.activeLimit) {
+    if (active.length <= limit) {
       // Back within limit — the grace (if any) cancels silently.
       clearGrace();
-      return { activeCount: active.length, limit: cfg.activeLimit, graceUntil: null, revokedSelf: false };
+      return { activeCount: active.length, limit, graceUntil: null, revokedSelf: false };
     }
 
     if (!graceMs) {
@@ -693,12 +688,12 @@ async function sessionHeartbeat(req, res) {
         sessionOverLimitSince: nowTs,
         overLimitEvents: FieldValue.increment(1),
       }, { merge: true });
-      return { activeCount: active.length, limit: cfg.activeLimit, graceUntil: until, revokedSelf: false };
+      return { activeCount: active.length, limit, graceUntil: until, revokedSelf: false };
     }
 
     if (now < graceMs) {
       // Grace still running — nothing to do but report it.
-      return { activeCount: active.length, limit: cfg.activeLimit, graceUntil: graceMs, revokedSelf: false };
+      return { activeCount: active.length, limit, graceUntil: graceMs, revokedSelf: false };
     }
 
     // Grace expired and still over limit → evict the least-recently-active
@@ -716,7 +711,7 @@ async function sessionHeartbeat(req, res) {
         lastAutoRevokeAt: nowIso(),
       }, { merge: true });
     }
-    return { activeCount: active.length - (victim ? 1 : 0), limit: cfg.activeLimit, graceUntil: null, revokedSelf: false, evicted: victim ? victim.id : null };
+    return { activeCount: active.length - (victim ? 1 : 0), limit, graceUntil: null, revokedSelf: false, evicted: victim ? victim.id : null };
   });
 
   return res.status(200).json({ ok: true, ...out });
@@ -1331,6 +1326,8 @@ async function paddleWebhook(req, res) {
 // ---------------------------------------------------------------------------
 
 const PLAN_RANK = { professional: 1, team_3: 2, team_5: 3 };
+// six_months stays ranked so legacy records compare sanely; it is never a
+// valid TARGET any more (OFFERED_TERMS).
 const TERM_RANK = { monthly: 1, six_months: 2, annual: 3 };
 const CHANGE_COOLDOWN_DAYS = 30;
 
@@ -1430,6 +1427,11 @@ async function applyPlanChange(req, res) {
 
   const last = user.lastPlanChangeAt ? Date.parse(user.lastPlanChangeAt) : null;
   if (last && Date.now() - last < CHANGE_COOLDOWN_DAYS * 86400000) return sendErr(res, 429, 'change-cooldown');
+
+  // The six-month term is retired (2026-09-27): no change may land on it. A
+  // subscriber still on a legacy six-month price moves to annual (an upgrade
+  // by TERM_RANK) or stays as is — six_months itself is never re-issued.
+  if (!OFFERED_TERMS.includes(newTerm)) return sendErr(res, 422, 'term-retired');
 
   const priceId = priceIdFor(newPlan, newTerm);
   if (!priceId) return sendErr(res, 422, 'unknown-price');
@@ -1809,6 +1811,11 @@ async function previewMemberEmail(req, res) {
    than retried forever; the admin resends that one from the member's own page.
 */
 const BULK_KINDS = ['announcement', 'notice', 'trial'];
+// 'active' is the SERVICE-NOTICE audience: every status==='active' account —
+// Free, Premium, running AND expired trials (an expired trial stays active on
+// the Free plan since 2026-09-27) — with no marketingConsent requirement;
+// suspended / disabled / deleted / pending never match. Launch notice copy:
+// mail-assets/free-tier-launch-notice.json (send with kind 'notice').
 const BULK_AUDIENCES = ['marketing', 'active', 'trialing', 'pending'];
 const BULK_MAX = 1000;   // beyond this a mailing needs a real campaign tool, not this console
 const BULK_CHUNK = 20;   // per call: the function's own timeout is the ceiling
@@ -2168,6 +2175,11 @@ async function sendVerificationEmail(req, res) {
    closed except by finding the app locked. One account's trial ended that way on
    2026-08-19.
 
+   FREE + PREMIUM (2026-09-27): the trial is now a PREMIUM trial and its end
+   drops the account to the Free plan instead of locking it. The messages say
+   exactly that — what stays on Free, what needs Premium, and a link to the
+   plans — and never that access closes. Cadence is unchanged.
+
    Three messages, and no more than three. Each one is sent AT MOST ONCE per
    account, recorded on the account itself (`trialReminders.<stage>`), so a
    scheduler that fires twice, a retry, or a manual re-run cannot mail anyone
@@ -2199,79 +2211,8 @@ const MARKET_SITE = {
 };
 const MARKET_LANG = { DE: 'de', FR: 'fr', PL: 'pl', IT: 'it', GB: 'en' };
 
-/** Short by design: three sentences and one link convert better than a page. */
-const TRIAL_COPY = {
-  en: {
-    two_days_left: (n, url) => ({
-      subject: 'Your HeatPump DB trial ends in 2 days',
-      body: `Your free trial ends on ${n}. After that the catalogue is no longer accessible, and any comparisons you have open will not load.\n\nIf HeatPump DB is useful to you, you can continue without interruption by choosing a plan here:\n${url}\n\nIf it is not the right fit, no action is needed and nothing will be charged.`,
-    }),
-    last_day: (n, url) => ({
-      subject: 'Last day of your HeatPump DB trial',
-      body: `Your free trial ends today (${n}). Access to the catalogue stops when it does.\n\nTo keep working without a gap, choose a plan here:\n${url}\n\nNothing is charged unless you do.`,
-    }),
-    expired: (n, url) => ({
-      subject: 'Your HeatPump DB trial has ended',
-      body: `Your free trial ended on ${n} and the catalogue is no longer accessible from your account.\n\nEverything is still here — choosing a plan restores access immediately, with your account and settings as you left them:\n${url}\n\nIf you would rather tell us what was missing, reply to this message. We read every answer.`,
-    }),
-  },
-  de: {
-    two_days_left: (n, url) => ({
-      subject: 'Ihr HeatPump DB Test endet in 2 Tagen',
-      body: `Ihr kostenloser Test endet am ${n}. Danach ist der Katalog nicht mehr zugänglich, und offene Vergleiche lassen sich nicht mehr laden.\n\nWenn HeatPump DB für Sie nützlich ist, können Sie hier ohne Unterbrechung mit einem Tarif weiterarbeiten:\n${url}\n\nWenn es nicht passt, müssen Sie nichts tun — es wird nichts berechnet.`,
-    }),
-    last_day: (n, url) => ({
-      subject: 'Letzter Tag Ihres HeatPump DB Tests',
-      body: `Ihr kostenloser Test endet heute (${n}). Mit ihm endet der Zugang zum Katalog.\n\nUm ohne Lücke weiterzuarbeiten, wählen Sie hier einen Tarif:\n${url}\n\nEs wird nichts berechnet, solange Sie das nicht tun.`,
-    }),
-    expired: (n, url) => ({
-      subject: 'Ihr HeatPump DB Test ist beendet',
-      body: `Ihr kostenloser Test endete am ${n}; der Katalog ist über Ihr Konto nicht mehr zugänglich.\n\nAlles ist weiterhin vorhanden — mit einem Tarif wird der Zugang sofort wiederhergestellt, Konto und Einstellungen unverändert:\n${url}\n\nWenn Sie uns lieber sagen möchten, was gefehlt hat: antworten Sie einfach auf diese Nachricht. Wir lesen jede Antwort.`,
-    }),
-  },
-  fr: {
-    two_days_left: (n, url) => ({
-      subject: 'Votre essai HeatPump DB se termine dans 2 jours',
-      body: `Votre essai gratuit se termine le ${n}. Ensuite, le catalogue ne sera plus accessible et vos comparaisons en cours ne se chargeront plus.\n\nSi HeatPump DB vous est utile, vous pouvez continuer sans interruption en choisissant une formule ici :\n${url}\n\nSi ce n'est pas adapté, aucune action n'est nécessaire et rien ne sera facturé.`,
-    }),
-    last_day: (n, url) => ({
-      subject: 'Dernier jour de votre essai HeatPump DB',
-      body: `Votre essai gratuit se termine aujourd'hui (${n}). L'accès au catalogue s'arrête en même temps.\n\nPour continuer sans coupure, choisissez une formule ici :\n${url}\n\nRien n'est facturé sans votre action.`,
-    }),
-    expired: (n, url) => ({
-      subject: 'Votre essai HeatPump DB est terminé',
-      body: `Votre essai gratuit s'est terminé le ${n} et le catalogue n'est plus accessible depuis votre compte.\n\nTout est conservé — choisir une formule rétablit l'accès immédiatement, avec votre compte et vos réglages tels que vous les avez laissés :\n${url}\n\nSi vous préférez nous dire ce qui manquait, répondez à ce message. Nous lisons chaque réponse.`,
-    }),
-  },
-  pl: {
-    two_days_left: (n, url) => ({
-      subject: 'Twój okres próbny HeatPump DB kończy się za 2 dni',
-      body: `Bezpłatny okres próbny kończy się ${n}. Po tym terminie katalog przestanie być dostępny, a otwarte porównania się nie wczytają.\n\nJeśli HeatPump DB jest dla Ciebie przydatny, możesz kontynuować bez przerwy, wybierając plan tutaj:\n${url}\n\nJeśli to nie jest to, czego szukasz — nie musisz nic robić i nic nie zostanie pobrane.`,
-    }),
-    last_day: (n, url) => ({
-      subject: 'Ostatni dzień okresu próbnego HeatPump DB',
-      body: `Bezpłatny okres próbny kończy się dziś (${n}). Wraz z nim kończy się dostęp do katalogu.\n\nAby pracować bez przerwy, wybierz plan tutaj:\n${url}\n\nNic nie zostanie pobrane, dopóki tego nie zrobisz.`,
-    }),
-    expired: (n, url) => ({
-      subject: 'Okres próbny HeatPump DB zakończył się',
-      body: `Bezpłatny okres próbny zakończył się ${n} i katalog nie jest już dostępny z Twojego konta.\n\nWszystko jest na miejscu — wybór planu natychmiast przywraca dostęp, wraz z kontem i ustawieniami w takim stanie, w jakim je zostawiłeś:\n${url}\n\nJeśli wolisz powiedzieć nam, czego zabrakło — odpowiedz na tę wiadomość. Czytamy każdą odpowiedź.`,
-    }),
-  },
-  it: {
-    two_days_left: (n, url) => ({
-      subject: 'La tua prova HeatPump DB termina fra 2 giorni',
-      body: `La prova gratuita termina il ${n}. Dopo quella data il catalogo non sarà più accessibile e i confronti aperti non si caricheranno.\n\nSe HeatPump DB ti è utile, puoi continuare senza interruzioni scegliendo un piano qui:\n${url}\n\nSe non è quello che cercavi non devi fare nulla e non verrà addebitato niente.`,
-    }),
-    last_day: (n, url) => ({
-      subject: 'Ultimo giorno della tua prova HeatPump DB',
-      body: `La prova gratuita termina oggi (${n}). Con essa termina l'accesso al catalogo.\n\nPer continuare senza interruzioni, scegli un piano qui:\n${url}\n\nNulla viene addebitato se non lo fai.`,
-    }),
-    expired: (n, url) => ({
-      subject: 'La tua prova HeatPump DB è terminata',
-      body: `La prova gratuita è terminata il ${n} e il catalogo non è più accessibile dal tuo account.\n\nTutto è ancora al suo posto — scegliere un piano ripristina immediatamente l'accesso, con account e impostazioni come li hai lasciati:\n${url}\n\nSe preferisci dirci cosa mancava, rispondi a questo messaggio. Leggiamo ogni risposta.`,
-    }),
-  },
-};
+// Messages live in trialReminderCopy.js (Premium trial -> continues on Free).
+const { TRIAL_COPY } = require('./trialReminderCopy');
 
 const LOCALE_FOR = { en: 'en-GB', de: 'de-DE', fr: 'fr-FR', pl: 'pl-PL', it: 'it-IT' };
 
