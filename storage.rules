@@ -72,15 +72,45 @@ service firebase.storage {
       return me().get('country', '');
     }
 
+    // Own registered market, or a legacy doc with no 'country' (never locked out).
+    function ownMarket(country) {
+      return myCountry() == '' || myCountry() == country;
+    }
+    // Free + Premium split (2026-09-27): *.basic.json objects are the same
+    // records projected to src/config/datasetBasicFields.json (no COP, sound,
+    // refrigerant charge, SG Ready, GSE rating rows …).
+    function isBasicDataset(file) {
+      return file.matches('^[A-Za-z0-9_-]+[.]basic[.]json$');
+    }
+    // Active, non-suspended account — regardless of the Premium window.
+    // isApproved() already requires status == 'active' (a suspended/pending
+    // account fails it); the explicit suspended check guards legacy docs.
+    function isActiveAccount() {
+      return isApproved() && me().get('status', '') != 'suspended';
+    }
+
     match /datasets/{country}/{file} {
       // Per-market isolation (2026-07-19 audit follow-up): an approved user may
       // read ONLY their own registered market's datasets; owner/admin roles read
       // every market. A legacy doc with no 'country' field is NOT locked out — it
       // falls through to allowed, so a metadata gap can never deny a legitimate
       // approved user (new signups always carry country).
+      //
+      // Tiers (2026-09-27): BASIC files → any active account of the market
+      // (Free included); FULL files → isEntitled() (Premium / trial / team
+      // window / admin), exactly as before.
       allow read: if isAdmin() ||
-                     (isEntitled() && (myCountry() == '' || myCountry() == country));
+                     (isBasicDataset(file) && isActiveAccount() && ownMarket(country)) ||
+                     (!isBasicDataset(file) && isEntitled() && ownMarket(country));
       allow write: if false;  // uploads go through gcloud (pipeline), never clients
+    }
+
+    // Special Report premium files (2026-09-27): the report body per edition.
+    // Premium only (isEntitled() includes admins); the public article page on
+    // hosting stays the teaser. Uploads go through the pipeline, never clients.
+    match /special-report/{edition}/{file} {
+      allow read: if isEntitled();
+      allow write: if false;
     }
 
     match /{allPaths=**} {

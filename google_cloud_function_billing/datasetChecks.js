@@ -22,13 +22,77 @@ const DATASETS = {
   IT: { residential: 'products-it.json', commercial: 'products-commercial-it.json' },
 };
 
-/** The exact live object paths (10) — a restore set must match this exactly. */
-function expectedObjectPaths() {
+/**
+ * Free + Premium split (2026-09-27): every full dataset object has a BASIC
+ * companion — same records, projected to the allowlist in
+ * src/config/datasetBasicFields.json (Free accounts read only these;
+ * storage.rules). products-fr.json → products-fr.basic.json.
+ */
+const BASIC_SUFFIX = '.basic.json';
+function basicFileName(file) {
+  return String(file).replace(/\.json$/, BASIC_SUFFIX);
+}
+function isBasicFileName(file) {
+  return String(file).endsWith(BASIC_SUFFIX);
+}
+
+/**
+ * The exact live object paths — a restore set must match this exactly.
+ * Default: the 20-object set (10 full + 10 basic companions).
+ * { basic: false } → the 10 full objects only (the pre-split legacy set).
+ */
+function expectedObjectPaths({ basic = true } = {}) {
   const paths = [];
   for (const [cc, files] of Object.entries(DATASETS)) {
-    for (const file of Object.values(files)) paths.push(`datasets/${cc}/${file}`);
+    for (const file of Object.values(files)) {
+      paths.push(`datasets/${cc}/${file}`);
+      if (basic) paths.push(`datasets/${cc}/${basicFileName(file)}`);
+    }
   }
   return paths;
+}
+
+/**
+ * Project ONE record to the basic allowlist. Keys not listed are dropped;
+ * listed keys absent on the record stay absent (never invented as null).
+ * `fields` is an array or Set of allowed key names.
+ */
+function projectBasicRecord(record, fields) {
+  const allow = fields instanceof Set ? fields : new Set(fields);
+  const out = {};
+  for (const k of Object.keys(record)) if (allow.has(k)) out[k] = record[k];
+  return out;
+}
+
+/** Project a whole served dataset ({_meta, items}) — same records, same order. */
+function projectBasicDataset(data, fields, version) {
+  const allow = fields instanceof Set ? fields : new Set(fields);
+  return {
+    ...data,
+    _meta: { ...(data._meta || {}), tier: 'basic', basic_fields_version: version ?? null },
+    items: (data.items || []).map(r => projectBasicRecord(r, allow)),
+  };
+}
+
+/**
+ * A basic object must be the exact projection of its full sibling: the SAME
+ * records (count + id order), no key outside the allowlist, and the same
+ * segmentation capacity. Throws Error(reason).
+ */
+function checkBasicPair(fullData, basicData, fields) {
+  const allow = fields instanceof Set ? fields : new Set(fields);
+  const f = fullData?.items, b = basicData?.items;
+  if (!Array.isArray(f) || !Array.isArray(b)) throw new Error('basic pair: missing items array');
+  if (f.length !== b.length) throw new Error(`basic has ${b.length} records, full has ${f.length} — must be equal`);
+  for (let i = 0; i < f.length; i++) {
+    const idF = String(f[i].source_id ?? f[i].bafa_id), idB = String(b[i].source_id ?? b[i].bafa_id);
+    if (idF !== idB) throw new Error(`basic record ${i} is ${idB}, full is ${idF} — not the same set`);
+    for (const k of Object.keys(b[i])) {
+      if (!allow.has(k)) throw new Error(`basic record ${idB} carries non-basic field "${k}"`);
+    }
+    if (ratedKw(f[i]) !== ratedKw(b[i])) throw new Error(`basic record ${idB} changed its rated capacity`);
+  }
+  return { items: b.length };
 }
 
 /** Canonical rated capacity — mirror of src/config/segmentation.ts. */
@@ -100,4 +164,8 @@ function simulateMarket(cc, resItems, comItems) {
   if (!byId.get(String(probe.source_id ?? probe.bafa_id))) throw new Error(`${cc}: id lookup failed`);
 }
 
-module.exports = { DATASETS, expectedObjectPaths, checkDataset, simulateMarket };
+module.exports = {
+  DATASETS, expectedObjectPaths, checkDataset, simulateMarket,
+  BASIC_SUFFIX, basicFileName, isBasicFileName,
+  projectBasicRecord, projectBasicDataset, checkBasicPair,
+};

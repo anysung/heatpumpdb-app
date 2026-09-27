@@ -38,11 +38,16 @@ await testEnv.withSecurityRulesDisabled(async ctx => {
   await setDoc(doc(fs, 'users/admin'),   { status: 'active', role: 'admin', country: 'FR' });
   await setDoc(doc(fs, 'users/legacy'),  { status: 'active', role: 'user' });             // no country
   await setDoc(doc(fs, 'users/pending'), { status: 'pending', role: 'user', country: 'DE' });
+  // Free + Premium split (2026-09-27): a Free (window closed) account and a suspended one.
+  await setDoc(doc(fs, 'users/de-free'), { status: 'active', role: 'user', country: 'DE', accessUntilTs: new Date('2026-01-01') });
+  await setDoc(doc(fs, 'users/de-suspended'), { status: 'suspended', role: 'user', country: 'DE' });
   const st = ctx.storage();
   for (const [cc, f] of [['DE', 'products.json'], ['DE', 'products-commercial.json'],
-    ['IT', 'products-it.json'], ['IT', 'products-commercial-it.json'], ['GB', 'products-gb.json']]) {
+    ['IT', 'products-it.json'], ['IT', 'products-commercial-it.json'], ['GB', 'products-gb.json'],
+    ['DE', 'products.basic.json'], ['DE', 'products-commercial.basic.json'], ['IT', 'products-it.basic.json']]) {
     await uploadString(ref(st, `datasets/${cc}/${f}`), '{"items":[]}', 'raw', { contentType: 'application/json' });
   }
+  await uploadString(ref(st, 'special-report/2026-09/report.html'), '<p>x</p>', 'raw', { contentType: 'text/html' });
 });
 
 const asUser = uid => testEnv.authenticatedContext(uid).storage();
@@ -75,6 +80,25 @@ await check('pending user CANNOT read own-market DE', () => assertFails(read(asU
 await check('unauthenticated CANNOT read DE', () => assertFails(read(testEnv.unauthenticatedContext().storage(), 'datasets/DE/products.json')));
 await check('no write from a client (owner)', async () => {
   await assertFails(uploadString(ref(asUser('owner'), 'datasets/DE/products.json'), 'x'));
+});
+
+/* Free + Premium tiers (2026-09-27): basic = any active account of the market; full = entitled. */
+await check('Free DE user reads DE basic residential', () => assertSucceeds(read(asUser('de-free'), 'datasets/DE/products.basic.json')));
+await check('Free DE user reads DE basic commercial',  () => assertSucceeds(read(asUser('de-free'), 'datasets/DE/products-commercial.basic.json')));
+await check('Free DE user CANNOT read DE full',        () => assertFails(read(asUser('de-free'), 'datasets/DE/products.json')));
+await check('Free DE user CANNOT read IT basic',       () => assertFails(read(asUser('de-free'), 'datasets/IT/products-it.basic.json')));
+await check('entitled DE user reads DE basic too',     () => assertSucceeds(read(asUser('de-user'), 'datasets/DE/products.basic.json')));
+await check('suspended user CANNOT read DE basic',     () => assertFails(read(asUser('de-suspended'), 'datasets/DE/products.basic.json')));
+await check('pending user CANNOT read DE basic',       () => assertFails(read(asUser('pending'), 'datasets/DE/products.basic.json')));
+await check('unauthenticated CANNOT read DE basic',    () => assertFails(read(testEnv.unauthenticatedContext().storage(), 'datasets/DE/products.basic.json')));
+
+/* Special Report premium files. */
+await check('entitled user reads Special Report',   () => assertSucceeds(read(asUser('de-user'), 'special-report/2026-09/report.html')));
+await check('admin reads Special Report',           () => assertSucceeds(read(asUser('admin'), 'special-report/2026-09/report.html')));
+await check('Free user CANNOT read Special Report', () => assertFails(read(asUser('de-free'), 'special-report/2026-09/report.html')));
+await check('unauthenticated CANNOT read Special Report', () => assertFails(read(testEnv.unauthenticatedContext().storage(), 'special-report/2026-09/report.html')));
+await check('no client write to Special Report (owner)', async () => {
+  await assertFails(uploadString(ref(asUser('owner'), 'special-report/2026-09/x.html'), 'x'));
 });
 
 await testEnv.cleanup();

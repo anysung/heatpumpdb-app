@@ -13,16 +13,24 @@
  * copy — the committed/built source files stay clean. A canary surfacing in
  * third-party data is hard evidence of extraction (see the canary file).
  *
+ * FREE + PREMIUM SPLIT (2026-09-27): every full object gets a BASIC companion
+ * (products-fr.json → products-fr.basic.json) — the SAME records, canary
+ * included, projected to src/config/datasetBasicFields.json. Free accounts can
+ * read only the basic objects (storage.rules); the full objects stay behind
+ * isEntitled(). Both objects of a pair are one release: they are snapshotted,
+ * verified and restored together (a set is always restored whole).
+ *
  * Usage: node scripts/upload-datasets.mjs [--dry-run]
  * Requires: gcloud auth (Application Default) with access to the bucket.
  */
 import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { gzipSync } from 'node:zlib';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BUCKET = 'gs://heatpumpdb-datasets';
@@ -31,6 +39,12 @@ const DRY = process.argv.includes('--dry-run');
 const GATE_PASSED = process.argv.includes('--gate-passed');
 
 const CANARIES = JSON.parse(readFileSync(join(ROOT, 'scripts/canary/canary-records.json'), 'utf8'));
+
+/** The ONE basic-field allowlist + the ONE projection/pair check (shared with the Panic Button). */
+const BASIC = JSON.parse(readFileSync(join(ROOT, 'src/config/datasetBasicFields.json'), 'utf8'));
+const { basicFileName, projectBasicDataset, checkBasicPair } =
+  createRequire(import.meta.url)(join(ROOT, 'google_cloud_function_billing/datasetChecks.js'));
+const BASIC_FIELDS = new Set(BASIC.fields);
 
 /** market → { segment → local dataset file } (mirrors countryProfiles.datasetPaths) */
 const DATASETS = {
@@ -217,7 +231,14 @@ if (!DRY) {
    */
   try {
     const stampPath = join(tmpdir(), `${RUN_ID}-preflight.json`);
-    writeFileSync(stampPath, JSON.stringify({ runId: RUN_ID, preflight, objects: 10 }, null, 2));
+    // Object count of what was ACTUALLY frozen: 10 for a pre-split live set,
+    // 20 once the basic companions are live. Best-effort (null = unknown).
+    let objects = null;
+    try {
+      objects = execFileSync('gcloud', ['storage', 'ls', `${BUCKET}/snapshots/${RUN_ID}/datasets/**`],
+        { encoding: 'utf8' }).split('\n').filter(l => l.trim().endsWith('.json')).length;
+    } catch { /* leave null */ }
+    writeFileSync(stampPath, JSON.stringify({ runId: RUN_ID, preflight, objects }, null, 2));
     execFileSync('gcloud', ['storage', 'cp', stampPath, `${BUCKET}/snapshots/${RUN_ID}/PREFLIGHT.json`],
       { stdio: ['ignore', 'ignore', 'inherit'] });
     rmSync(stampPath, { force: true });
@@ -230,6 +251,43 @@ const tmp = mkdtempSync(join(tmpdir(), 'hpdb-datasets-'));
 let failed = false;
 /** Per-object record for data_manifests/stable-release.json. */
 const uploadedObjects = [];
+/** Dry-run size report: cc/segment → { full, basic } gzip bytes. */
+const sizeReport = [];
+
+/**
+ * Write one served object (gzip) and, unless dry-run, upload it with the
+ * shared headers. ALL datasets ship gzip'd (2026-07-27 first-load latency
+ * fix): GCS serves Content-Encoding: gzip and the browser HTTP stack
+ * transparently decompresses, so getBlob → blob.text() sees plain JSON.
+ */
+function shipObject({ cc, segment, file, served, tier }) {
+  const json = JSON.stringify(served);
+  const dest = `${BUCKET}/datasets/${cc}/${file}`;
+  const out = join(tmp, `${cc}-${file}.gz`);
+  const body = gzipSync(Buffer.from(json));
+  writeFileSync(out, body);
+  if (DRY) {
+    console.log(`[dry-run] would upload ${served.items.length} items → ${dest} (gzip, ${tier}, ${(body.length / 1024).toFixed(0)} KiB)`);
+    return body.length;
+  }
+  execFileSync('gcloud', [
+    'storage', 'cp', out, dest,
+    '--cache-control=private, max-age=3600',
+    '--content-type=application/json',
+    '--content-encoding=gzip',
+  ], { stdio: ['ignore', 'ignore', 'inherit'] });
+  console.log(`✓ ${dest}  (${served.items.length} items incl. canary, gzip, ${tier})`);
+  uploadedObjects.push({
+    path: `datasets/${cc}/${file}`,
+    country: cc,
+    segment,
+    tier,
+    items: served.items.length,
+    // GCS md5Hash is the md5 of the STORED bytes (the gzip body), base64.
+    md5: createHash('md5').update(body).digest('base64'),
+  });
+  return body.length;
+}
 
 for (const [cc, files] of Object.entries(DATASETS)) {
   for (const [segment, file] of Object.entries(files)) {
@@ -256,39 +314,31 @@ for (const [cc, files] of Object.entries(DATASETS)) {
       // projected too, so every served record has one consistent public shape).
       items: [...data.items, makeCanary(data.items, overrides)].map(projectPublic),
     };
-    const json = JSON.stringify(served);
-    const dest = `${BUCKET}/datasets/${cc}/${file}`;
-    // ALL datasets ship gzip'd (2026-07-27 first-load latency fix). The IT
-    // residential object piloted this for months (2026-07-19, Option 2a): GCS
-    // serves Content-Encoding: gzip and the browser HTTP stack transparently
-    // decompresses, so getBlob → blob.text() sees plain JSON — content and
-    // client behaviour are unchanged. The win is dramatic because the records
-    // are highly repetitive: e.g. DE residential 11 MB → ~0.45 MB on the wire.
-    // Reversible per object: set false and re-upload for plain JSON.
-    const gzip = true;
-    const out = join(tmp, `${cc}-${file}${gzip ? '.gz' : ''}`);
-    const body = gzip ? gzipSync(Buffer.from(json)) : Buffer.from(json);
-    writeFileSync(out, body);
-    if (DRY) {
-      console.log(`[dry-run] would upload ${served.items.length} items → ${dest}${gzip ? ' (gzip)' : ''}`);
+    // BASIC companion: the SAME served records (canary included — it keeps its
+    // stable id, so the basic file carries its own honeytoken) projected to the
+    // allowlist. Built from `served`, so basic ⊆ public projection ⊆ source.
+    const basicFile = basicFileName(file);
+    const basic = projectBasicDataset(served, BASIC_FIELDS, BASIC.version);
+    try {
+      checkBasicPair(served, basic, BASIC_FIELDS);
+    } catch (e) {
+      console.error(`✗ ${cc}/${segment}: basic projection invalid — ${e.message}`);
+      failed = true;
       continue;
     }
-    const args = [
-      'storage', 'cp', out, dest,
-      '--cache-control=private, max-age=3600',
-      '--content-type=application/json',
-    ];
-    if (gzip) args.push('--content-encoding=gzip');
-    execFileSync('gcloud', args, { stdio: ['ignore', 'ignore', 'inherit'] });
-    console.log(`✓ ${dest}  (${served.items.length} items incl. canary${gzip ? ', gzip' : ''})`);
-    uploadedObjects.push({
-      path: `datasets/${cc}/${file}`,
-      country: cc,
-      segment,
-      items: served.items.length,
-      // GCS md5Hash is the md5 of the STORED bytes (the gzip body), base64.
-      md5: createHash('md5').update(body).digest('base64'),
-    });
+    // Upload order: basic first, then full. A crash between the two leaves a
+    // new basic next to an old full, which verify-serving then rejects
+    // (checkBasicPair) → the run's snapshot is restored whole.
+    const basicBytes = shipObject({ cc, segment, file: basicFile, served: basic, tier: 'basic' });
+    const fullBytes = shipObject({ cc, segment, file, served, tier: 'full' });
+    sizeReport.push({ object: `${cc}/${segment}`, items: served.items.length, fullBytes, basicBytes });
+  }
+}
+
+if (DRY && sizeReport.length) {
+  console.log('\nGzip size per object (full vs basic):');
+  for (const r of sizeReport) {
+    console.log(`  ${r.object.padEnd(16)} ${String(r.items).padStart(6)} items   full ${(r.fullBytes / 1024).toFixed(0).padStart(5)} KiB   basic ${(r.basicBytes / 1024).toFixed(0).padStart(5)} KiB   (${(100 * r.basicBytes / r.fullBytes).toFixed(0)}%)`);
   }
 }
 
@@ -311,6 +361,7 @@ if (!DRY) {
     try {
       execFileSync('gcloud', ['storage', 'cp', '-r', `${BUCKET}/snapshots/${RUN_ID}/datasets/*`, `${BUCKET}/datasets/`],
         { stdio: ['ignore', 'ignore', 'inherit'] });
+      rederiveBasicIfLegacySnapshot();
       console.error('✓ Snapshot restored — production serves the pre-update state again.');
       console.error('  stable-release.json was NOT touched: it still describes the running stable set.');
     } catch {
@@ -327,4 +378,40 @@ if (!DRY) {
     objects: uploadedObjects,
   }, null, 2) + '\n');
   console.log('✓ Verified — data_manifests/stable-release.json promoted to this run. Commit it with the gate approval.');
+}
+
+/**
+ * A snapshot taken BEFORE the basic companions existed (the first split
+ * release) holds only the 10 full objects. Restoring it would leave THIS
+ * run's new basic objects live next to the old full ones — two epochs in one
+ * set. So after such a restore, every basic object is re-derived from the
+ * restored full object (same projection as the upload path), which makes the
+ * live set whole and single-epoch again.
+ */
+function rederiveBasicIfLegacySnapshot() {
+  let listing = '';
+  try {
+    listing = execFileSync('gcloud', ['storage', 'ls', `${BUCKET}/snapshots/${RUN_ID}/datasets/**`], { encoding: 'utf8' });
+  } catch { /* treat as legacy — re-deriving from the restored full objects is always consistent */ }
+  if (listing.includes('.basic.json')) return;   // snapshot carried its basic objects → restored with it
+  console.error('  Snapshot pre-dates the basic companions — re-deriving *.basic.json from the restored full objects…');
+  const dir = mkdtempSync(join(tmpdir(), 'hpdb-rederive-'));
+  for (const [cc, files] of Object.entries(DATASETS)) {
+    for (const file of Object.values(files)) {
+      const raw = execFileSync('gcloud', ['storage', 'cat', `${BUCKET}/datasets/${cc}/${file}`], { maxBuffer: 512 * 1024 * 1024 });
+      let text;
+      try { text = gunzipSync(raw).toString('utf8'); } catch { text = raw.toString('utf8'); }
+      const basic = projectBasicDataset(JSON.parse(text), BASIC_FIELDS, BASIC.version);
+      const out = join(dir, `${cc}-${basicFileName(file)}.gz`);
+      writeFileSync(out, gzipSync(Buffer.from(JSON.stringify(basic))));
+      execFileSync('gcloud', [
+        'storage', 'cp', out, `${BUCKET}/datasets/${cc}/${basicFileName(file)}`,
+        '--cache-control=private, max-age=3600',
+        '--content-type=application/json',
+        '--content-encoding=gzip',
+      ], { stdio: ['ignore', 'ignore', 'inherit'] });
+    }
+  }
+  rmSync(dir, { recursive: true, force: true });
+  console.error('  ✓ basic companions re-derived from the restored set.');
 }

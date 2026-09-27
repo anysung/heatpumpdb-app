@@ -27,6 +27,7 @@
 const functions = require('@google-cloud/functions-framework');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
+const zlib = require('zlib');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -815,7 +816,16 @@ async function adminClearSessions(req, res) {
 // restored objects serve exactly as they did.
 // ---------------------------------------------------------------------------
 
-const { DATASETS, expectedObjectPaths, checkDataset, simulateMarket } = require('./datasetChecks');
+const {
+  DATASETS, expectedObjectPaths, checkDataset, simulateMarket,
+  basicFileName, projectBasicDataset, checkBasicPair,
+} = require('./datasetChecks');
+// Basic-field allowlist (Free + Premium split, 2026-09-27) — deploy.sh copies
+// src/config/datasetBasicFields.json here. Needed to re-derive the *.basic.json
+// companions when a PRE-SPLIT (10-object) snapshot is restored, and to prove a
+// basic object is the exact projection of its full sibling.
+let BASIC = null;
+try { BASIC = require('./datasetBasicFields.json'); } catch { /* legacy restore refused; pair key check skipped */ }
 // Canary ids — deploy.sh copies scripts/canary/canary-records.json here. If
 // the copy is somehow absent the checks run in degraded mode (canary skipped)
 // and every response/audit carries degraded:true so the operator knows.
@@ -871,6 +881,18 @@ function validateFullSet(byPath, degraded) {
       verified.push({ path, items: items.length });
     }
     simulateMarket(cc, perMarket[cc].residential, perMarket[cc].commercial);
+    // Basic companions (20-object sets): same checks + exact projection of
+    // the full sibling. A pre-split 10-object map simply has none to check.
+    for (const [segment, file] of Object.entries(files)) {
+      const path = `datasets/${cc}/${basicFileName(file)}`;
+      if (!byPath.has(path)) continue;
+      const data = byPath.get(path);
+      const canaryId = degraded ? null : CANARIES?.[cc]?.[segment]?.bafa_id;
+      const { items } = checkDataset(data, { cc, segment, canaryId });
+      checkBasicPair({ items: perMarket[cc][segment] }, data,
+        BASIC ? BASIC.fields : Object.keys(data.items[0] || {}));
+      verified.push({ path, items: items.length });
+    }
   }
   return verified;
 }
@@ -960,13 +982,24 @@ async function panicRollback(req, res) {
     // live (2026-07-28 review, finding #1). The expected set is exactly the
     // 10 canonical object paths — a missing file, an extra file, or a file
     // that fails ANY of the shared checks aborts with nothing restored.
-    const expected = expectedObjectPaths();
+    //
+    // Free + Premium split (2026-09-27): a current set is 20 objects (10 full +
+    // 10 *.basic.json companions). A snapshot taken BEFORE the split holds
+    // exactly the 10 full objects; it is still a complete set — restoring it
+    // copies the 10 full objects and RE-DERIVES the 10 basic companions from
+    // them (same projection as the upload path), so live never mixes epochs.
     const [files] = await bucket.getFiles({ prefix: `${prefix}datasets/` });
     const found = new Map(files.map(f => [f.name.slice(prefix.length), f]));
+    const fullSet = expectedObjectPaths();
+    const legacySet = expectedObjectPaths({ basic: false });
+    const isLegacy = legacySet.every(p => found.has(p)) && found.size === legacySet.length;
+    const expected = isLegacy ? legacySet : fullSet;
     const missing = expected.filter(p => !found.has(p));
     const extra = [...found.keys()].filter(p => !expected.includes(p));
     if (missing.length) return await fail(400, `snapshot-incomplete: missing ${missing.join(', ')}`);
     if (extra.length) return await fail(400, `snapshot-unexpected-objects: ${extra.join(', ')}`);
+    if (isLegacy && !BASIC) return await fail(400, 'legacy-snapshot-needs-basic-fields: datasetBasicFields.json not deployed with the function');
+    audit.legacySnapshot = isLegacy;
 
     const byPath = new Map();
     for (const p of expected) {
@@ -983,11 +1016,23 @@ async function panicRollback(req, res) {
     for (const p of expected) {
       await found.get(p).copy(bucket.file(p));
     }
+    if (isLegacy) {
+      // Re-derive every basic companion from the full object just restored.
+      for (const [cc, dsFiles] of Object.entries(DATASETS)) {
+        for (const file of Object.values(dsFiles)) {
+          const basic = projectBasicDataset(byPath.get(`datasets/${cc}/${file}`), BASIC.fields, BASIC.version);
+          await bucket.file(`datasets/${cc}/${basicFileName(file)}`).save(
+            zlib.gzipSync(Buffer.from(JSON.stringify(basic))),
+            { resumable: false, contentType: 'application/json',
+              metadata: { contentEncoding: 'gzip', cacheControl: 'private, max-age=3600' } });
+        }
+      }
+    }
 
     // ── Phase 3: post-restore verification of the LIVE objects — the same
     // full check set again, on what is actually being served now.
     const liveByPath = new Map();
-    for (const p of expected) {
+    for (const p of fullSet) {
       const [buf] = await bucket.file(p).download();
       liveByPath.set(p, JSON.parse(buf.toString('utf8')));
     }

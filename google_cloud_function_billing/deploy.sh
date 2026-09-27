@@ -105,6 +105,12 @@ echo "Deploying ${FUNCTION_NAME} to ${PROJECT_ID} (${REGION})..."
 # (gitignored). Missing copy = checks run degraded (canary skipped, flagged).
 cp ../scripts/canary/canary-records.json ./canary-records.json
 
+# Basic-field allowlist (Free + Premium dataset split, 2026-09-27) — single
+# source src/config/datasetBasicFields.json. The Panic Button needs it to
+# re-derive *.basic.json when restoring a pre-split snapshot (refused without
+# it) and to check that a basic object is the exact projection of its sibling.
+cp ../src/config/datasetBasicFields.json ./datasetBasicFields.json
+
 # Letterhead images, regenerated from the CANONICAL brand assets every deploy so
 # a rebrand cannot leave a stale logo in the mail. Resizing is all that happens
 # here — the mark and the lockup are never redrawn (brand-assets/README.md).
