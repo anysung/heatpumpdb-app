@@ -68,7 +68,7 @@ const M = {
       'Förderung & Regulierung — zentrale Entwicklungen', 'Gebäudemarkt — Neubau vs. Sanierung',
       'Technologie-Trends — R290, Effizienz, Elektrifizierung'],
     source: 'Quelle: HeatPump DB Katalogdaten (BAFA-Liste), Snapshot',
-    cta: { h: 'Die Daten hinter den Zahlen', p: 'Jedes Modell mit SCOP, Schallleistung, Kältemittel und BAFA-Status — kostenlos registrieren, 15 Tage voller Zugang.', b: 'Kostenlos registrieren' },
+    cta: { h: 'Die Daten hinter den Zahlen', p: 'Jedes Modell mit SCOP, Kältemittel und BAFA-Status — kostenlos registrieren, inklusive 15 Tage Premium mit Schallleistung und vollständigen Daten.', b: 'Kostenlos registrieren' },
     back: 'Zur Wärmepumpen-Datenbank', guide: 'Förder-Leitfaden', news: 'Nachrichten',
   },
   GB: {
@@ -89,7 +89,7 @@ const M = {
       'Funding & regulation — key developments', 'Building market — new build vs. renovation',
       'Technology trends — R290, efficiency, electrification'],
     source: 'Source: HeatPump DB catalogue data (European reference), snapshot',
-    cta: { h: 'The data behind the numbers', p: 'Every model with SCOP, sound power, refrigerant and PEL status — join free, 15 days of full access.', b: 'Join free' },
+    cta: { h: 'The data behind the numbers', p: 'Every model with SCOP, refrigerant and PEL status — join free, with 15 days of Premium (sound power and full specifications) to start.', b: 'Join free' },
     back: 'To the heat pump database', guide: 'Funding guide', news: 'News',
   },
   FR: {
@@ -110,7 +110,7 @@ const M = {
       'Aides & réglementation — évolutions clés', 'Marché du bâtiment — neuf vs rénovation',
       'Tendances technologiques — R290, efficacité, électrification'],
     source: 'Source : données du catalogue HeatPump DB (référence européenne), snapshot',
-    cta: { h: 'Les données derrière les chiffres', p: 'Chaque modèle avec SCOP, puissance acoustique et fluide — inscription gratuite, 15 jours d’accès complet.', b: 'Inscription gratuite' },
+    cta: { h: 'Les données derrière les chiffres', p: 'Chaque modèle avec SCOP et fluide — inscription gratuite, avec 15 jours de Premium (puissance acoustique et caractéristiques complètes) pour commencer.', b: 'Inscription gratuite' },
     back: 'Vers la base de données', guide: 'Guide des aides', news: 'Actualités',
   },
   PL: {
@@ -131,7 +131,7 @@ const M = {
       'Dofinansowanie i regulacje — kluczowe zmiany', 'Rynek budowlany — nowe budynki vs modernizacja',
       'Trendy technologiczne — R290, efektywność, elektryfikacja'],
     source: 'Źródło: dane katalogu HeatPump DB (referencja europejska), snapshot',
-    cta: { h: 'Dane stojące za liczbami', p: 'Każdy model ze SCOP, mocą akustyczną, czynnikiem i statusem ZUM — dołącz za darmo, 15 dni pełnego dostępu.', b: 'Dołącz za darmo' },
+    cta: { h: 'Dane stojące za liczbami', p: 'Każdy model ze SCOP, czynnikiem i statusem ZUM — dołącz za darmo, na start 15 dni Premium (moc akustyczna i pełne dane).', b: 'Dołącz za darmo' },
     back: 'Do bazy pomp ciepła', guide: 'Przewodnik po dofinansowaniu', news: 'Aktualności',
   },
   IT: {
@@ -152,7 +152,7 @@ const M = {
       'Incentivi e regolazione — sviluppi chiave', 'Mercato edilizio — nuove costruzioni vs ristrutturazione',
       'Tendenze tecnologiche — R290, efficienza, elettrificazione'],
     source: 'Fonte: dati catalogo HeatPump DB (riferimento europeo), snapshot',
-    cta: { h: 'I dati dietro i numeri', p: 'Ogni modello con SCOP, potenza sonora, refrigerante e stato GSE — registrati gratis, 15 giorni di accesso completo.', b: 'Registrati gratis' },
+    cta: { h: 'I dati dietro i numeri', p: 'Ogni modello con SCOP, refrigerante e stato GSE — registrati gratis, con 15 giorni di Premium (potenza sonora e specifiche complete) per iniziare.', b: 'Registrati gratis' },
     back: 'Al database delle pompe di calore', guide: 'Guida agli incentivi', news: 'Notizie',
   },
 }[MARKET];
@@ -384,7 +384,7 @@ const EN_UI = {
   back: 'Market & Trends',
   cta: {
     h: 'The data behind the numbers',
-    p: 'Every model with SCOP, sound power, refrigerant and local listing status — join free, 15 days of full access.',
+    p: 'Every model with SCOP, refrigerant and local listing status — join free, with 15 days of Premium (sound power and full specifications) to start.',
     b: 'Join free',
   },
 };

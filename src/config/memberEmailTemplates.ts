@@ -183,12 +183,12 @@ ${signOff}`,
     kind: 'trial',
     fillIn: ['the new end date'],
     build: (u) => ({
-      subject: 'HeatPump DB — your trial has been extended',
+      subject: 'HeatPump DB — your Premium trial has been extended',
       body: `${salutation(u)}
 
-We have extended the free trial, and the change applies to your account as well.
+We have extended the Premium trial, and the change applies to your account as well.
 
-Your access to the full database is open again and runs until [DATE]. There is nothing for you to do — simply sign in as usual. No payment details are held and nothing is charged.
+Premium — full specifications, comparison, the commercial range and PDF data sheets — is open again on your account until [DATE]. There is nothing for you to do — simply sign in as usual. No payment details are held and nothing is charged.
 
 If something was missing during your first days, reply to this message. We read every answer.
 
@@ -201,10 +201,10 @@ ${signOff}`,
     kind: 'trial',
     fillIn: ['the end date', 'anything specific this member searched for'],
     build: (u) => ({
-      subject: 'HeatPump DB — your trial ends on [DATE]',
+      subject: 'HeatPump DB — your Premium trial ends on [DATE]',
       body: `${salutation(u)}
 
-Your free trial runs until [DATE]. After that the catalogue closes, though your account and settings stay exactly as you left them.
+Your Premium trial runs until [DATE]. After that your account simply continues on Free — search, the residential catalogue with basic specifications, subsidies, news and market trends stay open, and your settings stay exactly as you left them. Nothing is charged unless you choose a plan yourself.
 
 If you have questions before deciding — about coverage, a particular manufacturer, or what a data sheet contains — reply here and we will answer them directly.
 

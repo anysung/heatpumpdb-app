@@ -171,7 +171,10 @@ ${ld ? `<script type="application/ld+json">${JSON.stringify(ld)}</script>` : ''}
 /* The campaign's landing page needs a way INTO the product. Without this the
    funnel ends at a free report: the reader gets what was promised and leaves,
    and the LinkedIn spend (time or money) buys a download rather than a trial.
-   The report stays free and ungated — this simply offers the next step. */
+   The August and September 2026 editions stay free samples on this page; from
+   the October 2026 edition the full report is for Premium members in the app
+   (Free + Premium program, owner 2026-09-27) and this public page is the
+   teaser — this block simply offers the next step. */
 const productCta = (t) => (t.productCta ? `
   <div class="pcta">
     <h2>${esc(t.productCta.h)}</h2>

@@ -172,7 +172,7 @@ const EN = {
     updated: ver.terms,
     intro: `${BRAND_TM} is a software service operated by ${OPERATOR_NAME}, a registered sole proprietorship. Full operator, registration and contact information is available in our Legal Notice. These terms govern your use of the service, a professional web-based B2B database service — please read them before you register.`,
     sections: [
-      { h: 'The service', p: [`${SERVICE_NAME} is a professional, web-based subscription service for the European heat-pump industry, operated by ${OPERATOR_NAME}. Subscriptions are purchased on the web and billed by Paddle. Full operator and registration details are in our Legal Notice.`] },
+      { h: 'The service', p: [`${SERVICE_NAME} is a professional, web-based service for the European heat-pump industry, operated by ${OPERATOR_NAME}. It is offered as a free tier (Free) and a paid subscription (Premium). Premium subscriptions are purchased on the web and billed by Paddle. Full operator and registration details are in our Legal Notice.`] },
       { h: 'Account eligibility', p: ['Accounts are intended for professional use (manufacturers, wholesalers, installers, engineers, consultancies, housing, public sector, sole traders and comparable roles). New accounts are reviewed before activation.'] },
       { h: 'Account responsibility', p: ['You are responsible for your credentials and for everything done under your account. Keep your password confidential.'] },
       {
@@ -191,18 +191,26 @@ const EN = {
         ],
       },
       {
-        h: 'Free trial',
+        h: 'Free and Premium',
         p: [
-          'Every new account includes a 15-day free trial with full access. No payment method is required to start it, and nothing is charged during it.',
-          'When the trial ends, access to the database closes. Nothing is charged automatically — a subscription begins only when you choose a plan and complete checkout, and the first period is billed immediately at that point.',
+          'Free is available to every registered account at no charge and without a time limit. It includes product search, the residential catalogue (up to 23 kW) with basic specifications (rated capacity, SCOP, energy class, refrigerant type) and local listing status, the subsidy pages and funding guide, news, Market & Trends, installation videos and the on-screen data sheet preview. A Free account can be active on one device at a time.',
+          'Premium unlocks the full service: complete specifications (for example COP values, sound power and refrigerant charge), side-by-side comparison, the commercial range (above 23 kW), PDF and print data sheets and EU label sheets, and the monthly Special Report (from the October 2026 edition). A Premium account can be active on up to two devices at a time. Team plans additionally include team management.',
+        ],
+      },
+      {
+        h: 'Premium trial',
+        p: [
+          'Every new account includes a 15-day Premium trial, once per email address. No payment method is required to start it, and nothing is charged during it.',
+          'When the trial ends, the account automatically continues on Free — it is not closed. Nothing is charged automatically: a subscription begins only when you choose a plan and complete checkout, and the first period is billed immediately at that point.',
         ],
       },
       {
         h: 'Billing, renewal and changes',
         p: [
-          'Subscriptions are offered on monthly, 6-month and annual billing terms and renew automatically at the end of each period until cancelled.',
+          'Premium subscriptions are offered on monthly and annual billing terms and renew automatically at the end of each period until cancelled.',
+          'Prices are stated in euros (EUR) and exclude VAT. Applicable VAT is calculated and added at checkout by Paddle, our merchant of record. Every market is billed in EUR; if your card or account uses another currency, your card issuer or bank converts the amount and may apply its own exchange rate or fees.',
           'Plan and billing term are fixed for the paid period. Changes do not take effect mid-term: a change you request applies from the next renewal, and the new conditions begin only once the current period has ended.',
-          'You may cancel at any time. Cancellation stops the next renewal; access continues until the end of the period you have paid for.',
+          'You may cancel at any time. Cancellation stops the next renewal; Premium access continues until the end of the period you have paid for, after which the account continues on Free.',
         ],
       },
       { h: 'Payments', p: ['Payments are processed by Paddle, which acts as merchant of record and issues invoices including any applicable VAT.'] },
@@ -231,14 +239,14 @@ const EN = {
     updated: ver.terms,
     intro: `This policy explains what happens when you cancel your ${SERVICE_NAME} subscription, and when a refund is or is not due. Paddle is our merchant of record and handles all payments.`,
     sections: [
-      { h: 'During the free trial', p: ['Every new account includes a 15-day free trial. No payment method is required and nothing is charged during the trial.'] },
-      { h: 'After the trial', p: ['When the trial ends, access closes and no payment is taken. A charge occurs only if you then choose a plan yourself; the first period is billed immediately at checkout.'] },
-      { h: '14-day refund on your first payment', p: [`If your first payment is taken after the free trial, you may request a full refund of that first payment within 14 days of the charge, for any reason. Send a New inquiry from the Account page or email ${SUPPORT_EMAIL}, and we will process it with Paddle. This 14-day right applies to the first payment only; later renewals are governed by the sections below.`] },
+      { h: 'During the Premium trial', p: ['Every new account includes a 15-day Premium trial. No payment method is required and nothing is charged during the trial.'] },
+      { h: 'After the trial', p: ['When the trial ends, the account continues on Free and no payment is taken. A charge occurs only if you then choose a Premium plan yourself; the first period is billed immediately at checkout.'] },
+      { h: '14-day refund on your first payment', p: [`If your first payment is taken after the Premium trial, you may request a full refund of that first payment within 14 days of the charge, for any reason. Send a New inquiry from the Account page or email ${SUPPORT_EMAIL}, and we will process it with Paddle. This 14-day right applies to the first payment only; later renewals are governed by the sections below.`] },
       {
         h: 'Cancelling a paid subscription',
         p: [
           'You may cancel at any time. Cancellation stops the next renewal — it does not end the current period.',
-          'Access continues until the end of the period you have already paid for.',
+          'Premium access continues until the end of the period you have already paid for; afterwards the account continues on Free.',
         ],
       },
       { h: 'Unused time', p: ['We do not automatically refund unused time on a period that has already been paid for.'] },
@@ -368,7 +376,7 @@ const DE = {
     updated: ver.terms,
     intro: `${BRAND_TM} ist ein Softwaredienst, der von ${OPERATOR_NAME}, einem eingetragenen Einzelunternehmen, betrieben wird. Vollständige Angaben zu Betreiber, Registrierung und Kontakt finden Sie in unserem Impressum. Diese Bedingungen regeln die Nutzung des Dienstes, eines professionellen, webbasierten B2B-Datenbankdienstes — bitte lesen Sie sie vor der Registrierung.`,
     sections: [
-      { h: 'Der Dienst', p: [`${SERVICE_NAME} ist ein professioneller, webbasierter Abonnementdienst für die europäische Wärmepumpenbranche, betrieben von ${OPERATOR_NAME}. Abonnements werden im Web erworben und über Paddle abgerechnet. Vollständige Angaben zu Betreiber und Registrierung finden Sie in unserem Impressum.`] },
+      { h: 'Der Dienst', p: [`${SERVICE_NAME} ist ein professioneller, webbasierter Dienst für die europäische Wärmepumpenbranche, betrieben von ${OPERATOR_NAME}. Er wird als kostenlose Stufe (Free) und als kostenpflichtiges Abonnement (Premium) angeboten. Premium-Abonnements werden im Web erworben und über Paddle abgerechnet. Vollständige Angaben zu Betreiber und Registrierung finden Sie in unserem Impressum.`] },
       { h: 'Zulässige Nutzer', p: ['Konten sind für die professionelle Nutzung bestimmt (Hersteller, Großhandel, Installateure, Planung/Ingenieurbüros, Wohnungswirtschaft, öffentliche Hand, Einzelunternehmer und vergleichbare Rollen). Neue Konten werden vor der Freischaltung geprüft.'] },
       { h: 'Verantwortung für das Konto', p: ['Sie sind für Ihre Zugangsdaten und für alle unter Ihrem Konto vorgenommenen Handlungen verantwortlich. Halten Sie Ihr Passwort geheim.'] },
       {
@@ -387,18 +395,26 @@ const DE = {
         ],
       },
       {
-        h: 'Kostenlose Testphase',
+        h: 'Free und Premium',
         p: [
-          'Jedes neue Konto enthält eine 15-tägige kostenlose Testphase mit vollem Zugang. Für den Start ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.',
-          'Nach Ablauf der Testphase endet der Zugang zur Datenbank. Es wird nichts automatisch abgebucht — ein Abonnement beginnt erst, wenn Sie selbst einen Tarif wählen und den Checkout abschließen; der erste Zeitraum wird dann sofort berechnet.',
+          'Free steht jedem registrierten Konto kostenlos und ohne zeitliche Begrenzung zur Verfügung. Enthalten sind die Produktsuche, der Wohngebäude-Katalog (bis 23 kW) mit den wichtigsten technischen Daten (Nennleistung, SCOP, Energieeffizienzklasse, Kältemittel) und dem lokalen Listungsstatus, die Förderseiten und der Förderleitfaden, News, Markt & Trends, Installationsvideos sowie die Datenblatt-Vorschau am Bildschirm. Ein Free-Konto kann jeweils auf einem Gerät aktiv sein.',
+          'Premium schaltet den vollen Funktionsumfang frei: vollständige technische Daten (zum Beispiel COP-Werte, Schallleistung und Kältemittelfüllmenge), den direkten Produktvergleich, das Gewerbesegment (über 23 kW), PDF- und Druck-Datenblätter sowie EU-Label-Blätter und den monatlichen Special Report (ab der Ausgabe Oktober 2026). Ein Premium-Konto kann auf bis zu zwei Geräten gleichzeitig aktiv sein. Team-Tarife umfassen zusätzlich die Teamverwaltung.',
+        ],
+      },
+      {
+        h: 'Premium-Testphase',
+        p: [
+          'Jedes neue Konto enthält eine 15-tägige Premium-Testphase, einmal pro E-Mail-Adresse. Für den Start ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.',
+          'Nach Ablauf der Testphase läuft das Konto automatisch mit Free weiter — es wird nicht geschlossen. Es wird nichts automatisch abgebucht: Ein Abonnement beginnt erst, wenn Sie selbst einen Tarif wählen und den Checkout abschließen; der erste Zeitraum wird dann sofort berechnet.',
         ],
       },
       {
         h: 'Abrechnung, Verlängerung und Änderungen',
         p: [
-          'Abonnements werden monatlich, halbjährlich oder jährlich abgerechnet und verlängern sich automatisch, bis sie gekündigt werden.',
+          'Premium-Abonnements werden monatlich oder jährlich abgerechnet und verlängern sich am Ende jedes Zeitraums automatisch, bis sie gekündigt werden.',
+          'Die Preise verstehen sich in Euro (EUR) zuzüglich Umsatzsteuer. Die anwendbare Umsatzsteuer wird beim Checkout von Paddle, unserem Merchant of Record, berechnet und hinzugefügt. Alle Märkte werden in EUR abgerechnet; lautet Ihre Karte oder Ihr Konto auf eine andere Währung, rechnet Ihr Kartenaussteller bzw. Ihre Bank den Betrag um und kann dafür eigene Kurse oder Gebühren ansetzen.',
           'Tarif und Abrechnungszeitraum sind für die bezahlte Periode fest. Änderungen werden nicht mitten im Zeitraum wirksam: Eine gewünschte Änderung gilt ab der nächsten Verlängerung; die neuen Konditionen beginnen erst nach Ablauf der laufenden Periode.',
-          'Sie können jederzeit kündigen. Die Kündigung stoppt die nächste Verlängerung; der Zugang bleibt bis zum Ende der bezahlten Periode bestehen.',
+          'Sie können jederzeit kündigen. Die Kündigung stoppt die nächste Verlängerung; der Premium-Zugang bleibt bis zum Ende der bezahlten Periode bestehen, danach läuft das Konto mit Free weiter.',
         ],
       },
       { h: 'Zahlungen', p: ['Zahlungen werden von Paddle abgewickelt. Paddle ist Merchant of Record und stellt Rechnungen einschließlich anwendbarer Umsatzsteuer aus.'] },
@@ -425,14 +441,14 @@ const DE = {
     updated: ver.terms,
     intro: `Diese Regelung erläutert, was bei der Kündigung Ihres ${SERVICE_NAME}-Abonnements geschieht und wann eine Erstattung erfolgt bzw. nicht erfolgt. Paddle ist unser Merchant of Record und wickelt alle Zahlungen ab.`,
     sections: [
-      { h: 'Während der Testphase', p: ['Jedes neue Konto enthält eine 15-tägige kostenlose Testphase. Es ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.'] },
-      { h: 'Nach der Testphase', p: ['Nach Ablauf der Testphase endet der Zugang und es erfolgt keine Zahlung. Eine Abbuchung erfolgt nur, wenn Sie anschließend selbst einen Tarif wählen; der erste Zeitraum wird beim Checkout sofort berechnet.'] },
-      { h: '14-tägiges Rückerstattungsrecht für Ihre erste Zahlung', p: [`Erfolgt Ihre erste Zahlung nach der kostenlosen Testphase, können Sie innerhalb von 14 Tagen nach der Abbuchung ohne Angabe von Gründen die vollständige Erstattung dieser ersten Zahlung verlangen. Senden Sie eine „Neue Anfrage“ über die Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL} — wir wickeln die Erstattung gemeinsam mit Paddle ab. Dieses 14-Tage-Recht gilt nur für die erste Zahlung; spätere Verlängerungen richten sich nach den nachstehenden Abschnitten.`] },
+      { h: 'Während der Premium-Testphase', p: ['Jedes neue Konto enthält eine 15-tägige Premium-Testphase. Es ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.'] },
+      { h: 'Nach der Testphase', p: ['Nach Ablauf der Testphase läuft das Konto mit Free weiter, und es erfolgt keine Zahlung. Eine Abbuchung erfolgt nur, wenn Sie anschließend selbst einen Premium-Tarif wählen; der erste Zeitraum wird beim Checkout sofort berechnet.'] },
+      { h: '14-tägiges Rückerstattungsrecht für Ihre erste Zahlung', p: [`Erfolgt Ihre erste Zahlung nach der Premium-Testphase, können Sie innerhalb von 14 Tagen nach der Abbuchung ohne Angabe von Gründen die vollständige Erstattung dieser ersten Zahlung verlangen. Senden Sie eine „Neue Anfrage“ über die Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL} — wir wickeln die Erstattung gemeinsam mit Paddle ab. Dieses 14-Tage-Recht gilt nur für die erste Zahlung; spätere Verlängerungen richten sich nach den nachstehenden Abschnitten.`] },
       {
         h: 'Kündigung eines bezahlten Abonnements',
         p: [
           'Sie können jederzeit kündigen. Die Kündigung stoppt die nächste Verlängerung — die laufende Periode endet dadurch nicht vorzeitig.',
-          'Der Zugang bleibt bis zum Ende der bereits bezahlten Periode bestehen.',
+          'Der Premium-Zugang bleibt bis zum Ende der bereits bezahlten Periode bestehen; danach läuft das Konto mit Free weiter.',
         ],
       },
       { h: 'Nicht genutzte Zeit', p: ['Für nicht genutzte Zeit einer bereits bezahlten Periode erfolgt keine automatische anteilige Erstattung.'] },
@@ -562,7 +578,7 @@ const FR = {
     updated: ver.terms,
     intro: `${BRAND_TM} est un service logiciel exploité par ${OPERATOR_NAME}, une entreprise individuelle enregistrée. Les informations complètes sur l'exploitant, l'enregistrement et le contact figurent dans nos Mentions légales. Ces conditions régissent l'utilisation du service, un service professionnel de base de données B2B sur le web — merci de les lire avant de vous inscrire.`,
     sections: [
-      { h: 'Le service', p: [`${SERVICE_NAME} est un service d'abonnement professionnel sur le web pour la filière européenne des pompes à chaleur, exploité par ${OPERATOR_NAME}. Les abonnements sont souscrits sur le web et facturés par Paddle. Les informations complètes sur l'exploitant et l'enregistrement figurent dans nos Mentions légales.`] },
+      { h: 'Le service', p: [`${SERVICE_NAME} est un service professionnel sur le web pour la filière européenne des pompes à chaleur, exploité par ${OPERATOR_NAME}. Il est proposé en niveau gratuit (Free) et en abonnement payant (Premium). Les abonnements Premium sont souscrits sur le web et facturés par Paddle. Les informations complètes sur l'exploitant et l'enregistrement figurent dans nos Mentions légales.`] },
       { h: 'Éligibilité des comptes', p: ["Les comptes sont destinés à un usage professionnel (fabricants, grossistes, installateurs, bureaux d'études, promoteurs, bailleurs, secteur public, indépendants et fonctions comparables). Les nouveaux comptes sont vérifiés avant activation."] },
       { h: 'Responsabilité du compte', p: ['Vous êtes responsable de vos identifiants et de tout ce qui est fait depuis votre compte. Gardez votre mot de passe confidentiel.'] },
       {
@@ -581,18 +597,26 @@ const FR = {
         ],
       },
       {
-        h: "Essai gratuit",
+        h: 'Free et Premium',
         p: [
-          "Chaque nouveau compte comprend un essai gratuit de 15 jours avec accès complet. Aucun moyen de paiement n'est requis pour le démarrer et aucun débit n'a lieu pendant l'essai.",
-          "À la fin de l'essai, l'accès à la base de données se ferme. Aucun débit n'a lieu automatiquement : un abonnement ne commence que si vous choisissez vous-même une offre et finalisez le paiement, la première période étant alors facturée immédiatement.",
+          "Free est accessible gratuitement et sans limite de durée à tout compte inscrit. Il comprend la recherche de produits, le catalogue résidentiel (jusqu'à 23 kW) avec les caractéristiques essentielles (puissance nominale, SCOP, classe énergétique, type de fluide frigorigène) et le statut de référencement local, les pages d'aides et le guide des financements, les actualités, Marché & Tendances, les vidéos d'installation ainsi que l'aperçu à l'écran des fiches techniques. Un compte Free peut être actif sur un seul appareil à la fois.",
+          "Premium débloque l'ensemble du service : les caractéristiques complètes (par exemple les valeurs de COP, la puissance acoustique et la charge de fluide frigorigène), la comparaison côte à côte, la gamme tertiaire (au-delà de 23 kW), les fiches techniques et fiches d'étiquette énergie UE en PDF et à l'impression, ainsi que le Special Report mensuel (à partir de l'édition d'octobre 2026). Un compte Premium peut être actif sur deux appareils à la fois. Les offres Team incluent en outre la gestion d'équipe.",
+        ],
+      },
+      {
+        h: 'Essai Premium',
+        p: [
+          "Chaque nouveau compte comprend un essai Premium de 15 jours, une fois par adresse e-mail. Aucun moyen de paiement n'est requis pour le démarrer et aucun débit n'a lieu pendant l'essai.",
+          "À la fin de l'essai, le compte continue automatiquement en Free — il n'est pas fermé. Aucun débit n'a lieu automatiquement : un abonnement ne commence que si vous choisissez vous-même une offre et finalisez le paiement, la première période étant alors facturée immédiatement.",
         ],
       },
       {
         h: 'Facturation, renouvellement et modifications',
         p: [
-          "Les abonnements sont proposés en formules mensuelle, semestrielle et annuelle et se renouvellent automatiquement jusqu'à résiliation.",
+          "Les abonnements Premium sont proposés en formules mensuelle et annuelle et se renouvellent automatiquement à la fin de chaque période jusqu'à résiliation.",
+          "Les prix sont indiqués en euros (EUR), hors TVA. La TVA applicable est calculée et ajoutée lors du paiement par Paddle, notre marchand officiel. Tous les marchés sont facturés en EUR ; si votre carte ou votre compte est libellé dans une autre devise, l'émetteur de votre carte ou votre banque convertit le montant et peut appliquer son propre taux de change ou ses frais.",
           "La formule et la période de facturation sont fixes pendant la période payée. Les modifications ne prennent pas effet en cours de période : une modification demandée s'applique au renouvellement suivant, et les nouvelles conditions ne débutent qu'après la fin de la période en cours.",
-          "Vous pouvez résilier à tout moment. La résiliation arrête le renouvellement suivant ; l'accès continue jusqu'à la fin de la période payée.",
+          "Vous pouvez résilier à tout moment. La résiliation arrête le renouvellement suivant ; l'accès Premium continue jusqu'à la fin de la période payée, puis le compte continue en Free.",
         ],
       },
       { h: 'Paiements', p: ["Les paiements sont traités par Paddle, marchand officiel, qui émet les factures incluant la TVA applicable."] },
@@ -619,14 +643,14 @@ const FR = {
     updated: ver.terms,
     intro: `Cette politique explique ce qui se passe lorsque vous résiliez votre abonnement ${SERVICE_NAME}, et quand un remboursement est dû ou non. Paddle est notre marchand officiel et gère tous les paiements.`,
     sections: [
-      { h: "Pendant l'essai gratuit", p: ["Chaque nouveau compte comprend un essai gratuit de 15 jours. Aucun moyen de paiement n'est requis et aucun débit n'a lieu pendant l'essai."] },
-      { h: "Après l'essai", p: ["À la fin de l'essai, l'accès se ferme et aucun paiement n'est prélevé. Un débit n'intervient que si vous choisissez ensuite une offre vous-même ; la première période est facturée immédiatement au moment du paiement."] },
-      { h: 'Remboursement sous 14 jours de votre premier paiement', p: [`Si votre premier paiement est prélevé après l'essai gratuit, vous pouvez demander le remboursement intégral de ce premier paiement dans les 14 jours suivant le débit, pour tout motif. Envoyez une « Nouvelle demande » depuis la page Compte ou écrivez à ${SUPPORT_EMAIL} ; nous procéderons au remboursement avec Paddle. Ce droit de 14 jours ne s'applique qu'au premier paiement ; les renouvellements ultérieurs sont régis par les sections ci-dessous.`] },
+      { h: "Pendant l'essai Premium", p: ["Chaque nouveau compte comprend un essai Premium de 15 jours. Aucun moyen de paiement n'est requis et aucun débit n'a lieu pendant l'essai."] },
+      { h: "Après l'essai", p: ["À la fin de l'essai, le compte continue en Free et aucun paiement n'est prélevé. Un débit n'intervient que si vous choisissez ensuite vous-même une offre Premium ; la première période est facturée immédiatement au moment du paiement."] },
+      { h: 'Remboursement sous 14 jours de votre premier paiement', p: [`Si votre premier paiement est prélevé après l'essai Premium, vous pouvez demander le remboursement intégral de ce premier paiement dans les 14 jours suivant le débit, pour tout motif. Envoyez une « Nouvelle demande » depuis la page Compte ou écrivez à ${SUPPORT_EMAIL} ; nous procéderons au remboursement avec Paddle. Ce droit de 14 jours ne s'applique qu'au premier paiement ; les renouvellements ultérieurs sont régis par les sections ci-dessous.`] },
       {
         h: "Résilier un abonnement payant",
         p: [
           "Vous pouvez résilier à tout moment. La résiliation arrête le renouvellement suivant — elle ne met pas fin à la période en cours.",
-          "L'accès continue jusqu'à la fin de la période déjà payée.",
+          "L'accès Premium continue jusqu'à la fin de la période déjà payée ; ensuite, le compte continue en Free.",
         ],
       },
       { h: 'Temps non utilisé', p: ["Nous ne remboursons pas automatiquement le temps non utilisé d'une période déjà payée."] },
@@ -770,7 +794,7 @@ const PL = {
     updated: ver.terms,
     intro: `${BRAND_TM} to usługa oprogramowania prowadzona przez ${OPERATOR_NAME}, zarejestrowaną jednoosobową działalność gospodarczą. Pełne informacje o operatorze, rejestracji i kontakcie znajdują się w Informacjach o usługodawcy. Niniejsze warunki regulują korzystanie z usługi — profesjonalnego, internetowego serwisu bazodanowego B2B — prosimy o ich przeczytanie przed rejestracją.`,
     sections: [
-      { h: 'Usługa', p: [`${SERVICE_NAME} to profesjonalna, internetowa usługa subskrypcyjna dla europejskiej branży pomp ciepła, prowadzona przez ${OPERATOR_NAME}. Subskrypcje są nabywane w internecie i rozliczane przez Paddle. Pełne dane operatora i rejestracji znajdują się w Informacjach o usługodawcy.`] },
+      { h: 'Usługa', p: [`${SERVICE_NAME} to profesjonalna, internetowa usługa dla europejskiej branży pomp ciepła, prowadzona przez ${OPERATOR_NAME}. Jest oferowana w bezpłatnym planie Free oraz w płatnej subskrypcji Premium. Subskrypcje Premium są nabywane w internecie i rozliczane przez Paddle. Pełne dane operatora i rejestracji znajdują się w Informacjach o usługodawcy.`] },
       { h: 'Kto może założyć konto', p: ['Konta są przeznaczone do użytku profesjonalnego (producenci, hurtownicy, instalatorzy, inżynierowie, firmy doradcze, sektor mieszkaniowy, sektor publiczny, osoby prowadzące jednoosobową działalność gospodarczą i porównywalne role). Nowe konta są weryfikowane przed aktywacją.'] },
       { h: 'Odpowiedzialność za konto', p: ['Odpowiadają Państwo za swoje dane logowania i za wszystkie działania wykonywane w ramach konta. Hasło należy zachować w poufności.'] },
       {
@@ -789,18 +813,26 @@ const PL = {
         ],
       },
       {
-        h: 'Bezpłatny okres próbny',
+        h: 'Free i Premium',
         p: [
-          'Każde nowe konto obejmuje 15-dniowy bezpłatny okres próbny z pełnym dostępem. Do jego rozpoczęcia nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.',
-          'Po zakończeniu okresu próbnego dostęp do bazy danych zostaje zamknięty. Żadna płatność nie jest pobierana automatycznie — subskrypcja rozpoczyna się dopiero wtedy, gdy samodzielnie wybiorą Państwo plan i sfinalizują płatność; pierwszy okres jest wówczas naliczany natychmiast.',
+          'Plan Free jest dostępny dla każdego zarejestrowanego konta bezpłatnie i bez ograniczenia czasowego. Obejmuje wyszukiwarkę produktów, katalog urządzeń do budynków mieszkalnych (do 23 kW) z podstawowymi danymi technicznymi (moc znamionowa, SCOP, klasa energetyczna, rodzaj czynnika chłodniczego) i lokalnym statusem na liście, strony dotacji i przewodnik po finansowaniu, aktualności, Rynek i trendy, filmy instalacyjne oraz podgląd karty katalogowej na ekranie. Konto Free może być aktywne jednocześnie na jednym urządzeniu.',
+          'Plan Premium odblokowuje pełny zakres usługi: kompletne dane techniczne (na przykład wartości COP, moc akustyczną i ilość czynnika chłodniczego), porównanie produktów obok siebie, segment komercyjny (powyżej 23 kW), karty katalogowe i karty etykiet energetycznych UE w PDF i do druku oraz comiesięczny Special Report (od wydania z października 2026 r.). Konto Premium może być aktywne jednocześnie na maksymalnie dwóch urządzeniach. Plany Team obejmują dodatkowo zarządzanie zespołem.',
+        ],
+      },
+      {
+        h: 'Okres próbny Premium',
+        p: [
+          'Każde nowe konto obejmuje 15-dniowy okres próbny Premium, jeden na adres e-mail. Do jego rozpoczęcia nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.',
+          'Po zakończeniu okresu próbnego konto automatycznie działa dalej w planie Free — nie zostaje zamknięte. Żadna płatność nie jest pobierana automatycznie: subskrypcja rozpoczyna się dopiero wtedy, gdy samodzielnie wybiorą Państwo plan i sfinalizują płatność; pierwszy okres jest wówczas naliczany natychmiast.',
         ],
       },
       {
         h: 'Rozliczenia, odnowienia i zmiany',
         p: [
-          'Subskrypcje są oferowane w miesięcznym, 6-miesięcznym i rocznym okresie rozliczeniowym i odnawiają się automatycznie na koniec każdego okresu do momentu anulowania.',
+          'Subskrypcje Premium są oferowane w miesięcznym i rocznym okresie rozliczeniowym i odnawiają się automatycznie na koniec każdego okresu do momentu anulowania.',
+          'Ceny podawane są w euro (EUR) i nie zawierają podatku VAT. Należny VAT jest naliczany i doliczany przy płatności przez Paddle, naszego sprzedawcę rozliczeniowego (merchant of record). Wszystkie rynki są rozliczane w EUR; jeżeli karta lub rachunek prowadzone są w innej walucie, kwotę przelicza wydawca karty lub bank, który może stosować własny kurs wymiany lub opłaty.',
           'Plan i okres rozliczeniowy są stałe w opłaconym okresie. Zmiany nie wchodzą w życie w trakcie okresu: zgłoszona przez Państwa zmiana obowiązuje od następnego odnowienia, a nowe warunki zaczynają obowiązywać dopiero po zakończeniu bieżącego okresu.',
-          'Subskrypcję można anulować w każdej chwili. Anulowanie wstrzymuje następne odnowienie; dostęp pozostaje aktywny do końca opłaconego okresu.',
+          'Subskrypcję można anulować w każdej chwili. Anulowanie wstrzymuje następne odnowienie; dostęp Premium pozostaje aktywny do końca opłaconego okresu, a następnie konto działa dalej w planie Free.',
         ],
       },
       { h: 'Płatności', p: ['Płatności są przetwarzane przez Paddle, który działa jako sprzedawca rozliczeniowy (merchant of record) i wystawia faktury zawierające należny podatek VAT.'] },
@@ -829,14 +861,14 @@ const PL = {
     updated: ver.terms,
     intro: `Niniejsze zasady wyjaśniają, co się dzieje po anulowaniu subskrypcji ${SERVICE_NAME} oraz kiedy zwrot przysługuje, a kiedy nie. Paddle jest naszym sprzedawcą rozliczeniowym (merchant of record) i obsługuje wszystkie płatności.`,
     sections: [
-      { h: 'W trakcie bezpłatnego okresu próbnego', p: ['Każde nowe konto obejmuje 15-dniowy bezpłatny okres próbny. Nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.'] },
-      { h: 'Po okresie próbnym', p: ['Po zakończeniu okresu próbnego dostęp zostaje zamknięty i żadna płatność nie jest pobierana. Opłata pojawia się tylko wtedy, gdy następnie samodzielnie wybiorą Państwo plan; pierwszy okres jest naliczany natychmiast przy płatności.'] },
-      { h: 'Zwrot pierwszej płatności w ciągu 14 dni', p: [`Jeżeli pierwsza płatność zostanie pobrana po bezpłatnym okresie próbnym, mogą Państwo zażądać pełnego zwrotu tej pierwszej płatności w ciągu 14 dni od obciążenia, z dowolnego powodu. Prosimy wysłać „Nowe zapytanie” ze strony Konto lub napisać na adres ${SUPPORT_EMAIL} — zrealizujemy zwrot wspólnie z Paddle. To 14-dniowe prawo dotyczy wyłącznie pierwszej płatności; późniejsze odnowienia regulują poniższe sekcje.`] },
+      { h: 'W trakcie okresu próbnego Premium', p: ['Każde nowe konto obejmuje 15-dniowy okres próbny Premium. Nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.'] },
+      { h: 'Po okresie próbnym', p: ['Po zakończeniu okresu próbnego konto działa dalej w planie Free i żadna płatność nie jest pobierana. Opłata pojawia się tylko wtedy, gdy następnie samodzielnie wybiorą Państwo plan Premium; pierwszy okres jest naliczany natychmiast przy płatności.'] },
+      { h: 'Zwrot pierwszej płatności w ciągu 14 dni', p: [`Jeżeli pierwsza płatność zostanie pobrana po okresie próbnym Premium, mogą Państwo zażądać pełnego zwrotu tej pierwszej płatności w ciągu 14 dni od obciążenia, z dowolnego powodu. Prosimy wysłać „Nowe zapytanie” ze strony Konto lub napisać na adres ${SUPPORT_EMAIL} — zrealizujemy zwrot wspólnie z Paddle. To 14-dniowe prawo dotyczy wyłącznie pierwszej płatności; późniejsze odnowienia regulują poniższe sekcje.`] },
       {
         h: 'Anulowanie płatnej subskrypcji',
         p: [
           'Subskrypcję można anulować w każdej chwili. Anulowanie wstrzymuje następne odnowienie — nie kończy bieżącego okresu.',
-          'Dostęp pozostaje aktywny do końca już opłaconego okresu.',
+          'Dostęp Premium pozostaje aktywny do końca już opłaconego okresu; następnie konto działa dalej w planie Free.',
         ],
       },
       { h: 'Niewykorzystany czas', p: ['Nie zwracamy automatycznie środków za niewykorzystany czas w ramach już opłaconego okresu.'] },
@@ -980,7 +1012,7 @@ const IT = {
     updated: ver.terms,
     intro: `${BRAND_TM} è un servizio software gestito da ${OPERATOR_NAME}, impresa individuale registrata. Le informazioni complete su gestore, registrazione e contatti sono disponibili nelle nostre Note legali. Le presenti condizioni disciplinano l’utilizzo del servizio, un servizio professionale di banca dati B2B via web — vi invitiamo a leggerle prima di registrarvi.`,
     sections: [
-      { h: 'Il servizio', p: [`${SERVICE_NAME} è un servizio professionale in abbonamento via web per il settore europeo delle pompe di calore, gestito da ${OPERATOR_NAME}. Gli abbonamenti si acquistano sul web e sono fatturati da Paddle. Le informazioni complete su gestore e registrazione sono nelle nostre Note legali.`] },
+      { h: 'Il servizio', p: [`${SERVICE_NAME} è un servizio professionale via web per il settore europeo delle pompe di calore, gestito da ${OPERATOR_NAME}. È offerto in un livello gratuito (Free) e in un abbonamento a pagamento (Premium). Gli abbonamenti Premium si acquistano sul web e sono fatturati da Paddle. Le informazioni complete su gestore e registrazione sono nelle nostre Note legali.`] },
       { h: 'Requisiti per l’account', p: ['Gli account sono destinati a un uso professionale (produttori, grossisti, installatori, ingegneri, società di consulenza, settore abitativo, settore pubblico, ditte individuali e ruoli comparabili). I nuovi account vengono verificati prima dell’attivazione.'] },
       { h: 'Responsabilità dell’account', p: ['Siete responsabili delle vostre credenziali e di tutto ciò che avviene tramite il vostro account. Mantenete riservata la vostra password.'] },
       {
@@ -999,18 +1031,26 @@ const IT = {
         ],
       },
       {
-        h: 'Prova gratuita',
+        h: 'Free e Premium',
         p: [
-          'Ogni nuovo account include una prova gratuita di 15 giorni con accesso completo. Per avviarla non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.',
-          'Al termine della prova l’accesso al database si chiude. Nulla viene addebitato automaticamente: un abbonamento inizia solo se scegliete un piano e completate il checkout, e in quel momento il primo periodo viene fatturato immediatamente.',
+          'Free è disponibile gratuitamente e senza limiti di tempo per ogni account registrato. Comprende la ricerca prodotti, il catalogo residenziale (fino a 23 kW) con le specifiche di base (potenza nominale, SCOP, classe energetica, tipo di refrigerante) e lo stato di iscrizione negli elenchi locali, le pagine sugli incentivi e la guida ai finanziamenti, le notizie, Mercato e tendenze, i video di installazione e l’anteprima a schermo della scheda tecnica. Un account Free può essere attivo su un solo dispositivo alla volta.',
+          'Premium sblocca il servizio completo: le specifiche complete (ad esempio i valori COP, la potenza sonora e la carica di refrigerante), il confronto affiancato, la gamma commerciale (oltre 23 kW), le schede tecniche e le schede dell’etichetta energetica UE in PDF e in stampa, e lo Special Report mensile (a partire dall’edizione di ottobre 2026). Un account Premium può essere attivo su un massimo di due dispositivi contemporaneamente. I piani Team includono inoltre la gestione del team.',
+        ],
+      },
+      {
+        h: 'Prova Premium',
+        p: [
+          'Ogni nuovo account include una prova Premium di 15 giorni, una sola volta per indirizzo e-mail. Per avviarla non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.',
+          'Al termine della prova l’account prosegue automaticamente con Free — non viene chiuso. Nulla viene addebitato automaticamente: un abbonamento inizia solo se scegliete un piano e completate il checkout, e in quel momento il primo periodo viene fatturato immediatamente.',
         ],
       },
       {
         h: 'Fatturazione, rinnovo e modifiche',
         p: [
-          'Gli abbonamenti sono offerti con periodi di fatturazione mensile, semestrale e annuale e si rinnovano automaticamente alla fine di ogni periodo fino alla disdetta.',
+          'Gli abbonamenti Premium sono offerti con periodi di fatturazione mensile e annuale e si rinnovano automaticamente alla fine di ogni periodo fino alla disdetta.',
+          'I prezzi sono indicati in euro (EUR), IVA esclusa. L’IVA applicabile viene calcolata e aggiunta al checkout da Paddle, il nostro venditore ufficiale (merchant of record). Tutti i mercati sono fatturati in EUR; se la vostra carta o il vostro conto sono in un’altra valuta, l’emittente della carta o la banca converte l’importo e può applicare un proprio tasso di cambio o proprie commissioni.',
           'Piano e periodo di fatturazione sono fissi per il periodo pagato. Le modifiche non hanno effetto a metà periodo: una modifica richiesta si applica dal rinnovo successivo e le nuove condizioni iniziano solo al termine del periodo in corso.',
-          'Potete disdire in qualsiasi momento. La disdetta blocca il rinnovo successivo; l’accesso continua fino alla fine del periodo già pagato.',
+          'Potete disdire in qualsiasi momento. La disdetta blocca il rinnovo successivo; l’accesso Premium continua fino alla fine del periodo già pagato, dopodiché l’account prosegue con Free.',
         ],
       },
       { h: 'Pagamenti', p: ['I pagamenti sono elaborati da Paddle, che agisce come venditore ufficiale (merchant of record) ed emette le fatture comprensive dell’IVA applicabile.'] },
@@ -1039,14 +1079,14 @@ const IT = {
     updated: ver.terms,
     intro: `La presente politica spiega cosa accade quando disdite il vostro abbonamento ${SERVICE_NAME} e quando un rimborso è dovuto o meno. Paddle è il nostro venditore ufficiale (merchant of record) e gestisce tutti i pagamenti.`,
     sections: [
-      { h: 'Durante la prova gratuita', p: ['Ogni nuovo account include una prova gratuita di 15 giorni. Non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.'] },
-      { h: 'Dopo la prova', p: ['Al termine della prova l’accesso si chiude e nessun pagamento viene prelevato. Un addebito avviene solo se scegliete poi un piano; il primo periodo viene fatturato immediatamente al checkout.'] },
-      { h: 'Rimborso entro 14 giorni sul primo pagamento', p: [`Se il primo pagamento viene prelevato dopo la prova gratuita, potete richiedere il rimborso completo di tale primo pagamento entro 14 giorni dall'addebito, per qualsiasi motivo. Inviate una «Nuova richiesta» dalla pagina Account oppure scrivete a ${SUPPORT_EMAIL}: procederemo al rimborso insieme a Paddle. Questo diritto di 14 giorni si applica solo al primo pagamento; i rinnovi successivi sono disciplinati dalle sezioni seguenti.`] },
+      { h: 'Durante la prova Premium', p: ['Ogni nuovo account include una prova Premium di 15 giorni. Non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.'] },
+      { h: 'Dopo la prova', p: ['Al termine della prova l’account prosegue con Free e nessun pagamento viene prelevato. Un addebito avviene solo se scegliete poi un piano Premium; il primo periodo viene fatturato immediatamente al checkout.'] },
+      { h: 'Rimborso entro 14 giorni sul primo pagamento', p: [`Se il primo pagamento viene prelevato dopo la prova Premium, potete richiedere il rimborso completo di tale primo pagamento entro 14 giorni dall'addebito, per qualsiasi motivo. Inviate una «Nuova richiesta» dalla pagina Account oppure scrivete a ${SUPPORT_EMAIL}: procederemo al rimborso insieme a Paddle. Questo diritto di 14 giorni si applica solo al primo pagamento; i rinnovi successivi sono disciplinati dalle sezioni seguenti.`] },
       {
         h: 'Disdire un abbonamento a pagamento',
         p: [
           'Potete disdire in qualsiasi momento. La disdetta blocca il rinnovo successivo — non pone fine al periodo in corso.',
-          'L’accesso continua fino alla fine del periodo già pagato.',
+          'L’accesso Premium continua fino alla fine del periodo già pagato; in seguito l’account prosegue con Free.',
         ],
       },
       { h: 'Tempo non utilizzato', p: ['Non rimborsiamo automaticamente il tempo non utilizzato di un periodo già pagato.'] },

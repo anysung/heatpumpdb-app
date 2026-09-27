@@ -165,7 +165,7 @@ const closing = () => `
       <div class="cprod">
         <b>HeatPump DB</b> — the registry-based heat pump database for five European markets.
         Search any model, compare four side by side, print a quote-ready data sheet.
-        <span class="ctrial">Free first week with every new account — no card required.</span>
+        <span class="ctrial">Free to use — every new account starts with 15 days of Premium, no card required.</span>
       </div>
     </div>
     <div class="brandbar">
