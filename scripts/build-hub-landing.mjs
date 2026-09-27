@@ -111,7 +111,7 @@ const I18N = {
     featLabel: 'Key features',
     features: ['Instant model search', 'Compare 4 side-by-side', 'Print-ready data sheets', 'EU energy label sheets', 'Funding tracked monthly', 'Market news briefings'],
     sect: 'Choose your market', models: 'models', open: 'Open',
-    band: '<strong>Built for daily installer work.</strong> Official listing status on every product, the EU energy label one click away, and the month\u2019s funding changes already summarised when you open the app. Professional &amp; Team subscriptions — the free first week is included with every new account.',
+    band: '<strong>Built for daily installer work.</strong> Official listing status on every product, the EU energy label one click away, and the month\u2019s funding changes already summarised when you open the app. Free to use — search, the residential catalogue and listing status included. Premium (Professional &amp; Team) unlocks full specifications, comparison, the commercial range and PDF data sheets; every new account starts with 15 days of Premium.',
     legal: 'Product data is provided for information — verify against official sources before contractual use.',
     tag: {
       DE: 'The BAFA-list database for installers and planners.',
@@ -127,7 +127,7 @@ const I18N = {
     featLabel: 'Kernfunktionen',
     features: ['Sofortige Modellsuche', '4 Modelle im Vergleich', 'Druckfertige Datenblätter', 'EU-Energielabel-Blätter', 'Förderung monatlich verfolgt', 'Markt-News-Briefings'],
     sect: 'Wählen Sie Ihren Markt', models: 'Modelle', open: 'Öffnen:',
-    band: '<strong>Für die tägliche Installateursarbeit gebaut.</strong> Offizieller Listenstatus an jedem Produkt, das EU-Energielabel einen Klick entfernt, und die Förderänderungen des Monats beim Öffnen der App bereits zusammengefasst. Professional- &amp; Team-Abos — die kostenlose erste Woche ist bei jedem neuen Konto enthalten.',
+    band: '<strong>Für die tägliche Installateursarbeit gebaut.</strong> Offizieller Listenstatus an jedem Produkt, das EU-Energielabel einen Klick entfernt, und die Förderänderungen des Monats beim Öffnen der App bereits zusammengefasst. Kostenlos nutzbar — Suche, Wohngebäude-Katalog und Listenstatus inklusive. Premium (Professional &amp; Team) schaltet vollständige technische Daten, Vergleich, das Gewerbesegment und PDF-Datenblätter frei; jedes neue Konto startet mit 15 Tagen Premium.',
     legal: 'Produktdaten dienen der Information — vor vertraglicher Nutzung an offiziellen Quellen prüfen.',
     tag: {
       DE: 'Die Datenbank zur BAFA-Liste — für Fachhandwerk und Planer.',
@@ -143,7 +143,7 @@ const I18N = {
     featLabel: 'Fonctions clés',
     features: ['Recherche instantanée', 'Comparer 4 modèles', 'Fiches techniques prêtes à imprimer', 'Fiches étiquette énergie UE', 'Aides suivies chaque mois', 'Briefings marché'],
     sect: 'Choisissez votre marché', models: 'modèles', open: 'Ouvrir :',
-    band: '<strong>Conçu pour le travail quotidien de l\u2019installateur.</strong> Statut officiel de référencement sur chaque produit, l\u2019étiquette énergie UE à un clic, et les changements d\u2019aides du mois déjà résumés à l\u2019ouverture. Abonnements Professional &amp; Team — la première semaine gratuite est incluse avec chaque nouveau compte.',
+    band: '<strong>Conçu pour le travail quotidien de l\u2019installateur.</strong> Statut officiel de référencement sur chaque produit, l\u2019étiquette énergie UE à un clic, et les changements d\u2019aides du mois déjà résumés à l\u2019ouverture. Gratuit à l\u2019usage — recherche, catalogue résidentiel et statut de référencement inclus. Premium (Professional &amp; Team) débloque les caractéristiques complètes, la comparaison, la gamme tertiaire et les fiches techniques PDF ; chaque nouveau compte démarre avec 15 jours de Premium.',
     legal: 'Les données produits sont fournies à titre d\u2019information — vérifiez auprès des sources officielles avant tout usage contractuel.',
     tag: {
       DE: 'La base de la liste BAFA — pour artisans et bureaux d\u2019études.',
@@ -159,7 +159,7 @@ const I18N = {
     featLabel: 'Kluczowe funkcje',
     features: ['Błyskawiczna wyszukiwarka', 'Porównanie 4 modeli', 'Karty danych do druku', 'Karty etykiety energetycznej UE', 'Dotacje śledzone co miesiąc', 'Briefingi rynkowe'],
     sect: 'Wybierz swój rynek', models: 'modeli', open: 'Otwórz:',
-    band: '<strong>Stworzona do codziennej pracy instalatora.</strong> Oficjalny status z listy przy każdym produkcie, etykieta energetyczna UE o klik, a zmiany w dotacjach z danego miesiąca już podsumowane po otwarciu aplikacji. Subskrypcje Professional i Team — bezpłatny pierwszy tydzień w każdym nowym koncie.',
+    band: '<strong>Stworzona do codziennej pracy instalatora.</strong> Oficjalny status z listy przy każdym produkcie, etykieta energetyczna UE o klik, a zmiany w dotacjach z danego miesiąca już podsumowane po otwarciu aplikacji. Korzystanie jest bezpłatne — wyszukiwarka, katalog urządzeń do budynków mieszkalnych i status z listy w cenie. Premium (Professional i Team) odblokowuje pełne dane techniczne, porównanie, segment komercyjny i karty danych PDF; każde nowe konto zaczyna od 15 dni Premium.',
     legal: 'Dane produktów mają charakter informacyjny — przed użyciem w umowach zweryfikuj w oficjalnych źródłach.',
     tag: {
       DE: 'Baza listy BAFA — dla instalatorów i projektantów.',
@@ -175,7 +175,7 @@ const I18N = {
     featLabel: 'Funzioni chiave',
     features: ['Ricerca istantanea', 'Confronto di 4 modelli', 'Schede tecniche pronte da stampare', 'Schede etichetta energetica UE', 'Incentivi seguiti ogni mese', 'Briefing di mercato'],
     sect: 'Scegli il tuo mercato', models: 'modelli', open: 'Apri:',
-    band: '<strong>Costruito per il lavoro quotidiano dell\u2019installatore.</strong> Stato ufficiale di catalogo su ogni prodotto, etichetta energetica UE a un clic e i cambiamenti degli incentivi del mese già riassunti all\u2019apertura. Abbonamenti Professional e Team — la prima settimana gratuita è inclusa in ogni nuovo account.',
+    band: '<strong>Costruito per il lavoro quotidiano dell\u2019installatore.</strong> Stato ufficiale di catalogo su ogni prodotto, etichetta energetica UE a un clic e i cambiamenti degli incentivi del mese già riassunti all\u2019apertura. Gratuito da usare — ricerca, catalogo residenziale e stato di catalogo inclusi. Premium (Professional e Team) sblocca specifiche complete, confronto, gamma commerciale e schede tecniche PDF; ogni nuovo account parte con 15 giorni di Premium.',
     legal: 'I dati prodotto sono forniti a scopo informativo — verificare sulle fonti ufficiali prima dell\u2019uso contrattuale.',
     tag: {
       DE: 'Il database della lista BAFA — per installatori e progettisti.',
@@ -669,8 +669,8 @@ const ctaBlock = `
 <div class="cta">
   <h2>Full specification, comparison and print-ready data sheets</h2>
   <p>${REG_OPEN
-    ? 'Every new account includes a free first week with full access — official listing status, complete performance tables, 4-model comparison and quote-ready PDF data sheets. Choose your market to get started:'
-    : 'Official listing status, complete performance tables, 4-model comparison and quote-ready PDF data sheets live in the app. Registration reopens shortly — the free first week will be included with every new account. Choose your market:'}</p>
+    ? 'Free to join: search, the residential catalogue with basic specifications and official listing status are free. Premium adds complete performance tables, 4-model comparison, the commercial range and quote-ready PDF data sheets — and every new account starts with 15 days of Premium, no card required. Choose your market to get started:'
+    : 'Official listing status, complete performance tables, 4-model comparison and quote-ready PDF data sheets live in the app. Registration reopens shortly — Free access for every account, with 15 days of Premium to start. Choose your market:'}</p>
   <div class="mgrid">${MARKETS.map(m => `<a class="mbtn" href="${m.url}">${m.name} — ${m.host}</a>`).join('')}</div>
 </div>`;
 
