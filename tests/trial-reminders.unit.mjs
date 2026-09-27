@@ -61,5 +61,32 @@ is('a CANCELED subscription may be reminded again',
   skipReminder({ ...active, subscription: { status: 'canceled' } }), null);
 is('a Paddle customer is not upsold', skipReminder({ ...active, billingChannel: 'paddle' }), 'paddle-customer');
 
+// Free + Premium (2026-09-27): a trial end drops the account to FREE. The copy
+// must say so in every language, link to the plans, and never claim that
+// access closes / stops / is blocked.
+console.log('\nTrial reminder — copy says "continues on Free", never "access ends"\n');
+const { TRIAL_COPY } = require(resolve(root, 'google_cloud_function_billing/trialReminderCopy.js'));
+const LOCKOUT = {
+  en: /no longer accessible|access (to the catalogue )?(stops|ends|closes)|restores access|blocked|locked/i,
+  de: /nicht mehr zugänglich|endet der Zugang|Zugang .*(endet|gesperrt)|wiederhergestellt|gesperrt/i,
+  fr: /plus accessible|accès .*(s'arrête|prend fin)|rétablit l'accès|bloqué/i,
+  pl: /nie (jest|będzie) już dostępny|przestanie być dostępny|kończy się dostęp|przywraca dostęp|zablokowan/i,
+  it: /non (è|sarà) più accessibile|termina l'accesso|ripristina .*l'accesso|bloccat/i,
+};
+const FREE_WORD = { en: /Free plan/, de: /Free-Tarif/, fr: /formule gratuite/, pl: /planie? Free/, it: /piano (gratuito )?Free/ };
+const PREMIUM_ONLY = { en: /Special Report/, de: /Special Report/, fr: /Special Report/, pl: /Special Report/, it: /Special Report/ };
+const URL = 'https://www.heatpumpdb.de/pricing';
+for (const lang of ['en', 'de', 'fr', 'pl', 'it']) {
+  is(`${lang}: all three stages present`, Object.keys(TRIAL_COPY[lang]).sort(), ['expired', 'last_day', 'two_days_left']);
+  for (const stage of ['two_days_left', 'last_day', 'expired']) {
+    const { subject, body } = TRIAL_COPY[lang][stage]('1 Oct 2026', URL);
+    const all = `${subject}\n${body}`;
+    is(`${lang}/${stage}: no lockout wording`, LOCKOUT[lang].test(all) ? all.match(LOCKOUT[lang])[0] : null, null);
+    is(`${lang}/${stage}: names the Free plan`, FREE_WORD[lang].test(all), true);
+    is(`${lang}/${stage}: says what needs Premium`, /Premium/.test(body) && PREMIUM_ONLY[lang].test(body), true);
+    is(`${lang}/${stage}: links to plans`, body.includes(URL), true);
+  }
+}
+
 console.log(failed ? `\n✗ ${failed} assertion(s) failed\n` : `\n✓ all trial-reminder assertions passed (${passed})\n`);
 process.exit(failed ? 1 : 0);
