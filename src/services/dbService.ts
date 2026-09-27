@@ -4,6 +4,7 @@ import { db, datasetStorage } from '../firebase';
 import { HeatPump, NewsItem, PolicyItem } from '../types';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { cacheGet, cachePut } from './datasetCache';
+import { DatasetTier, datasetFileForTier, projectBasic } from './basicProjection';
 
 // Firestore collection paths — derived from the active country profile so that
 // all country-specific routing is driven by ACTIVE_COUNTRY, not hardcoded strings.
@@ -61,14 +62,25 @@ const revalidateDataset = (storageRef: StorageReference, key: string, cachedMd5:
     .catch(() => { /* offline / transient / invalid download — keep the cache */ });
 };
 
-const loadProductsFromJson = async (path: string): Promise<HeatPump[]> => {
+/**
+ * Tiers (Free + Premium split, 2026-09-27): 'full' reads products*.json
+ * (storage.rules: isEntitled — Premium / trial / admin); 'basic' reads the
+ * *.basic.json companion (any active account of the market) — the same
+ * records projected to src/config/datasetBasicFields.json. The IndexedDB
+ * cache is keyed by the Storage OBJECT path, so the two tiers never share an
+ * entry and switching tier can never serve the other tier's file.
+ */
+const loadProductsFromJson = async (path: string, tier: DatasetTier = 'full'): Promise<HeatPump[]> => {
   let data: any;
   if (import.meta.env.DEV) {
+    // Dev server: the local public/data files are always the FULL build, so
+    // the basic tier is projected here with the same allowlist — dev mirrors prod.
     const resp = await fetch(path);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     data = await resp.json();
+    if (tier === 'basic') data = { ...data, items: (data.items || []).map((r: object) => projectBasic(r)) };
   } else {
-    const file = path.split('/').pop()!;
+    const file = datasetFileForTier(path.split('/').pop()!, tier);
     const key = `datasets/${ACTIVE_COUNTRY.code}/${file}`;
     const storageRef = ref(datasetStorage, key);
 
@@ -99,13 +111,15 @@ const loadProductsFromJson = async (path: string): Promise<HeatPump[]> => {
   return ((data.items || []) as HeatPump[]).filter(p => !isHoneytokenRecord(p));
 };
 
-/** Load residential products (static JSON, path from active country profile). */
-export const getProducts = (): Promise<HeatPump[]> =>
-  loadProductsFromJson(ACTIVE_COUNTRY.datasetPaths.products);
+/** Load residential products (path from active country profile). tier defaults to 'full'. */
+export const getProducts = (tier: DatasetTier = 'full'): Promise<HeatPump[]> =>
+  loadProductsFromJson(ACTIVE_COUNTRY.datasetPaths.products, tier);
 
-/** Load commercial products (static JSON, path from active country profile). */
-export const getCommercialProducts = (): Promise<HeatPump[]> =>
-  loadProductsFromJson(ACTIVE_COUNTRY.datasetPaths.commercialProducts);
+/** Load commercial products (path from active country profile). tier defaults to 'full'. */
+export const getCommercialProducts = (tier: DatasetTier = 'full'): Promise<HeatPump[]> =>
+  loadProductsFromJson(ACTIVE_COUNTRY.datasetPaths.commercialProducts, tier);
+
+export type { DatasetTier } from './basicProjection';
 
 /** News for an arbitrary market — used by the unified admin console. */
 export const getNewsFor = async (countryCode: string): Promise<NewsItem[]> => {

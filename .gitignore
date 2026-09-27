@@ -105,6 +105,7 @@ feasibility_tests/**/evidence-*/
 __pycache__/
 .venv/
 google_cloud_function_billing/canary-records.json
+google_cloud_function_billing/datasetBasicFields.json
 
 # Generated demo recordings (rebuild with scripts/record-demo.mjs)
 demo_video/

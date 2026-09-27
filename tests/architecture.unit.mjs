@@ -278,6 +278,11 @@ if (!existsSync(GB)) {
       mkdirSync(join(dir, 'data_sources/manufacturer_cross_reference'), { recursive: true });
       writeFileSync(join(dir, 'scripts/dataset-gate.mjs'), readFileSync(resolve(root, 'scripts/dataset-gate.mjs')));
       writeFileSync(join(dir, 'scripts/lib/data-sheet-eligibility.mjs'), readFileSync(resolve(root, 'scripts/lib/data-sheet-eligibility.mjs')));
+      // The gate's basic-projection check (Free + Premium split) reads the allowlist + shared projection.
+      mkdirSync(join(dir, 'src/config'), { recursive: true });
+      mkdirSync(join(dir, 'google_cloud_function_billing'), { recursive: true });
+      writeFileSync(join(dir, 'src/config/datasetBasicFields.json'), readFileSync(resolve(root, 'src/config/datasetBasicFields.json')));
+      writeFileSync(join(dir, 'google_cloud_function_billing/datasetChecks.js'), readFileSync(resolve(root, 'google_cloud_function_billing/datasetChecks.js')));
       for (const f of ['data_manifests/production.json', 'data_manifests/migration.json',
         'data_sources/manufacturer_cross_reference/pel-one-to-many-exceptions.json',
         'data_sources/manufacturer_cross_reference/zum-one-to-many-exceptions.json']) {

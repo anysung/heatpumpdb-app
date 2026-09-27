@@ -41,14 +41,26 @@ import { createRequire } from 'node:module';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
-const { DATASETS, checkDataset, simulateMarket } =
+const { DATASETS, checkDataset, simulateMarket, basicFileName, checkBasicPair } =
   require(join(ROOT, 'google_cloud_function_billing/datasetChecks.js'));
+const BASIC_FIELDS = new Set(JSON.parse(readFileSync(join(ROOT, 'src/config/datasetBasicFields.json'), 'utf8')).fields);
 
 const BUCKET = 'gs://heatpumpdb-datasets';
 const CANARIES = JSON.parse(readFileSync(join(ROOT, 'scripts/canary/canary-records.json'), 'utf8'));
 const manifestPath = join(ROOT, 'data_manifests/stable-release.json');
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : null;
 const expectedItems = new Map((manifest?.objects ?? []).map(o => [o.path, o.items]));
+
+/**
+ * Free + Premium split (2026-09-27): every full object has a *.basic.json
+ * companion that must be its exact projection (same records, canary included).
+ * The companions are REQUIRED after a publish. In --preflight they are
+ * required only once the last stable release already carried them — the very
+ * first split release runs its pre-update check against a live set that
+ * pre-dates the companions, and that set is still healthy.
+ */
+const liveHasBasic = (manifest?.objects ?? []).some(o => String(o.path).endsWith('.basic.json'));
+
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -69,6 +81,7 @@ function decode(buf) {
 // ── Run ─────────────────────────────────────────────────────────────────────
 /** Pre-update health check rather than post-publish verification (see header). */
 const PREFLIGHT = process.argv.includes('--preflight');
+const BASIC_REQUIRED = !PREFLIGHT || liveHasBasic;
 
 console.log(PREFLIGHT
   ? 'PRE-UPDATE CHECK — validating the CURRENTLY LIVE set before it becomes the rollback point…\n'
@@ -109,6 +122,40 @@ for (const [cc, files] of Object.entries(DATASETS)) {
     }
     if (!ok) {
       console.error(`✗ ${objectPath} — ${lastErr?.message}`);
+      failedAny = true;
+    }
+  }
+
+  // ── Basic companions: same checks + exact-projection pair check ─────────
+  for (const [segment, file] of Object.entries(files)) {
+    const objectPath = `datasets/${cc}/${basicFileName(file)}`;
+    let buf = null;
+    for (let attempt = 1; attempt <= (BASIC_REQUIRED ? 3 : 1); attempt++) {
+      try { buf = download(objectPath); break; }
+      catch { if (attempt < 3 && BASIC_REQUIRED) await sleep(3000); }
+    }
+    if (!buf) {
+      if (BASIC_REQUIRED) {
+        console.error(`✗ ${objectPath} — download failed (basic companion missing?)`);
+        failedAny = true;
+      } else {
+        console.log(`· ${objectPath} — not live yet (pre-split release); not required for this pre-update check`);
+      }
+      continue;
+    }
+    try {
+      const data = decode(buf);
+      const { items } = checkDataset(data, {
+        cc, segment,
+        canaryId: CANARIES[cc]?.[segment]?.bafa_id,
+        expectedItems: expectedItems.get(objectPath),
+      });
+      const full = parsedBySegment[cc][segment];
+      if (!full) throw new Error('full sibling failed its own checks — pair cannot be verified');
+      checkBasicPair({ items: full }, data, BASIC_FIELDS);
+      console.log(`✓ ${objectPath} — ${items.length} items, exact basic projection of ${file}`);
+    } catch (e) {
+      console.error(`✗ ${objectPath} — ${e.message}`);
       failedAny = true;
     }
   }

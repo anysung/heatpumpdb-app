@@ -30,6 +30,7 @@ import { createHash } from 'node:crypto';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ratedCapacityKw, segmentOf, isDataSheetEligible, isPublishable } from './lib/data-sheet-eligibility.mjs';
+import { createRequire } from 'node:module';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -41,6 +42,19 @@ const FROM_LIVE = args.includes('--baseline-from-live');
 const OVERRIDE = args.includes('--override');
 const REASON = args.find(a => a.startsWith('--reason='))?.slice(9) ?? null;
 
+/**
+ * Free + Premium split (2026-09-27): upload-datasets.mjs publishes a
+ * *.basic.json companion per file = the same records projected to
+ * src/config/datasetBasicFields.json. The gate proves the projection is
+ * lossless where it must be: every record survives, the segment is unchanged
+ * (all capacity fields the split reads are basic), and identity / local
+ * listing / ηs (energy-class input) fields are unchanged. Absolute rule only —
+ * no manifest numbers are added or changed.
+ */
+const BASIC = JSON.parse(readFileSync(resolve(ROOT, 'src/config/datasetBasicFields.json'), 'utf8'));
+const { projectBasicDataset } = createRequire(import.meta.url)(resolve(ROOT, 'google_cloud_function_billing/datasetChecks.js'));
+const BASIC_MUST_KEEP = ['source_id', 'manufacturer', 'model', 'efficiency_35C_percent', 'efficiency_55C_percent',
+  'bafa_listing_status', 'pel_match_status', 'zum_match_status', 'zum_id', 'gse_match_status', 'agrement_match_status', 'agrement_number', 'mcs_number'];
 const BASELINE = 'data_manifests/production.json';
 const CANDIDATE = 'data_manifests/candidate.json';
 
@@ -194,6 +208,23 @@ for (const [cc, files] of Object.entries(DATASETS)) {
   if (!items.length) {
     block(`[${cc}] dataset parsed to ZERO records — refusing to publish an empty catalogue`);
     continue;
+  }
+
+  // ── Basic projection (absolute rule): same records, same segment, same listing ──
+  for (const part of parts) {
+    const basicItems = projectBasicDataset({ items: part.data.items }, BASIC.fields, BASIC.version).items;
+    if (basicItems.length !== part.data.items.length) {
+      block(`[${cc}] basic projection of ${part.file} has ${basicItems.length} records, full has ${part.data.items.length}`);
+      continue;
+    }
+    let segDiff = 0, fieldDiff = 0;
+    part.data.items.forEach((full, n) => {
+      const b = basicItems[n];
+      if (segmentOf(full) !== segmentOf(b)) segDiff++;
+      if (BASIC_MUST_KEEP.some(k => (full[k] ?? null) !== (b[k] ?? null))) fieldDiff++;
+    });
+    if (segDiff) block(`[${cc}] basic projection of ${part.file} re-segments ${segDiff} records — a capacity field the split reads is missing from datasetBasicFields.json`);
+    if (fieldDiff) block(`[${cc}] basic projection of ${part.file} loses identity/listing/ηs fields on ${fieldDiff} records`);
   }
 
   const seg = { residential: 0, commercial: 0, unclassified: 0 };
