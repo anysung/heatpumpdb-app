@@ -1,75 +1,165 @@
 {
-  "runId": "snap-20260901-141719",
-  "publishedAt": "2026-09-01T14:17:56.845Z",
-  "preUpdateSnapshot": "snapshots/snap-20260901-141719/",
+  "runId": "snap-20260927-203901",
+  "publishedAt": "2026-09-27T20:40:09.440Z",
+  "preUpdateSnapshot": "snapshots/snap-20260927-203901/",
   "objects": [
+    {
+      "path": "datasets/DE/products.basic.json",
+      "country": "DE",
+      "segment": "residential",
+      "tier": "basic",
+      "items": 5331,
+      "md5": "lcWk9GfRGaJ+hH1P+CvB2g=="
+    },
     {
       "path": "datasets/DE/products.json",
       "country": "DE",
       "segment": "residential",
+      "tier": "full",
       "items": 5331,
       "md5": "kXaVJN7SAihxGptnJ9NF/w=="
+    },
+    {
+      "path": "datasets/DE/products-commercial.basic.json",
+      "country": "DE",
+      "segment": "commercial",
+      "tier": "basic",
+      "items": 2007,
+      "md5": "HXxNwmxNQKZzLRAOqeN/Yg=="
     },
     {
       "path": "datasets/DE/products-commercial.json",
       "country": "DE",
       "segment": "commercial",
+      "tier": "full",
       "items": 2007,
       "md5": "ymCBl146dx1jE1acfSL8fQ=="
+    },
+    {
+      "path": "datasets/GB/products-gb.basic.json",
+      "country": "GB",
+      "segment": "residential",
+      "tier": "basic",
+      "items": 5331,
+      "md5": "sIQ+12s1eb9TUPduTnZzww=="
     },
     {
       "path": "datasets/GB/products-gb.json",
       "country": "GB",
       "segment": "residential",
+      "tier": "full",
       "items": 5331,
       "md5": "zCdQL3iKIveoMjOFrWYgzQ=="
+    },
+    {
+      "path": "datasets/GB/products-commercial-gb.basic.json",
+      "country": "GB",
+      "segment": "commercial",
+      "tier": "basic",
+      "items": 2007,
+      "md5": "0Acw3fDkDKOQm+YwwZODJw=="
     },
     {
       "path": "datasets/GB/products-commercial-gb.json",
       "country": "GB",
       "segment": "commercial",
+      "tier": "full",
       "items": 2007,
       "md5": "VExSlnctcn5kTLyAuS2e+w=="
+    },
+    {
+      "path": "datasets/FR/products-fr.basic.json",
+      "country": "FR",
+      "segment": "residential",
+      "tier": "basic",
+      "items": 6455,
+      "md5": "6Onb7XB9I9gOfvSq9/k7rQ=="
     },
     {
       "path": "datasets/FR/products-fr.json",
       "country": "FR",
       "segment": "residential",
+      "tier": "full",
       "items": 6455,
       "md5": "QvlUT3VYOWGT7UXlHQUdpA=="
+    },
+    {
+      "path": "datasets/FR/products-commercial-fr.basic.json",
+      "country": "FR",
+      "segment": "commercial",
+      "tier": "basic",
+      "items": 2043,
+      "md5": "P4tsraKUnarzlARRXvanLA=="
     },
     {
       "path": "datasets/FR/products-commercial-fr.json",
       "country": "FR",
       "segment": "commercial",
+      "tier": "full",
       "items": 2043,
       "md5": "XarfRmbiEuys/EknyEm3fA=="
+    },
+    {
+      "path": "datasets/PL/products-pl.basic.json",
+      "country": "PL",
+      "segment": "residential",
+      "tier": "basic",
+      "items": 7339,
+      "md5": "hmfu7WmdjMIJRbMT8mCoVA=="
     },
     {
       "path": "datasets/PL/products-pl.json",
       "country": "PL",
       "segment": "residential",
+      "tier": "full",
       "items": 7339,
       "md5": "mGabgaTDBnOdBZstgx8gAg=="
+    },
+    {
+      "path": "datasets/PL/products-commercial-pl.basic.json",
+      "country": "PL",
+      "segment": "commercial",
+      "tier": "basic",
+      "items": 2046,
+      "md5": "82NTBag4H2Zye5nVc9HytQ=="
     },
     {
       "path": "datasets/PL/products-commercial-pl.json",
       "country": "PL",
       "segment": "commercial",
+      "tier": "full",
       "items": 2046,
       "md5": "J45VEQzg3nEUWnLuDNVpvg=="
+    },
+    {
+      "path": "datasets/IT/products-it.basic.json",
+      "country": "IT",
+      "segment": "residential",
+      "tier": "basic",
+      "items": 8672,
+      "md5": "eWANkmjgA6xCfOrR/pm6jg=="
     },
     {
       "path": "datasets/IT/products-it.json",
       "country": "IT",
       "segment": "residential",
+      "tier": "full",
       "items": 8672,
       "md5": "MiWSQJ2wANx2NqQ5nia5wA=="
+    },
+    {
+      "path": "datasets/IT/products-commercial-it.basic.json",
+      "country": "IT",
+      "segment": "commercial",
+      "tier": "basic",
+      "items": 2395,
+      "md5": "0WyZ+86A6eSMU9ax57cpjQ=="
     },
     {
       "path": "datasets/IT/products-commercial-it.json",
       "country": "IT",
       "segment": "commercial",
+      "tier": "full",
       "items": 2395,
       "md5": "3XVeXIZusGEIdA0/rHxF7w=="
     }
