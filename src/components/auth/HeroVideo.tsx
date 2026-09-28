@@ -10,8 +10,15 @@
  *    positions it (page corner on desktop, clip corner on phones);
  *  - paused when scrolled out of view or the tab is hidden, resumed after —
  *    but never over a pause the visitor made themselves;
- *  - prefers-reduced-motion: the poster is shown and nothing moves until the
- *    visitor presses play;
+ *  - it plays even when the OS asks for reduced motion (owner 2026-09-28):
+ *    Windows reports prefers-reduced-motion whenever "Animation effects" is
+ *    off — the default over Remote Desktop, in "best performance" mode and on
+ *    many managed PCs — so honouring it froze the cover on a large share of
+ *    Windows visitors. The clip is slow, silent and decorative and always
+ *    carries a real pause button (WCAG 2.2.2), which is what a visitor who
+ *    wants stillness uses;
+ *  - two encodings: H.264 MP4 first, VP9 WebM as the fallback for Windows
+ *    builds without an H.264 decoder;
  *  - before load, when autoplay is blocked, and on load failure the poster
  *    (the assembled unit, first frame of the clip) is what the visitor sees;
  *  - the headline and the entry buttons live outside this component, so a
@@ -58,10 +65,9 @@ export const HeroVideo: React.FC<{
 }> = ({ s, className = '', buttonClassName = 'bottom-3 right-3', control = true, edgeFade = true }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playback, setPlayback] = useState<Playback>('idle');
-  // Read once: a visitor who has motion reduced gets a still by default.
-  const [reducedMotion] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  );
+  // Reduced motion is NOT honoured for autoplay (see header) — the pause
+  // button is the control. Kept as a constant so the effect below stays simple.
+  const reducedMotion = false;
   const userPaused = useRef(false);   // their pause — never auto-resumed
   const autoPaused = useRef(false);   // our pause (offscreen / hidden tab) — resumed
   const inView = useRef(true);
@@ -184,7 +190,6 @@ export const HeroVideo: React.FC<{
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-contain"
-          src={HERO_VIDEO.src}
           poster={HERO_VIDEO.poster}
           width={HERO_VIDEO.width}
           height={HERO_VIDEO.height}
@@ -202,7 +207,13 @@ export const HeroVideo: React.FC<{
           onPlaying={() => setPlayback('playing')}
           onPause={() => setPlayback((cur) => (cur === 'error' ? cur : 'paused'))}
           onError={() => setPlayback('error')}
-        />
+        >
+          {/* MP4 first (the tuned colour match of StageCanvas was made on it);
+              a browser that cannot decode H.264 falls through to VP9. Only
+              the LAST source failing means the clip is unplayable. */}
+          <source src={HERO_VIDEO.src} type='video/mp4; codecs="avc1.640032"' />
+          <source src={HERO_VIDEO.webm} type='video/webm; codecs="vp9"' onError={() => setPlayback('error')} />
+        </video>
       )}
 
       {edgeFade && (

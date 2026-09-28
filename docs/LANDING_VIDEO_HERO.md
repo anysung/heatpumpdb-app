@@ -109,3 +109,16 @@ explicitly too, and the first touch/scroll is a play() fallback.
    because they are existing functionality.
 3. The clip is 1.84 MB; the headline and buttons render before it (poster
    shows meanwhile).
+
+## Windows still frame (2026-09-28)
+
+Symptom: on Windows the cover showed the poster and never moved. Cause: the clip
+honoured `prefers-reduced-motion`, and Windows reports it whenever "Animation
+effects" is off (Settings → Accessibility → Visual effects) — the default over
+Remote Desktop, in "Adjust for best performance" and on many managed PCs. The
+market sites then never called play(); the EU hub hid the <video> entirely.
+Reproduced headless with `reducedMotion: 'reduce'` (paused at t=0 / display:none).
+Fix: the clip autoplays regardless (it is silent, slow, decorative and keeps its
+pause button — WCAG 2.2.2), and ships a VP9 WebM fallback
+(`heatpump-assembly-loop-v2.webm`, 1.0 MB) after the H.264 MP4 for Windows builds
+without an H.264 decoder (Windows N/KN without the Media Feature Pack).

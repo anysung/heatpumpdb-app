@@ -29,6 +29,10 @@ export const LANDING_HERO: Record<CountryCode, 'classic' | 'video'> = {
  *  layout keeps this aspect and never crops. */
 export const HERO_VIDEO = {
   src: '/media/hero/heatpump-assembly-loop-v2.mp4',
+  /** VP9 fallback (2026-09-28): Windows builds without an H.264 decoder
+   *  (Windows N/KN without the Media Feature Pack, some locked-down corporate
+   *  images) play this instead of showing a frozen poster. */
+  webm: '/media/hero/heatpump-assembly-loop-v2.webm',
   poster: '/media/hero/heatpump-assembly-loop-v2-poster.jpg',
   width: 1998,
   height: 1038,

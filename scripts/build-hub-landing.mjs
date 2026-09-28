@@ -298,7 +298,9 @@ const HTML = `<!doctype html>
       radial-gradient(1000px 640px at 8% 108%, rgba(41,151,255,.12), transparent 60%),
       radial-gradient(ellipse 70% 66% at 50% 50%, rgba(11,22,38,.58) 0%, rgba(11,22,38,.50) 35%, rgba(11,22,38,.30) 68%, rgba(11,22,38,.14) 100%); }
   .backdrop img { display:none; }
-  @media (prefers-reduced-motion:reduce) { .backdrop video { display:none; } .backdrop img { display:block; } }
+  /* The clip plays even with reduced motion (owner 2026-09-28): Windows reports it
+     whenever Animation effects is off (Remote Desktop, best-performance mode, many
+     managed PCs), which froze the page for a large share of Windows visitors. */
 
   /* Over the clip, text gets a faint dark edge (owner 2026-09-23: "테두리 효과를
      살짝만") so the parts behind never eat into the letters, and every content
@@ -438,7 +440,10 @@ const HTML = `<!doctype html>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true">
-    <video src="/media/heatpump-assembly-loop-v2.mp4" poster="/media/heatpump-assembly-loop-v2-poster.jpg" muted loop playsinline autoplay preload="metadata" disablepictureinpicture></video>
+    <video poster="/media/heatpump-assembly-loop-v2-poster.jpg" muted loop playsinline autoplay preload="metadata" disablepictureinpicture>
+      <source src="/media/heatpump-assembly-loop-v2.mp4" type='video/mp4; codecs="avc1.640032"'>
+      <source src="/media/heatpump-assembly-loop-v2.webm" type='video/webm; codecs="vp9"'>
+    </video>
     <img src="/media/heatpump-assembly-loop-v2-poster.jpg" alt="">
     <div class="focus"></div>
   </div>
@@ -475,8 +480,8 @@ ${SR_HTML}
   // Backdrop clip: always silent; paused while the tab is hidden.
   (function(){ var v=document.querySelector('.backdrop video'); if(!v) return; v.muted=true; v.defaultMuted=true;
     var play=function(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); };
-    if(!matchMedia('(prefers-reduced-motion: reduce)').matches) play();
-    document.addEventListener('visibilitychange',function(){ if(document.hidden) v.pause(); else if(!matchMedia('(prefers-reduced-motion: reduce)').matches) play(); }); })();
+    play();
+    document.addEventListener('visibilitychange',function(){ if(document.hidden) v.pause(); else play(); }); })();
   // Cursor-following glow per card (sets the radial-gradient origin).
   document.getElementById('grid').addEventListener('pointermove', e => {
     for (const c of e.currentTarget.children) {
@@ -788,7 +793,7 @@ writeFileSync(join(OUT, 'index.html'), HTML);
 /* Hero clip + poster — the same derivatives the market sites ship
    (public/media/hero/, made from the owner's HeatPump_DB_Assembly_Loop.mp4). */
 mkdirSync(join(OUT, 'media'), { recursive: true });
-for (const f of ['heatpump-assembly-loop-v2.mp4', 'heatpump-assembly-loop-v2-poster.jpg']) {
+for (const f of ['heatpump-assembly-loop-v2.mp4', 'heatpump-assembly-loop-v2.webm', 'heatpump-assembly-loop-v2-poster.jpg']) {
   copyFileSync(join(ROOT, 'public/media/hero', f), join(OUT, 'media', f));
 }
 for (const [src, dst] of [['eu-48.png', 'appicon-48.png'], ['eu-192.png', 'appicon-192.png'],
