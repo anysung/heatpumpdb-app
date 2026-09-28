@@ -43,6 +43,8 @@ const KNOWN = new Set([
   // would have consented. Split into 'gads-de', 'gads-fr'… if a second market
   // starts advertising.
   'gads',
+  // Chillventa 2026 (Nuremberg, 13–15 Oct) flyer QR codes — owner 2026-09-28.
+  'chillventa',
 ]);
 
 /** Call once on boot, before any routing. Idempotent; never throws. */

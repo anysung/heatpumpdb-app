@@ -482,6 +482,12 @@ ${SR_HTML}
     var play=function(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); };
     play();
     document.addEventListener('visibilitychange',function(){ if(document.hidden) v.pause(); else play(); }); })();
+  // Carry an arriving ?ref= (flyer QR, campaign link) into the market site the
+  // visitor picks — the market app records it on signup (services/signupRef.ts).
+  (function(){ var ref=new URLSearchParams(location.search).get('ref'); if(!ref||!/^[a-z0-9-]{1,24}$/i.test(ref)) return;
+    document.querySelectorAll('a[href]').forEach(function(a){ var h=a.getAttribute('href');
+      if(!/^https:\/\/www\.heatpumpdb\.(de|uk|fr|pl|it)\/?$/.test(h)) return;
+      a.setAttribute('href', h.replace(/\/?$/, '/') + '?ref=' + encodeURIComponent(ref)); }); })();
   // Cursor-following glow per card (sets the radial-gradient origin).
   document.getElementById('grid').addEventListener('pointermove', e => {
     for (const c of e.currentTarget.children) {
