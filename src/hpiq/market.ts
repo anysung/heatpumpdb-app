@@ -6,6 +6,7 @@
 import { ACTIVE_COUNTRY, COUNTRY_PROFILES } from '../config/countryProfiles';
 import { PUBLIC_ENV } from '../config/env';
 import { Language } from '../types';
+import type { NoiseRegime } from './features/noise/noiseModel';
 
 export const MARKET = ACTIVE_COUNTRY;
 export const IS_GB = ACTIVE_COUNTRY.code === 'GB';
@@ -126,3 +127,12 @@ export const TECHNICAL_BASELINE = ACTIVE_COUNTRY.technicalBaseline;
  * presses play.
  */
 export const GUIDE_VIDEO_ID: string | null = IS_GB ? '5zkU-KQjzvo' : IS_FR ? 'L8FDkPmjd14' : IS_PL ? '_-2GVNOfQuY' : IS_IT ? 'NV45K9TtuBg' : 'JSkbYarh_iA';
+
+/**
+ * Noise check (Premium calculator, 2026-09-29) — which neighbour-noise rule the
+ * edition applies. DE: TA Lärm Nr. 6.1 night value (+ LAI-Leitfaden 2023
+ * planning margin); GB: MCS 020 a) 37.0 dB(A); FR/PL/IT: distance table only
+ * (émergence vs. background noise / local acoustic zoning — no fixed limit).
+ * Behaviour per regime lives in features/noise/noiseModel.ts.
+ */
+export const NOISE_REGIME: NoiseRegime = IS_GB ? 'gb-mcs020a' : IS_FR ? 'fr-emergence' : IS_PL ? 'pl-zoning' : IS_IT ? 'it-zoning' : 'de-ta-laerm';
