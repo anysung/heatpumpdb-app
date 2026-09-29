@@ -6,6 +6,7 @@ import { ProductActions } from '../features/ProductActions';
 import { AddToProject } from '../features/projects/AddToProject';
 import { ComparePdfButton } from '../features/branding/ComparePdfButton';
 import { HpVM } from '../model';
+import { compareRows, bestOf } from '../compareRows';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
@@ -633,18 +634,8 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
               {/* One CSS grid = every row's height syncs across all columns, so a
                   three-line model name can never overlap the first data row. */}
               {(() => {
-                const num = (s: string) => { const n = parseFloat(String(s).replace(',', '.')); return Number.isFinite(n) ? n : null; };
-                const L = t.products.cmpRows;
-                const rows: { label: string; value: (c: HpVM) => string; metric?: (c: HpVM) => number | null; dir?: 1 | -1; strong?: boolean; dim?: boolean }[] = [
-                  { label: L[0], value: c => `${c.kw} kW`, strong: true },
-                  { label: L[1], value: c => c.cop7, metric: c => num(c.cop7), dir: 1 },
-                  { label: L[2], value: c => c.cop2, metric: c => num(c.cop2), dir: 1 },
-                  { label: L[3], value: c => c.scop, metric: c => num(c.scop), dir: 1 },
-                  { label: L[4], value: c => ((/^\d/.test(c.noise) ? `${c.noise} dB(A)` : c.noise)), metric: c => num(c.noise), dir: -1 },
-                  { label: L[5], value: c => (/^\d/.test(c.refKg) ? `${c.ref} · ${c.refKg} kg` : c.ref) },
-                  { label: L[6], value: c => c.label },
-                  { label: L[7], value: c => c.sourceId, dim: true },
-                ];
+                // Rows + BEST rule shared with the comparison PDF (compareRows.ts).
+                const rows = compareRows(t);
                 return (
                   <div style={{ display: 'grid', gridTemplateColumns: `190px repeat(${compareCount}, minmax(0, 1fr))`, border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden', fontSize: 15.5 }}>
                     {/* header row — product identity */}
@@ -659,11 +650,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     ))}
                     {/* metric rows — zebra striping; the best value per row is highlighted */}
                     {rows.map((row, ri) => {
-                      const vals = row.metric ? compareItems.map(row.metric) : [];
-                      const usable = vals.filter((v): v is number => v != null);
-                      const best = row.metric && usable.length >= 2 && new Set(usable).size > 1
-                        ? (row.dir === -1 ? Math.min(...usable) : Math.max(...usable))
-                        : null;
+                      const best = bestOf(row, compareItems);
                       const bg = ri % 2 ? '#fafafa' : '#fff';
                       return (
                         <React.Fragment key={row.label}>

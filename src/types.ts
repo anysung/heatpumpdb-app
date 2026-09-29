@@ -408,6 +408,20 @@ export interface User {
   deletionNote?: string;
   // Internal notes
   adminNotes?: string;
+  /** Premium branded documents (2026-09-29) — self-edited on the Account page. */
+  branding?: UserBranding;
+}
+
+/**
+ * The user's own branding for generated PDFs (data sheet, comparison).
+ * `logo` is a PNG data URL, downscaled client-side to ≤ 600×200 px and kept
+ * ≤ 150 KB (firestore.rules enforce the size cap).
+ */
+export interface UserBranding {
+  logo?: string;
+  company?: string;
+  contact?: string;
+  updatedAt: string;
 }
 
 // --- Subscription program (Professional / Team 3 / Team 5) ---

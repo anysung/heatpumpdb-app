@@ -121,6 +121,17 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Branded documents (users/{uid}.branding) — see the self-edit clause.
+    function brandingValid(b) {
+      return b is map &&
+        b.keys().hasOnly(['logo', 'company', 'contact', 'updatedAt']) &&
+        (!('logo' in b) || (b.logo is string && b.logo.size() <= 153600 &&
+                            b.logo.matches('data:image/png;base64,[A-Za-z0-9+/=]+'))) &&
+        (!('company' in b) || (b.company is string && b.company.size() <= 120)) &&
+        (!('contact' in b) || (b.contact is string && b.contact.size() <= 200)) &&
+        (!('updatedAt' in b) || (b.updatedAt is string && b.updatedAt.size() <= 40));
+    }
+
     match /users/{userId} {
       allow get: if isSignedIn() && request.auth.uid == userId;
 
@@ -173,6 +184,14 @@ service cloud.firestore {
                       // Profile step (2026-09-27): optional address + a
                       // secondary contact email (never a login identity).
                       'companyStreet', 'companyPostalCode', 'secondaryEmail'])
+        ) ||
+        // Premium branded documents (2026-09-29): the user's own logo +
+        // company + contact line for generated PDFs. Only the `branding` map,
+        // a fixed key set, and a hard size cap on the logo data URL (the
+        // client keeps it ≤ 150,000 chars; 1 MiB is the doc limit).
+        (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['branding']) &&
+          brandingValid(request.resource.data.get('branding', {}))
         ) ||
         // Free-access grant redemption: an admin-issued grant for this email
         // may self-activate the account with exactly the granted plan/window.
