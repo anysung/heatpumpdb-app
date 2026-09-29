@@ -13,6 +13,7 @@ export const WORKSPACE_PAGES: WorkspacePage[] = ['projects', 'watchlist', 'noise
 export const WorkspaceTabs: React.FC<{ app: HpApp; active: WorkspacePage; style?: React.CSSProperties }> = ({ app, active, style }) => {
   const n = tr(app.lang).nav;
   return (
+    <div data-tour="workspace">
     <SubTabs
       group="workspace"
       tabs={WORKSPACE_PAGES.map(id => ({ id, label: (n as Record<string, string>)[id] }))}
@@ -20,5 +21,6 @@ export const WorkspaceTabs: React.FC<{ app: HpApp; active: WorkspacePage; style?
       onSelect={id => app.go(id as HpPage)}
       style={style}
     />
+    </div>
   );
 };

@@ -64,7 +64,8 @@ const STEPS: StepDef[] = [
   { page: 'news',      target: 'news',         advance: 'next',  copy: 5, when: 'both' },
   // 2026-09-28: the Special Report menu and the Standard/Premium plans page.
   { page: 'report',    target: 'report',       advance: 'next',  copy: 8, when: 'both' },
-  { page: 'upgrade',   target: 'upgrade-plans', advance: 'next', copy: 9, when: 'both' },
+  { page: 'projects',  target: 'workspace',    advance: 'next',  copy: 9, when: 'both' },
+  { page: 'upgrade',   target: 'upgrade-plans', advance: 'next', copy: 10, when: 'both' },
 ];
 
 const DEMO_QUERY = 'Vitocal';

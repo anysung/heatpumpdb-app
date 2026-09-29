@@ -112,6 +112,7 @@ const EN = {
       { title: 'From product to paper', body: 'Tap the Data sheet button — every product view ends in a print-ready document with its official listing status.' },
       { title: 'Installation, on video', body: 'Official manufacturer installation and commissioning videos for this market \u2014 leading brands first, in the market language where the manufacturer provides it.' },
       { title: 'The monthly Special Report', body: 'A European market analysis every month, in its own menu. The August and September 2026 editions are free samples; from October it is part of Premium.' },
+      { title: 'Your workspace', body: 'Projects per customer, a watchlist that e-mails you when data changes, and calculators for noise and running cost — every result exports as a PDF for your customer.' },
       { title: 'Standard or Premium', body: 'Standard stays free. Premium unlocks full specifications, comparison, the commercial range, PDF data sheets and the Special Report — the Upgrade button in the header shows the plans for individuals and teams.' },
     ] as { title: string; body: string }[],
   },
@@ -132,8 +133,8 @@ const EN = {
     free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Premium feature',
-    lockBody: 'Full specifications, side-by-side comparison, the commercial range, PDF data sheets and the monthly Special Report are part of Premium.',
-    benefits: ['Full specifications — COP values, sound power, refrigerant charge', 'Compare up to 4 models side by side', 'Commercial range above 23 kW', 'Print-ready PDF data sheets and EU label sheets', 'The monthly Special Report', 'Three devices'] as string[],
+    lockBody: 'Full specifications, comparison, the commercial range, branded PDFs, the monthly Special Report and the pro workspace (projects, watchlist alerts, alternatives, noise and running-cost tools) are part of Premium.',
+    benefits: ['Full specifications — COP values, sound power, refrigerant charge', 'Compare up to 4 models + comparison PDF', 'Commercial range above 23 kW', 'PDF data sheets with your company logo', 'Customer projects + watchlist alerts', 'Alternatives finder, noise check, running-cost & CO₂ estimate', 'The monthly Special Report · 3 devices'] as string[],
     price: 'From €9.90 per month or €99 per year, excl. VAT.',
     cta: 'View Premium plans ›',
     later: 'Not now',
@@ -155,7 +156,7 @@ const EN = {
       "nav": "Upgrade",
       "heroEyebrow": "HeatPump DB Premium",
       "heroTitle": "Unlock the full heat pump database.",
-      "heroSub": "Standard stays free forever. Premium adds full specifications, side-by-side comparison, the commercial range, print-ready data sheets and the monthly Special Report.",
+      "heroSub": "Standard stays free forever. Premium adds full specifications, comparison, the commercial range, branded PDF data sheets, the monthly Special Report — and a workspace of pro tools: projects, watchlist alerts, alternatives, noise check and running-cost estimates.",
       "tabPersonal": "Personal plans",
       "tabBusiness": "Business plans",
       "standardSub": "For looking things up",
@@ -182,15 +183,21 @@ const EN = {
       "proFeatures": [
           "Everything in Standard",
           "Full specifications — COP, sound power, refrigerant charge",
-          "Compare up to 4 models side by side",
+          "Compare up to 4 models + comparison PDF",
           "Commercial range above 23 kW",
-          "Print-ready PDF data sheets and EU label sheets",
+          "PDF data sheets with your company logo",
+          "Customer projects (shortlists, notes, project PDF)",
+          "Watchlist with monthly change alerts by email",
+          "Alternatives finder (same capacity, R290, quieter)",
+          "Noise check (distance, placement, local limits)",
+          "Running cost & CO₂ estimate for your customer",
           "The monthly Special Report",
           "3 devices"
       ],
       "teamFeatures": [
           "Everything in Professional, for every seat",
           "{n} users — one admin invites the team",
+          "Projects shared across the team",
           "Members can be replaced at any time",
           "One invoice for the whole team"
       ],
@@ -245,6 +252,41 @@ const EN = {
               "y"
           ],
           [
+              "Comparison PDF and data sheets with your logo",
+              "n",
+              "y"
+          ],
+          [
+              "Customer projects (team-shared on Team plans)",
+              "n",
+              "y"
+          ],
+          [
+              "Watchlist + monthly change alerts",
+              "n",
+              "y"
+          ],
+          [
+              "Alternatives finder",
+              "n",
+              "y"
+          ],
+          [
+              "Noise check (sound pressure vs. local limits)",
+              "n",
+              "y"
+          ],
+          [
+              "Running cost & CO₂ estimate (customer PDF)",
+              "n",
+              "y"
+          ],
+          [
+              "Data-quality marks (manufacturer check)",
+              "y",
+              "y"
+          ],
+          [
               "Monthly Special Report",
               "sample",
               "y"
@@ -261,6 +303,10 @@ const EN = {
           [
               "Do I keep Standard for free?",
               "Yes. Standard is free with no time limit and needs no payment method. New accounts start with 15 days of Premium; afterwards the account simply continues on Standard."
+          ],
+          [
+              "What are the Premium work tools?",
+              "Projects keep shortlists per customer (shared across the team on Team plans), the watchlist e-mails you when a watched model's listing status or data changes after the monthly update, the alternatives finder suggests comparable models, and the noise and running-cost calculators produce estimate PDFs for your customer. Calculators give estimates for pre-planning, not certified reports."
           ],
           [
               "Is anything charged automatically after the trial?",
@@ -1070,6 +1116,7 @@ const DE: HpStrings = {
       { title: 'Vom Produkt zum Papier', body: 'Tippen Sie auf den Datenblatt-Button — jede Produktansicht endet in einem druckfertigen Dokument mit offiziellem Listenstatus.' },
       { title: 'Installation im Video', body: 'Offizielle Installations- und Inbetriebnahme-Videos der Hersteller f\u00fcr diesen Markt \u2014 f\u00fchrende Marken zuerst, auf Deutsch, wo der Hersteller es anbietet.' },
       { title: 'Der monatliche Special Report', body: 'Jeden Monat eine europäische Marktanalyse, mit eigenem Menüpunkt. Die Ausgaben August und September 2026 sind kostenlose Leseproben; ab Oktober ist er Teil von Premium.' },
+      { title: 'Ihr Arbeitsbereich', body: 'Projekte pro Kunde, eine Merkliste mit E-Mail bei Datenänderungen und Rechner für Schall und Betriebskosten — jedes Ergebnis als PDF für Ihre Kunden.' },
       { title: 'Standard oder Premium', body: 'Standard bleibt kostenlos. Premium schaltet vollständige Daten, Vergleich, das Gewerbesegment, PDF-Datenblätter und den Special Report frei — der Upgrade-Button oben zeigt die Tarife für Einzelne und Teams.' },
     ] as { title: string; body: string }[],
   },
@@ -1085,8 +1132,8 @@ const DE: HpStrings = {
     free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Premium-Funktion',
-    lockBody: 'Vollständige technische Daten, Direktvergleich, das Gewerbesegment, PDF-Datenblätter und der monatliche Special Report sind Teil von Premium.',
-    benefits: ['Vollständige Daten — COP-Werte, Schallleistung, Kältemittelmenge', 'Bis zu 4 Modelle direkt vergleichen', 'Gewerbesegment über 23 kW', 'Druckfertige PDF-Datenblätter und EU-Label-Blätter', 'Der monatliche Special Report', 'Drei Geräte'] as string[],
+    lockBody: 'Vollständige Daten, Vergleich, das Gewerbesegment, PDFs mit Ihrem Logo, der monatliche Special Report und der Profi-Arbeitsbereich (Projekte, Merkliste, Alternativen, Schall- und Betriebskostenrechner) sind Teil von Premium.',
+    benefits: ['Vollständige Daten — COP-Werte, Schallleistung, Kältemittelmenge', 'Bis zu 4 Modelle vergleichen + Vergleichs-PDF', 'Gewerbesegment über 23 kW', 'PDF-Datenblätter mit Ihrem Firmenlogo', 'Kundenprojekte + Merkliste mit Änderungsmeldung', 'Alternativen-Finder, Schallprüfung, Betriebskosten- & CO₂-Schätzung', 'Der monatliche Special Report · 3 Geräte'] as string[],
     price: 'Ab 9,90 € pro Monat oder 99 € pro Jahr, zzgl. MwSt.',
     cta: 'Premium-Tarife ansehen ›',
     later: 'Nicht jetzt',
@@ -1107,7 +1154,7 @@ const DE: HpStrings = {
       "nav": "Upgrade",
       "heroEyebrow": "HeatPump DB Premium",
       "heroTitle": "Die vollständige Wärmepumpen-Datenbank freischalten.",
-      "heroSub": "Standard bleibt dauerhaft kostenlos. Premium ergänzt vollständige technische Daten, Direktvergleich, das Gewerbesegment, druckfertige Datenblätter und den monatlichen Special Report.",
+      "heroSub": "Standard bleibt dauerhaft kostenlos. Premium ergänzt vollständige Daten, Vergleich, das Gewerbesegment, PDF-Datenblätter mit Ihrem Logo, den monatlichen Special Report — und einen Arbeitsbereich mit Profi-Werkzeugen: Projekte, Merkliste mit Benachrichtigung, Alternativen, Schallprüfung und Betriebskosten-Schätzung.",
       "tabPersonal": "Einzeltarife",
       "tabBusiness": "Business-Tarife",
       "standardSub": "Zum Nachschlagen",
@@ -1134,15 +1181,21 @@ const DE: HpStrings = {
       "proFeatures": [
           "Alles aus Standard",
           "Vollständige Daten — COP, Schallleistung, Kältemittelmenge",
-          "Bis zu 4 Modelle direkt vergleichen",
+          "Bis zu 4 Modelle vergleichen + Vergleichs-PDF",
           "Gewerbesegment über 23 kW",
-          "Druckfertige PDF-Datenblätter und EU-Label-Blätter",
+          "PDF-Datenblätter mit Ihrem Firmenlogo",
+          "Kundenprojekte (Auswahllisten, Notizen, Projekt-PDF)",
+          "Merkliste mit monatlicher Änderungsmeldung per E-Mail",
+          "Alternativen-Finder (gleiche Leistung, R290, leiser)",
+          "Schallprüfung (Abstand, Aufstellung, TA-Lärm-Richtwerte)",
+          "Betriebskosten- & CO₂-Schätzung für Ihre Kunden",
           "Der monatliche Special Report",
           "3 Geräte"
       ],
       "teamFeatures": [
           "Alles aus Professional, für jeden Platz",
           "{n} Nutzer — ein Admin lädt das Team ein",
+          "Projekte im ganzen Team geteilt",
           "Mitglieder jederzeit austauschbar",
           "Eine Rechnung für das ganze Team"
       ],
@@ -1197,6 +1250,41 @@ const DE: HpStrings = {
               "y"
           ],
           [
+              "Vergleichs-PDF und Datenblätter mit Ihrem Logo",
+              "n",
+              "y"
+          ],
+          [
+              "Kundenprojekte (im Team-Tarif geteilt)",
+              "n",
+              "y"
+          ],
+          [
+              "Merkliste + monatliche Änderungsmeldung",
+              "n",
+              "y"
+          ],
+          [
+              "Alternativen-Finder",
+              "n",
+              "y"
+          ],
+          [
+              "Schallprüfung (Schalldruck vs. Richtwerte)",
+              "n",
+              "y"
+          ],
+          [
+              "Betriebskosten- & CO₂-Schätzung (Kunden-PDF)",
+              "n",
+              "y"
+          ],
+          [
+              "Datenqualitäts-Hinweise (Herstellerprüfung)",
+              "y",
+              "y"
+          ],
+          [
               "Monatlicher Special Report",
               "sample",
               "y"
@@ -1213,6 +1301,10 @@ const DE: HpStrings = {
           [
               "Bleibt Standard kostenlos?",
               "Ja. Standard ist zeitlich unbegrenzt kostenlos und braucht keine Zahlungsmethode. Neue Konten starten mit 15 Tagen Premium; danach läuft das Konto einfach mit Standard weiter."
+          ],
+          [
+              "Was sind die Premium-Werkzeuge?",
+              "Projekte halten Auswahllisten pro Kunde fest (im Team-Tarif im ganzen Team geteilt), die Merkliste meldet per E-Mail, wenn sich Listungsstatus oder Daten eines Modells nach dem monatlichen Update ändern, der Alternativen-Finder schlägt vergleichbare Modelle vor, und Schall- und Betriebskostenrechner erstellen Schätzungs-PDFs für Ihre Kunden. Die Rechner liefern Schätzungen für die Vorplanung, keine Gutachten."
           ],
           [
               "Wird nach der Testphase automatisch etwas berechnet?",
@@ -2397,6 +2489,7 @@ const FR_FR: HpStrings = {
       { title: 'Du produit au papier', body: 'Touchez le bouton Fiche technique — chaque vue produit aboutit à un document prêt à imprimer avec son statut officiel.' },
       { title: 'L\u2019installation en vid\u00e9o', body: 'Vid\u00e9os officielles d\u2019installation et de mise en service des fabricants pour ce march\u00e9 \u2014 grandes marques d\u2019abord, en fran\u00e7ais lorsque le fabricant le propose.' },
       { title: 'Le rapport spécial mensuel', body: 'Chaque mois une analyse du marché européen, dans son propre menu. Les éditions d’août et de septembre 2026 sont des échantillons gratuits ; à partir d’octobre, il fait partie de Premium.' },
+      { title: 'Votre espace de travail', body: 'Projets par client, suivi avec e-mail lors d’un changement de données et calculateurs acoustique et de coûts — chaque résultat s’exporte en PDF pour votre client.' },
       { title: 'Standard ou Premium', body: 'Standard reste gratuit. Premium débloque les caractéristiques complètes, la comparaison, la gamme tertiaire, les fiches PDF et le rapport spécial — le bouton de l’en-tête présente les offres individuelles et entreprise.' },
     ] as { title: string; body: string }[],
   },
@@ -2412,8 +2505,8 @@ const FR_FR: HpStrings = {
     free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Fonctionnalité Premium',
-    lockBody: 'Les caractéristiques complètes, la comparaison côte à côte, la gamme tertiaire, les fiches PDF et le rapport spécial mensuel font partie de Premium.',
-    benefits: ['Caractéristiques complètes — COP, puissance acoustique, charge de fluide', 'Comparer jusqu’à 4 modèles côte à côte', 'Gamme tertiaire au-delà de 23 kW', 'Fiches techniques et fiches étiquette UE en PDF, prêtes à imprimer', 'Le rapport spécial mensuel', 'Trois appareils'] as string[],
+    lockBody: 'Les caractéristiques complètes, la comparaison, la gamme tertiaire, les PDF à votre logo, le rapport spécial mensuel et l’espace pro (projets, suivi, alternatives, outils acoustique et coûts) font partie de Premium.',
+    benefits: ['Caractéristiques complètes — COP, puissance acoustique, charge de fluide', 'Comparer jusqu’à 4 modèles + PDF de comparaison', 'Gamme tertiaire au-delà de 23 kW', 'Fiches PDF avec le logo de votre entreprise', 'Projets clients + suivi avec alertes', 'Alternatives, contrôle acoustique, estimation coûts & CO₂', 'Le rapport spécial mensuel · 3 appareils'] as string[],
     price: 'À partir de 9,90 € par mois ou 99 € par an, HT.',
     cta: 'Voir les offres Premium ›',
     later: 'Plus tard',
@@ -2434,7 +2527,7 @@ const FR_FR: HpStrings = {
       "nav": "Premium",
       "heroEyebrow": "HeatPump DB Premium",
       "heroTitle": "Débloquez toute la base de données PAC.",
-      "heroSub": "Standard reste gratuit à vie. Premium ajoute les caractéristiques complètes, la comparaison côte à côte, la gamme tertiaire, les fiches prêtes à imprimer et le rapport spécial mensuel.",
+      "heroSub": "Standard reste gratuit à vie. Premium ajoute les caractéristiques complètes, la comparaison, la gamme tertiaire, des fiches PDF à votre logo, le rapport spécial mensuel — et un espace d’outils pro : projets, suivi avec alertes, alternatives, contrôle acoustique et estimation des coûts.",
       "tabPersonal": "Offres individuelles",
       "tabBusiness": "Offres entreprise",
       "standardSub": "Pour consulter",
@@ -2461,15 +2554,21 @@ const FR_FR: HpStrings = {
       "proFeatures": [
           "Tout Standard",
           "Caractéristiques complètes — COP, puissance acoustique, charge de fluide",
-          "Comparer jusqu’à 4 modèles côte à côte",
+          "Comparer jusqu’à 4 modèles + PDF de comparaison",
           "Gamme tertiaire au-delà de 23 kW",
-          "Fiches techniques et fiches étiquette UE en PDF",
+          "Fiches techniques PDF avec le logo de votre entreprise",
+          "Projets clients (listes, notes, PDF de projet)",
+          "Suivi de modèles avec alertes mensuelles par e-mail",
+          "Recherche d’alternatives (même puissance, R290, plus silencieux)",
+          "Contrôle acoustique (distance, implantation)",
+          "Estimation des coûts d’exploitation et du CO₂ pour vos clients",
           "Le rapport spécial mensuel",
           "3 appareils"
       ],
       "teamFeatures": [
           "Tout Professional, pour chaque place",
           "{n} utilisateurs — un administrateur invite l’équipe",
+          "Projets partagés dans toute l’équipe",
           "Membres remplaçables à tout moment",
           "Une seule facture pour toute l’équipe"
       ],
@@ -2524,6 +2623,41 @@ const FR_FR: HpStrings = {
               "y"
           ],
           [
+              "PDF de comparaison et fiches à votre logo",
+              "n",
+              "y"
+          ],
+          [
+              "Projets clients (partagés dans les offres équipe)",
+              "n",
+              "y"
+          ],
+          [
+              "Suivi + alertes mensuelles de changement",
+              "n",
+              "y"
+          ],
+          [
+              "Recherche d’alternatives",
+              "n",
+              "y"
+          ],
+          [
+              "Contrôle acoustique (pression acoustique estimée)",
+              "n",
+              "y"
+          ],
+          [
+              "Estimation coûts & CO₂ (PDF client)",
+              "n",
+              "y"
+          ],
+          [
+              "Signalements qualité des données (vérification fabricant)",
+              "y",
+              "y"
+          ],
+          [
               "Rapport spécial mensuel",
               "sample",
               "y"
@@ -2540,6 +2674,10 @@ const FR_FR: HpStrings = {
           [
               "Standard reste-t-il gratuit ?",
               "Oui. Standard est gratuit sans limite de durée et sans moyen de paiement. Les nouveaux comptes commencent avec 15 jours de Premium ; ensuite, le compte continue simplement avec Standard."
+          ],
+          [
+              "Quels sont les outils de travail Premium ?",
+              "Les projets conservent vos sélections par client (partagées dans l’équipe avec les offres Team), le suivi vous prévient par e-mail quand le statut de liste ou les données d’un modèle suivi changent après la mise à jour mensuelle, la recherche d’alternatives propose des modèles comparables, et les calculateurs acoustique et de coûts produisent des PDF d’estimation pour vos clients. Les calculateurs donnent des estimations pour l’avant-projet, pas des rapports certifiés."
           ],
           [
               "Quelque chose est-il facturé automatiquement après l’essai ?",
@@ -3530,6 +3668,7 @@ const PL_PL: HpStrings = {
       { title: 'Od produktu do dokumentu', body: 'Dotknij przycisku Karta danych — każdy widok produktu kończy się dokumentem gotowym do druku ze statusem ZUM.' },
       { title: 'Monta\u017c na filmie', body: 'Oficjalne filmy producent\u00f3w o monta\u017cu i uruchomieniu dla tego rynku \u2014 najpierw wiod\u0105ce marki, po polsku tam, gdzie producent je udost\u0119pnia.' },
       { title: 'Miesięczny Raport specjalny', body: 'Co miesiąc europejska analiza rynku, w osobnym menu. Wydania z sierpnia i września 2026 są bezpłatnymi egzemplarzami; od października raport jest częścią Premium.' },
+      { title: 'Twój obszar roboczy', body: 'Projekty dla klientów, obserwowane z e-mailem przy zmianie danych oraz kalkulatory hałasu i kosztów — każdy wynik jako PDF dla klienta.' },
       { title: 'Standard czy Premium', body: 'Standard pozostaje bezpłatny. Premium odblokowuje pełne dane, porównanie, segment komercyjny, karty PDF i Raport specjalny — przycisk Ulepsz w nagłówku pokazuje plany indywidualne i dla firm.' },
     ] as { title: string; body: string }[],
   },
@@ -3545,8 +3684,8 @@ const PL_PL: HpStrings = {
     free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Funkcja Premium',
-    lockBody: 'Pełne dane techniczne, porównanie modeli, segment komercyjny, karty PDF i miesięczny Raport specjalny są częścią Premium.',
-    benefits: ['Pełne dane — wartości COP, moc akustyczna, ilość czynnika', 'Porównanie do 4 modeli obok siebie', 'Segment komercyjny powyżej 23 kW', 'Gotowe do druku karty danych i karty etykiety UE w PDF', 'Miesięczny Raport specjalny', 'Trzy urządzenia'] as string[],
+    lockBody: 'Pełne dane, porównanie, segment komercyjny, PDF z Twoim logo, miesięczny Raport specjalny i obszar narzędzi pro (projekty, obserwowane, alternatywy, kalkulatory hałasu i kosztów) są częścią Premium.',
+    benefits: ['Pełne dane — wartości COP, moc akustyczna, ilość czynnika', 'Porównanie do 4 modeli + PDF porównania', 'Segment komercyjny powyżej 23 kW', 'Karty PDF z logo Twojej firmy', 'Projekty klientów + obserwowane z powiadomieniami', 'Alternatywy, kontrola hałasu, szacunek kosztów i CO₂', 'Miesięczny Raport specjalny · 3 urządzenia'] as string[],
     price: 'Od 9,90 € miesięcznie lub 99 € rocznie, netto (bez VAT).',
     cta: 'Zobacz plany Premium ›',
     later: 'Nie teraz',
@@ -3567,7 +3706,7 @@ const PL_PL: HpStrings = {
       "nav": "Ulepsz",
       "heroEyebrow": "HeatPump DB Premium",
       "heroTitle": "Odblokuj pełną bazę pomp ciepła.",
-      "heroSub": "Standard pozostaje bezpłatny na zawsze. Premium dodaje pełne dane techniczne, porównanie modeli, segment komercyjny, karty gotowe do druku i miesięczny Raport specjalny.",
+      "heroSub": "Standard pozostaje bezpłatny na zawsze. Premium dodaje pełne dane, porównanie, segment komercyjny, karty PDF z Twoim logo, miesięczny Raport specjalny — oraz obszar narzędzi pro: projekty, obserwowane z powiadomieniami, alternatywy, kontrolę hałasu i szacunek kosztów.",
       "tabPersonal": "Plany indywidualne",
       "tabBusiness": "Plany dla firm",
       "standardSub": "Do wyszukiwania",
@@ -3594,15 +3733,21 @@ const PL_PL: HpStrings = {
       "proFeatures": [
           "Wszystko ze Standard",
           "Pełne dane — COP, moc akustyczna, ilość czynnika",
-          "Porównanie do 4 modeli obok siebie",
+          "Porównanie do 4 modeli + PDF porównania",
           "Segment komercyjny powyżej 23 kW",
-          "Karty danych i karty etykiety UE w PDF",
+          "Karty danych PDF z logo Twojej firmy",
+          "Projekty klientów (listy, notatki, PDF projektu)",
+          "Obserwowane modele z comiesięcznym powiadomieniem e-mail",
+          "Wyszukiwarka alternatyw (ta sama moc, R290, ciszej)",
+          "Kontrola hałasu (odległość, ustawienie)",
+          "Szacunek kosztów eksploatacji i CO₂ dla klienta",
           "Miesięczny Raport specjalny",
           "3 urządzenia"
       ],
       "teamFeatures": [
           "Wszystko z Professional, dla każdego miejsca",
           "{n} użytkowników — administrator zaprasza zespół",
+          "Projekty wspólne dla całego zespołu",
           "Członków można wymieniać w każdej chwili",
           "Jedna faktura dla całego zespołu"
       ],
@@ -3657,6 +3802,41 @@ const PL_PL: HpStrings = {
               "y"
           ],
           [
+              "PDF porównania i karty z Twoim logo",
+              "n",
+              "y"
+          ],
+          [
+              "Projekty klientów (wspólne w planach zespołowych)",
+              "n",
+              "y"
+          ],
+          [
+              "Obserwowane + comiesięczne powiadomienia",
+              "n",
+              "y"
+          ],
+          [
+              "Wyszukiwarka alternatyw",
+              "n",
+              "y"
+          ],
+          [
+              "Kontrola hałasu (szacowany poziom ciśnienia)",
+              "n",
+              "y"
+          ],
+          [
+              "Szacunek kosztów i CO₂ (PDF dla klienta)",
+              "n",
+              "y"
+          ],
+          [
+              "Oznaczenia jakości danych (weryfikacja u producenta)",
+              "y",
+              "y"
+          ],
+          [
               "Miesięczny Raport specjalny",
               "sample",
               "y"
@@ -3673,6 +3853,10 @@ const PL_PL: HpStrings = {
           [
               "Czy Standard pozostaje bezpłatny?",
               "Tak. Standard jest bezpłatny bez limitu czasu i nie wymaga metody płatności. Nowe konta zaczynają od 15 dni Premium; potem konto po prostu działa dalej w planie Standard."
+          ],
+          [
+              "Czym są narzędzia pracy Premium?",
+              "Projekty przechowują listy modeli dla każdego klienta (w planach zespołowych wspólne dla zespołu), obserwowane wysyłają e-mail, gdy status na liście lub dane modelu zmienią się po comiesięcznej aktualizacji, wyszukiwarka alternatyw proponuje porównywalne modele, a kalkulatory hałasu i kosztów tworzą PDF z szacunkiem dla klienta. Kalkulatory dają szacunki do wstępnego planowania, a nie certyfikowane raporty."
           ],
           [
               "Czy po okresie próbnym coś zostanie pobrane automatycznie?",
@@ -4669,6 +4853,7 @@ const IT_IT: HpStrings = {
       { title: 'Dal prodotto alla carta', body: 'Tocca il pulsante Scheda tecnica — ogni vista prodotto termina in un documento pronto da stampare con lo stato a catalogo.' },
       { title: 'L\u2019installazione in video', body: 'Video ufficiali dei produttori su installazione e messa in servizio per questo mercato \u2014 prima i marchi principali, in italiano dove il produttore li offre.' },
       { title: 'Il Report speciale mensile', body: 'Ogni mese un’analisi del mercato europeo, con un menu dedicato. Le edizioni di agosto e settembre 2026 sono campioni gratuiti; da ottobre fa parte di Premium.' },
+      { title: 'La tua area di lavoro', body: 'Progetti per cliente, modelli osservati con e-mail quando i dati cambiano e calcolatori acustico e dei costi — ogni risultato in PDF per il cliente.' },
       { title: 'Standard o Premium', body: 'Standard resta gratuito. Premium sblocca specifiche complete, confronto, la gamma commerciale, le schede PDF e il Report speciale — il pulsante Upgrade nell’intestazione mostra i piani individuali e aziendali.' },
     ] as { title: string; body: string }[],
   },
@@ -4684,8 +4869,8 @@ const IT_IT: HpStrings = {
     free: 'Standard',
     premium: 'Premium',
     lockTitle: 'Funzione Premium',
-    lockBody: 'Le specifiche complete, il confronto affiancato, la gamma commerciale, le schede PDF e il Report speciale mensile fanno parte di Premium.',
-    benefits: ['Specifiche complete — valori COP, potenza sonora, carica di refrigerante', 'Confronto fino a 4 modelli affiancati', 'Gamma commerciale oltre 23 kW', 'Schede tecniche e schede etichetta UE in PDF pronte per la stampa', 'Il Report speciale mensile', 'Tre dispositivi'] as string[],
+    lockBody: 'Specifiche complete, confronto, gamma commerciale, PDF con il tuo logo, il Report speciale mensile e l’area strumenti pro (progetti, osservati, alternative, calcolatori acustico e costi) fanno parte di Premium.',
+    benefits: ['Specifiche complete — valori COP, potenza sonora, carica di refrigerante', 'Confronto fino a 4 modelli + PDF di confronto', 'Gamma commerciale oltre 23 kW', 'Schede PDF con il logo della tua azienda', 'Progetti clienti + osservati con avvisi', 'Alternative, verifica acustica, stima costi e CO₂', 'Il Report speciale mensile · 3 dispositivi'] as string[],
     price: 'Da 9,90 € al mese o 99 € all’anno, IVA esclusa.',
     cta: 'Vedi i piani Premium ›',
     later: 'Non ora',
@@ -4706,7 +4891,7 @@ const IT_IT: HpStrings = {
       "nav": "Upgrade",
       "heroEyebrow": "HeatPump DB Premium",
       "heroTitle": "Sblocca l’intero database delle pompe di calore.",
-      "heroSub": "Standard resta gratuito per sempre. Premium aggiunge specifiche complete, confronto affiancato, la gamma commerciale, schede pronte per la stampa e il Report speciale mensile.",
+      "heroSub": "Standard resta gratuito per sempre. Premium aggiunge specifiche complete, confronto, la gamma commerciale, schede PDF con il tuo logo, il Report speciale mensile — e un’area di strumenti pro: progetti, osservati con avvisi, alternative, verifica acustica e stima dei costi.",
       "tabPersonal": "Piani individuali",
       "tabBusiness": "Piani aziendali",
       "standardSub": "Per consultare",
@@ -4733,15 +4918,21 @@ const IT_IT: HpStrings = {
       "proFeatures": [
           "Tutto Standard",
           "Specifiche complete — COP, potenza sonora, carica di refrigerante",
-          "Confronto fino a 4 modelli affiancati",
+          "Confronto fino a 4 modelli + PDF di confronto",
           "Gamma commerciale oltre 23 kW",
-          "Schede tecniche e schede etichetta UE in PDF",
+          "Schede tecniche PDF con il logo della tua azienda",
+          "Progetti clienti (liste, note, PDF di progetto)",
+          "Modelli osservati con avviso mensile via e-mail",
+          "Ricerca alternative (stessa potenza, R290, più silenziosi)",
+          "Verifica acustica (distanza, posizionamento)",
+          "Stima costi di esercizio e CO₂ per il cliente",
           "Il Report speciale mensile",
           "3 dispositivi"
       ],
       "teamFeatures": [
           "Tutto Professional, per ogni posto",
           "{n} utenti — un amministratore invita il team",
+          "Progetti condivisi in tutto il team",
           "Membri sostituibili in qualsiasi momento",
           "Un’unica fattura per tutto il team"
       ],
@@ -4796,6 +4987,41 @@ const IT_IT: HpStrings = {
               "y"
           ],
           [
+              "PDF di confronto e schede con il tuo logo",
+              "n",
+              "y"
+          ],
+          [
+              "Progetti clienti (condivisi nei piani Team)",
+              "n",
+              "y"
+          ],
+          [
+              "Osservati + avvisi mensili di modifica",
+              "n",
+              "y"
+          ],
+          [
+              "Ricerca alternative",
+              "n",
+              "y"
+          ],
+          [
+              "Verifica acustica (pressione sonora stimata)",
+              "n",
+              "y"
+          ],
+          [
+              "Stima costi e CO₂ (PDF per il cliente)",
+              "n",
+              "y"
+          ],
+          [
+              "Segnalazioni qualità dati (verifica del produttore)",
+              "y",
+              "y"
+          ],
+          [
               "Report speciale mensile",
               "sample",
               "y"
@@ -4812,6 +5038,10 @@ const IT_IT: HpStrings = {
           [
               "Standard resta gratuito?",
               "Sì. Standard è gratuito senza limiti di tempo e non richiede alcun metodo di pagamento. I nuovi account iniziano con 15 giorni di Premium; poi l’account continua semplicemente con Standard."
+          ],
+          [
+              "Quali sono gli strumenti di lavoro Premium?",
+              "I progetti conservano le selezioni per cliente (condivise nel team con i piani Team), gli osservati inviano un’e-mail quando lo stato o i dati di un modello cambiano dopo l’aggiornamento mensile, la ricerca alternative propone modelli comparabili e i calcolatori acustico e dei costi producono PDF di stima per il cliente. I calcolatori forniscono stime per la progettazione preliminare, non relazioni certificate."
           ],
           [
               "Dopo la prova viene addebitato qualcosa automaticamente?",

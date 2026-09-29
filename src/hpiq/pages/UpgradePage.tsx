@@ -93,7 +93,9 @@ export const UpgradePage: React.FC<{ app: HpApp }> = ({ app }) => {
     const ribbon = code === 'professional' ? u.mostPopular : code === 'team_5' ? u.bestValue : null;
     const isCurrent = paidPlan === code;
     const features = team
-      ? [...u.teamFeatures.map(f => fill(f, 'n', plan.seatLimit)), ...(code === 'team_5' ? [u.team5Extra] : []), ...u.proFeatures.slice(1)]
+      // Team cards: 'Everything in Professional' + what the team adds — repeating
+      // the full Professional list made the card twice as tall (2026-09-29).
+      ? [...u.teamFeatures.map(f => fill(f, 'n', plan.seatLimit)), ...(code === 'team_5' ? [u.team5Extra] : [])]
       : u.proFeatures;
     const inner = (
       <div className="hp-up-card" style={{ ...cardBase, background: highlight ? 'linear-gradient(160deg, #10241c 0%, #0d1117 55%, #111827 100%)' : 'rgba(255,255,255,.06)', height: '100%', boxSizing: 'border-box' }}>
