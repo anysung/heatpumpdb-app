@@ -2,6 +2,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { DataNotice, PremiumPill } from '../Premium';
+import { ProductActions } from '../features/ProductActions';
+import { AddToProject } from '../features/projects/AddToProject';
+import { ComparePdfButton } from '../features/branding/ComparePdfButton';
 import { HpVM } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
@@ -578,6 +581,8 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <span style={{ fontSize: 13.5, color: '#7a7a7a' }}>{t.products.noEprel}</span>
                   )}
                 </div>
+                {/* Premium feature slot: watch · add to project · similar models */}
+                <ProductActions app={app} v={sel} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span className="hp-press" onClick={() => app.toggleCompare(sel.id)} style={pillSecondary}>
                     {app.compare.includes(sel.id) ? t.products.removeCompare : t.products.addCompare}
@@ -611,10 +616,15 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 28px', borderBottom: '1px solid #e0e0e0', flex: 'none' }}>
               <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px' }}>{t.products.comparison}</span>
               <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{t.products.comparisonCount(compareCount)}</span>
+              {/* Premium feature slots: branded comparison PDF · save comparison to a project */}
+              <span style={{ marginLeft: 'auto', display: 'inline-flex', gap: 8, alignItems: 'center' }}>
+                <AddToProject app={app} ids={app.compare} />
+                <ComparePdfButton app={app} ids={app.compare} />
+              </span>
               <span
                 className="hp-press"
                 onClick={() => app.setShowCompare(false)}
-                style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 14.5, fontWeight: 600, cursor: 'pointer' }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#1d1d1f', color: '#fff', borderRadius: 999, padding: '10px 22px', fontSize: 14.5, fontWeight: 600, cursor: 'pointer' }}
               >
                 {t.products.close}
               </span>

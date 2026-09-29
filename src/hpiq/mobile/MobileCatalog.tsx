@@ -11,6 +11,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { DataNotice, PremiumPill } from '../Premium';
+import { ProductActions } from '../features/ProductActions';
 import { HpVM, crossRefId } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
@@ -131,6 +132,8 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
           <span onClick={() => window.open(REGISTRY_VERIFY_URL, '_blank', 'noopener')} style={{ color: '#0066cc', cursor: 'pointer' }}>{t.products.openBafa}</span>
         </span>
       </div>
+
+      <ProductActions app={app} v={v} compact />
 
       {crossRefId(v.raw) != null && (
         <span style={{ fontSize: 10.5, color: '#7a7a7a', lineHeight: 1.5, padding: '0 2px' }}>

@@ -1,5 +1,6 @@
 /** Account — subscription program, team seats, profile, language, legal. */
 import { UpgradePromoCard } from '../Premium';
+import { BrandingCard } from '../features/branding/BrandingCard';
 import React, { useEffect, useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { collection, onSnapshot } from 'firebase/firestore';
@@ -943,6 +944,9 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
               <span onClick={sendSetupLink} style={{ color: '#0066cc', fontSize: 13, cursor: 'pointer', marginTop: 2 }}>{t.account.sendLink(user.email)}</span>
             </Card>
           </div>
+
+          {/* Branded documents (Premium, 2026-09-29): logo + contact on PDFs */}
+          <div style={{ order: 3 }}><BrandingCard app={app} /></div>
 
           {/* R2a · Sign-in methods (link/unlink Google & Apple) */}
           <div style={{ order: 3 }}><SignInMethodsCard app={app} /></div>

@@ -38,6 +38,8 @@ import { NewsPage } from './pages/NewsPage';
 import { TrendsPage } from './pages/TrendsPage';
 import { ReportPage } from './pages/ReportPage';
 import { UpgradePage } from './pages/UpgradePage';
+import { ProjectsPage } from './features/projects/ProjectsPage';
+import { WatchlistPage } from './features/watch/WatchlistPage';
 import { isSpecialReportItem } from './newsModel';
 import { UpsellModal, DataNotice, WelcomeTrialModal } from './Premium';
 import { InstallPage } from './pages/InstallPage';
@@ -80,6 +82,8 @@ const NAV_GROUPS: { id: string; pages: NavPage[] }[] = [
   // Special Report: its own destination since 2026-09-27 (it used to ride the
   // top of the News feed as a pinned announcement).
   { id: 'report', pages: ['report'] },
+  // Premium workspace (2026-09-29): customer projects + watched models.
+  { id: 'workspace', pages: ['projects', 'watchlist'] },
   { id: 'install', pages: ['install'] },
 ];
 const groupOf = (page: HpPage) => NAV_GROUPS.find(g => (g.pages as HpPage[]).includes(page));
@@ -99,8 +103,14 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   const t = tr(language);
   const viewport = useViewport();
   // Shared-article deep links (?article=<id>) land on the news page directly.
-  const [page, setPage] = useState<HpPage>(() =>
-    new URLSearchParams(window.location.search).has('article') ? 'news' : 'find');
+  const [page, setPage] = useState<HpPage>(() => {
+    const q = new URLSearchParams(window.location.search);
+    if (q.has('article')) return 'news';
+    // Deep links from member mails (2026-09-29): ?open=watchlist | projects | upgrade
+    const open = q.get('open');
+    if (open === 'watchlist' || open === 'projects' || open === 'upgrade') return open;
+    return 'find';
+  });
   const [query, setQuery] = useState('');
   const [compare, setCompare] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -727,6 +737,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
       {page === 'trends' && <TrendsPage app={app} />}
       {page === 'report' && <ReportPage app={app} />}
       {page === 'upgrade' && <UpgradePage app={app} />}
+      {page === 'projects' && <ProjectsPage app={app} />}
+      {page === 'watchlist' && <WatchlistPage app={app} />}
       {page === 'install' && <InstallPage app={app} />}
       {page === 'account' && <AccountPage app={app} />}
 
