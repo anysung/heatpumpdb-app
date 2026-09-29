@@ -7,6 +7,7 @@
  * per-item notes, compare (desktop), open product, Project PDF.
  * Standard accounts see a teaser that routes to the one upgrade prompt.
  */
+import { WorkspaceTabs } from '../WorkspaceTabs';
 import { QaMark, qaStyle } from '../../QaMark';
 import React, { useEffect, useMemo, useState } from 'react';
 import { HpApp } from '../../appState';
@@ -49,12 +50,7 @@ export const ProjectsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   return (
     <div style={PAGE} data-testid="projects-page">
       <div style={INNER}>
-        <SubTabs
-          group="workspace"
-          tabs={[{ id: 'projects', label: t.nav.projects }, { id: 'watchlist', label: t.nav.watchlist }]}
-          active="projects"
-          onSelect={id => app.go(id as 'projects' | 'watchlist')}
-        />
+        <WorkspaceTabs app={app} active="projects" />
         {!app.premium ? (
           <Teaser app={app} s={s} />
         ) : open ? (

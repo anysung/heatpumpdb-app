@@ -39,11 +39,13 @@ import { ReportPage } from '../pages/ReportPage';
 import { UpgradePage } from '../pages/UpgradePage';
 import { ProjectsPage } from '../features/projects/ProjectsPage';
 import { WatchlistPage } from '../features/watch/WatchlistPage';
+import { NoisePage } from '../features/noise/NoisePage';
+import { CostPage } from '../features/cost/CostPage';
 import { InstallPage } from '../pages/InstallPage';
 import { SubTabs, recallSubTab } from '../ui';
 import { printPdfViaShareSheet } from '../pdf/deliverPdf';
 
-type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account' | 'label' | 'trends' | 'report' | 'install' | 'upgrade' | 'projects' | 'watchlist'> | 'guide';
+type MTab = Extract<HpPage, 'find' | 'products' | 'bafa' | 'datasheet' | 'news' | 'account' | 'label' | 'trends' | 'report' | 'install' | 'upgrade' | 'projects' | 'watchlist' | 'noise' | 'cost'> | 'guide';
 
 /* ── Tiny tab icons (stroke style matching the desktop icon set) ─────────── */
 
@@ -71,6 +73,9 @@ const ICONS: Record<MTab, string> = {
   // Projects: folder · Watchlist: bell
   projects: 'M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
   watchlist: 'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0',
+  // Noise check: sound waves · Running cost: coin
+  noise: 'M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4',
+  cost: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 8.5a3.5 3.5 0 1 0 0 7M8 11h5M8 13h5',
   // Upgrade: rocket
   upgrade: 'M5 15c-1.5 1.3-2 4-2 6 2 0 4.7-.5 6-2M9 18l-3-3c1-4.5 4.5-10 12-11 0 0 .5 7.5-6 12zM14.5 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3',
 };
@@ -824,13 +829,13 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
      news tab (news + trends the same way). The freed slots put the EU label
      into the header menu next to the new Installation page. */
   const MOBILE_TABS: MTab[] = ['find', 'products', 'bafa', 'news', 'account'];
-  const MENU_PAGES: MTab[] = ['upgrade', 'projects', 'watchlist', 'report', 'label', 'install'];
-  const VALID_PAGES = ['find', 'products', 'datasheet', 'guide', 'bafa', 'news', 'trends', 'report', 'install', 'upgrade', 'projects', 'watchlist', 'account', 'label'];
+  const MENU_PAGES: MTab[] = ['upgrade', 'projects', 'watchlist', 'noise', 'cost', 'report', 'label', 'install'];
+  const VALID_PAGES = ['find', 'products', 'datasheet', 'guide', 'bafa', 'news', 'trends', 'report', 'install', 'upgrade', 'projects', 'watchlist', 'noise', 'cost', 'account', 'label'];
   const page: MTab = VALID_PAGES.includes(app.page) ? (app.page as MTab) : 'find';
   const tabLabel: Record<MTab, string> = {
     find: t.m.tabSearch, products: t.products.title, datasheet: t.m.mdsTitle,
     bafa: t.m.tabFunding, news: t.nav.news, guide: t.nav.guide, account: t.nav.account,
-    label: t.nav.label, trends: t.nav.trends, report: t.nav.report, install: t.nav.install, upgrade: t.up.nav, projects: t.nav.projects, watchlist: t.nav.watchlist,
+    label: t.nav.label, trends: t.nav.trends, report: t.nav.report, install: t.nav.install, upgrade: t.up.nav, projects: t.nav.projects, watchlist: t.nav.watchlist, noise: t.nav.noise, cost: t.nav.cost,
   };
   /** A grouped tab lands on the sub-page the person used last (same memory the
    *  desktop nav reads — localStorage survives shell switches). */
@@ -961,6 +966,8 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
         {page === 'upgrade' && <UpgradePage app={app} />}
         {page === 'projects' && <ProjectsPage app={app} />}
         {page === 'watchlist' && <WatchlistPage app={app} />}
+        {page === 'noise' && <NoisePage app={app} />}
+        {page === 'cost' && <CostPage app={app} />}
         {page === 'install' && <InstallPage app={app} />}
         {page === 'account' && <MobileAccount app={app} />}
       </div>

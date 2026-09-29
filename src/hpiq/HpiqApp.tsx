@@ -41,6 +41,8 @@ import { ReportPage } from './pages/ReportPage';
 import { UpgradePage } from './pages/UpgradePage';
 import { ProjectsPage } from './features/projects/ProjectsPage';
 import { WatchlistPage } from './features/watch/WatchlistPage';
+import { NoisePage } from './features/noise/NoisePage';
+import { CostPage } from './features/cost/CostPage';
 import { isSpecialReportItem } from './newsModel';
 import { UpsellModal, DataNotice, WelcomeTrialModal } from './Premium';
 import { InstallPage } from './pages/InstallPage';
@@ -84,7 +86,7 @@ const NAV_GROUPS: { id: string; pages: NavPage[] }[] = [
   // top of the News feed as a pinned announcement).
   { id: 'report', pages: ['report'] },
   // Premium workspace (2026-09-29): customer projects + watched models.
-  { id: 'workspace', pages: ['projects', 'watchlist'] },
+  { id: 'workspace', pages: ['projects', 'watchlist', 'noise', 'cost'] },
   { id: 'install', pages: ['install'] },
 ];
 const groupOf = (page: HpPage) => NAV_GROUPS.find(g => (g.pages as HpPage[]).includes(page));
@@ -109,7 +111,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     if (q.has('article')) return 'news';
     // Deep links from member mails (2026-09-29): ?open=watchlist | projects | upgrade
     const open = q.get('open');
-    if (open === 'watchlist' || open === 'projects' || open === 'upgrade') return open;
+    if (open === 'watchlist' || open === 'projects' || open === 'upgrade' || open === 'noise' || open === 'cost') return open;
     return 'find';
   });
   const [query, setQuery] = useState('');
@@ -741,6 +743,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
       {page === 'upgrade' && <UpgradePage app={app} />}
       {page === 'projects' && <ProjectsPage app={app} />}
       {page === 'watchlist' && <WatchlistPage app={app} />}
+      {page === 'noise' && <NoisePage app={app} />}
+      {page === 'cost' && <CostPage app={app} />}
       {page === 'install' && <InstallPage app={app} />}
       {page === 'account' && <AccountPage app={app} />}
 
