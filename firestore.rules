@@ -433,9 +433,49 @@ service cloud.firestore {
     match /countries/{countryCode} {
       allow read: if isAdmin() || isApproved();
       match /{subcollection}/{docId} {
-        allow read: if isAdmin() || isApproved();
+        // changes/* (watchlist change lists) carry Premium-only values (COP,
+        // sound power…) — Premium only, below. Everything else: any approved account.
+        allow read: if isAdmin() || (isApproved() && subcollection != 'changes');
         allow write: if isAdmin();
       }
+      // Monthly change lists (scripts/compute-dataset-changes.mjs, IAM writes).
+      match /changes/{docId} {
+        allow read: if isEntitled();
+      }
+    }
+
+    // ── Premium watchlist (2026-09-29) ─────────────────────────────────────
+    // users/{uid}/watch/{cc}_m_{productId} | {cc}_f_{mfrSlug} | _settings.
+    // Owner only. CREATING a watch needs Premium (isEntitled) — the feature
+    // is Premium and enforcement lives in rules, not the UI. Removing a watch
+    // and the _settings doc never do: a lapsed member can always clean up and
+    // switch the mails off. The 200-entry cap is UX (rules cannot count); the
+    // alert script copes with any number. The alert run reads these with IAM.
+    function watchDocValid(docId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['type', 'market', 'key', 'label', 'createdAt']) &&
+             d.keys().hasAll(['type', 'market', 'key', 'label', 'createdAt']) &&
+             d.type in ['model', 'manufacturer'] &&
+             d.market in ['DE', 'GB', 'FR', 'PL', 'IT'] &&
+             d.key is string && d.key.size() > 0 && d.key.size() <= 200 &&
+             d.label is string && d.label.size() <= 200 &&
+             d.createdAt == request.time &&
+             docId.size() <= 300 &&
+             docId.split('_')[0] == d.market &&
+             docId.split('_')[1] == (d.type == 'model' ? 'm' : 'f');
+    }
+    function watchSettingsValid() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['emailAlerts', 'lang', 'updatedAt']) &&
+             (!('emailAlerts' in d) || d.emailAlerts is bool) &&
+             (!('lang' in d) || d.lang in ['en', 'de', 'fr', 'pl', 'it']) &&
+             d.updatedAt == request.time;
+    }
+    match /users/{userId}/watch/{docId} {
+      allow read, delete: if isSignedIn() && request.auth.uid == userId;
+      allow create, update: if isSignedIn() && request.auth.uid == userId && (
+        (docId == '_settings' && watchSettingsValid()) ||
+        (docId != '_settings' && isEntitled() && watchDocValid(docId)));
     }
 
   }

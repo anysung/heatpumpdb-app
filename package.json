@@ -38,6 +38,8 @@
     "test:gse": "node tests/gse-matching.unit.mjs",
     "test:agrement": "node tests/agrement-matching.unit.mjs",
     "test:trial-reminders": "node tests/trial-reminders.unit.mjs",
+    "test:watchlist": "node tests/dataset-diff.unit.mjs && node tests/watch-alerts.unit.mjs",
+    "test:rules:watch": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/watchlist.rules.mjs\"",
     "test:architecture": "node tests/architecture.unit.mjs",
     "test:listing": "node tests/listing.unit.mjs",
     "verify:remote": "node scripts/verify-remote-datasets.mjs",

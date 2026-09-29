@@ -22,9 +22,16 @@
  * ORDER, AND WHY
  *   1  fetch + build + gate      reversible. Nothing outside this machine has
  *                                changed yet, so any failure here is free.
+ *   1d dataset changes           Premium watchlist diff: live bucket vs candidate.
+ *                                Must precede 2 (afterwards live == candidate).
+ *                                Saved locally; non-fatal, 10-min cap.
  *   2  publish datasets          the point of no return: Storage now serves the
  *                                new catalogue. Guarded by the gate above and
  *                                recoverable through the snapshot set.
+ *   2b watchlist                 change lists → Firestore, then the Premium
+ *                                change mails. Only after a SUCCESSFUL publish;
+ *                                non-fatal, time-capped, idempotent per month,
+ *                                a no-op when nobody watches anything.
  *   3  news                      AFTER the database, by owner's instruction —
  *                                the month's articles describe the data that has
  *                                just landed. Non-fatal: news failing must not
@@ -169,11 +176,13 @@ async function liveMaintenance() {
 const saveState = (s) => writeFileSync(STATE, JSON.stringify({ ...s, runId, at: new Date().toISOString() }, null, 2) + '\n');
 const loadState = () => (existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : null);
 
-function step(name, cmd, { fatal = true } = {}) {
+function step(name, cmd, { fatal = true, timeoutMs } = {}) {
   say(`── ${name}`);
   if (DRY) { say(`   DRY: ${cmd}`); return true; }
   try {
-    execSync(cmd, { cwd: ROOT, stdio: 'inherit', env: process.env });
+    // timeoutMs: an optional step must not be able to eat the window — on
+    // expiry execSync kills it (SIGTERM) and, being non-fatal, the run goes on.
+    execSync(cmd, { cwd: ROOT, stdio: 'inherit', env: process.env, ...(timeoutMs ? { timeout: timeoutMs, killSignal: 'SIGTERM' } : {}) });
     return true;
   } catch (e) {
     if (!fatal) { say(`   NON-FATAL failure: ${name} — continuing (${e.message.slice(0, 120)})`); return false; }
@@ -264,9 +273,29 @@ try {
   step('FR: match canonical ↔ agrément (listing overlay)', 'node scripts/fr/match-canonical-to-agrement.mjs', { fatal: false });
   step('FR: rebuild datasets with the native layer', 'node scripts/fr/build-app-products-fr.mjs');
 
+  // 1d — Premium watchlist: what this release changes, measured against the
+  // objects that are STILL live (after step 2 live == candidate and the diff
+  // is empty). Saved locally only; Firestore learns about it after a
+  // successful publish (2b), so a rolled-back release never announces changes.
+  // Never fatal, bounded: the catalogue must not wait on a nicety.
+  saveState({ phase: 'running', step: 'dataset-changes' });
+  const changesOk = step('compute dataset changes (watchlist; live bucket vs candidate)',
+    'node scripts/compute-dataset-changes.mjs --save', { fatal: false, timeoutMs: 10 * 60_000 });
+
   // 2 — point of no return.
   saveState({ phase: 'running', step: 'publish-datasets' });
   step('publish datasets (gate + upload + serving verification)', 'node scripts/upload-datasets.mjs');
+
+  // 2b — publish the change lists and mail the watchers. Both never fatal,
+  // both time-bounded; with nobody watching, the alert run exits in a second.
+  // Idempotent per month (watchAlertRuns/{YYYY-MM}), so a re-run mails no one twice.
+  saveState({ phase: 'running', step: 'watchlist-alerts' });
+  if (changesOk) {
+    const published = step('publish dataset changes to Firestore (countries/{cc}/changes)',
+      'node scripts/compute-dataset-changes.mjs --publish-saved', { fatal: false, timeoutMs: 5 * 60_000 });
+    if (published) step('watchlist alerts (Premium change mails)',
+      'node scripts/send-watchlist-alerts.mjs --send --max-minutes=15', { fatal: false, timeoutMs: 20 * 60_000 });
+  }
 
   // 3 — news, after the database it describes. Never fatal.
   saveState({ phase: 'running', step: 'news' });

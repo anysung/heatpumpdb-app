@@ -315,6 +315,14 @@ assumption that gitignored means disposable — keep at least the newest seed.
   Enforcement is by FILE/rules — UI locks are UX only. Prices EUR (every
   market), VAT excl., monthly + annual only (6-month retired). The profile step
   (name, company name, company type) is REQUIRED at first sign-in.
+- **Premium watchlist + change alerts (2026-09-29):** `src/hpiq/features/watch/`
+  (`users/{uid}/watch/{cc}_m_{id}|{cc}_f_{slug}|_settings`, create = Premium in
+  rules, cap 200 in UI) ← monthly window steps 1d/2b
+  (`compute-dataset-changes.mjs --save` BEFORE publish — it diffs the still-live
+  bucket objects; `--publish-saved` + `send-watchlist-alerts.mjs --send` after;
+  all non-fatal + time-capped; canaries excluded; `countries/{cc}/changes/*` is
+  Premium-only). `mfrSlug` exists twice (watchModel.ts ↔ lib/dataset-diff.mjs) —
+  a unit test keeps them identical. Details: docs/UPDATE_PIPELINE.md §4.
 - **Auth flow (2026-07-27 program): 15-day in-app free trial, no payment method**
   (7 days until 2026-09-07; the length lives in `TRIAL_DAYS`, client + function).**
   Two modes, switched by `VITE_BILLING_FN_URL` (src/config/env.ts):

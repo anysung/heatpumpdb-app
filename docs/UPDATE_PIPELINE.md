@@ -110,6 +110,27 @@ npm aliases: `npm run update:all` / `npm run update:all:deploy`.
   idempotent per month; never fatal). There is no separate news scheduler — the only Cloud
   Scheduler job in the project is `trial-reminders-daily`. If the window does
   not open, no news is published either.
+- **Premium watchlist change alerts ride the window too** (since 2026-10).
+  Step 1d, BEFORE publishing: `node scripts/compute-dataset-changes.mjs --save`
+  diffs the objects that are still LIVE in `gs://heatpumpdb-datasets/datasets/<CC>/`
+  (canaries stripped) against the candidate in `public/data/`
+  (`scripts/lib/dataset-diff.mjs`: user-facing listing-status changes per
+  market field, added, removed, spec changes) and writes
+  `data_sources/dataset_changes/<CC>/<YYYY-MM>.json` (committed by step 7;
+  lists capped to keep the Firestore doc < 900 KB, counts never capped; a
+  diff removing >25 % or adding >50 % is flagged `suspect` and never mailed).
+  Step 2b, only after a SUCCESSFUL publish: `--publish-saved` writes
+  `countries/{CC}/changes/{YYYY-MM}` + `…/latest` (read by the Watchlist page,
+  Premium-only in firestore.rules), then `node scripts/send-watchlist-alerts.mjs
+  --send` mails Premium members whose `users/{uid}/watch/*` intersect the
+  change list (5 languages, letterhead from the billing function, one
+  `memberEmails` row per mail, idempotent via `watchAlertRuns/{YYYY-MM}`).
+  All three are `fatal: false` and time-capped (10 / 5 / 20 min); with nobody
+  watching, the alert run exits after one collection-group query. Manual
+  re-run after a window: `compute-dataset-changes.mjs` without flags and
+  `send-watchlist-alerts.mjs` without `--send` are read-only dry runs. A re-run
+  of `--save` after publishing (empty diff) never overwrites a saved non-zero
+  month.
 
 ### 4a. Publishing the news archive (after each news cycle)
 
