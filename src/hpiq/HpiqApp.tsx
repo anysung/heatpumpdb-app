@@ -17,6 +17,7 @@ import { splitBySegment } from '../config/segmentation';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
 import { accessInfo } from '../config/entitlement';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
+import { pdfBrandingFor } from './features/branding/brandingState';
 import { preloadBrandArtwork } from './pdf/brandArtwork';
 import { preloadPdfFonts } from './pdf/pdfFonts';
 import { downloadPdf, printPdfViaShareSheet } from './pdf/deliverPdf';
@@ -359,6 +360,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         sourceAbbr: SOURCE_ID_ABBR,
         isGb: IS_GB,
         useRawType: IS_GB || IS_PL || IS_IT,
+        branding: pdfBrandingFor(user, premium, language),
       }),
       filename: pdfFileName(v),
     };

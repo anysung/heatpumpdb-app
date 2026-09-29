@@ -94,6 +94,30 @@ await check('profile edit cannot escalate role or status', async () => {
   await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { orgRole: 'team_admin' }));
 });
 
+/* ── Branded documents (users/{uid}.branding, 2026-09-29) ──────────────── */
+const pngUrl = n => 'data:image/png;base64,' + 'A'.repeat(n);
+await check('user may save their own branding (logo within the size cap)', async () => {
+  await assertSucceeds(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), {
+    branding: { logo: pngUrl(140000), company: 'Co GmbH', contact: '+49 1 · a@b.de', updatedAt: new Date().toISOString() },
+  }));
+  // text-only branding and clearing it are fine too
+  await assertSucceeds(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: { company: 'Co', updatedAt: 'x' } }));
+  await assertSucceeds(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: {} }));
+});
+await check('an oversized or non-PNG logo is refused', async () => {
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: { logo: pngUrl(160000), updatedAt: 'x' } }));
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: { logo: 'data:image/svg+xml;base64,AAAA', updatedAt: 'x' } }));
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: { logo: 'https://evil.example/x.png', updatedAt: 'x' } }));
+});
+await check('branding cannot carry extra keys or smuggle other fields', async () => {
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: { company: 'Co', plan: 'premium' } }));
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: { company: 'Co' }, role: 'admin' }));
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { branding: { company: 'x'.repeat(121) } }));
+});
+await check("another user cannot set someone else's branding", async () => {
+  await assertFails(updateDoc(doc(as(MEMBER), 'users', STRANGER.uid), { branding: { company: 'Hijack', updatedAt: 'x' } }));
+});
+
 /* ── Invited member registration ───────────────────────────────────────── */
 await check('invited email may create an ACTIVE member profile for that org', async () => {
   await assertSucceeds(setDoc(doc(as(INVITED), 'users', INVITED.uid),

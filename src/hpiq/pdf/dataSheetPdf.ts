@@ -27,6 +27,8 @@ import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../lis
 import { FLAG_ASPECT, LOGO_ASPECT } from '../../components/brandSvg';
 import { getBrandArtwork } from './brandArtwork';
 import { registerPdfFonts, PDF_FONT_FAMILY } from './pdfFonts';
+import { foldPdfText } from './pdfText';
+import { PdfBranding, measureBrandingBand, drawBrandingBand } from './brandingBand';
 
 /* ── Page geometry (mm) ──────────────────────────────────────────────────── */
 const PW = 210;          // A4 width
@@ -56,8 +58,6 @@ const FAINT: [number, number, number] = [154, 154, 160];
  * then fold the known symbols, then drop anything still unsupported (a
  * belt-and-braces guard for strings added later).
  */
-const WINANSI_EXTRA = '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ';
-
 /**
  * True when the embedded Noto Sans registered on the current document — then
  * Latin-Extended-A letters (Polish ą ć ę ł ń ó ś ź ż, Czech, etc.) are kept
@@ -65,28 +65,8 @@ const WINANSI_EXTRA = '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜
  */
 let LATIN_EXT_OK = false;
 
-const keepChar = (ch: string): boolean => {
-  const cp = ch.codePointAt(0) ?? 0;
-  if (cp <= 0xFF) return true;
-  if (LATIN_EXT_OK && cp >= 0x100 && cp <= 0x17F) return true;
-  return WINANSI_EXTRA.includes(ch);
-};
-
-const ascii = (s: string): string =>
-  (s ?? '').toString()
-    .normalize('NFC')
-    .replace(/ηs/g, 'eta-s')     // seasonal space-heating efficiency
-    .replace(/η/g, 'eta')
-    .replace(/−/g, '-')          // MINUS SIGN
-    .replace(/≈/g, '~')
-    .replace(/≠/g, '!=')
-    .replace(/…/g, '...')
-    .replace(/[›»]/g, '>')
-    .replace(/[‹«]/g, '<')
-    .replace(/ /g, ' ')          // non-breaking space
-    .split('')
-    .filter(keepChar)
-    .join('');
+/** The shared WinAnsi-safe fold (pdfText.ts) — never remove, see above. */
+const ascii = (s: string): string => foldPdfText(s, LATIN_EXT_OK);
 
 export interface DataSheetPdfInput {
   v: HpVM;
@@ -99,9 +79,12 @@ export interface DataSheetPdfInput {
   /** Markets whose dataset type strings are already localized (GB/PL/IT):
    *  print the record's own type instead of the dictionary air/water label. */
   useRawType?: boolean;
+  /** Premium branded documents (2026-09-29): "Prepared by … for …" band.
+   *  Null/absent = the unbranded sheet, byte-for-byte as before. */
+  branding?: PdfBranding | null;
 }
 
-export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb, useRawType }: DataSheetPdfInput): jsPDF {
+export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb, useRawType, branding }: DataSheetPdfInput): jsPDF {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   // Embedded Noto Sans (Latin-Extended) when preloaded; Helvetica fallback keeps
   // exports working offline. LATIN_EXT_OK widens ascii()'s keep-set to match.
@@ -138,6 +121,8 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     setFont(7, false, FAINT);
     doc.text(ascii(t.footer.copyright(new Date().getFullYear())), M_X, PH - 8);
     doc.text(`${doc.getCurrentPageInfo().pageNumber}`, PW - M_X, PH - 8, { align: 'right' });
+    // Branded sheet: the preparer travels onto every page (page 1 carries the band).
+    if (preparedByLine) doc.text(preparedByLine, PW - M_X - 7, PH - 8, { align: 'right' });
   };
 
   const newPage = () => {
@@ -164,6 +149,9 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     const lines = (doc.splitTextToSize(ascii(text), width) as string[]).length;
     return lines * (size * 0.48) + 3;
   };
+
+  const preparedByLine = branding && measureBrandingBand(branding) && branding.company?.trim()
+    ? ascii(`${branding.labels.preparedBy} ${branding.company.trim()}`).slice(0, 48) : '';
 
   watermark();
 
@@ -193,6 +181,12 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   doc.text(ascii(`${t.ds.generated} ${new Date().toLocaleDateString(t.locale, { day: 'numeric', month: 'long', year: 'numeric' })}`), PW - M_X, y + 4, { align: 'right' });
   doc.text(ascii(`${isLabelMode ? t.ds.bafaRef : sourceAbbr} ${v.sourceId}${v.eprel ? ` · ${v.eprelId}` : ''}`), PW - M_X, y + 8.5, { align: 'right' });
   y += LOGO_H + 6;
+
+  /* ── Premium: "Prepared by <logo> <company> · <contact> — for <customer>" ──
+     Page 1 only, between our header and the title card; fixed height, so the
+     pagination below is unaffected (the first page simply starts lower). */
+  const bandH = drawBrandingBand(doc, M_X, y, CW, branding, fontFamily, ascii);
+  if (bandH) y += bandH + 4;
 
   /* ── Title card (dark) ────────────────────────────────────────────────── */
   setFont(13.5, true, [255, 255, 255]);   // measure at the size it is drawn in

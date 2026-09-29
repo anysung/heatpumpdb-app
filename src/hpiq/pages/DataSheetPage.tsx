@@ -8,6 +8,7 @@ import { tr } from '../i18n';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
 import { IS_GB, IS_PL, IS_IT, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
+import { DataSheetBrandingSection, DataSheetBrandingBand } from '../features/branding/DataSheetBranding';
 
 const PICKER_LIMIT = 60;
 
@@ -134,6 +135,9 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                   <span>{isLabelMode ? t.ds.bafaRef : SOURCE_ID_ABBR} {dsp.sourceId}{dsp.eprel ? ` · ${dsp.eprelId}` : ''}</span>
                 </div>
               </div>
+
+              {/* Premium: "Prepared by … for …" — mirrors the generated PDF's band */}
+              <DataSheetBrandingBand app={app} />
 
               {/* title card + key stats */}
               <div className="ds-title-card" style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -428,6 +432,7 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
               );
             })}
           </div>
+          <DataSheetBrandingSection app={app} />
           <div style={{ padding: '14px 20px 22px', display: 'flex', flexDirection: 'column', gap: 10, borderTop: '1px solid rgba(0,0,0,.08)' }}>
             <span style={sectionLabel}>{t.ds.step3}</span>
             {/* Equal-width buttons: flex:1 so they size to the row, not to their
