@@ -74,7 +74,6 @@ export const CostPage: React.FC<{ app: HpApp }> = ({ app }) => {
   return (
     <div style={PAGE} data-testid="cost-page">
       <div style={INNER}>
-        <WorkspaceTabs app={app} active="cost" />
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
           <span style={TITLE}>{s.title}</span>
           <EstimateBadge s={s} />

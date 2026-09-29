@@ -40,6 +40,7 @@ import { UpgradePage } from '../pages/UpgradePage';
 import { ProjectsPage } from '../features/projects/ProjectsPage';
 import { WatchlistPage } from '../features/watch/WatchlistPage';
 import { NoisePage } from '../features/noise/NoisePage';
+import { WorkspaceBar, isWorkspacePage } from '../features/WorkspaceTabs';
 import { CostPage } from '../features/cost/CostPage';
 import { InstallPage } from '../pages/InstallPage';
 import { SubTabs, recallSubTab } from '../ui';
@@ -964,6 +965,7 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
         {page === 'trends' && <TrendsPage app={app} />}
         {page === 'report' && <ReportPage app={app} />}
         {page === 'upgrade' && <UpgradePage app={app} />}
+        {isWorkspacePage(page as never) && <WorkspaceBar app={app} compact />}
         {page === 'projects' && <ProjectsPage app={app} />}
         {page === 'watchlist' && <WatchlistPage app={app} />}
         {page === 'noise' && <NoisePage app={app} />}

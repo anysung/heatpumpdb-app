@@ -92,7 +92,6 @@ export const WatchlistPage: React.FC<{ app: HpApp }> = ({ app }) => {
 
   const header = (
     <>
-      <WorkspaceTabs app={app} active="watchlist" />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         <span style={{ fontFamily: FD, fontSize: 28, fontWeight: 600, letterSpacing: '-0.3px' }}>
           {s.title}{!app.premium && <PremiumPill app={app} />}

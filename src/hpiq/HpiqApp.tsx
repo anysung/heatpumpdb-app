@@ -42,6 +42,7 @@ import { UpgradePage } from './pages/UpgradePage';
 import { ProjectsPage } from './features/projects/ProjectsPage';
 import { WatchlistPage } from './features/watch/WatchlistPage';
 import { NoisePage } from './features/noise/NoisePage';
+import { WorkspaceBar, isWorkspacePage } from './features/WorkspaceTabs';
 import { CostPage } from './features/cost/CostPage';
 import { isSpecialReportItem } from './newsModel';
 import { UpsellModal, DataNotice, WelcomeTrialModal } from './Premium';
@@ -741,6 +742,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
       {page === 'trends' && <TrendsPage app={app} />}
       {page === 'report' && <ReportPage app={app} />}
       {page === 'upgrade' && <UpgradePage app={app} />}
+      {isWorkspacePage(page) && <WorkspaceBar app={app} />}
       {page === 'projects' && <ProjectsPage app={app} />}
       {page === 'watchlist' && <WatchlistPage app={app} />}
       {page === 'noise' && <NoisePage app={app} />}

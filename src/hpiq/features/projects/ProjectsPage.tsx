@@ -50,7 +50,6 @@ export const ProjectsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   return (
     <div style={PAGE} data-testid="projects-page">
       <div style={INNER}>
-        <WorkspaceTabs app={app} active="projects" />
         {!app.premium ? (
           <Teaser app={app} s={s} />
         ) : open ? (

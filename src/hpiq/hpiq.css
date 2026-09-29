@@ -311,3 +311,9 @@
 
 /* Phones: the Premium card leads, Standard follows. */
 @media screen and (max-width: 700px) { .hp-up-std { order: 2; } }
+
+/* ── Workspace bar (2026-09-29): equal segments, hover grows + highlights ── */
+.hp-ws-tab { transition: background-color .16s, color .16s, border-color .16s, transform .16s, box-shadow .16s; }
+.hp-ws-tab .hp-ws-label { transition: transform .16s; display: inline-block; }
+.hp-ws-tab:not(.hp-ws-on):hover { background: #eef4ff !important; color: #0066cc !important; border-color: #0066cc !important; transform: translateY(-1px); box-shadow: 0 6px 16px -8px rgba(0,102,204,.5); }
+.hp-ws-tab:hover .hp-ws-label { transform: scale(1.08); }

@@ -133,7 +133,6 @@ export const NoisePage: React.FC<{ app: HpApp }> = ({ app }) => {
 
   const header = (
     <>
-      <WorkspaceTabs app={app} active="noise" />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         <span style={{ fontFamily: FD, fontSize: 28, fontWeight: 600, letterSpacing: '-0.3px' }}>
           {t.nav.noise}{!app.premium && <PremiumPill app={app} />}
