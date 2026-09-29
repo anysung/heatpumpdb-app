@@ -438,5 +438,65 @@ service cloud.firestore {
       }
     }
 
+    // ═════════════════════════════════════════════════════════════════════
+    // ── Projects (Premium feature 4, 2026-09-29) — customer shortlists ───
+    // Self-contained block: its helpers are prefixed `project…` so it never
+    // collides with other feature blocks. Tests: tests/projects.rules.mjs.
+    //
+    //   users/{uid}/projects/{pid}            personal — the owner only
+    //   organizations/{orgId}/projects/{pid}  team — every uid in the org's
+    //                                         memberUids reads and writes
+    //
+    // Writes (create/update) need the Premium window (isEntitled), matching
+    // the UI gate. Read and delete stay open to the owner/members even after
+    // the window closes — their own data is never held hostage (fail-open).
+    // Items are a list of {id, note?, addedAt}; rules cannot iterate a list,
+    // so they cap its SIZE (50, mirrored in projectModel.ts) and the 1 MiB
+    // document limit bounds the rest.
+    // ═════════════════════════════════════════════════════════════════════
+    function projectShapeValid(d) {
+      return d.keys().hasOnly(['name', 'customer', 'notes', 'market', 'items',
+                               'createdBy', 'createdAt', 'updatedAt']) &&
+             d.keys().hasAll(['name', 'customer', 'notes', 'market', 'items',
+                              'createdBy', 'createdAt', 'updatedAt']) &&
+             d.name is string && d.name.size() >= 1 && d.name.size() <= 120 &&
+             d.customer is string && d.customer.size() <= 120 &&
+             d.notes is string && d.notes.size() <= 2000 &&
+             d.market is string && d.market.size() >= 2 && d.market.size() <= 4 &&
+             d.items is list && d.items.size() <= 50 &&
+             d.createdBy is string &&
+             d.createdAt is timestamp &&
+             d.updatedAt == request.time;
+    }
+    function projectCreateValid() {
+      return projectShapeValid(request.resource.data) &&
+             request.resource.data.createdBy == request.auth.uid &&
+             request.resource.data.createdAt == request.time;
+    }
+    function projectUpdateValid() {
+      return projectShapeValid(request.resource.data) &&
+             request.resource.data.createdBy == resource.data.createdBy &&
+             request.resource.data.createdAt == resource.data.createdAt;
+    }
+    function projectOrgMember(orgId) {
+      return isSignedIn() &&
+             exists(/databases/$(database)/documents/organizations/$(orgId)) &&
+             request.auth.uid in
+               get(/databases/$(database)/documents/organizations/$(orgId)).data.get('memberUids', []);
+    }
+
+    match /users/{userId}/projects/{projectId} {
+      allow read, delete: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isSignedIn() && request.auth.uid == userId && isEntitled() && projectCreateValid();
+      allow update: if isSignedIn() && request.auth.uid == userId && isEntitled() && projectUpdateValid();
+    }
+
+    match /organizations/{orgId}/projects/{projectId} {
+      allow read, delete: if projectOrgMember(orgId);
+      allow create: if projectOrgMember(orgId) && isEntitled() && projectCreateValid();
+      allow update: if projectOrgMember(orgId) && isEntitled() && projectUpdateValid();
+    }
+    // ── end Projects ─────────────────────────────────────────────────────
+
   }
 }
