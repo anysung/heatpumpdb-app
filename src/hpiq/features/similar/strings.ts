@@ -9,6 +9,7 @@ import type { Language } from '../../../types';
 export interface SimilarStrings {
   title: string;
   found: (n: number) => string;
+  variants: (n: number) => string;
   none: string;
   noneFiltered: string;
   noCapacity: string;
@@ -30,7 +31,8 @@ export interface SimilarStrings {
 
 const EN: SimilarStrings = {
   title: 'Alternatives',
-  found: n => (n === 1 ? '1 alternative found' : `${n} alternatives found`),
+  found: n => (n === 1 ? '1 match in this capacity band' : `${n} matches in this capacity band`),
+  variants: n => `+${n} variant${n === 1 ? '' : 's'}`,
   none: 'No comparable model in this capacity band.',
   noneFiltered: 'No alternative matches the selected filters.',
   noCapacity: 'No rated capacity published for this model, so alternatives cannot be matched.',
@@ -52,7 +54,8 @@ const EN: SimilarStrings = {
 
 const DE: SimilarStrings = {
   title: 'Alternativen',
-  found: n => (n === 1 ? '1 Alternative gefunden' : `${n} Alternativen gefunden`),
+  found: n => (n === 1 ? '1 Treffer in dieser Leistungsklasse' : `${n} Treffer in dieser Leistungsklasse`),
+  variants: n => `+${n} Variante${n === 1 ? '' : 'n'}`,
   none: 'Kein vergleichbares Modell in diesem Leistungsbereich.',
   noneFiltered: 'Keine Alternative passt zu den gewählten Filtern.',
   noCapacity: 'Für dieses Modell ist keine Nennleistung veröffentlicht – Alternativen lassen sich nicht zuordnen.',
@@ -74,7 +77,8 @@ const DE: SimilarStrings = {
 
 const FR: SimilarStrings = {
   title: 'Alternatives',
-  found: n => (n === 1 ? '1 alternative trouvée' : `${n} alternatives trouvées`),
+  found: n => (n === 1 ? '1 résultat dans cette plage de puissance' : `${n} résultats dans cette plage de puissance`),
+  variants: n => `+${n} variante${n === 1 ? '' : 's'}`,
   none: 'Aucun modèle comparable dans cette plage de puissance.',
   noneFiltered: 'Aucune alternative ne correspond aux filtres choisis.',
   noCapacity: 'Aucune puissance nominale publiée pour ce modèle : impossible de trouver des alternatives.',
@@ -96,7 +100,8 @@ const FR: SimilarStrings = {
 
 const PL: SimilarStrings = {
   title: 'Alternatywy',
-  found: n => (n === 1 ? 'Znaleziono 1 alternatywę' : `Znaleziono alternatyw: ${n}`),
+  found: n => `Wyniki w tym zakresie mocy: ${n}`,
+  variants: n => `+${n} wariant${n === 1 ? '' : 'y'}`,
   none: 'Brak porównywalnego modelu w tym zakresie mocy.',
   noneFiltered: 'Żadna alternatywa nie spełnia wybranych filtrów.',
   noCapacity: 'Dla tego modelu nie opublikowano mocy znamionowej – nie można dobrać alternatyw.',
@@ -118,7 +123,8 @@ const PL: SimilarStrings = {
 
 const IT: SimilarStrings = {
   title: 'Alternative',
-  found: n => (n === 1 ? '1 alternativa trovata' : `${n} alternative trovate`),
+  found: n => (n === 1 ? '1 risultato in questa fascia di potenza' : `${n} risultati in questa fascia di potenza`),
+  variants: n => `+${n} variant${n === 1 ? 'e' : 'i'}`,
   none: 'Nessun modello confrontabile in questa fascia di potenza.',
   noneFiltered: 'Nessuna alternativa corrisponde ai filtri scelti.',
   noCapacity: 'Nessuna potenza nominale pubblicata per questo modello: impossibile trovare alternative.',

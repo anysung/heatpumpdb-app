@@ -15,7 +15,7 @@ import { LOCAL_LISTING_FILTER, LOCAL_LISTING_SOURCE, localListingStatus } from '
 import { classifyProductSegment } from '../../../config/segmentation';
 import { sectionLabel } from '../../ui';
 import { PremiumPill } from '../../Premium';
-import { rankAlternatives, SimFilters } from './similarity';
+import { rankAlternatives, SimFilters, collapseVariants } from './similarity';
 import { similarStrings } from './strings';
 
 const MAX_ROWS = 5;
@@ -111,7 +111,9 @@ export const SimilarModels: React.FC<{ app: HpApp; v: HpVM; compact?: boolean }>
   }
 
   /* ── Premium: chips + ranked rows ─────────────────────────────────────── */
-  const rows = res.items.slice(0, MAX_ROWS);
+  const groups = collapseVariants(res.items).slice(0, MAX_ROWS);
+  const rows = groups.map(g => g.item);
+  const variantsOf = new Map(groups.map(g => [g.item.id, g.variants]));
   return (
     <div data-testid="similar-models" style={card}>
       {header}
@@ -155,6 +157,9 @@ export const SimilarModels: React.FC<{ app: HpApp; v: HpVM; compact?: boolean }>
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
                   <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, color: '#1d1d1f', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.model}</span>
+                  {(variantsOf.get(r.id) ?? 0) > 0 && (
+                    <span data-testid="similar-variants" style={{ flex: 'none', fontSize: 10.5, color: '#6e6e73', background: '#f0f0f2', borderRadius: 999, padding: '1px 7px' }}>{s.variants(variantsOf.get(r.id) ?? 0)}</span>
+                  )}
                   <ListingChip raw={r.raw} t={t} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11.5, color: '#6e6e73' }}>

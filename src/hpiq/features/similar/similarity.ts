@@ -161,3 +161,25 @@ function compare(a: SimItem, b: SimItem, refKw: number): number {
   if (da !== db) return da - db;
   return a.model.localeCompare(b.model) || a.id.localeCompare(b.id);
 }
+
+/**
+ * Collapse spec-identical variants for display (2026-09-29): one manufacturer
+ * often registers the same outdoor unit several times (indoor-unit or tank
+ * variants) with identical capacity, SCOP, sound power and refrigerant. Listing
+ * them one under another pushes genuinely different alternatives off the list,
+ * so the best-ranked row stands for the group and carries the variant count.
+ */
+export function collapseVariants<T extends SimItem>(list: readonly T[]): { item: T; variants: number }[] {
+  const out: { item: T; variants: number }[] = [];
+  const at = new Map<string, number>();
+  for (const v of list) {
+    const k = [
+      String(v.mfr ?? '').toLowerCase(), num(v.ratedKwNum)?.toFixed(1) ?? '-',
+      num(v.raw.scop)?.toFixed(2) ?? '-', num(v.raw.noise_outdoor_dB) ?? '-', String(v.ref ?? '').toUpperCase(),
+    ].join('|');
+    const i = at.get(k);
+    if (i == null) { at.set(k, out.length); out.push({ item: v, variants: 0 }); }
+    else out[i].variants++;
+  }
+  return out;
+}
