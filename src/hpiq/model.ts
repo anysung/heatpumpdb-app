@@ -47,6 +47,8 @@ export interface HpVM {
   /** Plausibility (src/shared/plausibility.mjs): fields shown in red because
    *  the source record contradicts itself (category B). */
   qaFlags: string[];
+  /** Fields removed as physically impossible (category A) — their value is null in `raw`. */
+  qaRemoved: string[];
   /** True when the model carries the "manufacturer check needed" mark
    *  (a B flag, or a physically impossible value that was removed — A). */
   qaCheck: boolean;
@@ -138,6 +140,7 @@ export function toVM(src: HeatPump, lock?: string): HpVM {
     shortName: p.model.split(' ').slice(0, 3).join(' '),
     raw: p,
     qaFlags: qa.flags,
+    qaRemoved: qa.removed,
     qaCheck: qa.needsCheck,
   };
 }
