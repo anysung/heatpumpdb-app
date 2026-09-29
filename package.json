@@ -25,6 +25,8 @@
     "update:all:deploy": "node scripts/update-all.mjs --fetch --fetch-eprel --deploy",
     "test:rules": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/profile-team.rules.mjs\"",
     "test:rules:storage": "firebase emulators:exec --config firebase.rules-test.json --only firestore,storage --project heatpumpdb-rules-test \"node tests/storage-datasets.rules.mjs\"",
+    "test:rules:projects": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/projects.rules.mjs\"",
+    "test:similarity": "node tests/similarity.unit.mjs",
     "test:rules:country": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/users-country.rules.mjs\"",
     "test:account-country": "node tests/account-country.unit.mjs",
     "test:signup": "bash tests/run-signup-account-e2e.sh",
