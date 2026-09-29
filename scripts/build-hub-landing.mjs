@@ -16,6 +16,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync, rmSync, readFileSync, copyFileSync, existsSync, readdirSync } from 'node:fs';
+import { inconsistentFields } from '../src/shared/plausibility.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import QRCode from 'qrcode';
@@ -606,6 +607,13 @@ for (const [mfr, items] of ranked) {
   picked.push(...best.map(x => ({ x, mfr })));
 }
 picked.length = Math.min(picked.length, 340);
+// Plausibility (2026-09-29, src/shared/plausibility.mjs): report picked pages
+// whose displayed SCOP is flagged as inconsistent (category B).
+{
+  const flagged = picked.filter(({ x }) => (inconsistentFields(x) || []).includes('scop'));
+  console.log(`public model index: ${flagged.length} picked page(s) with an inconsistent SCOP` +
+    (flagged.length ? ' — ' + flagged.map(({ x, mfr }) => `${mfr} ${x.model}`).join('; ') : ''));
+}
 
 const slugOf = ({ x, mfr }) =>
   `${mfr}-${x.model}`.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')
@@ -619,6 +627,7 @@ const models = picked.map(pk => ({
   scop: Number(pk.x.scop).toFixed(2),
   ref: String(pk.x.refrigerant),
   cls: energyClass(pk.x.efficiency_35C_percent),
+  scopFlag: (inconsistentFields(pk.x) || []).includes('scop'),
 }));
 const bySlug = new Map(models.map(m => [m.slug, m]));
 if (bySlug.size !== models.length) throw new Error('slug collision');
@@ -710,7 +719,7 @@ models.forEach((m, i) => {
   <tr><th>Manufacturer</th><td>${m.mfr}</td></tr>
   <tr><th>Model</th><td>${m.model}</td></tr>
   <tr><th>Rated heating capacity</th><td>${m.kw} kW</td></tr>
-  <tr><th>SCOP (seasonal COP)</th><td>${m.scop}</td></tr>
+  <tr><th>SCOP (seasonal COP)</th><td>${m.scopFlag ? `<span style="color:#c0262d;font-weight:600">${m.scop}</span> <span style="color:#c0262d;font-size:.85em">⚠ values in the source record do not agree with each other — verify with the manufacturer</span>` : m.scop}</td></tr>
   <tr><th>Refrigerant</th><td>${m.ref}</td></tr>
   <tr><th>EU energy class (W35)</th><td>${m.cls}</td></tr>
 </table>

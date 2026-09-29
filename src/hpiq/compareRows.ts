@@ -14,6 +14,9 @@ export interface CompareRow {
   dir?: 1 | -1;
   strong?: boolean;
   dim?: boolean;
+  /** Source field behind the value — used for the plausibility flag (red,
+   *  never BEST). */
+  field?: string;
 }
 
 const num = (s: string) => { const n = parseFloat(String(s).replace(',', '.')); return Number.isFinite(n) ? n : null; };
@@ -22,10 +25,10 @@ export function compareRows(t: HpStrings): CompareRow[] {
   const L = t.products.cmpRows;
   return [
     { label: L[0], value: c => `${c.kw} kW`, strong: true },
-    { label: L[1], value: c => c.cop7, metric: c => num(c.cop7), dir: 1 },
-    { label: L[2], value: c => c.cop2, metric: c => num(c.cop2), dir: 1 },
-    { label: L[3], value: c => c.scop, metric: c => num(c.scop), dir: 1 },
-    { label: L[4], value: c => ((/^\d/.test(c.noise) ? `${c.noise} dB(A)` : c.noise)), metric: c => num(c.noise), dir: -1 },
+    { label: L[1], value: c => c.cop7, metric: c => num(c.cop7), dir: 1, field: 'cop_A7W35' },
+    { label: L[2], value: c => c.cop2, metric: c => num(c.cop2), dir: 1, field: 'cop_A2W35' },
+    { label: L[3], value: c => c.scop, metric: c => num(c.scop), dir: 1, field: 'scop' },
+    { label: L[4], value: c => ((/^\d/.test(c.noise) ? `${c.noise} dB(A)` : c.noise)), metric: c => num(c.noise), dir: -1, field: 'noise_outdoor_dB' },
     { label: L[5], value: c => (/^\d/.test(c.refKg) ? `${c.ref} · ${c.refKg} kg` : c.ref) },
     { label: L[6], value: c => c.label },
     { label: L[7], value: c => c.sourceId, dim: true },
@@ -36,7 +39,13 @@ export function compareRows(t: HpStrings): CompareRow[] {
  *  (non-metric row, fewer than two values, or all values equal). */
 export function bestOf(row: CompareRow, items: HpVM[]): number | null {
   if (!row.metric) return null;
-  const usable = items.map(row.metric).filter((v): v is number => v != null);
+  // A value flagged as inconsistent (plausibility B) never wins the row.
+  const usable = items
+    .filter(c => !(row.field && c.qaFlags.includes(row.field)))
+    .map(row.metric).filter((v): v is number => v != null);
   if (usable.length < 2 || new Set(usable).size <= 1) return null;
   return row.dir === -1 ? Math.min(...usable) : Math.max(...usable);
 }
+
+/** Is this cell's value flagged (paint red)? */
+export const cellFlagged = (row: CompareRow, c: HpVM): boolean => !!row.field && c.qaFlags.includes(row.field);

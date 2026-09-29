@@ -8,6 +8,7 @@
  * tables, filters in a bottom sheet, fact-sheet style detail, skeleton-free
  * instant local pagination.
  */
+import { QaMark, qaStyle } from '../QaMark';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { DataNotice, PremiumPill } from '../Premium';
@@ -48,13 +49,13 @@ const ProductCard: React.FC<{ v: HpVM; t: ReturnType<typeof tr>; onOpen: () => v
     }}
   >
     <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'baseline' }}>
-      <span style={{ fontWeight: 600, fontSize: 14.5, lineHeight: 1.25, minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>{v.model}</span>
+      <span style={{ fontWeight: 600, fontSize: 14.5, lineHeight: 1.25, minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>{v.model}<QaMark v={v} lang={t.locale.slice(0, 2)} size={14} /></span>
       <span style={{ fontSize: 12, color: '#7a7a7a', flex: 'none', maxWidth: '38%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.mfr}</span>
     </div>
     <div style={{ display: 'flex', gap: '6px 14px', fontSize: 12.5, color: '#333', flexWrap: 'wrap' }}>
       <span style={{ whiteSpace: 'nowrap' }}><strong style={{ fontWeight: 600 }}>{v.ratedKw}</strong> {v.ratedKw === '—' ? '' : 'kW'}</span>
-      <span>COP A2 <strong style={{ fontWeight: 600 }}>{v.cop2}</strong></span>
-      <span>SCOP <strong style={{ fontWeight: 600 }}>{v.scop}</strong></span>
+      <span>COP A2 <strong style={{ fontWeight: 600, ...qaStyle(v, 'cop_A2W35') }}>{v.cop2}</strong></span>
+      <span>SCOP <strong style={{ fontWeight: 600, ...qaStyle(v, 'scop') }}>{v.scop}</strong></span>
     </div>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <ListedChips v={v} t={t} />
@@ -85,7 +86,7 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
     <>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0, flex: 1 }}>
-          <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.24px', lineHeight: 1.2 }}>{v.model}</span>
+          <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.24px', lineHeight: 1.2 }}>{v.model}<QaMark v={v} lang={app.lang} size={16} /></span>
           <span style={{ fontSize: 12, color: '#7a7a7a' }}>{v.mfr} · {SOURCE_ID_ABBR} {v.sourceId}</span>
         </div>
         <span onClick={onClose} style={{ flex: 'none', width: 30, height: 30, borderRadius: '50%', background: '#f0f0f2', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: '#555', cursor: 'pointer' }}>✕</span>

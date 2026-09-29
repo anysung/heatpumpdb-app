@@ -298,6 +298,16 @@ assumption that gitignored means disposable — keep at least the newest seed.
   Never conflate creator-provided subtitles with YouTube auto-translate.
   Health-checked monthly (`scripts/verify-install-videos.mjs`, window step 4c —
   stamps `unavailableSince`, never deletes; removal is editorial).
+- **Data plausibility (owner 2026-09-29 — ONE rule set: `src/shared/plausibility.mjs`,
+  used by the app, `upload-datasets` (served copy), `compute-dataset-changes` and the
+  public model index).** A · physically impossible (COP ≥ Carnot limit of its test
+  point — A7/W35 11.0, A2/W35 9.3, A−7/W35 7.3 —, COP < 1, outdoor sound < 30 dB(A))
+  → the VALUE is removed (`qa_removed`); B · inconsistent (COP must fall A7 ≥ A2 ≥ A−7,
+  tol 0.3; SCOP = 2.5·(ηs35+3)/100 within 0.15 — not applied to registry-native
+  GSE/ZUM records, whose SCOP basis differs; surviving COPs of a set with an A value)
+  → shown RED, never BEST or ranked, model carries the red "!" "manufacturer check
+  needed" mark (`qa_flags`); C · unusually high but possible → used as is. Source
+  values are never corrected or guessed.
 - Refrigerant filtering always uses `.includes()` contains logic (values like
   `R290(estimated)` must match), never exact match.
 - **Standard + Premium (2026-09-27 — docs/FREE_PREMIUM_PROGRAM_PLAN.md).** The free

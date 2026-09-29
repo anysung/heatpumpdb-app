@@ -19,6 +19,8 @@
  * folds in `ascii()` (η→eta, − →-, …) apply either way — never remove them or
  * sheets get mojibake on the fallback path.
  */
+import { qaTip } from '../QaMark';
+const QA_RGB: [number, number, number] = [192, 38, 45];
 import { jsPDF } from 'jspdf';
 import { HpVM, crossRefId } from '../model';
 import { HpStrings } from '../i18n';
@@ -197,6 +199,14 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   doc.roundedRect(M_X, y, CW, cardH, 2, 2, 'F');
   setFont(13.5, true, [255, 255, 255]);
   titleLines.forEach((ln, i) => doc.text(ln, M_X + 6, y + 7.6 + i * 6));
+  // Plausibility mark (src/shared/plausibility.mjs): a red "(!)" after the
+  // title and a one-line note under the card.
+  if (v.qaCheck) {
+    const last = titleLines[titleLines.length - 1] ?? '';
+    const lx = M_X + 6 + doc.getTextWidth(last) + 2;
+    setFont(11, true, QA_RGB);
+    doc.text('(!)', lx, y + 7.6 + (titleLines.length - 1) * 6);
+  }
   setFont(8.5, false, [205, 205, 205]);
   const typeStr = (useRawType ?? isGb) ? (v.raw.type ?? '—').toLowerCase() : t.ds.airWater;
   doc.text(
@@ -204,6 +214,13 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     M_X + 6, y + cardH - 3.4,
   );
   y += cardH + 4;
+  if (v.qaCheck) {
+    setFont(7.5, false, QA_RGB);
+    const qaLines = doc.splitTextToSize(ascii('(!) ' + qaTip(t.locale.slice(0, 2))), CW) as string[];
+    need(qaLines.length * 3.6 + 1);
+    qaLines.forEach((ln, i) => doc.text(ln, M_X, y + 3 + i * 3.6));
+    y += qaLines.length * 3.6 + 2;
+  }
 
   /* ── Key stats (4 tiles) ──────────────────────────────────────────────── */
   const stats: [string, string][] = [
@@ -240,7 +257,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
   };
 
   /** Two-column field grid. Each cell: [n] LABEL (small caps) over the value. */
-  const fieldGrid = (cells: [string, string, number | null][]) => {
+  const fieldGrid = (cells: ([string, string, number | null] | [string, string, number | null, boolean])[]) => {
     for (let i = 0; i < cells.length; i += 2) {
       const row = cells.slice(i, i + 2);
       // The value is indented to where the LABEL starts — after the "[n] "
@@ -259,7 +276,7 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
         setFont(6, false, MUTED);
         const prefix = note != null ? `[${note}] ` : '';
         doc.text(ascii(prefix + label.toUpperCase()), x, y + 2.8);
-        setFont(9.5, true, INK);
+        setFont(9.5, true, row[c][3] ? QA_RGB : INK);   // plausibility B → red
         wrapped[c].forEach((ln, li) => doc.text(ln, x + indents[c], y + 7 + li * 4.6));
         doc.setDrawColor(HAIR[0], HAIR[1], HAIR[2]);
         doc.setLineWidth(0.2);
@@ -339,10 +356,10 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     sectionHead(t.ds.headPerf);
     fieldGrid([
       [t.ds.f.kw55, v.kw === '—' ? '—' : `${v.kw} kW`, n('kw55')],
-      [t.ds.f.scop, v.scop, n('scop')],
-      [t.ds.f.cop7, v.cop7, n('cop7')],
-      [t.ds.f.cop2, v.cop2, n('cop2')],
-      [t.ds.f.copm7, v.copm7, n('copm7')],
+      [t.ds.f.scop, v.scop, n('scop'), v.qaFlags.includes('scop')],
+      [t.ds.f.cop7, v.cop7, n('cop7'), v.qaFlags.includes('cop_A7W35')],
+      [t.ds.f.cop2, v.cop2, n('cop2'), v.qaFlags.includes('cop_A2W35')],
+      [t.ds.f.copm7, v.copm7, n('copm7'), v.qaFlags.includes('cop_AMinus7W35')],
     ]);
     if (crossRefId(v.raw) != null) {
       paragraph(t.ds.perfCrossRefNote(crossRefId(v.raw) ?? '—'));

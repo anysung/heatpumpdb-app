@@ -62,6 +62,7 @@ const berlinMonth = () => {
 const MONTH = arg('month') ?? berlinMonth();
 if (!/^\d{4}-\d{2}$/.test(MONTH)) { console.error(`bad --month=${MONTH}`); process.exit(2); }
 
+import { sanitizeRecord } from '../src/shared/plausibility.mjs';
 const CANARIES = JSON.parse(readFileSync(join(ROOT, 'scripts/canary/canary-records.json'), 'utf8'));
 
 function readLive(cc, file) {
@@ -71,7 +72,9 @@ function readLive(cc, file) {
   try { text = gunzipSync(raw).toString('utf8'); } catch { text = raw.toString('utf8'); }
   return JSON.parse(text).items ?? [];
 }
-const readLocal = (file) => JSON.parse(readFileSync(join(DATA_DIR, file), 'utf8')).items ?? [];
+// The candidate is sanitised exactly like the served copy (upload-datasets), so
+// a removed impossible value is not reported as a spec change every month.
+const readLocal = (file) => (JSON.parse(readFileSync(join(DATA_DIR, file), 'utf8')).items ?? []).map(sanitizeRecord);
 
 const allZero = (c) => !c || (c.listing + c.added + c.removed + c.specs) === 0;
 const savedPath = (cc) => join(OUT_DIR, cc, `${MONTH}.json`);

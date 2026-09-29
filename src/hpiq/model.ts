@@ -2,6 +2,7 @@
  * HeatPump DB view model — adapts the real HeatPump records (BAFA dataset +
  * EPREL enrichment fields) to the display shape used by the approved design.
  */
+import { plausibilityOf } from '../shared/plausibility.mjs';
 import { ratedCapacityKw } from '../config/segmentation';
 import { HeatPump } from '../types';
 
@@ -43,6 +44,12 @@ export interface HpVM {
   completeness: string;
   shortName: string;
   raw: HeatPump;
+  /** Plausibility (src/shared/plausibility.mjs): fields shown in red because
+   *  the source record contradicts itself (category B). */
+  qaFlags: string[];
+  /** True when the model carries the "manufacturer check needed" mark
+   *  (a B flag, or a physically impossible value that was removed — A). */
+  qaCheck: boolean;
 }
 
 /** EU Regulation 811/2013 seasonal space-heating efficiency classes (ηs %). */
@@ -88,7 +95,14 @@ export function crossRefId(p: HeatPump): string | null {
  * values. Free accounts download the BASIC dataset, which does not carry these
  * fields at all — the label only says why the cell is empty, it hides nothing.
  */
-export function toVM(p: HeatPump, lock?: string): HpVM {
+export function toVM(src: HeatPump, lock?: string): HpVM {
+  // A-values (physically impossible) never reach the screen; B-values are kept
+  // and flagged. The served datasets are already sanitised — this repeats it so
+  // local/dev data and any older cached copy behave the same.
+  const qa = plausibilityOf(src as unknown as Record<string, unknown>);
+  const p = (qa.removed.length
+    ? { ...src, ...Object.fromEntries(qa.removed.map(f => [f, null])) }
+    : src) as HeatPump;
   const id = p.source_id || p.bafa_id || p.european_reference_id;
   const mfr = p.manufacturer_short || p.manufacturer;
   const eprel = !!p.eprel_registration_number;
@@ -123,6 +137,8 @@ export function toVM(p: HeatPump, lock?: string): HpVM {
     completeness: completenessOf(p),
     shortName: p.model.split(' ').slice(0, 3).join(' '),
     raw: p,
+    qaFlags: qa.flags,
+    qaCheck: qa.needsCheck,
   };
 }
 

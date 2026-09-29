@@ -39,6 +39,8 @@ export function sourceFamily(type: string | null | undefined): SourceFamily | nu
 }
 
 export type SimItem = Pick<HpVM, 'id' | 'mfr' | 'model' | 'ratedKwNum' | 'ref'> & {
+  /** Plausibility B flags — a flagged SCOP never ranks (treated as unknown). */
+  qaFlags?: string[];
   raw: { scop?: number | null; noise_outdoor_dB?: number | null; type?: string | null };
 };
 
@@ -144,7 +146,7 @@ function dedupe<T extends SimItem>(list: T[]): T[] {
 }
 
 function compare(a: SimItem, b: SimItem, refKw: number): number {
-  const sa = num(a.raw.scop), sb = num(b.raw.scop);
+  const sa = scopOf(a), sb = scopOf(b);
   if (sa !== sb) {
     if (sa == null) return 1;
     if (sb == null) return -1;
@@ -182,4 +184,9 @@ export function collapseVariants<T extends SimItem>(list: readonly T[]): { item:
     else out[i].variants++;
   }
   return out;
+}
+
+/** SCOP used for ranking — a value flagged as inconsistent counts as unknown. */
+function scopOf(v: SimItem): number | null {
+  return v.qaFlags?.includes('scop') ? null : num(v.raw.scop);
 }

@@ -1,4 +1,5 @@
 /** Find product — fast model lookup (search-first page). */
+import { QaMark, qaStyle } from '../QaMark';
 import React, { useRef } from 'react';
 import { HpApp } from '../appState';
 import { DataNotice, PremiumPill } from '../Premium';
@@ -80,7 +81,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                       <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{p.mfr}</span>
-                      <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.22 }}>{p.model}</span>
+                      <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.22 }}>{p.model}<QaMark v={p} lang={app.lang} size={15} /></span>
                       <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.find.outdoorUnit} {p.odu}</span>
                     </div>
                     <span
@@ -113,7 +114,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{t.find.scop}</span>
-                      <span style={{ fontSize: 16, fontWeight: 600 }}>{p.scop}</span>
+                      <span style={{ fontSize: 16, fontWeight: 600, ...qaStyle(p, 'scop') }}>{p.scop}</span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{t.find.soundPower}</span>

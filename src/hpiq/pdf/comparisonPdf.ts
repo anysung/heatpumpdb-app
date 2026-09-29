@@ -12,7 +12,8 @@
 import { jsPDF } from 'jspdf';
 import { HpVM } from '../model';
 import { HpStrings } from '../i18n';
-import { compareRows, bestOf, CompareRow } from '../compareRows';
+import { compareRows, bestOf, CompareRow, cellFlagged } from '../compareRows';
+const QA_RGB: [number, number, number] = [192, 38, 45];
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
 import { FLAG_ASPECT, LOGO_ASPECT } from '../../components/brandSvg';
 import { getBrandArtwork } from './brandArtwork';
@@ -154,7 +155,13 @@ export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: Co
       const ml = (doc.splitTextToSize(ascii(c.model), colW - 8) as string[]).slice(0, 3);
       ml.forEach((ln, li) => doc.text(ln, x, y + 6 + li * 4.4));
       set(7.5, false, MUTED);
-      doc.text((doc.splitTextToSize(ascii(c.mfr), colW - 8) as string[])[0] ?? '', x, y + 6 + ml.length * 4.4 + 0.6);
+      const mfrLine = (doc.splitTextToSize(ascii(c.mfr), colW - 8) as string[])[0] ?? '';
+      doc.text(mfrLine, x, y + 6 + ml.length * 4.4 + 0.6);
+      if (c.qaCheck) {   // plausibility mark: red "(!)" after the manufacturer
+        const mx = x + doc.getTextWidth(mfrLine) + 1.8;
+        set(7.5, true, QA_RGB);
+        doc.text('(!)', mx, y + 6 + ml.length * 4.4 + 0.6);
+      }
     });
     doc.setDrawColor(LINE[0], LINE[1], LINE[2]);
     doc.setLineWidth(0.5);
@@ -208,6 +215,7 @@ export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: Co
 
     items.forEach((c, i) => {
       const isBest = best != null && row.metric!(c) === best;
+      const flagged = cellFlagged(row, c);
       const w = wrapped[i];
       const cx = colX(i) + colW / 2;
       const vy = y + rowH / 2 - ((w.length - 1) * 4) / 2 + 1.3;
@@ -225,7 +233,7 @@ export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: Co
         set(6, true, GREEN);
         doc.text(bestLabel, x0 + tw + 2.2 + pw / 2, vy - 0.25, { align: 'center' });
       } else {
-        set(size, !!row.strong, row.dim ? MUTED : INK);
+        set(size, !!row.strong || flagged, flagged ? QA_RGB : row.dim ? MUTED : INK);
         w.forEach((ln, li) => doc.text(ln, cx, vy + li * 4, { align: 'center' }));
       }
     });

@@ -38,6 +38,7 @@ const DRY = process.argv.includes('--dry-run');
 // Set only after the gate was run with an explicit, recorded --override.
 const GATE_PASSED = process.argv.includes('--gate-passed');
 
+import { sanitizeRecord } from '../src/shared/plausibility.mjs';
 const CANARIES = JSON.parse(readFileSync(join(ROOT, 'scripts/canary/canary-records.json'), 'utf8'));
 
 /** The ONE basic-field allowlist + the ONE projection/pair check (shared with the Panic Button). */
@@ -312,7 +313,9 @@ for (const [cc, files] of Object.entries(DATASETS)) {
       _meta: { ...data._meta, total_items: (data._meta?.total_items ?? data.items.length) + 1 },
       // Strip internal-only fields from the browser-facing copy (the canary is
       // projected too, so every served record has one consistent public shape).
-      items: [...data.items, makeCanary(data.items, overrides)].map(projectPublic),
+      // Plausibility (2026-09-29): physically impossible values are removed and
+      // inconsistent ones flagged (qa_removed / qa_flags) — src/shared/plausibility.mjs.
+      items: [...data.items.map(sanitizeRecord), makeCanary(data.items, overrides)].map(projectPublic),
     };
     // BASIC companion: the SAME served records (canary included — it keeps its
     // stable id, so the basic file carries its own honeytoken) projected to the

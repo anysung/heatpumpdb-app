@@ -7,6 +7,7 @@
  * per-item notes, compare (desktop), open product, Project PDF.
  * Standard accounts see a teaser that routes to the one upgrade prompt.
  */
+import { QaMark, qaStyle } from '../../QaMark';
 import React, { useEffect, useMemo, useState } from 'react';
 import { HpApp } from '../../appState';
 import { HpVM, shortDate } from '../../model';
@@ -323,7 +324,7 @@ const ProjectDetail: React.FC<{
               {v ? (
                 <>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                    <span onClick={() => openProduct(v.id)} style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 600, cursor: 'pointer', overflowWrap: 'anywhere' }}>{v.model}</span>
+                    <span onClick={() => openProduct(v.id)} style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 600, cursor: 'pointer', overflowWrap: 'anywhere' }}>{v.model}<QaMark v={v} lang={app.lang} size={13} /></span>
                     <ListingChip raw={v.raw} t={t} />
                   </div>
                   <span style={{ fontSize: 12, color: '#6e6e73' }}>
@@ -358,12 +359,12 @@ const ProjectDetail: React.FC<{
                 {v ? (
                   <>
                     <span style={{ minWidth: 0 }}>
-                      <span onClick={() => openProduct(v.id)} style={{ fontWeight: 600, display: 'block', cursor: 'pointer', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={v.model}>{v.model}</span>
+                      <span onClick={() => openProduct(v.id)} style={{ fontWeight: 600, display: 'block', cursor: 'pointer', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={v.model}>{v.model}<QaMark v={v} lang={app.lang} size={13} /></span>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{SOURCE_ID_ABBR} {v.sourceId}</span>
                     </span>
                     <span style={{ minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.mfr}</span>
                     <span>{v.ratedKw}</span>
-                    <span>{v.scop}</span>
+                    <span style={qaStyle(v, 'scop')}>{v.scop}</span>
                     <span style={{ whiteSpace: 'nowrap' }}>{soundOf(v)}</span>
                     <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.ref}</span>
                     <span><ListingChip raw={v.raw} t={t} /></span>

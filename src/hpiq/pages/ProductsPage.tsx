@@ -6,7 +6,8 @@ import { ProductActions } from '../features/ProductActions';
 import { AddToProject } from '../features/projects/AddToProject';
 import { ComparePdfButton } from '../features/branding/ComparePdfButton';
 import { HpVM } from '../model';
-import { compareRows, bestOf } from '../compareRows';
+import { compareRows, bestOf, cellFlagged } from '../compareRows';
+import { QaMark, qaStyle, QA_RED } from '../QaMark';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
 import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
@@ -483,13 +484,13 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       <CheckBox on={inCmp} size={16} radius={4} onClick={e => { e.stopPropagation(); app.toggleCompare(r.id); }} />
                     </span>
                     <span style={{ minWidth: 0 }}>
-                      <span style={{ fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.model}</span>
+                      <span style={{ fontWeight: 600, display: 'flex', alignItems: 'center', minWidth: 0 }}><span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.model}</span><QaMark v={r} lang={app.lang} size={14} /></span>
                       <span style={{ fontSize: 11, color: '#7a7a7a' }}>{SOURCE_ID_ABBR} {r.sourceId}</span>
                     </span>
                     <span style={{ minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.mfr}</span>
                     <span data-testid="row-kw" style={{ whiteSpace: 'nowrap' }}>{r.ratedKw}</span>
-                    <span style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>{r.cop2}</span>
-                    <span style={{ whiteSpace: 'nowrap' }}>{r.scop}</span>
+                    <span style={{ fontWeight: 600, whiteSpace: 'nowrap', ...qaStyle(r, 'cop_A2W35') }}>{r.cop2}</span>
+                    <span style={{ whiteSpace: 'nowrap', ...qaStyle(r, 'scop') }}>{r.scop}</span>
                     <span style={{ whiteSpace: 'nowrap' }}>{(/^\d/.test(r.noise) ? `${r.noise} dB` : r.noise)}</span>
                     <span style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                       {/* No national list in this market → say nothing about listing. */}
@@ -524,24 +525,24 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   <span style={{ fontSize: 12, color: '#7a7a7a' }}>{sel.mfr} · {SOURCE_ID_ABBR} {sel.sourceId}</span>
                   <span onClick={() => app.setSelectedId(null)} style={{ fontSize: 13, color: '#7a7a7a', cursor: 'pointer' }}>×</span>
                 </div>
-                <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.18 }}>{sel.model}</span>
+                <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.18 }}>{sel.model}<QaMark v={sel} lang={app.lang} size={17} /></span>
               </div>
               <div style={{ padding: '18px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '18px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px 12px' }}>
                   {([
-                    [t.products.inspSpecs.cap, sel.kw === '—' ? '—' : `${sel.kw} kW`],
-                    [t.products.inspSpecs.scop, sel.scop],
-                    [t.products.inspSpecs.cls, sel.label],
-                    [t.products.inspSpecs.cop7, sel.cop7],
-                    [t.products.inspSpecs.cop2, sel.cop2],
-                    [t.products.inspSpecs.copm7, sel.copm7],
-                    [t.products.inspSpecs.ref, sel.ref],
-                    [t.products.inspSpecs.noise, (/^\d/.test(sel.noise) ? `${sel.noise} dB(A)` : sel.noise)],
-                    [t.products.inspSpecs.type, sel.installType],
-                  ] as [string, string][]).map(([label, value]) => (
+                    [t.products.inspSpecs.cap, sel.kw === '—' ? '—' : `${sel.kw} kW`, ''],
+                    [t.products.inspSpecs.scop, sel.scop, 'scop'],
+                    [t.products.inspSpecs.cls, sel.label, ''],
+                    [t.products.inspSpecs.cop7, sel.cop7, 'cop_A7W35'],
+                    [t.products.inspSpecs.cop2, sel.cop2, 'cop_A2W35'],
+                    [t.products.inspSpecs.copm7, sel.copm7, 'cop_AMinus7W35'],
+                    [t.products.inspSpecs.ref, sel.ref, ''],
+                    [t.products.inspSpecs.noise, (/^\d/.test(sel.noise) ? `${sel.noise} dB(A)` : sel.noise), ''],
+                    [t.products.inspSpecs.type, sel.installType, ''],
+                  ] as [string, string, string][]).map(([label, value, field]) => (
                     <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                       <span style={{ fontSize: 10.5, color: '#7a7a7a' }}>{label}</span>
-                      <span style={{ fontSize: 16, fontWeight: 600 }}>{value}</span>
+                      <span style={{ fontSize: 16, fontWeight: 600, ...(field ? qaStyle(sel, field) : {}) }}>{value}</span>
                     </div>
                   ))}
                 </div>
@@ -642,7 +643,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <div style={{ background: '#f5f5f7', borderBottom: '2px solid #e0e0e0' }} />
                     {compareItems.map(c => (
                       <div key={`h-${c.id}`} style={{ background: '#f5f5f7', borderBottom: '2px solid #e0e0e0', borderLeft: '1px solid #e0e0e0', padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
-                        <span style={{ fontWeight: 650, fontSize: 17, lineHeight: 1.32, overflowWrap: 'anywhere' }}>{c.model}</span>
+                        <span style={{ fontWeight: 650, fontSize: 17, lineHeight: 1.32, overflowWrap: 'anywhere' }}>{c.model}<QaMark v={c} lang={app.lang} size={15} /></span>
                         <span style={{ fontSize: 12.5, color: '#7a7a7a', overflowWrap: 'anywhere' }}>
                           {c.mfr} · <span onClick={() => app.toggleCompare(c.id)} style={{ color: '#0066cc', cursor: 'pointer', whiteSpace: 'nowrap' }}>{t.products.remove}</span>
                         </span>
@@ -667,6 +668,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                                   ...(row.strong ? { fontWeight: 600 } : {}),
                                   ...(row.dim ? { fontSize: 13, color: '#7a7a7a' } : {}),
                                   ...(isBest ? { color: '#0a7a43', fontWeight: 650 } : {}),
+                                  ...(cellFlagged(row, c) ? { color: QA_RED, fontWeight: 650 } : {}),
                                 }}
                               >
                                 {row.value(c)}

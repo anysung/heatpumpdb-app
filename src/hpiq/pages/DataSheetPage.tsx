@@ -1,4 +1,5 @@
 /** Data sheet studio — two modes, model picker, section toggles, live preview. */
+import { QaMark, qaFlagged, qaTip, QA_RED } from '../QaMark';
 import React, { useMemo, useState } from 'react';
 import { HpApp, DsSectionKey } from '../appState';
 import { DataNotice, PremiumPill } from '../Premium';
@@ -20,13 +21,13 @@ const MONO = 'ui-monospace, Menlo, monospace';
  *  indented to the LABEL, not to the number (owner, 2026-09-02: values lined
  *  up under the markers read as a second column of numbers). */
 const NOTE_W = 27;
-const FieldCell: React.FC<{ label: string; value: string; note?: number; span?: boolean }> = ({ label, value, note, span }) => (
+const FieldCell: React.FC<{ label: string; value: string; note?: number; span?: boolean; red?: boolean }> = ({ label, value, note, span, red }) => (
   <div className="ds-cell" style={{ gridColumn: span ? '1 / -1' : undefined, display: 'flex', flexDirection: 'column', gap: 4, padding: '11px 0 10px', borderBottom: '1px solid #ececf0', breakInside: 'avoid' }}>
     <span className="ds-cell-label" style={{ display: 'flex', fontSize: 10.5, letterSpacing: '.05em', textTransform: 'uppercase', color: '#7a7a7a' }}>
       {note != null && <span style={{ fontFamily: MONO, fontSize: 9.5, color: '#b6b6bc', flex: `0 0 ${NOTE_W}px` }}>[{note}]</span>}
       <span style={{ minWidth: 0 }}>{label}</span>
     </span>
-    <span className="ds-cell-value" style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.1px', paddingLeft: note != null ? NOTE_W : 0 }}>{value}</span>
+    <span className="ds-cell-value" style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.1px', paddingLeft: note != null ? NOTE_W : 0, ...(red ? { color: QA_RED } : {}) }}>{value}</span>
   </div>
 );
 
@@ -139,9 +140,12 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
               {/* Premium: "Prepared by … for …" — mirrors the generated PDF's band */}
               <DataSheetBrandingBand app={app} />
 
+              {dsp.qaCheck && (
+                <span data-testid="qa-note" style={{ fontSize: 12, color: QA_RED, lineHeight: 1.5 }}>(!) {qaTip(app.lang)}</span>
+              )}
               {/* title card + key stats */}
               <div className="ds-title-card" style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
-                <span className="ds-title-model" style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}</span>
+                <span className="ds-title-model" style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}<QaMark v={dsp} lang={app.lang} size={17} /></span>
                 <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB || IS_PL || IS_IT ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
               </div>
               <div className="ds-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
@@ -218,10 +222,10 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                   <SectionHead title={t.ds.headPerf} />
                   <SectionGrid>
                     <FieldCell label={t.ds.f.kw55} value={dsp.kw === '—' ? '—' : `${dsp.kw} kW`} note={n('kw55')} />
-                    <FieldCell label={t.ds.f.scop} value={dsp.scop} note={n('scop')} />
-                    <FieldCell label={t.ds.f.cop7} value={dsp.cop7} note={n('cop7')} />
-                    <FieldCell label={t.ds.f.cop2} value={dsp.cop2} note={n('cop2')} />
-                    <FieldCell label={t.ds.f.copm7} value={dsp.copm7} note={n('copm7')} />
+                    <FieldCell label={t.ds.f.scop} value={dsp.scop} note={n('scop')} red={qaFlagged(dsp, 'scop')} />
+                    <FieldCell label={t.ds.f.cop7} value={dsp.cop7} note={n('cop7')} red={qaFlagged(dsp, 'cop_A7W35')} />
+                    <FieldCell label={t.ds.f.cop2} value={dsp.cop2} note={n('cop2')} red={qaFlagged(dsp, 'cop_A2W35')} />
+                    <FieldCell label={t.ds.f.copm7} value={dsp.copm7} note={n('copm7')} red={qaFlagged(dsp, 'cop_AMinus7W35')} />
                   </SectionGrid>
                   {crossRefId(dsp.raw) != null && (
                     <span style={{ fontSize: 10.5, color: '#7a7a7a', lineHeight: 1.55, paddingTop: 10 }}>
@@ -243,7 +247,7 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                       <FieldCell label={t.ds.f.kw55} value={`${dsp.raw.power_55C_kw} kW`} note={n('kw55')} />
                     )}
                     {dsp.raw.scop != null && (
-                      <FieldCell label={t.ds.f.scop} value={dsp.scop} note={n('scop')} />
+                      <FieldCell label={t.ds.f.scop} value={dsp.scop} note={n('scop')} red={qaFlagged(dsp, 'scop')} />
                     )}
                   </SectionGrid>
                 </div>
