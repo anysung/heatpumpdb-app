@@ -1,0 +1,201 @@
+{
+  "_readme": [
+    "Running cost & CO2 calculator defaults (Premium feature 6, owner-approved 2026-09-29). ONE file for every market; read by src/hpiq/features/cost/CostPage.tsx through costModel.marketDefaults().",
+    "Every value is a public statistic with its source, URL and the period it refers to (asOf). All values are editable in the UI; the page says 'defaults as of <markets.XX.asOf>, edit to your tariff'.",
+    "REFRESH TWICE A YEAR (owner rule) — procedure and source list: docs/ENERGY_DEFAULTS.md. Bump markets.XX.asOf and version when you do.",
+    "Bases (keep consistent when refreshing): prices are ALL-IN household unit prices per kWh incl. taxes (standing-charge share as the source reports it); gas kWh and gas CO2 are on the GROSS calorific value (Hs / PCS / gross CV) basis — the one gas is billed on and boiler seasonal efficiency (EU 813/2013) is defined on; CO2 factors are direct (combustion/generation) CO2 unless the note says otherwise.",
+    "currency: GB -> GBP, PL -> PLN, others EUR (display only — this is not billing)."
+  ],
+  "version": "2026-09-29",
+  "boilerEfficiency": {
+    "value": 0.9,
+    "source": "EU 813/2013 seasonal space-heating efficiency (gross calorific value basis) — typical modern condensing gas boiler",
+    "url": "https://eur-lex.europa.eu/eli/reg/2013/813/oj",
+    "note": "Editable; older non-condensing boilers typically 0.75–0.85."
+  },
+  "buildingStandards": {
+    "source": "co2online Heizspiegel für Deutschland 2026",
+    "url": "https://www.co2online.de/energie-sparen/heizenergie-sparen/heizkosten-sparen/heizkosten-pro-m2-vergleich/",
+    "asOf": "2026 (billing year 2025)",
+    "note": "gas-heated single-family houses; gas consumption bands low / medium / elevated (65 / 127 / 220 kWh/m²·a) and the 1995–2001 age band (95) × 0.9 boiler efficiency, rounded — German stock; adjust for your climate",
+    "values": {
+      "new": 60,
+      "renovated": 85,
+      "partly": 115,
+      "unrenovated": 200
+    }
+  },
+  "markets": {
+    "DE": {
+      "currency": "EUR",
+      "asOf": "2026-09-29",
+      "electricity": {
+        "value": 0.37, "unit": "EUR/kWh",
+        "source": "BDEW-Strompreisanalyse (household, 3,500 kWh/a, incl. taxes and standing-charge share)",
+        "url": "https://www.bdew.de/service/daten-und-grafiken/bdew-strompreisanalyse/",
+        "asOf": "2026 (Aug 2026)",
+        "note": "Eurostat nrg_pc_204 2025-S2 cross-check: 0.387"
+      },
+      "heatPumpTariff": {
+        "value": 0.207, "unit": "EUR/kWh",
+        "source": "Verivox, Wärmepumpenstrom Preisentwicklung (new-customer heat-pump tariff, 7,500 kWh/a)",
+        "url": "https://www.verivox.de/heizstrom/waermepumpenstrom-preisentwicklung/",
+        "asOf": "2026",
+        "note": "Plus a base price of about 8–12 EUR/month for the separate meter — enter it as a negative standing-charge difference if relevant"
+      },
+      "gas": {
+        "value": 0.1193, "unit": "EUR/kWh (Hs)",
+        "source": "BDEW-Gaspreisanalyse (single-family house, 20,000 kWh/a, incl. taxes)",
+        "url": "https://www.bdew.de/service/daten-und-grafiken/bdew-gaspreisanalyse/",
+        "asOf": "Aug 2026",
+        "note": "Eurostat nrg_pc_202 2025-S2 cross-check: 0.122"
+      },
+      "gridCo2": {
+        "value": 0.344, "unit": "kg CO2/kWh",
+        "source": "Umweltbundesamt, Climate Change 16/2026 — CO2 emission factor of the German electricity mix (domestic consumption)",
+        "url": "https://www.umweltbundesamt.de/themen/co2-emissionen-pro-kilowattstunde-strom-2025-nur",
+        "asOf": "2025 (provisional; 2024: 0.353)",
+        "note": "Direct CO2 of generation, no upstream chain"
+      },
+      "gasCo2": {
+        "value": 0.181, "unit": "kg CO2/kWh (Hs)",
+        "source": "Umweltbundesamt CO2 emission factor natural gas (≈ 0.201 kg/kWh Hi), converted to Hs (÷ 1.11)",
+        "url": "https://www.umweltbundesamt.de/publikationen/co2-emissionsfaktoren-fuer-fossile-brennstoffe-0",
+        "asOf": "current inventory factor",
+        "note": "Combustion only. GEG Anlage 9 (0.240 kg CO2e/kWh Hi) includes the upstream chain"
+      }
+    },
+    "GB": {
+      "currency": "GBP",
+      "asOf": "2026-09-29",
+      "electricity": {
+        "value": 0.2632, "unit": "GBP/kWh",
+        "source": "Ofgem energy price cap — GB average unit rate, Direct Debit",
+        "url": "https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap-unit-rates-and-standing-charges",
+        "asOf": "1 Oct – 31 Dec 2026",
+        "note": "Standing charge 0.5483 GBP/day (not in the unit rate). Ofgem: no VAT on electricity 1 Oct 2026 – 31 Mar 2027"
+      },
+      "heatPumpTariff": null,
+      "gas": {
+        "value": 0.0797, "unit": "GBP/kWh (gross CV)",
+        "source": "Ofgem energy price cap — GB average unit rate, Direct Debit, incl. 5 % VAT",
+        "url": "https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap-unit-rates-and-standing-charges",
+        "asOf": "1 Oct – 31 Dec 2026",
+        "note": "Gas standing charge 0.2968 GBP/day (≈ 108 GBP/year) — enter it as the standing-charge difference if the gas supply is disconnected"
+      },
+      "gridCo2": {
+        "value": 0.144, "unit": "kg CO2e/kWh",
+        "source": "DESNZ Greenhouse gas reporting conversion factors 2026 — UK electricity generation (0.13096) + transmission & distribution (0.01299)",
+        "url": "https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026",
+        "asOf": "2026 factors",
+        "note": "Well-to-tank excluded"
+      },
+      "gasCo2": {
+        "value": 0.1823, "unit": "kg CO2e/kWh (gross CV)",
+        "source": "DESNZ Greenhouse gas reporting conversion factors 2026 — natural gas, Scope 1, gross CV",
+        "url": "https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026",
+        "asOf": "2026 factors",
+        "note": "Combustion only; well-to-tank would add 0.030"
+      }
+    },
+    "FR": {
+      "currency": "EUR",
+      "asOf": "2026-09-29",
+      "electricity": {
+        "value": 0.2001, "unit": "EUR/kWh",
+        "source": "Tarif réglementé de vente d'électricité (Tarif Bleu, option Base, 6 kVA, TTC) — CRE délibération n° 2026-147",
+        "url": "https://www.cre.fr/actualites/toute-lactualite/la-cre-propose-une-evolution-du-niveau-moyen-des-tarifs-reglementes-de-vente-de-lelectricite-de-25-ttc-au-1er-aout-2026.html",
+        "asOf": "from 1 Aug 2026",
+        "note": "Subscription ≈ 15.86 EUR/month (6 kVA) not included. Eurostat 2025-S2 all-in cross-check: 0.256"
+      },
+      "heatPumpTariff": null,
+      "gas": {
+        "value": 0.1456, "unit": "EUR/kWh (PCS)",
+        "source": "CRE — prix repère de vente de gaz naturel, clients résidentiels chauffage (TTC)",
+        "url": "https://www.cre.fr/consommateurs/prix-reperes-et-references/prix-repere-de-vente-de-gaz-naturel-a-destination-des-clients-residentiels.html",
+        "asOf": "Oct 2026",
+        "note": "Subscription ≈ 361 EUR/year not included (Sep 2026: 0.1347). Eurostat 2025-S2 cross-check: 0.144"
+      },
+      "gridCo2": {
+        "value": 0.079, "unit": "kg CO2e/kWh",
+        "source": "ADEME / RE2020 & DPE — CO2 content of electricity used for space heating",
+        "url": "https://www.ademe.fr/presse/communique-national/positionnement-de-lademe-sur-le-calcul-du-contenu-co2-de-lelectricite-dans-le-cas-du-chauffage-electrique/",
+        "asOf": "current regulatory value",
+        "note": "Seasonal heating-use value (lifecycle basis), higher than the annual average mix"
+      },
+      "gasCo2": {
+        "value": 0.205, "unit": "kg CO2e/kWh (PCS)",
+        "source": "ADEME Base Empreinte — natural gas 0.227 kg CO2e/kWh PCI (combustion + upstream), converted to PCS (÷ 1.11)",
+        "url": "https://base-empreinte.ademe.fr/",
+        "asOf": "current Base Empreinte value",
+        "note": "Lifecycle basis, consistent with the electricity factor above"
+      }
+    },
+    "PL": {
+      "currency": "PLN",
+      "asOf": "2026-09-29",
+      "electricity": {
+        "value": 1.15, "unit": "PLN/kWh",
+        "source": "Eurostat nrg_pc_204 — household electricity, 2,500–4,999 kWh/a, all taxes and levies included",
+        "url": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_204/default/table",
+        "asOf": "2025-S2 (latest published semester)",
+        "note": "The statutory price freeze ended 31 Dec 2025; 2026 G11 all-in offers are ~1.18–1.32 PLN/kWh depending on the DSO (URE tariffs)"
+      },
+      "heatPumpTariff": null,
+      "gas": {
+        "value": 0.38, "unit": "PLN/kWh (Hs)",
+        "source": "URE-approved myORLEN (PGNiG OD) tariff W-3.6: gas fuel 197.29 PLN/MWh net (≈ 0.243 PLN/kWh gross) plus PSG distribution and VAT",
+        "url": "https://www.ure.gov.pl/pl/urzad/informacje-ogolne/aktualnosci/12680,Rynek-gazu-Prezes-URE-zatwierdzil-nowa-taryfe-na-sprzedaz-gazu-dla-PGNiG-Obrot-D.html",
+        "asOf": "from 1 Jul 2026 (valid to 31 Dec 2026)",
+        "note": "All-in value is the midpoint of the 0.35–0.42 PLN/kWh range for fuel + distribution + VAT; Eurostat withholds the PL household gas price (confidential). Check against the customer's bill"
+      },
+      "gridCo2": {
+        "value": 0.553, "unit": "kg CO2/kWh",
+        "source": "KOBiZE — Wskaźniki emisyjności CO2 … dla energii elektrycznej u odbiorców końcowych (Dec 2025, Table 2)",
+        "url": "https://www.kobize.pl/uploads/materialy/materialy_do_pobrania/aktualnosci/2025/142_Wskazniki_emisyjnosci_2025.pdf",
+        "asOf": "data year 2024",
+        "note": "Final consumers, incl. renewables and grid losses"
+      },
+      "gasCo2": {
+        "value": 0.182, "unit": "kg CO2/kWh (Hs)",
+        "source": "KOBiZE — natural gas emission factor 56.10 kg CO2/GJ (≈ 0.202 kg/kWh Hi), converted to Hs (÷ 1.11)",
+        "url": "https://www.kobize.pl/pl/fileCategory/id/28/wskazniki-emisyjnosci",
+        "asOf": "current KOBiZE factor",
+        "note": "Combustion only"
+      }
+    },
+    "IT": {
+      "currency": "EUR",
+      "asOf": "2026-09-29",
+      "electricity": {
+        "value": 0.3163, "unit": "EUR/kWh",
+        "source": "ARERA — reference price for vulnerable customers, typical household 2,700 kWh/a, 3 kW, taxes included",
+        "url": "https://www.arera.it/comunicati-stampa/dettaglio/elettricita-maggior-tutela-46-nel-iii-trimestre-2026-per-i-clienti-vulnerabili",
+        "asOf": "Q3 2026 (Jul–Sep)",
+        "note": "Eurostat nrg_pc_204 2025-S2 cross-check: 0.297"
+      },
+      "heatPumpTariff": null,
+      "gas": {
+        "value": 0.1343, "unit": "EUR/kWh (Hs)",
+        "source": "ARERA — reference price for vulnerable customers, 1,400 Smc/a: 1.4372 EUR/Smc, converted with PCS 0.03852 GJ/Smc (10.70 kWh/Smc)",
+        "url": "https://www.arera.it/area-operatori/prezzi-e-tariffe/valore-cmemm-vulnerabili",
+        "asOf": "Aug 2026",
+        "note": "Eurostat nrg_pc_202 2025-S2 cross-check: 0.148"
+      },
+      "gridCo2": {
+        "value": 0.193, "unit": "kg CO2/kWh",
+        "source": "ISPRA Rapporto 430/2026 — CO2 emission factor of electricity consumption",
+        "url": "https://emissioni.sina.isprambiente.it/fattori-di-emissione-produzione-consumo-energia-elettrica/",
+        "asOf": "2024 (2025 provisional: 0.200)",
+        "note": "Direct CO2"
+      },
+      "gasCo2": {
+        "value": 0.184, "unit": "kg CO2/kWh (Hs)",
+        "source": "ISPRA — national natural gas emission factor 56.79 t CO2/TJ (0.2044 kg/kWh Hi), converted to Hs (÷ 1.11)",
+        "url": "https://emissioni.sina.isprambiente.it/fattori-di-emissione-produzione-consumo-energia-elettrica/",
+        "asOf": "2024",
+        "note": "Combustion only"
+      }
+    }
+  }
+}
