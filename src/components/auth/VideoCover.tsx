@@ -26,6 +26,7 @@ import {
   Wordmark, MarketBadge, LanguagePill, SocialLinks, primaryBtn, ghostBtn,
 } from './AuthShell';
 import { HeroVideo } from './HeroVideo';
+import { InstallerVideoTrigger, InstallerVideoStrings } from './InstallerVideo';
 
 /** Page background in the clip's studio tones: a lit mist at the top centre,
  *  the floor glow at the bottom, near-black corners (sampled from the frames). */
@@ -102,6 +103,31 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
   const headRef = useRef<HTMLDivElement>(null);
   const entryRef = useRef<HTMLDivElement>(null);
   const stage = useStageBox(rootRef, headRef, entryRef);
+  // The top-left slot is used only when it clears the headline with room to
+  // spare — measured, because headline length differs a lot by language (FR is
+  // the longest: it reaches the slot on every screen below ~1700 px).
+  const slotRef = useRef<HTMLDivElement>(null);
+  const [slotFits, setSlotFits] = useState(false);
+  useLayoutEffect(() => {
+    const check = () => {
+      const slot = slotRef.current, h1 = headRef.current?.querySelector('h1');
+      if (!slot || !h1 || window.innerWidth < 1280) { setSlotFits(false); return; }
+      const range = document.createRange(); range.selectNodeContents(h1);
+      const left = Math.min(...Array.from(range.getClientRects()).map(r => r.left));
+      const btn = slot.firstElementChild as HTMLElement | null;
+      const right = slot.getBoundingClientRect().left + (btn?.offsetWidth ?? 0);
+      setSlotFits(left - right >= 40);
+    };
+    check();
+    document.fonts?.ready.then(check).catch(() => {});
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, [language]);
+  const iv: InstallerVideoStrings = {
+    label: t.authInstallerLabel, open: t.authInstallerOpen, close: t.authInstallerClose,
+    unmute: t.authInstallerUnmute, mute: t.authInstallerMute, volume: t.authInstallerVolume,
+    replay: t.authInstallerReplay, alt: t.authInstallerAlt,
+  };
 
   return (
   <div
@@ -155,6 +181,19 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
       </div>
     </header>
 
+    {/* Installer video (owner 2026-10-01): the empty top-left on wide
+        screens; below xl the headline needs that room, so the trigger moves
+        under the hero line instead (see the headline band). */}
+    <div
+      ref={slotRef}
+      className="hidden xl:block absolute z-20 left-[max(3rem,5.2vw)] top-[128px]"
+      style={{ visibility: slotFits ? 'visible' : 'hidden' }}
+      aria-hidden={!slotFits}
+      data-testid="installer-video-slot"
+    >
+      <InstallerVideoTrigger s={iv} />
+    </div>
+
     {/* Headline band — top of the stage, above where any part travels.
         Desktop type scales with the window (vw/vh caps) so the composition the
         owner approved on a wide window holds on a 1400 px laptop too — rem-only
@@ -171,6 +210,9 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
       <p className="mt-2.5 text-white/75 text-[15px] sm:text-lg md:text-[1.35rem] lg:text-[min(1.35rem,1.3vw,2.4vh)] drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
         {t.authHeroLine}
       </p>
+      <div className={`${slotFits ? 'hidden' : 'flex'} mt-3 justify-center pointer-events-auto`} data-testid="installer-video-inline">
+        <InstallerVideoTrigger s={iv} compact />
+      </div>
     </div>
 
     {/* Free band for the clip. On short phones (iPhone SE: 667 px) the text
