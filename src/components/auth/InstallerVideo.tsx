@@ -12,15 +12,20 @@
  * landing page must not talk unasked); one tap on the speaker turns sound on,
  * then a volume slider appears. Esc / backdrop / Close all dismiss it.
  *
- * The clip is an English-language ad for every market; only the UI around it
- * is localised. File name is versioned — /media/** is served immutable.
+ * On-screen copy is in the market language (one cut per market); the
+ * narration is the source clip's English voice. File names are versioned —
+ * /media/** is served immutable.
  */
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { ACTIVE_COUNTRY } from '../../config/countryProfiles';
 
+/** v3 (2026-10-01): one cut per market — on-screen copy in the market
+ *  language and that market's own sample reports; 30 % slower than v2. */
+const IV_CC = ACTIVE_COUNTRY.code.toLowerCase();
 export const INSTALLER_VIDEO = {
-  src: '/media/installer/usp-installer-v2.mp4',
-  poster: '/media/installer/usp-installer-v2-poster.jpg',
+  src: `/media/installer/usp-installer-v3-${IV_CC}.mp4`,
+  poster: `/media/installer/usp-installer-v3-${IV_CC}-poster.jpg`,
 };
 
 export interface InstallerVideoStrings {
@@ -47,11 +52,11 @@ export const InstallerVideoTrigger: React.FC<{ s: InstallerVideoStrings; compact
         onClick={() => setOrigin(ref.current?.getBoundingClientRect() ?? null)}
         aria-label={s.open}
         aria-haspopup="dialog"
-        className={`hp-iv-trigger group inline-flex items-center ${compact ? 'gap-2.5' : 'gap-3.5'} bg-transparent border-0 p-0 cursor-pointer text-emerald-300/90 ${className}`}
+        className={`hp-iv-trigger group inline-flex items-center ${compact ? 'gap-2' : 'gap-2.5'} bg-transparent border-0 p-0 cursor-pointer text-emerald-300/90 ${className}`}
         data-testid="installer-video-trigger"
       >
-        <PlayRing size={compact ? 30 : 40} />
-        <span className={`hp-iv-label uppercase font-medium ${compact ? 'text-[11px] tracking-[0.22em]' : 'text-[13px] tracking-[0.26em]'}`}>
+        <PlayRing size={compact ? 22 : 28} />
+        <span className={`hp-iv-label uppercase font-medium ${compact ? 'text-[8.5px] tracking-[0.22em]' : 'text-[9.5px] tracking-[0.26em]'}`}>
           {s.label}
         </span>
       </button>
