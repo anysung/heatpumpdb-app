@@ -67,7 +67,7 @@ gcloud functions deploy "${FUNCTION_NAME}" \
   --trigger-http \
   --allow-unauthenticated \
   --memory=512MB \
-  --timeout=540s \
+  --timeout=1800s \
   --set-env-vars="GEMINI_API_KEY=${GEMINI_API_KEY},SECRET_KEY=${SECRET_KEY},BUDGET_LIMIT_USD=${BUDGET_LIMIT_USD},AUTO_UPDATE_ENABLED=${AUTO_UPDATE_ENABLED}"
 
 echo "=== Cloud Function deployed ==="

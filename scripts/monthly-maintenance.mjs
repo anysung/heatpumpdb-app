@@ -88,7 +88,9 @@ const runId = new Date().toISOString().replace(/[:.]/g, '-');
 
 mkdirSync(STATE_DIR, { recursive: true });
 mkdirSync(LOG_DIR, { recursive: true });
-const LOG = join(LOG_DIR, `${runId}.log`);
+// A rehearsal must never look like a run (2026-10-01: a --dry-run after the
+// real window overwrote state.json, and its log sat among the real ones).
+const LOG = join(LOG_DIR, `${runId}${DRY ? '-dry-run' : ''}.log`);
 const say = (m) => { const line = `[${new Date().toISOString()}] ${m}`; console.log(line); try { appendFileSync(LOG, line + '\n'); } catch {} };
 
 /* ── Environment ─────────────────────────────────────────────────────────────
@@ -174,7 +176,7 @@ async function liveMaintenance() {
   return ((await res.json()).fields?.active?.booleanValue) === true;
 }
 
-const saveState = (s) => writeFileSync(STATE, JSON.stringify({ ...s, runId, at: new Date().toISOString() }, null, 2) + '\n');
+const saveState = (s) => DRY ? undefined : writeFileSync(STATE, JSON.stringify({ ...s, runId, at: new Date().toISOString() }, null, 2) + '\n');
 const loadState = () => (existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : null);
 
 function step(name, cmd, { fatal = true, timeoutMs } = {}) {
