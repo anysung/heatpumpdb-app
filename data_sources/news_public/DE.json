@@ -1,6 +1,6 @@
 {
   "market": "DE",
-  "generatedAt": "2026-09-09T20:45:26.250Z",
+  "generatedAt": "2026-10-01T01:31:32.090Z",
   "items": [
     {
       "id": "news-20260908-de-sr1",
@@ -37,36 +37,138 @@
       ]
     },
     {
-      "id": "news-20260816-de-sr1",
-      "date": "2026-08-16T00:00:00Z",
-      "category": "MARKET",
-      "title": "Europas Wärmewende: Fünf Märkte, fünf Realitäten",
-      "summary": "HeatPump DataBase Europe startet einen neuen monatlichen interaktiven Marktbericht zu den aktuellen Entwicklungen im Wärmepumpen- und Wärmemarkt in Europa.",
-      "body": "HeatPump DataBase Europe hat die erste Ausgabe des neuen monatlichen europäischen Wärmepumpen-Sonderberichts veröffentlicht. Untersucht werden Deutschland, das Vereinigte Königreich, Frankreich, Polen und Italien — auf Basis der Gesamtjahresdaten 2025 zusammen mit den neuesten verfügbaren Marktsignalen für 2026.\n\nDer Bericht zeigt fünf sehr unterschiedliche Marktrealitäten: Der deutsche Wärmepumpenmarkt hat sich im ersten Halbjahr 2026 weiter gefestigt; das Vereinigte Königreich wächst, wird aber weiterhin von Kesseln dominiert; in Frankreich schrumpft der hydronische Wärmemarkt; Polen erholt sich, während sich die Lagerbestände im Handel normalisieren; und Italien verzeichnete im ersten Halbjahr 2026 ein kräftiges Wachstum bei Luft/Wasser-Wärmepumpen.\n\nAnders als ein herkömmliches statisches PDF ist der Bericht als interaktiver digitaler Bericht angelegt. Leserinnen und Leser blättern wie in einem digitalen Magazin durch die Seiten und sehen die zugrunde liegenden Zahlenwerte, sobald sie den Cursor über ein Diagramm bewegen; Quellenangaben und Methodikhinweise liefern den weiteren Kontext.\n\nHeatPump DataBase Europe plant, jeden Monat einen neuen Sonderbericht zum europäischen Wärmepumpenmarkt zu veröffentlichen — zu Markttrends, politischen Entwicklungen, Förderprogrammen, technologischen Verschiebungen und weiteren Themen, die für Fachleute der Heizungsbranche relevant sind.\n\nDer Bericht ist kostenlos lesbar und herunterladbar und steht auf Englisch, Deutsch, Französisch, Polnisch und Italienisch zur Verfügung.",
-      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
-      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
-      "imageUrl": "/special-report/img/special-report-2026-08-de.webp",
+      "id": "news-20261001-de-001",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Deutschland reformiert Wärmepumpen-Förderung: Wesentliche Änderungen bei BEG/KfW 458 treten in Kraft",
+      "summary": "Die deutsche Bundesförderung für effiziente Gebäude (BEG) wurde am 21. Juli 2026 grundlegend reformiert. Das KfW-Programm 458 für Privatpersonen in Bestandsgebäuden weist nun reduzierte Boni, neue Einkommensstaffelungen und niedrigere förderfähige Höchstbeträge auf. Diese Anpassungen sollen die Förderung optimieren und gleichzeitig einen zügigeren Umstieg auf erneuerbare Heizsysteme anreizen.",
+      "body": "Die Bundesregierung hat mit Wirkung zum 21. Juli 2026 eine umfassende Reform der Wärmepumpen-Förderung im Rahmen der Bundesförderung für effiziente Gebäude (BEG) umgesetzt. Diese Neuregelung betrifft primär das KfW-Programm 458 für private Antragsteller in Bestandsgebäuden und beinhaltet mehrere zentrale Änderungen an den Zuschussstrukturen und Förderbedingungen. Die Grundförderung verbleibt bei 30 Prozent der förderfähigen Kosten für alle Antragsberechtigten.\n\nEine wesentliche Neuerung ist die Senkung des Klimageschwindigkeitsbonus von ehemals 20 Prozent auf nunmehr 16 Prozent für den frühzeitigen Austausch einer funktionstüchtigen fossilen Heizung. Dieser Bonus wird ab dem 1. Februar 2027 alle sechs Monate um weitere 4 Prozentpunkte reduziert, bis er im August 2028 vollständig entfällt.\n\nDer Einkommensbonus wurde neu gestaffelt. Haushalte mit einem zu versteuernden Jahreseinkommen von bis zu 30.000 Euro können einen zusätzlichen Bonus von 40 Prozent erhalten. Für Einkommen bis 40.000 Euro beträgt der Bonus 30 Prozent, für Einkommen bis 50.000 Euro sind es 10 Prozent. Für Familien mit mindestens einem minderjährigen Kind erhöht sich die maßgebliche Einkommensgrenze einmalig um 10.000 Euro, was die Chancen auf höhere Bonusstufen verbessern kann.\n\nDes Weiteren wurden die maximal förderfähigen Kosten für die Installation einer Wärmepumpe in der ersten Wohneinheit von 30.000 Euro auf 28.000 Euro gesenkt. Diese Höchstgrenze wird ab dem 1. Februar 2027 ebenfalls halbjährlich um 750 Euro weiter reduziert. Der bisherige Effizienzbonus sowie der Emissionsminderungszuschlag wurden ersatzlos gestrichen.\n\nInsgesamt können Antragsteller nun einen maximalen Gesamtzuschuss von bis zu 80 Prozent der förderfähigen Kosten erhalten, was bei den aktuellen Höchstgrenzen einem Betrag von 22.400 Euro für die erste Wohneinheit entspricht. Für das erste Quartal 2027 ist zudem die Einführung eines Wertschöpfungsbonus für Wärmepumpen geplant, die innerhalb der Europäischen Union gefertigt wurden.\n\nAntragsteller müssen ihren Förderantrag über das Kundenportal „Meine KfW“ stellen, und zwar zwingend vor Beginn der Maßnahmen. Eine „Bestätigung zum Antrag“ (BzA) durch ein qualifiziertes Fachunternehmen oder einen Energieeffizienz-Experten ist weiterhin ebenso erforderlich wie ein Lieferungs- oder Leistungsvertrag mit einer aufschiebenden oder auflösenden Bedingung.",
+      "titleEn": "Germany Overhauls Heat Pump Subsidies: Key BEG/KfW 458 Changes Take Effect",
+      "summaryEn": "Germany's federal heat pump subsidy landscape underwent significant reform on July 21, 2026, introducing reduced bonuses, new income tiers, and lower maximum eligible costs under the Bundesförderung für effiziente Gebäude (BEG) program, primarily administered through KfW program 458. These adjustments aim to streamline funding while incentivizing quicker transitions to renewable heating systems.",
+      "imageUrl": "/news-images/de-policy-02.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
-      "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.de/special-report/2026-08/",
-      "ctaLabel": "Sonderbericht lesen",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
       "sources": [
         {
-          "title": "BDH — Absatzzahlen Heizungen Deutschland 2025",
-          "url": "https://www.bdh-industrie.de/fileadmin/user_upload/Downloads/PresseMeldungen/Absatzzahlen_Heizungen_Deutschland_2025.pdf"
+          "title": "Förderung der Wärmepumpe: Alles, was Sie 2026 wissen müssen - Buderus",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEAzx7xzlTTl8gZQKfJAqXbCFatvOxoEah4zafqSCrkLJy39KUSZZgLRtLPGOflL5eYVf1Lpr1GNDtiVD-2FQpUtStwPmTipVRZgVdFkuZh5akHN6AG-4I9_i1ZlO8Z1V5QFnDKKiYfD3fYdw=="
         },
         {
-          "title": "BDH — Heizungsmarkt legt zu, Wärmepumpen setzen positive Impulse (H1 2026)",
-          "url": "https://www.bdh-industrie.de/presse/pressemeldungen/artikel/heizungsmarkt-legt-zu-waermepumpen-setzen-positive-impulse"
+          "title": "Heizungsförderung 2026: Neuer KfW-Zuschuss 458 - Baufi24",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGGA2FovUXNGDSzifcWG-skZjUqXLk8S3CsO-XBCuqrKMKcgWQDaoKoBPZDAWgiqh5XA2j4dXB8XqLUjsvNLpxqyjJFab1q4CTGttpMKY98KglvpoziuunzmL-HY3YB_6f5pHaVutnJDQESKGu6NpLuxv9uBC_jb2M=="
         },
         {
-          "title": "BWP — Branchenstudie 2026",
-          "url": "https://www.waermepumpe.de/fileadmin/user_upload/2026-03-30_BWP-Branchenstudie_2026_final.pdf"
+          "title": "Heizungsgesetz (GEG/GmodG): Was gilt 2026? | Vattenfall",
+          "url": "https://www.vattenfall.de/infowelt-energie/waermepumpe/heizungsgesetz"
         },
         {
-          "title": "EHPA — European market data (updated 2026)",
-          "url": "https://ehpa.org/market-data/"
+          "title": "Wärmepumpen-Förderung 2026: Das ändert sich - Planville",
+          "url": "https://planville.de/waermepumpen-foerderung-wird-reduziert-mt/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-de-002",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Deutscher Wärmepumpenmarkt verzeichnet kräftiges Wachstum in 2025 und Anfang 2026",
+      "summary": "Der deutsche Wärmepumpenmarkt hat 2025 eine starke Erholung erlebt und seinen Aufwärtstrend im ersten Halbjahr 2026 mit deutlichen Absatzsteigerungen fortgesetzt. Der Bundesverband Wärmepumpe (BWP) nennt ein gestiegenes Verbraucherbewusstsein für fossile Energierisiken und stabile Förderbedingungen als wesentliche Treiber, wodurch Wärmepumpen zum meistverkauften Heizsystem in Deutschland avancierten.",
+      "body": "Nach einem Rückgang im Jahr 2024, der größtenteils auf Unsicherheiten rund um das Gebäudeenergiegesetz (GEG) zurückzuführen war, hat der deutsche Wärmepumpenmarkt 2025 eine signifikante Erholung gezeigt. Laut Bundesverband Wärmepumpe (BWP) wurden in Deutschland rund 299.000 Heizungswärmepumpen abgesetzt, was einem deutlichen Anstieg von 55 Prozent gegenüber den 193.000 Einheiten im Jahr 2024 entspricht.\n\nDieses kräftige Wachstum führte dazu, dass Wärmepumpen 2025 das meistverkaufte Heizsystem in Deutschland waren und fast die Hälfte (48 Prozent) des gesamten Heizungsmarktes ausmachten. Luft-Wasser-Wärmepumpen dominierten weiterhin den Markt mit 95 Prozent der Verkäufe im Jahr 2025 (rund 283.000 Einheiten), während Erdwärmepumpen einen Anteil von 5 Prozent hielten.\n\nDer positive Trend setzte sich im ersten Halbjahr 2026 fort, mit 195.000 abgesetzten Wärmepumpen, was einem Zuwachs von 40 Prozent gegenüber dem gleichen Zeitraum im Jahr 2025 entspricht. Dr. Martin Sabel, Geschäftsführer des BWP, führt diese Entwicklung auf ein wachsendes Risikobewusstsein der Verbraucher hinsichtlich fossiler Energien und den Erfolg der Bundesförderung für effiziente Gebäude (BEG) zurück.\n\nAktuell sind in Deutschland fast zwei Millionen Wärmepumpen in Betrieb. Der BWP prognostiziert eine anhaltende Wachstumsdynamik für den Sektor und erwartet im Basisszenario rund 410.000 verkaufte Einheiten im Jahr 2026, mit einem potenziellen Anstieg auf über 530.000 in einem optimistischeren Szenario. Der Verband rechnet zudem damit, dass Wärmepumpen bis zum Ende des Jahrzehnts etwa 90 Prozent des Heizungsmarktes ausmachen werden.\n\nTrotz der positiven Entwicklung betont der BWP die Notwendigkeit eines stabilen Förderumfelds, eines günstigeren Strom-Gas-Preisverhältnisses, idealerweise durch eine Senkung der Stromsteuer, und klarer regulatorischer Rahmenbedingungen, um dieses Wachstum aufrechtzuerhalten und die Energiewende im Wärmesektor weiter zu beschleunigen.",
+      "titleEn": "German Heat Pump Market Experiences Robust Growth in 2025 and Early 2026",
+      "summaryEn": "Germany's heat pump market has demonstrated a strong rebound in 2025 and continued its upward trajectory into the first half of 2026, with significant sales increases. The Bundesverband Wärmepumpe (BWP) highlights heightened consumer awareness regarding fossil fuel risks and the success of federal funding programs as key drivers, establishing heat pumps as the most sold heating system in Germany.",
+      "imageUrl": "/news-images/common-market-01.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Wärmepumpen-Statistik 2026: Absatz, Förderung und Marktanteile in Deutschland",
+          "url": "https://www.deutsche-waermepumpen-beratung.de/ratgeber/waermepumpen-statistik"
+        },
+        {
+          "title": "Wärmepumpen-Absatz wächst im ersten Halbjahr auf 195.000 Anlagen - amarc21",
+          "url": "https://www.amarc21.de/waermepumpen-absatz-waechst-im-ersten-halbjahr-auf-195-000-anlagen/"
+        },
+        {
+          "title": "Wärmepumpen-Absatz wächst um 40 Prozent - Gebäude-Energieberater",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEFQiowIyut1AzbpZH1eBK-Wakwg_QYjo7zOILqCz5m0pYLZE1UHN9RZYVLpE23eVere3D8ISoWwbt-kYi_4SYln5HzAB5oCBxZPfyI-C_64LuYNOLne3BTl1wy1gi_h3oDqvtTM8mCTg5o3RMePaMGM1IjD8M_jPBXOFgVEr60JEAq241IDnfCoWGbZQ=="
+        },
+        {
+          "title": "Wärmepumpen-Absatz wächst um 40 Prozent - Solarserver",
+          "url": "https://www.solarserver.de/2026/08/06/absatz-von-waermepumpen-waechst-im-ersten-halbjahr-2026-um-40-prozent/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-de-003",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "Deutschland führt strengere Lärmschutzvorgaben für geförderte Luft-Wasser-Wärmepumpen ein",
+      "summary": "Ab dem 1. Januar 2026 gelten in Deutschland deutlich verschärfte Anforderungen an die Geräuschemissionen von Luft-Wasser-Wärmepumpen, um staatliche Förderungen zu erhalten. Die neuen Regeln schreiben vor, dass Außengeräte mindestens 10 dB unter den Grenzwerten der EU-Ökodesign-Verordnung liegen müssen. Diese Maßnahme zielt darauf ab, Lärmemissionen zu minimieren und die Akzeptanz von Wärmepumpen in Wohngebieten zu steigern.",
+      "body": "Für Hauseigentümer, die ab dem 1. Januar 2026 eine staatliche Förderung für neue Luft-Wasser-Wärmepumpen in Deutschland beantragen, sind strengere Anforderungen an die Geräuschemissionen zu beachten. Die überarbeiteten Bestimmungen der Bundesförderung für effiziente Gebäude (BEG) legen fest, dass die Außeneinheiten förderfähiger Wärmepumpen einen Schallleistungspegel aufweisen müssen, der mindestens 10 dB unter den in der EU-Ökodesign-Verordnung Nr. 813/2013 festgelegten Grenzwerten liegt. Dies ist eine Verschärfung gegenüber der vorherigen Vorgabe von 5 dB.\n\nZiel dieser erhöhten Anforderungen ist es, potenzielle Lärmbelästigungen zu reduzieren und dadurch die allgemeine Akzeptanz und Integration von Wärmepumpentechnologien, insbesondere in dicht besiedelten Wohngebieten, zu verbessern. Die neuen Regeln gelten ohne Übergangsfrist und sind entscheidend für den Erhalt staatlicher Zuschüsse.\n\nKonkrete maximale Schalldruckpegel wurden für verschiedene Leistungsklassen von Wärmepumpen festgelegt, um die Förderfähigkeit zu gewährleisten. So dürfen Anlagen bis 6 kW maximal 55 dB erreichen, Geräte zwischen 6 kW und 12 kW sind auf 60 dB begrenzt, und Systeme zwischen 12 kW und 30 kW müssen unter 68 dB bleiben. Für größere Einheiten von 30 kW bis 70 kW liegt die Obergrenze bei 78 dB.\n\nExperten der Branche weisen darauf hin, dass viele moderne Wärmepumpenmodelle diese strengen Vorgaben bereits erfüllen. Dennoch sind eine sorgfältige Planung und Produktauswahl sowohl für Installateure als auch für Hauseigentümer von zunehmender Bedeutung. Der physische Aufstellungsort der Außeneinheit, ein ausreichender Abstand zu Nachbargrundstücken und die Vermeidung schallreflektierender Flächen sind dabei entscheidend, um die Grenzwerte sicher einzuhalten.\n\nEs ist zu beachten, dass diese verschärften Lärmschutzauflagen ausschließlich für Luft-Wasser-Wärmepumpen gelten, da diese mit einer Außeneinheit arbeiten. Sole/Wasser- und Wasser/Wasser-Wärmepumpen sind von diesen spezifischen Geräuschemissionskriterien ausgenommen, da sie keine lauten externen Komponenten besitzen. Das Bundesamt für Wirtschaft und Ausfuhrkontrolle (BAFA) veröffentlicht eine Liste förderfähiger Wärmepumpen, die diese und andere technische Mindestanforderungen erfüllen.",
+      "titleEn": "Germany Implements Stricter Noise Regulations for Funded Air-to-Water Heat Pumps",
+      "summaryEn": "As of January 1, 2026, Germany has significantly tightened noise emission requirements for air-to-water heat pumps to qualify for federal subsidies. New regulations mandate that outdoor units must operate at least 10 dB below the limits set by the EU Ecodesign Regulation, a move aimed at minimizing noise pollution and enhancing public acceptance of heat pump installations in residential areas.",
+      "imageUrl": "/news-images/common-tech-01.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Förderung für die Wärmepumpe 2026 I Vattenfall",
+          "url": "https://www.vattenfall.de/infowelt-energie/waermepumpe/waermepumpe-foerderung"
+        },
+        {
+          "title": "Ab 2026 neue Geräuschemissionsauflagen für Wärmepumpen-Förderung",
+          "url": "https://kkpeters.de/ab-2026-neue-geraeuschemissionsauflagen-fuer-waermepumpen-foerderung/"
+        },
+        {
+          "title": "Strengere Schallvorgaben für Luft/Wasser-Wärmepumpen - SHK BW",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFk_F-Sn8yJlAakI8iAEVTKICU64aMo-CK43CDDlf5-4zXrtAqH0Fx_tWdngj3KHkG0kazuh17hss-kXtG7sdIkI2uQahKdhj-1ZyuIigiSJYwZzNeZRLRUJspAwy80B36sDDW5zu7lGkdJcRZsNuNXwX8MZFujMEbq95CZyaEvmFcygSaYL8Z2cXC76NbUIPfV8RwgJqQeEWg=="
+        },
+        {
+          "title": "Lautstärke von Wärmepumpen: Was ist 2026 erlaubt? - EWE",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH99L2M2wvk89oo4mDyUUOLYGvjoOiYPDkSuLDTb5Pl89A90iLgp9JXt_k-E3v5by2LVVGIzcP7zN6tp1vjT0bUiAP-v0Vag03es_pIO1zEZIMpKhtSkLcDadKxxb4VagGKi81Ezo_qV8zCxAfZVH1iu4_38Kk=="
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-de-004",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Deutsches Gebäudemodernisierungsgesetz (GModG) ersetzt GEG und bietet mehr Flexibilität bei Erneuerbaren-Vorgaben",
+      "summary": "Das neue Gebäudemodernisierungsgesetz (GModG) hat am 29. Juli 2026 offiziell das bisherige Gebäudeenergiegesetz (GEG) abgelöst und dabei wesentliche Änderungen der Heizungsregelungen eingeführt. Während die 65-Prozent-Pflicht für erneuerbare Energien bei Neuinstallationen entfällt, verpflichtet eine „Bio-Treppe“ nun zu einem schrittweisen Anstieg des Anteils erneuerbarer Brennstoffe in fossilen Heizungen, mit dem Ziel der Klimaneutralität bis 2045.",
+      "body": "Das lang erwartete Gebäudemodernisierungsgesetz (GModG) ist am 29. Juli 2026 in Kraft getreten und ersetzt damit offiziell das umstrittene Gebäudeenergiegesetz (GEG). Diese neue Gesetzgebung soll Hauseigentümern mehr Flexibilität bei der Wahl ihrer Heizungssysteme ermöglichen, während sie gleichzeitig einen klaren Pfad zur Klimaneutralität im Gebäudesektor bis 2045 vorgibt.\n\nEine zentrale Neuerung des GModG ist die Abschaffung der Vorgabe, dass neu eingebaute Heizungen zu mindestens 65 Prozent mit erneuerbaren Energien betrieben werden müssen. Diese Maßnahme stellt die freie Wahl der Heizungstechnologie wieder her, was bedeutet, dass Gas- und Ölheizungen weiterhin installiert werden dürfen.\n\nDie fortgesetzte Nutzung fossiler Heizungen ist jedoch an Bedingungen geknüpft. Das GModG führt eine sogenannte „Bio-Treppe“ ein, die einen schrittweisen Anstieg des Anteils erneuerbarer Brennstoffe vorschreibt. Ab 2029 ist ein Anteil von 10 Prozent erneuerbarer Brennstoffe verpflichtend, der bis 2030 auf 15 Prozent, bis 2035 auf 30 Prozent und ab dem 1. Januar 2040 auf mindestens 60 Prozent ansteigt, mit dem letztendlichen Ziel der 100-prozentigen Klimaneutralität bis 2045.\n\nFinanzielle Anreize für neue fossile Heizsysteme entfallen, und ihr Betrieb wird voraussichtlich aufgrund steigender CO2-Kosten und Netzentgelte für Gas teurer. Das neue Gesetz schafft auch die bisherige verpflichtende Beratung vor dem Einbau einer neuen Gas- oder Ölheizung ab, wobei eine freiwillige Energieberatung weiterhin empfohlen wird und oft Voraussetzung für Bundesförderungen ist.\n\nZusätzlich sieht das GModG bis 2030 eine bundesweite Solarpflicht für nahezu alle Neubauten vor. Für Vermieter, die neue Öl- oder Gasheizungen installieren, werden die CO2-Kosten zukünftig zur Hälfte (50/50) mit den Mietern geteilt. Trotz der wiedergewonnenen Flexibilität bei fossilen Brennstoffen bleiben Wärmepumpen ein entscheidender Bestandteil zur Erreichung der Energieeffizienzstandards, insbesondere im Neubau.",
+      "titleEn": "Germany's New Building Energy Act (GModG) Replaces GEG, Offers Greater Flexibility with Renewable Mandates",
+      "summaryEn": "Germany's new Gebäudemodernisierungsgesetz (GModG) officially replaced the previous Building Energy Act (GEG) on July 29, 2026, introducing significant changes to heating system regulations. While the 65% renewable energy mandate for new installations has been removed, a 'Bio-Treppe' (bio-staircase) now requires a gradual increase in renewable fuel shares for fossil fuel heaters, aiming for climate neutrality by 2045.",
+      "imageUrl": "/news-images/common-market-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Heizungsgesetz (GEG/GmodG): Was gilt 2026? | Vattenfall",
+          "url": "https://www.vattenfall.de/infowelt-energie/waermepumpe/heizungsgesetz"
+        },
+        {
+          "title": "Heizungsgesetz: Alle Infos zur GEG-Novelle 2026 - Viessmann",
+          "url": "https://www.viessmann.de/de/wissen/gesetze-und-verordnungen/heizungsgesetz.html"
+        },
+        {
+          "title": "Heizungsgesetz: Das ändert das Gebäudemodernisierungsgesetz 2026 - ADAC",
+          "url": "https://www.adac.de/rund-ums-haus/energie/versorgung/heizungsgesetz/"
+        },
+        {
+          "title": "Bundestag beschließt Heizungsgesetz-Novelle",
+          "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw28-de-heizungsgesetz-1194534"
         }
       ]
     },
@@ -223,6 +325,40 @@
         {
           "title": "The German Buildings Energy Act: Mandatory Measures for Non-Residential Buildings | aedifion Blog",
           "url": "https://www.aedifion.com/blog/the-german-buildings-energy-act-mandatory-measures-for-non-residential-buildings"
+        }
+      ]
+    },
+    {
+      "id": "news-20260816-de-sr1",
+      "date": "2026-08-16T00:00:00Z",
+      "category": "MARKET",
+      "title": "Europas Wärmewende: Fünf Märkte, fünf Realitäten",
+      "summary": "HeatPump DataBase Europe startet einen neuen monatlichen interaktiven Marktbericht zu den aktuellen Entwicklungen im Wärmepumpen- und Wärmemarkt in Europa.",
+      "body": "HeatPump DataBase Europe hat die erste Ausgabe des neuen monatlichen europäischen Wärmepumpen-Sonderberichts veröffentlicht. Untersucht werden Deutschland, das Vereinigte Königreich, Frankreich, Polen und Italien — auf Basis der Gesamtjahresdaten 2025 zusammen mit den neuesten verfügbaren Marktsignalen für 2026.\n\nDer Bericht zeigt fünf sehr unterschiedliche Marktrealitäten: Der deutsche Wärmepumpenmarkt hat sich im ersten Halbjahr 2026 weiter gefestigt; das Vereinigte Königreich wächst, wird aber weiterhin von Kesseln dominiert; in Frankreich schrumpft der hydronische Wärmemarkt; Polen erholt sich, während sich die Lagerbestände im Handel normalisieren; und Italien verzeichnete im ersten Halbjahr 2026 ein kräftiges Wachstum bei Luft/Wasser-Wärmepumpen.\n\nAnders als ein herkömmliches statisches PDF ist der Bericht als interaktiver digitaler Bericht angelegt. Leserinnen und Leser blättern wie in einem digitalen Magazin durch die Seiten und sehen die zugrunde liegenden Zahlenwerte, sobald sie den Cursor über ein Diagramm bewegen; Quellenangaben und Methodikhinweise liefern den weiteren Kontext.\n\nHeatPump DataBase Europe plant, jeden Monat einen neuen Sonderbericht zum europäischen Wärmepumpenmarkt zu veröffentlichen — zu Markttrends, politischen Entwicklungen, Förderprogrammen, technologischen Verschiebungen und weiteren Themen, die für Fachleute der Heizungsbranche relevant sind.\n\nDer Bericht ist kostenlos lesbar und herunterladbar und steht auf Englisch, Deutsch, Französisch, Polnisch und Italienisch zur Verfügung.",
+      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
+      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
+      "imageUrl": "/special-report/img/special-report-2026-08-de.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.de/special-report/2026-08/",
+      "ctaLabel": "Sonderbericht lesen",
+      "sources": [
+        {
+          "title": "BDH — Absatzzahlen Heizungen Deutschland 2025",
+          "url": "https://www.bdh-industrie.de/fileadmin/user_upload/Downloads/PresseMeldungen/Absatzzahlen_Heizungen_Deutschland_2025.pdf"
+        },
+        {
+          "title": "BDH — Heizungsmarkt legt zu, Wärmepumpen setzen positive Impulse (H1 2026)",
+          "url": "https://www.bdh-industrie.de/presse/pressemeldungen/artikel/heizungsmarkt-legt-zu-waermepumpen-setzen-positive-impulse"
+        },
+        {
+          "title": "BWP — Branchenstudie 2026",
+          "url": "https://www.waermepumpe.de/fileadmin/user_upload/2026-03-30_BWP-Branchenstudie_2026_final.pdf"
+        },
+        {
+          "title": "EHPA — European market data (updated 2026)",
+          "url": "https://ehpa.org/market-data/"
         }
       ]
     },

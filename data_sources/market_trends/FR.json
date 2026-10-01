@@ -1,5 +1,28 @@
 [
  {
+  "slug": "2026-10-aides-pac-france-2026",
+  "date": "2026-10-01",
+  "image": "fr-2026-10-aides-pac-france-2026.webp",
+  "title": "Réformes des aides aux pompes à chaleur en France : MaPrimeRénov', CEE et leasing social",
+  "excerpt": "Le gouvernement français a mis en œuvre des changements substantiels dans ses principaux dispositifs d'aide aux pompes à chaleur, MaPrimeRénov' et Coup de pouce Chauffage. Ces réformes, effectives dès septembre 2026, visent à orienter le marché vers le chauffage décarboné et les rénovations énergétiques globales.",
+  "body": [
+   "À compter du 1er septembre 2026, le parcours « par geste » de MaPrimeRénov' est considérablement restreint, se concentrant désormais sur l'installation de systèmes de chauffage décarbonés, notamment les pompes à chaleur air/eau et géothermiques. Parallèlement, le « Parcours Accompagné » (rénovation globale) devient primordial, exigeant un gain d'au moins deux classes DPE et étant obligatoire pour les logements classés E, F ou G. Ce parcours exclut strictement les projets qui conservent ou installent des systèmes de chauffage ou d'eau chaude sanitaire basés sur des combustibles fossiles, incluant les pompes à chaleur hybrides intégrant une chaudière à gaz.",
+   "L'éligibilité au « Parcours Accompagné » nécessite un audit énergétique préalable et un accompagnement continu par un « Mon Accompagnateur Rénov' » certifié. Tous les propriétaires peuvent accéder à ce parcours, à condition que leur logement ait plus de 15 ans et serve de résidence principale. Les montants d'aide sont modulés en fonction des revenus et du gain énergétique.",
+   "Le programme « Coup de pouce Chauffage » a également été révisé. À partir du 1er septembre 2026, les bonifications financières pour l'installation de pompes à chaleur sont exclusivement accordées aux modèles bénéficiant d'un agrément officiel « qualité et résilience industrielle », attestant d'un assemblage européen. Les pompes à chaleur éligibles bénéficient d'une multiplication par cinq de la prime CEE. De plus, un programme de leasing social pour les ménages modestes a été lancé, avec des offres disponibles à partir du 1er octobre 2026, visant à rendre les pompes à chaleur accessibles en garantissant un coût total égal ou inférieur à la facture de chauffage fossile précédente.",
+   "Il est conseillé aux propriétaires de solliciter les conseils des experts France Rénov' et de s'assurer que toutes les demandes d'aide sont soumises et approuvées avant de commencer les travaux. Un démarrage prématuré risque la perte d'un soutien financier crucial. Le cumul de ces diverses aides avec l'Éco-PTZ et la TVA réduite reste possible."
+  ],
+  "sourceNote": "Source: HeatPump DB France News",
+  "titleEn": "Heat Pump Aid Reforms in France: MaPrimeRénov', CEE, and Social Leasing",
+  "excerptEn": "The French government has implemented substantial changes to its main heat pump aid schemes, MaPrimeRénov' and Coup de pouce Chauffage. These reforms, effective from September 2026, aim to steer the market towards decarbonized heating and comprehensive energy renovations.",
+  "bodyEn": [
+   "Effective September 1, 2026, the 'single-action' pathway of MaPrimeRénov' is significantly restricted, now focusing primarily on the installation of decarbonized heating systems, specifically air-to-water and geothermal heat pumps. Concurrently, the 'Accompanied Pathway' (comprehensive renovation) becomes paramount, requiring a minimum gain of two DPE (Energy Performance Diagnosis) classes and mandatory for homes rated E, F, or G. This pathway strictly excludes projects that retain or install fossil fuel-based heating or domestic hot water systems, including hybrid heat pumps integrating a gas boiler.",
+   "Eligibility for the 'Accompanied Pathway' requires a prior energy audit and continuous support from a certified 'Mon Accompagnateur Rénov''. All homeowners can access this pathway, provided their home is over 15 years old and serves as their primary residence. Aid amounts are adjusted based on income and energy gain.",
+   "The 'Coup de pouce Chauffage' program has also been revised. From September 1, 2026, financial bonuses for heat pump installation are exclusively granted to models with official 'quality and industrial resilience' approval, certifying European assembly. Eligible heat pumps benefit from a fivefold increase in the CEE premium. Additionally, a social leasing program for modest households has been launched, with offers available from October 1, 2026, aiming to make heat pumps accessible by ensuring the combined cost of the heat pump and electricity is equal to or less than the household's previous fossil fuel heating bill.",
+   "Homeowners are advised to seek advice from France Rénov' experts and ensure all aid applications are submitted and approved before commencing work. Premature commencement risks the loss of crucial financial support. The combination of these various aids with the Éco-PTZ (interest-free eco-loan) and reduced VAT remains possible."
+  ],
+  "sourceNoteEn": "Source: HeatPump DB France News"
+ },
+ {
   "slug": "2026-09-fluides",
   "date": "2026-09-12",
   "image": "fr-2026-09-refrigerants-1.webp",

@@ -1,6 +1,6 @@
 {
   "market": "IT",
-  "generatedAt": "2026-09-09T20:45:26.758Z",
+  "generatedAt": "2026-10-01T01:31:32.473Z",
   "items": [
     {
       "id": "news-20260908-it-sr1",
@@ -33,32 +33,138 @@
       ]
     },
     {
-      "id": "news-20260816-it-sr1",
-      "date": "2026-08-16T00:00:00Z",
-      "category": "MARKET",
-      "title": "La transizione del riscaldamento in Europa: cinque mercati, cinque realtà",
-      "summary": "HeatPump DataBase Europe lancia un nuovo rapporto di mercato mensile interattivo sugli sviluppi più recenti del mercato delle pompe di calore e del riscaldamento in Europa.",
-      "body": "HeatPump DataBase Europe ha pubblicato la prima edizione del nuovo rapporto speciale mensile europeo sulle pompe di calore. Il rapporto esamina Germania, Regno Unito, Francia, Polonia e Italia sulla base dei dati dell'intero 2025, insieme ai più recenti segnali di mercato disponibili per il 2026.\n\nIl rapporto mostra cinque realtà di mercato molto diverse: il mercato tedesco delle pompe di calore ha continuato a rafforzarsi nel primo semestre 2026; il Regno Unito cresce ma resta dominato dalle caldaie; la Francia registra un mercato del riscaldamento idronico in contrazione; la Polonia si sta riprendendo mentre le scorte di canale si normalizzano; e l'Italia ha registrato una forte crescita delle pompe di calore aria/acqua nel primo semestre 2026.\n\nA differenza di un PDF statico convenzionale, il rapporto si presenta come un rapporto digitale interattivo. Il lettore scorre le pagine come una rivista digitale e, portando il cursore sui grafici, vede i valori numerici sottostanti; i riferimenti alle fonti e le note metodologiche forniscono il contesto.\n\nHeatPump DataBase Europe prevede di pubblicare ogni mese un nuovo rapporto speciale sul mercato europeo delle pompe di calore, dedicato alle tendenze di mercato, agli sviluppi normativi, agli incentivi, ai passaggi tecnologici e agli altri temi rilevanti per i professionisti del settore del riscaldamento.\n\nIl rapporto è gratuito da leggere e da scaricare ed è disponibile in inglese, tedesco, francese, polacco e italiano.",
-      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
-      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
-      "imageUrl": "/special-report/img/special-report-2026-08-it.webp",
+      "id": "news-20261001-it-001",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Riforma degli Incentivi Italiani per le Pompe di Calore nel 2026: Addio ai Sussidi per i Combustibili Fossili",
+      "summary": "L'Italia ha introdotto riforme significative nei suoi principali schemi di incentivazione per le pompe di calore, Conto Termico 3.0 ed Ecobonus, per il 2026. Queste modifiche privilegiano contributi diretti in denaro e detrazioni fiscali per soluzioni di riscaldamento ad alta efficienza e rinnovabili, escludendo esplicitamente le caldaie a combustibili fossili autonome dai sussidi pubblici.",
+      "body": "Il mercato italiano delle pompe di calore si trova nel 2026 ad affrontare un panorama di incentivi profondamente riformato, con aggiornamenti significativi ai programmi Conto Termico ed Ecobonus. Il Conto Termico 3.0, regolamentato dal Decreto Ministeriale 07/08/2025, è entrato ufficialmente in vigore il 27 dicembre 2025, con la piattaforma digitale di richiesta del Gestore dei Servizi Energetici (GSE) operativa da febbraio 2026.\n\nNell'ambito del Conto Termico 3.0, i beneficiari possono accedere a contributi diretti in denaro, una differenza fondamentale rispetto ai tradizionali crediti d'imposta. I soggetti privati possono recuperare fino al 65% delle spese ammissibili, mentre gli edifici pubblici in comuni con meno di 15.000 abitanti, le scuole pubbliche e gli ospedali possono beneficiare di una copertura fino al 100% dei costi. Il programma dispone di un budget annuale di 900 milioni di euro, suddiviso tra pubbliche amministrazioni e soggetti privati.\n\nPer le imprese private, specifiche categorie di intervento offrono fino al 45% per i progetti di energia termica rinnovabile e il 25-30% per le misure di efficienza energetica, con potenziali aumenti per le PMI e gli interventi nel Sud Italia. I pagamenti del Conto Termico 3.0 vengono erogati in un'unica soluzione per importi fino a 15.000 euro, oppure in rate annuali per due-cinque anni per importi superiori. È disponibile una procedura semplificata tramite un catalogo GSE per sistemi di piccola taglia (≤35 kW o solare termico <50 m²).\n\nParallelamente, il regime Ecobonus continua a offrire detrazioni fiscali, con le installazioni di pompe di calore ammissibili a una detrazione del 65% ripartita su 10 anni. Tuttavia, il generoso Superbonus 110% è stato ampiamente ridimensionato per i progetti residenziali standard nel 2026. Le detrazioni generali per le ristrutturazioni energetiche sono state ridotte a una base del 36% per la maggior parte delle proprietà residenziali, con le abitazioni principali che mantengono un'aliquota del 50%.\n\nUn cambiamento politico fondamentale in entrambi gli incentivi è l'esclusione delle caldaie autonome a combustibili fossili. Dal 1° gennaio 2025, i sussidi pubblici non si applicano più a questi sistemi in base alla politica dell'UE, con l'Italia che allinea i suoi quadri di incentivazione per promuovere solo pompe di calore e sistemi ibridi conformi. I richiedenti devono ora scegliere tra Conto Termico 3.0 ed Ecobonus per la stessa spesa, poiché non è consentito cumulare gli incentivi. ENEA ha aggiornato i suoi vademecum Ecobonus, inclusa una guida specifica per le pompe di calore e i sistemi ibridi, pubblicata a settembre 2026.",
+      "titleEn": "Italy's Heat Pump Incentives Undergo Major Reforms for 2026, Phasing Out Fossil Fuel Subsidies",
+      "summaryEn": "Italy has introduced substantial changes to its primary heat pump incentive schemes, Conto Termico 3.0 and Ecobonus, for 2026. These reforms emphasize direct cash grants and tax deductions for high-efficiency, renewable heating solutions while explicitly excluding standalone fossil fuel boilers from public subsidies.",
+      "imageUrl": "/news-images/it-policy-03.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
-      "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.it/special-report/2026-08/",
-      "ctaLabel": "Leggi il rapporto speciale",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
       "sources": [
         {
-          "title": "Assotermica — caldaie, mercato in forte contrazione nel 2025",
-          "url": "https://www.anima.it/associazioni/elenco/assotermica/media/comunicati-stampa/caldaie-mercato-in-forte-contrazione-nel-2025-segnali-di-allarme-per-il-comparto.kl"
+          "title": "Conto Termico 3.0: Your Practical Guide to Italy's New Energy Incentives",
+          "url": "https://greengen.com/insights/conto-termico-3-0/"
         },
         {
-          "title": "Assoclima — climatizzazione, primo semestre 2026",
-          "url": "https://www.anima.it/associazioni/elenco/assoclima/media/comunicati-stampa/climatizzazione-primo-semestre-due-velocita-in-flessione-split-avanzano-soluzioni-impiantistiche-piu-evolute.kl"
+          "title": "Heat Pump Incentives in Italy (2026 Guide)",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGeDV5G7k7kgiJt8xUEWkRHY9AVQimvx2dO_c5VYc1oblcDNLdLUnv49Zn7dgr5VDTpgj1o1V3C1RfFLpritlPDqIeHhPbm2Qeyo5_Xa-5zsJNZkPip1_aqZ2JFLD4dKoEtw7XbmaE94263myHGMAMulMayg5URXxz9SZGn2D5dofzcNZKzQkr6Ud1FA2bVpwoPCg=="
         },
         {
-          "title": "EHPA — European market data (updated 2026)",
-          "url": "https://ehpa.org/market-data/"
+          "title": "Conto Termico 3.0 -Climatization and Heat Pumps | Tadiran Italy",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFe437RTOSyIv_hKuqyp9ISgQFjTqx7p5ocLxwfX7FkITd0WMLr3LMJsBDGU4zgkNIp6SFlZQwUGxuyFeQYVwZlsnz31Nt__T5mPei1qs6QhBhzcSa7P-v1fuEe-EP7d3byt-2MyGxutNo=="
+        },
+        {
+          "title": "From Superbonus to Ecobonus: Navigating Italy's Home Renovation Tax Credits in 2026",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFV-GULiHbOaqGrBqi29OizrIIS_mT1Ajjzlh4H8wBPHQbiW3Y_mkaaBUqn467dUFfCjN7TkGYF371K1HZTPp6H6PCWmCsZpTLGOEvO2eEqBBwg3lvRYd33CRebMJ1UT-pq4Eyzy1Xgd1nirie9nDzRAH9HBWpNzFC6NI5asudArvKuw4zebMsEwP5WlUNrT1CUMtiyz7o3TLVsX60Wwg=="
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-it-002",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Vendite Europee di Pompe di Calore in Crescita a Doppia Cifra nel Primo Semestre 2026, l'Italia Contribuisce all'Aumento",
+      "summary": "Le vendite di pompe di calore residenziali in Europa, inclusa l'Italia, hanno registrato un aumento dell'11% nella prima metà del 2026 rispetto all'anno precedente. Questa crescita è principalmente attribuita all'aumento dei prezzi dell'energia e alle iniziative dell'UE per ridurre le tasse sull'elettricità, stimolando la domanda di soluzioni di riscaldamento più efficienti.",
+      "body": "Il mercato europeo delle pompe di calore ha mostrato una crescita robusta nel primo semestre del 2026, con vendite residenziali in 12 paesi europei chiave, inclusa l'Italia, in aumento dell'11%. Circa 1,16 milioni di unità sono state vendute tra gennaio e giugno 2026, un incremento rispetto a 1,04 milioni nello stesso periodo del 2025, secondo i dati dell'European Heat Pump Association (EHPA).\n\nL'EHPA attribuisce questo significativo aumento alla crescita dei prezzi dell'energia, in particolare a seguito delle interruzioni nello Stretto di Hormuz, e agli sforzi della Commissione Europea per incoraggiare gli Stati membri a ridurre le tasse sull'elettricità. Questi fattori stanno rendendo le pompe di calore elettriche un'alternativa sempre più attraente ai sistemi di riscaldamento basati su combustibili fossili.\n\nL'Italia svolge un ruolo sostanziale in questa tendenza europea. Sebbene la riduzione dell'incentivo Superbonus nel 2023 abbia causato una battuta d'arresto temporanea, l'andamento del mercato sta di nuovo accelerando. Il mercato italiano delle pompe di calore ha generato un fatturato di 2.337,8 milioni di dollari nel 2025 e si prevede che raggiungerà i 4.891,4 milioni di dollari entro il 2033, con un tasso di crescita annuale composto (CAGR) del 9,5% dal 2026 al 2033, come riportato da Grand View Research.\n\nLe pompe di calore ad aria continuano a dominare il mercato italiano, rappresentando una quota di fatturato del 98,4% nel 2025, mentre la tecnologia geotermica è identificata come il segmento in più rapida crescita. Il Piano Nazionale Integrato per l'Energia e il Clima (PNIEC) italiano, aggiornato nel 2025, fissa un ambizioso obiettivo di 6,5 milioni di installazioni di pompe di calore entro il 2030, un aumento considerevole rispetto ai 2,1 milioni di unità in essere alla fine del 2025.\n\nQuesta crescita sostenuta sottolinea il ruolo critico delle pompe di calore nel migliorare la sicurezza energetica dell'Italia e nell'accelerare la decarbonizzazione del suo settore di riscaldamento residenziale, che tradizionalmente dipende fortemente dal gas fossile. L'attuale panorama politico e le dinamiche di mercato suggeriscono un continuo spostamento verso soluzioni di riscaldamento elettrificate in tutta la nazione.",
+      "titleEn": "European Heat Pump Sales See Double-Digit Growth in First Half of 2026, Italy Contributes to Surge",
+      "summaryEn": "Residential heat pump sales across Europe, including Italy, experienced an 11% increase in the first half of 2026 compared to the previous year. This growth is primarily attributed to rising energy prices and EU initiatives to reduce electricity taxes, pushing demand for more efficient heating solutions.",
+      "imageUrl": "/news-images/common-market-01.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Heat Pump Sales Soar Across Europe After States Cut Electricity Taxes, Data Shows",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGHpSsN7eM4kLE01tit6CveKiyhUx3lP3j4HUfb78zvzzzgUlQxUrCxhA5kurlFaq1BbVeABx1F7hlN3p_eXYgGBEhh0GlmUypQdAJKokZGfIGXgIMnGOekK-MC_yow82aANaSY8eTgllldbrGF6QkyITRjpOM2f8SgACQQBSZRqfVzt-vyCjaGBO6gzhvSfZOY19kY4bCZMuvPqXjWSA5VlN8x"
+        },
+        {
+          "title": "European Heat Pump Sales on the Rise - Cooling Post",
+          "url": "https://www.coolingpost.com/world-news/european-heat-pump-sales-on-the-rise/"
+        },
+        {
+          "title": "European Residential Heat Pump Sales Rise 11% in First Half of This Year - IndexBox",
+          "url": "https://www.indexbox.io/blog/european-residential-heat-pump-sales-rise-11-in-first-half-of-this-year/"
+        },
+        {
+          "title": "Italy Heat Pump Market Outlook, 2033 - Grand View Research",
+          "url": "https://www.grandviewresearch.com/horizon/outlook/heat-pump-market/italy"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-it-003",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "Refrigeranti Naturali, in Particolare R290, Guidano l'Innovazione delle Pompe di Calore Tra Regolamenti F-Gas dell'UE Più Rigidi",
+      "summary": "Il mercato europeo delle pompe di calore sta assistendo a un rapido cambiamento tecnologico verso i refrigeranti naturali come l'R290 (propano), spinto dalla nuova e rigorosa Regolamentazione F-Gas dell'UE (UE 2024/573). I produttori stanno introducendo soluzioni innovative di pompe di calore basate sull'R290 a bassa rumorosità per conformarsi ai prossimi divieti sui refrigeranti ad alto potenziale di riscaldamento globale (GWP).",
+      "body": "La spinta verso la decarbonizzazione e la sostenibilità ambientale sta accelerando i progressi tecnologici nel settore delle pompe di calore, con una forte attenzione ai refrigeranti naturali. La revisione del Regolamento UE sui gas fluorurati (UE 2024/573) è un catalizzatore primario, che mira a eliminare quasi completamente i refrigeranti ad alto potenziale di riscaldamento globale (GWP) entro il 2050. Le scadenze principali includono il divieto di gas fluorurati nelle piccole pompe di calore monoblocco (<12 kW) entro il 2032 e nei sistemi split entro il 2035.\n\nIl propano (R290) è emerso come un precursore tra i refrigeranti naturali grazie al suo GWP ultra-basso e alle sue proprietà termodinamiche favorevoli, che contribuiscono a un'elevata efficienza energetica. I principali produttori hanno presentato una gamma di soluzioni di pompe di calore basate su R290 alla Mostra Convegno Expocomfort (MCE) 2026 di Milano. Queste includono unità monoblocco completamente interne, come l'airMono R290 di PHNIX, progettate per ristrutturazioni urbane con spazio esterno limitato.\n\nL'innovazione si estende ai sistemi ibridi e alla gestione del suono. L'H-Pack di Midea, presentato all'MCE 2026, è una pompa di calore R290 completamente interna progettata per affrontare i problemi di rumorosità esterna, spazio di installazione e restrizioni edilizie, offrendo sia modalità di riscaldamento ibride che completamente elettriche. Allo stesso modo, la serie Greenergy Pure R290 di SPRSUN vanta la tecnologia full inverter e un funzionamento stabile con livelli di rumorosità minimi, fino a 36 dB(A).\n\nI livelli di potenza sonora sono una considerazione critica per le installazioni di pompe di calore, soprattutto nelle aree residenziali. Il Regolamento UE di Ecodesign (UE) n. 813/2013 stabilisce i livelli massimi di potenza sonora per i generatori di calore, con una tipica pompa di calore ad aria residenziale (8-10 kW) che non deve superare i 70 dB(A) all'unità. La Germania, ad esempio, ha inasprito i suoi limiti acustici a -10 dB rispetto all'Ecodesign UE per l'ammissibilità a determinati programmi di incentivazione. Ciò evidenzia la crescente importanza del funzionamento a bassa rumorosità nello sviluppo dei prodotti.\n\nNonostante i rapidi progressi, l'industria ha sollevato preoccupazioni riguardo alla tempistica per l'adeguamento alle rigorose normative sui gas fluorurati, con alcuni produttori che hanno richiesto più tempo per sviluppare e certificare soluzioni alternative. Ciononostante, il passaggio a refrigeranti naturali come l'R290 è irreversibile, promettendo un futuro di riscaldamento e raffreddamento più sostenibili ed efficienti.",
+      "titleEn": "Natural Refrigerants, Especially R290, Drive Heat Pump Innovation Amidst Stricter EU F-Gas Regulations",
+      "summaryEn": "The European heat pump market is witnessing a rapid technological shift towards natural refrigerants like R290 (propane), driven by the stringent new EU F-Gas Regulation (EU 2024/573). Manufacturers are introducing innovative, low-noise R290-based heat pump solutions to meet upcoming bans on high Global Warming Potential (GWP) refrigerants.",
+      "imageUrl": "/news-images/common-tech-02.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "F-Gas regulation 2026 - Eco Scandic",
+          "url": "https://ecoscandic.fi/en/f-gas-regulation-2026-2/"
+        },
+        {
+          "title": "Danfoss at MCE 2026 | R290 Heat pumps and VLP system with Mattia Puccianti - YouTube",
+          "url": "https://www.youtube.com/watch?v=4EkmrWuMvqc"
+        },
+        {
+          "title": "MCE 2026 Opens in Milan with Focus on Natural Refrigerants, Data Center Cooling, and Heat Pumps - Refindustry",
+          "url": "https://refindustry.com/insights/mce-2026-opens-in-milan-with-focus-on-natural-refrigerants-data-center-cooling-and-heat-pumps/"
+        },
+        {
+          "title": "Heat Pump Noise Requirements: Limits, Standards & Compliance Guide",
+          "url": "https://www.idm-energie.at/en/heat-pump-installation/noise-requirements/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-it-004",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "L'Italia Sotto Procedura d'Infrazione UE per il Ritardo nella Trasposizione della Direttiva 'Case Green'",
+      "summary": "L'Italia ha ricevuto una comunicazione formale dalla Commissione Europea per non aver recepito la Direttiva sulla Prestazione Energetica nell'Edilizia (EPBD), nota come direttiva 'Case Green', nella legislazione nazionale entro la scadenza del 29 maggio 2026. Questo ritardo incide sul percorso della nazione verso edifici a emissioni zero e l'eliminazione graduale dei combustibili fossili entro il 2040.",
+      "body": "L'Italia sta affrontando una procedura di infrazione da parte della Commissione Europea a causa del mancato rispetto delle scadenze chiave relative alla Direttiva sulla Prestazione Energetica nell'Edilizia (EPBD), spesso definita direttiva 'Case Green'. La Commissione Europea ha inviato lettere di costituzione in mora a tutti i 27 Stati membri dell'UE il 15 luglio 2026, inclusa l'Italia, per non aver notificato completamente la trasposizione nazionale della Direttiva (UE) 2024/1275 entro la scadenza del 29 maggio 2026.\n\nInoltre, l'Italia ha anche mancato la precedente scadenza del 31 dicembre 2025 per la presentazione della prima bozza del Piano Nazionale di Ristrutturazione Edilizia (NBRP) a Bruxelles. Questa direttiva è centrale nella strategia dell'UE per decarbonizzare gli edifici, mirando a un parco immobiliare a emissioni quasi zero entro il 2050 e a un obiettivo di riduzione delle emissioni del 60% per il settore entro il 2030.\n\nI requisiti chiave della EPBD includono l'obbligo di nuovi edifici pubblici a emissioni zero entro il 2028 e tutti i nuovi edifici residenziali privati entro il 2030. Per le proprietà residenziali esistenti, gli Stati membri devono attuare misure per garantire una riduzione media del consumo di energia primaria di almeno il 16% entro il 2030 e tra il 20-22% entro il 2035.\n\nUn aspetto significativo della direttiva, già in vigore dal 1° gennaio 2025, è il divieto di incentivi finanziari per l'installazione di caldaie autonome a combustibili fossili. Ciò si allinea all'obiettivo più ampio di eliminare gradualmente i combustibili fossili per il riscaldamento entro il 2040, incoraggiando nel contempo i sistemi di riscaldamento ibridi. La direttiva impone anche l'installazione di sistemi solari su tutti i nuovi edifici pubblici e non residenziali superiori a 250 metri quadrati entro il 2026.\n\nIl ritardo dell'Italia nel recepire questi regolamenti cruciali crea incertezza per i proprietari di immobili, gli installatori e il mercato nel suo complesso, ostacolando i progressi della nazione verso i suoi obiettivi di efficienza energetica e climatici. L'azione della Commissione Europea sottolinea l'urgenza per l'Italia di definire la propria strategia di attuazione nazionale e gli incentivi a sostegno di questi aggiornamenti obbligatori di efficienza energetica.",
+      "titleEn": "Italy Faces EU Infringement for Delayed 'Case Green' Directive Transposition",
+      "summaryEn": "Italy has received a formal notice from the European Commission for failing to transpose the Energy Performance of Buildings Directive (EPBD), known as the 'Case Green' directive, into national law by the May 29, 2026, deadline. This delay impacts the nation's pathway to achieving zero-emission buildings and phasing out fossil fuels by 2040.",
+      "imageUrl": "/news-images/eu-policy-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Green homes, the future of Italian property - Idealista",
+          "url": "https://www.idealista.it/en/news/lifestyle-in-italy/2026/07/24/409334-green-homes-the-future-of-italian-property"
+        },
+        {
+          "title": "Commission urges EU countries to implement reinforced building energy rules",
+          "url": "https://transition-pathways.europa.eu/construction/news/commission-urges-eu-countries-implement-reinforced-building-energy-rules"
+        },
+        {
+          "title": "New \"Case Green\" Directive: Final Approval - Enertech Solution",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHQmAH2AmtRSdwnGveWXjiGWnUA7flF_gz2ovDg4CVF2dRLeNzz_WyRCyWgC6R2LDifZG2XzEy5_tCi5YrDw6H1bcAvHFPPY37l_BmvtXTROvbOvc_fFToauwZzFIzDM2FTh920WuUGnVLh9VSbrotxoWDX5GV9RxFFWKOYSFvRiCkDHW284yQ=="
+        },
+        {
+          "title": "Zero-emission buildings: Italy and other EU countries are getting ready. Boilers and aggregates: from waste to resources - Ecomondo",
+          "url": "https://www.ecomondo.com/en/news-detail/zero-emission-buildings-italy-and-other-eu-countries-are-getting-ready?newsId=5800901"
         }
       ]
     },
@@ -195,6 +301,36 @@
         {
           "title": "EU heat pump policy: F-gas regulations & key deadlines - Grundfos",
           "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG86MvTS-QahlNeGi41zu4Nxb_Sqql_yksw2CwgQz1tEfENEFz8AeZjQyoacBwPqU1tUZSdyEBeTO8vvAwPlNaKUTIcOvRHGQot-H_qOAjcZ9Q93MyBBPg6bnaAPkxmfgcCTtwt4k6oK8sKASgTDT9XoJdPrUqLNC5hQS03Olja4tvBfQdpn4jJRV3psg=="
+        }
+      ]
+    },
+    {
+      "id": "news-20260816-it-sr1",
+      "date": "2026-08-16T00:00:00Z",
+      "category": "MARKET",
+      "title": "La transizione del riscaldamento in Europa: cinque mercati, cinque realtà",
+      "summary": "HeatPump DataBase Europe lancia un nuovo rapporto di mercato mensile interattivo sugli sviluppi più recenti del mercato delle pompe di calore e del riscaldamento in Europa.",
+      "body": "HeatPump DataBase Europe ha pubblicato la prima edizione del nuovo rapporto speciale mensile europeo sulle pompe di calore. Il rapporto esamina Germania, Regno Unito, Francia, Polonia e Italia sulla base dei dati dell'intero 2025, insieme ai più recenti segnali di mercato disponibili per il 2026.\n\nIl rapporto mostra cinque realtà di mercato molto diverse: il mercato tedesco delle pompe di calore ha continuato a rafforzarsi nel primo semestre 2026; il Regno Unito cresce ma resta dominato dalle caldaie; la Francia registra un mercato del riscaldamento idronico in contrazione; la Polonia si sta riprendendo mentre le scorte di canale si normalizzano; e l'Italia ha registrato una forte crescita delle pompe di calore aria/acqua nel primo semestre 2026.\n\nA differenza di un PDF statico convenzionale, il rapporto si presenta come un rapporto digitale interattivo. Il lettore scorre le pagine come una rivista digitale e, portando il cursore sui grafici, vede i valori numerici sottostanti; i riferimenti alle fonti e le note metodologiche forniscono il contesto.\n\nHeatPump DataBase Europe prevede di pubblicare ogni mese un nuovo rapporto speciale sul mercato europeo delle pompe di calore, dedicato alle tendenze di mercato, agli sviluppi normativi, agli incentivi, ai passaggi tecnologici e agli altri temi rilevanti per i professionisti del settore del riscaldamento.\n\nIl rapporto è gratuito da leggere e da scaricare ed è disponibile in inglese, tedesco, francese, polacco e italiano.",
+      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
+      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
+      "imageUrl": "/special-report/img/special-report-2026-08-it.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.it/special-report/2026-08/",
+      "ctaLabel": "Leggi il rapporto speciale",
+      "sources": [
+        {
+          "title": "Assotermica — caldaie, mercato in forte contrazione nel 2025",
+          "url": "https://www.anima.it/associazioni/elenco/assotermica/media/comunicati-stampa/caldaie-mercato-in-forte-contrazione-nel-2025-segnali-di-allarme-per-il-comparto.kl"
+        },
+        {
+          "title": "Assoclima — climatizzazione, primo semestre 2026",
+          "url": "https://www.anima.it/associazioni/elenco/assoclima/media/comunicati-stampa/climatizzazione-primo-semestre-due-velocita-in-flessione-split-avanzano-soluzioni-impiantistiche-piu-evolute.kl"
+        },
+        {
+          "title": "EHPA — European market data (updated 2026)",
+          "url": "https://ehpa.org/market-data/"
         }
       ]
     },

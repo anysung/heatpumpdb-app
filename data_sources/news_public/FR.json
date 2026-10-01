@@ -1,6 +1,6 @@
 {
   "market": "FR",
-  "generatedAt": "2026-09-09T20:45:26.490Z",
+  "generatedAt": "2026-10-01T01:31:32.293Z",
   "items": [
     {
       "id": "news-20260908-fr-sr1",
@@ -33,32 +33,104 @@
       ]
     },
     {
-      "id": "news-20260816-fr-sr1",
-      "date": "2026-08-16T00:00:00Z",
-      "category": "MARKET",
-      "title": "La transition du chauffage en Europe : cinq marchés, cinq réalités",
-      "summary": "HeatPump DataBase Europe lance un nouveau rapport de marché mensuel interactif consacré aux dernières évolutions du marché de la pompe à chaleur et du chauffage en Europe.",
-      "body": "HeatPump DataBase Europe publie la première édition de son nouveau rapport spécial mensuel sur la pompe à chaleur en Europe. Il examine l'Allemagne, le Royaume-Uni, la France, la Pologne et l'Italie à partir des données de l'année complète 2025, complétées par les signaux de marché 2026 les plus récents disponibles.\n\nLe rapport met en évidence cinq réalités de marché très différentes : le marché allemand de la pompe à chaleur a continué de se renforcer au premier semestre 2026 ; le Royaume-Uni progresse mais reste dominé par les chaudières ; la France connaît une contraction du marché du chauffage hydronique ; la Pologne se redresse à mesure que les stocks des circuits de distribution se normalisent ; et l'Italie a enregistré une forte croissance des pompes à chaleur air/eau au premier semestre 2026.\n\nContrairement à un PDF statique classique, le rapport se présente comme un rapport numérique interactif. Le lecteur parcourt les pages comme un magazine numérique et fait apparaître les valeurs chiffrées en plaçant le curseur sur les graphiques, tandis que les références aux sources et les notes méthodologiques apportent le contexte.\n\nHeatPump DataBase Europe prévoit de publier chaque mois un nouveau rapport spécial sur le marché européen de la pompe à chaleur, couvrant les tendances de marché, les évolutions réglementaires, les dispositifs d'aide, les basculements technologiques et les autres sujets utiles aux professionnels du chauffage.\n\nLe rapport est consultable et téléchargeable gratuitement, en anglais, allemand, français, polonais et italien.",
-      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
-      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
-      "imageUrl": "/special-report/img/special-report-2026-08-fr.webp",
+      "id": "news-20261001-fr-001",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "La France refond ses aides aux pompes à chaleur avec des réformes majeures en septembre 2026 et le lancement du leasing social",
+      "summary": "Des réformes importantes de MaPrimeRénov' et du Coup de pouce Chauffage sont entrées en vigueur le 1er septembre 2026, limitant considérablement les aides aux gestes isolés et introduisant de nouvelles exigences de certification pour les pompes à chaleur. Parallèlement, un programme de leasing social pour les ménages modestes est lancé le 1er octobre. Ces changements visent à orienter les rénovations vers des projets globaux et à garantir la qualité, accélérant ainsi la sortie de la France des énergies fossiles.",
+      "body": "Le gouvernement français a mis en œuvre des changements substantiels dans ses principaux dispositifs d'aide aux pompes à chaleur, MaPrimeRénov' et Coup de pouce Chauffage, à compter du 1er septembre 2026, parallèlement au lancement d'une nouvelle initiative de leasing social le 1er octobre, marquant une orientation décisive vers le chauffage décarboné et les rénovations énergétiques globales.\n\nÀ compter du 1er septembre 2026, le parcours « par geste » de MaPrimeRénov', qui soutenait auparavant les actions de rénovation individuelles, a été considérablement restreint. La plupart des travaux d'isolation autonomes, des systèmes de ventilation, des chauffe-eau thermodynamiques, des chauffe-eau solaires et des systèmes de chauffage au bois (poêles et inserts à granulés) ne sont plus éligibles à cette aide monogeste. Désormais, le soutien aux gestes isolés se concentre principalement sur l'installation de systèmes de chauffage décarbonés, en particulier les pompes à chaleur air/eau et géothermiques pour les ménages éligibles.\n\nPour les propriétaires souhaitant des améliorations plus larges, le « Parcours Accompagné » (parcours de rénovation globale) est désormais primordial. Cette voie exige que les projets atteignent un gain d'au moins deux classes sur le DPE (Diagnostic de Performance Énergétique) et est obligatoire pour les logements classés E, F ou G. Une mise à jour cruciale pour ce parcours, également effective au 1er septembre 2026, est l'exclusion stricte de tout projet qui conserve ou installe un système de chauffage ou d'eau chaude sanitaire basé sur des combustibles fossiles, ce qui inclut désormais les pompes à chaleur hybrides intégrant une chaudière à gaz.\n\nL'éligibilité au « Parcours Accompagné » nécessite un audit énergétique préalable et un accompagnement continu par un « Mon Accompagnateur Rénov' » (MAR') certifié. Tous les propriétaires, y compris les bailleurs, peuvent accéder à ce parcours, à condition que leur logement ait plus de 15 ans et serve de résidence principale. Les montants d'aide dans le cadre de ce dispositif sont modulés en fonction des revenus et du gain énergétique, pouvant couvrir une part significative des coûts du projet.\n\nLe programme « Coup de pouce Chauffage », qui fait partie du dispositif CEE plus large, a également été révisé. À partir du 1er septembre 2026, les bonifications financières pour l'installation de pompes à chaleur air/eau, eau/eau ou eau glycolée/eau sont exclusivement accordées aux modèles bénéficiant d'un agrément officiel « qualité et résilience industrielle », attestant d'un assemblage européen et de normes élevées. Ce changement vise à garantir la qualité et la durabilité des équipements installés tout en stimulant la fabrication européenne, les pompes à chaleur éligibles bénéficiant d'une multiplication par cinq de la prime CEE.\n\nPour démocratiser davantage l'accès à la technologie des pompes à chaleur, un programme de leasing social pour les ménages modestes a été lancé, avec des offres disponibles à partir du 1er octobre 2026. Cette initiative, financée par les CEE, vise à rendre les pompes à chaleur accessibles en garantissant que le coût combiné de la pompe à chaleur et de l'électricité sera égal ou inférieur à la facture de chauffage aux combustibles fossiles précédente du ménage. Cette phase initiale exclut les appartements et les foyers déjà chauffés à l'électricité.\n\nIl est fortement conseillé aux propriétaires de solliciter les conseils des experts France Rénov' et de s'assurer que toutes les demandes d'aide sont soumises et approuvées *avant* de commencer les travaux, car un démarrage prématuré risque la perte d'un soutien financier crucial. Le cumul de ces diverses aides avec l'Éco-PTZ et la TVA réduite reste possible, offrant des dispositifs de financement complets pour les projets éligibles.",
+      "titleEn": "France Reshapes Heat Pump Subsidies with Major September 2026 Reforms and Social Leasing Launch",
+      "summaryEn": "Major reforms to MaPrimeRénov' and Coup de pouce Chauffage took effect on September 1, 2026, significantly restricting single-action aid and introducing new certification requirements for heat pumps. Concurrently, a social leasing program for modest households launches on October 1. These changes aim to steer renovations towards comprehensive projects and ensure quality, further accelerating France's move away from fossil fuels.",
+      "imageUrl": "/news-images/fr-policy-03.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
-      "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.fr/special-report/2026-08/",
-      "ctaLabel": "Lire le rapport spécial",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
       "sources": [
         {
-          "title": "Uniclima — Dossier de presse, Bilan 2025",
-          "url": "https://www.uniclima.fr/userfiles/2026/DP_Uniclima_Bilan_2025_VF.pdf"
+          "title": "MaPrimeRénov' parcours par geste : la prime pour la rénovation énergétique | economie.gouv.fr",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQERe9w9uDrlPn133FW0wP5LKEMLy2leSb_RPRlBTVyFcSeADUIMjFr0YVswuo5Qw1eaccaqOyZ8DuQ417fHyIGu7klMTf9tRfXfZtqZzb01An8pyWUCwKcIsJ-m1a4l8pYMpXnPfIZgntvdlwk8ZInOgXdk7orLHmJ6WpH8veg0vjutA-7pFo5lBOf4maqa_GUb9d63AbMnOt8mTDedJBR-zbk9fByXHouHVJvwRUN4Sv1JtsYhqUJAEnpS9_HMyTXEFI2RfSncWaid"
         },
         {
-          "title": "Uniclima — communiqué, ventes air/air janvier–avril 2026",
-          "url": "https://www.uniclima.fr/userfiles/2026/2026_06_23_CP_Vague_de_chaleur.pdf"
+          "title": "MaPrimeRénov' rénovation d'ampleur : tout savoir sur cette aide | economie.gouv.fr",
+          "url": "https://www.economie.gouv.fr/particuliers/faire-des-economies-denergie/maprimerenov-renovation-dampleur-tout-savoir-sur-cette-aide"
         },
         {
-          "title": "EHPA — European market data (updated 2026)",
-          "url": "https://ehpa.org/market-data/"
+          "title": "Comment bénéficier de la prime « Coup de pouce chauffage » ? | economie.gouv.fr",
+          "url": "https://www.economie.gouv.fr/particuliers/faire-des-economies-denergie/comment-beneficier-de-la-prime-coup-de-pouce-chauffage"
+        },
+        {
+          "title": "Leasing pompe à chaleur : cadre et calendrier ADEME - Primeo Energie",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHh_eWM2Cjs7nA1mG7Qln_vVXycgBoxuS8XHjQ8Ju08UL33-d7Dac2-PIbedn773fqz0ihsgrGngRjiPPAQLU2X-6UoXQBifB-OphJPJv_O9e8DXi3phcggeyzv8yNKVV04y58OOomTg2QHcRaaKqGG-w=="
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-fr-002",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Le marché français des pompes à chaleur rebondit au 1er semestre 2026 au milieu des changements de politique",
+      "summary": "Après plusieurs années de déclin, le marché français des pompes à chaleur connaît une résurgence significative au premier semestre 2026, portée par la hausse des prix des combustibles fossiles et les politiques gouvernementales ciblées. Les données d'Uniclima révèlent une forte croissance, en particulier pour les modèles air/eau et air/air, signalant un virage décisif vers les solutions de chauffage électrique.",
+      "body": "Le marché français des pompes à chaleur a connu un rebond notable au premier semestre 2026, mettant fin à une période de déclin avec une croissance significative des ventes, principalement stimulée par l'escalade des prix du gaz et du fioul et la réorientation stratégique des aides publiques, selon les rapports de l'industrie.\n\nStanislas Lacroix, président d'Uniclima, le syndicat professionnel français des industries thermiques, aérauliques et frigorifiques, a présenté des perspectives positives pour le secteur au premier semestre 2026. Les données montrent une augmentation robuste des ventes de pompes à chaleur air/eau, en hausse de 14,7 % pour les six premiers mois, totalisant 101 330 unités. Cette tendance haussière s'est encore accélérée fin août, atteignant une augmentation impressionnante de 20,3 %.\n\nLe segment des pompes à chaleur air/air a connu une augmentation encore plus spectaculaire, avec des ventes en hausse de 36,2 % au premier semestre et une remarquable croissance de 44,4 % fin août. Cette envolée est largement attribuée aux récentes vagues de chaleur et à une demande croissante des consommateurs pour des systèmes offrant à la fois des capacités de chauffage et de rafraîchissement, une solution de « confort 4 saisons ».\n\nInversement, le marché des systèmes de chauffage à combustibles fossiles, tels que les chaudières à gaz et au fioul, poursuit sa trajectoire descendante. Les ventes de ces unités ont chuté de 23,4 % au premier semestre 2026, reflétant l'efficacité des politiques gouvernementales prônant l'électrification du chauffage et décourageant la dépendance aux options conventionnelles et intensives en carbone.\n\nCette revitalisation du marché fait suite à une période difficile où les ventes sont passées d'un sommet de 358 000 unités en 2022 à 182 000 en 2025. La reprise actuelle est étroitement liée au contexte géopolitique qui fait grimper les prix du gaz et du fioul, ainsi qu'aux efforts gouvernementaux pour recentrer les subventions comme MaPrimeRénov' et le Coup de pouce Chauffage spécifiquement sur les installations de pompes à chaleur et pour promouvoir la fabrication européenne.\n\nLa France maintient sa position de premier marché européen en volume, avec 528 000 unités vendues dans 21 pays en 2025, contribuant à une croissance globale de 13 % du marché européen des pompes à chaleur cette année-là. Les acteurs de l'industrie soulignent la nécessité de maintenir des politiques de soutien pour assurer le développement stable et à long terme du secteur des pompes à chaleur, les bonifications CEE devant actuellement expirer fin 2026.",
+      "titleEn": "French Heat Pump Market Rebounds in H1 2026 Amid Policy Shifts",
+      "summaryEn": "After several years of decline, the French heat pump market is experiencing a significant resurgence in the first half of 2026, driven by rising fossil fuel prices and targeted government policies. Uniclima data reveals strong growth, particularly for air-to-water and air-to-air models, signaling a decisive shift towards electric heating solutions.",
+      "imageUrl": "/news-images/common-market-05.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Bilan Uniclima : les pompes à chaleur retrouvent la croissance en 2026 - Effy",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHa52CjwlO7Pjun9rMf-QFTlGuxMYm_tK83CC-FdnhzQJAFaOmBvXzQi0S5eg-gMt2AWCzyXAOZf3F8OOJZ3b7lyjCEXiG3sJjkawcnMPK6xu_Uh9XrX69cMKw928ni03oWqkTgF-0CGsA9hWS5cjQfE46gaF7Yn538SAZ7mqwQu3G1Zc6OoSC42eQkZLCJhBQ0fbWN0DyYn-e8o5fOhv6qDA=="
+        },
+        {
+          "title": "Uniclima : bilan mitigé pour le génie climatique au S1 2026 - Batiweb",
+          "url": "https://www.batiweb.com/actualites/genie-climatique/uniclima-marche-genie-climatique-pac-ventilation-2026-49357"
+        },
+        {
+          "title": "Le marché de la pompe à chaleur se relance (enfin) et la France entend protéger ses champions industriels - La Tribune",
+          "url": "https://www.latribune.fr/article/entreprises-finance/industrie/18124136757629/le-marche-de-la-pompe-a-chaleur-se-relance-enfin-et-la-france-entend-proteger-ses-champions-industriels"
+        },
+        {
+          "title": "Après trois ans, le marché de la pompe à chaleur enfin à la hausse - Hello Watt",
+          "url": "https://www.hellowatt.fr/blog/hausse-marche-pompe-chaleur/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-fr-003",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "La décarbonisation redéfinit la technologie des pompes à chaleur et les pratiques d'installation en France",
+      "summary": "La dynamique de décarbonisation, soulignée par la norme de construction RE2020 et les récentes évolutions politiques, influence profondément la technologie des pompes à chaleur et les méthodes d'installation en France. L'accent est mis sur des solutions hautement efficaces et à faible émission de carbone, y compris les fluides frigorigènes naturels et les stratégies de rénovation globale, exigeant une expertise accrue des installateurs.",
+      "body": "Les objectifs ambitieux de décarbonisation de la France, renforcés par la norme de construction RE2020 et les récents ajustements de la politique gouvernementale, transforment fondamentalement la technologie des pompes à chaleur et les exigences en matière d'installation professionnelle, avec un accent clair sur des solutions hautement efficaces et respectueuses de l'environnement.\n\nLa réglementation environnementale RE2020 pour les nouveaux bâtiments continue de promouvoir les solutions de construction et de chauffage à faible émission de carbone, favorisant directement les pompes à chaleur. Les récentes modifications de politique, telles que l'exclusion des systèmes de chauffage à combustibles fossiles du « Parcours Accompagné » de MaPrimeRénov' à partir du 1er septembre 2026, démontrent un alignement fort avec les objectifs de la RE2020 visant à éliminer les émissions de carbone liées au chauffage dans les propriétés neuves et rénovées de manière globale.\n\nL'industrie observe une transition progressive vers des fluides frigorigènes plus respectueux de l'environnement. Par exemple, Bosch Home Comfort a introduit une pompe à chaleur air/air utilisant le R290 (propane), un fluide frigorigène naturel à très faible potentiel de réchauffement global. Cette tendance s'aligne sur les efforts européens plus larges visant à réduire progressivement les fluides frigorigènes à fort PRG (Potentiel de Réchauffement Global), poussant les fabricants vers des solutions innovantes et durables.\n\nAvec le nouveau paysage politique favorisant les rénovations globales, les installateurs sont de plus en plus tenus d'adopter une approche holistique. Le simple remplacement d'un système de chauffage sans s'attaquer à l'enveloppe thermique du bâtiment n'est plus suffisant pour une performance optimale ou pour l'accès aux aides les plus substantielles. Un audit énergétique et une isolation adéquate sont désormais des étapes préalables, garantissant que les pompes à chaleur fonctionnent avec une efficacité maximale et génèrent des économies d'énergie et un confort significatifs.\n\nL'évolution du paysage technologique et le cadre réglementaire rigoureux soulignent le rôle essentiel des professionnels certifiés « Reconnu Garant de l'Environnement » (RGE). Les installateurs doivent non seulement maîtriser l'installation de diverses technologies de pompes à chaleur, mais aussi fournir des conseils d'experts sur les stratégies de rénovation intégrées, y compris l'amélioration de l'isolation et la gestion de l'efficacité globale du système. La complexité des nouveaux critères d'éligibilité aux subventions accentue davantage le besoin de praticiens qualifiés et compétents.\n\nAu-delà du choix des fluides frigorigènes, les fabricants continuent d'affiner la conception des pompes à chaleur pour une efficacité optimale et des émissions sonores réduites, une considération constante pour les installations urbaines et résidentielles. L'intégration d'une pompe à chaleur dans un logement bien isolé, comme le souligne le parcours « Accompagné », est essentielle pour maximiser son potentiel d'économie d'énergie et assurer le confort des occupants.",
+      "titleEn": "Decarbonization Drive Reshapes French Heat Pump Technology and Installation Practices",
+      "summaryEn": "The ongoing push for decarbonization, underscored by the RE2020 building standard and recent policy shifts, is profoundly influencing heat pump technology and installation methods in France. The emphasis is on highly efficient, low-carbon solutions, including natural refrigerants and comprehensive renovation strategies, demanding enhanced installer expertise.",
+      "imageUrl": "/news-images/common-energy-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "MaPrimeRénov' rénovation d'ampleur : tout savoir sur cette aide | economie.gouv.fr",
+          "url": "https://www.economie.gouv.fr/particuliers/faire-des-economies-denergie/maprimerenov-renovation-dampleur-tout-savoir-sur-cette-aide"
+        },
+        {
+          "title": "Uniclima : bilan mitigé pour le génie climatique au S1 2026 - Batiweb",
+          "url": "https://www.batiweb.com/actualites/genie-climatique/uniclima-marche-genie-climatique-pac-ventilation-2026-49357"
+        },
+        {
+          "title": "Quel modèle de pompe à chaleur choisir en 2026 - M.A Solution Energy",
+          "url": "https://masolutionenergy.com/quel-modele-pompe-a-chaleur-choisir-2026/"
+        },
+        {
+          "title": "MaPrimeRénov' 2026 : conditions et critères d'éligibilité ANAH - Carrefour Energies",
+          "url": "https://installation.energies.carrefour.fr/conseils/chauffage/maprimerenov-anah-2026-conditions-eligibilite"
         }
       ]
     },
@@ -242,6 +314,36 @@
         {
           "title": "Ministère de la Transition écologique — Coup de pouce Chauffage",
           "url": "https://www.ecologie.gouv.fr/politiques-publiques/coup-pouce-chauffage"
+        }
+      ]
+    },
+    {
+      "id": "news-20260816-fr-sr1",
+      "date": "2026-08-16T00:00:00Z",
+      "category": "MARKET",
+      "title": "La transition du chauffage en Europe : cinq marchés, cinq réalités",
+      "summary": "HeatPump DataBase Europe lance un nouveau rapport de marché mensuel interactif consacré aux dernières évolutions du marché de la pompe à chaleur et du chauffage en Europe.",
+      "body": "HeatPump DataBase Europe publie la première édition de son nouveau rapport spécial mensuel sur la pompe à chaleur en Europe. Il examine l'Allemagne, le Royaume-Uni, la France, la Pologne et l'Italie à partir des données de l'année complète 2025, complétées par les signaux de marché 2026 les plus récents disponibles.\n\nLe rapport met en évidence cinq réalités de marché très différentes : le marché allemand de la pompe à chaleur a continué de se renforcer au premier semestre 2026 ; le Royaume-Uni progresse mais reste dominé par les chaudières ; la France connaît une contraction du marché du chauffage hydronique ; la Pologne se redresse à mesure que les stocks des circuits de distribution se normalisent ; et l'Italie a enregistré une forte croissance des pompes à chaleur air/eau au premier semestre 2026.\n\nContrairement à un PDF statique classique, le rapport se présente comme un rapport numérique interactif. Le lecteur parcourt les pages comme un magazine numérique et fait apparaître les valeurs chiffrées en plaçant le curseur sur les graphiques, tandis que les références aux sources et les notes méthodologiques apportent le contexte.\n\nHeatPump DataBase Europe prévoit de publier chaque mois un nouveau rapport spécial sur le marché européen de la pompe à chaleur, couvrant les tendances de marché, les évolutions réglementaires, les dispositifs d'aide, les basculements technologiques et les autres sujets utiles aux professionnels du chauffage.\n\nLe rapport est consultable et téléchargeable gratuitement, en anglais, allemand, français, polonais et italien.",
+      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
+      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
+      "imageUrl": "/special-report/img/special-report-2026-08-fr.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.fr/special-report/2026-08/",
+      "ctaLabel": "Lire le rapport spécial",
+      "sources": [
+        {
+          "title": "Uniclima — Dossier de presse, Bilan 2025",
+          "url": "https://www.uniclima.fr/userfiles/2026/DP_Uniclima_Bilan_2025_VF.pdf"
+        },
+        {
+          "title": "Uniclima — communiqué, ventes air/air janvier–avril 2026",
+          "url": "https://www.uniclima.fr/userfiles/2026/2026_06_23_CP_Vague_de_chaleur.pdf"
+        },
+        {
+          "title": "EHPA — European market data (updated 2026)",
+          "url": "https://ehpa.org/market-data/"
         }
       ]
     },

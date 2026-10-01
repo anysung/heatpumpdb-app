@@ -1,5 +1,28 @@
 [
  {
+  "slug": "2026-10-incentivi-italia-pompe-calore",
+  "date": "2026-10-01",
+  "image": "it-2026-10-incentivi-italia-pompe-calore.webp",
+  "title": "Riforma Incentivi Italiani 2026: Conto Termico 3.0 ed Ecobonus, Stop ai Sussidi Fossili",
+  "excerpt": "Il 2026 segna una svolta per gli incentivi alle pompe di calore in Italia. Il Conto Termico 3.0 e l'Ecobonus sono stati aggiornati, con l'esclusione dei sussidi per i combustibili fossili.",
+  "body": [
+   "Il mercato italiano delle pompe di calore si confronta nel 2026 con un panorama di incentivi profondamente riformato. Il Conto Termico 3.0, regolamentato dal Decreto Ministeriale 07/08/2025, è entrato in vigore il 27 dicembre 2025, con la piattaforma GSE operativa da febbraio 2026. Questo programma offre contributi diretti in denaro: i soggetti privati possono recuperare fino al 65% delle spese ammissibili, mentre gli edifici pubblici, scuole e ospedali beneficiano di una copertura fino al 100% dei costi. Il budget annuale è di 900 milioni di euro.",
+   "Per le imprese private, il Conto Termico 3.0 prevede fino al 45% per progetti di energia termica rinnovabile e 25-30% per misure di efficienza energetica. I pagamenti sono erogati in un'unica soluzione per importi fino a 15.000 euro, o in rate annuali per importi superiori. Una procedura semplificata è disponibile tramite un catalogo GSE per sistemi di piccola taglia (≤35 kW o solare termico <50 m²).",
+   "Parallelamente, il regime Ecobonus continua a offrire detrazioni fiscali, con le installazioni di pompe di calore ammissibili a una detrazione del 65% ripartita su 10 anni. Il Superbonus 110% è stato ampiamente ridimensionato per i progetti residenziali standard nel 2026. Le detrazioni generali per le ristrutturazioni energetiche sono state ridotte a una base del 36% per la maggior parte delle proprietà residenziali, con le abitazioni principali che mantengono un'aliquota del 50%.",
+   "Un cambiamento politico fondamentale è l'esclusione delle caldaie autonome a combustibili fossili. Dal 1° gennaio 2025, i sussidi pubblici non si applicano più a questi sistemi, allineando l'Italia alla politica UE. È importante notare che i richiedenti devono ora scegliere tra Conto Termico 3.0 ed Ecobonus per la stessa spesa, poiché non è consentito cumulare gli incentivi. ENEA ha inoltre aggiornato i suoi vademecum Ecobonus, con una guida specifica per le pompe di calore e i sistemi ibridi."
+  ],
+  "sourceNote": "Fonte: HeatPump DB Italia News, Maggio 2024. Riferimenti: Decreto Ministeriale 07/08/2025, Gestore dei Servizi Energetici (GSE), ENEA.",
+  "titleEn": "Italian Incentive Reform 2026: Conto Termico 3.0 and Ecobonus, End to Fossil Fuel Subsidies",
+  "excerptEn": "2026 marks a turning point for heat pump incentives in Italy. Conto Termico 3.0 and Ecobonus have been updated, with the exclusion of fossil fuel subsidies.",
+  "bodyEn": [
+   "The Italian heat pump market faces a profoundly reformed incentive landscape in 2026. Conto Termico 3.0, regulated by Ministerial Decree 07/08/2025, officially came into force on December 27, 2025, with the GSE digital application platform operational from February 2026. This program offers direct cash contributions: private individuals can recover up to 65% of eligible expenses, while public buildings, schools, and hospitals can benefit from up to 100% cost coverage. The annual budget is 900 million euros.",
+   "For private enterprises, Conto Termico 3.0 provides up to 45% for renewable thermal energy projects and 25-30% for energy efficiency measures. Payments are disbursed in a single solution for amounts up to 15,000 euros, or in annual installments for higher amounts. A simplified procedure is available through a GSE catalog for small-scale systems (≤35 kW or solar thermal <50 m²).",
+   "In parallel, the Ecobonus scheme continues to offer tax deductions, with heat pump installations eligible for a 65% deduction spread over 10 years. The generous Superbonus 110% has been largely downsized for standard residential projects in 2026. General deductions for energy renovations have been reduced to a base of 36% for most residential properties, with main residences retaining a 50% rate.",
+   "A fundamental policy change in both incentives is the exclusion of autonomous fossil fuel boilers. From January 1, 2025, public subsidies no longer apply to these systems, aligning Italy with EU policy. Applicants must now choose between Conto Termico 3.0 and Ecobonus for the same expense, as incentive cumulation is not permitted. ENEA has also updated its Ecobonus vademecums, including a specific guide for heat pumps and hybrid systems."
+  ],
+  "sourceNoteEn": "Source: HeatPump DB Italia News, May 2024. References: Ministerial Decree 07/08/2025, Gestore dei Servizi Energetici (GSE), ENEA."
+ },
+ {
   "slug": "2026-09-refrigeranti",
   "date": "2026-09-12",
   "image": "it-2026-09-refrigerants-1.webp",

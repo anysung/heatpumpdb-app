@@ -1,6 +1,6 @@
 {
   "market": "PL",
-  "generatedAt": "2026-09-09T20:45:26.562Z",
+  "generatedAt": "2026-10-01T01:31:32.417Z",
   "items": [
     {
       "id": "news-20260908-pl-sr1",
@@ -33,36 +33,138 @@
       ]
     },
     {
-      "id": "news-20260816-pl-sr1",
-      "date": "2026-08-16T00:00:00Z",
-      "category": "MARKET",
-      "title": "Transformacja ogrzewania w Europie: pięć rynków, pięć rzeczywistości",
-      "summary": "HeatPump DataBase Europe uruchamia nowy comiesięczny interaktywny raport rynkowy o najnowszych zmianach na rynku pomp ciepła i ogrzewania w Europie.",
-      "body": "HeatPump DataBase Europe opublikował pierwsze wydanie nowego comiesięcznego europejskiego raportu specjalnego o pompach ciepła. Analizuje on Niemcy, Wielką Brytanię, Francję, Polskę i Włochy na podstawie danych za pełny rok 2025 wraz z najnowszymi dostępnymi sygnałami rynkowymi z 2026 roku.\n\nRaport pokazuje pięć bardzo różnych rzeczywistości rynkowych: niemiecki rynek pomp ciepła dalej się umacniał w pierwszym półroczu 2026; Wielka Brytania rośnie, ale wciąż dominują na niej kotły; we Francji kurczy się rynek ogrzewania hydraulicznego; Polska odbudowuje się w miarę normalizacji zapasów w kanale dystrybucji; a Włochy odnotowały w pierwszym półroczu 2026 silny wzrost pomp ciepła powietrze/woda.\n\nW przeciwieństwie do zwykłego statycznego pliku PDF raport ma formę interaktywnego raportu cyfrowego. Czytelnik przechodzi przez strony jak przez cyfrowy magazyn, a najechanie kursorem na wykres odsłania wartości liczbowe; odniesienia do źródeł i noty metodologiczne dopełniają kontekst.\n\nHeatPump DataBase Europe planuje publikować nowy raport specjalny o europejskim rynku pomp ciepła co miesiąc — o trendach rynkowych, zmianach regulacyjnych, programach dopłat, przesunięciach technologicznych i innych zagadnieniach istotnych dla profesjonalistów branży grzewczej.\n\nRaport jest bezpłatny do czytania i pobrania, dostępny po angielsku, niemiecku, francusku, polsku i włosku.",
-      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
-      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
-      "imageUrl": "/special-report/img/special-report-2026-08-pl.webp",
+      "id": "news-20261001-pl-001",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Program Czyste Powietrze z Głębokimi Reformami: Szerszy Dostęp i Wyższe Dotacje na Termomodernizację",
+      "summary": "W ramach programu \"Czyste Powietrze\" wprowadzono istotne zmiany, które weszły w życie 20 lipca 2026 roku, mające na celu ułatwienie dostępu do dofinansowań oraz zwiększenie wsparcia finansowego na poprawę efektywności energetycznej. Reformy obejmują rozszerzenie kryteriów kwalifikacyjnych dla właścicieli domów, podniesienie kwot dotacji na termomodernizację oraz wydłużenie terminów realizacji projektów objętych prefinansowaniem.",
+      "body": "Narodowy Fundusz Ochrony Środowiska i Gospodarki Wodnej (NFOŚiGW) ogłosił pakiet korzystnych zmian w programie \"Czyste Powietrze\", obowiązujących od 20 lipca 2026 roku. Nowe regulacje mają na celu uproszczenie procesu ubiegania się o dotacje dla właścicieli domów jednorodzinnych, którzy planują wymianę starych źródeł ciepła i kompleksową termomodernizację budynków.\n\nJedną z kluczowych modyfikacji jest rozszerzenie katalogu wyjątków od zasady posiadania nieruchomości przez co najmniej trzy lata. Nowe przepisy uwzględniają właścicieli i współwłaścicieli, którzy nabyli nieruchomość w drodze zasiedzenia lub posiadają co najmniej 50% udziałów przez rok w przypadku zakupu lub darowizny od wstępnych. Ma to na celu objęcie programem szerszego grona beneficjentów.\n\nZwiększono również maksymalne stawki dotacji na wybrane prace termomodernizacyjne o 10%. Dotyczy to ocieplenia ścian, dachów, stropów i podłóg, a także wymiany okien, drzwi zewnętrznych i bram garażowych. Najwyższy poziom dofinansowania w programie może pokryć do 100% kosztów kwalifikowanych netto.\n\nDodatkowo, beneficjenci korzystający z prefinansowania zyskali więcej czasu na realizację prac – termin został wydłużony ze 120 do 180 dni. Rozwiązanie to obejmuje również umowy zawarte po 31 marca 2025 roku, choć może wymagać aneksu do istniejącej umowy z WFOŚiGW.\n\nUproszczenia dotyczą także procesu potwierdzania wykonania inwestycji. Dokumenty potwierdzające trwałe odłączenie starego źródła ciepła oraz dostosowanie przewodów kominowych mogą być teraz wystawiane nie tylko przez mistrzów kominiarskich, ale również przez osoby posiadające odpowiednie uprawnienia budowlane.\n\nIstotną zmianą w zakresie urządzeń grzewczych jest wycofanie od 2027 roku wsparcia dla ogrzewania elektrycznego innego niż pompy ciepła, co ma na celu koncentrację na rozwiązaniach o najwyższej efektywności energetycznej i najlepszym wpływie na środowisko. Pompy ciepła, kotły na biomasę i kotły zgazowujące drewno, znajdujące się na Liście ZUM, pozostają urządzeniami kwalifikującymi się do dofinansowania.\n\nZmiany te, będące efektem konsultacji społecznych, odzwierciedlają priorytet NFOŚiGW w zakresie bezpieczeństwa beneficjentów i wysokiej jakości realizowanych inwestycji, przy jednoczesnym wsparciu poprawy jakości powietrza w Polsce. Program niezmiennie wymaga audytu energetycznego dla najwyższych poziomów dofinansowania.",
+      "titleEn": "Czyste Powietrze Program Undergoes Major Reforms, Broadening Access and Increasing Thermomodernization Support",
+      "summaryEn": "Poland's flagship 'Czyste Powietrze' (Clean Air) program has implemented significant changes as of July 20, 2026, aimed at simplifying access to subsidies and enhancing financial support for energy efficiency improvements. The reforms include expanded eligibility criteria for homeowners, increased grant amounts for thermal modernization, and extended deadlines for project completion under pre-financing arrangements.",
+      "imageUrl": "/news-images/pl-policy-03.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
-      "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.pl/special-report/2026-08/",
-      "ctaLabel": "Przeczytaj raport specjalny",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
       "sources": [
         {
-          "title": "SPIUG — Market of heating appliances in Poland 2025",
-          "url": "https://spiug.pl/app/uploads/2026/08/Report_Market_of_heating_appliances_in_Poland_2025.pdf"
+          "title": "Zmiany w programie Czyste Powietrze. Od 20 lipca łatwiej skorzystasz z dotacji",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGGDobO5smFJUZr_b26p6xqCdz5D1cq5j33TnpKZz9B2sWVXrCns7WxHveSgOluVWuoRmAn2RreGxppw4g0L5uKkRXZAmwfwcNifQZfjvqQn5fMbfztErnmG4wJTOksBg5y8nZbRq-lPlJ-4Ex-73vGZkRcEnNKgjO5W3lTDCFIlZGfKPr3b6JJYMW7X0iQah3Gm9ThEo85OtlMKxa_Y6rBIBgWbjXsmuVJssyTPFtBuXV0yf_mt12D12d3Dsk="
         },
         {
-          "title": "PORT PC — rynek pomp ciepła 2025 i perspektywy 2026",
-          "url": "https://portpc.pl/w-2025-roku-polacy-kupili-niemal-tyle-samo-pomp-ciepla-co-w-2024-%E2%88%92-wiekszosc-bez-dotacji/"
+          "title": "Nowy program Czyste Powietrze 2026 – pytania i odpowiedzi",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFQM9Uq1xY63XLgvdRiJTQvt9HY4J3N4vHJBlgootzir6TKaDxJZ9dV1DuDWYuiFTJODFW11P9BSm0KckCQhl_I_F-0Uma0wyCjtgmAgwnOJPwPdZRmJdbtLEALb4U0nGM8tP0tjaZVRxDs_PLL2NgBy8M-Hp1FT-pmA8AnNjakbqM1JawxOjlCxDjmtmF1Auj61_BJm-Ik-sea8bvNmJ_McYhB_6WAhKhutMQ3k1wOm2Muts2sKGXC"
         },
         {
-          "title": "PORT PC — sprzedaż pomp ciepła w I półroczu 2026 (+18%)",
-          "url": "https://informacjeprasowe.pl/sprzedaz-pomp-ciepla-do-ogrzewania-budynkow-wzrosla-o-18-proc-w-i-polroczu-2026-r/"
+          "title": "Rozwijamy program Czyste Powietrze. Od dziś nowe, korzystne zmiany",
+          "url": "https://czystepowietrze.gov.pl/wazne-komunikaty/rozwijamy-program-czyste-powietrze-zmiany-od-20-lipca-2026"
         },
         {
-          "title": "EHPA — European market data (updated 2026)",
-          "url": "https://ehpa.org/market-data/"
+          "title": "Czyste Powietrze 2026 - co się zmieniło? - Hurtownia z techniką grzewczą | Cieplo24.pl",
+          "url": "https://www.technika-grzewcza-sklep.pl/blog/nowy-program-czyste-powietrze-2025-jakie-sa-warunki-otrzymania-dotacji.html"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-pl-002",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Polski Rynek Pomp Ciepła Znotował Silne Odbicie w Pierwszej Połowie 2026 Roku",
+      "summary": "Polski rynek pomp ciepła wykazał dynamiczne ożywienie w pierwszej połowie 2026 roku, ze wzrostem sprzedaży dla centralnego ogrzewania o 18% rok do roku. Dane Polskiej Organizacji Rozwoju Technologii Pomp Ciepła (PORT PC) wskazują na znaczący wzrost popytu, szczególnie na gruntowe pompy ciepła.",
+      "body": "Po okresie spowolnienia, polski rynek pomp ciepła odnotowuje wyraźne ożywienie, co potwierdzają dane opublikowane przez Polską Organizację Rozwoju Technologii Pomp Ciepła (PORT PC). Sprzedaż pomp ciepła przeznaczonych do centralnego ogrzewania wzrosła o 18% w ciągu pierwszych sześciu miesięcy 2026 roku w porównaniu do analogicznego okresu roku poprzedniego.\n\nTen solidny wzrost następuje po trudnym okresie w latach 2023-2025, który charakteryzował się korektą rynku po wcześniejszym boomie. Obecny trend wzrostowy, jak podaje PORT PC, jest wynikiem bardziej świadomych decyzji inwestycyjnych konsumentów, motywowanych rzeczywistymi potrzebami, a nie wyłącznie impulsami dotacyjnymi.\n\nNajbardziej imponujący wynik odnotował segment gruntowych pomp ciepła, których sprzedaż wzrosła o 57% w pierwszej połowie 2026 roku w stosunku do pierwszej połowy 2025. Pompy ciepła powietrze-woda, choć nadal stanowią największy segment rynku, również zanotowały zdrowy 15% wzrost sprzedaży. W tej kategorii jednostki monoblokowe zwiększyły sprzedaż o 19%, a systemy split o 14%, przy czym splity wciąż dominują na rynku.\n\nPORT PC skorygował w górę swoją prognozę sprzedaży na 2026 rok, przewidując łącznie 84 970 urządzeń w głównych segmentach. Obejmuje to 71 370 pomp ciepła powietrze-woda, 9 900 gruntowych pomp ciepła oraz 3 700 urządzeń powietrze-woda przeznaczonych wyłącznie do przygotowania ciepłej wody użytkowej. Jedyną kategorią, która odnotowała spadek, były pompy powietrze-woda do c.w.u., z obniżeniem sprzedaży o 34%.\n\nMimo pozytywnych trendów, wyzwania pozostają, w tym zmienne ceny energii elektrycznej, które bezpośrednio wpływają na opłacalność eksploatacji systemów pomp ciepła. Eksperci branżowi podkreślają jednak, że stabilne programy wsparcia i konkurencyjne ceny energii będą kluczowe dla utrzymania tego ożywienia i zapewnienia długoterminowego rozwoju polskiego rynku pomp ciepła.",
+      "titleEn": "Polish Heat Pump Market Sees Robust Rebound in First Half of 2026",
+      "summaryEn": "Poland's heat pump market has demonstrated a strong recovery in the first half of 2026, with overall sales for central heating applications increasing by 18% year-on-year. Data from the Polish Organization for the Development of Heat Pump Technology (PORT PC) indicates a significant resurgence in demand, particularly for ground-source heat pumps.",
+      "imageUrl": "/news-images/common-market-01.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "PORT PC: sprzedaż pomp ciepła w Polsce wzrosła o 18 proc. rok do roku - Gramwzielone.pl",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFmPclsv0xqYmOgsrlHv68zp-5GIWHPXq6LIdKbAscMEjPNsKup-HIOy7ji_Eg9k2XmGNnEXG4upMd_4Zk4R8urKLWWGOovS3Q9kdraGayKVhiOM9_nhzCPeTscbW-NCePsZ2hAAmpDYRaCvQZgiR8-Lb_eILEPTY3VIvSKvsmF18rahMNYjPE6lweEhf7KqAbU2XABAUu06LRB9t93VveyJ31usO_ZiMevo9LbWuHgiMim7REKNdJiF"
+        },
+        {
+          "title": "Rynek pomp ciepła w Polsce 2026 – wzrost sprzedaży o 20% i nowe trendy technologiczne",
+          "url": "https://dedietrich.pl/blog/rynek-pomp-ciepla-w-polsce-2026-wzrost-sprzedazy-o-20-i-nowe-trendy-technologiczne/"
+        },
+        {
+          "title": "Ile pomp ciepła zostanie sprzedanych w 2026 roku? PORT PC koryguje prognozy - GLOBENERGIA",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHTiioFFrW6x8gu7u4u23Y2t0a-WgFya1ocYpGorXRQcFGiWYo0FG8GCgVDko2YTBsOy2I7YDR3Uf-umXSmi4NyXzpYPCInsg08m5D30iDjgaL6Qd188irzi-L-RopWwCBCa_l-T2XPy5_HLqYwMiSpm4nAqhGhcLC_ucRYN9WISDbhaUFPtXGddo6ObKmKvhiboTzGyLnZtMHyNuX"
+        },
+        {
+          "title": "Dobry początek roku dla rynku pomp ciepła. W Polsce sprzedaż wzrosła średnio o 20% - Polska Organizacja Rozwoju Technologii Pomp Ciepła",
+          "url": "https://portpc.pl/dobry-poczatek-roku-dla-rynku-pomp-ciepla-w-polsce-sprzedaz-wzrosla-srednio-o-20/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-pl-003",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Program Moje Ciepło Przedłużony do Lutego 2027, Wspierając Adopcję Pomp Ciepła w Nowych Domach",
+      "summary": "Program \"Moje Ciepło\", kluczowa inicjatywa wspierająca instalacje pomp ciepła w nowo budowanych domach jednorodzinnych, został przedłużony. Narodowy Fundusz Ochrony Środowiska i Gospodarki Wodnej (NFOŚiGW) ogłosił, że termin składania wniosków został przesunięty na 26 lutego 2027 roku z pierwotnej daty 31 grudnia 2026 roku, co stwarza więcej możliwości dla kwalifikujących się właścicieli domów.",
+      "body": "Właściciele nowo wybudowanych domów jednorodzinnych w Polsce mają teraz więcej czasu na złożenie wniosków o dotacje w ramach programu \"Moje Ciepło\". Narodowy Fundusz Ochrony Środowiska i Gospodarki Wodnej (NFOŚiGW) oficjalnie przedłużył okres naboru wniosków do 26 lutego 2027 roku, zapewniając dodatkowy czas beneficjentom na zabezpieczenie finansowania swoich inwestycji w pompy ciepła.\n\nTo przedłużenie, ogłoszone 16 września 2026 roku, daje większą elastyczność przyszłym właścicielom domów, szczególnie tym, którzy są na zaawansowanym etapie budowy. Program, który rozpoczął się 29 kwietnia 2022 roku, ma na celu wspieranie osób fizycznych wybierających pompy ciepła jako główne źródło ogrzewania w nowych, energooszczędnych budynkach mieszkalnych, przyczyniając się do realizacji celów transformacji energetycznej Polski.\n\nAby kwalifikować się do dotacji \"Moje Ciepło\", nowe domy muszą spełniać podwyższone standardy efektywności energetycznej, w szczególności roczne zapotrzebowanie na nieodnawialną energię pierwotną (wskaźnik EP) nie może przekraczać 55 kWh/m² dla potrzeb ogrzewania, wentylacji i ciepłej wody użytkowej. Program skierowany jest do pierwszych właścicieli nowo wybudowanych domów, co odróżnia go od \"Czystego Powietrza\", który koncentruje się na istniejących budynkach.\n\nWysokość wsparcia finansowego jest zróżnicowana; gruntowe pompy ciepła kwalifikują się do dotacji w wysokości do 21 000 PLN, natomiast pompy ciepła powietrze-woda i powietrze-powietrze mogą otrzymać do 7 000 PLN. Kwoty te stanowią do 30% kosztów kwalifikowanych, a dla posiadaczy Karty Dużej Rodziny – do 45%. Co istotne, wnioskodawcy muszą zrealizować inwestycję – w tym montaż i uruchomienie pompy ciepła oraz opłacenie wszystkich faktur – przed złożeniem wniosku, gdyż program działa na zasadzie refundacji, bez prefinansowania.\n\nWedług danych z 29 września 2026 roku, program \"Moje Ciepło\" wypłacił już ponad 362 miliony PLN dotacji, współfinansując ponad 41 000 instalacji pomp ciepła. Całkowity budżet programu wynosi 600 milionów PLN i jest finansowany z Funduszu Modernizacyjnego. Inicjatywa ta odgrywa kluczową rolę w promowaniu odnawialnych źródeł energii i redukcji emisji CO2 w sektorze mieszkaniowym.",
+      "titleEn": "Moje Ciepło Program Extended to February 2027, Bolstering Heat Pump Adoption in New Homes",
+      "summaryEn": "The 'Moje Ciepło' (My Heat) program, a key initiative supporting heat pump installations in new single-family homes, has been extended. The National Fund for Environmental Protection and Water Management (NFOŚiGW) announced that the application deadline has been moved to February 26, 2027, from its original December 31, 2026, date, providing more opportunities for eligible homeowners.",
+      "imageUrl": "/news-images/pl-policy-02.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Moje Ciepło do 26 lutego 2027. Dotacja do 21 tys. zł - Murator.pl",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEtPNWf2ekfH62Js8-HREWTwHr08fyYXzcbC9nr2h7PDIB5fy33M_dQBB8N21E6TVyzjlMQ_stMzVmuNnMDace1yIhyQSz-5sOuyhrsTL5Lu7U6Mlg4KFZ5gPKg3RnUBMALcG63Jpt8VxyLrEvNlPQtCbze345HU_8rm8gT7QFIIXIqUroqeOB8YwomaXA=="
+        },
+        {
+          "title": "Dopłaty do pomp ciepła na nowych zasadach. Wnioski można składać dłużej",
+          "url": "https://budujemydom.pl/instalacje/pompy-ciepla/a/121993-doplaty-do-pomp-ciepla-na-nowych-zasadach-wnioski-mozna-skladac-dluzej"
+        },
+        {
+          "title": "Moje Ciepło – Program dofinansowania pomp ciepła",
+          "url": "https://mojecieplo.gov.pl/"
+        },
+        {
+          "title": "Dotacje na nowoczesne ogrzewanie domu dostępne dłużej - Moje Ciepło",
+          "url": "https://mojecieplo.gov.pl/dotacje-na-nowoczesne-ogrzewanie-domu-dostepne-dluzej/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261001-pl-004",
+      "date": "2026-10-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "Unijne Rozporządzenie F-Gazowe Zaostrza Normy Dotyczące Czynników Chłodniczych, Stwarzając Wyzwania i Szanse dla Polskiego Sektora Pomp Ciepła",
+      "summary": "Zrewidowane rozporządzenie Unii Europejskiej w sprawie F-gazów wprowadzi od stycznia 2027 roku surowsze limity dla czynników chłodniczych o wysokim współczynniku GWP. Rozwój ten znacząco wpłynie na projektowanie i produkcję pomp ciepła, stwarzając zarówno wyzwania związane z przestrzeganiem przepisów, jak i możliwości innowacji na polskim rynku.",
+      "body": "Nowe regulacje dotyczące F-gazów, stanowiące kluczowy element strategii dekarbonizacyjnej Unii Europejskiej, zaczną egzekwować surowsze limity GWP dla czynników chłodniczych w pompach ciepła od stycznia 2027 roku. Ta zmiana regulacyjna nakłada maksymalne GWP wynoszące 150 dla jednostek monoblokowych i kompaktowych pomp ciepła o mocy do 12 kW, z planowanym dalszym zaostrzeniem ograniczeń w nadchodzących latach.\n\nDługoterminowy kierunek rozporządzenia F-gazowego wskazuje na stopniowe wycofywanie czynników chłodniczych o wysokim GWP. Do 2032 roku, czynniki chłodnicze F-gazowe nie będą dozwolone w nowych jednostkach monoblokowych o mocy poniżej 12 kW, a systemy split zostaną objęte tymi przepisami w 2035 roku. Terminy te wywierają presję na producentów w całej Europie, w tym w Polsce, aby dostosowali swoje portfolio produktów i strategie dotyczące czynników chłodniczych.\n\nDla polskiego sektora pomp ciepła zmiany te oznaczają konieczność znaczących inwestycji w badania i rozwój, aby przejść na alternatywne czynniki chłodnicze o niższym GWP, takie jak R290 (propan) czy R32. Chociaż niektórzy producenci już rozpoczęli tę transformację, branża stoi przed wyzwaniem zapewnienia powszechnej dostępności zgodnych komponentów, szkoleń dla instalatorów oraz świadomości konsumentów na temat nowych technologii.\n\nOprócz rozporządzenia F-gazowego, inne polityki UE, takie jak Dyrektywa w sprawie charakterystyki energetycznej budynków (EPBD) i Dyrektywa Ecodesign, również kształtują rynek. EPBD, którą państwa członkowskie miały transponować do prawa krajowego do 29 maja 2026 roku, dąży do całkowicie zdekarbonizowanego zasobu budowlanego do 2050 roku i już od 1 stycznia 2025 roku wycofała dotacje na samodzielne kotły na paliwa kopalne. Te połączone regulacje podkreślają kompleksowe przejście na bardziej zrównoważone i wydajne rozwiązania grzewcze w całej UE.\n\nZaostrzanie przepisów dotyczących czynników chłodniczych ma stymulować innowacje w technologii pomp ciepła, potencjalnie prowadząc do wprowadzenia na rynek bardziej wydajnych i przyjaznych dla środowiska produktów. Dla instalatorów oznacza to potrzebę aktualizacji certyfikatów i szkoleń w zakresie bezpiecznego i efektywnego obchodzenia się z nowymi czynnikami chłodniczymi. Zdolność polskiego rynku do szybkiego dostosowania się do tych ewoluujących standardów będzie kluczowa dla jego dalszego rozwoju i zgodności z szerszymi europejskimi celami klimatycznymi.",
+      "titleEn": "EU F-Gas Regulation Tightens Refrigerant Standards, Posing Challenges and Opportunities for Polish Heat Pump Sector",
+      "summaryEn": "The European Union's revised F-Gas Regulation is set to introduce stricter limits on refrigerants with high Global Warming Potential (GWP) starting January 2027. This development will significantly impact the design and manufacturing of heat pumps, presenting both challenges for compliance and opportunities for innovation within the Polish market.",
+      "imageUrl": "/news-images/common-tech-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "EU heat pump policy: F-gas regulations & key deadlines - Grundfos",
+          "url": "https://www.grundfos.com/solutions/learn/research-and-insights/eu-heat-pump-policy"
+        },
+        {
+          "title": "Energy Performance of Buildings Directive",
+          "url": "https://energy.ec.europa.eu/topics/energy-efficiency/energy-performance-buildings/energy-performance-buildings-directive_en"
+        },
+        {
+          "title": "Normy i certyfikaty w HVAC (2025) - FHU Inventor",
+          "url": "https://fhuinventor.pl/normy-i-certyfikaty-w-hvac-przewodnik-po-wymaganiach-prawnych-w-2026-roku-polska-ue/"
+        },
+        {
+          "title": "REHVA Journal On the Process of EPBD Implementation in Poland",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFOJ_kLFB_B97hQo41TCFwlLtx0mH_dBXU0xsX5hOf95yE7vfaCamzqpihOCI09LzvhO69Egrgz_6ffK64AWDxokwmpzzOsoqAXpjT49Yv3Ow5YxySo_TDsvCU7TSWm1mwasgJJh1YaD3asyhH_8HeJXA9ZBp3hUbVqscsF0UchV2ZfrOWcAraQD8fNGIrGGr4PVG1S4w=="
         }
       ]
     },
@@ -199,6 +301,40 @@
         {
           "title": "Opening a new chapter for heat pumps - Instytut Reform",
           "url": "https://ireform.eu/?pobierz_plik=1244"
+        }
+      ]
+    },
+    {
+      "id": "news-20260816-pl-sr1",
+      "date": "2026-08-16T00:00:00Z",
+      "category": "MARKET",
+      "title": "Transformacja ogrzewania w Europie: pięć rynków, pięć rzeczywistości",
+      "summary": "HeatPump DataBase Europe uruchamia nowy comiesięczny interaktywny raport rynkowy o najnowszych zmianach na rynku pomp ciepła i ogrzewania w Europie.",
+      "body": "HeatPump DataBase Europe opublikował pierwsze wydanie nowego comiesięcznego europejskiego raportu specjalnego o pompach ciepła. Analizuje on Niemcy, Wielką Brytanię, Francję, Polskę i Włochy na podstawie danych za pełny rok 2025 wraz z najnowszymi dostępnymi sygnałami rynkowymi z 2026 roku.\n\nRaport pokazuje pięć bardzo różnych rzeczywistości rynkowych: niemiecki rynek pomp ciepła dalej się umacniał w pierwszym półroczu 2026; Wielka Brytania rośnie, ale wciąż dominują na niej kotły; we Francji kurczy się rynek ogrzewania hydraulicznego; Polska odbudowuje się w miarę normalizacji zapasów w kanale dystrybucji; a Włochy odnotowały w pierwszym półroczu 2026 silny wzrost pomp ciepła powietrze/woda.\n\nW przeciwieństwie do zwykłego statycznego pliku PDF raport ma formę interaktywnego raportu cyfrowego. Czytelnik przechodzi przez strony jak przez cyfrowy magazyn, a najechanie kursorem na wykres odsłania wartości liczbowe; odniesienia do źródeł i noty metodologiczne dopełniają kontekst.\n\nHeatPump DataBase Europe planuje publikować nowy raport specjalny o europejskim rynku pomp ciepła co miesiąc — o trendach rynkowych, zmianach regulacyjnych, programach dopłat, przesunięciach technologicznych i innych zagadnieniach istotnych dla profesjonalistów branży grzewczej.\n\nRaport jest bezpłatny do czytania i pobrania, dostępny po angielsku, niemiecku, francusku, polsku i włosku.",
+      "titleEn": "Europe's Heating Transition: Five Markets, Five Realities",
+      "summaryEn": "HeatPump DataBase Europe launches a new monthly interactive market report covering the latest heat-pump and heating-market developments across Europe.",
+      "imageUrl": "/special-report/img/special-report-2026-08-pl.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.pl/special-report/2026-08/",
+      "ctaLabel": "Przeczytaj raport specjalny",
+      "sources": [
+        {
+          "title": "SPIUG — Market of heating appliances in Poland 2025",
+          "url": "https://spiug.pl/app/uploads/2026/08/Report_Market_of_heating_appliances_in_Poland_2025.pdf"
+        },
+        {
+          "title": "PORT PC — rynek pomp ciepła 2025 i perspektywy 2026",
+          "url": "https://portpc.pl/w-2025-roku-polacy-kupili-niemal-tyle-samo-pomp-ciepla-co-w-2024-%E2%88%92-wiekszosc-bez-dotacji/"
+        },
+        {
+          "title": "PORT PC — sprzedaż pomp ciepła w I półroczu 2026 (+18%)",
+          "url": "https://informacjeprasowe.pl/sprzedaz-pomp-ciepla-do-ogrzewania-budynkow-wzrosla-o-18-proc-w-i-polroczu-2026-r/"
+        },
+        {
+          "title": "EHPA — European market data (updated 2026)",
+          "url": "https://ehpa.org/market-data/"
         }
       ]
     },

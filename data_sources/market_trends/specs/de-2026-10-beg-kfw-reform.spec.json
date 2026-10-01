@@ -1,0 +1,58 @@
+{
+ "country": "DE",
+ "countryLabel": "Deutschland",
+ "month": "OKTOBER 2026",
+ "motif": "coins",
+ "title": [
+  "Wärmepumpen-Förderung",
+  "Reformiert ab 2026"
+ ],
+ "sub": "Die Bundesregierung passt die BEG-Förderung an, mit Änderungen bei Boni und Höchstgrenzen.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "80 Prozent",
+     "label": "Max. Gesamtzuschuss"
+    },
+    {
+     "value": "28.000 Euro",
+     "label": "Max. förderfähige Kosten (1. WE)"
+    },
+    {
+     "value": "30 Prozent",
+     "label": "Grundförderung"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Wesentliche Änderungen",
+   "rows": [
+    {
+     "label": "Klimageschwindigkeitsbonus sinkt auf 16%, entfällt bis Aug. 2028."
+    },
+    {
+     "label": "Einkommensbonus neu gestaffelt, bis 40% für geringe Einkommen."
+    },
+    {
+     "label": "Max. förderfähige Kosten sinken auf 28.000 Euro für 1. Wohneinheit."
+    },
+    {
+     "label": "Effizienz- und Emissionsminderungszuschlag entfallen ersatzlos.",
+     "no": true
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Antragstellung beachten",
+   "lines": [
+    "Antrag zwingend vor Maßnahmenbeginn über 'Meine KfW'.",
+    "Bestätigung durch Fachunternehmen erforderlich."
+   ]
+  }
+ ]
+}

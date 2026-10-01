@@ -1,0 +1,57 @@
+{
+ "country": "GB",
+ "countryLabel": "United Kingdom",
+ "month": "OCTOBER 2026",
+ "motif": "coins",
+ "title": [
+  "BUS Grants Elevate",
+  "Off-Gas Grid Support"
+ ],
+ "sub": "The Boiler Upgrade Scheme now offers £9,000 for off-gas grid heat pump installations.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "£9,000",
+     "label": "Off-Gas Grid Grant"
+    },
+    {
+     "value": "45,880",
+     "label": "Scheme Year 4 Applications"
+    },
+    {
+     "value": "97.6%",
+     "label": "Grants for Air Source HP"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Scheme Highlights",
+   "rows": [
+    {
+     "label": "£9,000 grant for off-gas grid properties replacing oil/LPG."
+    },
+    {
+     "label": "Temporary measure until March 31, 2027, for higher retrofit costs."
+    },
+    {
+     "label": "Standard grant remains £7,500; £2,500 for air-to-air heat pumps."
+    },
+    {
+     "label": "MCS-certified installers apply on behalf of property owners."
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Key Takeaways",
+   "lines": [
+    "Sustained government commitment to low-carbon heat is evident.",
+    "The scheme drives growth in the UK's renewable heating sector."
+   ]
+  }
+ ]
+}

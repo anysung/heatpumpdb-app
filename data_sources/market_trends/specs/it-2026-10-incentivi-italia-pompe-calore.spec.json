@@ -1,0 +1,58 @@
+{
+ "country": "IT",
+ "countryLabel": "Italia",
+ "month": "OTTOBRE 2026",
+ "motif": "coins",
+ "title": [
+  "Incentivi Italia 2026",
+  "Pompe di Calore Focus"
+ ],
+ "sub": "Conto Termico 3.0 ed Ecobonus aggiornati, stop sussidi fossili dal 2025.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "900 milioni di euro",
+     "label": "Budget annuale Conto Termico 3.0"
+    },
+    {
+     "value": "65%",
+     "label": "Recupero spese privati (Conto Termico 3.0)"
+    },
+    {
+     "value": "100%",
+     "label": "Copertura costi enti pubblici (Conto Termico 3.0)"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Novità Chiave Incentivi 2026",
+   "rows": [
+    {
+     "label": "Conto Termico 3.0: contributi diretti in denaro, non crediti d'imposta."
+    },
+    {
+     "label": "Esclusione sussidi pubblici per caldaie a combustibili fossili dal 2025."
+    },
+    {
+     "label": "Non è consentito cumulare incentivi Conto Termico 3.0 ed Ecobonus.",
+     "no": true
+    },
+    {
+     "label": "Ecobonus: detrazione fiscale del 65% per pompe di calore su 10 anni."
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Impatto sul Mercato",
+   "lines": [
+    "Spinta decisa verso le rinnovabili e l'efficienza energetica.",
+    "Necessaria valutazione attenta tra Conto Termico ed Ecobonus."
+   ]
+  }
+ ]
+}

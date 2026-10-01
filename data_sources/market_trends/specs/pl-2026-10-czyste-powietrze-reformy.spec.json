@@ -1,0 +1,57 @@
+{
+ "country": "PL",
+ "countryLabel": "Polska",
+ "month": "PAŹDZIERNIK 2026",
+ "motif": "coins",
+ "title": [
+  "Czyste Powietrze",
+  "Nowe Zasady"
+ ],
+ "sub": "Od 20 lipca 2026 program oferuje szerszy dostęp i wyższe dotacje na termomodernizację.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "10%",
+     "label": "Wzrost dotacji na termomodernizację"
+    },
+    {
+     "value": "100%",
+     "label": "Maksymalne pokrycie kosztów netto"
+    },
+    {
+     "value": "180",
+     "label": "Dni na realizację z prefinansowaniem"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Kluczowe Zmiany w Programie",
+   "rows": [
+    {
+     "label": "Rozszerzenie katalogu beneficjentów programu"
+    },
+    {
+     "label": "Wzrost maksymalnych stawek dotacji o 10% na termomodernizację"
+    },
+    {
+     "label": "Wydłużenie terminu na realizację prac z prefinansowaniem do 180 dni"
+    },
+    {
+     "label": "Uproszczenie procesu potwierdzania wykonania inwestycji"
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Wnioski dla Branży",
+   "lines": [
+    "Program koncentruje się na efektywnych źródłach ciepła.",
+    "Wsparcie dla pomp ciepła pozostaje priorytetem NFOŚiGW."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "country": "FR",
+ "countryLabel": "France",
+ "month": "OCTOBRE 2026",
+ "motif": "scales",
+ "title": [
+  "Aides PAC : Réformes",
+  "Majeures en France"
+ ],
+ "sub": "La France refond ses dispositifs d'aide aux pompes à chaleur avec des changements clés dès septembre 2026.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "deux",
+     "label": "classes DPE à gagner (min.)"
+    },
+    {
+     "value": "15",
+     "label": "ans d'ancienneté logement (min.)"
+    },
+    {
+     "value": "cinq",
+     "label": "prime CEE multipliée (PAC agréées)"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Principales évolutions",
+   "rows": [
+    {
+     "label": "MaPrimeRénov' 'par geste' restreint aux PAC décarbonées."
+    },
+    {
+     "label": "'Parcours Accompagné' obligatoire pour DPE E, F, G et sans fossile."
+    },
+    {
+     "label": "Coup de pouce Chauffage : agrément 'qualité et résilience industrielle'."
+    },
+    {
+     "label": "Lancement du leasing social PAC pour les ménages modestes."
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Recommandations clés",
+   "lines": [
+    "Consulter France Rénov' avant tout projet de rénovation.",
+    "Soumettre les demandes d'aide et attendre l'approbation."
+   ]
+  }
+ ]
+}
