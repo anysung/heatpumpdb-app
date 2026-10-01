@@ -27,6 +27,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { matchBrand } from '../lib/manufacturer-short.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -103,7 +104,10 @@ console.log(`EPREL heat pump registrations loaded: ${eprel.length}`);
 
 // ── Brand gate: index EPREL records per DE short name ────────────────────────
 
-const shorts = [...new Set([...deShort.values()])];
+// Curated short names, plus a derived key for every seed manufacturer the table
+// does not cover yet (BAFA renamed Hitachi in 2026-10 and 53 products lost
+// their EPREL links) — lib/manufacturer-short.mjs. Matching key only.
+const shorts = [...new Set([...deShort.values(), ...seed.items.map(p => matchBrand(p, deShort))])];
 const brandIndex = new Map(shorts.map(s => [s.toUpperCase(), []]));
 for (const r of eprel) {
   const st = tokens(r.supplier), ot = tokens(r.org);
@@ -125,7 +129,7 @@ function accept(p, hits, matchType) {
   if (hits.length > 1 && new Set(hits.map(h => h.sig)).size > 1) return false;
   const c = hits.reduce((a, b) => (Number(b.reg) > Number(a.reg) ? b : a));
   stats[matchType]++;
-  const brandKey = (deShort.get(p.manufacturer_normalized) ?? '').toUpperCase();
+  const brandKey = matchBrand(p, deShort);
   byBrandMatched[brandKey] = (byBrandMatched[brandKey] ?? 0) + 1;
   matches.push({
     bafa_id: String(p.bafa_id),
@@ -142,7 +146,7 @@ function accept(p, hits, matchType) {
 }
 
 for (const p of seed.items) {
-  const brandKey = (deShort.get(p.manufacturer_normalized) ?? '').toUpperCase();
+  const brandKey = matchBrand(p, deShort);
   const cands = brandIndex.get(brandKey) ?? [];
   if (cands.length === 0) { stats.brand_not_in_eprel++; continue; }
 

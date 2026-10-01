@@ -2,6 +2,7 @@
   "_description": "Mapping: manufacturer_normalized → manufacturer_short (recommended display name). Original manufacturer field is preserved unchanged.",
   "mapping": {
     "1 SINQ GMBH": "1 SINQ",
+    "1A HEIZEN STROBL UG": "1A heizen",
     "2G HEEK GMBH": "2G Heek",
     "ACCAMPS GMBH": "Accamps",
     "ACOND A.S.": "Acond",
@@ -9,6 +10,7 @@
     "ADVANTIX SPA": "Advantix",
     "AERECO GMBH": "Aereco",
     "AERMEC DEUTSCHLAND GMBH": "Aermec",
+    "AGON SOJEVA": "Agon Sojeva",
     "AIRA HOME GERMANY GMBH": "Aira",
     "AIT-DEUTSCHLAND GMBH": "AIT",
     "ATAG HEIZUNGSTECHNIK GMBH": "ATAG",
@@ -48,6 +50,7 @@
     "ECOFOREST S.A.": "Ecoforest",
     "EFFIDUR GMBH": "Effidur",
     "ELCO GMBH": "ELCO",
+    "ELEPHANT POWER GMBH": "Elephant Power",
     "ENPAL PRODUCTION GMBH": "Enpal",
     "EQ-THERM GMBH": "EQ-Therm",
     "ES ENERGY SAVE AB": "ES Energy Save",
@@ -80,6 +83,7 @@
     "HELIOTHERM WÄRMEPUMPENTECHNIK GES.M.B.H": "Heliotherm",
     "HERZ ENERGIETECHNIK GMBH": "Herz",
     "HISENSE GORENJE GERMANY GMBH": "Hisense",
+    "HITACHI": "Hitachi",
     "HKS LAZAR SP Z O.O.": "HKS Lazar",
     "HOME STAR SPÓŁKA Z OGRANICZONĄ ODPOWIDZIALNOŚCIĄ": "Home Star",
     "HOTJET CZ S.R.O.": "Hotjet",
@@ -107,6 +111,7 @@
     "LAMBDA WÄRMEPUMPEN GMBH": "Lambda",
     "LG ELECTRONICS DEUTSCHLAND GMBH": "LG",
     "LUCHS WERK": "Luchs Werk",
+    "LULEICH KÄLTETECHNIK": "Luleich",
     "LUMENHAUS GMBH": "LumenHaus",
     "LÖWE SPITZENTECHNOLOGIE GMBH": "Löwe",
     "M-TEC GMBH": "M-TEC",
@@ -144,6 +149,7 @@
     "REGULUS WÄRMETECHNIK GMBH": "Regulus",
     "REMEHA GMBH": "Remeha",
     "REMKO GMBH & CO KG": "REMKO",
+    "REMKO GMBH & CO. KG": "REMKO",
     "RHOSS DEUTSCHLAND GMBH": "Rhoss",
     "RIELLO S.P.A ZWEIGNIEDERLASSUNG DEUTSCHLAND": "Riello",
     "RITTER ENERGIE GMBH & CO. KG": "Ritter Energie",
@@ -155,6 +161,7 @@
     "S-KLIMA": "S-Klima",
     "SALVADOR ESCODA SAU": "Salvador Escoda",
     "SAMSUNG KLIMATECHNIK": "Samsung",
+    "SCHWÄBISCHE ENERGIESYSTEME GMBH": "Schwäbische Energiesysteme",
     "SCHÖNKNECHT & BUSCH GMBH": "Schönknecht",
     "SHUNHONG ENVIRONMENTAL TECHNOLOGY (SUZHOU) CO., LTD": "Shunhong",
     "SKADEC GMBH": "Skadec",
@@ -190,6 +197,7 @@
     "WAERMEQUELLE GMBH": "Waermequelle",
     "WATERKOTTE GMBH": "Waterkotte",
     "WEIDER WÄRMEPUMPEN GMBH": "Weider",
+    "WEPIT": "wepit",
     "WINDHAGER(HIDU GMBH)": "Windhager",
     "WOLF GMBH": "Wolf",
     "WRW PIPES GMBH": "WRW",
@@ -199,6 +207,6 @@
     "ZEWOTHERM HEATING GMBH": "Zewotherm",
     "ZHEJIANG DEYE ELECTRICAL APPLIANCES CO., LTD.": "Deye",
     "ÖKOFEN FORSCHUNGS- UND ENTWICKLUNGSGESELLSCHAFT M.B.H.": "ÖkoFEN",
-    "\u201eGALMET SP. Z O.O.\u201d SP. K.": "Galmet"
+    "„GALMET SP. Z O.O.” SP. K.": "Galmet"
   }
 }

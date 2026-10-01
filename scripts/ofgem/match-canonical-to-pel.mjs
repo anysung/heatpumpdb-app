@@ -35,6 +35,7 @@ import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compact, identityKeys, findCandidates, numericConflict } from './pel-match-lib.mjs';
+import { matchBrand } from '../lib/manufacturer-short.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const loadJSON = p => JSON.parse(readFileSync(resolve(ROOT, p), 'utf8'));
@@ -120,7 +121,8 @@ const stats = { confirmed: 0, review_candidate: 0, no_candidate: 0, brand_not_on
 const byMethod = {};
 
 for (const p of canonical) {
-  const brand = (p.manufacturer_short ?? '').toUpperCase();
+  // Curated short name, else a derived brand key (BAFA renames — see lib/manufacturer-short.mjs).
+  const brand = matchBrand(p);
   const cands = pool.get(brand);
   if (!cands?.length) { stats.brand_not_on_pel++; continue; }
 

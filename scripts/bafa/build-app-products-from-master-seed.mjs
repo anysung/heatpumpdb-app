@@ -525,4 +525,32 @@ console.log(`  outdoor_side_display_model:   ${outdoorDisplayModel}`);
 console.log(`Field count:          ${fieldCount} ✓`);
 console.log(`No price keys:        ✓`);
 console.log(`Provenance complete:  ✓`);
+
+// ── Short-name coverage (2026-10-01) ─────────────────────────────────────────
+// A manufacturer missing from the curated table publishes with no short name,
+// and the table is keyed by BAFA's exact spelling — so a BAFA rename drops a
+// brand out silently (Hitachi, October 2026: 53 products, 47 lost listings).
+// Say it every month, loudly, and keep the list in a committed file so the
+// monthly commit shows when it grows. The matchers fall back to a derived key
+// (scripts/lib/manufacturer-short.mjs); the display name waits for a curator.
+{
+  const unmapped = new Map();
+  for (const s of seed.items) {
+    if (shortNameMap.has(s.manufacturer_normalized)) continue;
+    const k = s.manufacturer ?? '(none)';
+    unmapped.set(k, (unmapped.get(k) ?? 0) + 1);
+  }
+  const UNMAPPED_PATH = resolve(ROOT, 'data_sources/bafa/unmapped-manufacturers.json');
+  const prev = existsSync(UNMAPPED_PATH) ? new Set(Object.keys(loadJSON('data_sources/bafa/unmapped-manufacturers.json').manufacturers ?? {})) : null;
+  const sorted = Object.fromEntries([...unmapped].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])));
+  writeFileSync(UNMAPPED_PATH, JSON.stringify({
+    note: 'BAFA manufacturers with no entry in scraper/pricing/manufacturer-short-names.json (key = exact BAFA spelling). Add them there to give them a display short name.',
+    snapshot: SNAPSHOT,
+    records: [...unmapped.values()].reduce((a, b) => a + b, 0),
+    manufacturers: sorted,
+  }, null, 2) + '\n');
+  const fresh = prev ? [...unmapped.keys()].filter(k => !prev.has(k)) : [];
+  console.log(`Short-name coverage:  ${unmapped.size} manufacturers / ${[...unmapped.values()].reduce((a, b) => a + b, 0)} records without a curated short name`);
+  if (fresh.length) console.warn(`  WARNING new unmapped manufacturers this build (rename or new brand?): ${fresh.map(k => `${k} (${unmapped.get(k)})`).join(', ')}`);
+}
 console.log('──────────────────────────────────────────────────────────');
