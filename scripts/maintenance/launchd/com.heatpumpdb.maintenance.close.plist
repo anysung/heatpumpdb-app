@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
-  Monthly maintenance window — the 04:00 Europe/Berlin guard.
+  Monthly maintenance window — the close guard, 07:00–12:00 Europe/Berlin.
 
   Runs whether or not the window succeeded. If the run completed it finds the
   notice already lifted and does nothing; if the run stopped for a person and no
   instruction arrived, it restores service on the version that was already live.
   An unattended window must not be able to leave five sites dark.
+
+  Hourly from 07:00 (2026-10-01): a run that is still ALIVE is left alone and
+  re-checked the next hour (it lifts the notice itself when it finishes); only a
+  dead run, or one still going at 12:00, is overridden. The Mac runs on
+  Europe/Berlin — if it changes timezone, re-derive these hours (the script's
+  --if-window guard checks Berlin time, so wrong hours fail safe by skipping).
 -->
 <plist version="1.0">
 <dict>
@@ -15,10 +21,12 @@
   <array><string>/Users/christophersung/heatpumpdb-app/scripts/maintenance/close-window.sh</string></array>
   <key>StartCalendarInterval</key>
   <array>
+    <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>7</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>8</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
     <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>10</integer><key>Minute</key><integer>0</integer></dict>
     <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>11</integer><key>Minute</key><integer>0</integer></dict>
     <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>12</integer><key>Minute</key><integer>0</integer></dict>
-    <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>13</integer><key>Minute</key><integer>0</integer></dict>
   </array>
   <key>StandardOutPath</key><string>/Users/christophersung/heatpumpdb-app/.maintenance/launchd-close.log</string>
   <key>StandardErrorPath</key><string>/Users/christophersung/heatpumpdb-app/.maintenance/launchd-close.log</string>

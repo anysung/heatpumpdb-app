@@ -194,4 +194,7 @@ async function main() {
   console.log(`\nNext: node scripts/ofgem/parse-pel-xlsx.mjs --snapshot ${SNAPSHOT}`);
 }
 
-main().catch((err) => { console.error(err); process.exit(1); });
+// Exit explicitly: the HEAD probe's socket stays in the keep-alive pool and
+// held the process open for exactly 600 s after a 0.25 s download (2026-10-01
+// window: 10 of the run's 57 minutes in step 1 were this idle wait).
+main().then(() => process.exit(0), (err) => { console.error(err); process.exit(1); });

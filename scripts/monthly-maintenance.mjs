@@ -80,6 +80,12 @@ const LOG_DIR = join(ROOT, '.maintenance', 'logs');
  *  ends. The launchd close plist fires on the candidate hours for this value
  *  (see ~/Library/LaunchAgents/com.heatpumpdb.maintenance.close.plist). */
 const CLOSE_HOUR = 7;
+/** A run that is still ALIVE at CLOSE_HOUR is not cut off (2026-10-01): the
+ *  guard re-checks every hour and lifts the notice only once the run has ended
+ *  (or at this hour, when a run still going is taken to be hung). Lifting the
+ *  notice under a live run used to show visitors a half-updated service while
+ *  the run went on to publish anyway. The close plist fires hourly 07–12. */
+const LAST_CLOSE_HOUR = 12;
 
 const args = process.argv.slice(2);
 const DRY = args.includes('--dry-run');
@@ -176,7 +182,41 @@ async function liveMaintenance() {
   return ((await res.json()).fields?.active?.booleanValue) === true;
 }
 
-const saveState = (s) => DRY ? undefined : writeFileSync(STATE, JSON.stringify({ ...s, runId, at: new Date().toISOString() }, null, 2) + '\n');
+const saveState = (s) => DRY ? undefined : writeFileSync(STATE, JSON.stringify({
+  ...s, runId, ...(MODE === 'run' ? { pid: process.pid } : {}), at: new Date().toISOString(),
+}, null, 2) + '\n');
+
+/** Did this month's news land in every market? Polls the first article id of
+ *  each market (news-YYYYMMDD-<cc>-001, UTC or Berlin date) for up to waitMinutes. */
+async function newsWrittenToday({ waitMinutes }) {
+  const MARKETS_NEWS = ['DE', 'GB', 'FR', 'PL', 'IT'];
+  const ymd = (d, tz) => new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d).replace(/-/g, '');
+  const days = [...new Set([ymd(new Date(), 'UTC'), ymd(new Date(), 'Europe/Berlin')])];
+  const deadline = Date.now() + waitMinutes * 60_000;
+  say(`   checking Firestore for this month's articles (up to ${waitMinutes} min)…`);
+  for (;;) {
+    const missing = [];
+    for (const cc of MARKETS_NEWS) {
+      let found = false;
+      for (const day of days) {
+        const r = await fetch(`${FS}/countries/${cc}/news/news-${day}-${cc.toLowerCase()}-001`, { headers: { Authorization: `Bearer ${token()}` } }).catch(() => null);
+        if (r?.ok) { found = true; break; }
+      }
+      if (!found) missing.push(cc);
+    }
+    if (!missing.length) { say('   articles present in all markets — news counted as done'); return true; }
+    if (Date.now() > deadline) { say(`   still missing after ${waitMinutes} min: ${missing.join(', ')}`); return false; }
+    await new Promise(r => setTimeout(r, 60_000));
+  }
+}
+
+/** Is the recorded run still executing? (pid alive AND it is this script.) */
+function runAlive(s) {
+  if (!s?.pid) return false;
+  try { process.kill(s.pid, 0); } catch (e) { if (e.code !== 'EPERM') return false; }
+  try { return execSync(`ps -p ${Number(s.pid)} -o command=`, { encoding: 'utf8' }).includes('monthly-maintenance'); }
+  catch { return false; }
+}
 const loadState = () => (existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : null);
 
 function step(name, cmd, { fatal = true, timeoutMs } = {}) {
@@ -199,8 +239,9 @@ function step(name, cmd, { fatal = true, timeoutMs } = {}) {
    would run an hour early or late for half the year. */
 if (args.includes('--if-window')) {
   const b = berlinParts();
-  const wantHour = MODE === 'close' ? CLOSE_HOUR : 0;
-  const ok = b.day === 1 && b.hour === wantHour;
+  const ok = b.day === 1 && (MODE === 'close'
+    ? b.hour >= CLOSE_HOUR && b.hour <= LAST_CLOSE_HOUR
+    : b.hour === 0);
   if (!ok) {
     console.log(`not the window (Berlin ${b.date} ${String(b.hour).padStart(2, '0')}:${String(b.minute).padStart(2, '0')}) — exiting`);
     process.exit(0);
@@ -230,6 +271,17 @@ if (MODE === 'close') {
     if (s?.phase !== 'done') saveState({ ...(s ?? {}), phase: 'closed-noop', closedAt: new Date().toISOString() });
     process.exit(0);
   }
+  // A run that is still working gets its time — it lifts the notice itself at
+  // the end. Only a dead run (crashed, killed, machine restarted) or one still
+  // going at LAST_CLOSE_HOUR is overridden.
+  const hour = berlinParts().hour;
+  if ((s?.phase === 'running' || s?.phase === 'starting') && runAlive(s)) {
+    if (hour < LAST_CLOSE_HOUR) {
+      say(`the update is still running (step "${s.step ?? '?'}", pid ${s.pid}) — leaving the notice up; next check in an hour, final at ${LAST_CLOSE_HOUR}:00`);
+      process.exit(0);
+    }
+    say(`the update has been running past ${LAST_CLOSE_HOUR}:00 (step "${s.step ?? '?'}") — treating it as hung and restoring service`);
+  }
   say(s?.phase === 'failed'
     ? `notice is still up after a failure in "${s.failedStep}" and no instruction arrived — restoring service on the version that was already live`
     : `notice is still up (last recorded phase: ${s?.phase ?? 'none'}) — restoring service on the version that was already live`);
@@ -247,7 +299,7 @@ const until = berlinISOToday(CLOSE_HOUR, 0);
 // inherits it (scripts/lib/snapshot-month.mjs).
 if (!process.env.SNAPSHOT_MONTH) process.env.SNAPSHOT_MONTH = berlinMonth();
 say(`snapshot month ${process.env.SNAPSHOT_MONTH} (Europe/Berlin)`);
-say(`monthly window ${runId} — must finish by ${String(CLOSE_HOUR).padStart(2, '0')}:00 Europe/Berlin (${until})`);
+say(`monthly window ${runId} — target ${String(CLOSE_HOUR).padStart(2, '0')}:00 Europe/Berlin (${until}); a run still working is given until ${LAST_CLOSE_HOUR}:00`);
 saveState({ phase: 'starting' });
 
 try {
@@ -264,23 +316,27 @@ try {
   step('payment-contract matrix (webhook, events, live prices vs code)',
     'node scripts/verify-paddle.mjs', { fatal: false });
 
-  // 1 — everything reversible: fetch, build every market, gate.
+  // 1a — EPREL FIRST (2026-10-01): the DE matcher links BAFA ↔ EPREL and the
+  // French layer joins ADEME ↔ EPREL inside update-all, so EPREL must be fresh
+  // before it runs — it used to come after, which left the DE links on last
+  // month's EPREL and made France fetch and process its register a second time
+  // (~21 min). The fetcher RESUMES from its saved pages, so a retry after a
+  // network drop continues instead of starting over. Never fatal: three failed
+  // attempts leave last month's snapshot in place, loudly.
+  saveState({ phase: 'running', step: 'eprel' });
+  let eprelOk = false;
+  for (let attempt = 1; attempt <= 3 && !eprelOk; attempt++) {
+    eprelOk = step(`refresh EPREL snapshot (EU energy-label registry) — attempt ${attempt}/3`,
+      'node scripts/eprel/fetch-eprel-raw.mjs --full --yes', { fatal: false, timeoutMs: 45 * 60_000 });
+    if (!eprelOk && attempt < 3) execSync('sleep 60');
+  }
+  if (!eprelOk) say('   WARNING: EPREL could not be refreshed in 3 attempts — the matchers use the previous snapshot this month');
+
+  // 1 — everything reversible: fetch, build every market (FR's ADEME fetch,
+  // facets, EPREL join, match and build included), gate.
   saveState({ phase: 'running', step: 'sources+build+gate' });
   step('fetch sources, build all markets, verify (DE first; GB/FR/PL/IT derive from it)',
     'node scripts/update-all.mjs --fetch');
-
-  // 1b — EPREL, before anything that reads it.
-  saveState({ phase: 'running', step: 'eprel' });
-  step('refresh EPREL snapshot (EU energy-label registry)',
-    'node scripts/eprel/fetch-eprel-raw.mjs --full --yes', { fatal: false });   // --yes: no one to answer the prompt at 00:05
-
-  // 1c — France's own layer, which joins the register to that EPREL snapshot.
-  saveState({ phase: 'running', step: 'fr-agrement' });
-  step('FR: ADEME agrément register snapshot', 'node scripts/fr/fetch-ademe.mjs');
-  step('FR: recover type/refrigerant/usage facets', 'node scripts/fr/enrich-agrement-facets.mjs');
-  step('FR: join agrément ↔ EPREL', 'node scripts/fr/enrich-agrement-from-eprel.mjs');
-  step('FR: match canonical ↔ agrément (listing overlay)', 'node scripts/fr/match-canonical-to-agrement.mjs', { fatal: false });
-  step('FR: rebuild datasets with the native layer', 'node scripts/fr/build-app-products-fr.mjs');
 
   // 1d — Premium watchlist: what this release changes, measured against the
   // objects that are STILL live (after step 2 live == candidate and the diff
@@ -308,8 +364,12 @@ try {
 
   // 3 — news, after the database it describes. Never fatal.
   saveState({ phase: 'running', step: 'news' });
-  const newsOk = step('news + policies (all markets)',
-    `node scripts/news/trigger-monthly-news.mjs`, { fatal: false });
+  let newsOk = step('news + policies (all markets)',
+    `node scripts/news/trigger-monthly-news.mjs`, { fatal: false, timeoutMs: 35 * 60_000 });
+  // The trigger can fail while the function goes on writing (2026-10-01: all
+  // five markets got their articles, the window called it a failure and skipped
+  // the public export + trend cards). Ask Firestore before believing it.
+  if (!newsOk && !DRY) newsOk = await newsWrittenToday({ waitMinutes: 20 });
 
   // 4 — the snapshot the site build reads.
   saveState({ phase: 'running', step: 'news-snapshot' });

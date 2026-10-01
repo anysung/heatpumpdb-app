@@ -98,7 +98,7 @@ orchestrator: DE first, then FR/GB/PL derive from the built DE datasets; optiona
 matcher overlays; freshness + shrink-guard verification; `--deploy` ships all
 sites in one atomic call). Never hand-run builders for production updates —
 see `docs/UPDATE_PIPELINE.md` for the graph, schedule (monthly, **1st,
-00:00–07:00 Europe/Berlin, UNATTENDED** via `scripts/monthly-maintenance.mjs`
+00:05 Europe/Berlin, UNATTENDED; the close guard waits for a still-running run until 12:00** via `scripts/monthly-maintenance.mjs`
 behind a maintenance notice; two launchd jobs drive it and their candidate
 hours must be rechecked whenever the Mac changes timezone) and the
 country-expansion checklist. News runs INSIDE that window, not on its own

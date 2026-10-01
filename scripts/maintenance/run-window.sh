@@ -19,4 +19,8 @@ REPO="/Users/christophersung/heatpumpdb-app"
 # work without being copied into a third file that could drift out of sync.
 
 cd "$REPO" || exit 1
-exec node scripts/monthly-maintenance.mjs --run --if-window
+# caffeinate (2026-10-01): a sleeping Mac pauses the run mid-step, so the run
+# holds an assertion against idle (-i), system-on-AC (-s) and disk (-m) sleep
+# for exactly as long as it lives. It cannot stop a lid-close on battery —
+# keep the machine on power with the lid open on the 1st.
+exec /usr/bin/caffeinate -ims node scripts/monthly-maintenance.mjs --run --if-window

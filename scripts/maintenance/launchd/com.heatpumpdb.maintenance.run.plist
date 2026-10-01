@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
-  Monthly maintenance window — start.
+  Monthly maintenance window — start, 00:05 Europe/Berlin on the 1st.
 
-  The window is 00:00–03:00 Europe/Berlin on the 1st. launchd schedules in THIS
-  Mac's local time and has no notion of another zone's summer time, so the job
-  fires on every hour that could be Berlin midnight (Korea is 7h ahead in CEST,
-  8h in CET) and scripts/monthly-maintenance.mjs --if-window decides which
-  firing is the real one. Extra firings cost one process that exits immediately.
+  launchd schedules in THIS Mac's local time and knows nothing of another
+  zone's summer time, so the job fires on every hour that could be Berlin
+  00:xx and scripts/monthly-maintenance.mjs --if-window decides which firing
+  is the real one; extra firings exit immediately. 00:05 is the slot for a Mac
+  on Europe/Berlin (current, since 2026-09); 06:05–09:05 cover a Mac on Korean
+  time (Berlin midnight = 07:00 KST in CEST, 08:00 in CET). Re-check whenever
+  the Mac changes timezone — a silently missed window cost Aug+Sep 2026.
+  run-window.sh holds a caffeinate assertion for the run's lifetime, and the
+  close guard (07:00–12:00) waits for a run that is still alive.
 -->
 <plist version="1.0">
 <dict>
@@ -16,6 +20,7 @@
   <array><string>/Users/christophersung/heatpumpdb-app/scripts/maintenance/run-window.sh</string></array>
   <key>StartCalendarInterval</key>
   <array>
+    <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>0</integer><key>Minute</key><integer>5</integer></dict>
     <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>6</integer><key>Minute</key><integer>5</integer></dict>
     <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>7</integer><key>Minute</key><integer>5</integer></dict>
     <dict><key>Day</key><integer>1</integer><key>Hour</key><integer>8</integer><key>Minute</key><integer>5</integer></dict>
