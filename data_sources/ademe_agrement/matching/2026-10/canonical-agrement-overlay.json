@@ -1,24 +1,24 @@
 {
  "_meta": {
-  "generated": "2026-10-01T01:22:13.512Z",
+  "generated": "2026-10-01T09:31:21.358Z",
   "generator": "match-canonical-to-agrement.mjs v1.0",
   "snapshot": "2026-10",
   "import_date": "30/09/2026",
   "stats": {
    "register": 2589,
    "canonical": 7416,
-   "confirmed": 125,
-   "review": 187,
-   "brand_absent": 1204,
-   "bridge_no_shared_code": 8,
-   "bridge_one_to_many": 13,
-   "config_disagreement_ignored": 814,
+   "confirmed": 159,
+   "review": 176,
+   "brand_absent": 1193,
+   "bridge_no_shared_code": 10,
+   "bridge_one_to_many": 15,
+   "config_disagreement_ignored": 326,
    "ambiguity_blocked": 0,
-   "lost_since_last_run": 6
+   "lost_since_last_run": 21
   },
   "by_method": {
-   "eprel_bridge": 94,
-   "exact_model": 28,
+   "eprel_bridge": 123,
+   "exact_model": 33,
    "component_identity": 3
   },
   "rule": "Confirmed => \"Agréé\" + number. Everything else => \"Vérification de l'agrément requise\". Never \"not agréé\"."
@@ -47,7 +47,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017302",
@@ -72,7 +72,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017304",
@@ -97,7 +97,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16016883",
@@ -109,14 +109,20 @@
    "register_configuration": "Monobloc",
    "assembly_country": "France",
    "transitory": false,
-   "match_method": "exact_model",
+   "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": null,
+   "bridge_evidence": {
+    "eprel": "2309774",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "61AQ040P"
+    ]
+   },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16016885",
@@ -141,7 +147,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018439",
@@ -160,7 +166,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16016888",
@@ -185,7 +191,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16002927",
@@ -280,7 +286,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16002998",
@@ -361,29 +367,38 @@
   {
    "canonical_id": "16018381",
    "canonical_model": "airH2O 600 S (1.5HP) RAS-1.5WHVRP2E+RWM-1.5R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000049",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 3,5kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2410360",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS15WHVRP2E",
+     "RWM15R3E",
+     "5WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": null
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018385",
    "canonical_model": "airH2O 600 S (2.5HP) RAS-2.5WHVRP2E+RWM-2.5R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000063",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 6kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
@@ -399,124 +414,178 @@
   {
    "canonical_id": "16018383",
    "canonical_model": "airH2O 600 S (2HP) RAS-2WHVRP2E+RWM-2.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000050",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 4,3kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502677",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS2WHVRP2E",
+     "RWM20R3E",
+     "2WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017738",
    "canonical_model": "airH2O 600 S (3.5HP) RAS-3.5WHRP2E+RWM-3.5R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000054",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 8,5kW  Tri R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2410018",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS35WHRP2E",
+     "RWM35R3E",
+     "5WHRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017733",
    "canonical_model": "airH2O 600 S (3.5HP) RAS-3.5WHVRP2E+RWM-3.5R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000053",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 8,5kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2409927",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS35WHVRP2E",
+     "RWM35R3E",
+     "5WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018387",
    "canonical_model": "airH2O 600 S (3HP) RAS-3WHVRP2E+RWM-3.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000052",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 8,0kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502655",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS3WHVRP2E",
+     "RWM30R3E",
+     "3WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017739",
    "canonical_model": "airH2O 600 S (4HP) RAS-4WHRP2E+RWM-4.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000056",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 10,0kW  Tri R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502710",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS4WHRP2E",
+     "RWM40R3E",
+     "4WHRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017735",
    "canonical_model": "airH2O 600 S (4HP) RAS-4WHVRP2E+RWM-4.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000055",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 10,0kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502740",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS4WHVRP2E",
+     "RWM40R3E",
+     "4WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017740",
    "canonical_model": "airH2O 600 S (5HP) RAS-5WHRP2E+RWM-5.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000063",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 6kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
@@ -532,86 +601,122 @@
   {
    "canonical_id": "16017736",
    "canonical_model": "airH2O 600 S (5HP) RAS-5WHVRP2E+RWM-5.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000057",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 12,0kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502726",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS5WHVRP2E",
+     "RWM50R3E",
+     "5WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017741",
    "canonical_model": "airH2O 600 S (6HP) RAS-6WHRP2E+RWM-6.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000060",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 14,0kW  Tri R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502687",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS6WHRP2E",
+     "RWM60R3E",
+     "6WHRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": null
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017737",
    "canonical_model": "airH2O 600 S (6HP) RAS-6WHVRP2E+RWM-6.0R3E",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000059",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_gamme": "AirH2O 600 S",
+   "register_model": "AirH2O 600 S 14,0kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502715",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS6WHVRP2E",
+     "RWM60R3E",
+     "6WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018382",
    "canonical_model": "airH2O 600 S Combi (1.5HP) RAS-1.5WHVRP2E+RWD-1.5RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000061",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 3,5kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2410249",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS15WHVRP2E",
+     "RWD15RW3E220S",
+     "5WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018386",
    "canonical_model": "airH2O 600 S Combi (2.5HP) RAS-2.5WHVRP2E+RWD-2.5RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000063",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 6kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
@@ -627,135 +732,198 @@
   {
    "canonical_id": "16018384",
    "canonical_model": "airH2O 600 S Combi (2HP) RAS-2WHVRP2E+RWD-2.0RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000062",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 4,3kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502679",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS2WHVRP2E",
+     "RWD20RW3E220S",
+     "2WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017747",
    "canonical_model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHRP2E+RWD-3.5RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000066",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 8,5kW  Tri R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2410036",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS35WHRP2E",
+     "RWD35RW3E220S",
+     "5WHRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": null
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017743",
    "canonical_model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHVRP2E+RWD-3.5RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000065",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 8,5kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2409974",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS35WHVRP2E",
+     "RWD35RW3E220S",
+     "5WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": null
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018388",
    "canonical_model": "airH2O 600 S Combi (3HP) RAS-3WHVRP2E+RWD-3.0RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000064",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 8,0kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502490",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS3WHVRP2E",
+     "RWD30RW3E220S",
+     "3WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017748",
    "canonical_model": "airH2O 600 S Combi (4HP) RAS-4WHRP2E+RWD-4.0RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000068",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 10,0kW  Tri R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502709",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS4WHRP2E",
+     "RWD40RW3E220S",
+     "4WHRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017744",
    "canonical_model": "airH2O 600 S Combi (4HP) RAS-4WHVRP2E+RWD-4.0RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000067",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 10,0kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502737",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS4WHVRP2E",
+     "RWD40RW3E220S",
+     "4WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017749",
    "canonical_model": "airH2O 600 S Combi (5HP) RAS-5WHRP2E+RWD-5.0RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000070",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 12,0kW  Tri R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502700",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS5WHRP2E",
+     "RWD50RW3E220S",
+     "5WHRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017745",
@@ -767,52 +935,79 @@
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502718",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS5WHVRP2E",
+     "RWD50RW3E220S",
+     "5WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017750",
    "canonical_model": "airH2O 600 S Combi (6HP) RAS-6WHRP2E+RWD-6.0RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000072",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 14,0kW  Tri R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502686",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS6WHRP2E",
+     "RWD60RW3E220S",
+     "6WHRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017746",
    "canonical_model": "airH2O 600 S Combi (6HP) RAS-6WHVRP2E+RWD-6.0RW3E-220S",
-   "agrement_number": "54-2026-000069",
+   "agrement_number": "54-2026-000071",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AirH2O 600 S COMBI",
-   "register_model": "AirH2O 600 S COMBI 12,0kW  Mono R32",
+   "register_model": "AirH2O 600 S COMBI 14,0kW  Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2502714",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS6WHVRP2E",
+     "RWD60RW3E220S",
+     "6WHVRP2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010928",
@@ -840,7 +1035,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019891",
@@ -1058,7 +1253,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019958",
@@ -1077,7 +1272,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018518",
@@ -1105,7 +1300,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16006472",
@@ -1124,7 +1319,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16000579",
@@ -1143,7 +1338,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16013091",
@@ -1155,21 +1350,14 @@
    "register_configuration": "Split",
    "assembly_country": "Autriche",
    "transitory": false,
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "2323261",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "SNT10LMRCC",
-     "SNT10L"
-    ]
-   },
+   "bridge_evidence": null,
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16002923",
@@ -1305,42 +1493,360 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16017774",
-   "canonical_model": "airH2O 800 Control Box (2HP) RASM-2VTW2E+ATW-CBX-01",
-   "agrement_number": "54-2026-000109",
+   "canonical_id": "16017779",
+   "canonical_model": "airH2O 800 Control Box (6HP) RASM-6VTW2E+ATW-CBX-01",
+   "agrement_number": "54-2026-000091",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AIRH2O 800 H COMBI",
-   "register_model": "AIRH2O 800 H COMBI 14kW Mono R290",
+   "register_gamme": "AIRH2O 800 M",
+   "register_model": "AIRH2O 800 M  14kW Mono R290",
    "register_configuration": "Monobloc",
    "assembly_country": "Espagne",
    "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2410115",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RASM6VTW2E",
+     "ATWCBX01",
+     "6VTW2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16010930",
+   "canonical_model": "Aquarea [WH-SXC12K6E5 / WH-UXZ12KE5]",
+   "agrement_number": "64-2026-000071",
+   "register_brand": "Panasonic",
+   "register_gamme": "AQUAREA",
+   "register_model": "Aquarea T-CAP bi-bloc Série K 12 kW monophasé",
+   "register_configuration": "Split",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2058397",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "WHSXC12K6E5",
+     "WHUXZ12KE5",
+     "SXC12K6E5",
+     "UXZ12KE5"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16004598",
+   "canonical_model": "Sphera EVO 2.0 Box SQKN-YEE 1 BC + MiSAN-YEE 1 S 4.1",
+   "agrement_number": "134-2026-000047",
+   "register_brand": "Clivet",
+   "register_gamme": "Sphera EVO 2.0 Tower",
+   "register_model": "SQKN-YEE 1 TC A 190 E-XT + MiSAN-YEE 1 S 4.1",
+   "register_configuration": "Split",
+   "assembly_country": "Italie",
+   "transitory": false,
    "match_method": "shared_component",
    "match_confidence": "low",
-   "candidates": 24,
+   "candidates": 2,
    "bridge_evidence": null,
    "status": "review_required",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": null
+  },
+  {
+   "canonical_id": "16004610",
+   "canonical_model": "Sphera EVO 2.0 Invisible SQKN-YEE 1 IC + MiSAN-YEE 1 S 4.1",
+   "agrement_number": "134-2026-000047",
+   "register_brand": "Clivet",
+   "register_gamme": "Sphera EVO 2.0 Tower",
+   "register_model": "SQKN-YEE 1 TC A 190 E-XT + MiSAN-YEE 1 S 4.1",
+   "register_configuration": "Split",
+   "assembly_country": "Italie",
+   "transitory": false,
+   "match_method": "shared_component",
+   "match_confidence": "low",
+   "candidates": 2,
+   "bridge_evidence": null,
+   "status": "review_required",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": null
+  },
+  {
+   "canonical_id": "16018071",
+   "canonical_model": "LWZ 05.1 Premium HKWL 230",
+   "agrement_number": "149-2026-000034",
+   "register_brand": "Stiebel Eltron",
+   "register_gamme": "LWZ",
+   "register_model": "LWZ 05.1 Premium HKWL 230",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Slovaquie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2389217",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "LWZ051PREMIUMHKWL230"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16019957",
+   "canonical_model": "Vitocal 200-A AWMOF-201.A1.06-230-V005",
+   "agrement_number": "152-2026-000165",
+   "register_brand": "Viessmann",
+   "register_gamme": "Vitocal 200-A ie",
+   "register_model": "Vitocal 200-A AWMOF-201.A1.06-230-V005",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Pologne",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2826612",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "VITOCAL200AAWMOF201A106230V005",
+     "AWMOF201A106230V005"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16012802",
+   "canonical_model": "i-290 0106",
+   "agrement_number": "143-2026-000001",
+   "register_brand": "Maxa Heating & Cooling",
+   "register_gamme": "i-290",
+   "register_model": "0106",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Italie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1512041",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "I2900106"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16010918",
+   "canonical_model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ09KE5]",
+   "agrement_number": "64-2026-000058",
+   "register_brand": "Panasonic",
+   "register_gamme": "AQUAREA",
+   "register_model": "Aquarea Haute Performance bi-bloc Série K 9 kW",
+   "register_configuration": "Split",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1791520",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "WHSDC0309K3E5",
+     "WHUDZ09KE5",
+     "SDC0309K3E5",
+     "UDZ09KE5"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16017565",
+   "canonical_model": "EDGE Pro / WiSAN-PMP 1 S 7.1T",
+   "agrement_number": "134-2026-000012",
+   "register_brand": "Clivet",
+   "register_gamme": "EDGE PRO",
+   "register_model": "WiSAN-PMP 1S 7.1T",
+   "register_configuration": "Monobloc",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "component_identity",
+   "match_confidence": "high",
+   "candidates": 4,
+   "bridge_evidence": null,
+   "status": "review_required",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": null
+  },
+  {
+   "canonical_id": "16017589",
+   "canonical_model": "EDGE Pro + Box / WiSAN-PMP 1 S 7.1T + HQCN-NEE 1 BC A",
+   "agrement_number": "134-2026-000012",
+   "register_brand": "Clivet",
+   "register_gamme": "EDGE PRO",
+   "register_model": "WiSAN-PMP 1S 7.1T",
+   "register_configuration": "Monobloc",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "component_identity",
+   "match_confidence": "high",
+   "candidates": 4,
+   "bridge_evidence": null,
+   "status": "review_required",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": null
+  },
+  {
+   "canonical_id": "16017619",
+   "canonical_model": "EDGE Pro + Mini / WiSAN-PMP 1 S 7.1T + HQCN-NEE 1 MC A",
+   "agrement_number": "134-2026-000012",
+   "register_brand": "Clivet",
+   "register_gamme": "EDGE PRO",
+   "register_model": "WiSAN-PMP 1S 7.1T",
+   "register_configuration": "Monobloc",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "component_identity",
+   "match_confidence": "high",
+   "candidates": 4,
+   "bridge_evidence": null,
+   "status": "review_required",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": null
+  },
+  {
+   "canonical_id": "16017601",
+   "canonical_model": "EDGE Pro + Tower / WiSAN-PMP 1 S 7.1T + HQCN-NEE 1 TC A",
+   "agrement_number": "134-2026-000012",
+   "register_brand": "Clivet",
+   "register_gamme": "EDGE PRO",
+   "register_model": "WiSAN-PMP 1S 7.1T",
+   "register_configuration": "Monobloc",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "component_identity",
+   "match_confidence": "high",
+   "candidates": 4,
+   "bridge_evidence": null,
+   "status": "review_required",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": null
+  },
+  {
+   "canonical_id": "16013089",
+   "canonical_model": "SNT07L-M-R-CC",
+   "agrement_number": "163-2026-000001",
+   "register_brand": "Heliotherm",
+   "register_gamme": "Air to water",
+   "register_model": "SNT07L-M-R-CC",
+   "register_configuration": "Split",
+   "assembly_country": "Autriche",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2323167",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "SNT07LMRCC",
+     "SNT07L"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16017774",
+   "canonical_model": "airH2O 800 Control Box (2HP) RASM-2VTW2E+ATW-CBX-01",
+   "agrement_number": "54-2026-000084",
+   "register_brand": "Hitachi Climat",
+   "register_gamme": "AIRH2O 800 M",
+   "register_model": "AIRH2O 800 M  4kW Mono R290",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Espagne",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2405754",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RASM2VTW2E",
+     "ATWCBX01",
+     "2VTW2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017776",
    "canonical_model": "airH2O 800 Control Box (3.5HP) RASM-3.5VTW2E+ATW-CBX-01",
-   "agrement_number": "54-2026-000109",
+   "agrement_number": "54-2026-000086",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AIRH2O 800 H COMBI",
-   "register_model": "AIRH2O 800 H COMBI 14kW Mono R290",
+   "register_gamme": "AIRH2O 800 M",
+   "register_model": "AIRH2O 800 M  8kW Mono R290",
    "register_configuration": "Monobloc",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2407587",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RASM35VTW2E",
+     "ATWCBX01",
+     "5VTW2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017780",
@@ -1383,63 +1889,61 @@
   {
    "canonical_id": "16017781",
    "canonical_model": "airH2O 800 Control Box (5HP) RASM-5TW2E+ATW-CBX-01",
-   "agrement_number": "54-2026-000109",
+   "agrement_number": "54-2026-000090",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AIRH2O 800 H COMBI",
-   "register_model": "AIRH2O 800 H COMBI 14kW Mono R290",
+   "register_gamme": "AIRH2O 800 M",
+   "register_model": "AIRH2O 800 M  12kW Tri R290",
    "register_configuration": "Monobloc",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2410073",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RASM5TW2E",
+     "ATWCBX01",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017778",
    "canonical_model": "airH2O 800 Control Box (5HP) RASM-5VTW2E+ATW-CBX-01",
-   "agrement_number": "54-2026-000109",
+   "agrement_number": "54-2026-000089",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "AIRH2O 800 H COMBI",
-   "register_model": "AIRH2O 800 H COMBI 14kW Mono R290",
+   "register_gamme": "AIRH2O 800 M",
+   "register_model": "AIRH2O 800 M  12kW Mono R290",
    "register_configuration": "Monobloc",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2410062",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RASM5VTW2E",
+     "ATWCBX01",
+     "5VTW2E",
+     "AIRH2O"
+    ]
+   },
+   "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": null
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017782",
    "canonical_model": "airH2O 800 Control Box (6HP) RASM-6TW2E+ATW-CBX-01",
-   "agrement_number": "54-2026-000109",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "AIRH2O 800 H COMBI",
-   "register_model": "AIRH2O 800 H COMBI 14kW Mono R290",
-   "register_configuration": "Monobloc",
-   "assembly_country": "Espagne",
-   "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 24,
-   "bridge_evidence": null,
-   "status": "review_required",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z"
-  },
-  {
-   "canonical_id": "16017779",
-   "canonical_model": "airH2O 800 Control Box (6HP) RASM-6VTW2E+ATW-CBX-01",
    "agrement_number": "54-2026-000109",
    "register_brand": "Hitachi Climat",
    "register_gamme": "AIRH2O 800 H COMBI",
@@ -1761,218 +2265,6 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16004598",
-   "canonical_model": "Sphera EVO 2.0 Box SQKN-YEE 1 BC + MiSAN-YEE 1 S 4.1",
-   "agrement_number": "134-2026-000047",
-   "register_brand": "Clivet",
-   "register_gamme": "Sphera EVO 2.0 Tower",
-   "register_model": "SQKN-YEE 1 TC A 190 E-XT + MiSAN-YEE 1 S 4.1",
-   "register_configuration": "Split",
-   "assembly_country": "Italie",
-   "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 2,
-   "bridge_evidence": null,
-   "status": "review_required",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": null
-  },
-  {
-   "canonical_id": "16004610",
-   "canonical_model": "Sphera EVO 2.0 Invisible SQKN-YEE 1 IC + MiSAN-YEE 1 S 4.1",
-   "agrement_number": "134-2026-000047",
-   "register_brand": "Clivet",
-   "register_gamme": "Sphera EVO 2.0 Tower",
-   "register_model": "SQKN-YEE 1 TC A 190 E-XT + MiSAN-YEE 1 S 4.1",
-   "register_configuration": "Split",
-   "assembly_country": "Italie",
-   "transitory": false,
-   "match_method": "shared_component",
-   "match_confidence": "low",
-   "candidates": 2,
-   "bridge_evidence": null,
-   "status": "review_required",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": null
-  },
-  {
-   "canonical_id": "16018071",
-   "canonical_model": "LWZ 05.1 Premium HKWL 230",
-   "agrement_number": "149-2026-000034",
-   "register_brand": "Stiebel Eltron",
-   "register_gamme": "LWZ",
-   "register_model": "LWZ 05.1 Premium HKWL 230",
-   "register_configuration": "Monobloc",
-   "assembly_country": "Slovaquie",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "2389217",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "LWZ051PREMIUMHKWL230"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16019957",
-   "canonical_model": "Vitocal 200-A AWMOF-201.A1.06-230-V005",
-   "agrement_number": "152-2026-000165",
-   "register_brand": "Viessmann",
-   "register_gamme": "Vitocal 200-A ie",
-   "register_model": "Vitocal 200-A AWMOF-201.A1.06-230-V005",
-   "register_configuration": "Monobloc",
-   "assembly_country": "Pologne",
-   "transitory": false,
-   "match_method": "exact_model",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": null,
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16010918",
-   "canonical_model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ09KE5]",
-   "agrement_number": "64-2026-000058",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance bi-bloc Série K 9 kW",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1791520",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "WHSDC0309K3E5",
-     "WHUDZ09KE5",
-     "SDC0309K3E5",
-     "UDZ09KE5"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16017565",
-   "canonical_model": "EDGE Pro / WiSAN-PMP 1 S 7.1T",
-   "agrement_number": "134-2026-000012",
-   "register_brand": "Clivet",
-   "register_gamme": "EDGE PRO",
-   "register_model": "WiSAN-PMP 1S 7.1T",
-   "register_configuration": "Monobloc",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "component_identity",
-   "match_confidence": "high",
-   "candidates": 4,
-   "bridge_evidence": null,
-   "status": "review_required",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": null
-  },
-  {
-   "canonical_id": "16017589",
-   "canonical_model": "EDGE Pro + Box / WiSAN-PMP 1 S 7.1T + HQCN-NEE 1 BC A",
-   "agrement_number": "134-2026-000012",
-   "register_brand": "Clivet",
-   "register_gamme": "EDGE PRO",
-   "register_model": "WiSAN-PMP 1S 7.1T",
-   "register_configuration": "Monobloc",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "component_identity",
-   "match_confidence": "high",
-   "candidates": 4,
-   "bridge_evidence": null,
-   "status": "review_required",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": null
-  },
-  {
-   "canonical_id": "16017619",
-   "canonical_model": "EDGE Pro + Mini / WiSAN-PMP 1 S 7.1T + HQCN-NEE 1 MC A",
-   "agrement_number": "134-2026-000012",
-   "register_brand": "Clivet",
-   "register_gamme": "EDGE PRO",
-   "register_model": "WiSAN-PMP 1S 7.1T",
-   "register_configuration": "Monobloc",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "component_identity",
-   "match_confidence": "high",
-   "candidates": 4,
-   "bridge_evidence": null,
-   "status": "review_required",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": null
-  },
-  {
-   "canonical_id": "16017601",
-   "canonical_model": "EDGE Pro + Tower / WiSAN-PMP 1 S 7.1T + HQCN-NEE 1 TC A",
-   "agrement_number": "134-2026-000012",
-   "register_brand": "Clivet",
-   "register_gamme": "EDGE PRO",
-   "register_model": "WiSAN-PMP 1S 7.1T",
-   "register_configuration": "Monobloc",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "component_identity",
-   "match_confidence": "high",
-   "candidates": 4,
-   "bridge_evidence": null,
-   "status": "review_required",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": null
-  },
-  {
-   "canonical_id": "16013089",
-   "canonical_model": "SNT07L-M-R-CC",
-   "agrement_number": "163-2026-000001",
-   "register_brand": "Heliotherm",
-   "register_gamme": "Air to water",
-   "register_model": "SNT07L-M-R-CC",
-   "register_configuration": "Split",
-   "assembly_country": "Autriche",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "2323167",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "SNT07LMRCC",
-     "SNT07L"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
    "canonical_id": "16001890",
    "canonical_model": "WPL 19 (I/ IK/ A/ SR/ dB) Set",
    "agrement_number": "149-2026-000050",
@@ -1989,7 +2281,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018642",
@@ -2017,7 +2309,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16012513",
@@ -2283,7 +2575,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017566",
@@ -2385,7 +2677,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018072",
@@ -2410,7 +2702,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004599",
@@ -2695,7 +2987,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010859",
@@ -2983,12 +3275,12 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16010924",
-   "canonical_model": "Aquarea [WH-SDC0509L3E5 / WH-WDG09LE5]",
-   "agrement_number": "64-2026-000043",
+   "canonical_id": "16010896",
+   "canonical_model": "Aquarea [WH-ADC0509L3E5 / WH-WDG07LE5]",
+   "agrement_number": "64-2026-000035",
    "register_brand": "Panasonic",
    "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance bi-bloc Série L 9 kW",
+   "register_model": "Aquarea Haute Performance All in One Série L 7 kW",
    "register_configuration": "Monobloc",
    "assembly_country": "République tchèque",
    "transitory": false,
@@ -2996,19 +3288,19 @@
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1791527",
+    "eprel": "1833990",
     "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "WHSDC0509L3E5",
-     "WHWDG09LE5",
-     "SDC0509L3E5",
-     "WDG09LE5"
+     "WHADC0509L3E5",
+     "WHWDG07LE5",
+     "ADC0509L3E5",
+     "WDG07LE5"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16002242",
@@ -3027,35 +3319,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16010864",
-   "canonical_model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ03KE5]",
-   "agrement_number": "64-2026-000099",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance All in One 185 L Série K 3 kW",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1575983",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "WHADC0309K3E5",
-     "WHUDZ03KE5",
-     "ADC0309K3E5",
-     "UDZ03KE5"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16012798",
@@ -3080,7 +3344,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017559",
@@ -3197,6 +3461,34 @@
    "last_confirmed_at": null
   },
   {
+   "canonical_id": "16010929",
+   "canonical_model": "Aquarea [WH-SXC09K9E8 / WH-UXZ09KE8]",
+   "agrement_number": "64-2026-000070",
+   "register_brand": "Panasonic",
+   "register_gamme": "AQUAREA",
+   "register_model": "Aquarea T-CAP bi-bloc Série K 9 kW triphasé",
+   "register_configuration": "Split",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2058396",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "WHSXC09K9E8",
+     "WHUXZ09KE8",
+     "SXC09K9E8",
+     "UXZ09KE8"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
    "canonical_id": "16015136",
    "canonical_model": "i-290 0250-PS",
    "agrement_number": "143-2026-000068",
@@ -3220,7 +3512,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010911",
@@ -3248,7 +3540,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010897",
@@ -3276,7 +3568,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16016480",
@@ -3302,7 +3594,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16002570",
@@ -3362,32 +3654,29 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16010910",
-   "canonical_model": "Aquarea [WH-ADC0912K9E8 / WH-UXZ12KE8]",
-   "agrement_number": "64-2026-000066",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea T-CAP All in One Série K 12 kW triphasé",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
+   "canonical_id": "16015138",
+   "canonical_model": "i-290 0250 PSEC",
+   "agrement_number": "143-2026-000070",
+   "register_brand": "Maxa Heating & Cooling",
+   "register_gamme": "i-290",
+   "register_model": "0250 -PSEC",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Italie",
    "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "2403995",
+    "eprel": "1897767",
     "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "WHADC0912K9E8",
-     "WHUXZ12KE8",
-     "ADC0912K9E8",
-     "UXZ12KE8"
+     "I2900250PSEC"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017562",
@@ -3466,6 +3755,31 @@
    "last_confirmed_at": null
   },
   {
+   "canonical_id": "16020500",
+   "canonical_model": "i-290 0109T",
+   "agrement_number": "143-2026-000081",
+   "register_brand": "Maxa Heating & Cooling",
+   "register_gamme": "i-290",
+   "register_model": "i-290 0109T",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Italie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2815451",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "I2900109T"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
    "canonical_id": "16018202",
    "canonical_model": "LA 1525CP",
    "agrement_number": "155-2026-000002",
@@ -3489,7 +3803,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16006475",
@@ -3514,7 +3828,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019094",
@@ -3526,20 +3840,39 @@
    "register_configuration": "Monobloc",
    "assembly_country": "Allemagne",
    "transitory": false,
+   "match_method": "exact_model",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": null,
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16019580",
+   "canonical_model": "ADAPT 2 L / HK 3F",
+   "agrement_number": "166-2026-000003",
+   "register_brand": "KRONOTERM",
+   "register_gamme": "ADAPT 2 L",
+   "register_model": "ADAPT 2 L / HK 3F",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Slovénie",
+   "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "2735611",
+    "eprel": "2700640",
     "register_link": "eprel_exact_model",
     "shared_codes": [
-     "20ARMDA"
+     "ADAPT2L"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16015135",
@@ -3564,7 +3897,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16020501",
+   "canonical_model": "i-290 0109T SL",
+   "agrement_number": "143-2026-000082",
+   "register_brand": "Maxa Heating & Cooling",
+   "register_gamme": "i-290",
+   "register_model": "i-290 0109T SL",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Italie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2815466",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "I2900109TSL"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16006644",
@@ -3591,7 +3949,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16001893",
@@ -3603,20 +3961,14 @@
    "register_configuration": "Monobloc",
    "assembly_country": "Allemagne",
    "transitory": false,
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "140485",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "WPL17ICSCLASSIC"
-    ]
-   },
+   "bridge_evidence": null,
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010921",
@@ -3644,7 +3996,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16007736",
@@ -3671,7 +4023,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16016432",
@@ -3696,7 +4048,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16013093",
@@ -3708,21 +4060,14 @@
    "register_configuration": "Split",
    "assembly_country": "Autriche",
    "transitory": false,
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "2327539",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "SNT15LMRCC",
-     "SNT15L"
-    ]
-   },
+   "bridge_evidence": null,
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16012803",
@@ -3747,7 +4092,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004529",
@@ -3788,6 +4133,33 @@
    "last_confirmed_at": null
   },
   {
+   "canonical_id": "16010914",
+   "canonical_model": "YUTAKI S80 (6HP) RAS-6WHNPE + RWH-6.0NFE",
+   "agrement_number": "54-2026-000008",
+   "register_brand": "Hitachi Climat",
+   "register_gamme": "YUTAKI S80",
+   "register_model": "YUTAKI S80 16.0kW Tri  R410A",
+   "register_configuration": "Split",
+   "assembly_country": "Espagne",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1788111",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS6WHNPE",
+     "RWH60NFE",
+     "6WHNPE"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
    "canonical_id": "16014522",
    "canonical_model": "EcoTouch Air Bloc 7008 (400V)",
    "agrement_number": "129-2026-000002",
@@ -3804,7 +4176,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010922",
@@ -3832,7 +4204,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16013090",
@@ -3858,7 +4230,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004600",
@@ -3880,29 +4252,31 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16012800",
-   "canonical_model": "i-290 0125",
-   "agrement_number": "143-2026-000008",
-   "register_brand": "Maxa Heating & Cooling",
-   "register_gamme": "i-290",
-   "register_model": "0125",
-   "register_configuration": "Monobloc",
-   "assembly_country": "Italie",
+   "canonical_id": "16010825",
+   "canonical_model": "YUTAKI S80 (5HP) RAS-5WHVNPE + RWH-5.0VNFE",
+   "agrement_number": "54-2026-000005",
+   "register_brand": "Hitachi Climat",
+   "register_gamme": "YUTAKI S80",
+   "register_model": "YUTAKI S80 14.0kW  Mono  R410A",
+   "register_configuration": "Split",
+   "assembly_country": "Espagne",
    "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1776268",
+    "eprel": "1788084",
     "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "I2900125"
+     "RAS5WHVNPE",
+     "RWH50VNFE",
+     "5WHVNPE"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010919",
@@ -3930,7 +4304,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019960",
@@ -3949,7 +4323,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16003014",
@@ -3968,7 +4342,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16002566",
@@ -4006,7 +4380,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16003011",
@@ -4026,34 +4400,6 @@
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
    "last_confirmed_at": null
-  },
-  {
-   "canonical_id": "16010873",
-   "canonical_model": "Aquarea [WH-ADC0309K6E5 / WH-UDZ05KE5]",
-   "agrement_number": "64-2026-000047",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance All in One Série K 5 kW",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1576040",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "WHADC0309K6E5",
-     "WHUDZ05KE5",
-     "ADC0309K6E5",
-     "UDZ05KE5"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
   },
   {
    "canonical_id": "16015394",
@@ -4078,7 +4424,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018197",
@@ -4090,21 +4436,14 @@
    "register_configuration": "Monobloc",
    "assembly_country": "Allemagne",
    "transitory": false,
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "2436514",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "LA2030CP",
-     "2030CP"
-    ]
-   },
+   "bridge_evidence": null,
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16012717",
@@ -4129,34 +4468,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16006715",
-   "canonical_model": "YUTAKI S (2HP) RAS-2WHVRP1+RWM-2.0R1E",
-   "agrement_number": "54-2026-000024",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI S 2.0 R32",
-   "register_model": "YUTAKI S 2.0 4.3kW Mono  R32",
-   "register_configuration": "Split",
-   "assembly_country": "Espagne",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1782129",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "RAS2WHVRP1",
-     "RWM20R1E",
-     "2WHVRP1"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16001896",
@@ -4181,7 +4493,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16016416",
@@ -4208,7 +4520,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16015131",
+   "canonical_model": "i-290 0240",
+   "agrement_number": "143-2026-000010",
+   "register_brand": "Maxa Heating & Cooling",
+   "register_gamme": "i-290",
+   "register_model": "0240",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Italie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1897424",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "I2900240"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017070",
@@ -4234,7 +4571,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16012799",
@@ -4259,15 +4596,15 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
-   "canonical_id": "16007734",
-   "canonical_model": "YUTAKI S (2.5HP) RAS-2.5WHVRP1+RWM-2.5R1E",
-   "agrement_number": "54-2026-000026",
+   "canonical_id": "16010882",
+   "canonical_model": "YUTAKI S80 (5HP) RAS-5WHNPE + RWH-5.0NFE",
+   "agrement_number": "54-2026-000006",
    "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI S 2.0 R32",
-   "register_model": "YUTAKI S 2.0 6.0kW Mono R32",
+   "register_gamme": "YUTAKI S80",
+   "register_model": "YUTAKI S80 14.0kW Tri  R410A",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
@@ -4275,18 +4612,43 @@
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1782330",
+    "eprel": "1788107",
     "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "RAS25WHVRP1",
-     "RWM25R1E",
-     "5WHVRP1"
+     "RAS5WHNPE",
+     "RWH50NFE",
+     "5WHNPE"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16015722",
+   "canonical_model": "ADAPT MAX 10070 HT / HK 3F",
+   "agrement_number": "166-2026-000006",
+   "register_brand": "KRONOTERM",
+   "register_gamme": "ADAPT MAX",
+   "register_model": "ADAPT MAX 10070 HT / HK 3F",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Slovénie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2325416",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "ADAPTMAX10070HT"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16001891",
@@ -4305,7 +4667,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16006473",
@@ -4324,7 +4686,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019091",
@@ -4349,7 +4711,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017561",
@@ -4447,32 +4809,6 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16016421",
-   "canonical_model": "YUTAKI S Combi (3HP) RAS-3WHVRP2E+RWD-3.0RW2E-220S(-K)",
-   "agrement_number": "54-2026-000014",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI S COMBI 2.0 R32",
-   "register_model": "YUTAKI S COMBI 2.0 8.0kW Mono R32",
-   "register_configuration": "Split",
-   "assembly_country": "Espagne",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "2178095",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "RAS3WHVRP2E",
-     "3WHVRP2E"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
    "canonical_id": "16012804",
    "canonical_model": "i-290 0112",
    "agrement_number": "143-2026-000003",
@@ -4495,15 +4831,15 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
-   "canonical_id": "16007735",
-   "canonical_model": "YUTAKI S (3HP) RAS-3WHVRP1+RWM-3.0R1E",
-   "agrement_number": "54-2026-000027",
+   "canonical_id": "16016414",
+   "canonical_model": "YUTAKI S (1.5HP) RAS-1.5WHVRP2E+RWM-1.5R2E",
+   "agrement_number": "54-2026-000022",
    "register_brand": "Hitachi Climat",
    "register_gamme": "YUTAKI S 2.0 R32",
-   "register_model": "YUTAKI S 2.0 8.0kW Mono R32",
+   "register_model": "YUTAKI S 2.0 3,5kW Mono R32",
    "register_configuration": "Split",
    "assembly_country": "Espagne",
    "transitory": false,
@@ -4511,18 +4847,18 @@
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1782343",
+    "eprel": "1960254",
     "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "RAS3WHVRP1",
-     "RWM30R1E",
-     "3WHVRP1"
+     "RAS15WHVRP2E",
+     "RWM15R2E",
+     "5WHVRP2E"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16015393",
@@ -4541,7 +4877,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16015137",
@@ -4567,7 +4903,34 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16016415",
+   "canonical_model": "YUTAKI S (2HP) RAS-2WHVRP2E+RWM-2.0R2E",
+   "agrement_number": "54-2026-000023",
+   "register_brand": "Hitachi Climat",
+   "register_gamme": "YUTAKI S 2.0 R32",
+   "register_model": "YUTAKI S 2.0 4,3kW Mono R32",
+   "register_configuration": "Split",
+   "assembly_country": "Espagne",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2178074",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RAS2WHVRP2E",
+     "RWM20R2E",
+     "2WHVRP2E"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010912",
@@ -4595,7 +4958,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017556",
@@ -4804,7 +5167,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16019686",
+   "canonical_model": "ADAPT 2 S / HK 1F",
+   "agrement_number": "166-2026-000004",
+   "register_brand": "KRONOTERM",
+   "register_gamme": "ADAPT 2 S",
+   "register_model": "ADAPT 2 S / HK 1F",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Slovénie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2734485",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "ADAPT2S"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010907",
@@ -4832,7 +5220,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16001895",
@@ -4844,47 +5232,14 @@
    "register_configuration": "Monobloc",
    "assembly_country": "Allemagne",
    "transitory": false,
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "140492",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "WPL17IKCSCLASSIC"
-    ]
-   },
+   "bridge_evidence": null,
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16007737",
-   "canonical_model": "YUTAKI S (5HP) RAS-5WHVNPE+RWM-5.0N1E",
-   "agrement_number": "54-2026-000030",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI S 2.0",
-   "register_model": "YUTAKI S 2.0 14.0kW Mono R410A",
-   "register_configuration": "Split",
-   "assembly_country": "Espagne",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1782426",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "RAS5WHVNPE",
-     "RWM50N1E",
-     "5WHVNPE"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16002618",
@@ -4931,35 +5286,35 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
-   "canonical_id": "16011250",
-   "canonical_model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ07KE5]",
-   "agrement_number": "64-2026-000057",
+   "canonical_id": "16010901",
+   "canonical_model": "Aquarea [WH-ADC0509L6E5 / WH-WDG05LE5]",
+   "agrement_number": "64-2026-000032",
    "register_brand": "Panasonic",
    "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance bi-bloc Série K 7 kW",
-   "register_configuration": "Split",
+   "register_model": "Aquarea Haute Performance All in One Série L 5 kW",
+   "register_configuration": "Monobloc",
    "assembly_country": "République tchèque",
    "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1791523",
+    "eprel": "1834001",
     "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "WHSDC0309K6E5",
-     "WHUDZ07KE5",
-     "SDC0309K6E5",
-     "UDZ07KE5"
+     "WHADC0509L6E5",
+     "WHWDG05LE5",
+     "ADC0509L6E5",
+     "WDG05LE5"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16011239",
@@ -4987,7 +5342,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16006474",
@@ -5012,34 +5367,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16006646",
-   "canonical_model": "YUTAKI S (5HP) RAS-5WHNPE+RWM-5.0N1E",
-   "agrement_number": "54-2026-000033",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI S 2.0",
-   "register_model": "YUTAKI S 2.0 14.0kW Tri R410A",
-   "register_configuration": "Split",
-   "assembly_country": "Espagne",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1787741",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "RAS5WHNPE",
-     "RWM50N1E",
-     "5WHNPE"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16003012",
@@ -5058,7 +5386,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16015721",
+   "canonical_model": "ADAPT MAX 10035 HT / HK 3F",
+   "agrement_number": "166-2026-000005",
+   "register_brand": "KRONOTERM",
+   "register_gamme": "ADAPT MAX",
+   "register_model": "ADAPT MAX 10035 HT / HK 3F",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Slovénie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2325401",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "ADAPTMAX10035HT"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16011238",
@@ -5086,7 +5439,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010927",
@@ -5114,7 +5467,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010872",
@@ -5142,7 +5495,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16016423",
+   "canonical_model": "Yutaki M (3HP) RASM-3VR2E",
+   "agrement_number": "54-2026-000076",
+   "register_brand": "Hitachi Climat",
+   "register_gamme": "YUTAKI M",
+   "register_model": "YUTAKI M 8.0kW Mono R32",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Espagne",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1941975",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RASM3VR2E"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16020102",
@@ -5167,7 +5545,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010903",
@@ -5195,7 +5573,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017563",
@@ -5283,20 +5661,14 @@
    "register_configuration": "Monobloc",
    "assembly_country": "Espagne",
    "transitory": false,
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1436436",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "T318PRO"
-    ]
-   },
+   "bridge_evidence": null,
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16012797",
@@ -5321,60 +5693,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16006727",
-   "canonical_model": "Yutaki M (6HP) RASM-6R1E",
-   "agrement_number": "54-2026-000082",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI M",
-   "register_model": "YUTAKI M 13kW Tri R32",
-   "register_configuration": "Monobloc",
-   "assembly_country": "Espagne",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1788049",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "RASM6R1E"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16010865",
-   "canonical_model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ05KE5]",
-   "agrement_number": "64-2026-000045",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance All in One Série K 5 kW",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1576001",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "WHADC0309K3E5",
-     "WHUDZ05KE5",
-     "ADC0309K3E5",
-     "UDZ05KE5"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018069",
@@ -5399,35 +5718,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
-   "canonical_id": "16010866",
-   "canonical_model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ07KE5]",
-   "agrement_number": "64-2026-000048",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance All in One Série K 7 kW",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
+   "canonical_id": "16019582",
+   "canonical_model": "ADAPT 2 M / HK 1F",
+   "agrement_number": "166-2026-000001",
+   "register_brand": "KRONOTERM",
+   "register_gamme": "ADAPT 2 M",
+   "register_model": "ADAPT 2 M / HK 1F",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Slovénie",
    "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1576002",
-    "register_link": "eprel_commercial_ref",
+    "eprel": "2700712",
+    "register_link": "eprel_exact_model",
     "shared_codes": [
-     "WHADC0309K3E5",
-     "WHUDZ07KE5",
-     "ADC0309K3E5",
-     "UDZ07KE5"
+     "ADAPT2M"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16001894",
@@ -5439,20 +5755,41 @@
    "register_configuration": "Monobloc",
    "assembly_country": "Allemagne",
    "transitory": false,
+   "match_method": "exact_model",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": null,
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16010826",
+   "canonical_model": "YUTAKI S80 (6HP) RAS-6WHVNPE + RWH-6.0VNFE",
+   "agrement_number": "54-2026-000007",
+   "register_brand": "Hitachi Climat",
+   "register_gamme": "YUTAKI S80",
+   "register_model": "YUTAKI S80 16.0kW  Mono  R410A",
+   "register_configuration": "Split",
+   "assembly_country": "Espagne",
+   "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "140491",
-    "register_link": "eprel_exact_model",
+    "eprel": "1788109",
+    "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "WPL09ICSCLASSIC"
+     "RAS6WHVNPE",
+     "RWH60VNFE",
+     "6WHVNPE"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019400",
@@ -5477,35 +5814,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16011185",
-   "canonical_model": "Aquarea [WH-ADC0912K6E5 / WH-UXZ12KE5]",
-   "agrement_number": "64-2026-000064",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea T-CAP All in One Série K 12 kW",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1576048",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "WHADC0912K6E5",
-     "WHUXZ12KE5",
-     "ADC0912K6E5",
-     "UXZ12KE5"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010925",
@@ -5533,7 +5842,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010867",
@@ -5561,7 +5870,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017558",
@@ -5659,29 +5968,29 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16006731",
-   "canonical_model": "Yutaki M (7HP) RASM-7R1E",
-   "agrement_number": "54-2026-000083",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI M",
-   "register_model": "YUTAKI M 16kW Tri R32",
+   "canonical_id": "16019581",
+   "canonical_model": "ADAPT 2 M / HK 3F",
+   "agrement_number": "166-2026-000002",
+   "register_brand": "KRONOTERM",
+   "register_gamme": "ADAPT 2 M",
+   "register_model": "ADAPT 2 M / HK 3F",
    "register_configuration": "Monobloc",
-   "assembly_country": "Espagne",
+   "assembly_country": "Slovénie",
    "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1788051",
-    "register_link": "eprel_commercial_ref",
+    "eprel": "2700689",
+    "register_link": "eprel_exact_model",
     "shared_codes": [
-     "RASM7R1E"
+     "ADAPT2M"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017560",
@@ -5804,7 +6113,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16014524",
@@ -5823,7 +6132,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019093",
@@ -5848,7 +6157,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16015133",
@@ -5874,7 +6183,61 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16010923",
+   "canonical_model": "Aquarea [WH-SDC0509L3E5 / WH-WDG07LE5]",
+   "agrement_number": "64-2026-000038",
+   "register_brand": "Panasonic",
+   "register_gamme": "AQUAREA",
+   "register_model": "Aquarea Haute Performance bi-bloc Série L 7 kW",
+   "register_configuration": "Monobloc",
+   "assembly_country": "République tchèque",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1791526",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "WHSDC0509L3E5",
+     "WHWDG07LE5",
+     "SDC0509L3E5",
+     "WDG07LE5"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16015132",
+   "canonical_model": "i-290 0240-PS",
+   "agrement_number": "143-2026-000057",
+   "register_brand": "Maxa Heating & Cooling",
+   "register_gamme": "i-290",
+   "register_model": "0240 -PS",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Italie",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1897775",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "I2900240PS",
+     "0240PS"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010926",
@@ -5902,7 +6265,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16018199",
@@ -5928,35 +6291,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16010920",
-   "canonical_model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ05KE5]",
-   "agrement_number": "64-2026-000055",
-   "register_brand": "Panasonic",
-   "register_gamme": "AQUAREA",
-   "register_model": "Aquarea Haute Performance bi-bloc Série K 5 kW",
-   "register_configuration": "Split",
-   "assembly_country": "République tchèque",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1791522",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "WHSDC0309K6E5",
-     "WHUDZ05KE5",
-     "SDC0309K6E5",
-     "UDZ05KE5"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16003015",
@@ -5975,7 +6310,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16012805",
@@ -6000,7 +6335,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010902",
@@ -6028,7 +6363,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16010874",
@@ -6056,7 +6391,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16016422",
+   "canonical_model": "Yutaki M (2HP) RASM-2VR2E",
+   "agrement_number": "54-2026-000075",
+   "register_brand": "Hitachi Climat",
+   "register_gamme": "YUTAKI M",
+   "register_model": "YUTAKI M 4.3kW Mono R32",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Espagne",
+   "transitory": false,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "1960275",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "RASM2VR2E"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017564",
@@ -6135,29 +6495,32 @@
    "last_confirmed_at": null
   },
   {
-   "canonical_id": "16006726",
-   "canonical_model": "Yutaki M (6HP) RASM-6VR1E",
-   "agrement_number": "54-2026-000079",
-   "register_brand": "Hitachi Climat",
-   "register_gamme": "YUTAKI M",
-   "register_model": "YUTAKI M 13kW Mono R32",
-   "register_configuration": "Monobloc",
-   "assembly_country": "Espagne",
+   "canonical_id": "16011497",
+   "canonical_model": "Aquarea [WH-ADC0912K9E8 / WH-UXZ09KE8]",
+   "agrement_number": "64-2026-000065",
+   "register_brand": "Panasonic",
+   "register_gamme": "AQUAREA",
+   "register_model": "Aquarea T-CAP All in One Série K 9 kW triphasé",
+   "register_configuration": "Split",
+   "assembly_country": "République tchèque",
    "transitory": false,
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
    "bridge_evidence": {
-    "eprel": "1788043",
+    "eprel": "2121907",
     "register_link": "eprel_commercial_ref",
     "shared_codes": [
-     "RASM6VR1E"
+     "WHADC0912K9E8",
+     "WHUXZ09KE8",
+     "ADC0912K9E8",
+     "UXZ09KE8"
     ]
    },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16000577",
@@ -6182,7 +6545,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16019092",
@@ -6194,20 +6557,14 @@
    "register_configuration": "Monobloc",
    "assembly_country": "Allemagne",
    "transitory": false,
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "2735610",
-    "register_link": "eprel_exact_model",
-    "shared_codes": [
-     "14ARMEA"
-    ]
-   },
+   "bridge_evidence": null,
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16017567",
@@ -6302,32 +6659,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
-  },
-  {
-   "canonical_id": "16012801",
-   "canonical_model": "i-290 0127",
-   "agrement_number": "143-2026-000009",
-   "register_brand": "Maxa Heating & Cooling",
-   "register_gamme": "i-290",
-   "register_model": "0127",
-   "register_configuration": "Monobloc",
-   "assembly_country": "Italie",
-   "transitory": false,
-   "match_method": "eprel_bridge",
-   "match_confidence": "high",
-   "candidates": 1,
-   "bridge_evidence": {
-    "eprel": "1776279",
-    "register_link": "eprel_commercial_ref",
-    "shared_codes": [
-     "I2900127"
-    ]
-   },
-   "status": "confirmed",
-   "snapshot": "2026-10",
-   "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004204",
@@ -6355,7 +6687,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004209",
@@ -6374,7 +6706,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004205",
@@ -6386,14 +6718,23 @@
    "register_configuration": "Split",
    "assembly_country": "Chine",
    "transitory": true,
-   "match_method": "exact_model",
+   "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": null,
+   "bridge_evidence": {
+    "eprel": "1707532",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "AWYHPSA10H91",
+     "AWWHPSA0810N91",
+     "YHPSA10",
+     "WHPSA0810"
+    ]
+   },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004208",
@@ -6412,7 +6753,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004206",
@@ -6431,7 +6772,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004202",
@@ -6443,14 +6784,23 @@
    "register_configuration": "Split",
    "assembly_country": "Chine",
    "transitory": true,
-   "match_method": "exact_model",
+   "match_method": "eprel_bridge",
    "match_confidence": "high",
    "candidates": 1,
-   "bridge_evidence": null,
+   "bridge_evidence": {
+    "eprel": "1707163",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "AWYHPSA04H91",
+     "AWWHPSA0406N91",
+     "YHPSA04",
+     "WHPSA0406"
+    ]
+   },
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004203",
@@ -6478,7 +6828,32 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "canonical_id": "16019898",
+   "canonical_model": "Easypell EPA17T",
+   "agrement_number": "151-2026-000005",
+   "register_brand": "Easypell",
+   "register_gamme": "EPA",
+   "register_model": "EPA17T",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Chine",
+   "transitory": true,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2121869",
+    "register_link": "eprel_exact_model",
+    "shared_codes": [
+     "EPA17T"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004211",
@@ -6497,7 +6872,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004210",
@@ -6516,7 +6891,7 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
    "canonical_id": "16004212",
@@ -6535,53 +6910,235 @@
    "status": "confirmed",
    "snapshot": "2026-10",
    "import_date": "30/09/2026",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
   },
   {
-   "agrement_number": "54-2026-000005",
-   "register_model": "YUTAKI S80 14.0kW  Mono  R410A",
+   "canonical_id": "16019999",
+   "canonical_model": "THERMA V HM051HFS.UA41",
+   "agrement_number": "57-2026-000001",
+   "register_brand": "Lg Electronics",
+   "register_gamme": "THERMA V R290 - MONOBLOC S",
+   "register_model": "Therma V R290 - Monobloc S - 5kW - Monophasé",
+   "register_configuration": "Monobloc",
+   "assembly_country": "Chine",
+   "transitory": true,
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "candidates": 1,
+   "bridge_evidence": {
+    "eprel": "2555827",
+    "register_link": "eprel_commercial_ref",
+    "shared_codes": [
+     "HM051HFSUA41",
+     "HM051HFS"
+    ]
+   },
+   "status": "confirmed",
+   "snapshot": "2026-10",
+   "import_date": "30/09/2026",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z"
+  },
+  {
+   "agrement_number": "54-2026-000033",
+   "register_model": "YUTAKI S 2.0 14.0kW Tri R410A",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "review_required",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09",
-   "canonical_id": "16010825",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16006646",
    "previous_status": "confirmed",
    "lost_in_snapshot": "2026-10"
   },
   {
-   "agrement_number": "54-2026-000007",
-   "register_model": "YUTAKI S80 16.0kW  Mono  R410A",
+   "agrement_number": "54-2026-000024",
+   "register_model": "YUTAKI S 2.0 4.3kW Mono  R32",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "review_required",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09",
-   "canonical_id": "16010826",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16006715",
    "previous_status": "confirmed",
    "lost_in_snapshot": "2026-10"
   },
   {
-   "agrement_number": "54-2026-000006",
-   "register_model": "YUTAKI S80 14.0kW Tri  R410A",
+   "agrement_number": "54-2026-000079",
+   "register_model": "YUTAKI M 13kW Mono R32",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "review_required",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09",
-   "canonical_id": "16010882",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16006726",
    "previous_status": "confirmed",
    "lost_in_snapshot": "2026-10"
   },
   {
-   "agrement_number": "54-2026-000008",
-   "register_model": "YUTAKI S80 16.0kW Tri  R410A",
+   "agrement_number": "54-2026-000082",
+   "register_model": "YUTAKI M 13kW Tri R32",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "review_required",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09",
-   "canonical_id": "16010914",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16006727",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "54-2026-000083",
+   "register_model": "YUTAKI M 16kW Tri R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16006731",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "54-2026-000026",
+   "register_model": "YUTAKI S 2.0 6.0kW Mono R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16007734",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "54-2026-000027",
+   "register_model": "YUTAKI S 2.0 8.0kW Mono R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16007735",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "54-2026-000030",
+   "register_model": "YUTAKI S 2.0 14.0kW Mono R410A",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16007737",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000099",
+   "register_model": "Aquarea Haute Performance All in One 185 L Série K 3 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16010864",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000045",
+   "register_model": "Aquarea Haute Performance All in One Série K 5 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16010865",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000048",
+   "register_model": "Aquarea Haute Performance All in One Série K 7 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16010866",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000047",
+   "register_model": "Aquarea Haute Performance All in One Série K 5 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16010873",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000066",
+   "register_model": "Aquarea T-CAP All in One Série K 12 kW triphasé",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16010910",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000055",
+   "register_model": "Aquarea Haute Performance bi-bloc Série K 5 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16010920",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000043",
+   "register_model": "Aquarea Haute Performance bi-bloc Série L 9 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16010924",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000064",
+   "register_model": "Aquarea T-CAP All in One Série K 12 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16011185",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "64-2026-000057",
+   "register_model": "Aquarea Haute Performance bi-bloc Série K 7 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16011250",
    "previous_status": "confirmed",
    "lost_in_snapshot": "2026-10"
   },
@@ -6598,14 +7155,38 @@
    "lost_in_snapshot": "2026-10"
   },
   {
-   "agrement_number": "54-2026-000023",
-   "register_model": "YUTAKI S 2.0 4,3kW Mono R32",
+   "agrement_number": "143-2026-000008",
+   "register_model": "0125",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "review_required",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09",
-   "canonical_id": "16016415",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16012800",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "143-2026-000009",
+   "register_model": "0127",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16012801",
+   "previous_status": "confirmed",
+   "lost_in_snapshot": "2026-10"
+  },
+  {
+   "agrement_number": "54-2026-000014",
+   "register_model": "YUTAKI S COMBI 2.0 8.0kW Mono R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "review_required",
+   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10",
+   "canonical_id": "16016421",
    "previous_status": "confirmed",
    "lost_in_snapshot": "2026-10"
   }

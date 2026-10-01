@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated_at": "2026-10-01T01:22:13.512Z",
+ "updated_at": "2026-10-01T09:31:21.358Z",
  "note": "Confirmed canonical↔ADEME agrément mappings. A mapping that stops matching becomes review_required, never \"not agréé\".",
  "matches": {
   "16000577": {
@@ -9,7 +9,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16000579": {
@@ -18,7 +18,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16001890": {
@@ -27,7 +27,7 @@
    "match_method": "component_identity",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16001891": {
@@ -36,34 +36,34 @@
    "match_method": "component_identity",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16001893": {
    "agrement_number": "149-2026-000047",
    "register_model": "WPL 17 ICS classic",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16001894": {
    "agrement_number": "149-2026-000045",
    "register_model": "WPL 09 ICS classic",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16001895": {
    "agrement_number": "149-2026-000048",
    "register_model": "WPL 17 IKCS classic",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16001896": {
@@ -72,7 +72,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16002241": {
@@ -81,7 +81,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16002242": {
@@ -90,7 +90,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16003010": {
@@ -99,7 +99,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16003012": {
@@ -108,7 +108,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16003013": {
@@ -117,7 +117,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16003014": {
@@ -126,7 +126,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16003015": {
@@ -135,16 +135,16 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004202": {
    "agrement_number": "1-2026-000025",
    "register_model": "AW-YHPSA04-H91 + AW-WHPSA0406-N91",
-   "match_method": "exact_model",
+   "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004203": {
@@ -153,7 +153,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004204": {
@@ -162,16 +162,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004205": {
    "agrement_number": "1-2026-000024",
    "register_model": "AW-YHPSA10-H91 + AW-WHPSA0810-N91",
-   "match_method": "exact_model",
+   "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004206": {
@@ -180,7 +180,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004208": {
@@ -189,7 +189,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004209": {
@@ -198,7 +198,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004210": {
@@ -207,7 +207,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004211": {
@@ -216,7 +216,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16004212": {
@@ -225,7 +225,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16006472": {
@@ -234,7 +234,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16006473": {
@@ -243,7 +243,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16006474": {
@@ -252,7 +252,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16006475": {
@@ -261,7 +261,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16006644": {
@@ -270,7 +270,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16006646": {
@@ -342,7 +342,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16007737": {
@@ -360,8 +360,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16010826": {
    "agrement_number": "54-2026-000007",
@@ -369,8 +369,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16010864": {
    "agrement_number": "64-2026-000099",
@@ -405,7 +405,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010872": {
@@ -414,7 +414,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010873": {
@@ -432,7 +432,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010882": {
@@ -441,8 +441,17 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16010896": {
+   "agrement_number": "64-2026-000035",
+   "register_model": "Aquarea Haute Performance All in One Série L 7 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16010897": {
    "agrement_number": "64-2026-000040",
@@ -450,7 +459,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16010901": {
+   "agrement_number": "64-2026-000032",
+   "register_model": "Aquarea Haute Performance All in One Série L 5 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010902": {
@@ -459,7 +477,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010903": {
@@ -468,7 +486,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010907": {
@@ -477,7 +495,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010910": {
@@ -495,7 +513,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010912": {
@@ -504,7 +522,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010913": {
@@ -513,7 +531,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010914": {
@@ -522,8 +540,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16010918": {
    "agrement_number": "64-2026-000058",
@@ -531,7 +549,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010919": {
@@ -540,7 +558,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010920": {
@@ -558,7 +576,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010922": {
@@ -567,7 +585,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16010923": {
+   "agrement_number": "64-2026-000038",
+   "register_model": "Aquarea Haute Performance bi-bloc Série L 7 kW",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010924": {
@@ -585,7 +612,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010926": {
@@ -594,7 +621,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010927": {
@@ -603,7 +630,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16010928": {
@@ -612,7 +639,25 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16010929": {
+   "agrement_number": "64-2026-000070",
+   "register_model": "Aquarea T-CAP bi-bloc Série K 9 kW triphasé",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16010930": {
+   "agrement_number": "64-2026-000071",
+   "register_model": "Aquarea T-CAP bi-bloc Série K 12 kW monophasé",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16011185": {
@@ -630,7 +675,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16011238": {
@@ -639,7 +684,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16011239": {
@@ -648,7 +693,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16011250": {
@@ -658,6 +703,15 @@
    "match_confidence": "high",
    "status": "confirmed",
    "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "snapshot": "2026-10"
+  },
+  "16011497": {
+   "agrement_number": "64-2026-000065",
+   "register_model": "Aquarea T-CAP All in One Série K 9 kW triphasé",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16011503": {
@@ -675,7 +729,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16012797": {
@@ -684,7 +738,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16012798": {
@@ -693,7 +747,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16012799": {
@@ -702,7 +756,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16012800": {
@@ -723,13 +777,22 @@
    "last_confirmed_at": "2026-10-01T01:22:13.512Z",
    "snapshot": "2026-10"
   },
+  "16012802": {
+   "agrement_number": "143-2026-000001",
+   "register_model": "0106",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
   "16012803": {
    "agrement_number": "143-2026-000002",
    "register_model": "0109",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16012804": {
@@ -738,7 +801,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16012805": {
@@ -747,7 +810,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16013089": {
@@ -756,7 +819,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16013090": {
@@ -765,25 +828,25 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16013091": {
    "agrement_number": "163-2026-000002",
    "register_model": "SNT10L-M-R-CC",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16013093": {
    "agrement_number": "163-2026-000003",
    "register_model": "SNT15L-M-R-CC",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16014522": {
@@ -792,7 +855,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16014523": {
@@ -801,7 +864,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16014524": {
@@ -810,7 +873,25 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16015131": {
+   "agrement_number": "143-2026-000010",
+   "register_model": "0240",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16015132": {
+   "agrement_number": "143-2026-000057",
+   "register_model": "0240 -PS",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16015133": {
@@ -819,7 +900,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16015135": {
@@ -828,7 +909,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16015136": {
@@ -837,7 +918,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16015137": {
@@ -846,7 +927,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16015138": {
+   "agrement_number": "143-2026-000070",
+   "register_model": "0250 -PSEC",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16015393": {
@@ -855,7 +945,7 @@
    "match_method": "component_identity",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16015394": {
@@ -864,7 +954,34 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16015721": {
+   "agrement_number": "166-2026-000005",
+   "register_model": "ADAPT MAX 10035 HT / HK 3F",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16015722": {
+   "agrement_number": "166-2026-000006",
+   "register_model": "ADAPT MAX 10070 HT / HK 3F",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16016414": {
+   "agrement_number": "54-2026-000022",
+   "register_model": "YUTAKI S 2.0 3,5kW Mono R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016415": {
@@ -873,8 +990,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16016416": {
    "agrement_number": "54-2026-000025",
@@ -882,7 +999,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016421": {
@@ -894,13 +1011,31 @@
    "last_confirmed_at": "2026-10-01T01:22:13.512Z",
    "snapshot": "2026-10"
   },
-  "16016431": {
-   "agrement_number": "39-2026-000016",
-   "register_model": "ecoAIR+ T 3-18 PRO",
+  "16016422": {
+   "agrement_number": "54-2026-000075",
+   "register_model": "YUTAKI M 4.3kW Mono R32",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16016423": {
+   "agrement_number": "54-2026-000076",
+   "register_model": "YUTAKI M 8.0kW Mono R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16016431": {
+   "agrement_number": "39-2026-000016",
+   "register_model": "ecoAIR+ T 3-18 PRO",
+   "match_method": "exact_model",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016432": {
@@ -909,7 +1044,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016480": {
@@ -918,7 +1053,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016481": {
@@ -927,16 +1062,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016883": {
    "agrement_number": "141-2026-000001",
    "register_model": "61AQ 040P",
-   "match_method": "exact_model",
+   "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016884": {
@@ -945,7 +1080,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016885": {
@@ -954,7 +1089,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16016888": {
@@ -963,7 +1098,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16017070": {
@@ -972,7 +1107,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16017302": {
@@ -981,7 +1116,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16017304": {
@@ -990,7 +1125,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16017351": {
@@ -999,7 +1134,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16017733": {
@@ -1008,8 +1143,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017735": {
    "agrement_number": "54-2026-000055",
@@ -1017,8 +1152,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017736": {
    "agrement_number": "54-2026-000057",
@@ -1026,8 +1161,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017737": {
    "agrement_number": "54-2026-000059",
@@ -1035,8 +1170,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017738": {
    "agrement_number": "54-2026-000054",
@@ -1044,8 +1179,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017739": {
    "agrement_number": "54-2026-000056",
@@ -1053,8 +1188,26 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16017741": {
+   "agrement_number": "54-2026-000060",
+   "register_model": "AirH2O 600 S 14,0kW  Tri R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16017743": {
+   "agrement_number": "54-2026-000065",
+   "register_model": "AirH2O 600 S COMBI 8,5kW  Mono R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017744": {
    "agrement_number": "54-2026-000067",
@@ -1062,8 +1215,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017745": {
    "agrement_number": "54-2026-000069",
@@ -1071,8 +1224,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017746": {
    "agrement_number": "54-2026-000071",
@@ -1080,8 +1233,17 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16017747": {
+   "agrement_number": "54-2026-000066",
+   "register_model": "AirH2O 600 S COMBI 8,5kW  Tri R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017748": {
    "agrement_number": "54-2026-000068",
@@ -1089,8 +1251,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017749": {
    "agrement_number": "54-2026-000070",
@@ -1098,8 +1260,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017750": {
    "agrement_number": "54-2026-000072",
@@ -1107,8 +1269,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017774": {
    "agrement_number": "54-2026-000084",
@@ -1116,8 +1278,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017776": {
    "agrement_number": "54-2026-000086",
@@ -1125,8 +1287,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017777": {
    "agrement_number": "54-2026-000087",
@@ -1137,14 +1299,23 @@
    "last_confirmed_at": "2026-09-01T14:13:37.609Z",
    "snapshot": "2026-09"
   },
+  "16017778": {
+   "agrement_number": "54-2026-000089",
+   "register_model": "AIRH2O 800 M  12kW Mono R290",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
   "16017779": {
    "agrement_number": "54-2026-000091",
    "register_model": "AIRH2O 800 M  14kW Mono R290",
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017780": {
    "agrement_number": "54-2026-000088",
@@ -1161,8 +1332,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16017782": {
    "agrement_number": "54-2026-000092",
@@ -1179,7 +1350,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018071": {
@@ -1188,7 +1359,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018072": {
@@ -1197,16 +1368,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018197": {
    "agrement_number": "155-2026-000001",
    "register_model": "LA 2030CP",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018199": {
@@ -1215,7 +1386,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018202": {
@@ -1224,7 +1395,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16018381": {
+   "agrement_number": "54-2026-000049",
+   "register_model": "AirH2O 600 S 3,5kW  Mono R32",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018382": {
@@ -1233,8 +1413,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16018383": {
    "agrement_number": "54-2026-000050",
@@ -1242,8 +1422,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16018384": {
    "agrement_number": "54-2026-000062",
@@ -1251,8 +1431,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16018385": {
    "agrement_number": "54-2026-000051",
@@ -1278,8 +1458,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16018388": {
    "agrement_number": "54-2026-000064",
@@ -1287,8 +1467,8 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-09-01T14:13:37.609Z",
-   "snapshot": "2026-09"
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
   },
   "16018439": {
    "agrement_number": "141-2026-000004",
@@ -1296,7 +1476,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018518": {
@@ -1305,7 +1485,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018638": {
@@ -1314,7 +1494,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16018642": {
@@ -1323,7 +1503,7 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019091": {
@@ -1332,16 +1512,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019092": {
    "agrement_number": "58-2026-000004",
    "register_model": "WEB 9/14-A-RME-A",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019093": {
@@ -1350,16 +1530,16 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019094": {
    "agrement_number": "58-2026-000006",
    "register_model": "WEB 13/20-A-RMD-A",
-   "match_method": "eprel_bridge",
+   "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019400": {
@@ -1368,16 +1548,61 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16019580": {
+   "agrement_number": "166-2026-000003",
+   "register_model": "ADAPT 2 L / HK 3F",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16019581": {
+   "agrement_number": "166-2026-000002",
+   "register_model": "ADAPT 2 M / HK 3F",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16019582": {
+   "agrement_number": "166-2026-000001",
+   "register_model": "ADAPT 2 M / HK 1F",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16019686": {
+   "agrement_number": "166-2026-000004",
+   "register_model": "ADAPT 2 S / HK 1F",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16019898": {
+   "agrement_number": "151-2026-000005",
+   "register_model": "EPA17T",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019957": {
    "agrement_number": "152-2026-000165",
    "register_model": "Vitocal 200-A AWMOF-201.A1.06-230-V005",
-   "match_method": "exact_model",
+   "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019958": {
@@ -1386,7 +1611,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019959": {
@@ -1395,7 +1620,7 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16019960": {
@@ -1404,7 +1629,16 @@
    "match_method": "exact_model",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16019999": {
+   "agrement_number": "57-2026-000001",
+   "register_model": "Therma V R290 - Monobloc S - 5kW - Monophasé",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   },
   "16020102": {
@@ -1413,7 +1647,25 @@
    "match_method": "eprel_bridge",
    "match_confidence": "high",
    "status": "confirmed",
-   "last_confirmed_at": "2026-10-01T01:22:13.512Z",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16020500": {
+   "agrement_number": "143-2026-000081",
+   "register_model": "i-290 0109T",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
+   "snapshot": "2026-10"
+  },
+  "16020501": {
+   "agrement_number": "143-2026-000082",
+   "register_model": "i-290 0109T SL",
+   "match_method": "eprel_bridge",
+   "match_confidence": "high",
+   "status": "confirmed",
+   "last_confirmed_at": "2026-10-01T09:31:21.358Z",
    "snapshot": "2026-10"
   }
  }
