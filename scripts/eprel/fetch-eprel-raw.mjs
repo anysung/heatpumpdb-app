@@ -24,7 +24,7 @@
  *    node scripts/eprel/fetch-eprel-raw.mjs --full
  *      Requires EPREL_API_KEY. Full paginated download into a versioned monthly snapshot:
  *        data_sources/eprel_raw/raw/YYYY-MM/
- *      Defaults to the current UTC month. Requires typing 'yes' to confirm.
+ *      Defaults to the current Berlin month. Asks for 'yes' (skip with --yes, which the monthly window passes).
  *
  *    node scripts/eprel/fetch-eprel-raw.mjs --full --snapshot 2026-06
  *      Same as --full but writes to an explicit snapshot label (e.g. for re-downloads).
@@ -38,6 +38,7 @@ import { mkdir, writeFile, appendFile } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
 import { createInterface } from 'node:readline';
+import { snapshotMonth } from '../lib/snapshot-month.mjs';
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -320,11 +321,11 @@ const rawArgs = process.argv.slice(2);
 const args = new Set(rawArgs);
 const MODE = args.has('--full') ? 'full' : args.has('--test') ? 'test' : 'dry-run';
 
-// Snapshot label for --full output path: defaults to the current UTC month (YYYY-MM).
+// Snapshot label for --full output path: defaults to the current Berlin month (YYYY-MM).
 // Override with --snapshot YYYY-MM to target a specific month (e.g. re-download or backfill).
+// Berlin month (or SNAPSHOT_MONTH) — scripts/lib/snapshot-month.mjs explains why not UTC.
 function currentSnapshot() {
-  const d = new Date();
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+  return snapshotMonth();
 }
 const snapshotArgIdx = rawArgs.indexOf('--snapshot');
 const SNAPSHOT_ARG = snapshotArgIdx !== -1 ? (rawArgs[snapshotArgIdx + 1] ?? null) : null;
@@ -388,7 +389,11 @@ if (MODE === 'full') {
   console.log(`  _meta.json : written per category folder after completion`);
   console.log(`  NOTE: This key is for PRODUCTION use only — do not use in load tests.`);
   console.log(`──────────────────────────────────────────────────────`);
-  const answer = await confirm('\nType "yes" to proceed with full download, anything else to abort: ');
+  // --yes: unattended runs (the monthly window) have no terminal to answer —
+  // with stdin closed the prompt never resolves and node exits with code 13.
+  const answer = args.has('--yes')
+    ? (console.log('\n--yes given — proceeding without the prompt.'), 'yes')
+    : await confirm('\nType "yes" to proceed with full download, anything else to abort: ');
   if (answer !== 'yes') {
     console.log('Aborted.');
     process.exit(0);

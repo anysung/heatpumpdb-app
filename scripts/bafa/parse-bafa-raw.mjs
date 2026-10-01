@@ -28,6 +28,7 @@ import fs from 'fs';
 import path from 'path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'url';
+import { snapshotMonth } from '../lib/snapshot-month.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '../..');
@@ -40,9 +41,9 @@ const args = process.argv.slice(2);
 const snapshotIdx = args.indexOf('--snapshot');
 const snapshotArg = snapshotIdx !== -1 ? args[snapshotIdx + 1] : undefined;
 
+// Berlin month (or SNAPSHOT_MONTH) — scripts/lib/snapshot-month.mjs explains why not UTC.
 function currentSnapshot() {
-  const d = new Date();
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+  return snapshotMonth();
 }
 
 const SNAPSHOT = snapshotArg ?? currentSnapshot();

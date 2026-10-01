@@ -35,6 +35,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { snapshotMonth } from '../lib/snapshot-month.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const STORE = join(ROOT, 'data_sources/market_trends');
@@ -52,7 +53,7 @@ for (const f of ['.env', '.env.local', join(process.env.HOME ?? '', '.heatpumpdb
 const args = process.argv.slice(2);
 const arg = (k, d) => (args.find((a) => a.startsWith(`--${k}=`)) ?? '').split('=')[1] || d;
 const DRY = args.includes('--dry-run');
-const MONTH = arg('month', new Date().toISOString().slice(0, 7));
+const MONTH = arg('month', snapshotMonth());   // Berlin month — see scripts/lib/snapshot-month.mjs
 const MARKETS = arg('markets', 'DE,GB,FR,PL,IT').split(',').map((s) => s.trim().toUpperCase());
 
 const KEY = process.env.GEMINI_API_KEY;

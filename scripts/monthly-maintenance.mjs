@@ -65,6 +65,7 @@ import { execSync } from 'node:child_process';
 import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { berlinMonth } from './lib/snapshot-month.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PROJECT = 'gen-lang-client-0324244302';
@@ -238,6 +239,12 @@ if (MODE === 'close') {
 
 /* ── run ─────────────────────────────────────────────────────────────────── */
 const until = berlinISOToday(CLOSE_HOUR, 0);
+// One snapshot label for the whole run, in Berlin's calendar (2026-10-01): the
+// window opens at 00:05 Berlin, which is still last month in UTC, and a run
+// must not split across two labels if it crosses midnight. Every child step
+// inherits it (scripts/lib/snapshot-month.mjs).
+if (!process.env.SNAPSHOT_MONTH) process.env.SNAPSHOT_MONTH = berlinMonth();
+say(`snapshot month ${process.env.SNAPSHOT_MONTH} (Europe/Berlin)`);
 say(`monthly window ${runId} — must finish by ${String(CLOSE_HOUR).padStart(2, '0')}:00 Europe/Berlin (${until})`);
 saveState({ phase: 'starting' });
 
@@ -263,7 +270,7 @@ try {
   // 1b — EPREL, before anything that reads it.
   saveState({ phase: 'running', step: 'eprel' });
   step('refresh EPREL snapshot (EU energy-label registry)',
-    'node scripts/eprel/fetch-eprel-raw.mjs --full', { fatal: false });
+    'node scripts/eprel/fetch-eprel-raw.mjs --full --yes', { fatal: false });   // --yes: no one to answer the prompt at 00:05
 
   // 1c — France's own layer, which joins the register to that EPREL snapshot.
   saveState({ phase: 'running', step: 'fr-agrement' });

@@ -18,6 +18,8 @@
  *
  *   NEWS_FN_KEY=… node scripts/news/trigger-monthly-news.mjs [--countries DE,FR]
  */
+import https from 'node:https';
+
 const FN = process.env.NEWS_FN_URL
   ?? 'https://us-central1-gen-lang-client-0324244302.cloudfunctions.net/autoUpdateDatabase';
 const KEY = process.env.NEWS_FN_KEY ?? process.env.SECRET_KEY;
@@ -35,16 +37,40 @@ const countries = i >= 0 ? process.argv[i + 1].split(',').map(s => s.trim().toUp
 const body = { newsOnly: true, ...(countries ? { countries } : {}) };
 console.log(`news: calling ${FN} ${countries ? `for ${countries.join(', ')}` : 'for all markets'}`);
 
+// NOT global fetch: undici gives up after 300 s without response headers
+// (UND_ERR_HEADERS_TIMEOUT), but writing every market's articles takes ~8 min.
+// On 2026-10-01 that made the window record news as FAILED — and skip the
+// public-news export and trend cards — while the function went on and wrote
+// all five markets. A plain https request with our own ceiling waits properly.
+const TIMEOUT_MIN = Number(process.env.NEWS_FN_TIMEOUT_MIN ?? 30);
+
+function post(url, payload, headers) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(url, { method: 'POST', headers: { ...headers, 'Content-Length': Buffer.byteLength(payload) } }, (r) => {
+      let data = '';
+      r.setEncoding('utf8');
+      r.on('data', (c) => { data += c; });
+      r.on('end', () => resolve({ status: r.statusCode ?? 0, text: data }));
+    });
+    req.setTimeout(TIMEOUT_MIN * 60_000, () => req.destroy(new Error(`no answer within ${TIMEOUT_MIN} min`)));
+    req.on('error', reject);
+    req.end(payload);
+  });
+}
+
 const started = Date.now();
-const res = await fetch(FN, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', 'x-api-key': KEY },
-  body: JSON.stringify(body),
-});
-const text = await res.text();
+let res;
+try {
+  res = await post(FN, JSON.stringify(body), { 'Content-Type': 'application/json', 'x-api-key': KEY });
+} catch (e) {
+  console.error(`news: request failed after ${Math.round((Date.now() - started) / 1000)}s — ${e.message}`);
+  console.error('The function may still be running server-side; check countries/<cc>/news before re-triggering.');
+  process.exit(1);
+}
+const text = res.text;
 const secs = Math.round((Date.now() - started) / 1000);
 
-if (!res.ok) {
+if (res.status < 200 || res.status >= 300) {
   console.error(`news: HTTP ${res.status} after ${secs}s — ${text.slice(0, 400)}`);
   process.exit(1);
 }

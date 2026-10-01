@@ -29,10 +29,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { snapshotMonth } from '../lib/snapshot-month.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const SNAPSHOT = (process.argv.find(a => a.startsWith('--snapshot=')) ?? '').split('=')[1]
-  || new Date().toISOString().slice(0, 7);
+  || snapshotMonth();   // Berlin month — see scripts/lib/snapshot-month.mjs
 const GRID_ONLY = process.argv.includes('--grid-only');
 const OUT = path.join(ROOT, 'data_sources/lista_zum/raw', SNAPSHOT);
 fs.mkdirSync(path.join(OUT, 'grid'), { recursive: true });

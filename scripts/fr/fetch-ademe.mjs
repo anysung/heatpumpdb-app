@@ -31,6 +31,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { snapshotMonth } from '../lib/snapshot-month.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const BASE = 'https://bonus-pac.ademe.fr/eligibilite/recherche';
@@ -81,7 +82,7 @@ for (const pg of pages) {
 const complete = records.length >= total;
 if (!complete) console.warn(`  WARNING partial read: ${records.length} of ${total} — downstream must treat this as incomplete`);
 
-const month = new Date().toISOString().slice(0, 7);
+const month = snapshotMonth();   // Berlin month — see scripts/lib/snapshot-month.mjs
 const argOut = process.argv.indexOf('--out');
 const OUT = argOut >= 0 ? process.argv[argOut + 1]
   : join(ROOT, 'data_sources', 'ademe_agrement', 'raw', month);

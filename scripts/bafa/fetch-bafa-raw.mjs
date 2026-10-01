@@ -5,7 +5,7 @@
  * Modes:
  *   (default)         dry-run: probe API, print record count, exit — no files written
  *   --fetch           download full active snapshot to data_sources/bafa/raw/YYYY-MM/
- *   --snapshot YYYY-MM  override snapshot label (default: current UTC month)
+ *   --snapshot YYYY-MM  override snapshot label (default: current Berlin month)
  *   --force           overwrite existing snapshot for the same month
  *   --test N          fetch only N items (default 20) — for quick validation
  *
@@ -32,6 +32,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { snapshotMonth } from '../lib/snapshot-month.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '../..');
@@ -65,9 +66,9 @@ const snapshotArg = snapshotIdx !== -1 ? args[snapshotIdx + 1] : undefined;
 const testIdx = args.indexOf('--test');
 const TEST_LIMIT = testIdx !== -1 ? (parseInt(args[testIdx + 1], 10) || 20) : null;
 
+// Berlin month (or SNAPSHOT_MONTH) — scripts/lib/snapshot-month.mjs explains why not UTC.
 function currentSnapshot() {
-  const d = new Date();
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+  return snapshotMonth();
 }
 
 const SNAPSHOT = snapshotArg ?? currentSnapshot();

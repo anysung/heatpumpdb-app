@@ -5,7 +5,7 @@
  * Modes:
  *   (default)    dry-run: probe URL, print metadata, exit — no files written
  *   --download   download XLSX to raw/YYYY-MM/ snapshot folder + write _meta.json
- *   --snapshot YYYY-MM   override snapshot label (default: current UTC month)
+ *   --snapshot YYYY-MM   override snapshot label (default: current Berlin month)
  *
  * Output: data_sources/ofgem_pel/raw/YYYY-MM/BUS-external-PEL.xlsx
  *         data_sources/ofgem_pel/raw/YYYY-MM/_meta.json
@@ -20,6 +20,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import https from 'https';
+import { snapshotMonth } from '../lib/snapshot-month.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_ROOT = path.resolve(__dirname, '../../data_sources/ofgem_pel');
@@ -37,9 +38,9 @@ const MODE_DOWNLOAD = args.includes('--download');
 const snapshotIdx = args.indexOf('--snapshot');
 const snapshotArg = snapshotIdx !== -1 ? args[snapshotIdx + 1] : undefined;
 
+// Berlin month (or SNAPSHOT_MONTH) — scripts/lib/snapshot-month.mjs explains why not UTC.
 function currentSnapshot() {
-  const d = new Date();
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+  return snapshotMonth();
 }
 
 const SNAPSHOT = snapshotArg ?? currentSnapshot();
