@@ -1,0 +1,1525 @@
+{
+ "market": "IT",
+ "counts": {
+  "previous": 11065,
+  "candidate": 11145,
+  "listing": 0,
+  "added": 80,
+  "removed": 0,
+  "specs": 47
+ },
+ "listing": [],
+ "added": [
+  {
+   "id": "16003390",
+   "mfr": "1A heizen Strobl UG",
+   "model": "1A COP TOP 8 / 11 Y"
+  },
+  {
+   "id": "16020316",
+   "mfr": "Accamps",
+   "model": "AC-11.4PR290380"
+  },
+  {
+   "id": "16020315",
+   "mfr": "Accamps",
+   "model": "AC-14.8PR290220"
+  },
+  {
+   "id": "16020314",
+   "mfr": "Accamps",
+   "model": "AC-14.8PR290380"
+  },
+  {
+   "id": "16020312",
+   "mfr": "Accamps",
+   "model": "AC-18.2PR290380"
+  },
+  {
+   "id": "16020311",
+   "mfr": "Accamps",
+   "model": "AC-22.0PR290220"
+  },
+  {
+   "id": "16020310",
+   "mfr": "Accamps",
+   "model": "AC-22.0PR290380"
+  },
+  {
+   "id": "16020309",
+   "mfr": "Accamps",
+   "model": "AC-24.0PR290220"
+  },
+  {
+   "id": "16020319",
+   "mfr": "Accamps",
+   "model": "AC-6.0PR290220"
+  },
+  {
+   "id": "16020321",
+   "mfr": "Accamps",
+   "model": "AC20H8380"
+  },
+  {
+   "id": "16020320",
+   "mfr": "Accamps",
+   "model": "AC30H8380"
+  },
+  {
+   "id": "16020500",
+   "mfr": "Advantix",
+   "model": "i-290 0109T"
+  },
+  {
+   "id": "16020501",
+   "mfr": "Advantix",
+   "model": "i-290 0109T SL"
+  },
+  {
+   "id": "16020388",
+   "mfr": "Aerope Energiesysteme GmbH",
+   "model": "HONS HUL3-10"
+  },
+  {
+   "id": "16020387",
+   "mfr": "Aerope Energiesysteme GmbH",
+   "model": "HONS HUL3-16"
+  },
+  {
+   "id": "16020386",
+   "mfr": "Aerope Energiesysteme GmbH",
+   "model": "HONS HUL3-50"
+  },
+  {
+   "id": "16020504",
+   "mfr": "Agon Sojeva",
+   "model": "WH‑DC007R290"
+  },
+  {
+   "id": "16020277",
+   "mfr": "AUX",
+   "model": "ACHM-H22/5R2A"
+  },
+  {
+   "id": "16020276",
+   "mfr": "AUX",
+   "model": "ACHM-H26/5R2A"
+  },
+  {
+   "id": "16020275",
+   "mfr": "AUX",
+   "model": "ACHM-H30/5R2A"
+  },
+  {
+   "id": "16020274",
+   "mfr": "AUX",
+   "model": "ACHM-H35/5R2A"
+  },
+  {
+   "id": "16020273",
+   "mfr": "AUX",
+   "model": "ACHM-H40/5R2A"
+  },
+  {
+   "id": "16020293",
+   "mfr": "Bosch",
+   "model": "Compress CS8800iAW 11 O-T (B)"
+  },
+  {
+   "id": "16020294",
+   "mfr": "Bosch",
+   "model": "Compress CS8800iAW 13 O-T (B)"
+  },
+  {
+   "id": "16020295",
+   "mfr": "Bosch",
+   "model": "Compress CS8800iAW 15 O-T (B)"
+  },
+  {
+   "id": "16020091",
+   "mfr": "Brötje",
+   "model": "BLW Mono-KP 9.1"
+  },
+  {
+   "id": "16020465",
+   "mfr": "Buderus",
+   "model": "WLW-11 MBE+ AR"
+  },
+  {
+   "id": "16020466",
+   "mfr": "Buderus",
+   "model": "WLW-13 MBE+ AR"
+  },
+  {
+   "id": "16020467",
+   "mfr": "Buderus",
+   "model": "WLW-15 MBE+ AR"
+  },
+  {
+   "id": "16020292",
+   "mfr": "Bulg Frank Topnik",
+   "model": "BULG Mono Pro 18KW"
+  },
+  {
+   "id": "16020287",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP06UIMPZK-P"
+  },
+  {
+   "id": "16020357",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP110UIMPZM"
+  },
+  {
+   "id": "16020288",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP12UIMPZK-P"
+  },
+  {
+   "id": "16020289",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP12UIMPZM-P"
+  },
+  {
+   "id": "16020359",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP15UIMPZM-H"
+  },
+  {
+   "id": "16020280",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP17UIMPZM-P"
+  },
+  {
+   "id": "16020360",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP22UIMPZM-H"
+  },
+  {
+   "id": "16020284",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP44UIMPZM"
+  },
+  {
+   "id": "16020285",
+   "mfr": "Cooper&Hunter",
+   "model": "CH-HP75UIMPZM"
+  },
+  {
+   "id": "16020409",
+   "mfr": "Elephant Power GmbH",
+   "model": "EP-EU13T"
+  },
+  {
+   "id": "16020297",
+   "mfr": "Klimadan A/S",
+   "model": "PowerSaverAir PRO 110"
+  },
+  {
+   "id": "16020296",
+   "mfr": "Klimadan A/S",
+   "model": "PowerSaverAir PRO 50 2026"
+  },
+  {
+   "id": "16020395",
+   "mfr": "Kołton",
+   "model": "Airadapt 2-8"
+  },
+  {
+   "id": "16019172",
+   "mfr": "Krone",
+   "model": "LUNAR-08-MWP"
+  },
+  {
+   "id": "16019175",
+   "mfr": "Krone",
+   "model": "LUNAR-18-MWP"
+  },
+  {
+   "id": "16020191",
+   "mfr": "Luleich Kältetechnik",
+   "model": "Direktkondensation 8/11Y"
+  },
+  {
+   "id": "16020256",
+   "mfr": "Mitsubishi",
+   "model": "CAHV-Z450YA-HPB(-BS)"
+  },
+  {
+   "id": "16020402",
+   "mfr": "PHNIX",
+   "model": "G15-1"
+  },
+  {
+   "id": "16020405",
+   "mfr": "PHNIX",
+   "model": "PASRW020-BP-PS-B-1"
+  },
+  {
+   "id": "16020403",
+   "mfr": "PHNIX",
+   "model": "PASRW020-BP-PS-D-1"
+  },
+  {
+   "id": "16020404",
+   "mfr": "PHNIX",
+   "model": "PASRW040S-BP-PS-B-1"
+  },
+  {
+   "id": "16020401",
+   "mfr": "PHNIX",
+   "model": "U15-1"
+  },
+  {
+   "id": "16020400",
+   "mfr": "PHNIX",
+   "model": "U20-1"
+  },
+  {
+   "id": "16020398",
+   "mfr": "PHNIX",
+   "model": "U40-1"
+  },
+  {
+   "id": "16020399",
+   "mfr": "PHNIX",
+   "model": "U40S-1"
+  },
+  {
+   "id": "16020272",
+   "mfr": "Power World",
+   "model": "PW040-DKZLRS-E1(ODU)"
+  },
+  {
+   "id": "16020412",
+   "mfr": "Schwäbische Energiesysteme GmbH",
+   "model": "Thermoschwob TSL-FG1.15/3"
+  },
+  {
+   "id": "16020352",
+   "mfr": "Schwäbische Energiesysteme GmbH",
+   "model": "Thermoschwob TSL-FG2.12/1"
+  },
+  {
+   "id": "16020342",
+   "mfr": "SolarEast",
+   "model": "BLN-006TG1"
+  },
+  {
+   "id": "16020370",
+   "mfr": "SolarEast",
+   "model": "BLN-008TG1"
+  },
+  {
+   "id": "16020371",
+   "mfr": "SolarEast",
+   "model": "BLN-008TG3"
+  },
+  {
+   "id": "16020372",
+   "mfr": "SolarEast",
+   "model": "BLN-010TG1"
+  },
+  {
+   "id": "16020373",
+   "mfr": "SolarEast",
+   "model": "BLN-010TG3"
+  },
+  {
+   "id": "16020375",
+   "mfr": "SolarEast",
+   "model": "BLN-012TG1"
+  },
+  {
+   "id": "16020376",
+   "mfr": "SolarEast",
+   "model": "BLN-012TG3"
+  },
+  {
+   "id": "16020442",
+   "mfr": "SolaX",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-8K"
+  },
+  {
+   "id": "16020462",
+   "mfr": "Thermia",
+   "model": "Elve L 400V"
+  },
+  {
+   "id": "16020464",
+   "mfr": "Thermia",
+   "model": "Elve XL 400V"
+  },
+  {
+   "id": "16020416",
+   "mfr": "Wolf",
+   "model": "FHA-3-04-230V-M"
+  },
+  {
+   "id": "16020417",
+   "mfr": "Wolf",
+   "model": "FHA-3-06-230V-M"
+  },
+  {
+   "id": "16020421",
+   "mfr": "Wolf",
+   "model": "FHA-3-06-400V-M"
+  },
+  {
+   "id": "16020424",
+   "mfr": "Wolf",
+   "model": "FHA-3-09-400V-M"
+  },
+  {
+   "id": "16020426",
+   "mfr": "Wolf",
+   "model": "FHA-3-11-400V-M"
+  },
+  {
+   "id": "16020279",
+   "mfr": "WP HEATER Volkmar Philipp",
+   "model": "WPH-BLN-075TC3"
+  },
+  {
+   "id": "16020383",
+   "mfr": "Zealux",
+   "model": "ALSAVO HEAT 07i9-S"
+  },
+  {
+   "id": "16020385",
+   "mfr": "Zealux",
+   "model": "ALSAVO HEAT 10i9-S"
+  },
+  {
+   "id": "16020382",
+   "mfr": "Zealux",
+   "model": "XAH07Csi9-S"
+  },
+  {
+   "id": "16020384",
+   "mfr": "Zealux",
+   "model": "XAH10Csi9-S"
+  },
+  {
+   "id": "16020263",
+   "mfr": "Zentral Haustechnik Bayern",
+   "model": "Zentral 12/1"
+  },
+  {
+   "id": "16020262",
+   "mfr": "Zentral Haustechnik Bayern",
+   "model": "Zentral 18/1"
+  }
+ ],
+ "removed": [],
+ "specs": [
+  {
+   "id": "16012805",
+   "mfr": "Advantix",
+   "model": "i-290 0115",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.85
+    },
+    {
+     "f": "cop_A10W35",
+     "a": null,
+     "b": 5.44
+    }
+   ]
+  },
+  {
+   "id": "16012798",
+   "mfr": "Advantix",
+   "model": "i-290 0121",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.86
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 19,
+     "b": 17.96
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 20,
+     "b": 17.89
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 187,
+     "b": 191.5
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 145,
+     "b": 147.5
+    }
+   ]
+  },
+  {
+   "id": "16015133",
+   "mfr": "Advantix",
+   "model": "i-290 0240-PSI",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 38,
+     "b": 36.87
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 39,
+     "b": 36.17
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 161,
+     "b": 165.5
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 131,
+     "b": 131.4
+    },
+    {
+     "f": "cop_A10W35",
+     "a": null,
+     "b": 4.55
+    }
+   ]
+  },
+  {
+   "id": "16018381",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (1.5HP) RAS-1.5WHVRP2E+RWM-1.5R3E",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.8,
+     "b": 5.1
+    }
+   ]
+  },
+  {
+   "id": "16018385",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (2.5HP) RAS-2.5WHVRP2E+RWM-2.5R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6,
+     "b": 5
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 6,
+     "b": 5.8
+    }
+   ]
+  },
+  {
+   "id": "16018383",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (2HP) RAS-2WHVRP2E+RWM-2.0R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 4.3,
+     "b": 4
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 4.3,
+     "b": 4
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 7,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16017738",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (3.5HP) RAS-3.5WHRP2E+RWM-3.5R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.5,
+     "b": 12.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 4.67
+    }
+   ]
+  },
+  {
+   "id": "16017733",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (3.5HP) RAS-3.5WHVRP2E+RWM-3.5R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.5,
+     "b": 12.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 4.67
+    }
+   ]
+  },
+  {
+   "id": "16018387",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (3HP) RAS-3WHVRP2E+RWM-3.0R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 5.8
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8,
+     "b": 6.7
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.6,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16017739",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (4HP) RAS-4WHRP2E+RWM-4.0R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 10,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 12.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16017735",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (4HP) RAS-4WHVRP2E+RWM-4.0R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 10,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 12.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16017740",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (5HP) RAS-5WHRP2E+RWM-5.0R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 12,
+     "b": 14
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 12,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.83
+    }
+   ]
+  },
+  {
+   "id": "16017736",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (5HP) RAS-5WHVRP2E+RWM-5.0R3E",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 12,
+     "b": 14
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 12,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.83
+    }
+   ]
+  },
+  {
+   "id": "16017741",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (6HP) RAS-6WHRP2E+RWM-6.0R3E",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.35
+    }
+   ]
+  },
+  {
+   "id": "16017737",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (6HP) RAS-6WHVRP2E+RWM-6.0R3E",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.35
+    }
+   ]
+  },
+  {
+   "id": "16018382",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (1.5HP) RAS-1.5WHVRP2E+RWD-1.5RW3E-220S",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.8,
+     "b": 5.1
+    }
+   ]
+  },
+  {
+   "id": "16018386",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (2.5HP) RAS-2.5WHVRP2E+RWD-2.5RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6,
+     "b": 5
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 6,
+     "b": 5.8
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.65,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16018384",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (2HP) RAS-2WHVRP2E+RWD-2.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 4.3,
+     "b": 4
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 4.3,
+     "b": 4
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 7,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16017747",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHRP2E+RWD-3.5RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.5,
+     "b": 12.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 4.67
+    }
+   ]
+  },
+  {
+   "id": "16017743",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHVRP2E+RWD-3.5RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.5,
+     "b": 12.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 4.67
+    }
+   ]
+  },
+  {
+   "id": "16018388",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (3HP) RAS-3WHVRP2E+RWD-3.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 5.8
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8,
+     "b": 6.7
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.6,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16017748",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (4HP) RAS-4WHRP2E+RWD-4.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 10,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 12.1
+    }
+   ]
+  },
+  {
+   "id": "16017744",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (4HP) RAS-4WHVRP2E+RWD-4.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 10,
+     "b": 12.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 12.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16017749",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (5HP) RAS-5WHRP2E+RWD-5.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 12,
+     "b": 14
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 12,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.83
+    }
+   ]
+  },
+  {
+   "id": "16017745",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (5HP) RAS-5WHVRP2E+RWD-5.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 12,
+     "b": 14
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 12,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.83
+    }
+   ]
+  },
+  {
+   "id": "16017750",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (6HP) RAS-6WHRP2E+RWD-6.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.35
+    }
+   ]
+  },
+  {
+   "id": "16017746",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (6HP) RAS-6WHVRP2E+RWD-6.0RW3E-220S",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.35
+    }
+   ]
+  },
+  {
+   "id": "16017776",
+   "mfr": "Hitachi",
+   "model": "airH2O 800 Control Box (3.5HP) RASM-3.5VTW2E+ATW-CBX-01",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8.6,
+     "b": 8
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.89,
+     "b": 4.62
+    }
+   ]
+  },
+  {
+   "id": "16017754",
+   "mfr": "Hitachi",
+   "model": "airH2O 800 H (2HP) RASM-2VTW2E+HWM-W2E(-B)",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.89,
+     "b": 4.7
+    }
+   ]
+  },
+  {
+   "id": "16016415",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (2HP) RAS-2WHVRP2E+RWM-2.0R2E",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.46,
+     "b": 4.45
+    }
+   ]
+  },
+  {
+   "id": "16016342",
+   "mfr": "Igloo",
+   "model": "MultiTherma 21 HD",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.42
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 175.2,
+     "b": 175
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 130.3,
+     "b": 130
+    }
+   ]
+  },
+  {
+   "id": "16016343",
+   "mfr": "Igloo",
+   "model": "MultiTherma 21 HD + ElectroBox",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.42
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 175.2,
+     "b": 175
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 130.3,
+     "b": 130
+    }
+   ]
+  },
+  {
+   "id": "16016346",
+   "mfr": "Igloo",
+   "model": "MultiTherma 21 HD + MultiTherma BASIC 16-25",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.42
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 168.6,
+     "b": 169
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 125.6,
+     "b": 126
+    }
+   ]
+  },
+  {
+   "id": "16016344",
+   "mfr": "Igloo",
+   "model": "MultiTherma 21 HD Cascade",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.42
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 175.2,
+     "b": 175
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 130.3,
+     "b": 130
+    }
+   ]
+  },
+  {
+   "id": "16016345",
+   "mfr": "Igloo",
+   "model": "MultiTherma 21 HD Cascade + ElectroBox",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.42
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 175.2,
+     "b": 175
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 130.3,
+     "b": 130
+    }
+   ]
+  },
+  {
+   "id": "16016347",
+   "mfr": "Igloo",
+   "model": "MultiTherma 21 HD Cascade + MultiTherma BASIC 16-25",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.42
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 168.6,
+     "b": 169
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 125.6,
+     "b": 126
+    }
+   ]
+  },
+  {
+   "id": "16007230",
+   "mfr": "Kensol",
+   "model": "KTM10KW",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.46
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 10,
+     "b": 5.57
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 6.74
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 175.2
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 135.7,
+     "b": 127
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.82,
+     "b": 4.65
+    }
+   ]
+  },
+  {
+   "id": "16007231",
+   "mfr": "Kensol",
+   "model": "KTM14KW",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.15
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 17,
+     "b": 16.9
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 16,
+     "b": 15.9
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 175,
+     "b": 162.68
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 137.4,
+     "b": 127.53
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.19,
+     "b": 3.94
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 57,
+     "b": 67.2
+    }
+   ]
+  },
+  {
+   "id": "16007232",
+   "mfr": "Kensol",
+   "model": "KTM17KW",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.45
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 18,
+     "b": 14.19
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 18,
+     "b": 16.17
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 175,
+     "b": 175.2
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 132.4,
+     "b": 132
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.14,
+     "b": 3.5
+    }
+   ]
+  },
+  {
+   "id": "16011440",
+   "mfr": "Outes",
+   "model": "AHb12VR3HP",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.72
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 10.2,
+     "b": 12.2
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 12.02,
+     "b": 12
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 189,
+     "b": 186
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 139
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 43,
+     "b": 67
+    }
+   ]
+  },
+  {
+   "id": "16014824",
+   "mfr": "S-Klima",
+   "model": "SAL440RS2A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.34,
+     "b": 4.46
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 46.5,
+     "b": 33.2
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 51.5,
+     "b": 34.8
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.72,
+     "b": 4.54
+    }
+   ]
+  },
+  {
+   "id": "16014825",
+   "mfr": "S-Klima",
+   "model": "SAL500RS2A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.33,
+     "b": 4.46
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 51.9,
+     "b": 37.27
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 55.5,
+     "b": 38.6
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.75,
+     "b": 4.33
+    }
+   ]
+  },
+  {
+   "id": "16014826",
+   "mfr": "S-Klima",
+   "model": "SAL570RS2A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.3,
+     "b": 4.41
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 56.7,
+     "b": 40.32
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 64.1,
+     "b": 43
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.66,
+     "b": 4.15
+    }
+   ]
+  },
+  {
+   "id": "16014827",
+   "mfr": "S-Klima",
+   "model": "SAL700RS2A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.24,
+     "b": 4.33
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 75.7,
+     "b": 58.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 78.6,
+     "b": 53.4
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.6,
+     "b": 4.31
+    }
+   ]
+  },
+  {
+   "id": "16010878",
+   "mfr": "Varmeks",
+   "model": "VM-0MB1402015",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.65
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 9.94,
+     "b": 9.95
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 182.5,
+     "b": 182.9
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.8,
+     "b": 5.04
+    }
+   ]
+  },
+  {
+   "id": "16014155",
+   "mfr": "wepit",
+   "model": "AWlife5007",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.77
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 6.05,
+     "b": 6.35
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 6.79,
+     "b": 6.64
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 187.3,
+     "b": 187.8
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 141.7,
+     "b": 141.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 3.96,
+     "b": 4.5
+    }
+   ]
+  },
+  {
+   "id": "16014158",
+   "mfr": "wepit",
+   "model": "AWlife5015",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.76
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 3.84,
+     "b": 4.75
+    }
+   ]
+  }
+ ],
+ "month": "2026-10",
+ "generatedAt": "2026-10-01T01:22:25.023Z",
+ "suspect": false,
+ "truncated": null
+}

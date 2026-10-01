@@ -45,3 +45,8 @@ Confirmed latest file (via HEAD probe):
 - 2026-09-01T08:45:20.751Z wrote _meta.json (snapshot=2026-09, complete=true, 251.1KB)
 - 2026-09-01T08:55:21.248Z parse start: snapshot=2026-09, sheets=[Instructions, PEL]
 - 2026-09-01T08:55:21.313Z parse complete: snapshot=2026-09 records=4547 listed_no_expiry=2173 active_with_expiry=2361 expiry_imminent=13 expired=0 duplicates=5 malformed=0 keyLeak=false
+- 2026-10-01T00:24:44.836Z download start: https://www.ofgem.gov.uk/sites/default/files/2026-05/BUS-external-PEL.xlsx → raw/2026-10/BUS-external-PEL.xlsx
+- 2026-10-01T00:24:45.087Z download complete: 256.6 KB saved to raw/2026-10/BUS-external-PEL.xlsx
+- 2026-10-01T00:24:45.088Z wrote _meta.json (snapshot=2026-10, complete=true, 256.6KB)
+- 2026-10-01T00:34:45.574Z parse start: snapshot=2026-10, sheets=[Instructions, PEL]
+- 2026-10-01T00:34:45.624Z parse complete: snapshot=2026-10 records=4668 listed_no_expiry=2182 active_with_expiry=2474 expiry_imminent=12 expired=0 duplicates=5 malformed=0 keyLeak=false

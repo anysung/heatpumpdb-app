@@ -1088,3 +1088,4 @@ Post-run validation (inline Node script, full 455-file scan):
 - 2026-07-29T23:48:08.134Z spaceheatersolardevice: skipped 3 already-downloaded pages (resume mode)
 - 2026-07-29T23:48:08.136Z spaceheatersolardevice: wrote _meta.json (complete=true, records=207/207)
 - 2026-07-29T23:48:09.137Z run complete (full): [{"group":"spaceheaters","totalReported":45623,"recordsSaved":45623,"pagesSaved":457,"pagesSkipped":457},{"group":"spaceheatertemperaturecontrol","totalReported":842,"recordsSaved":842,"pagesSaved":9,"pagesSkipped":9},{"group":"spaceheatersolardevice","totalReported":207,"recordsSaved":207,"pagesSaved":3,"pagesSkipped":3}]
+- 2026-10-01T01:01:00.099Z probe OK: https://eprel.ec.europa.eu/api (HTTP 200)
