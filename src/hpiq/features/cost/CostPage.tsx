@@ -79,7 +79,7 @@ export const CostPage: React.FC<{ app: HpApp }> = ({ app }) => {
           <EstimateBadge s={s} />
           {!app.premium && <PremiumPill app={app} />}
         </div>
-        <span style={{ fontSize: 14, color: '#6e6e73', lineHeight: 1.5, marginTop: -8, maxWidth: 780 }}>{s.subtitle}</span>
+        <span style={{ fontSize: 14, color: '#6e6e73', lineHeight: 1.5, marginTop: -8 }}>{s.subtitle}</span>
         <Disclaimer s={s} />
         {app.premium ? <Calculator app={app} s={s} /> : <Teaser app={app} s={s} />}
       </div>
@@ -92,7 +92,7 @@ const EstimateBadge: React.FC<{ s: CostStrings }> = ({ s }) => (
 );
 
 const Disclaimer: React.FC<{ s: CostStrings }> = ({ s }) => (
-  <div data-testid="cost-disclaimer" style={{ display: 'flex', gap: 9, alignItems: 'flex-start', fontSize: 12.5, lineHeight: 1.5, color: WARN, background: '#fdf6e7', border: '1px solid #f1e2bd', borderRadius: 12, padding: '10px 14px', maxWidth: 900 }}>
+  <div data-testid="cost-disclaimer" style={{ display: 'flex', gap: 9, alignItems: 'flex-start', fontSize: 12.5, lineHeight: 1.5, color: WARN, background: '#fdf6e7', border: '1px solid #f1e2bd', borderRadius: 12, padding: '10px 14px' }}>
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ flex: 'none', marginTop: 2 }}><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16.5v.5" /></svg>
     <span>{s.disclaimer}</span>
   </div>

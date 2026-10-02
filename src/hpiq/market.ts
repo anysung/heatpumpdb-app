@@ -62,7 +62,7 @@ export const FUNDING_SOURCE_LINKS = IS_GB
         : [
             { link: 'bafa.de ›', href: 'https://www.bafa.de' },
             { link: 'kfw.de ›', href: 'https://www.kfw.de' },
-            { link: 'bmwk.de ›', href: 'https://www.bmwk.de' },
+            { link: 'bmwe.de ›', href: 'https://www.bmwe.de' },
           ];
 
 /**

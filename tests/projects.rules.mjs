@@ -124,6 +124,43 @@ await check('items capped at 50', async () => {
   await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'big'), newProject(PRO.uid, { items })));
   await assertSucceeds(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'fifty'), newProject(PRO.uid, { items: items.slice(0, 50) })));
 });
+/* ── v2 job file fields (2026-10-02) ───────────────────────────────────── */
+const v2 = {
+  status: 'quote', targetDate: '2026-11-15', selectedId: '1234',
+  details: { phone: '+49 40 123', city: 'Hamburg', buildingType: 'detached', heatLoad: '9.5' },
+  tasks: [{ id: 't1', text: 'Send quote', due: '2026-10-10', done: false }],
+  history: [{ at: new Date().toISOString(), by: 'A B', k: 'created' }],
+};
+await check('v2: a project with status, details, tasks and history is accepted', async () => {
+  await assertSucceeds(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'v2'), newProject(PRO.uid, v2)));
+});
+await check('v2: a v1 document (none of the new fields) can be updated with them', async () => {
+  await assertSucceeds(updateDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'p1'), { ...v2, updatedAt: serverTimestamp() }));
+});
+await check('v2: a v1-shaped update still works (old clients)', async () => {
+  await assertSucceeds(updateDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'p1'), { notes: 'old client', updatedAt: serverTimestamp() }));
+});
+await check('v2: status must be a short string', async () => {
+  await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'bad-s1'), newProject(PRO.uid, { status: 5 })));
+  await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'bad-s2'), newProject(PRO.uid, { status: 'x'.repeat(21) })));
+});
+await check('v2: details must be a map of at most 30 keys', async () => {
+  await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'bad-d1'), newProject(PRO.uid, { details: 'x' })));
+  const big = Object.fromEntries(Array.from({ length: 31 }, (_, i) => [`k${i}`, 'v']));
+  await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'bad-d2'), newProject(PRO.uid, { details: big })));
+});
+await check('v2: tasks capped at 40, history at 60', async () => {
+  const tasks = Array.from({ length: 41 }, (_, i) => ({ id: `t${i}`, text: 'x', due: '', done: false }));
+  await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'bad-t'), newProject(PRO.uid, { tasks })));
+  const history = Array.from({ length: 61 }, () => ({ at: 'x', by: '', k: 'details' }));
+  await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'bad-h'), newProject(PRO.uid, { history })));
+});
+await check('v2: targetDate longer than a date is refused', async () => {
+  await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'bad-td'), newProject(PRO.uid, { targetDate: '2026-11-15T00:00' })));
+});
+await check('v2: a team member updates tasks on a shared project', async () => {
+  await assertSucceeds(updateDoc(doc(as(MEMBER), 'organizations', ORG, 'projects', 't1'), { tasks: v2.tasks, status: 'won', updatedAt: serverTimestamp() }));
+});
 await check('items must be a list', async () => {
   await assertFails(setDoc(doc(as(PRO), 'users', PRO.uid, 'projects', 'map'), newProject(PRO.uid, { items: { a: 1 } })));
 });

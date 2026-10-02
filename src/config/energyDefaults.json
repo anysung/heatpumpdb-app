@@ -16,7 +16,8 @@
   "buildingStandards": {
     "source": "co2online Heizspiegel für Deutschland 2026",
     "url": "https://www.co2online.de/energie-sparen/heizenergie-sparen/heizkosten-sparen/heizkosten-pro-m2-vergleich/",
-    "asOf": "2026 (billing year 2025)",
+    "asOf": "2025",
+    "asOfNote": "Heizspiegel 2026 edition = billing year 2025 (the UI prints asOf in every language, so it stays a bare year)",
     "note": "gas-heated single-family houses; gas consumption bands low / medium / elevated (65 / 127 / 220 kWh/m²·a) and the 1995–2001 age band (95) × 0.9 boiler efficiency, rounded — German stock; adjust for your climate",
     "values": {
       "new": 60,

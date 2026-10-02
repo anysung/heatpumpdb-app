@@ -137,7 +137,7 @@ export const NoisePage: React.FC<{ app: HpApp }> = ({ app }) => {
         <span style={{ fontFamily: FD, fontSize: 28, fontWeight: 600, letterSpacing: '-0.3px' }}>
           {t.nav.noise}{!app.premium && <PremiumPill app={app} />}
         </span>
-        <span style={{ fontSize: 14, color: '#6e6e73', lineHeight: 1.55, maxWidth: 720 }}>{s.sub}</span>
+        <span style={{ fontSize: 14, color: '#6e6e73', lineHeight: 1.55 }}>{s.sub}</span>
       </div>
     </>
   );

@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { HpApp } from '../appState';
 import { DataNotice, PremiumPill } from '../Premium';
 import { ProductActions } from '../features/ProductActions';
+import { WatchStar, useWatchStars } from '../features/watch/WatchStar';
 import { AddToProject } from '../features/projects/AddToProject';
 import { ComparePdfButton } from '../features/branding/ComparePdfButton';
 import { HpVM } from '../model';
@@ -22,7 +23,7 @@ import { ManufacturerFacet } from '../MfrFacet';
 // column, misaligning the numeric columns row-by-row. minmax(0, fr) pins the
 // division to the container width alone; the status floor keeps pills legible
 // on narrow screens (same floor in every row → still aligned).
-const GRID = '34px minmax(0, 2fr) minmax(0, 1fr) minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(0, 0.75fr) minmax(0, 0.75fr) minmax(165px, 1.2fr)';
+const GRID = '52px minmax(0, 2fr) minmax(0, 1fr) minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(0, 0.75fr) minmax(0, 0.75fr) minmax(165px, 1.2fr)';
 /** Header cell: never paint across the neighbouring column. */
 const TH: React.CSSProperties = { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 };
 const PAGE_SIZE = 100;
@@ -39,6 +40,7 @@ const SK2 = ['66%', '75%', '45%', '60%', '55%', '50%', '70%'];
 
 export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
+  const stars = useWatchStars(app);
   const { store } = app;
   const [sort, setSort] = useState<ProductSort>('cop2');
   const [sortOpen, setSortOpen] = useState(false);
@@ -480,8 +482,12 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       ...(isSel ? { background: '#f5f5f7', boxShadow: 'inset 2px 0 0 #0066cc' } : { background: '#fff' }),
                     }}
                   >
-                    <span data-testid="compare-toggle" style={{ display: 'inline-flex' }}>
-                      <CheckBox on={inCmp} size={16} radius={4} onClick={e => { e.stopPropagation(); app.toggleCompare(r.id); }} />
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9 }}>
+                      <span data-testid="compare-toggle" style={{ display: 'inline-flex' }}>
+                        <CheckBox on={inCmp} size={16} radius={4} onClick={e => { e.stopPropagation(); app.toggleCompare(r.id); }} />
+                      </span>
+                      {/* one click → my watchlist (Workspace › Watchlist) */}
+                      <WatchStar app={app} stars={stars} v={r} size={16} />
                     </span>
                     <span style={{ minWidth: 0 }}>
                       <span style={{ fontWeight: 600, display: 'flex', alignItems: 'center', minWidth: 0 }}><span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.model}</span><QaMark v={r} lang={app.lang} size={14} /></span>

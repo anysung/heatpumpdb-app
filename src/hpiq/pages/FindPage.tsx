@@ -4,12 +4,14 @@ import React, { useRef } from 'react';
 import { HpApp } from '../appState';
 import { DataNotice, PremiumPill } from '../Premium';
 import { tr } from '../i18n';
+import { WatchStar, useWatchStars } from '../features/watch/WatchStar';
 import { LOCAL_LISTING_SOURCE } from '../listing';
 import { ListingChip } from '../ListingChip';
 import { FD, C, SearchIcon, Check } from '../ui';
 
 export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
+  const stars = useWatchStars(app);
   const { store } = app;
   const inputRef = useRef<HTMLInputElement>(null);
   const q = app.query.trim().toLowerCase();
@@ -84,6 +86,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.22 }}>{p.model}<QaMark v={p} lang={app.lang} size={15} /></span>
                       <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.find.outdoorUnit} {p.odu}</span>
                     </div>
+                    <WatchStar app={app} stars={stars} v={p} size={18} style={{ marginTop: 2, marginLeft: 'auto' }} />
                     <span
                       onClick={() => app.toggleCompare(p.id)}
                       title="Add to compare"

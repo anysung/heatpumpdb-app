@@ -7,7 +7,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HpApp } from '../../appState';
 import { PremiumPill } from '../../Premium';
-import { MergeResult, MAX_PROJECT_ITEMS, MAX_NAME } from './projectModel';
+import { MergeResult, MAX_CANDIDATES, MAX_NAME } from './projectModel';
 import { useProjects } from './useProjects';
 import { projectStrings } from './strings';
 
@@ -30,6 +30,8 @@ export const AddToProject: React.FC<{ app: HpApp; ids: string[]; label?: string 
   const { backend, projects, error } = useProjects(app.user, open && app.premium);
 
   if (!ids.length) return null;
+  // Readable names for the project's history line ("Candidate added: …").
+  const labels = Object.fromEntries(ids.map(id => { const m = app.allStore?.byId.get(id); return [id, m ? `${m.mfr} ${m.model}` : id]; }));
   const text = label ?? (ids.length > 1 ? s.addToN(ids.length) : s.addTo);
 
   return (
@@ -54,7 +56,7 @@ export const AddToProject: React.FC<{ app: HpApp; ids: string[]; label?: string 
           onAdd={async pid => {
             const p = projects?.find(x => x.id === pid);
             try {
-              const r = await backend.addItems(pid, ids);
+              const r = await backend.addItems(pid, ids, labels);
               app.notify(toast(s, r, p?.name ?? ''));
               setOpen(false);
             } catch (e) { console.warn('[projects] add failed', e); app.notify(s.saveFailed); }
@@ -73,8 +75,8 @@ export const AddToProject: React.FC<{ app: HpApp; ids: string[]; label?: string 
 };
 
 function toast(s: ReturnType<typeof projectStrings>, r: MergeResult, name: string): string {
-  if (r.added === 0) return r.overCap ? s.full(MAX_PROJECT_ITEMS) : s.already(name);
-  if (r.overCap) return `${s.addedSome(r.added, name)} · ${s.full(MAX_PROJECT_ITEMS)}`;
+  if (r.added === 0) return r.overCap ? s.full(MAX_CANDIDATES) : s.already(name);
+  if (r.overCap) return `${s.addedSome(r.added, name)} · ${s.full(MAX_CANDIDATES)}`;
   if (r.duplicates) return s.addedSome(r.added, name);
   return s.added(name);
 }
@@ -148,7 +150,7 @@ const Popover: React.FC<{
               style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 9, cursor: 'pointer', fontSize: 13 }}
             >
               <span style={{ flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 600 }}>{p.name}</span>
-              <span style={{ flex: 'none', fontSize: 11.5, color: all ? '#0a6847' : '#7a7a7a' }}>{all ? '✓' : ''} {s.models(p.items.length)}</span>
+              <span style={{ flex: 'none', fontSize: 11.5, color: all ? '#0a6847' : '#7a7a7a' }}>{all ? '✓' : ''} {Math.min(p.items.length, MAX_CANDIDATES)}/{MAX_CANDIDATES}</span>
             </span>
           );
         })}

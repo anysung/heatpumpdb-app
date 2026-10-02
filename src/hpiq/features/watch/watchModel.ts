@@ -51,6 +51,13 @@ export const watchDocId = (type: WatchType, key: string, market = MARKET): strin
 
 const watchCol = (uid: string) => collection(db, 'users', uid, 'watch');
 
+/* The dev `?preview=hpiq` user cannot write Firestore — in DEV builds it gets
+   an in-memory list instead (tree-shaken from production), like projects. */
+const isPreview = (uid: string | null | undefined) => import.meta.env.DEV && uid === 'preview';
+const mem = new Map<string, WatchDoc>();
+const memListeners = new Set<() => void>();
+const memEmit = () => memListeners.forEach(fn => fn());
+
 /** Live watch list (all markets) + settings for one account. */
 export function useWatchlist(uid: string | null | undefined): {
   items: WatchDoc[]; settings: WatchSettings; ready: boolean;
@@ -60,6 +67,11 @@ export function useWatchlist(uid: string | null | undefined): {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     if (!uid) { setItems([]); setReady(true); return; }
+    if (isPreview(uid)) {
+      const push = () => { setItems([...mem.values()].sort((a, b) => a.label.localeCompare(b.label))); setReady(true); };
+      memListeners.add(push); push();
+      return () => { memListeners.delete(push); };
+    }
     const unsub = onSnapshot(watchCol(uid), (snap) => {
       const list: WatchDoc[] = [];
       let s: WatchSettings = { emailAlerts: true };
@@ -79,6 +91,7 @@ export function useWatchlist(uid: string | null | undefined): {
 }
 
 export async function addWatch(uid: string, type: WatchType, key: string, label: string, lang: string): Promise<void> {
+  if (isPreview(uid)) { const docId = watchDocId(type, key); mem.set(docId, { docId, type, market: MARKET, key, label }); memEmit(); return; }
   await setDoc(doc(watchCol(uid), watchDocId(type, key)), {
     type, market: MARKET, key: key.slice(0, 200), label: label.slice(0, 200), createdAt: serverTimestamp(),
   });
@@ -86,7 +99,10 @@ export async function addWatch(uid: string, type: WatchType, key: string, label:
   setDoc(doc(watchCol(uid), '_settings'), { lang, updatedAt: serverTimestamp() }, { merge: true }).catch(() => {});
 }
 
-export const removeWatch = (uid: string, docId: string): Promise<void> => deleteDoc(doc(watchCol(uid), docId));
+export const removeWatch = (uid: string, docId: string): Promise<void> => {
+  if (isPreview(uid)) { mem.delete(docId); memEmit(); return Promise.resolve(); }
+  return deleteDoc(doc(watchCol(uid), docId));
+};
 
 export const setEmailAlerts = (uid: string, on: boolean, lang: string): Promise<void> =>
   setDoc(doc(watchCol(uid), '_settings'), { emailAlerts: on, lang, updatedAt: serverTimestamp() }, { merge: true });

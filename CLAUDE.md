@@ -333,6 +333,24 @@ assumption that gitignored means disposable — keep at least the newest seed.
   all non-fatal + time-capped; canaries excluded; `countries/{cc}/changes/*` is
   Premium-only). `mfrSlug` exists twice (watchModel.ts ↔ lib/dataset-diff.mjs) —
   a unit test keeps them identical. Details: docs/UPDATE_PIPELINE.md §4.
+- **Projects = the installer's job file (v2, owner 2026-10-02):** `src/hpiq/features/projects/` —
+  one page: the project sheet on top (customer + site, building + system via
+  drop-downs, status, target date, **up to FOUR candidates** shown in the SAME
+  comparison as Products via `compareRows.ts`, to-dos with due dates, history)
+  and two lists below (Open / All — collapsed by default, CSV export on All).
+  Every write goes through the transactional `backend.mutate` (projectStore.ts)
+  and appends a history entry. All v2 fields are OPTIONAL in firestore.rules, so
+  v1 documents and old clients stay valid; the storage cap stays 50 items, the UI
+  cap is `MAX_CANDIDATES = 4`. Deleting is the only way a record goes away —
+  finished and lost projects stay in "All projects".
+- **Watchlist = "my models" working list (2026-10-02):** a star on every Products
+  row and Find card (`WatchStar` + ONE `useWatchStars` per page — never a
+  listener per row), add models/manufacturers on the page itself, and row
+  actions (open, data sheet, add to project, compare 2–4).
+- **Funding page copy (`bafa.timeline`, cards, guide) is hand-curated and must be
+  fact-checked against official sources** — the news pipeline's articles and the
+  live policy list are AI-written leads, not sources (Oct 2026 review found
+  several wrong: DE "contract before commitment", GB "valid EPC", IT "65%").
 - **Auth flow (2026-07-27 program): 15-day in-app free trial, no payment method**
   (7 days until 2026-09-07; the length lives in `TRIAL_DAYS`, client + function).**
   Two modes, switched by `VITE_BILLING_FN_URL` (src/config/env.ts):

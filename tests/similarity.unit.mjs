@@ -17,7 +17,10 @@ async function load(rel) {
   return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 }
 const { sourceFamily, rankAlternatives, isR290 } = await load('../src/hpiq/features/similar/similarity.ts');
-const { mergeItems, MAX_PROJECT_ITEMS } = await load('../src/hpiq/features/projects/projectModel.ts');
+const {
+  mergeItems, MAX_PROJECT_ITEMS, MAX_CANDIDATES, sortTasks, nextTask, dueState, summarize, readDetails, cleanDetails,
+  readTasks, appendHistory, MAX_HISTORY, isOpen, projectsCsv,
+} = await load('../src/hpiq/features/projects/projectModel.ts');
 
 let failed = 0, passed = 0;
 const is = (name, actual, expected) => {
@@ -116,9 +119,47 @@ console.log('\nmergeItems\n');
   is('dedupe against existing and within batch', r.items.map(i => i.id), ['a', 'b', 'c']);
   is('counts', [r.added, r.duplicates, r.overCap], [2, 2, 0]);
   is('existing note kept', r.items[0].note, 'keep');
+  const three = [{ id: 'f0', addedAt: 'x' }, { id: 'f1', addedAt: 'x' }, { id: 'f2', addedAt: 'x' }];
+  const c = mergeItems(three, ['n1', 'n2', 'n3'], now);
+  is('candidates cap at four', [MAX_CANDIDATES, c.items.length, c.added, c.overCap], [4, 4, 1, 2]);
   const full = Array.from({ length: MAX_PROJECT_ITEMS - 1 }, (_, i) => ({ id: `f${i}`, addedAt: 'x' }));
-  const c = mergeItems(full, ['n1', 'n2', 'n3'], now);
-  is('cap at 50', [c.items.length, c.added, c.overCap], [50, 1, 2]);
+  const l = mergeItems(full, ['n1', 'n2'], now, MAX_PROJECT_ITEMS);
+  is('explicit cap (storage limit 50)', [l.items.length, l.added, l.overCap], [50, 1, 1]);
+}
+
+console.log('\nproject job file (v2)\n');
+{
+  const today = '2026-10-02';
+  const tasks = [
+    { id: '1', text: 'later', due: '2026-11-20', done: false },
+    { id: '2', text: 'no date', due: '', done: false },
+    { id: '3', text: 'overdue', due: '2026-09-30', done: false },
+    { id: '4', text: 'done', due: '2026-09-01', done: true, doneAt: '2026-09-02T10:00:00Z' },
+    { id: '5', text: 'this week', due: '2026-10-07', done: false },
+  ];
+  is('open tasks by due date, undated last, done at the end', sortTasks(tasks).map(t => t.id), ['3', '5', '1', '2', '4']);
+  is('next task = earliest open', nextTask(tasks).id, '3');
+  is('next task of an all-done list', nextTask([tasks[3]]), null);
+  is('due states', ['2026-09-30', '2026-10-02', '2026-10-09', '2026-10-10', '', 'junk'].map(d => dueState(d, today)),
+    ['overdue', 'today', 'soon', 'later', 'none', 'none']);
+  const proj = (status, t) => ({ status, tasks: t });
+  is('summary counts open projects and their dated open tasks only',
+    summarize([proj('quote', tasks), proj('done', tasks), proj('lost', []), proj('hold', [])], today),
+    { open: 2, dueSoon: 1, overdue: 1 });
+  is('done and lost are closed, the rest open', ['lead', 'survey', 'quote', 'won', 'install', 'done', 'hold', 'lost'].map(s => isOpen({ status: s })),
+    [true, true, true, true, true, false, true, false]);
+  const d = readDetails({ phone: ' 040 1 ', buildingType: 'detached', existing: 'coal', junk: 'x', area: 140 });
+  is('details: trims text, keeps valid option ids, drops unknown ids/keys/non-strings',
+    [d.phone, d.buildingType, d.existing, d.area, 'junk' in d], ['040 1', 'detached', '', '', false]);
+  is('details: only filled keys are stored', cleanDetails(d), { phone: '040 1', buildingType: 'detached' });
+  is('tasks: malformed entries dropped, bad dates cleared',
+    readTasks([{ id: 'a', text: 'x', due: '10.10.2026', done: 1 }, { text: 'no id' }, null]),
+    [{ id: 'a', text: 'x', due: '', done: false }]);
+  const h = appendHistory(Array.from({ length: MAX_HISTORY }, (_, i) => ({ at: String(i), by: '', k: 'details' })), [{ at: 'new', by: '', k: 'status' }]);
+  is('history keeps the newest entries', [h.length, h[0].at, h[h.length - 1].at], [MAX_HISTORY, '1', 'new']);
+  is('csv quotes separators, quotes and line breaks',
+    projectsCsv([{ n: 'A;B', c: 'say "hi"\nx' }], ['Name', 'Note'], p => [p.n, p.c]),
+    'Name;Note\r\n"A;B";"say ""hi""\nx"');
 }
 
 console.log(`\n${passed} passed, ${failed} failed\n`);

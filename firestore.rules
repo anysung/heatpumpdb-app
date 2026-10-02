@@ -512,10 +512,15 @@ service cloud.firestore {
     // Items are a list of {id, note?, addedAt}; rules cannot iterate a list,
     // so they cap its SIZE (50, mirrored in projectModel.ts) and the 1 MiB
     // document limit bounds the rest.
+    // v2 (2026-10-02) adds the job file: status, details (map of short
+    // strings), targetDate, selectedId, tasks (<= 40) and history (<= 60) —
+    // same approach: types + sizes here, contents bounded by the document limit.
     // ═════════════════════════════════════════════════════════════════════
     function projectShapeValid(d) {
       return d.keys().hasOnly(['name', 'customer', 'notes', 'market', 'items',
-                               'createdBy', 'createdAt', 'updatedAt']) &&
+                               'createdBy', 'createdAt', 'updatedAt',
+                               // v2 job file (2026-10-02) — all optional, so v1 documents stay valid
+                               'status', 'details', 'targetDate', 'selectedId', 'tasks', 'history']) &&
              d.keys().hasAll(['name', 'customer', 'notes', 'market', 'items',
                               'createdBy', 'createdAt', 'updatedAt']) &&
              d.name is string && d.name.size() >= 1 && d.name.size() <= 120 &&
@@ -523,6 +528,12 @@ service cloud.firestore {
              d.notes is string && d.notes.size() <= 2000 &&
              d.market is string && d.market.size() >= 2 && d.market.size() <= 4 &&
              d.items is list && d.items.size() <= 50 &&
+             (!('status' in d) || (d.status is string && d.status.size() <= 20)) &&
+             (!('details' in d) || (d.details is map && d.details.size() <= 30)) &&
+             (!('targetDate' in d) || (d.targetDate is string && d.targetDate.size() <= 10)) &&
+             (!('selectedId' in d) || (d.selectedId is string && d.selectedId.size() <= 200)) &&
+             (!('tasks' in d) || (d.tasks is list && d.tasks.size() <= 40)) &&
+             (!('history' in d) || (d.history is list && d.history.size() <= 60)) &&
              d.createdBy is string &&
              d.createdAt is timestamp &&
              d.updatedAt == request.time;

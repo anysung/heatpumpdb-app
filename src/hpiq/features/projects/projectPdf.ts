@@ -15,8 +15,9 @@ import { localListingStatus, LOCAL_LISTING_SOURCE } from '../../listing';
 import { FLAG_ASPECT, LOGO_ASPECT } from '../../../components/brandSvg';
 import { getBrandArtwork } from '../../pdf/brandArtwork';
 import { registerPdfFonts, PDF_FONT_FAMILY } from '../../pdf/pdfFonts';
-import { Project } from './projectModel';
+import { Project, DetailChoiceKey, sortTasks, MAX_CANDIDATES } from './projectModel';
 import { ProjectStrings } from './strings';
+import { ProjectFormStrings } from './formStrings';
 
 const PW = 210, PH = 297, M_X = 14, M_TOP = 10, M_BOT = 16;
 const CW = PW - M_X * 2;
@@ -61,11 +62,12 @@ export interface ProjectPdfInput {
   project: Project;
   rows: ProjectPdfRow[];
   s: ProjectStrings;
+  f: ProjectFormStrings;
   t: HpStrings;
   sourceAbbr: string;
 }
 
-export function buildProjectPdf({ project, rows, s, t, sourceAbbr }: ProjectPdfInput): jsPDF {
+export function buildProjectPdf({ project, rows, s, f, t, sourceAbbr }: ProjectPdfInput): jsPDF {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   const fontFamily = registerPdfFonts(doc);
   const ascii = makeAscii(fontFamily === PDF_FONT_FAMILY);
@@ -111,7 +113,7 @@ export function buildProjectPdf({ project, rows, s, t, sourceAbbr }: ProjectPdfI
   setFont(8, false, MUTED);
   doc.text(ascii(s.pdfTitle), M_X, y + LOGO_H + 4);
   doc.text(ascii(`${s.pdfGenerated} ${dateStr}`), PW - M_X, y + 4, { align: 'right' });
-  doc.text(ascii(s.models(project.items.length)), PW - M_X, y + 8.5, { align: 'right' });
+  doc.text(ascii(s.models(Math.min(project.items.length, MAX_CANDIDATES))), PW - M_X, y + 8.5, { align: 'right' });
   y += LOGO_H + 7;
 
   /* ── Title card ───────────────────────────────────────────────────────── */
@@ -125,6 +127,49 @@ export function buildProjectPdf({ project, rows, s, t, sourceAbbr }: ProjectPdfI
   titleLines.forEach((ln, i) => doc.text(ln, M_X + 6, y + 8 + i * 6.2));
   if (sub) { setFont(9, false, [205, 205, 205]); doc.text(ascii(sub), M_X + 6, y + cardH - 3.6); }
   y += cardH + 5;
+
+  /* ── Job details (v2): status, dates, contact, site, building ───────────── */
+  {
+    const d = project.details;
+    const opt = (k: DetailChoiceKey) => (d[k] ? f.opt[k][d[k]] ?? '' : '');
+    const day = (iso: string) => (iso ? new Date(`${iso}T12:00:00`).toLocaleDateString(t.locale, { day: 'numeric', month: 'long', year: 'numeric' }) : '');
+    const chosen = rows.find(r => r.id === project.selectedId)?.v;
+    const building = [
+      opt('buildingType'), opt('projectType'),
+      d.buildYear && `${f.fBuildYear} ${d.buildYear}`,
+      d.area && `${d.area} m²`,
+      d.heatLoad && `${f.fHeatLoad.replace(/\s*\(kW\)/, '')} ${d.heatLoad} kW`,
+      opt('existing') && `${f.fExisting}: ${opt('existing')}`,
+      opt('distribution'), opt('dhw') && `${f.fDhw}: ${opt('dhw')}`, opt('supply'),
+    ].filter(Boolean).join(' · ');
+    const pairs: [string, string][] = ([
+      [f.pdfStatus, f.status[project.status]],
+      [f.pdfTarget, day(project.targetDate)],
+      [f.pdfContact, [d.phone, d.email].filter(Boolean).join(' · ')],
+      [f.pdfSite, [d.address, [d.postcode, d.city].filter(Boolean).join(' ')].filter(Boolean).join(', ')],
+      [f.pdfBuilding, building],
+      [f.fFunding, opt('funding')],
+      [f.pdfChosen, chosen ? `${chosen.mfr} ${chosen.model}` : ''],
+    ] as [string, string][]).filter(([, v]) => v);
+    if (pairs.length) {
+      const LABEL_W = 34;
+      setFont(8.5, false, INK);
+      const blocks = pairs.map(([k, v]) => ({ k, lines: doc.splitTextToSize(ascii(v), CW - LABEL_W - 8) as string[] }));
+      const h = 4 + blocks.reduce((n, b) => n + b.lines.length * 4.1 + 1.2, 0);
+      need(h + 3);
+      doc.setFillColor(TILE[0], TILE[1], TILE[2]);
+      doc.roundedRect(M_X, y, CW, h, 1.6, 1.6, 'F');
+      let yy = y + 5.6;
+      blocks.forEach(b => {
+        setFont(6.8, true, MUTED);
+        doc.text(ascii(b.k.toUpperCase()), M_X + 4, yy);
+        setFont(8.5, false, INK);
+        b.lines.forEach((ln, i) => doc.text(ln, M_X + 4 + LABEL_W, yy + i * 4.1));
+        yy += b.lines.length * 4.1 + 1.2;
+      });
+      y += h + 5;
+    }
+  }
 
   /* ── Notes ────────────────────────────────────────────────────────────── */
   if (project.notes.trim()) {
@@ -186,7 +231,7 @@ export function buildProjectPdf({ project, rows, s, t, sourceAbbr }: ProjectPdfI
     const v = r.v;
     const cells: Record<string, string> = v
       ? {
-        model: `${v.model}\n${sourceAbbr} ${v.sourceId}`,
+        model: `${v.model}\n${sourceAbbr} ${v.sourceId}${r.id === project.selectedId ? ` · ${f.chosen}` : ''}`,
         mfr: v.mfr,
         kw: v.ratedKw,
         scop: v.scop,
@@ -238,6 +283,32 @@ export function buildProjectPdf({ project, rows, s, t, sourceAbbr }: ProjectPdfI
     doc.setLineWidth(0.2);
     doc.line(M_X, y, M_X + CW, y);
   });
+
+  /* ── Open to-dos ──────────────────────────────────────────────────────── */
+  {
+    const open = sortTasks(project.tasks).filter(x => !x.done);
+    if (open.length) {
+      y += 6;
+      need(10 + Math.min(open.length, 3) * 4.4);
+      setFont(6.8, true, MUTED);
+      doc.text(ascii(f.pdfTasks.toUpperCase()), M_X, y);
+      y += 4.6;
+      open.forEach(x => {
+        setFont(8.2, false, INK);
+        const lines = doc.splitTextToSize(ascii(x.text), CW - 40) as string[];
+        need(lines.length * 4 + 1.4);
+        doc.setDrawColor(MUTED[0], MUTED[1], MUTED[2]);
+        doc.setLineWidth(0.25);
+        doc.rect(M_X + 0.4, y - 2.6, 2.6, 2.6);
+        lines.forEach((ln, i) => doc.text(ln, M_X + 5.5, y + i * 4));
+        if (x.due) {
+          setFont(7.6, false, MUTED);
+          doc.text(ascii(new Date(`${x.due}T12:00:00`).toLocaleDateString(t.locale, { day: 'numeric', month: 'short', year: 'numeric' })), PW - M_X, y, { align: 'right' });
+        }
+        y += lines.length * 4 + 1.4;
+      });
+    }
+  }
 
   /* ── Disclaimer ───────────────────────────────────────────────────────── */
   setFont(6.4, false, FAINT);
