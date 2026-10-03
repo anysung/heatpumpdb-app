@@ -35,7 +35,7 @@ export const INSTALLER_VIDEO = {
 
 export interface InstallerVideoStrings {
   label: string; open: string; close: string; unmute: string; mute: string;
-  volume: string; replay: string; alt: string;
+  volume: string; alt: string;
 }
 
 const PlayRing: React.FC<{ size: number }> = ({ size }) => (
@@ -88,7 +88,6 @@ const InstallerVideoPopup: React.FC<{ s: InstallerVideoStrings; origin: DOMRect;
   const video = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [volume, setVolume] = useState(0.8);
-  const [ended, setEnded] = useState(false);
   const [progress, setProgress] = useState(0);
   const [shown, setShown] = useState(false);
   const [box, setBox] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
@@ -125,7 +124,7 @@ const InstallerVideoPopup: React.FC<{ s: InstallerVideoStrings; origin: DOMRect;
     const v = video.current; if (!v) return;
     const next = !muted;
     v.muted = next;
-    if (!next) { if (v.volume === 0 || volume === 0) { v.volume = 0.8; setVolume(0.8); } else v.volume = volume; if (ended || v.paused) { void v.play(); } }
+    if (!next) { if (v.volume === 0 || volume === 0) { v.volume = 0.8; setVolume(0.8); } else v.volume = volume; if (v.paused) { void v.play(); } }
     setMuted(next);
   };
   const onVolume = (x: number) => {
@@ -133,7 +132,6 @@ const InstallerVideoPopup: React.FC<{ s: InstallerVideoStrings; origin: DOMRect;
     v.volume = x; setVolume(x);
     if (x === 0) { v.muted = true; setMuted(true); } else if (v.muted) { v.muted = false; setMuted(false); }
   };
-  const replay = () => { const v = video.current; if (!v) return; v.currentTime = 0; setEnded(false); void v.play(); };
 
   if (!box) return null;
   const ox = origin.left + origin.width / 2 - box.left, oy = origin.top + origin.height / 2 - box.top;
@@ -163,11 +161,11 @@ const InstallerVideoPopup: React.FC<{ s: InstallerVideoStrings; origin: DOMRect;
             poster={INSTALLER_VIDEO.poster}
             muted
             autoPlay
+            loop
             playsInline
             preload="auto"
             className="block w-full h-full object-cover"
             aria-label={s.alt}
-            onEnded={() => setEnded(true)}
             onTimeUpdate={e => { const v = e.currentTarget; if (v.duration) setProgress(v.currentTime / v.duration); }}
             data-testid="installer-video"
           />
@@ -203,20 +201,6 @@ const InstallerVideoPopup: React.FC<{ s: InstallerVideoStrings; origin: DOMRect;
               </svg>
             </button>
           </div>
-          {ended && (
-            <button
-              type="button"
-              onClick={replay}
-              className="absolute inset-0 m-auto w-20 h-20 rounded-full bg-black/50 backdrop-blur-md ring-1 ring-white/25 text-white flex items-center justify-center"
-              aria-label={s.replay}
-              title={s.replay}
-              data-testid="installer-video-replay"
-            >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" />
-              </svg>
-            </button>
-          )}
         </div>
         <div className="flex justify-center mt-4">
           <button

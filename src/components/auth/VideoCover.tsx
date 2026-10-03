@@ -146,7 +146,7 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
   const iv: InstallerVideoStrings = {
     label: t.authInstallerLabel, open: t.authInstallerOpen, close: t.authInstallerClose,
     unmute: t.authInstallerUnmute, mute: t.authInstallerMute, volume: t.authInstallerVolume,
-    replay: t.authInstallerReplay, alt: t.authInstallerAlt,
+    alt: t.authInstallerAlt,
   };
 
   return (
