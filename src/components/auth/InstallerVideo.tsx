@@ -12,8 +12,8 @@
  * landing page must not talk unasked); one tap on the speaker turns sound on,
  * then a volume slider appears. Esc / backdrop / Close all dismiss it.
  *
- * On-screen copy is in the market language (one cut per market); the
- * narration is the source clip's English voice. File names are versioned —
+ * On-screen copy and narration are in the market language (one cut per
+ * market; GB keeps the original English voice). File names are versioned —
  * /media/** is served immutable.
  */
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -22,11 +22,15 @@ import { ACTIVE_COUNTRY } from '../../config/countryProfiles';
 
 /** One cut per market — on-screen copy in the market language and that
  *  market's own sample reports. Playback speed vs the original 15 s cut:
- *  v2 1.00× (15.0 s) · v3 0.70× (21.4 s, too slow) · v4 0.85× (17.6 s, 2026-10-03). */
+ *  v2 1.00× (15.0 s) · v3 0.70× (21.4 s, too slow) · v4 0.85× (17.6 s, 2026-10-03).
+ *  Voice: GB keeps the original English narration (v4); DE/FR/PL/IT carry a
+ *  market-language dub (v5 — same picture, Higgsfield ElevenLabs voice
+ *  "Landon", male middle-aged, pitch matched to the original narrator). */
 const IV_CC = ACTIVE_COUNTRY.code.toLowerCase();
+const IV_VER = IV_CC === 'gb' ? 'v4' : 'v5';
 export const INSTALLER_VIDEO = {
-  src: `/media/installer/usp-installer-v4-${IV_CC}.mp4`,
-  poster: `/media/installer/usp-installer-v4-${IV_CC}-poster.jpg`,
+  src: `/media/installer/usp-installer-${IV_VER}-${IV_CC}.mp4`,
+  poster: `/media/installer/usp-installer-${IV_VER}-${IV_CC}-poster.jpg`,
 };
 
 export interface InstallerVideoStrings {
