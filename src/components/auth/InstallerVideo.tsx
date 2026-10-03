@@ -20,12 +20,13 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ACTIVE_COUNTRY } from '../../config/countryProfiles';
 
-/** v3 (2026-10-01): one cut per market — on-screen copy in the market
- *  language and that market's own sample reports; 30 % slower than v2. */
+/** One cut per market — on-screen copy in the market language and that
+ *  market's own sample reports. Playback speed vs the original 15 s cut:
+ *  v2 1.00× (15.0 s) · v3 0.70× (21.4 s, too slow) · v4 0.85× (17.6 s, 2026-10-03). */
 const IV_CC = ACTIVE_COUNTRY.code.toLowerCase();
 export const INSTALLER_VIDEO = {
-  src: `/media/installer/usp-installer-v3-${IV_CC}.mp4`,
-  poster: `/media/installer/usp-installer-v3-${IV_CC}-poster.jpg`,
+  src: `/media/installer/usp-installer-v4-${IV_CC}.mp4`,
+  poster: `/media/installer/usp-installer-v4-${IV_CC}-poster.jpg`,
 };
 
 export interface InstallerVideoStrings {
