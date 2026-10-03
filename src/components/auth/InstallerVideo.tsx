@@ -46,7 +46,9 @@ const PlayRing: React.FC<{ size: number }> = ({ size }) => (
 );
 
 /** The trigger. `compact` = the phone/tablet variant under the hero line. */
-export const InstallerVideoTrigger: React.FC<{ s: InstallerVideoStrings; compact?: boolean; className?: string }> = ({ s, compact, className = '' }) => {
+/** labelMaxWidth: wrap the label onto two lines (top-left slot next to a long
+ *  headline — FR, 2026-10-03). Unset = one line. */
+export const InstallerVideoTrigger: React.FC<{ s: InstallerVideoStrings; compact?: boolean; className?: string; labelMaxWidth?: number | null }> = ({ s, compact, className = '', labelMaxWidth }) => {
   const ref = useRef<HTMLButtonElement>(null);
   const [origin, setOrigin] = useState<DOMRect | null>(null);
   return (
@@ -61,7 +63,11 @@ export const InstallerVideoTrigger: React.FC<{ s: InstallerVideoStrings; compact
         data-testid="installer-video-trigger"
       >
         <PlayRing size={compact ? 22 : 28} />
-        <span className={`hp-iv-label uppercase font-medium ${compact ? 'text-[8.5px] tracking-[0.22em]' : 'text-[9.5px] tracking-[0.26em]'}`}>
+        <span
+          data-testid="installer-video-label"
+          className={`hp-iv-label uppercase font-medium ${compact ? 'text-[8.5px] tracking-[0.22em]' : 'text-[9.5px] tracking-[0.26em]'}`}
+          style={labelMaxWidth ? { maxWidth: labelMaxWidth, whiteSpace: 'normal', lineHeight: 1.45, textAlign: 'left' } : { whiteSpace: 'nowrap' }}
+        >
           {s.label}
         </span>
       </button>

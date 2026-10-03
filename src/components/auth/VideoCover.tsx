@@ -103,20 +103,40 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
   const headRef = useRef<HTMLDivElement>(null);
   const entryRef = useRef<HTMLDivElement>(null);
   const stage = useStageBox(rootRef, headRef, entryRef);
-  // The top-left slot is used only when it clears the headline with room to
-  // spare — measured, because headline length differs a lot by language (FR is
-  // the longest: it reaches the slot on every screen below ~1700 px).
+  // The top-left slot is used whenever it clears the headline (gap >= 28 px).
+  // Headline length differs a lot by language: when the one-line label would
+  // touch the headline (FR on 1280–1700 px screens), the label wraps onto two
+  // lines and the button stays top-left like every other market (owner
+  // 2026-10-03). Only if even the wrapped label cannot clear it (< 1280 px or
+  // a narrow window) does the trigger move under the hero line.
   const slotRef = useRef<HTMLDivElement>(null);
   const [slotFits, setSlotFits] = useState(false);
+  const [labelMax, setLabelMax] = useState<number | null>(null);
   useLayoutEffect(() => {
+    const GAP = 28;
     const check = () => {
       const slot = slotRef.current, h1 = headRef.current?.querySelector('h1');
       if (!slot || !h1 || window.innerWidth < 1280) { setSlotFits(false); return; }
       const range = document.createRange(); range.selectNodeContents(h1);
       const left = Math.min(...Array.from(range.getClientRects()).map(r => r.left));
       const btn = slot.firstElementChild as HTMLElement | null;
-      const right = slot.getBoundingClientRect().left + (btn?.offsetWidth ?? 0);
-      setSlotFits(left - right >= 40);
+      const label = slot.querySelector('[data-testid=installer-video-label]') as HTMLElement | null;
+      if (!btn || !label) { setSlotFits(false); return; }
+      const avail = left - slot.getBoundingClientRect().left - GAP;
+      // Measure the one-line width without any wrap applied.
+      const prev = label.style.cssText;
+      label.style.maxWidth = 'none'; label.style.whiteSpace = 'nowrap';
+      const oneLine = btn.offsetWidth;
+      const ringAndGap = oneLine - label.offsetWidth;
+      if (oneLine <= avail) { label.style.cssText = prev; setLabelMax(null); setSlotFits(true); return; }
+      // Two lines: the label may use what is left after the ring; it must
+      // still fit its longest word.
+      const max = Math.floor(avail - ringAndGap);
+      label.style.whiteSpace = 'normal'; label.style.maxWidth = `${max}px`;
+      const ok = max >= 60 && label.scrollWidth <= max + 1;
+      label.style.cssText = prev;
+      setLabelMax(ok ? max : null);
+      setSlotFits(ok);
     };
     check();
     document.fonts?.ready.then(check).catch(() => {});
@@ -191,7 +211,7 @@ export const VideoCover: React.FC<VideoCoverProps> = ({
       aria-hidden={!slotFits}
       data-testid="installer-video-slot"
     >
-      <InstallerVideoTrigger s={iv} />
+      <InstallerVideoTrigger s={iv} labelMaxWidth={labelMax} />
     </div>
 
     {/* Headline band — top of the stage, above where any part travels.
