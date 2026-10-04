@@ -152,7 +152,7 @@ export const ReportPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   {sel === items[0] ? t.report.latest : c.editionLabel ?? sel.id}
                   {sel.pages ? ` · ${t.report.pages(sel.pages)}` : ''}
                   {sel.premium
-                    ? <PremiumPill app={app} style={{ marginLeft: 8 }} />
+                    ? <PremiumPill app={app} always style={{ marginLeft: 8 }} />
                     : <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, color: '#0055aa', background: '#eef4ff', borderRadius: 999, padding: '2px 7px' }}>{t.tier.sampleBadge}</span>}
                 </div>
                 <h1 style={{ fontFamily: FD, fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 600, lineHeight: 1.2, letterSpacing: '-0.3px', margin: '8px 0 10px', color: '#1d1d1f' }}>
@@ -215,7 +215,7 @@ export const ReportPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     <div style={{ padding: '12px 14px 16px' }}>
                       <div style={{ fontSize: 12.5, color: '#86868b', marginBottom: 4 }}>
                         {c.editionLabel ?? e.id}
-                        {e.premium ? <PremiumPill app={app} /> : null}
+                        {e.premium ? <PremiumPill app={app} always /> : null}
                       </div>
                       <div style={{ fontWeight: 650, fontSize: 15.5, color: '#1d1d1f', lineHeight: 1.3 }}>{c.title}</div>
                     </div>

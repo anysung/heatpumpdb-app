@@ -15,7 +15,7 @@ import { recallSubTab, rememberSubTab } from './ui';
 import { LOCAL_LISTING_FILTER, LOCAL_LISTING_FILTER_DEFAULT_ON } from './listing';
 import { splitBySegment } from '../config/segmentation';
 import { ACTIVE_COUNTRY } from '../config/countryProfiles';
-import { accessInfo } from '../config/entitlement';
+import { accessInfo, tsToMillis } from '../config/entitlement';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
 import { pdfBrandingFor } from './features/branding/brandingState';
 import { preloadBrandArtwork } from './pdf/brandArtwork';
@@ -45,7 +45,7 @@ import { NoisePage } from './features/noise/NoisePage';
 import { WorkspaceBar, isWorkspacePage } from './features/WorkspaceTabs';
 import { CostPage } from './features/cost/CostPage';
 import { isSpecialReportItem } from './newsModel';
-import { UpsellModal, DataNotice, WelcomeTrialModal } from './Premium';
+import { UpsellModal, DataNotice, WelcomeTrialModal, TrialEndedModal } from './Premium';
 import { InstallPage } from './pages/InstallPage';
 import { AccountPage } from './pages/AccountPage';
 
@@ -410,13 +410,16 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     if (hit && isSpecialReportItem(hit)) setPage('report');
   }, [dbData?.newsFeed]);
 
+  const accessNow = accessInfo(user);
+  const trialDaysLeft = accessNow.state === 'trial' ? accessNow.daysLeft : null;
+
   const app: HpApp = {
     store, allStore, user, patchUser,
     news: newsFeed,
     policies: dbData?.policySummary ?? [],
     dataStatusDate, bafaSnapshotDate, eprelSyncDate, totalListed,
     page, go: setPage,
-    premium, upsell,
+    premium, upsell, trialDaysLeft,
     query, setQuery,
     compare, toggleCompare,
     selectedId, setSelectedId,
@@ -498,6 +501,17 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   const closeWelcome = () => { try { localStorage.setItem(welcomeKey, new Date().toISOString()); } catch { /* private mode */ } setWelcomeSeen(true); };
   const welcomeModal = welcomeOpen && access.state === 'trial'
     ? <WelcomeTrialModal app={app} trialEndsMs={access.trialEndsMs} onClose={closeWelcome} /> : null;
+  // Trial-ended notice — once per account per device, on the first visit after
+  // the free trial closed WITHOUT a subscription (a lapsed subscriber is not
+  // told "your trial ended"). Lists what Standard no longer includes.
+  const endedKey = `hpdb.trialEnded.${user.id}`;
+  const [endedSeen, setEndedSeen] = useState(() => { try { return !!localStorage.getItem(endedKey); } catch { return false; } });
+  const trialEndsMs = tsToMillis(user.trialEndsAt);
+  const endedOpen = access.state === 'expired' && trialEndsMs !== null && trialEndsMs <= Date.now()
+    && !user.subscription && !endedSeen && !tourHold
+    && (user.id !== 'preview' || (import.meta.env.DEV && new URLSearchParams(window.location.search).get('trialended') === '1'));
+  const closeEnded = () => { try { localStorage.setItem(endedKey, new Date().toISOString()); } catch { /* private mode */ } setEndedSeen(true); };
+  const endedModal = endedOpen ? <TrialEndedModal app={app} onClose={closeEnded} /> : null;
   const trialBanner = access.state === 'trial' && access.daysLeft <= 3 ? (
     <div data-testid="trial-banner" style={{ background: '#0a6847', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '9px 20px', fontSize: 13.5, flex: 'none' }}>
       <span>{t.trial.banner(access.daysLeft)}</span>
@@ -535,8 +549,9 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         {(dataBanner || sessionBanner || trialBanner) && (
           <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 120 }}>{dataBanner}{sessionBanner || trialBanner}</div>
         )}
-        <OnboardingTour app={app} viewport="phone" hold={tourHold || welcomeOpen} />
+        <OnboardingTour app={app} viewport="phone" hold={tourHold || welcomeOpen || endedOpen} />
         {welcomeModal}
+        {endedModal}
         <MobileApp app={app} viewport={viewport} />
         {upsellOpen && <UpsellModal app={app} onClose={() => setUpsellOpen(false)} />}
         {notice && (
@@ -551,8 +566,9 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   return (
     <div className="hpiq-root" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff' }}>
       {printPortal}
-      <OnboardingTour app={app} viewport="desktop" hold={tourHold || welcomeOpen} />
+      <OnboardingTour app={app} viewport="desktop" hold={tourHold || welcomeOpen || endedOpen} />
       {welcomeModal}
+      {endedModal}
       {upsellOpen && <UpsellModal app={app} onClose={() => setUpsellOpen(false)} />}
 
       {/* ============ Global nav ============ */}
@@ -683,7 +699,13 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
           >
             <RocketIcon />
             <span className="hp-btn-label">{t.up.nav}</span>
-            {sharedTermDiscountPct('annual') > 0 && (
+            {/* During the free trial the badge counts down the days left
+                (owner 2026-10-04) instead of advertising the annual saving. */}
+            {trialDaysLeft != null ? (
+              <span data-testid="nav-trial-days" title={t.tier.trialPill(trialDaysLeft)} style={{ position: 'absolute', bottom: -9, left: '50%', transform: 'translateX(-50%)', fontSize: 9.5, fontWeight: 800, background: '#0f8a5f', color: '#fff', borderRadius: 999, padding: '1px 7px', whiteSpace: 'nowrap', lineHeight: 1.4 }}>
+                {t.tier.trialBadge(trialDaysLeft)}
+              </span>
+            ) : sharedTermDiscountPct('annual') > 0 && (
               <span style={{ position: 'absolute', bottom: -9, left: '50%', transform: 'translateX(-50%)', fontSize: 9.5, fontWeight: 800, background: '#e11d48', color: '#fff', borderRadius: 999, padding: '1px 6px', whiteSpace: 'nowrap', lineHeight: 1.4 }}>
                 -{sharedTermDiscountPct('annual')}%
               </span>

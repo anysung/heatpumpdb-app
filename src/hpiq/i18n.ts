@@ -147,8 +147,17 @@ const EN = {
     freePlanBody: 'Search, basic specifications, listing status, subsidies, news and installation videos stay free. Upgrade any time for the full database.',
     notice: 'Data provided through this site is protected by encryption and access control. An unauthorised-use detection system is in operation.',
     welcomeTitle: 'Welcome to HeatPump DB!',
-    welcomeLines: (d: string) => ['Your 15-day free Premium pass is now active.', `You can use every feature of the app without limits until ${d}.`, 'After the 15 free days, the Standard service stays available at no cost. No payment method is needed and nothing is charged automatically.'],
+    welcomeLines: (d: string) => ['Your 30-day free Premium pass is now active.', `You can use every feature of the app without limits until ${d}.`, 'After the 30 free days, the Standard service stays available at no cost. No payment method is needed and nothing is charged automatically.'],
     welcomeOk: 'Start exploring ›',
+    /** Trial marking (owner 2026-10-04): the PREMIUM pill stays visible during the
+     *  trial (outlined) so nobody is surprised by what Standard does not include. */
+    trialPill: (d: number) => `Premium feature — included in your free trial (${d} ${d === 1 ? 'day' : 'days'} left). After the trial it needs a Premium plan.`,
+    trialBadge: (d: number) => `Trial · ${d} ${d === 1 ? 'day' : 'days'}`,
+    trialBadgeShort: (d: number) => `${d}d`,
+    welcomeMark: 'Marks the features that need a Premium plan after the trial. Everything without this mark stays free on Standard.',
+    endedTitle: 'Your Premium trial has ended',
+    endedBody: 'Your account continues on Standard (free) — search, basic specifications, listing status, subsidies, news and installation videos stay available. These Premium features are now locked:',
+    endedOk: 'Continue on Standard',
   },
 
   /** Upgrade page (owner, 2026-09-28) — Personal / Business plans, Standard vs Premium. */
@@ -302,7 +311,7 @@ const EN = {
       "faq": [
           [
               "Do I keep Standard for free?",
-              "Yes. Standard is free with no time limit and needs no payment method. New accounts start with 15 days of Premium; afterwards the account simply continues on Standard."
+              "Yes. Standard is free with no time limit and needs no payment method. New accounts start with 30 days of Premium; afterwards the account simply continues on Standard."
           ],
           [
               "What are the Premium work tools?",
@@ -926,7 +935,7 @@ const EN = {
   /** Subscription program — Professional / Team 3 / Team 5 (config: subscriptionPlans.ts). */
   sub: {
     pickTitle: 'Choose your plan.',
-    pickSub: 'Subscribing starts Premium immediately. New accounts include a 15-day Premium trial; after that the account continues on Standard (free).',
+    pickSub: 'Subscribing starts Premium immediately. New accounts include a 30-day Premium trial; after that the account continues on Standard (free).',
     currentTitle: 'Your subscription.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 user', team_3: 'Up to 3 users', team_5: 'Up to 5 users' } as Record<string, string>,
@@ -1153,8 +1162,15 @@ const DE: HpStrings = {
     freePlanBody: 'Suche, Basisdaten, Listungsstatus, Förderung, News und Installationsvideos bleiben kostenlos. Für die vollständige Datenbank jederzeit upgraden.',
     notice: 'Über diese Website bereitgestellte Daten sind durch Verschlüsselung und Zugriffskontrolle geschützt. Ein System zur Erkennung unbefugter Nutzung ist aktiv.',
     welcomeTitle: 'Herzlich willkommen bei HeatPump DB!',
-    welcomeLines: (d: string) => ['Ihr 15-tägiger kostenloser Premium-Zugang ist jetzt aktiv.', `Bis zum ${d} nutzen Sie alle Funktionen der App ohne Einschränkung.`, 'Nach den 15 kostenlosen Tagen bleibt der Standard-Service weiterhin kostenlos nutzbar. Es ist keine Zahlungsmethode nötig und es wird nichts automatisch berechnet.'],
+    welcomeLines: (d: string) => ['Ihr 30-tägiger kostenloser Premium-Zugang ist jetzt aktiv.', `Bis zum ${d} nutzen Sie alle Funktionen der App ohne Einschränkung.`, 'Nach den 30 kostenlosen Tagen bleibt der Standard-Service weiterhin kostenlos nutzbar. Es ist keine Zahlungsmethode nötig und es wird nichts automatisch berechnet.'],
     welcomeOk: 'Jetzt loslegen ›',
+    trialPill: (d: number) => `Premium-Funktion — in Ihrer kostenlosen Testphase enthalten (noch ${d} ${d === 1 ? 'Tag' : 'Tage'}). Nach der Testphase ist ein Premium-Tarif nötig.`,
+    trialBadge: (d: number) => `Test · ${d} ${d === 1 ? 'Tag' : 'Tage'}`,
+    trialBadgeShort: (d: number) => `${d} T`,
+    welcomeMark: 'Kennzeichnet Funktionen, für die nach der Testphase ein Premium-Tarif nötig ist. Alles ohne diese Kennzeichnung bleibt mit Standard kostenlos.',
+    endedTitle: 'Ihre Premium-Testphase ist beendet',
+    endedBody: 'Ihr Konto läuft mit Standard (kostenlos) weiter — Suche, Basisdaten, Listenstatus, Förderung, News und Installationsvideos bleiben verfügbar. Diese Premium-Funktionen sind jetzt gesperrt:',
+    endedOk: 'Mit Standard weiter',
   },
 
   up: {
@@ -1307,7 +1323,7 @@ const DE: HpStrings = {
       "faq": [
           [
               "Bleibt Standard kostenlos?",
-              "Ja. Standard ist zeitlich unbegrenzt kostenlos und braucht keine Zahlungsmethode. Neue Konten starten mit 15 Tagen Premium; danach läuft das Konto einfach mit Standard weiter."
+              "Ja. Standard ist zeitlich unbegrenzt kostenlos und braucht keine Zahlungsmethode. Neue Konten starten mit 30 Tagen Premium; danach läuft das Konto einfach mit Standard weiter."
           ],
           [
               "Was sind die Premium-Werkzeuge?",
@@ -1896,7 +1912,7 @@ const DE: HpStrings = {
   },
   sub: {
     pickTitle: 'Wählen Sie Ihren Tarif.',
-    pickSub: 'Mit dem Abschluss startet Premium sofort. Neue Konten enthalten eine 15-tägige Premium-Testphase; danach läuft das Konto mit Standard (kostenlos) weiter.',
+    pickSub: 'Mit dem Abschluss startet Premium sofort. Neue Konten enthalten eine 30-tägige Premium-Testphase; danach läuft das Konto mit Standard (kostenlos) weiter.',
     currentTitle: 'Ihr Abonnement.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 Nutzer', team_3: 'Bis zu 3 Nutzer', team_5: 'Bis zu 5 Nutzer' } as Record<string, string>,
@@ -2541,8 +2557,15 @@ const FR_FR: HpStrings = {
     freePlanBody: 'La recherche, les caractéristiques de base, le statut de liste, les aides, les actualités et les vidéos d’installation restent gratuits. Passez à Premium à tout moment pour la base complète.',
     notice: 'Les données fournies par ce site sont protégées par chiffrement et contrôle d’accès. Un système de détection des utilisations non autorisées est en service.',
     welcomeTitle: 'Bienvenue sur HeatPump DB !',
-    welcomeLines: (d: string) => ['Votre accès Premium gratuit de 15 jours est activé.', `Vous pouvez utiliser toutes les fonctionnalités de l’application sans limite jusqu’au ${d}.`, 'Après les 15 jours gratuits, le service Standard reste disponible gratuitement. Aucun moyen de paiement n’est requis et rien n’est facturé automatiquement.'],
+    welcomeLines: (d: string) => ['Votre accès Premium gratuit de 30 jours est activé.', `Vous pouvez utiliser toutes les fonctionnalités de l’application sans limite jusqu’au ${d}.`, 'Après les 30 jours gratuits, le service Standard reste disponible gratuitement. Aucun moyen de paiement n’est requis et rien n’est facturé automatiquement.'],
     welcomeOk: 'Commencer ›',
+    trialPill: (d: number) => `Fonction Premium — incluse dans votre essai gratuit (encore ${d} ${d === 1 ? 'jour' : 'jours'}). Après l’essai, elle nécessite une offre Premium.`,
+    trialBadge: (d: number) => `Essai · ${d} j`,
+    trialBadgeShort: (d: number) => `${d} j`,
+    welcomeMark: 'Signale les fonctions qui nécessitent une offre Premium après l’essai. Tout ce qui ne porte pas cette mention reste gratuit avec Standard.',
+    endedTitle: 'Votre essai Premium est terminé',
+    endedBody: 'Votre compte continue en Standard (gratuit) — recherche, caractéristiques de base, statut de référencement, aides, actualités et vidéos d’installation restent disponibles. Ces fonctions Premium sont désormais verrouillées :',
+    endedOk: 'Continuer avec Standard',
   },
 
   up: {
@@ -2695,7 +2718,7 @@ const FR_FR: HpStrings = {
       "faq": [
           [
               "Standard reste-t-il gratuit ?",
-              "Oui. Standard est gratuit sans limite de durée et sans moyen de paiement. Les nouveaux comptes commencent avec 15 jours de Premium ; ensuite, le compte continue simplement avec Standard."
+              "Oui. Standard est gratuit sans limite de durée et sans moyen de paiement. Les nouveaux comptes commencent avec 30 jours de Premium ; ensuite, le compte continue simplement avec Standard."
           ],
           [
               "Quels sont les outils de travail Premium ?",
@@ -3281,7 +3304,7 @@ const FR_FR: HpStrings = {
   },
   sub: {
     pickTitle: 'Choisissez votre offre.',
-    pickSub: 'La souscription active Premium immédiatement. Les nouveaux comptes incluent un essai Premium de 15 jours ; le compte continue ensuite avec l’offre Standard (gratuite).',
+    pickSub: 'La souscription active Premium immédiatement. Les nouveaux comptes incluent un essai Premium de 30 jours ; le compte continue ensuite avec l’offre Standard (gratuite).',
     currentTitle: 'Votre abonnement.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 utilisateur', team_3: 'Jusqu’à 3 utilisateurs', team_5: 'Jusqu’à 5 utilisateurs' } as Record<string, string>,
@@ -3730,8 +3753,15 @@ const PL_PL: HpStrings = {
     freePlanBody: 'Wyszukiwarka, podstawowe dane, status na liście, dofinansowania, aktualności i filmy instalacyjne pozostają bezpłatne. W każdej chwili możesz przejść na Premium, aby uzyskać pełną bazę.',
     notice: 'Dane udostępniane przez tę stronę są chronione szyfrowaniem i kontrolą dostępu. Działa system wykrywania nieuprawnionego wykorzystania.',
     welcomeTitle: 'Witamy w HeatPump DB!',
-    welcomeLines: (d: string) => ['Twój bezpłatny 15-dniowy dostęp Premium jest aktywny.', `Do ${d} możesz korzystać ze wszystkich funkcji aplikacji bez ograniczeń.`, 'Po 15 bezpłatnych dniach usługa Standard pozostaje dostępna bez opłat. Nie potrzebujesz metody płatności i nic nie zostanie pobrane automatycznie.'],
+    welcomeLines: (d: string) => ['Twój bezpłatny 30-dniowy dostęp Premium jest aktywny.', `Do ${d} możesz korzystać ze wszystkich funkcji aplikacji bez ograniczeń.`, 'Po 30 bezpłatnych dniach usługa Standard pozostaje dostępna bez opłat. Nie potrzebujesz metody płatności i nic nie zostanie pobrane automatycznie.'],
     welcomeOk: 'Zaczynamy ›',
+    trialPill: (d: number) => `Funkcja Premium — dostępna w bezpłatnym okresie próbnym (pozostało dni: ${d}). Po okresie próbnym wymaga planu Premium.`,
+    trialBadge: (d: number) => `Próba · ${d === 1 ? '1 dzień' : `${d} dni`}`,
+    trialBadgeShort: (d: number) => `${d} d`,
+    welcomeMark: 'Oznacza funkcje, które po okresie próbnym wymagają planu Premium. Wszystko bez tego oznaczenia pozostaje bezpłatne w planie Standard.',
+    endedTitle: 'Twój okres próbny Premium się zakończył',
+    endedBody: 'Konto działa dalej w planie Standard (bezpłatnym) — wyszukiwarka, podstawowe dane, status na liście, dotacje, aktualności i filmy instalacyjne pozostają dostępne. Te funkcje Premium są teraz zablokowane:',
+    endedOk: 'Kontynuuj w planie Standard',
   },
 
   up: {
@@ -3884,7 +3914,7 @@ const PL_PL: HpStrings = {
       "faq": [
           [
               "Czy Standard pozostaje bezpłatny?",
-              "Tak. Standard jest bezpłatny bez limitu czasu i nie wymaga metody płatności. Nowe konta zaczynają od 15 dni Premium; potem konto po prostu działa dalej w planie Standard."
+              "Tak. Standard jest bezpłatny bez limitu czasu i nie wymaga metody płatności. Nowe konta zaczynają od 30 dni Premium; potem konto po prostu działa dalej w planie Standard."
           ],
           [
               "Czym są narzędzia pracy Premium?",
@@ -4472,7 +4502,7 @@ const PL_PL: HpStrings = {
 
   sub: {
     pickTitle: 'Wybierz swój plan.',
-    pickSub: 'Subskrypcja uruchamia Premium od razu. Nowe konta mają 15-dniowy okres próbny Premium; potem konto działa dalej w planie Standard (bezpłatnym).',
+    pickSub: 'Subskrypcja uruchamia Premium od razu. Nowe konta mają 30-dniowy okres próbny Premium; potem konto działa dalej w planie Standard (bezpłatnym).',
     currentTitle: 'Twoja subskrypcja.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 użytkownik', team_3: 'Do 3 użytkowników', team_5: 'Do 5 użytkowników' } as Record<string, string>,
@@ -4925,8 +4955,15 @@ const IT_IT: HpStrings = {
     freePlanBody: 'Ricerca, specifiche di base, stato di iscrizione, incentivi, notizie e video di installazione restano gratuiti. Passa a Premium quando vuoi per il database completo.',
     notice: 'I dati forniti tramite questo sito sono protetti da crittografia e controllo degli accessi. È attivo un sistema di rilevamento degli usi non autorizzati.',
     welcomeTitle: 'Benvenuto in HeatPump DB!',
-    welcomeLines: (d: string) => ['Il tuo accesso Premium gratuito di 15 giorni è ora attivo.', `Puoi usare tutte le funzioni dell’app senza limiti fino al ${d}.`, 'Dopo i 15 giorni gratuiti il servizio Standard resta disponibile gratuitamente. Non serve alcun metodo di pagamento e non viene addebitato nulla automaticamente.'],
+    welcomeLines: (d: string) => ['Il tuo accesso Premium gratuito di 30 giorni è ora attivo.', `Puoi usare tutte le funzioni dell’app senza limiti fino al ${d}.`, 'Dopo i 30 giorni gratuiti il servizio Standard resta disponibile gratuitamente. Non serve alcun metodo di pagamento e non viene addebitato nulla automaticamente.'],
     welcomeOk: 'Inizia ›',
+    trialPill: (d: number) => `Funzione Premium — inclusa nella tua prova gratuita (ancora ${d} ${d === 1 ? 'giorno' : 'giorni'}). Dopo la prova richiede un piano Premium.`,
+    trialBadge: (d: number) => `Prova · ${d} gg`,
+    trialBadgeShort: (d: number) => `${d} gg`,
+    welcomeMark: 'Indica le funzioni che dopo la prova richiedono un piano Premium. Tutto ciò che non ha questo segno resta gratuito con Standard.',
+    endedTitle: 'La tua prova Premium è terminata',
+    endedBody: 'Il tuo account prosegue con Standard (gratuito) — ricerca, dati di base, stato nel catalogo, incentivi, notizie e video di installazione restano disponibili. Queste funzioni Premium sono ora bloccate:',
+    endedOk: 'Continua con Standard',
   },
 
   up: {
@@ -5079,7 +5116,7 @@ const IT_IT: HpStrings = {
       "faq": [
           [
               "Standard resta gratuito?",
-              "Sì. Standard è gratuito senza limiti di tempo e non richiede alcun metodo di pagamento. I nuovi account iniziano con 15 giorni di Premium; poi l’account continua semplicemente con Standard."
+              "Sì. Standard è gratuito senza limiti di tempo e non richiede alcun metodo di pagamento. I nuovi account iniziano con 30 giorni di Premium; poi l’account continua semplicemente con Standard."
           ],
           [
               "Quali sono gli strumenti di lavoro Premium?",
@@ -5673,7 +5710,7 @@ const IT_IT: HpStrings = {
 
   sub: {
     pickTitle: 'Scegli il tuo piano.',
-    pickSub: 'L’abbonamento attiva subito Premium. I nuovi account includono una prova Premium di 15 giorni; poi l’account continua con il piano Standard (gratuito).',
+    pickSub: 'L’abbonamento attiva subito Premium. I nuovi account includono una prova Premium di 30 giorni; poi l’account continua con il piano Standard (gratuito).',
     currentTitle: 'Il tuo abbonamento.',
     planNames: { professional: 'Professional', team_3: 'Team 3', team_5: 'Team 5' } as Record<string, string>,
     planUsers: { professional: '1 utente', team_3: 'Fino a 3 utenti', team_5: 'Fino a 5 utenti' } as Record<string, string>,

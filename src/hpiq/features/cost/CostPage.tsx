@@ -77,7 +77,7 @@ export const CostPage: React.FC<{ app: HpApp }> = ({ app }) => {
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
           <span style={TITLE}>{s.title}</span>
           <EstimateBadge s={s} />
-          {!app.premium && <PremiumPill app={app} />}
+          <PremiumPill app={app} />
         </div>
         <span style={{ fontSize: 14, color: '#6e6e73', lineHeight: 1.5, marginTop: -8 }}>{s.subtitle}</span>
         <Disclaimer s={s} />

@@ -3,7 +3,7 @@
  *
  * Run: node tests/welcome-mail.unit.mjs
  *
- * Copy contract, in all five languages: subject + body, the 15-day Premium
+ * Copy contract, in all five languages: subject + body, the 30-day Premium
  * trial, the trial end date, "continues on Standard (free)", no payment
  * method + nothing charged automatically, the market site link — and never
  * the word "Free" for the tier.
@@ -58,13 +58,13 @@ const SITE = 'https://www.heatpumpdb.fr';
 console.log('\nWelcome mail — copy in every language\n');
 ok('exactly five languages', JSON.stringify(Object.keys(WELCOME_COPY).sort()) === JSON.stringify([...LANGS].sort()));
 for (const lang of LANGS) {
-  const m = buildWelcomeMail({ lang, name: 'Anna Nowak', endsMs: ENDS, site: SITE, days: 15 });
+  const m = buildWelcomeMail({ lang, name: 'Anna Nowak', endsMs: ENDS, site: SITE, days: 30 });
   const all = `${m.subject}\n${m.body}`;
   ok(`${lang}: language kept`, m.lang === lang, m.lang);
   ok(`${lang}: subject present`, typeof m.subject === 'string' && m.subject.length > 10);
   ok(`${lang}: body present`, typeof m.body === 'string' && m.body.length > 200);
-  ok(`${lang}: subject names the 15-day Premium trial`, /15/.test(m.subject) && /Premium/.test(m.subject), m.subject);
-  ok(`${lang}: body mentions 15 days`, /\b15\b/.test(m.body));
+  ok(`${lang}: subject names the 30-day Premium trial`, /30/.test(m.subject) && /Premium/.test(m.subject), m.subject);
+  ok(`${lang}: body mentions 30 days`, /\b30\b/.test(m.body));
   ok(`${lang}: congratulates`, CONGRATS[lang].test(m.body));
   ok(`${lang}: whole app, no restrictions`, ALL_FEATURES[lang].test(m.body));
   ok(`${lang}: continues on Standard (free)`, STANDARD_FIRST[lang].test(m.body));

@@ -62,11 +62,11 @@ type ViewState = 'LANDING' | 'LOGIN' | 'SIGNUP' | 'PENDING_APPROVAL' | 'VERIFY_E
  *  that signing up is free and card-less BEFORE choosing a button — the
  *  industry-standard trust phrase is "no credit card required". */
 const FREE_SIGNUP_NOTE: Record<Language, string> = {
-  en: 'Free to use — 15 days of Premium included, no credit card required.',
-  de: 'Kostenlos nutzen — 15 Tage Premium inklusive, keine Kreditkarte erforderlich.',
-  fr: 'Utilisation gratuite — 15 jours de Premium inclus, sans carte bancaire.',
-  pl: 'Korzystaj za darmo — 15 dni Premium w cenie, bez karty płatniczej.',
-  it: 'Uso gratuito — 15 giorni di Premium inclusi, senza carta di credito.',
+  en: 'Free to use — 30 days of Premium included, no credit card required.',
+  de: 'Kostenlos nutzen — 30 Tage Premium inklusive, keine Kreditkarte erforderlich.',
+  fr: 'Utilisation gratuite — 30 jours de Premium inclus, sans carte bancaire.',
+  pl: 'Korzystaj za darmo — 30 dni Premium w cenie, bez karty płatniczej.',
+  it: 'Uso gratuito — 30 giorni di Premium inclusi, senza carta di credito.',
 };
 
 /** The two public, indexable pages, labelled as signposts rather than as calls
@@ -607,7 +607,11 @@ const AppInner: React.FC = () => {
       ...previewUserPatch(),        // ?as=owner | member → team account shapes
       // ?welcome=1 — an account in its Premium trial (welcome notice layout check).
       ...(new URLSearchParams(window.location.search).get('welcome') === '1'
-        ? { trialEndsAt: new Date(Date.now() + 15 * 86_400_000).toISOString(), accessUntilTs: new Date(Date.now() + 15 * 86_400_000).toISOString() }
+        ? { trialEndsAt: new Date(Date.now() + 30 * 86_400_000).toISOString(), accessUntilTs: new Date(Date.now() + 30 * 86_400_000).toISOString() }
+        : {}),
+      // ?trialended=1 — the trial closed without a subscription (trial-ended notice check).
+      ...(new URLSearchParams(window.location.search).get('trialended') === '1'
+        ? { trialEndsAt: new Date(Date.now() - 86_400_000).toISOString(), accessUntilTs: new Date(Date.now() - 86_400_000).toISOString() }
         : {}),
     };
     return (

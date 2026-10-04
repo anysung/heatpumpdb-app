@@ -351,15 +351,15 @@ assumption that gitignored means disposable — keep at least the newest seed.
   fact-checked against official sources** — the news pipeline's articles and the
   live policy list are AI-written leads, not sources (Oct 2026 review found
   several wrong: DE "contract before commitment", GB "valid EPC", IT "65%").
-- **Auth flow (2026-07-27 program): 15-day in-app free trial, no payment method**
-  (7 days until 2026-09-07; the length lives in `TRIAL_DAYS`, client + function).**
+- **Auth flow (2026-07-27 program): 30-day in-app free trial, no payment method**
+  (7 days until 2026-09-07, 15 days until 2026-10-04; the length lives in `TRIAL_DAYS`, client + function).**
   Two modes, switched by `VITE_BILLING_FN_URL` (src/config/env.ts):
   - **Trial flow** (URL set): registration creates a `pending` profile; the
     server function `finalizeSignup` (google_cloud_function_billing/) activates
     it after **email verification against the Firebase Auth SERVER record**
-    (social = provider-verified) + required consents, and grants ONE 15-day
+    (social = provider-verified) + required consents, and grants ONE 30-day
     trial per email service-wide (`emailRegistry`, kept 1 year after deletion,
-    Firestore TTL). Day 8 without payment → server rules close access
+    Firestore TTL). Trial end without payment → the account drops to Standard
     (`accessUntilTs` on user/org; storage.rules + firestore.rules
     `isEntitled()`). Paddle prices carry NO trial — checkout charges
     immediately; only the billing webhook / admin / grant redemption ever

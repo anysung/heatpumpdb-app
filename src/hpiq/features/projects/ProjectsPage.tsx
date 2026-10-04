@@ -132,7 +132,7 @@ const StatusChip: React.FC<{ status: ProjectStatus; f: ProjectFormStrings }> = (
 const Teaser: React.FC<{ app: HpApp; s: ProjectStrings }> = ({ app, s }) => (
   <>
     <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-      <span style={TITLE}>{s.title}</span><PremiumPill app={app} />
+      <span style={TITLE}>{s.title}</span><PremiumPill app={app} always />
     </div>
     <div data-testid="projects-teaser" style={{ ...CARD, padding: '26px 26px 24px', display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 640 }}>
       <span style={{ fontFamily: FD, fontSize: 20, fontWeight: 700 }}>{s.teaserTitle}</span>

@@ -28,7 +28,7 @@ export const DataSheetBrandingSection: React.FC<{ app: HpApp }> = ({ app }) => {
 
   return (
     <div data-testid="ds-branding" style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 11, borderTop: '1px solid rgba(0,0,0,.08)' }}>
-      <span style={{ ...sectionLabel, textTransform: 'uppercase' }}>{s.studioHead}{!app.premium && <PremiumPill app={app} />}</span>
+      <span style={{ ...sectionLabel, textTransform: 'uppercase' }}>{s.studioHead}<PremiumPill app={app} /></span>
       <span onClick={onToggle} data-testid="ds-branding-toggle" style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, cursor: app.premium && !saved ? 'default' : 'pointer', color: app.premium && !saved ? '#9a9aa0' : '#1d1d1f' }}>
         <Switch on={on} disabled={app.premium && !saved} />
         {s.toggle}

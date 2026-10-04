@@ -138,7 +138,7 @@ export const WatchlistPage: React.FC<{ app: HpApp }> = ({ app }) => {
     <>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         <span style={{ fontFamily: FD, fontSize: 28, fontWeight: 600, letterSpacing: '-0.3px' }}>
-          {s.title}{!app.premium && <PremiumPill app={app} />}
+          {s.title}<PremiumPill app={app} />
         </span>
         <span style={{ fontSize: 14, color: '#6e6e73', lineHeight: 1.55 }}>{ps.sub}</span>
       </div>

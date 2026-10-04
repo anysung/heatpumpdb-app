@@ -8,13 +8,13 @@ Naming (owner decision 2026-09-28): the free-of-charge tier is called
 mention: EN "Standard (free)", DE "Standard (kostenlos)", FR "Standard
 (gratuit)", PL "Standard (bezpłatny)", IT "Standard (gratuito)", then just
 "Standard". Premium plans stay Professional / Team 3 / Team 5. The trial is
-a "15-day Premium trial", after which the account "continues on Standard".
+a "30-day Premium trial", after which the account "continues on Standard".
 Code identifiers are unchanged (tier values stay `'free'` / `'premium'`,
 file names such as `free-tier-launch-notice.json` stay).
 
 Welcome notice (owner decision 2026-09-28): every account activated WITH a
 fresh trial receives a welcome mail from `finalizeSignup`
-(`google_cloud_function_billing/welcomeMailCopy.js`; 15-day Premium trial
+(`google_cloud_function_billing/welcomeMailCopy.js`; 30-day Premium trial
 active, full app unlocked, end date, continues on Standard, no payment
 method, nothing charged automatically). Fail-open and idempotent
 (`welcomeMailSentAt` / `welcomeMailError` on the user doc). Status: PLAN — nothing
@@ -61,7 +61,7 @@ Live Paddle had exactly one subscription (a go-live test, canceled
 
 ## Trial
 
-15-day Premium trial at signup stays (one per email, emailRegistry). On expiry
+30-day Premium trial at signup stays (one per email, emailRegistry). On expiry
 the account continues on **Standard**, not on a lock screen. `accessUntilTs` then means
 "Premium until", no longer "access until". `runTrialReminders` copy must change
 accordingly ("continues on Standard", not "access closes").

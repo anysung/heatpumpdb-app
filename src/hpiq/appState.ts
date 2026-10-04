@@ -38,6 +38,8 @@ export interface HpApp {
 
   /** Free + Premium (2026-09-27): false = Free tier (basic dataset). */
   premium: boolean;
+  /** Whole days left in the free Premium trial; null when not in a trial. */
+  trialDaysLeft: number | null;
   /** Open the upgrade prompt — every Premium-only action routes here. */
   upsell: () => void;
 

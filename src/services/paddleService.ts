@@ -9,7 +9,7 @@
  *
  * Catalogue: 3 products (Professional / Team 3 / Team 5) × 3 recurring prices
  * (monthly / 6 months / annual). The LIVE prices carry NO Paddle trial — the
- * free period is the in-app 15-day signup trial, so checkout charges the first
+ * free period is the in-app 30-day signup trial, so checkout charges the first
  * term immediately. The ids live in config/paddlePrices.ts, keyed by currency; a market
  * whose currency has no catalogue keeps that option in "coming soon" mode.
  */

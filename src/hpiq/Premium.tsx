@@ -17,6 +17,7 @@ import { createPortal } from 'react-dom';
 import { HpApp } from './appState';
 import { tr } from './i18n';
 import { FD } from './ui';
+import { TRIAL_DAYS } from '../config/subscriptionPlans';
 
 export const UpsellModal: React.FC<{ app: HpApp; onClose: () => void }> = ({ app, onClose }) => {
   const t = tr(app.lang).tier;
@@ -74,12 +75,32 @@ export const UpsellModal: React.FC<{ app: HpApp; onClose: () => void }> = ({ app
   );
 };
 
-/** Small "Premium" pill used on locked controls (segment tab, compare, buttons). */
-export const PremiumPill: React.FC<{ app: HpApp; style?: React.CSSProperties }> = ({ app, style }) => (
-  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.04em', color: '#0a6847', background: '#e8f5ee', borderRadius: 999, padding: '2px 7px', marginLeft: 6, verticalAlign: 'middle', textTransform: 'uppercase', ...style }}>
-    {tr(app.lang).tier.premium}
-  </span>
-);
+/**
+ * Small "Premium" pill on Premium-only controls (segment tab, compare, buttons).
+ * Standard: the solid pill (the control is locked). Premium TRIAL: an outlined
+ * pill with a "included in your trial" tooltip — owner 2026-10-04, so a trial
+ * user knows during the trial which features Standard will not include.
+ * Paid Premium: hidden, unless `always` (headings that label Premium content).
+ */
+export const PremiumPill: React.FC<{ app: HpApp; style?: React.CSSProperties; always?: boolean }> = ({ app, style, always }) => {
+  const t = tr(app.lang).tier;
+  const trial = app.premium && app.trialDaysLeft != null;
+  if (app.premium && !trial && !always) return null;
+  return (
+    <span
+      className="hp-noprint"
+      title={trial ? t.trialPill(app.trialDaysLeft as number) : undefined}
+      data-testid={trial ? 'premium-pill-trial' : 'premium-pill'}
+      style={{
+        fontSize: 10, fontWeight: 700, letterSpacing: '.04em', color: '#0a6847', background: '#e8f5ee', borderRadius: 999, padding: '2px 7px', marginLeft: 6, verticalAlign: 'middle', textTransform: 'uppercase',
+        ...style,
+        ...(trial ? { background: '#fff', boxShadow: 'inset 0 0 0 1px #34a46b', cursor: 'help' } : {}),
+      }}
+    >
+      {t.premium}
+    </span>
+  );
+};
 
 /** The data-protection line under data views and in the footer. */
 export const DataNotice: React.FC<{ app: HpApp; style?: React.CSSProperties; dark?: boolean }> = ({ app, style, dark }) => (
@@ -110,7 +131,7 @@ export const WelcomeTrialModal: React.FC<{ app: HpApp; trialEndsMs: number; onCl
       <div data-testid="trial-welcome" style={{ background: '#fff', borderRadius: 22, maxWidth: 470, width: '100%', overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,.3)' }}>
         <div style={{ background: 'linear-gradient(135deg, #0a6847 0%, #0f8a5f 45%, #1fb57a 100%)', color: '#fff', padding: '26px 26px 22px', display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ flex: 'none', width: 64, height: 64, borderRadius: 18, background: 'rgba(255,255,255,.16)', border: '1px solid rgba(255,255,255,.35)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontFamily: FD, fontSize: 26, fontWeight: 800, lineHeight: 1 }}>15</span>
+            <span style={{ fontFamily: FD, fontSize: 26, fontWeight: 800, lineHeight: 1 }}>{TRIAL_DAYS}</span>
             <span style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: '.08em', marginTop: 2 }}>{t.tier.premium.toUpperCase()}</span>
           </div>
           <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 700, lineHeight: 1.25 }}>{t.tier.welcomeTitle}</span>
@@ -119,9 +140,51 @@ export const WelcomeTrialModal: React.FC<{ app: HpApp; trialEndsMs: number; onCl
           <span style={{ fontSize: 15.5, fontWeight: 650, color: '#1d1d1f' }}>{l1}</span>
           <span style={{ fontSize: 14, color: '#3a3a3c', lineHeight: 1.6 }}>{l2}</span>
           <span style={{ fontSize: 14, color: '#3a3a3c', lineHeight: 1.6 }}>{l3}</span>
+          <span data-testid="trial-welcome-mark" style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#3a3a3c', lineHeight: 1.55, background: '#f5f9f7', borderRadius: 12, padding: '10px 12px' }}>
+            <PremiumPill app={app} always style={{ marginLeft: 0, flex: 'none', marginTop: 1 }} />
+            <span>{t.tier.welcomeMark}</span>
+          </span>
           <span className="hp-press" data-testid="trial-welcome-ok" onClick={onClose}
             style={{ marginTop: 6, textAlign: 'center', borderRadius: 999, padding: '12px 18px', fontSize: 14.5, fontWeight: 700, cursor: 'pointer', background: '#0071e3', color: '#fff' }}>
             {t.tier.welcomeOk}
+          </span>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+};
+
+/**
+ * Trial-ended notice (owner 2026-10-04). Shown ONCE per account (per device) on
+ * the first visit after the free trial closed without a subscription: the
+ * account stays on Standard, and this lists what is now locked — the same
+ * features the PREMIUM pill marked during the trial.
+ */
+export const TrialEndedModal: React.FC<{ app: HpApp; onClose: () => void }> = ({ app, onClose }) => {
+  const t = tr(app.lang).tier;
+  return createPortal(
+    <div className="hpiq-root" onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 420, background: 'rgba(0,0,0,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+      <div data-testid="trial-ended" onClick={e => e.stopPropagation()} style={{ background: '#fff', borderRadius: 22, maxWidth: 480, width: '100%', boxSizing: 'border-box', padding: '26px 26px 22px', boxShadow: '0 24px 60px rgba(0,0,0,.3)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 700, color: '#1d1d1f' }}>{t.endedTitle}</span>
+        <span style={{ fontSize: 14, color: '#3a3a3c', lineHeight: 1.55 }}>{t.endedBody}</span>
+        <ul style={{ listStyle: 'none', margin: '2px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
+          {t.benefits.map(b => (
+            <li key={b} style={{ display: 'flex', gap: 9, fontSize: 13.5, color: '#1d1d1f', lineHeight: 1.45 }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8e8e93" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flex: 'none', marginTop: 2 }}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+              {b}
+            </li>
+          ))}
+        </ul>
+        <span style={{ fontSize: 13, color: '#6e6e73', marginTop: 2 }}>{t.price}</span>
+        <div style={{ display: 'flex', gap: 10, marginTop: 6, flexWrap: 'wrap' }}>
+          <span className="hp-press" data-testid="trial-ended-cta" onClick={() => { onClose(); app.go('upgrade'); }}
+            style={{ flex: '1 1 200px', textAlign: 'center', borderRadius: 999, padding: '12px 18px', fontSize: 14, fontWeight: 700, cursor: 'pointer', background: '#0071e3', color: '#fff' }}>
+            {t.cta}
+          </span>
+          <span className="hp-press" data-testid="trial-ended-ok" onClick={onClose}
+            style={{ flex: '0 1 auto', textAlign: 'center', border: '1px solid #d2d2d7', borderRadius: 999, padding: '12px 18px', fontSize: 14, fontWeight: 600, cursor: 'pointer', color: '#1d1d1f' }}>
+            {t.endedOk}
           </span>
         </div>
       </div>

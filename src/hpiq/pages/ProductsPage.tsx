@@ -198,7 +198,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 }}
               >
                 {s === 'residential' ? t.products.residential : t.products.commercial}
-                {s === 'commercial' && !app.premium && <PremiumPill app={app} />}
+                {s === 'commercial' && <PremiumPill app={app} />}
               </span>
             );
           })}
@@ -240,6 +240,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                     style={{ display: 'block', padding: '8px 16px', fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', ...(key === sort ? { fontWeight: 600, color: '#0066cc' } : {}) }}
                   >
                     {t.products.sortLabels[key]}
+                    {(key === 'cop2' || key === 'noise') && <PremiumPill app={app} />}
                   </span>
                 ))}
               </div>
@@ -385,7 +386,7 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 creates one) above the later-painted table rows — without it the
                 mini-mode popover and the chip tooltips render BEHIND the list. */}
             <div ref={trayRef} data-tour="compare-tray" style={{ position: 'relative', zIndex: 40, display: 'flex', alignItems: 'center', gap: 12, padding: '11px 20px', borderBottom: '1px solid rgba(0,0,0,.08)', background: 'rgba(245,245,247,.92)', ...frosted, flex: 'none' }}>
-              <span style={{ ...sectionLabel, flex: 'none' } as React.CSSProperties}>{t.products.compare}</span>
+              <span style={{ ...sectionLabel, flex: 'none' } as React.CSSProperties}>{t.products.compare}<PremiumPill app={app} /></span>
 
               {trayMini ? (
                 compareCount > 0 && (

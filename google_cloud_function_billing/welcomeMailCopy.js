@@ -5,14 +5,14 @@
  * Firestore or SMTP (tests/welcome-mail.unit.mjs).
  *
  * Owner decision 2026-09-28 (original wording, Korean): "가입을 축하합니다.
- * 현재 프리미엄 기능 15일 무료 사용권이 활성화 되었습니다. 앱 전체 기능을
- * 제한없이 사용 가능합니다. 15일 무료 사용 기간 종료 후 Standard 서비스는
+ * 현재 프리미엄 기능 30일 무료 사용권이 활성화 되었습니다. 앱 전체 기능을
+ * 제한없이 사용 가능합니다. 30일 무료 사용 기간 종료 후 Standard 서비스는
  * 계속 사용 가능합니다." — plus the trial end date, and that no payment method
  * is needed and nothing is charged automatically.
  *
  * Naming: the free-of-charge tier is "Standard" — first mention with the
  * parenthetical (free / kostenlos / gratuit / bezpłatny / gratuito), never
- * "Free". The trial is a "15-day Premium trial".
+ * "Free". The trial is a "30-day Premium trial".
  *
  * `{{CTA}}` marks where the letterhead places the button (see withCta in
  * index.js); the site URL also stays in the text for clients that strip it.
@@ -130,7 +130,7 @@ const GREETING = { en: 'Dear', de: 'Guten Tag', fr: 'Bonjour', pl: 'Dzień dobry
  * The complete message: { lang, subject, body, cta: { label, url } }.
  * `lang` falls back to English for anything unknown; `name` is optional.
  */
-function buildWelcomeMail({ lang, name, endsMs, site, days = 15 }) {
+function buildWelcomeMail({ lang, name, endsMs, site, days = 30 }) {
   const L = WELCOME_COPY[lang] ? lang : 'en';
   const date = formatTrialEnd(endsMs, L);
   const copy = WELCOME_COPY[L]({ days, date, site });

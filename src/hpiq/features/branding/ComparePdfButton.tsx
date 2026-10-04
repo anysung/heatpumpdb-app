@@ -65,7 +65,7 @@ export const ComparePdfButton: React.FC<{ app: HpApp; ids: string[] }> = ({ app,
           <path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" />
         </svg>
         {s.cmpBtn}
-        {!app.premium && <PremiumPill app={app} />}
+        <PremiumPill app={app} />
       </span>
       {open && (
         <>

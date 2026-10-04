@@ -200,7 +200,7 @@ const EN = {
       {
         h: 'Premium trial',
         p: [
-          'Every new account includes a 15-day Premium trial, once per email address. No payment method is required to start it, and nothing is charged during it.',
+          'Every new account includes a 30-day Premium trial, once per email address. No payment method is required to start it, and nothing is charged during it.',
           'When the trial ends, the account automatically continues on Standard — it is not closed. Nothing is charged automatically: a subscription begins only when you choose a plan and complete checkout, and the first period is billed immediately at that point.',
         ],
       },
@@ -239,7 +239,7 @@ const EN = {
     updated: ver.terms,
     intro: `This policy explains what happens when you cancel your ${SERVICE_NAME} subscription, and when a refund is or is not due. Paddle is our merchant of record and handles all payments.`,
     sections: [
-      { h: 'During the Premium trial', p: ['Every new account includes a 15-day Premium trial. No payment method is required and nothing is charged during the trial.'] },
+      { h: 'During the Premium trial', p: ['Every new account includes a 30-day Premium trial. No payment method is required and nothing is charged during the trial.'] },
       { h: 'After the trial', p: ['When the trial ends, the account continues on Standard and no payment is taken. A charge occurs only if you then choose a Premium plan yourself; the first period is billed immediately at checkout.'] },
       { h: '14-day refund on your first payment', p: [`If your first payment is taken after the Premium trial, you may request a full refund of that first payment within 14 days of the charge, for any reason. Send a New inquiry from the Account page or email ${SUPPORT_EMAIL}, and we will process it with Paddle. This 14-day right applies to the first payment only; later renewals are governed by the sections below.`] },
       {
@@ -404,7 +404,7 @@ const DE = {
       {
         h: 'Premium-Testphase',
         p: [
-          'Jedes neue Konto enthält eine 15-tägige Premium-Testphase, einmal pro E-Mail-Adresse. Für den Start ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.',
+          'Jedes neue Konto enthält eine 30-tägige Premium-Testphase, einmal pro E-Mail-Adresse. Für den Start ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.',
           'Nach Ablauf der Testphase läuft das Konto automatisch mit Standard weiter — es wird nicht geschlossen. Es wird nichts automatisch abgebucht: Ein Abonnement beginnt erst, wenn Sie selbst einen Tarif wählen und den Checkout abschließen; der erste Zeitraum wird dann sofort berechnet.',
         ],
       },
@@ -441,7 +441,7 @@ const DE = {
     updated: ver.terms,
     intro: `Diese Regelung erläutert, was bei der Kündigung Ihres ${SERVICE_NAME}-Abonnements geschieht und wann eine Erstattung erfolgt bzw. nicht erfolgt. Paddle ist unser Merchant of Record und wickelt alle Zahlungen ab.`,
     sections: [
-      { h: 'Während der Premium-Testphase', p: ['Jedes neue Konto enthält eine 15-tägige Premium-Testphase. Es ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.'] },
+      { h: 'Während der Premium-Testphase', p: ['Jedes neue Konto enthält eine 30-tägige Premium-Testphase. Es ist keine Zahlungsmethode erforderlich, und während der Testphase erfolgt keine Abbuchung.'] },
       { h: 'Nach der Testphase', p: ['Nach Ablauf der Testphase läuft das Konto mit Standard weiter, und es erfolgt keine Zahlung. Eine Abbuchung erfolgt nur, wenn Sie anschließend selbst einen Premium-Tarif wählen; der erste Zeitraum wird beim Checkout sofort berechnet.'] },
       { h: '14-tägiges Rückerstattungsrecht für Ihre erste Zahlung', p: [`Erfolgt Ihre erste Zahlung nach der Premium-Testphase, können Sie innerhalb von 14 Tagen nach der Abbuchung ohne Angabe von Gründen die vollständige Erstattung dieser ersten Zahlung verlangen. Senden Sie eine „Neue Anfrage“ über die Kontoseite oder schreiben Sie an ${SUPPORT_EMAIL} — wir wickeln die Erstattung gemeinsam mit Paddle ab. Dieses 14-Tage-Recht gilt nur für die erste Zahlung; spätere Verlängerungen richten sich nach den nachstehenden Abschnitten.`] },
       {
@@ -606,7 +606,7 @@ const FR = {
       {
         h: 'Essai Premium',
         p: [
-          "Chaque nouveau compte comprend un essai Premium de 15 jours, une fois par adresse e-mail. Aucun moyen de paiement n'est requis pour le démarrer et aucun débit n'a lieu pendant l'essai.",
+          "Chaque nouveau compte comprend un essai Premium de 30 jours, une fois par adresse e-mail. Aucun moyen de paiement n'est requis pour le démarrer et aucun débit n'a lieu pendant l'essai.",
           "À la fin de l'essai, le compte continue automatiquement en Standard — il n'est pas fermé. Aucun débit n'a lieu automatiquement : un abonnement ne commence que si vous choisissez vous-même une offre et finalisez le paiement, la première période étant alors facturée immédiatement.",
         ],
       },
@@ -643,7 +643,7 @@ const FR = {
     updated: ver.terms,
     intro: `Cette politique explique ce qui se passe lorsque vous résiliez votre abonnement ${SERVICE_NAME}, et quand un remboursement est dû ou non. Paddle est notre marchand officiel et gère tous les paiements.`,
     sections: [
-      { h: "Pendant l'essai Premium", p: ["Chaque nouveau compte comprend un essai Premium de 15 jours. Aucun moyen de paiement n'est requis et aucun débit n'a lieu pendant l'essai."] },
+      { h: "Pendant l'essai Premium", p: ["Chaque nouveau compte comprend un essai Premium de 30 jours. Aucun moyen de paiement n'est requis et aucun débit n'a lieu pendant l'essai."] },
       { h: "Après l'essai", p: ["À la fin de l'essai, le compte continue en Standard et aucun paiement n'est prélevé. Un débit n'intervient que si vous choisissez ensuite vous-même une offre Premium ; la première période est facturée immédiatement au moment du paiement."] },
       { h: 'Remboursement sous 14 jours de votre premier paiement', p: [`Si votre premier paiement est prélevé après l'essai Premium, vous pouvez demander le remboursement intégral de ce premier paiement dans les 14 jours suivant le débit, pour tout motif. Envoyez une « Nouvelle demande » depuis la page Compte ou écrivez à ${SUPPORT_EMAIL} ; nous procéderons au remboursement avec Paddle. Ce droit de 14 jours ne s'applique qu'au premier paiement ; les renouvellements ultérieurs sont régis par les sections ci-dessous.`] },
       {
@@ -822,7 +822,7 @@ const PL = {
       {
         h: 'Okres próbny Premium',
         p: [
-          'Każde nowe konto obejmuje 15-dniowy okres próbny Premium, jeden na adres e-mail. Do jego rozpoczęcia nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.',
+          'Każde nowe konto obejmuje 30-dniowy okres próbny Premium, jeden na adres e-mail. Do jego rozpoczęcia nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.',
           'Po zakończeniu okresu próbnego konto automatycznie działa dalej w planie Standard — nie zostaje zamknięte. Żadna płatność nie jest pobierana automatycznie: subskrypcja rozpoczyna się dopiero wtedy, gdy samodzielnie wybiorą Państwo plan i sfinalizują płatność; pierwszy okres jest wówczas naliczany natychmiast.',
         ],
       },
@@ -861,7 +861,7 @@ const PL = {
     updated: ver.terms,
     intro: `Niniejsze zasady wyjaśniają, co się dzieje po anulowaniu subskrypcji ${SERVICE_NAME} oraz kiedy zwrot przysługuje, a kiedy nie. Paddle jest naszym sprzedawcą rozliczeniowym (merchant of record) i obsługuje wszystkie płatności.`,
     sections: [
-      { h: 'W trakcie okresu próbnego Premium', p: ['Każde nowe konto obejmuje 15-dniowy okres próbny Premium. Nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.'] },
+      { h: 'W trakcie okresu próbnego Premium', p: ['Każde nowe konto obejmuje 30-dniowy okres próbny Premium. Nie jest wymagana metoda płatności, a w okresie próbnym nie są pobierane żadne opłaty.'] },
       { h: 'Po okresie próbnym', p: ['Po zakończeniu okresu próbnego konto działa dalej w planie Standard i żadna płatność nie jest pobierana. Opłata pojawia się tylko wtedy, gdy następnie samodzielnie wybiorą Państwo plan Premium; pierwszy okres jest naliczany natychmiast przy płatności.'] },
       { h: 'Zwrot pierwszej płatności w ciągu 14 dni', p: [`Jeżeli pierwsza płatność zostanie pobrana po okresie próbnym Premium, mogą Państwo zażądać pełnego zwrotu tej pierwszej płatności w ciągu 14 dni od obciążenia, z dowolnego powodu. Prosimy wysłać „Nowe zapytanie” ze strony Konto lub napisać na adres ${SUPPORT_EMAIL} — zrealizujemy zwrot wspólnie z Paddle. To 14-dniowe prawo dotyczy wyłącznie pierwszej płatności; późniejsze odnowienia regulują poniższe sekcje.`] },
       {
@@ -1040,7 +1040,7 @@ const IT = {
       {
         h: 'Prova Premium',
         p: [
-          'Ogni nuovo account include una prova Premium di 15 giorni, una sola volta per indirizzo e-mail. Per avviarla non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.',
+          'Ogni nuovo account include una prova Premium di 30 giorni, una sola volta per indirizzo e-mail. Per avviarla non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.',
           'Al termine della prova l’account prosegue automaticamente con Standard — non viene chiuso. Nulla viene addebitato automaticamente: un abbonamento inizia solo se scegliete un piano e completate il checkout, e in quel momento il primo periodo viene fatturato immediatamente.',
         ],
       },
@@ -1079,7 +1079,7 @@ const IT = {
     updated: ver.terms,
     intro: `La presente politica spiega cosa accade quando disdite il vostro abbonamento ${SERVICE_NAME} e quando un rimborso è dovuto o meno. Paddle è il nostro venditore ufficiale (merchant of record) e gestisce tutti i pagamenti.`,
     sections: [
-      { h: 'Durante la prova Premium', p: ['Ogni nuovo account include una prova Premium di 15 giorni. Non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.'] },
+      { h: 'Durante la prova Premium', p: ['Ogni nuovo account include una prova Premium di 30 giorni. Non è richiesto alcun metodo di pagamento e durante la prova non viene addebitato nulla.'] },
       { h: 'Dopo la prova', p: ['Al termine della prova l’account prosegue con Standard e nessun pagamento viene prelevato. Un addebito avviene solo se scegliete poi un piano Premium; il primo periodo viene fatturato immediatamente al checkout.'] },
       { h: 'Rimborso entro 14 giorni sul primo pagamento', p: [`Se il primo pagamento viene prelevato dopo la prova Premium, potete richiedere il rimborso completo di tale primo pagamento entro 14 giorni dall'addebito, per qualsiasi motivo. Inviate una «Nuova richiesta» dalla pagina Account oppure scrivete a ${SUPPORT_EMAIL}: procederemo al rimborso insieme a Paddle. Questo diritto di 14 giorni si applica solo al primo pagamento; i rinnovi successivi sono disciplinati dalle sezioni seguenti.`] },
       {

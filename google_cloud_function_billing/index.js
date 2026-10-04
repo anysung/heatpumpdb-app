@@ -48,7 +48,7 @@ const gcs = admin.storage();
 const DATASET_BUCKET = 'heatpumpdb-datasets';
 
 const OWNER_EMAIL = 'sungyongsoo1976@gmail.com';
-const TRIAL_DAYS = 15;
+const TRIAL_DAYS = 30;
 const RETENTION_DAYS = 365;
 const TEAM_PLANS = { team_3: 3, team_5: 5 };
 const PLAN_SEATS = { professional: 1, team_3: 3, team_5: 5 };

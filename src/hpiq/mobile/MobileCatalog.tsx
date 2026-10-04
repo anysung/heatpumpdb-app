@@ -284,7 +284,7 @@ export const MobileProducts: React.FC<{ app: HpApp; viewport: Viewport; onOpen: 
               {(['residential', 'commercial'] as const).map(s => (
                 <span key={s} onClick={() => app.setSegment(s)} style={{ padding: '7px 13px', cursor: 'pointer', textAlign: 'center', whiteSpace: 'nowrap', ...(app.segment === s ? { background: '#1d1d1f', color: '#fff', fontWeight: 600 } : {}) }}>
                   {s === 'residential' ? t.products.residential : t.products.commercial}
-                  {s === 'commercial' && !app.premium && <PremiumPill app={app} />}
+                  {s === 'commercial' && <PremiumPill app={app} />}
                 </span>
               ))}
             </div>

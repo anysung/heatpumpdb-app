@@ -1,7 +1,7 @@
 /**
  * Registration availability — one shared flag for every country edition.
  *
- * REOPENED 2026-08-06 (launch): the in-app trial flow is live (15 days since
+ * REOPENED 2026-08-06 (launch): the in-app trial flow is live (30 days since
  * 2026-09-07; 7 before that) — email
  * signup → verification → finalizeSignup activates and starts the trial.
  * The pause (Jul 2026, European expansion review) is over; the paused-notice

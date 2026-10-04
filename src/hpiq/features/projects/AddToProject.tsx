@@ -43,7 +43,7 @@ export const AddToProject: React.FC<{ app: HpApp; ids: string[]; label?: string 
         onClick={e => { e.stopPropagation(); if (!app.premium) { app.upsell(); return; } setOpen(o => !o); }}
         style={btn}
       >
-        <FolderIcon />{text}{!app.premium && <PremiumPill app={app} style={{ marginLeft: 2 }} />}
+        <FolderIcon />{text}<PremiumPill app={app} style={{ marginLeft: 2 }} />
       </span>
       {open && app.premium && (
         <Popover

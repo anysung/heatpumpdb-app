@@ -67,7 +67,7 @@ export const WatchButton: React.FC<{ app: HpApp; v: HpVM }> = ({ app, v }) => {
       >
         <Star on={modelOn} />
         {modelOn ? s.watching : s.watchModel}
-        {!app.premium && <PremiumPill app={app} style={{ marginLeft: 2 }} />}
+        <PremiumPill app={app} style={{ marginLeft: 2 }} />
       </span>
       {slug && (
         <span

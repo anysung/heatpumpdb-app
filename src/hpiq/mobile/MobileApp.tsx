@@ -265,8 +265,8 @@ const MobileDataSheet: React.FC<{ app: HpApp }> = ({ app }) => {
         )}
         {dsp ? (
           <div style={{ display: 'flex', gap: 9 }}>
-            <span className="hp-press" onClick={app.downloadSheetPdf} style={actionBtn(t.m.mdsPdf, true)}>⬇ {t.m.mdsPdf}{!app.premium && <PremiumPill app={app} />}</span>
-            <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPrint, false)}>🖨 {t.m.mdsPrint}{!app.premium && <PremiumPill app={app} />}</span>
+            <span className="hp-press" onClick={app.downloadSheetPdf} style={actionBtn(t.m.mdsPdf, true)}>⬇ {t.m.mdsPdf}<PremiumPill app={app} /></span>
+            <span className="hp-press" onClick={app.printSheet} style={actionBtn(t.m.mdsPrint, false)}>🖨 {t.m.mdsPrint}<PremiumPill app={app} /></span>
           </div>
         ) : (
           <span className="hp-press" onClick={() => app.go('products')} style={{ fontSize: 13, color: '#0066cc', cursor: 'pointer' }}>{t.m.mdsPick}</span>
@@ -913,9 +913,14 @@ export const MobileApp: React.FC<{ app: HpApp; viewport: Viewport }> = ({ app, v
             onClick={() => { setMenuOpen(false); app.go('upgrade'); }}
             data-testid="m-nav-upgrade"
             aria-label={t.up.nav}
-            style={{ width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, cursor: 'pointer', color: page === 'upgrade' ? '#0a3d2a' : '#eafff3', background: page === 'upgrade' ? '#fff' : 'linear-gradient(90deg, rgba(34,197,94,.3), rgba(6,182,212,.3))', border: '1px solid rgba(134,239,172,.55)' }}
+            style={{ position: 'relative', width: 30, height: 30, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, cursor: 'pointer', color: page === 'upgrade' ? '#0a3d2a' : '#eafff3', background: page === 'upgrade' ? '#fff' : 'linear-gradient(90deg, rgba(34,197,94,.3), rgba(6,182,212,.3))', border: '1px solid rgba(134,239,172,.55)' }}
           >
             <RocketIcon size={16} />
+            {app.trialDaysLeft != null && (
+              <span data-testid="m-nav-trial-days" style={{ position: 'absolute', bottom: -7, left: '50%', transform: 'translateX(-50%)', fontSize: 8.5, fontWeight: 800, background: '#0f8a5f', color: '#fff', borderRadius: 999, padding: '0 5px', whiteSpace: 'nowrap', lineHeight: 1.45 }}>
+                {t.tier.trialBadgeShort(app.trialDaysLeft)}
+              </span>
+            )}
           </span>
           {viewport === 'phone' && (
             <span

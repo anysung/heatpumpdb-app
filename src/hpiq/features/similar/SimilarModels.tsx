@@ -62,7 +62,7 @@ export const SimilarModels: React.FC<{ app: HpApp; v: HpVM; compact?: boolean }>
   const header = (
     <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
       <span style={{ ...sectionLabel, fontSize: 10.5, textTransform: 'uppercase' }}>
-        {s.title}{!app.premium && <PremiumPill app={app} />}
+        {s.title}<PremiumPill app={app} />
       </span>
       {!res.noCapacity && (
         <span data-testid="similar-count" style={{ fontSize: 12, color: '#7a7a7a' }}>{s.found(res.baseCount)}</span>

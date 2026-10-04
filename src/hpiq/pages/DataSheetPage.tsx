@@ -21,11 +21,11 @@ const MONO = 'ui-monospace, Menlo, monospace';
  *  indented to the LABEL, not to the number (owner, 2026-09-02: values lined
  *  up under the markers read as a second column of numbers). */
 const NOTE_W = 27;
-const FieldCell: React.FC<{ label: string; value: string; note?: number; span?: boolean; red?: boolean }> = ({ label, value, note, span, red }) => (
+const FieldCell: React.FC<{ label: string; value: string; note?: number; span?: boolean; red?: boolean; mark?: React.ReactNode }> = ({ label, value, note, span, red, mark }) => (
   <div className="ds-cell" style={{ gridColumn: span ? '1 / -1' : undefined, display: 'flex', flexDirection: 'column', gap: 4, padding: '11px 0 10px', borderBottom: '1px solid #ececf0', breakInside: 'avoid' }}>
     <span className="ds-cell-label" style={{ display: 'flex', fontSize: 10.5, letterSpacing: '.05em', textTransform: 'uppercase', color: '#7a7a7a' }}>
       {note != null && <span style={{ fontFamily: MONO, fontSize: 9.5, color: '#b6b6bc', flex: `0 0 ${NOTE_W}px` }}>[{note}]</span>}
-      <span style={{ minWidth: 0 }}>{label}</span>
+      <span style={{ minWidth: 0 }}>{label}{mark}</span>
     </span>
     <span className="ds-cell-value" style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.1px', paddingLeft: note != null ? NOTE_W : 0, ...(red ? { color: QA_RED } : {}) }}>{value}</span>
   </div>
@@ -97,6 +97,8 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
   const isLabelMode = app.dsMode === 'label';
   const dsp = (app.dsId && store ? store.byId.get(app.dsId) : null) ?? store?.all[0] ?? null;
   if (!dsp) return null;
+  // Premium-only fields carry the PREMIUM pill (screen only — hp-noprint).
+  const pm = <PremiumPill app={app} style={{ fontSize: 8.5, padding: '1px 6px', letterSpacing: '.03em' }} />;
 
   const noteOrder: string[] = [];
   const n = (key: string): number => {
@@ -223,9 +225,9 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                   <SectionGrid>
                     <FieldCell label={t.ds.f.kw55} value={dsp.kw === '—' ? '—' : `${dsp.kw} kW`} note={n('kw55')} />
                     <FieldCell label={t.ds.f.scop} value={dsp.scop} note={n('scop')} red={qaFlagged(dsp, 'scop')} />
-                    <FieldCell label={t.ds.f.cop7} value={dsp.cop7} note={n('cop7')} red={qaFlagged(dsp, 'cop_A7W35')} />
-                    <FieldCell label={t.ds.f.cop2} value={dsp.cop2} note={n('cop2')} red={qaFlagged(dsp, 'cop_A2W35')} />
-                    <FieldCell label={t.ds.f.copm7} value={dsp.copm7} note={n('copm7')} red={qaFlagged(dsp, 'cop_AMinus7W35')} />
+                    <FieldCell mark={pm} label={t.ds.f.cop7} value={dsp.cop7} note={n('cop7')} red={qaFlagged(dsp, 'cop_A7W35')} />
+                    <FieldCell mark={pm} label={t.ds.f.cop2} value={dsp.cop2} note={n('cop2')} red={qaFlagged(dsp, 'cop_A2W35')} />
+                    <FieldCell mark={pm} label={t.ds.f.copm7} value={dsp.copm7} note={n('copm7')} red={qaFlagged(dsp, 'cop_AMinus7W35')} />
                   </SectionGrid>
                   {crossRefId(dsp.raw) != null && (
                     <span style={{ fontSize: 10.5, color: '#7a7a7a', lineHeight: 1.55, paddingTop: 10 }}>
@@ -282,10 +284,10 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                   <SectionHead title={t.ds.headEnv} />
                   <SectionGrid>
                     <FieldCell label={t.ds.f.ref} value={dsp.ref} note={n('ref')} />
-                    <FieldCell label={t.ds.f.refKg} value={/^\d/.test(dsp.refKg) ? `${dsp.refKg} kg` : dsp.refKg} note={n('refKg')} />
-                    <FieldCell label={t.ds.f.noise} value={(/^\d/.test(dsp.noise) ? `${dsp.noise} dB(A)` : dsp.noise)} note={n('noise')} />
+                    <FieldCell mark={pm} label={t.ds.f.refKg} value={/^\d/.test(dsp.refKg) ? `${dsp.refKg} kg` : dsp.refKg} note={n('refKg')} />
+                    <FieldCell mark={pm} label={t.ds.f.noise} value={(/^\d/.test(dsp.noise) ? `${dsp.noise} dB(A)` : dsp.noise)} note={n('noise')} />
                     {/* GB: SG-Ready is not recorded on the PEL — unknown, not "No". */}
-                    <FieldCell label={t.ds.f.grid} value={IS_GB || dsp.raw.grid_ready == null ? '—' : dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
+                    <FieldCell mark={pm} label={t.ds.f.grid} value={IS_GB || dsp.raw.grid_ready == null ? '—' : dsp.raw.grid_ready ? t.ds.f.yes : t.ds.f.no} note={n('grid')} />
                   </SectionGrid>
                 </div>
               )}
@@ -442,8 +444,8 @@ export const DataSheetPage: React.FC<{ app: HpApp }> = ({ app }) => {
             {/* Equal-width buttons: flex:1 so they size to the row, not to their
                 labels; border-box so the outlined one isn't 2px wider. */}
             <div style={{ display: 'flex', gap: 9 }}>
-              <span className="hp-press" onClick={app.printSheet} style={{ ...pillPrimary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box', border: '1px solid transparent' }}>{t.ds.printBtn}{!app.premium && <PremiumPill app={app} style={{ background: 'rgba(255,255,255,.9)' }} />}</span>
-              <span className="hp-press" onClick={app.downloadSheetPdf} style={{ ...pillSecondary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box' }}>{t.ds.pdfBtn}{!app.premium && <PremiumPill app={app} />}</span>
+              <span className="hp-press" onClick={app.printSheet} style={{ ...pillPrimary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box', border: '1px solid transparent' }}>{t.ds.printBtn}<PremiumPill app={app} style={{ background: 'rgba(255,255,255,.9)' }} /></span>
+              <span className="hp-press" onClick={app.downloadSheetPdf} style={{ ...pillSecondary, flex: 1, textAlign: 'center', padding: '10px 0', boxSizing: 'border-box' }}>{t.ds.pdfBtn}<PremiumPill app={app} /></span>
             </div>
             <span style={{ fontSize: 11.5, color: '#7a7a7a', lineHeight: 1.5 }}>{app.premium ? t.ds.exportNote : t.tier.previewNote}</span>
             <DataNotice app={app} />

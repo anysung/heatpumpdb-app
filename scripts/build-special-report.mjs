@@ -287,11 +287,11 @@ ${productCta(t)}
 /* Premium editions (2026-10 on): the public page is the teaser; the report
    itself opens in the app for Premium members. Copy per market language. */
 const PREMIUM_CTA = {
-  en: { h: 'The full interactive report is part of Premium', p: 'Premium members open it in the app, under Special Report. New accounts include a 15-day Premium trial and then continue on Standard (free) — no credit card.', b: 'Open HeatPump DB' },
-  de: { h: 'Der vollständige interaktive Report ist Teil von Premium', p: 'Premium-Mitglieder öffnen ihn in der App unter „Special Report“. Neue Konten enthalten einen 15-tägigen Premium-Test und laufen danach mit Standard (kostenlos) weiter — ohne Kreditkarte.', b: 'HeatPump DB öffnen' },
-  fr: { h: 'Le rapport interactif complet fait partie de Premium', p: 'Les membres Premium l’ouvrent dans l’application, rubrique « Rapport spécial ». Les nouveaux comptes incluent un essai Premium de 15 jours, puis continuent en Standard (gratuit) — sans carte bancaire.', b: 'Ouvrir HeatPump DB' },
-  pl: { h: 'Pełny interaktywny raport jest częścią Premium', p: 'Członkowie Premium otwierają go w aplikacji, w zakładce „Raport specjalny”. Nowe konta mają 15-dniowy okres próbny Premium, a potem działają dalej w planie Standard (bezpłatny) — bez karty.', b: 'Otwórz HeatPump DB' },
-  it: { h: 'Il report interattivo completo fa parte di Premium', p: 'I membri Premium lo aprono nell’app, alla voce “Report speciale”. I nuovi account includono una prova Premium di 15 giorni e poi proseguono con Standard (gratuito) — senza carta di credito.', b: 'Apri HeatPump DB' },
+  en: { h: 'The full interactive report is part of Premium', p: 'Premium members open it in the app, under Special Report. New accounts include a 30-day Premium trial and then continue on Standard (free) — no credit card.', b: 'Open HeatPump DB' },
+  de: { h: 'Der vollständige interaktive Report ist Teil von Premium', p: 'Premium-Mitglieder öffnen ihn in der App unter „Special Report“. Neue Konten enthalten einen 30-tägigen Premium-Test und laufen danach mit Standard (kostenlos) weiter — ohne Kreditkarte.', b: 'HeatPump DB öffnen' },
+  fr: { h: 'Le rapport interactif complet fait partie de Premium', p: 'Les membres Premium l’ouvrent dans l’application, rubrique « Rapport spécial ». Les nouveaux comptes incluent un essai Premium de 30 jours, puis continuent en Standard (gratuit) — sans carte bancaire.', b: 'Ouvrir HeatPump DB' },
+  pl: { h: 'Pełny interaktywny raport jest częścią Premium', p: 'Członkowie Premium otwierają go w aplikacji, w zakładce „Raport specjalny”. Nowe konta mają 30-dniowy okres próbny Premium, a potem działają dalej w planie Standard (bezpłatny) — bez karty.', b: 'Otwórz HeatPump DB' },
+  it: { h: 'Il report interattivo completo fa parte di Premium', p: 'I membri Premium lo aprono nell’app, alla voce “Report speciale”. I nuovi account includono una prova Premium di 30 giorni e poi proseguono con Standard (gratuito) — senza carta di credito.', b: 'Apri HeatPump DB' },
 };
 
 /* ── the series index ────────────────────────────────────────────────────── */

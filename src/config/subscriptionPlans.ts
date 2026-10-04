@@ -8,13 +8,13 @@
  *   Terms: monthly / annual (~17% off). The 6-month term is retired.
  *   Billing currency: EUR in every market (GB/PL included), VAT-exclusive.
  *
- *   FREE TRIAL = the IN-APP signup trial: 15 days of full access with NO
+ *   FREE TRIAL = the IN-APP signup trial: 30 days of full access with NO
  *   payment method, granted server-side (finalizeSignup) at the account's
  *   first activation — ONE per email across the whole service, ever
  *   (emailRegistry). Paddle prices carry NO trial: checkout charges
  *   immediately. Team trials are ONE per organization, anchored to the team
- *   ADMIN's own signup trial — member join dates never extend it, and on day
- *   8 without payment the whole team is gated (accessUntilTs).
+ *   ADMIN's own signup trial — member join dates never extend it, and when it
+ *   ends without payment the whole team drops to Standard (accessUntilTs).
  *
  * Operating principles (enforced in UI + admin, not Paddle proration):
  *   - Plan and term are FIXED during a paid period. No mid-term upgrades,
@@ -40,7 +40,7 @@ export type SubPlanCode = 'professional' | 'team_3' | 'team_5';
 export type BillingTerm = 'monthly' | 'six_months' | 'annual';
 export type SubStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired';
 
-export const TRIAL_DAYS = 15;
+export const TRIAL_DAYS = 30;
 
 export interface SubPlanDef {
   code: SubPlanCode;

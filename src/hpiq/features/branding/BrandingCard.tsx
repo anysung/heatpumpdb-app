@@ -44,7 +44,7 @@ export const BrandingCard: React.FC<{ app: HpApp }> = ({ app }) => {
     return (
       <Card style={{ gap: 10 }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <CardTitle>{s.cardTitle}</CardTitle><PremiumPill app={app} />
+          <CardTitle>{s.cardTitle}</CardTitle><PremiumPill app={app} always />
         </span>
         <span style={{ fontSize: 13, color: '#555', lineHeight: 1.55 }}>{s.cardIntro}</span>
         <span style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, color: '#7a7a7a', lineHeight: 1.5 }}>
@@ -100,7 +100,7 @@ export const BrandingCard: React.FC<{ app: HpApp }> = ({ app }) => {
     <Card style={{ gap: 14 }}>
       <div data-testid="branding-card" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <CardTitle>{s.cardTitle}</CardTitle><PremiumPill app={app} />
+          <CardTitle>{s.cardTitle}</CardTitle><PremiumPill app={app} always />
         </span>
         <span style={{ fontSize: 13, color: '#555', lineHeight: 1.55 }}>{s.cardIntro}</span>
       </div>
