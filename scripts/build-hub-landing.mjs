@@ -96,11 +96,16 @@ const FEAT_ICONS = ['⚡', '⚖️', '📄', '🏷️', '💶', '📰'];
    (data_sources/special_report/<edition>/article.json) rather than restated
    here — one translation of a headline, not two that can drift apart. */
 const SR_STORE = join(ROOT, 'data_sources', 'special_report');
-const SR_EDITION = existsSync(SR_STORE)
+const SR_EDITIONS = existsSync(SR_STORE)
   ? readdirSync(SR_STORE)
       .filter((d) => /^\d{4}-\d{2}$/.test(d) && existsSync(join(SR_STORE, d, 'article.json')))
-      .sort().reverse()[0] ?? null
-  : null;
+      .sort().reverse()
+  : [];
+const SR_EDITION = SR_EDITIONS[0] ?? null;
+const srPublished = (id) => {
+  try { return JSON.parse(readFileSync(join(SR_STORE, id, 'article.json'), 'utf8')).published || new Date().toISOString().slice(0, 10); }
+  catch { return new Date().toISOString().slice(0, 10); }
+};
 const SR = SR_EDITION
   ? JSON.parse(readFileSync(join(SR_STORE, SR_EDITION, 'article.json'), 'utf8'))
   : null;
@@ -246,6 +251,7 @@ const HTML = `<!doctype html>
 <link rel="alternate" hreflang="fr-FR" href="https://www.heatpumpdb.fr/">
 <link rel="alternate" hreflang="pl-PL" href="https://www.heatpumpdb.pl/">
 <link rel="alternate" hreflang="it-IT" href="https://www.heatpumpdb.it/">
+<link rel="alternate" hreflang="en" href="https://www.heatpumpdb.eu/">
 <link rel="alternate" hreflang="x-default" href="https://www.heatpumpdb.eu/">
 <meta property="og:site_name" content="HeatPump DB">
 <meta property="og:title" content="HeatPump DB — Europe's Registry-Based Heat Pump Database">
@@ -797,6 +803,13 @@ writeFileSync(join(OUT, 'sitemap.xml'),
   + `  <url><loc>https://www.heatpumpdb.eu/</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq></url>\n`
   + `  <url><loc>https://www.heatpumpdb.eu/models/</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq></url>\n`
   + `  <url><loc>https://www.heatpumpdb.eu/models/methodology.html</loc><lastmod>${today}</lastmod><changefreq>yearly</changefreq></url>\n`
+  // Special Report: the hub's English pages are the canonical home of the
+  // European report (the market sites' English twins point here), so they
+  // must be in THIS sitemap — build-special-report.mjs writes the pages.
+  + (SR_EDITIONS.length
+    ? `  <url><loc>https://www.heatpumpdb.eu/special-report/</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq></url>\n`
+      + SR_EDITIONS.map((id) => `  <url><loc>https://www.heatpumpdb.eu/special-report/${id}/</loc><lastmod>${srPublished(id)}</lastmod><changefreq>yearly</changefreq></url>`).join('\n') + '\n'
+    : '')
   + models.map(m => `  <url><loc>https://www.heatpumpdb.eu/models/${m.slug}.html</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq></url>`).join('\n')
   + `\n</urlset>\n`);
 

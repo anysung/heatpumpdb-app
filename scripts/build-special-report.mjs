@@ -22,9 +22,12 @@
  * data_sources/special_report/<edition>/article.json holds the published copy
  * per UI language; the figures in it are transcribed from the owner's article
  * pack verbatim. Each market renders its own language plus an English twin
- * (GB is English-only), with reciprocal hreflang so the pair is never read as
- * duplicated content. The report file and the cover images are identical
- * everywhere — this is a European report, not five national ones.
+ * (GB is English-only). All six hosts form ONE hreflang cluster per page and
+ * the English twins are canonicalised to the hub's English page (see
+ * clusterLinks / canonicalFor below) — the twins stay for readers, but Google
+ * is told they are the same European page. The report file and the cover
+ * images are identical everywhere — this is a European report, not five
+ * national ones.
  *
  * Run:  node scripts/build-special-report.mjs <MARKET|EU> <outDir>
  * Wired into every build:<market> BEFORE build-public-news.mjs (which owns the
@@ -55,6 +58,25 @@ const host = HOSTS[MARKET];
 if (!host) { console.error(`build-special-report: unknown market ${MARKET}`); process.exit(1); }
 const primary = LANG[MARKET];
 const HAS_EN = primary !== 'en';           // the English twin exists only where the market language is not English
+
+/* ── one European report = ONE hreflang cluster across all six hosts ────────
+   Every host publishes the same report at the same path: five market-language
+   pages (de-DE/en-GB/fr-FR/pl-PL/it-IT) and the hub's English page (en, also
+   x-default). Each page lists the WHOLE cluster, reciprocally, and only
+   canonical URLs — never the en.html twins.
+   Why: until 2026-10 each market listed only its own pair (de-DE ↔ en), so the
+   English twins on DE/FR/PL/IT were, to Google, four byte-identical English
+   pages with no relationship to the UK/EU English pages. Search Console
+   reported them as "Duplicate, Google chose different canonical than user"
+   (DE and IT, 2026-09; Google picked heatpumpdb.uk). The twins now declare
+   the hub's English page as their canonical (cross-domain canonical) and the
+   cluster tells Google which English page belongs to which audience. */
+const clusterLinks = (path) => Object.entries(HOSTS)
+  .map(([cc, h]) => `\n<link rel="alternate" hreflang="${HREFLANG[cc]}" href="${h}${path}">`)
+  .join('') + `\n<link rel="alternate" hreflang="x-default" href="${HOSTS.EU}${path}">`;
+/** Canonical for a page: the English twin of a non-English market points at
+ *  the hub's English page (identical content); everything else is itself. */
+const canonicalFor = (path, english) => (english && HAS_EN ? `${HOSTS.EU}${path}` : `${host}${path}`);
 
 if (!existsSync(STORE)) {
   console.log(`special report (${MARKET}): no content store — skipped`);
@@ -214,13 +236,11 @@ function renderEdition(ed, lang) {
   const english = lang === 'en';
   const base = `/special-report/${ed.id}/`;
   const file = english && HAS_EN ? 'en.html' : 'index.html';
-  const canonical = `${host}${base}${english && HAS_EN ? 'en.html' : ''}`;
+  const canonical = canonicalFor(base, english);
   const cover = coverFile(ed, lang);
   const ogImage = `${host}/special-report/img/${cover}`;
 
-  const alternates = HAS_EN ? `
-<link rel="alternate" hreflang="${HREFLANG[MARKET]}" href="${host}${base}">
-<link rel="alternate" hreflang="en" href="${host}${base}en.html">` : '';
+  const alternates = clusterLinks(base);
 
   const toggle = HAS_EN ? `
   <div class="langs">
@@ -299,12 +319,10 @@ const PREMIUM_CTA = {
 function renderIndex(lang) {
   const english = lang === 'en';
   const t = copyOf(editions[0], lang);
-  const canonical = `${host}/special-report/${english && HAS_EN ? 'en.html' : ''}`;
+  const canonical = canonicalFor('/special-report/', english);
   const cover = coverFile(editions[0], lang);
 
-  const alternates = HAS_EN ? `
-<link rel="alternate" hreflang="${HREFLANG[MARKET]}" href="${host}/special-report/">
-<link rel="alternate" hreflang="en" href="${host}/special-report/en.html">` : '';
+  const alternates = clusterLinks('/special-report/');
 
   const toggle = HAS_EN ? `
   <div class="langs">

@@ -416,11 +416,12 @@ const urls = [
         .sort().reverse()
         .flatMap((id) => {
           const meta = JSON.parse(readFileSync(join(ROOT, 'data_sources', 'special_report', id, 'article.json'), 'utf8'));
+          // The English twin (…/en.html) is NOT listed: it is canonicalised to
+          // the hub's English page (build-special-report.mjs), and a sitemap
+          // must carry canonical URLs only — listing it had Google flag it as
+          // "Duplicate, Google chose different canonical" (DE/IT, 2026-09).
           return [
             { loc: `${M.host}/special-report/${id}/`, lastmod: meta.published, freq: 'yearly' },
-            // English twin of the article; GB's market language is already English.
-            ...(MARKET === 'GB' ? []
-              : [{ loc: `${M.host}/special-report/${id}/en.html`, lastmod: meta.published, freq: 'yearly' }]),
           ];
         })
     : []),

@@ -89,12 +89,19 @@ const MARKET_HTML: Record<string, { lang: string; hreflang: string; title: strin
   },
 };
 
-/** hreflang cluster — the market editions are alternates of each other. */
+/** hreflang cluster — the market editions are alternates of each other, and
+ *  the EU hub (English, market chooser) is the `en` member and the x-default.
+ *  The hub emits the identical cluster (scripts/build-hub-landing.mjs); keep
+ *  the two in sync — a cluster that is not reciprocal is ignored by Google,
+ *  and until 2026-10 the market sites pointed x-default at .de while the hub
+ *  pointed it at .eu and left the hub out of the market sites entirely. */
+const HUB_URL = 'https://www.heatpumpdb.eu/';
 function hreflangLinks(): string {
   const links = Object.values(MARKET_HTML)
     .map(x => `    <link rel="alternate" hreflang="${x.hreflang}" href="${x.canonical}" />`)
     .join('\n');
-  return `${links}\n    <link rel="alternate" hreflang="x-default" href="${MARKET_HTML.DE.canonical}" />`;
+  return `${links}\n    <link rel="alternate" hreflang="en" href="${HUB_URL}" />`
+    + `\n    <link rel="alternate" hreflang="x-default" href="${HUB_URL}" />`;
 }
 
 /** Structured data: tells Google what the entity "HeatPump DB" is. */
