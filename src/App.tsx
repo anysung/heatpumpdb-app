@@ -998,7 +998,16 @@ const AppInner: React.FC = () => {
               {(t as any).verifyBodyPre}
               {pendingEmail && <span className="font-semibold text-emerald-300"> {pendingEmail}</span>}
             </p>
-            <p className="text-white/50 text-sm mb-8">{(t as any).verifyBody}</p>
+            <p className="text-white/50 text-sm mb-4">{(t as any).verifyBody}</p>
+            {/* Corporate mail filters quarantine a first message from an unknown
+                sender — a verification that never surfaces is a signup that
+                cannot finish (2026-10-16: delivered twice, never seen). */}
+            <p
+              className="text-amber-200/90 text-sm mb-8 rounded-lg border border-amber-300/30 bg-amber-300/10 px-4 py-3"
+              data-testid="verify-spam-hint"
+            >
+              {(t as any).verifySpamHint}
+            </p>
             <button onClick={handleVerifyCheck} disabled={isLoading} className={primaryBtn} data-testid="verify-check">
               {isLoading ? t.loading : (t as any).verifyCheckBtn}
             </button>
