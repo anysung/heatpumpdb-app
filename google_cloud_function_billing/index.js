@@ -2455,6 +2455,73 @@ async function listMemberEmails(req, res) {
 }
 
 // ---------------------------------------------------------------------------
+// /partnerInterest — creator partner programme "I want to join" (2026-10-17)
+//
+// The offer PDF carries a per-creator button that opens
+// heatpumpdb.eu/partners/join/?p=<partner id>&l=<lang>. The creator types the
+// email address that should receive the agreement and the media kit; this
+// endpoint records it and alerts the marketing inbox. Nothing is sent to the
+// typed address automatically — a public form that mails whatever address it
+// is given is a spam relay. The owner confirms the request (the partner id
+// ties it to the channel we wrote to) and sends the agreement by hand.
+//
+// Public and unauthenticated by design, so: strict input shapes, a honeypot,
+// and a per-IP hourly cap stored as a hash (no raw IPs kept).
+// ---------------------------------------------------------------------------
+const PARTNER_INTEREST_PER_HOUR = 5;
+const MARKETING_TO = process.env.MARKETING_TO || 'marketing@heatpumpdb.eu';
+
+async function partnerInterest(req, res) {
+  const b = req.body || {};
+  if (b.website) return res.status(200).json({ ok: true });          // honeypot: bots fill every field
+  const pid = String(b.pid || '').toLowerCase().trim();
+  const email = String(b.email || '').trim().slice(0, 200);
+  const name = String(b.name || '').trim().slice(0, 120);
+  const lang = String(b.lang || '').toLowerCase().slice(0, 5);
+  if (!/^[a-z0-9-]{2,60}$/.test(pid)) return sendErr(res, 400, 'bad-partner-id');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return sendErr(res, 400, 'bad-email');
+
+  const ipHash = crypto.createHash('sha256').update(callerIp(req) || 'unknown').digest('hex').slice(0, 32);
+  const throttleRef = db.collection('partnerInterestThrottle').doc(ipHash);
+  const allowed = await db.runTransaction(async (tx) => {
+    const snap = await tx.get(throttleRef);
+    const now = Date.now();
+    const d = snap.exists ? snap.data() : null;
+    if (d && now - d.windowStart < 3600e3) {
+      if (d.count >= PARTNER_INTEREST_PER_HOUR) return false;
+      tx.update(throttleRef, { count: d.count + 1 });
+    } else {
+      tx.set(throttleRef, { windowStart: now, count: 1 });
+    }
+    return true;
+  });
+  if (!allowed) return sendErr(res, 429, 'too-many-requests');
+
+  const record = { pid, email, name, lang, createdAt: nowIso(), ipHash, status: 'new',
+    userAgent: String(req.headers['user-agent'] || '').slice(0, 200) };
+  const ref = await db.collection('partnerInterest').add(record);
+
+  // Alert the inbox; a failed alert never fails the creator's request (the
+  // record above is the source of truth, and the admin can list it).
+  try {
+    const tx = transport();
+    if (tx) {
+      await tx.sendMail({
+        from: `HeatPump DB <${SUPPORT_FROM}>`,
+        to: MARKETING_TO,
+        replyTo: email,
+        subject: `Partner interest: ${pid} (${lang || '—'})`,
+        text: `A creator asked to join the partner programme.\n\nPartner id: ${pid}\nEmail: ${email}\nName: ${name || '—'}\nLanguage: ${lang || '—'}\nRecord: partnerInterest/${ref.id}\n\nConfirm the channel, register this address as the partner's official email, then send the agreement and media kit.`,
+      });
+    }
+  } catch (e) {
+    console.error('partnerInterest alert failed', e.message);
+    await ref.set({ alertError: String(e.message || e) }, { merge: true }).catch(() => {});
+  }
+  return res.status(200).json({ ok: true });
+}
+
+// ---------------------------------------------------------------------------
 // HTTP entry
 // ---------------------------------------------------------------------------
 functions.http('accountBilling', async (req, res) => {
@@ -2489,6 +2556,7 @@ functions.http('accountBilling', async (req, res) => {
     if (path.endsWith('/applyPlanChange')) return await applyPlanChange(req, res);
     if (path.endsWith('/createDiscount')) return await createDiscount(req, res);
     if (path.endsWith('/archiveDiscount')) return await archiveDiscount(req, res);
+    if (path.endsWith('/partnerInterest')) return await partnerInterest(req, res);
     return sendErr(res, 404, 'not-found');
   } catch (e) {
     console.error(`accountBilling ${path} error`, e);

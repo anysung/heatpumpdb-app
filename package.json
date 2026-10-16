@@ -48,7 +48,7 @@
     "test:account": "bash tests/run-account-e2e.sh",
     "test:routing": "node tests/inquiry-routing.contract.mjs",
     "test:account:mobile": "bash tests/run-account-mobile-e2e.sh",
-    "build:hub": "node scripts/build-hub-landing.mjs && node scripts/build-hub-legal.mjs && node scripts/build-special-report.mjs EU hub-landing",
+    "build:hub": "node scripts/build-hub-landing.mjs && node scripts/build-hub-legal.mjs && node scripts/build-partner-join.mjs && node scripts/build-special-report.mjs EU hub-landing",
     "deploy:eu": "npm run build:hub && firebase deploy --only hosting:eu",
     "news:export": "node scripts/export-news-public.mjs",
     "test:signup-paths": "node tests/signup-paths.contract.mjs",
