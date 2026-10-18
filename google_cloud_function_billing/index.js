@@ -2729,7 +2729,9 @@ async function partnerRegister(req, res) {
   catch (e) { console.error('partner premium grant failed', e.message); }
 
   const now = nowIso();
-  const refSlug = `p-${pid.replace(/^[a-z]{2}-/, '').slice(0, 20).replace(/-+$/, '')}`;
+  // Link slug from the CODE (p-rhh30): short, readable in a video description,
+  // and the same identifier the creator already knows.
+  const refSlug = `p-${code.toLowerCase().slice(0, 20)}`;
   await pRef.set({
     pid, ...patch,
     status: patch.status || 'active',
