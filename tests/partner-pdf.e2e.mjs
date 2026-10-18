@@ -61,7 +61,7 @@ for (const m of months.slice(0, 5)) {
 }
 const ym = '2027-04';
 const statement = { ...R.buildStatement({ ym, ledger, attributions }), history: R.buildHistory({ ym, firstMonth: '2026-11', ledger, attributions }),
-  month: ym, statementNo: 'CP-2027-04-0006', status: 'approved', partnerSince: '2026-11-12' };
+  month: ym, statementNo: 'CP-202704-010', status: 'approved', partnerSince: '2026-11-12' };
 
 // ── Render ────────────────────────────────────────────────────────────────
 const PORT = 5198;
@@ -93,7 +93,7 @@ try {
       const text = execFileSync('pdftotext', ['-layout', file, '-']).toString();
       all += text;
       if (kind === 'statement') {
-        is(`${lang}: statement carries the code and statement no.`, text.includes('RHH30') && text.includes('CP-2027-04-0006'));
+        is(`${lang}: statement carries the code and statement no.`, text.includes('RHH30') && text.includes('CP-202704-010'));
         is(`${lang}: statement has no email address of a customer`, !/@(?!heatpumpdb\.eu)/.test(text));
         const pages = Number(/Pages:\s+(\d+)/.exec(execFileSync('pdfinfo', [file]).toString())[1]);
         is(`${lang}: statement fits on ≤ 3 pages (${pages})`, pages <= 3);

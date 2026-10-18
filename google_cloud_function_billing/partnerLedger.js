@@ -314,10 +314,11 @@ module.exports = function partnerLedger({ db, FieldValue, paddleApi, nowIso, log
       const st = R.buildStatement({ ym, ...books });
       const firstMonth = partner.createdAt ? R.berlinMonth(partner.createdAt) : null;
       const history = R.buildHistory({ ym, firstMonth, ...books });
-      const seq = (await db.collection('partnerStatements').where('pid', '==', p.id).get()).size + (existing.exists ? 0 : 1);
+      // External serial: CP-YYYYMM-010, -011 … across all partners of the month.
+      const monthCount = existing.exists ? 0 : (await db.collection('partnerStatements').where('month', '==', ym).get()).size;
       await stRef.set({
         id: stRef.id, pid: p.id, ...st, history,
-        statementNo: existing.exists && existing.data().statementNo ? existing.data().statementNo : `CP-${ym}-${String(seq).padStart(4, '0')}`,
+        statementNo: existing.exists && existing.data().statementNo ? existing.data().statementNo : R.externalSerial('CP', ym, monthCount),
         partnerName: partner.name || '', code: partner.code || '', lang: partner.lang || 'en',
         contractNo: partner.contractNo || '', partnerSince: partner.contractSignedAt || (partner.createdAt || '').slice(0, 10),
         premiumUntil: partner.premiumUntil || '', payoutMethod: partner.payoutMethod ? 'on-file' : '',

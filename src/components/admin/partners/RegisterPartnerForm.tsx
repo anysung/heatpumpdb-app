@@ -4,10 +4,10 @@
  * code mapping, promotions-registry entry and Premium on their own account
  * (billing function /partnerRegister). Prefilled from a join request.
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AdminLang } from '../adminI18n';
 import { PARTNERS_I18N } from './partnersI18n';
-import { registerPartner, Partner } from '../../../services/partnerAdminService';
+import { registerPartner, Partner, nextAgreementNo } from '../../../services/partnerAdminService';
 import programme from '../../../legal/partnerProgramme.json';
 import { btnPri, btnSec, inp } from '../PartnersPage';
 
@@ -32,6 +32,8 @@ export const RegisterPartnerForm: React.FC<{
   // The suggestion follows the name until the operator edits the code.
   const [codeTouched, setCodeTouched] = useState(!!initial.name);
   const [busy, setBusy] = useState(false);
+  // Agreement number follows the external serial rule (HPDB-P-YYYYMM-010 …).
+  useEffect(() => { nextAgreementNo().then(no => setF(x => (x.contractNo ? x : { ...x, contractNo: no }))).catch(() => {}); }, []);
   const [msg, setMsg] = useState('');
   const set = (k: keyof typeof f, v: any) => setF(x => ({ ...x, [k]: v }));
 
@@ -65,7 +67,7 @@ export const RegisterPartnerForm: React.FC<{
           {row(P.fLang, <select className={inp} value={f.lang} onChange={e => set('lang', e.target.value)}>{LANGS.map(l => <option key={l}>{l}</option>)}</select>)}
           {row(P.fCountry, <select className={inp} value={f.country} onChange={e => set('country', e.target.value)}><option value="">—</option>{MARKETS.map(m => <option key={m}>{m}</option>)}</select>)}
           {row(P.fChannel, <input className={inp} value={f.channelUrl} onChange={e => set('channelUrl', e.target.value)} />)}
-          {row(P.fContractNo, <input className={inp} value={f.contractNo} onChange={e => set('contractNo', e.target.value)} placeholder="HPDB-P-2026-001" />)}
+          {row(P.fContractNo, <input className={inp} value={f.contractNo} onChange={e => set('contractNo', e.target.value)} placeholder="HPDB-P-YYYYMM-010" />)}
           {row(P.fCode, <input className={`${inp} font-mono`} value={f.code} onChange={e => { setCodeTouched(true); set('code', e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '')); }} />)}
           {row(P.fPremiumMonths, <input className={inp} type="number" min={1} max={36} value={f.premiumMonths} onChange={e => set('premiumMonths', e.target.value)} />)}
           <div className="col-span-2">{row(P.fPayout, <textarea className={inp} rows={2} value={f.payoutMethod} onChange={e => set('payoutMethod', e.target.value)} />)}</div>

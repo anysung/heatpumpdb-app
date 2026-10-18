@@ -300,6 +300,17 @@ function buildHistory({ ym, firstMonth, ledger = [], attributions = [], n = 6, p
   });
 }
 
+/**
+ * External document serial (owner rule 2026-10-18 — applies to EVERY document
+ * that leaves the company: agreements, statements, …):
+ *   <PREFIX>-YYYYMM-NNN, NNN starting at 010 each month (010, 011, …).
+ * The month is in the number so a reader can at most guess "the n-th this
+ * month", never "the first one this year"; never 001/01.
+ */
+function externalSerial(prefix, ym, index) {
+  return `${prefix}-${String(ym).replace('-', '')}-${String(10 + index).padStart(3, '0')}`;
+}
+
 /** Customer reference shown to partners: anonymous, stable per attribution. */
 const customerRef = (seq) => `C-${String(seq).padStart(4, '0')}`;
 
@@ -328,5 +339,5 @@ module.exports = {
   berlinMonth, berlinMonthEndIso, nextMonth, payoutDueDate,
   transactionEarnings, transactionPaidCents, adjustmentEffect,
   selfReferralFlags, emailKey, domainOf,
-  buildStatement, buildHistory, customerRef, statementCsv,
+  buildStatement, buildHistory, customerRef, statementCsv, externalSerial,
 };

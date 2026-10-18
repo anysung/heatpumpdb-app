@@ -308,6 +308,13 @@ assumption that gitignored means disposable — keep at least the newest seed.
   → shown RED, never BEST or ranked, model carries the red "!" "manufacturer check
   needed" mark (`qa_flags`); C · unusually high but possible → used as is. Source
   values are never corrected or guessed.
+- **External document serials (owner 2026-10-18, binding):** every number on a
+  document that leaves the company (agreements, statements, receipts with a
+  sequence, …) is `<PREFIX>-YYYYMM-NNN` with NNN starting at **010** each month
+  (010, 011, …). Never 001/01, never a year-only counter — a reader may guess
+  "the n-th this month", never "the first one this year". One helper per side:
+  `externalSerial()` in `google_cloud_function_billing/partnerRules.js` and
+  `src/services/partnerAdminService.ts` (agreements `HPDB-P-…`, statements `CP-…`).
 - Refrigerant filtering always uses `.includes()` contains logic (values like
   `R290(estimated)` must match), never exact match.
 - **Standard + Premium (2026-09-27 — docs/FREE_PREMIUM_PROGRAM_PLAN.md).** The free

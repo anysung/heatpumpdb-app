@@ -98,3 +98,20 @@ export const MARKET_SITES: Record<string, string> = {
 };
 export const partnerLink = (p: Pick<Partner, 'code' | 'refSlug'>, country: string) =>
   `${MARKET_SITES[country] || MARKET_SITES.DE}/?coupon=${encodeURIComponent(p.code)}&ref=${encodeURIComponent(p.refSlug)}`;
+
+/**
+ * External document serial — owner rule 2026-10-18, identical to
+ * partnerRules.externalSerial in the billing function: <PREFIX>-YYYYMM-NNN with
+ * NNN starting at 010 every month. Never 001: a reader may guess "the n-th this
+ * month", never "the first one ever".
+ */
+export const externalSerial = (prefix: string, ym: string, index: number) =>
+  `${prefix}-${ym.replace('-', '')}-${String(10 + index).padStart(3, '0')}`;
+
+/** Next partner agreement number for the current Berlin month (HPDB-P-YYYYMM-0NN). */
+export async function nextAgreementNo(): Promise<string> {
+  const ym = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit' }).format(new Date()).slice(0, 7);
+  const prefix = `HPDB-P-${ym.replace('-', '')}-`;
+  const used = (await listPartners()).filter(p => (p.contractNo || '').startsWith(prefix)).length;
+  return externalSerial('HPDB-P', ym, used);
+}

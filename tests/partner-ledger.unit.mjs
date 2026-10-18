@@ -231,7 +231,9 @@ console.log('\nStatement — groups, audience, history (the 06 report layout)\n'
 is('commission groups: professional monthly first ×3', st.groups.map(g => [g.planCode, g.billingTerm, g.kind, g.payments]), [['professional', 'monthly', 'first', 3]]);
 is('group total = commission', st.groups.reduce((s2, g) => s2 + g.amountCents, 0), st.commissionCents);
 is('audience counts', [st.audience.newPaying, st.audience.newAnnual, st.audience.activeMonthly], [3, 0, 3]);
-is('statement number assigned', /^CP-2026-11-\d{4}$/.test(st.statementNo), true);
+is('statement number follows the external serial rule (first of the month = 010)', st.statementNo, 'CP-202611-010');
+is('external serial: never 001', R.externalSerial('HPDB-P', '2026-10', 0), 'HPDB-P-202610-010');
+is('external serial: next is 011', R.externalSerial('HPDB-P', '2026-10', 1), 'HPDB-P-202610-011');
 is('history ends at the statement month', st.history[st.history.length - 1].month, '2026-11');
 const hist = R.buildHistory({ ym: '2027-02', firstMonth: '2026-11', ledger: [], attributions: [] });
 is('history starts at the first partner month', hist.map(h => h.month), ['2026-11', '2026-12', '2027-01', '2027-02']);
