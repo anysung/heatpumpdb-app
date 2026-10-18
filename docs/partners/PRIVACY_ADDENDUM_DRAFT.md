@@ -1,11 +1,13 @@
-# Privacy policy addendum — creator partner programme (DRAFT, 2026-10-18)
+# Privacy policy addendum — creator partner programme (2026-10-18)
 
-Status: **draft for owner approval — not published.** Publishing means adding the
-section below to `src/legal/legalContent.ts` (privacy, all five languages) and
-bumping `PRIVACY_VERSION` in `src/config/legal.ts`. Decide first whether the bump
-should prompt existing members to re-accept (the consent stamp records the
-version; the current flow does not force re-acceptance on a version change —
-verify before publishing).
+Status: **PUBLISHED 2026-10-18 in its MINIMAL form (owner decision).** The
+privacy policy of every edition (EN/DE/FR/PL/IT, `src/legal/legalContent.ts`)
+carries one short section "Creator partner codes" (what is stored, that partners
+see aggregated figures only, legal basis); `PRIVACY_VERSION` = 2026-10-18. The
+version is stamped at signup only — existing members are not re-prompted (the
+basis is contract + legitimate interest, not consent). The longer text below
+(retention detail, partners' own data) was NOT published; partners' own data is
+covered by the partner terms §13 and their agreement.
 
 Why it is needed: since 2026-10-18 the app stores a creator's discount code on
 the member profile (`partnerCode`, `partnerCodeAt`, `partnerRef`) and the

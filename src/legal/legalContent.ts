@@ -131,6 +131,13 @@ const EN = {
         ],
       },
       {
+        h: "Creator partner codes",
+        p: [
+          "If you open our site through a partner creator’s link or enter a partner’s discount code, we store that code with your account so that it can be applied when you choose Premium. If you pay with it, we record that your subscription was referred by that partner and the amounts we received, so that we can pay the partner a commission.",
+          "Partners receive aggregated figures only — never your name, email address or company. Legal basis: performance of the contract and our legitimate interest in paying partners correctly (Art. 6(1)(b) and (f) GDPR).",
+        ],
+      },
+      {
         h: 'Data retention',
         p: [
           'Account and company data are kept while your account exists. After deletion we retain only what we must for legal, accounting or evidence purposes; billing records are retained by Paddle for statutory periods.',
@@ -342,6 +349,13 @@ const DE = {
         ],
       },
       {
+        h: "Partner-Codes von Creatorn",
+        p: [
+          "Wenn Sie unsere Website über den Link eines Partner-Creators öffnen oder einen Partner-Rabattcode eingeben, speichern wir diesen Code in Ihrem Konto, damit er bei der Wahl von Premium angewendet werden kann. Zahlen Sie damit, halten wir fest, dass Ihr Abonnement von diesem Partner vermittelt wurde, sowie die dafür erhaltenen Beträge, um dem Partner eine Provision zu zahlen.",
+          "Partner erhalten ausschließlich zusammengefasste Zahlen – niemals Ihren Namen, Ihre E-Mail-Adresse oder Ihre Firma. Rechtsgrundlage: Vertragserfüllung und unser berechtigtes Interesse an der korrekten Vergütung der Partner (Art. 6 Abs. 1 lit. b und f DSGVO).",
+        ],
+      },
+      {
         h: 'Speicherdauer',
         p: ['Konto- und Unternehmensdaten werden für die Dauer des Kontos gespeichert. Nach Löschung bewahren wir nur auf, was aus rechtlichen, buchhalterischen oder Nachweisgründen erforderlich ist; Abrechnungsunterlagen werden von Paddle für die gesetzlichen Fristen aufbewahrt.', 'Zur Verhinderung wiederholter kostenloser Testphasen und missbräuchlicher Nutzung speichern wir nach Kontolöschung für bis zu ein Jahr einen minimalen Eintrag der bei der Registrierung verwendeten E-Mail-Adresse (berechtigtes Interesse, Art. 6 Abs. 1 lit. f DSGVO). Er dient ausschließlich der Prüfung der Testphasen-Berechtigung und wird danach automatisch gelöscht.'],
       },
@@ -541,6 +555,13 @@ const FR = {
           "Pour comprendre quelles fonctions sont utilisées et où les recherches échouent, l'application enregistre elle-même un petit nombre d'événements d'usage : recherche effectuée, recherche sans résultat, produit ouvert, statut de référencement consulté, comparaison ouverte et fiche technique exportée.",
           "Les événements comportent un horodatage, le marché, la langue de l'interface, la classe d'appareil (téléphone/tablette/ordinateur), le niveau d'abonnement, un identifiant de session aléatoire et une référence de compte hachée à sens unique. Ils ne contiennent jamais votre nom, votre adresse e-mail, votre adresse IP, des données d'entreprise ni le texte saisi librement (les requêtes sont réduites à des termes normalisés, chiffres et fragments d'adresse supprimés).",
           "Aucun cookie n'est déposé à cette fin et aucun service d'analyse tiers ne reçoit ces données ; elles sont stockées chez nos prestataires d'infrastructure en région UE cités ci-dessus et supprimées automatiquement après 13 mois. Base juridique : notre intérêt légitime à exploiter et améliorer un service professionnel (art. 6, §1, f du RGPD). Vous pouvez vous y opposer à tout moment via l'adresse de support ci-dessous.",
+        ],
+      },
+      {
+        h: "Codes des créateurs partenaires",
+        p: [
+          "Si vous accédez à notre site via le lien d’un créateur partenaire ou saisissez le code de réduction d’un partenaire, nous enregistrons ce code dans votre compte afin qu’il puisse être appliqué lorsque vous choisissez Premium. Si vous payez avec ce code, nous enregistrons que votre abonnement a été recommandé par ce partenaire ainsi que les montants reçus, afin de lui verser une commission.",
+          "Les partenaires ne reçoivent que des chiffres agrégés — jamais votre nom, votre adresse e-mail ni votre entreprise. Base juridique : exécution du contrat et notre intérêt légitime à rémunérer correctement les partenaires (art. 6, par. 1, b) et f) du RGPD).",
         ],
       },
       {
@@ -750,6 +771,13 @@ const PL = {
           'Aby zrozumieć, które funkcje są używane i gdzie wyszukiwania kończą się niepowodzeniem, aplikacja samodzielnie rejestruje niewielki zestaw zdarzeń: wykonane wyszukiwanie, wyszukiwanie bez wyników, otwarcie produktu, wyświetlenie statusu z listy, otwarcie porównania i eksport karty danych.',
           'Zdarzenia zawierają znacznik czasu, rynek, język interfejsu, klasę urządzenia (telefon/tablet/komputer), poziom subskrypcji, losowy identyfikator sesji oraz jednokierunkowo zahaszowane odniesienie do konta. Nigdy nie zawierają imienia i nazwiska, adresu e-mail, adresu IP, danych firmy ani swobodnie wpisanego tekstu (zapytania są redukowane do znormalizowanych tokenów, z usunięciem liczb i fragmentów przypominających adresy).',
           'W tym celu nie są ustawiane żadne pliki cookie, a dane nie trafiają do zewnętrznych usług analitycznych; są przechowywane u naszych dostawców infrastruktury w regionie UE wymienionych powyżej i automatycznie usuwane po 13 miesiącach. Podstawa prawna: nasz prawnie uzasadniony interes w prowadzeniu i ulepszaniu profesjonalnej usługi (art. 6 ust. 1 lit. f RODO). W każdej chwili można wnieść sprzeciw przez podany niżej adres wsparcia.',
+        ],
+      },
+      {
+        h: "Kody partnerów-twórców",
+        p: [
+          "Jeśli otworzą Państwo naszą stronę z linku twórcy-partnera lub wpiszą kod rabatowy partnera, zapisujemy ten kod na Państwa koncie, aby można go było zastosować przy wyborze Premium. Jeśli zapłacą Państwo z tym kodem, odnotowujemy, że subskrypcja została polecona przez tego partnera, oraz otrzymane kwoty, aby wypłacić partnerowi prowizję.",
+          "Partnerzy otrzymują wyłącznie dane zbiorcze — nigdy imienia i nazwiska, adresu e-mail ani nazwy firmy. Podstawa prawna: wykonanie umowy oraz nasz prawnie uzasadniony interes w prawidłowym rozliczaniu partnerów (art. 6 ust. 1 lit. b i f RODO).",
         ],
       },
       {
@@ -968,6 +996,13 @@ const IT = {
           "Per capire quali funzioni vengono usate e dove le ricerche falliscono, l'app registra in proprio un piccolo insieme di eventi d'uso: ricerca eseguita, ricerca senza risultati, prodotto aperto, stato di catalogo visualizzato, confronto aperto e scheda tecnica esportata.",
           "Gli eventi contengono data e ora, mercato, lingua dell'interfaccia, classe di dispositivo (telefono/tablet/desktop), livello di abbonamento, un identificatore di sessione casuale e un riferimento all'account con hash unidirezionale. Non contengono mai nome, indirizzo e-mail, indirizzo IP, dati aziendali né testo digitato liberamente (le query sono ridotte a token normalizzati, con numeri e frammenti simili a indirizzi rimossi).",
           "A questo scopo non vengono impostati cookie e nessun servizio di analisi di terze parti riceve i dati; sono conservati presso i nostri fornitori di infrastruttura in regione UE elencati sopra ed eliminati automaticamente dopo 13 mesi. Base giuridica: il nostro legittimo interesse a gestire e migliorare un servizio professionale (art. 6, par. 1, lett. f GDPR). È possibile opporsi in qualsiasi momento tramite l'indirizzo di supporto indicato sotto.",
+        ],
+      },
+      {
+        h: "Codici dei creator partner",
+        p: [
+          "Se aprite il nostro sito tramite il link di un creator partner o inserite il codice sconto di un partner, salviamo quel codice nel vostro account affinché possa essere applicato quando scegliete Premium. Se pagate con quel codice, registriamo che il vostro abbonamento è stato segnalato da quel partner e gli importi ricevuti, per corrispondere al partner una commissione.",
+          "I partner ricevono solo dati aggregati — mai il vostro nome, indirizzo e-mail o azienda. Base giuridica: esecuzione del contratto e nostro legittimo interesse a remunerare correttamente i partner (art. 6, par. 1, lett. b) e f) GDPR).",
         ],
       },
       {
