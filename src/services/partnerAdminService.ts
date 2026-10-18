@@ -79,7 +79,7 @@ async function call<T = any>(path: string, body: Record<string, unknown>): Promi
 export const registerPartner = (b: Record<string, unknown>) => call<{ pid: string; code: string; discountId: string; refSlug: string; premiumUntil: string }>('partnerRegister', b);
 export const updatePartner = (pid: string, patch: Record<string, unknown>) => call('partnerUpdate', { pid, patch });
 export const endPartner = (pid: string, reason: string, forBreach: boolean) => call<{ errors: string[] }>('partnerEnd', { pid, reason, forBreach });
-export const addLedgerEntry = (b: { pid: string; type: string; amountEur?: string; at?: string; note?: string; reference?: string; videoUrl?: string }) =>
+export const addLedgerEntry = (b: { pid: string; type: string; amountEur?: string; at?: string; note?: string; reference?: string; videoUrl?: string; videoPublishedAt?: string }) =>
   call<{ entryId: string; amountCents: number }>('partnerLedgerAdd', b);
 export const voidAttribution = (subscriptionId: string, note: string) => call('partnerAttributionVoid', { subscriptionId, note });
 export const resolveReview = (id: string, note: string) => call('partnerReviewResolve', { id, note });

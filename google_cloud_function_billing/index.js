@@ -2837,9 +2837,14 @@ async function partnerLedgerAdd(req, res) {
   if (type === 'video_support') {
     const st = PR.buildStatement({ ym: PR.berlinMonth(at), ...books });
     if (!st.videoSupportEligible && !b.force) return sendErr(res, 409, 'not-eligible-yet');
-    const d = new Date(at);
+    // The quarter is the video's PUBLICATION quarter (terms §9: one video per
+    // quarter). The link may reach us any time later (owner 2026-10-18: no
+    // deadline); the support is booked on the day it is approved, so it lands
+    // on the next monthly statement.
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(b.videoPublishedAt || ''))) return sendErr(res, 400, 'video-published-date-required');
+    const d = new Date(`${b.videoPublishedAt}T12:00:00Z`);
     const quarter = `${d.getUTCFullYear()}Q${Math.floor(d.getUTCMonth() / 3) + 1}`;
-    entryId = `v_${pid}_${quarter}`;                         // once per quarter (terms §9)
+    entryId = `v_${pid}_${quarter}`;                         // once per publication quarter
     amountCents = PR.PROGRAMME.videoSupportEur * 100;
     if (!/^https?:\/\//.test(String(b.videoUrl || ''))) return sendErr(res, 400, 'video-url-required');
   } else {
@@ -2855,7 +2860,7 @@ async function partnerLedgerAdd(req, res) {
   if ((await ref.get()).exists) return sendErr(res, 409, 'already-booked-this-quarter');
   await ref.set({
     id: entryId, pid, type, amountCents, at, month: PR.berlinMonth(at),
-    note, reference, videoUrl: String(b.videoUrl || ''),
+    note, reference, videoUrl: String(b.videoUrl || ''), videoPublishedAt: String(b.videoPublishedAt || ''),
     createdAt: nowIso(), createdBy: adminCaller.email || adminCaller.uid,
   });
   await partnerAudit(adminCaller, 'ledger-add', { pid, type, amountCents, entryId });

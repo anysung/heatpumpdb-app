@@ -77,10 +77,10 @@ export const PartnerDetail: React.FC<{ al: AdminLang; partner: Partner; onBack: 
 
   // ── Ledger entry ──
   const today = new Date().toISOString().slice(0, 10);
-  const [entry, setEntry] = useState({ type: 'payout', amountEur: '', at: today, reference: '', note: '', videoUrl: '' });
+  const [entry, setEntry] = useState({ type: 'payout', amountEur: '', at: today, reference: '', note: '', videoUrl: '', videoPublishedAt: '' });
   const addEntry = () => run('entry', async () => {
     await addLedgerEntry({ pid: p.pid, ...entry });
-    setEntry({ ...entry, amountEur: '', reference: '', note: '', videoUrl: '' });
+    setEntry({ ...entry, amountEur: '', reference: '', note: '', videoUrl: '', videoPublishedAt: '' });
   });
 
   // ── Documents ──
@@ -191,6 +191,7 @@ export const PartnerDetail: React.FC<{ al: AdminLang; partner: Partner; onBack: 
             {entry.type !== 'video_support' && field(P.eAmount, <input className={inp} value={entry.amountEur} onChange={e => setEntry({ ...entry, amountEur: e.target.value })} placeholder={entry.type === 'manual' ? '-12.50 / 12.50' : '50.00'} data-testid="ledger-amount" />)}
             {entry.type === 'payout' && field(P.eRef, <input className={inp} value={entry.reference} onChange={e => setEntry({ ...entry, reference: e.target.value })} />)}
             {entry.type === 'video_support' && field(P.eVideo, <input className={inp} value={entry.videoUrl} onChange={e => setEntry({ ...entry, videoUrl: e.target.value })} />)}
+            {entry.type === 'video_support' && field(P.eVideoDate, <input type="date" className={inp} value={entry.videoPublishedAt} onChange={e => setEntry({ ...entry, videoPublishedAt: e.target.value })} />)}
             <div className="col-span-2">{field(P.eNote, <input className={inp} value={entry.note} onChange={e => setEntry({ ...entry, note: e.target.value })} />)}</div>
           </div>
           <div className="flex justify-between items-center mt-3">
