@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>partner pdf harness</title></head>
+<body>
+<script type="module">
+  // Dev-only harness (tests/partner-pdf.e2e.mjs): renders the creator-partner
+  // PDFs with the real fonts and brand artwork and hands them to Playwright.
+  import { buildStatementPdf, buildReceiptPdf, buildAnnualPdf, preloadPartnerPdf, pdfBase64 } from '/src/components/admin/partners/partnerPdf.ts';
+  window.__render = async (lang, statement, payout, payouts) => {
+    await preloadPartnerPdf();
+    const partner = { pid: 'gb-test', name: 'Renewable Heating Hub', code: 'RHH30', lang, contractNo: 'HPDB-P-2026-001',
+      premiumUntil: '2027-11-12T00:00:00.000Z', createdAt: '2026-11-12T00:00:00.000Z' };
+    return {
+      statement: pdfBase64(buildStatementPdf(statement, partner)),
+      receipt: pdfBase64(buildReceiptPdf(payout, partner)),
+      annual: pdfBase64(buildAnnualPdf('2027', payouts, [], partner)),
+    };
+  };
+  window.__ready = true;
+</script>
+</body></html>

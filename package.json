@@ -41,6 +41,7 @@
     "test:agrement": "node tests/agrement-matching.unit.mjs",
     "test:trial-reminders": "node tests/trial-reminders.unit.mjs",
     "test:partners": "node tests/partner-ledger.unit.mjs",
+    "test:partner-pdf": "node tests/partner-pdf.e2e.mjs",
     "test:watchlist": "node tests/dataset-diff.unit.mjs && node tests/watch-alerts.unit.mjs",
     "test:rules:watch": "firebase emulators:exec --config firebase.rules-test.json --only firestore --project heatpumpdb-rules-test \"node tests/watchlist.rules.mjs\"",
     "test:architecture": "node tests/architecture.unit.mjs",

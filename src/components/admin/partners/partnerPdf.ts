@@ -94,8 +94,9 @@ class Doc {
     if (badge) { this.set(7.5, true, GREEN); this.text(badge, PW - MX, this.y + 12.8, { align: 'right' }); }
     this.y += 16; this.hair(); this.y += 6;
   }
-  section(title: string) {
-    this.need(14);
+  section(title: string, keepWith = 14) {
+    this.y += 3;
+    this.need(keepWith);
     this.set(10.5, true); this.text(title, MX, this.y); this.y += 2.2; this.hair(); this.y += 5;
   }
   para(s: string, size = 8.6, color: Rgb = MUTED) {
@@ -131,6 +132,9 @@ class Doc {
   /** Table: widths in mm, right-aligned columns by index. */
   table(head: string[], rows: string[][], widths: number[], right: number[], foot?: string[]) {
     const rowH = 6;
+    // Keep a short table on one page (it reads as one object); long ones break.
+    const whole = rowH * (rows.length + (foot ? 2 : 1)) + 2;
+    if (whole < PH - MTOP - MBOT - 20) this.need(whole);
     const draw = (cells: string[], bold: boolean, color: Rgb, fill?: Rgb) => {
       this.need(rowH + 1);
       if (fill) { this.d.setFillColor(...fill); this.d.rect(MX, this.y - 4.2, CW, rowH, 'F'); }
@@ -251,7 +255,7 @@ export function buildStatementPdf(st: any, partner: PartnerLite): jsPDF {
   // History
   const hist: any[] = st.history || [];
   if (hist.length > 1) {
-    doc.section(L.secHistory);
+    doc.section(L.secHistory, 6 * (hist.length + 1) + 12);
     doc.table(
       [L.colMonth, L.colNew, L.colTotalPaying, L.colCommission, L.colVideo, L.colPaidOut],
       hist.map(h => [doc.month(h.month), String(h.newPaying), String(h.cumulativePaying), doc.eur(h.commissionCents),
@@ -284,7 +288,8 @@ export function buildReceiptPdf(entry: PayoutEntry, partner: PartnerLite): jsPDF
   const L = PL[lang];
   const doc = new Doc(lang, `${L.footer} · ${MARKETING_EMAIL}`);
   const amount = -entry.amountCents;
-  doc.header(L.rcTitle, `R-${entry.id}`);
+  // Human receipt number: transfer date + partner code (the ledger id stays internal).
+  doc.header(L.rcTitle, `R-${String(entry.at).slice(0, 10).replace(/-/g, '')}-${partner.code}`);
   doc.meta([
     [L.payer, `${OPERATOR_NAME} (${OPERATOR_OWNER})`], [L.regNo, BUSINESS_REG_NUMBER],
     [L.recipient, partner.name], [L.code, partner.code],

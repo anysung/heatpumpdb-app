@@ -2621,7 +2621,9 @@ async function couponStatus(req, res) {
   const code = String((req.body || {}).code || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 32);
   if (!code) return sendErr(res, 400, 'bad-code');
   const hit = couponCache.get(code);
-  if (hit && Date.now() - hit.at < 10 * 60 * 1000) return res.status(200).json({ ok: true, active: hit.active });
+  // A "yes" is trusted for 2 minutes only — an archived code must stop being
+  // pre-filled almost at once; a "no" can be remembered longer.
+  if (hit && Date.now() - hit.at < (hit.active ? 2 : 10) * 60 * 1000) return res.status(200).json({ ok: true, active: hit.active });
   try {
     const list = await paddleApi('GET', `/discounts?code=${encodeURIComponent(code)}&status=active`);
     const now = Date.now();
