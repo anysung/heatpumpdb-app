@@ -127,7 +127,7 @@ export const PartnersPage: React.FC<{ al: AdminLang }> = ({ al }) => {
             <table className="w-full text-sm">
               <thead><tr className="text-left text-xs text-gray-500 border-b">
                 <th className="py-2">{P.colName}</th><th>{P.colCode}</th><th>{P.colCountry}</th><th>{P.colStatus}</th>
-                <th>{P.colContract}</th><th className="text-right">{P.colPaying}</th><th className="text-right">{P.colBalance}</th><th>{P.colPremium}</th>
+                <th>{P.colContract}</th><th className="text-right pr-6">{P.colPaying}</th><th className="text-right pr-6">{P.colBalance}</th><th>{P.colPremium}</th>
               </tr></thead>
               <tbody>
                 {partners.map(p => (
@@ -138,8 +138,8 @@ export const PartnersPage: React.FC<{ al: AdminLang }> = ({ al }) => {
                     <td>{p.country}</td>
                     <td>{P.status[p.status]}</td>
                     <td>{P.contract[p.contractStatus || 'none']}</td>
-                    <td className="text-right">{byPid[p.pid]?.paying ?? 0}</td>
-                    <td className="text-right font-semibold">{eurFmt(byPid[p.pid]?.balance ?? 0)}</td>
+                    <td className="text-right pr-6">{byPid[p.pid]?.paying ?? 0}</td>
+                    <td className="text-right pr-6 font-semibold">{eurFmt(byPid[p.pid]?.balance ?? 0)}</td>
                     <td className="text-xs">{(p.premiumUntil || '').slice(0, 10)}</td>
                   </tr>
                 ))}
@@ -279,15 +279,15 @@ const MonthlyTab: React.FC<{
         {rows.length === 0 ? <EmptyState message={P.none} /> : (
           <table className="w-full text-sm">
             <thead><tr className="text-left text-xs text-gray-500 border-b">
-              <th className="py-2">{P.colName}</th><th className="text-right">{P.colAmount}</th><th>{P.colStatus}</th><th className="text-right">{P.colPending}</th><th>{P.colStatus}</th><th />
+              <th className="py-2">{P.colName}</th><th className="text-right pr-6">{P.colBalance}</th><th>{P.colPayout}</th><th className="text-right pr-6">{P.colPending}</th><th>{P.colStatus}</th><th />
             </tr></thead>
             <tbody>{rows.map(s => (
               <tr key={s.id} className="border-b" data-testid={`statement-row-${s.pid}`}>
                 <td className="py-2"><button className="text-blue-700 hover:underline" onClick={() => onOpen(s.pid)}>{partnerOf(s.pid)?.name || s.pid}</button>
                   <div className="text-[11px] text-gray-400">{s.statementNo}</div></td>
-                <td className="text-right font-semibold">{eurFmt(s.closingCents)}</td>
+                <td className="text-right pr-6 font-semibold">{eurFmt(s.closingCents)}</td>
                 <td className="text-xs">{s.payoutDue ? <span className="text-green-700 font-semibold">{P.payoutDue} · {P.dueBy} {s.payoutDueBy}</span> : P.carried}</td>
-                <td className="text-right">{s.pendingCount || 0}</td>
+                <td className="text-right pr-6">{s.pendingCount || 0}</td>
                 <td className="text-xs">{P.stStatus[s.status]}{s.sentAt ? ` · ${String(s.sentAt).slice(0, 10)}` : ''}</td>
                 <td className="text-right space-x-1 whitespace-nowrap">
                   <button className={btnSec} onClick={() => preview(s)}>{P.preview}</button>

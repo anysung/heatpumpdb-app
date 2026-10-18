@@ -2812,7 +2812,7 @@ async function partnerEnd(req, res) {
       }
     }
   }
-  await ref.update({ status: 'ended', endedAt: nowIso(), endReason: String(reason).slice(0, 500), commissionStopped: !!forBreach });
+  await ref.update({ status: 'ended', endedAt: nowIso(), endReason: String(reason).slice(0, 500), commissionStopped: !!forBreach, premiumUntil: nowIso() });
   await partnerAudit(adminCaller, 'end', { pid, reason, forBreach: !!forBreach, errors });
   return res.status(200).json({ ok: true, errors });
 }

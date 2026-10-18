@@ -148,7 +148,7 @@ export const PartnerDetail: React.FC<{ al: AdminLang; partner: Partner; onBack: 
         <StatCard label={P.kPremium} value={(p.premiumUntil || '—').slice(0, 10)} color="gray" />
       </div>
 
-      <SectionCard title={P.links} className="mb-4">
+      {p.status !== 'ended' && <SectionCard title={P.links} className="mb-4">
         <div className="space-y-1.5">
           {(p.country ? [p.country, ...Object.keys(MARKET_SITES).filter(c => c !== p.country)] : Object.keys(MARKET_SITES)).map(cc => {
             const link = partnerLink(p, cc);
@@ -161,7 +161,7 @@ export const PartnerDetail: React.FC<{ al: AdminLang; partner: Partner; onBack: 
             );
           })}
         </div>
-      </SectionCard>
+      </SectionCard>}
 
       <div className="grid md:grid-cols-2 gap-4 mb-4">
         <SectionCard title={P.info}>
@@ -299,7 +299,7 @@ export const PartnerDetail: React.FC<{ al: AdminLang; partner: Partner; onBack: 
             <button className={btnDanger} disabled={!endReason.trim() || busy === 'end'} onClick={() => {
               if (!endArmed) { setEndArmed(true); return; }
               setEndArmed(false);
-              run('end', async () => { const r = await endPartner(p.pid, endReason, endBreach); setP({ ...p, status: 'ended' }); if (r.errors?.length) flash(P.failed(r.errors.join(', '))); });
+              run('end', async () => { const r = await endPartner(p.pid, endReason, endBreach); setP({ ...p, status: 'ended', premiumUntil: new Date().toISOString() }); if (r.errors?.length) flash(P.failed(r.errors.join(', '))); });
             }}>{endArmed ? P.confirm : P.endBtn}</button>
           </div>
         </SectionCard>

@@ -29,6 +29,8 @@ export const RegisterPartnerForm: React.FC<{
     code: initial.name ? suggestCode(initial.name) : '', premiumMonths: '12', testPartner: false, discountPct: '100',
     payoutMethod: '', notes: '',
   });
+  // The suggestion follows the name until the operator edits the code.
+  const [codeTouched, setCodeTouched] = useState(!!initial.name);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState('');
   const set = (k: keyof typeof f, v: any) => setF(x => ({ ...x, [k]: v }));
@@ -57,14 +59,14 @@ export const RegisterPartnerForm: React.FC<{
         <p className="text-xs text-gray-500 mb-4">{P.regHelp}</p>
         <div className="grid grid-cols-2 gap-3">
           {row(P.fPid, <input className={inp} value={f.pid} onChange={e => set('pid', e.target.value.toLowerCase())} placeholder="gb-renewable-heating-hub" />)}
-          {row(P.fName, <input className={inp} value={f.name} onChange={e => { set('name', e.target.value); if (!f.code) set('code', suggestCode(e.target.value)); }} />)}
+          {row(P.fName, <input className={inp} value={f.name} onChange={e => { set('name', e.target.value); if (!codeTouched) set('code', suggestCode(e.target.value)); }} />)}
           {row(P.fEmail, <input className={inp} value={f.email} onChange={e => set('email', e.target.value)} />)}
           {row(P.fOtherEmails, <input className={inp} value={f.otherEmails} onChange={e => set('otherEmails', e.target.value)} />)}
           {row(P.fLang, <select className={inp} value={f.lang} onChange={e => set('lang', e.target.value)}>{LANGS.map(l => <option key={l}>{l}</option>)}</select>)}
           {row(P.fCountry, <select className={inp} value={f.country} onChange={e => set('country', e.target.value)}><option value="">—</option>{MARKETS.map(m => <option key={m}>{m}</option>)}</select>)}
           {row(P.fChannel, <input className={inp} value={f.channelUrl} onChange={e => set('channelUrl', e.target.value)} />)}
           {row(P.fContractNo, <input className={inp} value={f.contractNo} onChange={e => set('contractNo', e.target.value)} placeholder="HPDB-P-2026-001" />)}
-          {row(P.fCode, <input className={`${inp} font-mono`} value={f.code} onChange={e => set('code', e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))} />)}
+          {row(P.fCode, <input className={`${inp} font-mono`} value={f.code} onChange={e => { setCodeTouched(true); set('code', e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '')); }} />)}
           {row(P.fPremiumMonths, <input className={inp} type="number" min={1} max={36} value={f.premiumMonths} onChange={e => set('premiumMonths', e.target.value)} />)}
           <div className="col-span-2">{row(P.fPayout, <textarea className={inp} rows={2} value={f.payoutMethod} onChange={e => set('payoutMethod', e.target.value)} />)}</div>
           <div className="col-span-2">{row(P.fNotes, <textarea className={inp} rows={2} value={f.notes} onChange={e => set('notes', e.target.value)} />)}</div>
