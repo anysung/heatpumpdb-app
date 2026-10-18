@@ -117,7 +117,7 @@ export const PARTNER_TERMS: LegalDocContent = {
     {
       h: '10. Advertising disclosure and accuracy',
       p: [
-        'Content that features your code, your link or our support is advertising. You must label it as such under the law of the country where you publish (for example "Werbung" or "Anzeige" in Germany, "#ad" in the United Kingdom, "Publicité" or "Collaboration commerciale" in France).',
+        'Content that features your code, your link or our support is advertising. You must label it as such under the law of the country where you publish.',
         'Describe the service accurately. In particular, do not state or imply that any product is eligible for public funding, that our data is an official registry, or that you speak for us. Use our name and logo only as we provide them.',
       ],
     },
