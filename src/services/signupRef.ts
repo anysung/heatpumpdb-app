@@ -47,13 +47,18 @@ const KNOWN = new Set([
   'chillventa',
 ]);
 
+const PARTNER_REF = /^p-[a-z0-9-]{1,20}$/;
+
 /** Call once on boot, before any routing. Idempotent; never throws. */
 export function captureSignupRef(): void {
   try {
     const raw = new URLSearchParams(window.location.search).get('ref');
     if (!raw) return;
     const ref = raw.toLowerCase().slice(0, 24);
-    sessionStorage.setItem(KEY, KNOWN.has(ref) ? ref : 'other');
+    // Creator partner links (?ref=p-<slug>, 2026-10-18) are kept verbatim so
+    // the Marketing page can count signups per creator. Statistics only —
+    // commission follows the discount code used at checkout (terms §2).
+    sessionStorage.setItem(KEY, KNOWN.has(ref) || PARTNER_REF.test(ref) ? ref : 'other');
   } catch { /* storage blocked (private mode etc.) — attribution is optional */ }
 }
 

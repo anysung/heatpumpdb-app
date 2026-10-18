@@ -185,6 +185,21 @@ service cloud.firestore {
                       // secondary contact email (never a login identity).
                       'companyStreet', 'companyPostalCode', 'secondaryEmail'])
         ) ||
+        // Creator-partner code carried in from a link (2026-10-18): stored on
+        // the profile so it survives the 30-day trial and a change of device.
+        // It only PRE-FILLS the checkout — attribution is decided by the
+        // discount Paddle actually applied (webhook), so a member writing any
+        // code here can gain nothing and cost nothing.
+        (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['partnerCode', 'partnerCodeAt', 'partnerRef']) &&
+          request.resource.data.get('partnerCode', '') is string &&
+          request.resource.data.get('partnerCode', '').matches('^[A-Z0-9]{0,32}$') &&
+          request.resource.data.get('partnerCodeAt', '') is string &&
+          request.resource.data.get('partnerCodeAt', '').size() <= 40 &&
+          request.resource.data.get('partnerRef', '') is string &&
+          request.resource.data.get('partnerRef', '').matches('^(p-[a-z0-9-]{1,20})?$')
+        ) ||
         // Premium branded documents (2026-09-29): the user's own logo +
         // company + contact line for generated PDFs. Only the `branding` map,
         // a fixed key set, and a hard size cap on the logo data URL (the
@@ -436,6 +451,21 @@ service cloud.firestore {
       allow read: if isAdmin();
       allow write: if false;
     }
+    // Creator partner programme books (2026-10-18). ONE writer: the billing
+    // function (Admin SDK). Admins read them in the console; every change goes
+    // through an audited function endpoint, so the ledger cannot be edited by
+    // hand from a browser — a balance is always the sum of its entries.
+    match /paddleTransactions/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partners/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerCodes/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerAttributions/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerLedger/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerStatements/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerReview/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerDocs/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerMails/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerAudit/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /partnerInterest/{id} { allow read: if isAdmin(); allow write: if false; }
     match /paddleAdjustments/{adjustmentId} {
       // Created by the webhook (Admin SDK); admins may mark items reviewed.
       allow read, update: if isAdmin();

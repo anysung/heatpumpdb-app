@@ -111,3 +111,9 @@ export const createTeamOrgFn = (planCode: 'team_3' | 'team_5'): Promise<{ ok: bo
 /** Server-side account deletion (Firestore tx + Auth removal; retryable). */
 export const deleteAccountFn = (): Promise<{ ok: boolean; error?: string }> =>
   call('deleteAccount');
+
+/** Is a coupon code currently redeemable at Paddle? (public, cached server-side)
+ *  Used before PRE-FILLING a stored creator code — see services/partnerCode.ts.
+ *  `active: null` = could not tell; the caller then does not pre-fill. */
+export const couponStatusFn = (code: string): Promise<{ ok: boolean; active: boolean | null }> =>
+  call('couponStatus', { code });

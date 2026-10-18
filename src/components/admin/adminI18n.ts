@@ -307,6 +307,7 @@ const EN = {
   cNever: 'Never',
   cLoading: 'Loading…',
   menuMarketing: 'Marketing',
+  menuPartners: 'Creator partners',
   // ── Marketing page ──
   mk: {
     title: 'Marketing',
@@ -612,6 +613,7 @@ const KO: typeof EN = {
   cNever: '없음',
   cLoading: '불러오는 중…',
   menuMarketing: '마케팅',
+  menuPartners: '크리에이터 파트너',
   mk: {
     title: '마케팅',
     subtitle: '채널별 가입 수는 자동 집계(?ref= 링크)됩니다. 손으로 입력하는 것은 팔로워 수와 발행 로그뿐입니다.',

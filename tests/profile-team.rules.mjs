@@ -390,6 +390,30 @@ await check('[org read] the invitation query cannot be aimed at somebody else', 
   )));
 });
 
+/* ── Creator partner programme (2026-10-18) ─────────────────────────────── */
+await seed();
+await check('[partner] a member may store a creator code from a link on their own profile', async () => {
+  await assertSucceeds(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), {
+    partnerCode: 'RHH30', partnerCodeAt: new Date().toISOString(), partnerRef: 'p-renewable-heating',
+  }));
+});
+await check('[partner] a malformed code / ref is refused', async () => {
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { partnerCode: 'rhh30<script>', partnerCodeAt: 'x', partnerRef: '' }));
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { partnerCode: 'RHH30', partnerCodeAt: 'x', partnerRef: 'li' }));
+});
+await check('[partner] the code clause cannot smuggle another field', async () => {
+  await assertFails(updateDoc(doc(as(STRANGER), 'users', STRANGER.uid), { partnerCode: 'RHH30', partnerCodeAt: 'x', partnerRef: '', role: 'admin' }));
+});
+await check('[partner] a member cannot write someone else\'s code', async () => {
+  await assertFails(updateDoc(doc(as(MEMBER), 'users', STRANGER.uid), { partnerCode: 'RHH30', partnerCodeAt: 'x', partnerRef: '' }));
+});
+await check('[partner] members cannot read or write the partner books', async () => {
+  for (const col of ['partners', 'partnerLedger', 'partnerAttributions', 'partnerStatements', 'partnerCodes', 'paddleTransactions', 'partnerInterest', 'partnerDocs']) {
+    await assertFails(getDocs(collection(as(STRANGER), col)));
+    await assertFails(setDoc(doc(as(STRANGER), col, 'x'), { amountCents: 100000 }));
+  }
+});
+
 await testEnv.cleanup();
 console.log(`\n${passed} passed, ${failed} failed\n`);
 process.exit(failed === 0 ? 0 : 1);

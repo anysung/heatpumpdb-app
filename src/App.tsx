@@ -29,6 +29,7 @@ import { DEFAULT_LANGUAGE, COUNTRY_SITES } from './hpiq/market';
 import { PUBLIC_ENV } from './config/env';
 import { REGISTRATION_OPEN, REGISTRATION_REOPEN_DATE } from './config/registration';
 import { captureSignupRef } from './services/signupRef';
+import { capturePartnerCodeFromUrl, syncPartnerCodeToProfile } from './services/partnerCode';
 import { MaintenanceGate } from './components/MaintenanceGate';
 import { TeamNameGate, nameNeededForCheckout, OnboardingSheet, hasDisplayName, profileIncomplete } from './components/OnboardingSheet';
 
@@ -137,6 +138,9 @@ const AppInner: React.FC = () => {
    * who switched the site to English wants the mail in English too.
    */
   useEffect(() => { auth.languageCode = language; }, [language]);
+  // A signed-in member who arrives through a creator's link: keep that code on
+  // the profile so the checkout can pre-fill it on any device (partnerCode.ts).
+  useEffect(() => { syncPartnerCodeToProfile(currentUser).catch(() => {}); }, [currentUser?.id]);
   // Operations-console language (EN | KO only) — separate from the country
   // Language type, persisted so the choice carries into the dashboard.
   const [adminLang, setAdminLangState] = useState<AdminLang>(loadAdminLang());
@@ -154,6 +158,8 @@ const AppInner: React.FC = () => {
   // Campaign coupon links (?coupon=CODE): stash for checkout before anything
   // else touches the URL.
   captureCouponFromUrl();
+  // …and keep a creator's code beyond this visit (trial → later payment).
+  capturePartnerCodeFromUrl();
   const inviteParams = new URLSearchParams(window.location.search);
   const inviteOrgId = inviteParams.get('invite') ?? '';
   const invitedEmail = (inviteParams.get('email') ?? '').trim().toLowerCase();

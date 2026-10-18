@@ -1401,11 +1401,17 @@ async function applyTransactionCompleted(txn, occurredAt) {
 
 /** Adjustments (refunds / chargebacks / credits): AUDIT ONLY, never access. */
 async function recordAdjustment(adj, eventType, occurredAt) {
+  const apt = adj.payout_totals || {};
   await db.collection('paddleAdjustments').doc(adj.id).set({
     id: adj.id,
     action: adj.action || '',
     status: adj.status || '',
     type: adj.type || '',
+    // Money (2026-10-18): the partner ledger reverses commission from these.
+    currency: adj.currency_code || '',
+    totalCents: Number(((adj.totals || {}).total) ?? NaN) || 0,
+    payoutCurrency: apt.currency_code || '',
+    payoutEarningsCents: Number(apt.earnings ?? NaN) || 0,
     transactionId: adj.transaction_id || '',
     subscriptionId: adj.subscription_id || '',
     customerId: adj.customer_id || '',
@@ -1453,6 +1459,9 @@ async function paddleWebhook(req, res) {
     } else if (eventType.startsWith('adjustment.')) {
       await recordAdjustment(data, eventType, occurredAt);
     }
+    // Partner programme books — strictly AFTER the entitlement work above and
+    // in their own try/catch: a bug here is recorded, never a member's problem.
+    await partnerWebhookSide(eventType, eventId, data);
     // Everything else: acknowledged and ignored.
     return res.status(200).send('ok');
   } catch (e) {
@@ -1839,14 +1848,16 @@ function letterhead(bodyText, to, cta, opts) {
              by a few pixels in every one of them. -->
         <div style="font-size:15px;line-height:22px;font-weight:600;color:${INK};">HeatPump DataBase Europe</div>
         <div style="font-size:14px;line-height:22px;color:${MUTED};">
-          <a href="mailto:${SUPPORT_FROM}" style="color:#0066cc;text-decoration:none;">${SUPPORT_FROM}</a>
+          <a href="mailto:${(opts && opts.signatureEmail) || SUPPORT_FROM}" style="color:#0066cc;text-decoration:none;">${(opts && opts.signatureEmail) || SUPPORT_FROM}</a>
         </div>
       </td>
     </tr></table>
   </td></tr>
   <tr><td style="padding:16px 32px 26px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11.5px;line-height:1.6;color:${FAINT};">
     Germany · France · United Kingdom · Poland · Italy<br>
-    ${opts && opts.marketing
+    ${opts && opts.partner
+      ? `This message was sent to ${esc(to)} about your HeatPump DB Creator Partner agreement. Replies reach our partner team.`
+      : opts && opts.marketing
       ? `You receive this because you opted in to product news when you created your HeatPump DB account. Reply &ldquo;unsubscribe&rdquo; and we will stop sending it.`
       : `This message was sent to ${esc(to)} about that HeatPump DB account. Replies reach our support team.`}
   </td></tr>
@@ -2522,6 +2533,525 @@ async function partnerInterest(req, res) {
 }
 
 // ---------------------------------------------------------------------------
+// Creator partner programme — books, admin operations, statements (2026-10-18)
+//
+// Owner decision 2026-10-18: no discount code is handed to a creator until the
+// whole chain works — ledger, attribution, the admin Partners page and the
+// monthly statement. Money rules live in partnerRules.js (pure, tested), the
+// Firestore side in partnerLedger.js. Every mutation here is admin-gated and
+// writes an audit entry; the collections are read-only to admins in the rules
+// and write-only to this function, so the books have exactly one writer.
+//
+// Statement PDFs are rendered in the admin console (jsPDF, the same brand
+// artwork as every other generated document) and posted here to be mailed:
+// the function owns the numbers, the CSV and the send; the browser owns the
+// typesetting.
+// ---------------------------------------------------------------------------
+const PR = require('./partnerRules');
+const { statementMail, receiptMail, annualMail } = require('./partnerMailCopy');
+const MARKETING_FROM = process.env.MARKETING_FROM || 'marketing@heatpumpdb.eu';
+const PARTNER_DOC_PREFIX = 'partner-docs';
+
+let _partnerBooks = null;
+const partnerBooksApi = () => _partnerBooks
+  || (_partnerBooks = require('./partnerLedger')({ db, FieldValue, paddleApi, nowIso }));
+
+/** Webhook hook: never throws (fail-open), records failures for review. */
+async function partnerWebhookSide(eventType, eventId, data) {
+  try {
+    const P = partnerBooksApi();
+    if (eventType === 'transaction.completed') {
+      const custom = data.custom_data || {};
+      let uid = custom.userId || '';
+      if (!uid && data.subscription_id) {
+        const q = await db.collection('users').where('paddleSubscriptionId', '==', data.subscription_id).limit(1).get();
+        if (!q.empty) uid = q.docs[0].id;
+      }
+      const [planCode, billingTerm] = planFromItems(data) || [custom.planCode || '', custom.billingTerm || ''];
+      await P.recordTransaction(data, { uid, planCode, billingTerm });
+      await P.onTransaction(data, { uid, planCode, billingTerm });
+      if (data.discount_id) await partnerCodeSpikeCheck(data.discount_id);
+    } else if (eventType.startsWith('adjustment.')) {
+      await P.onAdjustment(data);
+    } else if (eventType.startsWith('subscription.')) {
+      await P.onSubscription(data, eventType);
+    }
+  } catch (e) {
+    console.error(`partner books ${eventType} ${eventId} failed`, e);
+    await db.collection('partnerReview').doc(`webhook_${eventId}`).set({
+      kind: 'webhook-error', eventType, eventId, error: String(e && e.message || e),
+      status: 'open', createdAt: nowIso(),
+      note: 'Partner accounting failed for this event (member access unaffected). Replay it from Paddle after fixing.',
+    }, { merge: true }).catch(() => {});
+  }
+}
+
+/** Leak guard (terms §1): a code used unusually often in 24 h goes to review. */
+const CODE_SPIKE_PER_DAY = 10;
+async function partnerCodeSpikeCheck(discountId) {
+  const code = await db.collection('partnerCodes').doc(discountId).get();
+  if (!code.exists) return;
+  const since = new Date(Date.now() - 86400000).toISOString();
+  const recent = await db.collection('partnerAttributions').where('discountId', '==', discountId).get();
+  const n = recent.docs.filter(d => String(d.data().createdAt) >= since).length;
+  if (n >= CODE_SPIKE_PER_DAY) {
+    const day = nowIso().slice(0, 10);
+    await db.collection('partnerReview').doc(`spike_${discountId}_${day}`).set({
+      kind: 'code-spike', pid: code.data().pid, code: code.data().code, discountId, count24h: n,
+      status: 'open', createdAt: nowIso(),
+      note: `${n} new subscriptions with this code in 24 h — check for a leak to a coupon site (terms §1).`,
+    }, { merge: true });
+  }
+}
+
+/** Admin action audit (who did what to the partner books). */
+async function partnerAudit(adminCaller, action, details) {
+  await db.collection('partnerAudit').add({
+    action, ...details, by: adminCaller.email || adminCaller.uid, at: nowIso(),
+  }).catch(e => console.error('partnerAudit failed', e.message));
+}
+
+// ── Public: is this coupon code currently redeemable? ─────────────────────
+// The app stores a code from a creator's link on the profile so it survives a
+// 30-day trial; before pre-applying a STORED code at checkout it asks here, so
+// an archived code (partner ended, code replaced) never reaches Paddle and can
+// never get between a member and a purchase. Answers active true/false only.
+const couponCache = new Map();           // code → { active, at }
+async function couponStatus(req, res) {
+  const code = String((req.body || {}).code || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 32);
+  if (!code) return sendErr(res, 400, 'bad-code');
+  const hit = couponCache.get(code);
+  if (hit && Date.now() - hit.at < 10 * 60 * 1000) return res.status(200).json({ ok: true, active: hit.active });
+  try {
+    const list = await paddleApi('GET', `/discounts?code=${encodeURIComponent(code)}&status=active`);
+    const now = Date.now();
+    const active = (Array.isArray(list) ? list : []).some(d =>
+      String(d.code || '').toUpperCase() === code && d.enabled_for_checkout !== false &&
+      (!d.expires_at || Date.parse(d.expires_at) > now) &&
+      (d.usage_limit == null || (d.times_used || 0) < d.usage_limit));
+    couponCache.set(code, { active, at: Date.now() });
+    return res.status(200).json({ ok: true, active });
+  } catch (e) {
+    console.error('couponStatus failed', e.message);
+    return res.status(200).json({ ok: true, active: null });   // unknown → the client does not pre-apply
+  }
+}
+
+// ── Admin: register a partner (code + Premium + record, one action) ───────
+const PARTNER_FIELDS = ['name', 'email', 'otherEmails', 'lang', 'country', 'channelUrl', 'contractNo',
+  'contractStatus', 'contractSentAt', 'contractSignedAt', 'termsVersion', 'payoutMethod', 'notes', 'status'];
+const PARTNER_STATUSES = ['prospect', 'active', 'paused', 'ended'];
+const CONTRACT_STATUSES = ['none', 'sent', 'signed'];
+const PARTNER_LANGS = ['en', 'de', 'fr', 'pl', 'it'];
+
+function cleanPartnerPatch(b) {
+  const out = {};
+  for (const k of PARTNER_FIELDS) {
+    if (!(k in b)) continue;
+    let v = b[k];
+    if (k === 'otherEmails') v = (Array.isArray(v) ? v : String(v || '').split(','))
+      .map(emailKey).filter(x => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(x)).slice(0, 5);
+    else if (k === 'email') v = emailKey(v);
+    else v = String(v ?? '').trim().slice(0, k === 'notes' || k === 'payoutMethod' ? 2000 : 300);
+    if (k === 'lang' && !PARTNER_LANGS.includes(v)) continue;
+    if (k === 'status' && !PARTNER_STATUSES.includes(v)) continue;
+    if (k === 'contractStatus' && !CONTRACT_STATUSES.includes(v)) continue;
+    if (k === 'country') v = v.toUpperCase().slice(0, 2);
+    out[k] = v;
+  }
+  return out;
+}
+
+/** Premium for the partner's own account for the contract (terms §8). */
+async function grantPartnerPremium(email, months, by, pid) {
+  const key = emailKey(email);
+  const startsAt = nowIso();
+  const endsMs = Date.parse(PR.addMonthsIso(startsAt, months));
+  const endsAt = new Date(endsMs).toISOString();
+  const endsAtTs = Timestamp.fromMillis(endsMs);
+  const q = await db.collection('users').where('email', '==', key).limit(1).get();
+  const user = q.empty ? null : { id: q.docs[0].id, ...q.docs[0].data() };
+  await db.collection('freeAccessGrants').doc(key).set({
+    email: key, planCode: 'professional', startsAt, endsAt, endsAtTs,
+    note: `Creator partner ${pid}`, grantedBy: by, createdAt: nowIso(),
+    ...(user ? { redeemedByUid: user.id, redeemedAt: nowIso() } : {}),
+  });
+  if (user) {
+    const closed = ['suspended', 'disabled', 'deleted', 'deletion_requested', 'rejected'].includes(user.status);
+    await db.collection('users').doc(user.id).update({
+      ...(closed ? {} : { status: 'active', isActive: true }),
+      grant: { source: 'free_grant', planCode: 'professional', startsAt, endsAt, grantedBy: by, note: `Creator partner ${pid}` },
+      ...extendWindowPatch(user.accessUntilTs, endsMs),
+    });
+  }
+  return { endsAt, uid: user ? user.id : '' };
+}
+
+async function partnerRegister(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const b = req.body || {};
+  const pid = String(b.pid || '').toLowerCase().trim();
+  const code = String(b.code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (!PR.PID_RE.test(pid)) return sendErr(res, 400, 'bad-pid');
+  if (!PR.CODE_RE.test(code)) return sendErr(res, 400, 'bad-code');
+  const patch = cleanPartnerPatch(b);
+  if (!patch.name || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(patch.email || '')) return sendErr(res, 400, 'name-and-email-required');
+  const pRef = db.collection('partners').doc(pid);
+  if ((await pRef.get()).exists) return sendErr(res, 409, 'partner-exists');
+  if ((await db.collection('promotions').doc(code).get()).exists) return sendErr(res, 409, 'code-exists');
+
+  // The discount: first payment only (recur=false), every CURRENT Premium price
+  // — terms §3: all plans and terms count. A test partner may carry a 100%
+  // code for the end-to-end rehearsal; real partners get the programme figure.
+  const pct = b.testPartner ? Math.min(100, Math.max(1, Number(b.discountPct) || 100)) : PR.PROGRAMME.firstPaymentDiscountPct;
+  const restrict = ['professional', 'team_3', 'team_5']
+    .flatMap(pl => OFFERED_TERMS.map(tm => priceIdFor(pl, tm))).filter(Boolean);
+  let discount;
+  try {
+    discount = await paddleApi('POST', '/discounts', {
+      description: `Creator partner ${pid} — ${patch.name} (first payment ${pct}% off)`.slice(0, 500),
+      type: 'percentage', amount: String(pct), code,
+      enabled_for_checkout: true, recur: false,
+      ...(restrict.length ? { restrict_to: restrict } : {}),
+      custom_data: { program: 'creator-partner', pid },
+    });
+  } catch (e) {
+    console.error('partnerRegister discount failed', e.message);
+    return sendErr(res, 502, e.body && e.body.error && e.body.error.code === 'discount_code_conflict' ? 'code-exists' : 'paddle-failed');
+  }
+
+  const grantMonths = Math.min(36, Math.max(1, Number(b.premiumMonths) || 12));
+  let grant = { endsAt: '', uid: '' };
+  try { grant = await grantPartnerPremium(patch.email, grantMonths, adminCaller.email || 'admin', pid); }
+  catch (e) { console.error('partner premium grant failed', e.message); }
+
+  const now = nowIso();
+  const refSlug = `p-${pid.replace(/^[a-z]{2}-/, '').slice(0, 20).replace(/-+$/, '')}`;
+  await pRef.set({
+    pid, ...patch,
+    status: patch.status || 'active',
+    contractStatus: patch.contractStatus || 'none',
+    code, discountId: discount.id, discountPct: pct, refSlug,
+    commissionRate: PR.PROGRAMME.commissionRate, commissionMonths: PR.PROGRAMME.commissionMonths,
+    premiumUntil: grant.endsAt, uid: grant.uid,
+    testPartner: !!b.testPartner,
+    interestId: String(b.interestId || ''),
+    attributionSeq: 0, createdAt: now, createdBy: adminCaller.email || adminCaller.uid,
+  });
+  await db.collection('partnerCodes').doc(discount.id).set({ pid, code, discountId: discount.id, createdAt: now, status: 'active' });
+  // The promotions registry stays the one list of every live code (Billing page).
+  await db.collection('promotions').doc(code).set({
+    code, paddleDiscountId: discount.id,
+    description: `Creator partner ${patch.name} — first payment ${pct}% off`,
+    markets: patch.country ? [patch.country] : [], planCodes: [],
+    startsAt: now.slice(0, 10), endsAt: '2099-12-31', note: `partner:${pid}`,
+    createdBy: adminCaller.email || 'Admin', createdAt: now,
+  });
+  if (b.interestId) {
+    await db.collection('partnerInterest').doc(String(b.interestId))
+      .set({ status: 'registered', pid, registeredAt: now }, { merge: true }).catch(() => {});
+  }
+  await partnerAudit(adminCaller, 'register', { pid, code, discountId: discount.id, pct, grantMonths });
+  return res.status(200).json({ ok: true, pid, code, discountId: discount.id, refSlug, premiumUntil: grant.endsAt });
+}
+
+async function partnerUpdate(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const b = req.body || {};
+  const pid = String(b.pid || '');
+  const ref = db.collection('partners').doc(pid);
+  const snap = await ref.get();
+  if (!snap.exists) return sendErr(res, 404, 'no-partner');
+  const patch = cleanPartnerPatch(b.patch || {});
+  if (patch.status === 'ended') return sendErr(res, 400, 'use-partnerEnd');
+  if (!Object.keys(patch).length) return sendErr(res, 400, 'nothing-to-update');
+  await ref.update({ ...patch, updatedAt: nowIso() });
+  await partnerAudit(adminCaller, 'update', { pid, fields: Object.keys(patch) });
+  return res.status(200).json({ ok: true });
+}
+
+/**
+ * End a partnership (terms §12): code archived, partner Premium ended. Commission
+ * CONTINUES on subscriptions that qualified before the end date for the rest of
+ * their window — unless the agreement ends for fraud or a serious breach
+ * (`forBreach`), which stops all further commission. The books stay open either
+ * way until the remaining balance is paid out.
+ */
+async function partnerEnd(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const { pid, reason = '', forBreach = false } = req.body || {};
+  const ref = db.collection('partners').doc(String(pid || ''));
+  const snap = await ref.get();
+  if (!snap.exists) return sendErr(res, 404, 'no-partner');
+  const p = snap.data();
+  const errors = [];
+  if (p.discountId) {
+    try { await paddleApi('PATCH', `/discounts/${p.discountId}`, { status: 'archived' }); }
+    catch (e) { errors.push('archive-discount'); console.error('partnerEnd archive failed', e.message); }
+    await db.collection('partnerCodes').doc(p.discountId).set({ status: 'archived', archivedAt: nowIso() }, { merge: true });
+    await db.collection('promotions').doc(p.code).set({ archivedAt: nowIso() }, { merge: true }).catch(() => {});
+  }
+  // Premium: only the partner grant ends — a paid subscription is untouched.
+  if (p.email) {
+    const key = emailKey(p.email);
+    await db.collection('freeAccessGrants').doc(key).set({ endsAt: nowIso(), endsAtTs: Timestamp.now(), revokedAt: nowIso() }, { merge: true }).catch(() => {});
+    const q = await db.collection('users').where('email', '==', key).limit(1).get();
+    if (!q.empty) {
+      const u = q.docs[0].data();
+      const paidActive = u.subscription && ['active', 'trialing', 'past_due'].includes(u.subscription.status);
+      if (u.grant && u.grant.source === 'free_grant' && String(u.grant.note || '').startsWith('Creator partner')) {
+        await q.docs[0].ref.update({
+          'grant.endsAt': nowIso(),
+          ...(paidActive ? {} : { accessUntilTs: Timestamp.now() }),
+        });
+      }
+    }
+  }
+  await ref.update({ status: 'ended', endedAt: nowIso(), endReason: String(reason).slice(0, 500), commissionStopped: !!forBreach });
+  await partnerAudit(adminCaller, 'end', { pid, reason, forBreach: !!forBreach, errors });
+  return res.status(200).json({ ok: true, errors });
+}
+
+/** Payouts, transfer fees, video support and manual corrections. */
+async function partnerLedgerAdd(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const b = req.body || {};
+  const pid = String(b.pid || '');
+  const type = String(b.type || '');
+  if (!['payout', 'payout_fee', 'video_support', 'manual'].includes(type)) return sendErr(res, 400, 'bad-type');
+  const pSnap = await db.collection('partners').doc(pid).get();
+  if (!pSnap.exists) return sendErr(res, 404, 'no-partner');
+  const at = /^\d{4}-\d{2}-\d{2}/.test(String(b.at || '')) ? new Date(`${String(b.at).slice(0, 10)}T12:00:00Z`).toISOString() : nowIso();
+  const note = String(b.note || '').slice(0, 500);
+  const reference = String(b.reference || '').slice(0, 120);
+  const books = await partnerBooksApi().partnerBooks(pid);
+  const balance = books.ledger.reduce((a, e) => a + (e.amountCents || 0), 0);
+
+  let amountCents, entryId;
+  if (type === 'video_support') {
+    const st = PR.buildStatement({ ym: PR.berlinMonth(at), ...books });
+    if (!st.videoSupportEligible && !b.force) return sendErr(res, 409, 'not-eligible-yet');
+    const d = new Date(at);
+    const quarter = `${d.getUTCFullYear()}Q${Math.floor(d.getUTCMonth() / 3) + 1}`;
+    entryId = `v_${pid}_${quarter}`;                         // once per quarter (terms §9)
+    amountCents = PR.PROGRAMME.videoSupportEur * 100;
+    if (!/^https?:\/\//.test(String(b.videoUrl || ''))) return sendErr(res, 400, 'video-url-required');
+  } else {
+    const eurAmt = Number(String(b.amountEur ?? '').replace(',', '.'));
+    if (!Number.isFinite(eurAmt) || eurAmt === 0) return sendErr(res, 400, 'bad-amount');
+    const c = Math.round(Math.abs(eurAmt) * 100);
+    amountCents = type === 'manual' ? Math.round(eurAmt * 100) : -c;   // payouts and fees reduce the balance
+    if (type === 'manual' && !note) return sendErr(res, 400, 'note-required');
+    if (type === 'payout' && c > balance) return sendErr(res, 409, 'payout-exceeds-balance');
+    entryId = `${type === 'payout' ? 'p' : type === 'payout_fee' ? 'f' : 'm'}_${pid}_${Date.now()}`;
+  }
+  const ref = db.collection('partnerLedger').doc(entryId);
+  if ((await ref.get()).exists) return sendErr(res, 409, 'already-booked-this-quarter');
+  await ref.set({
+    id: entryId, pid, type, amountCents, at, month: PR.berlinMonth(at),
+    note, reference, videoUrl: String(b.videoUrl || ''),
+    createdAt: nowIso(), createdBy: adminCaller.email || adminCaller.uid,
+  });
+  await partnerAudit(adminCaller, 'ledger-add', { pid, type, amountCents, entryId });
+  return res.status(200).json({ ok: true, entryId, amountCents });
+}
+
+/** Void an attribution (fraud / self-referral confirmed): reverses what it earned. */
+async function partnerAttributionVoid(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const { subscriptionId, note = '' } = req.body || {};
+  const aRef = db.collection('partnerAttributions').doc(String(subscriptionId || ''));
+  const a = await aRef.get();
+  if (!a.exists) return sendErr(res, 404, 'no-attribution');
+  if (a.data().voided) return sendErr(res, 409, 'already-voided');
+  if (!String(note).trim()) return sendErr(res, 400, 'note-required');
+  const l = await db.collection('partnerLedger').where('attributionId', '==', a.id).get();
+  const earned = l.docs.reduce((s, d) => s + (d.data().amountCents || 0), 0);
+  const at = nowIso();
+  if (earned) {
+    await db.collection('partnerLedger').doc(`x_${a.id}`).set({
+      id: `x_${a.id}`, pid: a.data().pid, type: 'manual', amountCents: -earned, at, month: PR.berlinMonth(at),
+      attributionId: a.id, customerRef: a.data().customerRef,
+      note: `Attribution voided: ${String(note).slice(0, 300)}`, createdAt: at, createdBy: adminCaller.email || adminCaller.uid,
+    });
+  }
+  await aRef.update({ voided: true, voidedAt: at, voidNote: String(note).slice(0, 500) });
+  await partnerAudit(adminCaller, 'void-attribution', { subscriptionId: a.id, reversedCents: -earned });
+  return res.status(200).json({ ok: true, reversedCents: -earned });
+}
+
+async function partnerReviewResolve(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const { id, note = '' } = req.body || {};
+  const ref = db.collection('partnerReview').doc(String(id || ''));
+  if (!(await ref.get()).exists) return sendErr(res, 404, 'no-item');
+  await ref.update({ status: 'resolved', resolvedAt: nowIso(), resolvedBy: adminCaller.email || adminCaller.uid, resolution: String(note).slice(0, 500) });
+  return res.status(200).json({ ok: true });
+}
+
+/** Monthly close: admin button, or Cloud Scheduler (3rd, 09:00 Berlin) with the job key. */
+async function partnerCloseMonth(req, res) {
+  const viaScheduler = !!process.env.REMINDER_KEY && req.headers['x-api-key'] === process.env.REMINDER_KEY;
+  const adminCaller = viaScheduler ? { email: 'scheduler' } : await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const b = req.body || {};
+  const prev = (() => { const m = PR.berlinMonth(nowIso()); const [y, mo] = m.split('-').map(Number); return mo === 1 ? `${y - 1}-12` : `${y}-${String(mo - 1).padStart(2, '0')}`; })();
+  const ym = /^\d{4}-\d{2}$/.test(String(b.month || '')) ? String(b.month) : prev;
+  const out = await partnerBooksApi().closeMonth(ym);
+  await partnerAudit(adminCaller, 'close-month', { month: ym, drafts: out.drafts, settled: out.settled });
+  if (viaScheduler && out.drafts) {
+    const tx = transport();
+    if (tx) await tx.sendMail({
+      from: `HeatPump DB <${SUPPORT_FROM}>`, to: MARKETING_FROM,
+      subject: `[internal] Partner statements ${ym}: ${out.drafts} draft(s) to review`,
+      text: `The monthly close built ${out.drafts} draft statement(s) for ${ym}.\n` +
+        `Payouts due: ${out.partners.filter(p => p.payoutDue).length}. Still pending at Paddle: ${out.stillPending}.\n\n` +
+        `Review, approve and send them on the admin Partners page; pay by the 15th.`,
+    }).catch(e => console.error('close-month alert failed', e.message));
+  }
+  return res.status(200).json({ ok: true, ...out });
+}
+
+async function partnerStatementStatus(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const { id, status } = req.body || {};
+  if (!['draft', 'approved'].includes(status)) return sendErr(res, 400, 'bad-status');
+  const ref = db.collection('partnerStatements').doc(String(id || ''));
+  const snap = await ref.get();
+  if (!snap.exists) return sendErr(res, 404, 'no-statement');
+  if (snap.data().status === 'sent') return sendErr(res, 409, 'already-sent');
+  await ref.update({ status, [`${status}At`]: nowIso(), [`${status}By`]: adminCaller.email || adminCaller.uid });
+  await partnerAudit(adminCaller, 'statement-status', { id, status });
+  return res.status(200).json({ ok: true });
+}
+
+/** Store a document (generated PDF or a signed scan) in the private bucket. */
+async function storePartnerDoc(pid, kind, filename, contentType, base64, meta) {
+  const safe = String(filename || 'document').replace(/[^A-Za-z0-9._-]/g, '_').slice(0, 120);
+  const path = `${PARTNER_DOC_PREFIX}/${pid}/${Date.now()}-${kind}-${safe}`;
+  const buf = Buffer.from(String(base64 || ''), 'base64');
+  if (!buf.length || buf.length > 12 * 1024 * 1024) throw Object.assign(new Error('bad-file'), { code: 'bad-file' });
+  await gcs.bucket(DATASET_BUCKET).file(path).save(buf, { contentType, resumable: false, metadata: { cacheControl: 'no-store' } });
+  const ref = await db.collection('partnerDocs').add({ pid, kind, path, filename: safe, contentType, size: buf.length, createdAt: nowIso(), ...meta });
+  return { id: ref.id, path };
+}
+
+/**
+ * Mail a statement / payment receipt / annual statement with its PDF (rendered
+ * by the console). Statement: must be APPROVED first; the CSV is built here
+ * from the stored statement, never from the browser.
+ */
+async function partnerSendDocument(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const b = req.body || {};
+  const kind = String(b.kind || '');
+  if (!['statement', 'receipt', 'annual'].includes(kind)) return sendErr(res, 400, 'bad-kind');
+  const pSnap = await db.collection('partners').doc(String(b.pid || '')).get();
+  if (!pSnap.exists) return sendErr(res, 404, 'no-partner');
+  const p = pSnap.data();
+  if (!p.email) return sendErr(res, 400, 'partner-has-no-email');
+  if (!b.pdfBase64) return sendErr(res, 400, 'pdf-required');
+  const tx = transport();
+  if (!tx) return sendErr(res, 503, 'smtp-not-configured');
+
+  let mail, attachments = [], stRef = null, ledgerRef = null;
+  const pdfName = String(b.filename || `${kind}.pdf`).replace(/[^A-Za-z0-9._-]/g, '_');
+  if (kind === 'statement') {
+    stRef = db.collection('partnerStatements').doc(String(b.statementId || ''));
+    const st = await stRef.get();
+    if (!st.exists || st.data().pid !== pSnap.id) return sendErr(res, 404, 'no-statement');
+    if (st.data().status !== 'approved' && !(st.data().status === 'sent' && b.resend)) return sendErr(res, 409, 'approve-first');
+    mail = statementMail(st.data(), { name: p.name, code: p.code, lang: p.lang, programme: PR.PROGRAMME });
+    attachments.push({ filename: pdfName, content: Buffer.from(b.pdfBase64, 'base64'), contentType: 'application/pdf' });
+    attachments.push({ filename: pdfName.replace(/\.pdf$/i, '.csv'), content: PR.statementCsv(st.data()), contentType: 'text/csv' });
+  } else if (kind === 'receipt') {
+    ledgerRef = db.collection('partnerLedger').doc(String(b.ledgerEntryId || ''));
+    const e = await ledgerRef.get();
+    if (!e.exists || e.data().pid !== pSnap.id || e.data().type !== 'payout') return sendErr(res, 404, 'no-payout');
+    mail = receiptMail({ name: p.name, code: p.code, lang: p.lang, amountCents: -e.data().amountCents, date: e.data().at, reference: e.data().reference });
+    attachments.push({ filename: pdfName, content: Buffer.from(b.pdfBase64, 'base64'), contentType: 'application/pdf' });
+  } else {
+    const year = String(b.year || '').slice(0, 4);
+    if (!/^\d{4}$/.test(year)) return sendErr(res, 400, 'bad-year');
+    mail = annualMail({ name: p.name, code: p.code, lang: p.lang, year });
+    attachments.push({ filename: pdfName, content: Buffer.from(b.pdfBase64, 'base64'), contentType: 'application/pdf' });
+  }
+
+  let info;
+  try {
+    info = await tx.sendMail({
+      from: `HeatPump DB Partner Team <${MARKETING_FROM}>`, to: p.email, replyTo: MARKETING_FROM,
+      ...(b.bccSelf !== false ? { bcc: MARKETING_FROM } : {}),
+      subject: mail.subject,
+      text: mail.text,
+      html: letterhead(mail.text, p.email, null, { partner: true, signatureEmail: MARKETING_FROM }),
+      attachments: [...mailAttachments(), ...attachments],
+    });
+  } catch (e) {
+    console.error('partnerSendDocument failed', e.message);
+    return sendErr(res, 502, 'send-failed');
+  }
+  const stored = await storePartnerDoc(pSnap.id, kind, pdfName, 'application/pdf', b.pdfBase64,
+    { statementId: b.statementId || '', ledgerEntryId: b.ledgerEntryId || '', sentTo: p.email, messageId: info.messageId || '' })
+    .catch(e => { console.error('store partner doc failed', e.message); return null; });
+  await db.collection('partnerMails').add({
+    pid: pSnap.id, kind, to: p.email, subject: mail.subject, statementId: b.statementId || '',
+    ledgerEntryId: b.ledgerEntryId || '', messageId: info.messageId || '', docPath: stored ? stored.path : '',
+    sentAt: nowIso(), sentBy: adminCaller.email || adminCaller.uid,
+  });
+  if (stRef) await stRef.update({ status: 'sent', sentAt: nowIso(), sentBy: adminCaller.email || adminCaller.uid, docPath: stored ? stored.path : '' });
+  if (ledgerRef) await ledgerRef.update({ receiptSentAt: nowIso(), receiptDocPath: stored ? stored.path : '' });
+  await partnerAudit(adminCaller, `send-${kind}`, { pid: pSnap.id, to: p.email });
+  return res.status(200).json({ ok: true, messageId: info.messageId || null });
+}
+
+/** Upload a signed contract / signed receipt scan (stored privately). */
+async function partnerUploadDocument(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const b = req.body || {};
+  const kind = String(b.kind || '');
+  if (!['signed-contract', 'signed-receipt', 'other'].includes(kind)) return sendErr(res, 400, 'bad-kind');
+  const pSnap = await db.collection('partners').doc(String(b.pid || '')).get();
+  if (!pSnap.exists) return sendErr(res, 404, 'no-partner');
+  const ct = String(b.contentType || '');
+  if (!/^(application\/pdf|image\/(png|jpeg|webp|heic))$/.test(ct)) return sendErr(res, 400, 'bad-content-type');
+  let stored;
+  try { stored = await storePartnerDoc(pSnap.id, kind, b.filename, ct, b.fileBase64, { ledgerEntryId: b.ledgerEntryId || '', uploadedBy: adminCaller.email || '' }); }
+  catch (e) { return sendErr(res, 400, e.code || 'store-failed'); }
+  if (kind === 'signed-receipt' && b.ledgerEntryId) {
+    await db.collection('partnerLedger').doc(String(b.ledgerEntryId)).set({ receiptSignedAt: nowIso(), receiptSignedDocPath: stored.path }, { merge: true });
+  }
+  if (kind === 'signed-contract') {
+    await pSnap.ref.update({ contractStatus: 'signed', contractSignedAt: pSnap.data().contractSignedAt || nowIso().slice(0, 10), contractDocPath: stored.path });
+  }
+  await partnerAudit(adminCaller, `upload-${kind}`, { pid: pSnap.id, path: stored.path });
+  return res.status(200).json({ ok: true, ...stored });
+}
+
+/** Read a stored partner document back (admin console download). */
+async function partnerGetDocument(req, res) {
+  const adminCaller = await verifyAdmin(req);
+  if (!adminCaller) return sendErr(res, 403, 'admin-only');
+  const path = String((req.body || {}).path || '');
+  if (!path.startsWith(`${PARTNER_DOC_PREFIX}/`) || path.includes('..')) return sendErr(res, 400, 'bad-path');
+  const file = gcs.bucket(DATASET_BUCKET).file(path);
+  const [exists] = await file.exists();
+  if (!exists) return sendErr(res, 404, 'not-found');
+  const [buf] = await file.download();
+  const [meta] = await file.getMetadata();
+  return res.status(200).json({ ok: true, contentType: meta.contentType || 'application/octet-stream', base64: buf.toString('base64') });
+}
+
+// ---------------------------------------------------------------------------
 // HTTP entry
 // ---------------------------------------------------------------------------
 functions.http('accountBilling', async (req, res) => {
@@ -2557,6 +3087,18 @@ functions.http('accountBilling', async (req, res) => {
     if (path.endsWith('/createDiscount')) return await createDiscount(req, res);
     if (path.endsWith('/archiveDiscount')) return await archiveDiscount(req, res);
     if (path.endsWith('/partnerInterest')) return await partnerInterest(req, res);
+    if (path.endsWith('/couponStatus')) return await couponStatus(req, res);
+    if (path.endsWith('/partnerRegister')) return await partnerRegister(req, res);
+    if (path.endsWith('/partnerUpdate')) return await partnerUpdate(req, res);
+    if (path.endsWith('/partnerEnd')) return await partnerEnd(req, res);
+    if (path.endsWith('/partnerLedgerAdd')) return await partnerLedgerAdd(req, res);
+    if (path.endsWith('/partnerAttributionVoid')) return await partnerAttributionVoid(req, res);
+    if (path.endsWith('/partnerReviewResolve')) return await partnerReviewResolve(req, res);
+    if (path.endsWith('/partnerCloseMonth')) return await partnerCloseMonth(req, res);
+    if (path.endsWith('/partnerStatementStatus')) return await partnerStatementStatus(req, res);
+    if (path.endsWith('/partnerSendDocument')) return await partnerSendDocument(req, res);
+    if (path.endsWith('/partnerUploadDocument')) return await partnerUploadDocument(req, res);
+    if (path.endsWith('/partnerGetDocument')) return await partnerGetDocument(req, res);
     return sendErr(res, 404, 'not-found');
   } catch (e) {
     console.error(`accountBilling ${path} error`, e);

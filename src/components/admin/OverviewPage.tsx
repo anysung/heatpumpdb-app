@@ -15,6 +15,9 @@ import { AdminPage } from '../../config/adminConfig';
 import { SectionCard, ActionBadge, PageHeader } from './shared';
 import { AdminLang, ADMIN_I18N } from './adminI18n';
 import { PanicCard } from './PanicCard';
+import { PARTNERS_I18N } from './partners/partnersI18n';
+import { listReview, listInterest, listStatements, listAllLedger } from '../../services/partnerAdminService';
+import { prevBerlinMonth } from './PartnersPage';
 
 interface OverviewPageProps {
   al: AdminLang;
@@ -53,6 +56,22 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ al, productCount, la
   const [metadata, setMetadata] = useState<DbMetadata | null>(null);
   const [newsByCode, setNewsByCode] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
+  // Creator partner programme (2026-10-18): what needs the owner this month.
+  const [partnerAlerts, setPartnerAlerts] = useState({ review: 0, requests: 0, drafts: 0, payout: 0, receipts: 0, month: '', dueBy: '' });
+  useEffect(() => {
+    const month = prevBerlinMonth();
+    Promise.all([listReview(), listInterest(), listStatements(month), listAllLedger()]).then(([rv, iq, st, lg]) => {
+      const payouts = lg.filter(e => e.type === 'payout');
+      const due = st.filter(s => s.payoutDue && !payouts.some(p => p.pid === s.pid && String(p.at) >= String(s.generatedAt || '').slice(0, 10)));
+      setPartnerAlerts({
+        review: rv.filter(r => r.status === 'open').length,
+        requests: iq.filter(i => i.status === 'new').length,
+        drafts: st.filter(s => s.status !== 'sent').length,
+        payout: due.length, month, dueBy: due[0]?.payoutDueBy || '',
+        receipts: payouts.filter(p => p.receiptSentAt && !p.receiptSignedAt && Date.now() - Date.parse(p.receiptSentAt) > 14 * 86400_000).length,
+      });
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -110,6 +129,13 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ al, productCount, la
   if (pastDue > 0) alerts.push({ icon: '💳', tone: 'orange', text: A.ovAlertPastDue(pastDue), go: () => openPage('billing') });
   if (changeCount > 0) alerts.push({ icon: '🔁', tone: 'blue', text: A.ovAlertChanges(changeCount), go: () => openPage('billing') });
   if (grantExpiring > 0) alerts.push({ icon: '🎁', tone: 'orange', text: A.ovAlertGrants(grantExpiring), go: () => openPage('billing') });
+
+  const PA = PARTNERS_I18N[al].ov;
+  if (partnerAlerts.payout > 0) alerts.push({ icon: '💶', tone: 'red', text: PA.payout(partnerAlerts.payout, partnerAlerts.dueBy), go: () => openPage('partners') });
+  if (partnerAlerts.drafts > 0) alerts.push({ icon: '🧾', tone: 'orange', text: PA.drafts(partnerAlerts.drafts, partnerAlerts.month), go: () => openPage('partners') });
+  if (partnerAlerts.review > 0) alerts.push({ icon: '🤝', tone: 'yellow', text: PA.review(partnerAlerts.review), go: () => openPage('partners') });
+  if (partnerAlerts.requests > 0) alerts.push({ icon: '✋', tone: 'blue', text: PA.requests(partnerAlerts.requests), go: () => openPage('partners') });
+  if (partnerAlerts.receipts > 0) alerts.push({ icon: '✍️', tone: 'yellow', text: PA.receipts(partnerAlerts.receipts), go: () => openPage('partners') });
 
   // Approved, non-admin users with no country assigned (one-email-one-country policy).
   const missingCountry = users.filter(u => (u.status === 'active' || (u.isActive && !u.status)) && !u.country && !['owner', 'admin', 'support', 'ops'].includes(u.role || 'user'));

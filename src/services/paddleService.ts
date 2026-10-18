@@ -13,6 +13,7 @@
  * term immediately. The ids live in config/paddlePrices.ts, keyed by currency; a market
  * whose currency has no catalogue keeps that option in "coming soon" mode.
  */
+import { checkoutPartnerCode } from './partnerCode';
 import { PUBLIC_ENV } from '../config/env';
 import { SubPlanCode, BillingTerm, paddlePriceId, checkoutConfigured } from '../config/subscriptionPlans';
 import { hasPriceCatalogue, IS_PADDLE_SANDBOX } from '../config/paddlePrices';
@@ -116,7 +117,10 @@ export async function openCheckout(user: User, plan: SubPlanCode, term: BillingT
   // own discount-code field, and a code carried in from a campaign link
   // (?coupon=CODE, stashed at app start) is pre-applied. Paddle alone
   // validates codes and computes prices — the app never does.
-  const coupon = pendingCouponCode();
+  // A code from THIS visit's link applies as before; otherwise a creator code
+  // the member carries since sign-up (services/partnerCode.ts) — only after
+  // the server confirms it is still redeemable.
+  const coupon = pendingCouponCode() ?? await checkoutPartnerCode(user);
   paddle.Checkout.open({
     items: [{ priceId: paddlePriceId(plan, term), quantity: 1 }],
     customer: user.email ? { email: user.email } : undefined,

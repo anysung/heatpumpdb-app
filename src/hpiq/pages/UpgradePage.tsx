@@ -14,7 +14,7 @@
  * old picker did — no Paddle trial, immediate charge, EUR, VAT added at
  * checkout.
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HpApp } from '../appState';
 import { tr } from '../i18n';
 import { FD } from '../ui';
@@ -25,6 +25,7 @@ import {
 import { openCheckout, checkoutConfigured } from '../../services/paddleService';
 import { TeamNameGate, nameNeededForCheckout } from '../../components/OnboardingSheet';
 import { accessInfo } from '../../config/entitlement';
+import { checkoutPartnerCode } from '../../services/partnerCode';
 
 const fill = (s: string, k: string, v: string | number) => s.replace(`{${k}}`, String(v));
 const eur = (v: number) => formatEur(Math.round(v * 100) / 100);
@@ -53,6 +54,16 @@ export const UpgradePage: React.FC<{ app: HpApp }> = ({ app }) => {
     ? (sub.planCode as SubPlanCode) : null;
   const inTrial = accessInfo(app.user).state === 'trial';
   const savePct = sharedTermDiscountPct('annual');
+  // A creator's code the member carries (services/partnerCode.ts): shown only
+  // once the server confirms it is still redeemable — never a promise the
+  // checkout would not keep.
+  const [carriedCode, setCarriedCode] = useState<string | null>(null);
+  useEffect(() => {
+    if (paidPlan || isPreview) return;
+    let live = true;
+    checkoutPartnerCode(app.user).then(c => { if (live) setCarriedCode(c); }).catch(() => {});
+    return () => { live = false; };
+  }, [app.user.id]);
 
   const choose = (plan: SubPlanCode) => {
     if (paidPlan) { app.go('account'); return; }
@@ -151,6 +162,7 @@ export const UpgradePage: React.FC<{ app: HpApp }> = ({ app }) => {
           <h1 style={{ fontFamily: FD, fontSize: 'clamp(28px, 4.6vw, 48px)', fontWeight: 800, letterSpacing: '-0.8px', lineHeight: 1.1, margin: 0, maxWidth: 820 }}>{u.heroTitle}</h1>
           <p style={{ fontSize: 'clamp(14.5px, 1.6vw, 17px)', color: 'rgba(255,255,255,.72)', lineHeight: 1.6, maxWidth: 760, margin: 0 }}>{u.heroSub}</p>
           {inTrial && <span style={{ ...badge('rgba(34,197,94,.16)', '#86efac'), fontSize: 12.5, padding: '6px 14px', border: '1px solid rgba(34,197,94,.4)' }}>{u.trialActive}</span>}
+          {carriedCode && <span data-testid="upgrade-code-applied" style={{ ...badge('rgba(6,182,212,.16)', '#a5f3fc'), fontSize: 12.5, padding: '6px 14px', border: '1px solid rgba(6,182,212,.45)' }}>{fill(u.codeApplied, 'code', carriedCode)}</span>}
 
           {/* Personal / Business */}
           <div role="tablist" data-tour="upgrade-plans" style={{ display: 'inline-flex', background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.14)', borderRadius: 999, padding: 4, marginTop: 10 }}>

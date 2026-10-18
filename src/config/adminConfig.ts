@@ -129,13 +129,14 @@ export type AdminPage =
   | 'members'
   | 'data'
   | 'marketing'
+  | 'partners'
   | 'audit';
 
 export interface AdminMenuItem {
   key: AdminPage;
   icon: string;
   /** adminI18n key for the label. */
-  labelKey: 'menuOverview' | 'menuBilling' | 'menuInbox' | 'menuMembers' | 'menuData' | 'menuMarketing' | 'menuAudit';
+  labelKey: 'menuOverview' | 'menuBilling' | 'menuInbox' | 'menuMembers' | 'menuData' | 'menuMarketing' | 'menuPartners' | 'menuAudit';
   /** Show notification badge count (e.g. pending approvals) */
   getBadge?: (ctx: { pendingUsers: number; deletionRequests: number; openTickets: number; billingAlerts: number }) => number;
 }
@@ -151,6 +152,7 @@ export const ADMIN_MENU: AdminMenuItem[] = [
     getBadge: ctx => ctx.pendingUsers + ctx.deletionRequests },
   { key: 'data',       icon: '🗄️', labelKey: 'menuData' },
   { key: 'marketing',  icon: '📣', labelKey: 'menuMarketing' },
+  { key: 'partners',   icon: '🤝', labelKey: 'menuPartners' },
   { key: 'audit',      icon: '📋', labelKey: 'menuAudit' },
 ];
 

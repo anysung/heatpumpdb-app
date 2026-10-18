@@ -37,6 +37,7 @@ import { TERMS_VERSION, PRIVACY_VERSION, DATA_USE_VERSION } from '../config/lega
 import { compact } from '../utils/profile';
 import { TRIAL_FLOW_ENABLED, finalizeSignupFn, sendVerificationEmailFn } from './billingFnService';
 import { pendingSignupRef } from './signupRef';
+import { pendingPartnerFields } from './partnerCode';
 import { DEFAULT_LANGUAGE } from '../hpiq/market';
 
 const OWNER_EMAIL = 'sungyongsoo1976@gmail.com';
@@ -281,6 +282,8 @@ export const registerUser = async (data: SignupData, lang: Language = DEFAULT_LA
       // Which channel brought them (see services/signupRef.ts) — the admin
       // Marketing page counts these per channel.
       signupRef: pendingSignupRef(),
+      // Creator code from a partner link — pre-fills the checkout later.
+      ...pendingPartnerFields(),
     }),
     ...(data.marketingConsent ? { marketingConsent: true } : {}),
   } as User;
@@ -643,7 +646,7 @@ const finishProviderSignIn = async (
       ...consentFields(),
       role: 'user',
       plan: 'standard',
-      ...compact({ signupRef: pendingSignupRef() }),
+      ...compact({ signupRef: pendingSignupRef(), ...pendingPartnerFields() }),
     } as User;
     await setDoc(userDocRef, created);
     await logActivity(uid, 'REGISTER_PENDING', `Registration via ${providerLabel}: ${email}`, email, `${firstName} ${lastName}`.trim());

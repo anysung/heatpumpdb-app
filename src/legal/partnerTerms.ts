@@ -22,21 +22,26 @@
  */
 import { BRAND_TM, OPERATOR_NAME, MARKETING_EMAIL } from '../config/legal';
 import type { LegalDocContent } from './legalContent';
+import programme from './partnerProgramme.json';
 
 /** Bump on any material change; agreements reference the version they signed. */
 export const PARTNER_TERMS_VERSION = '2026-10-16';
 
-/** Programme numbers — the single place they are stated. */
-export const PARTNER_PROGRAMME = {
-  commissionRate: 0.30,
-  commissionMonths: 24,
-  firstPaymentDiscountPct: 30,
-  payoutThresholdEur: 50,
-  payoutByDayOfMonth: 15,
-  videoSupportEur: 150,
-  videoSupportMinPaidAccounts: 50,
-  noticeDays: 30,
-} as const;
+/** Programme numbers — the single place they are stated is partnerProgramme.json,
+ *  which the billing function reads too (its copy google_cloud_function_billing/
+ *  partnerProgramme.json is kept identical by tests/partner-ledger.unit.mjs).
+ *  The commission ledger and the statements compute from the same file, so a
+ *  number on paper can never drift from the number that is paid. */
+export const PARTNER_PROGRAMME = programme as Readonly<{
+  commissionRate: number;
+  commissionMonths: number;
+  firstPaymentDiscountPct: number;
+  payoutThresholdEur: number;
+  payoutByDayOfMonth: number;
+  videoSupportEur: number;
+  videoSupportMinPaidAccounts: number;
+  noticeDays: number;
+}>;
 
 const P = PARTNER_PROGRAMME;
 
@@ -85,7 +90,7 @@ export const PARTNER_TERMS: LegalDocContent = {
       p: [
         `Balances close at the end of each calendar month. A balance of €${P.payoutThresholdEur} or more is paid by the ${P.payoutByDayOfMonth}th of the following month, by international bank transfer or Wise, in EUR, from our account in the Republic of Korea.`,
         `A balance below €${P.payoutThresholdEur} is carried forward and never expires. On your request we will pay a smaller balance at any time; the actual transfer cost of that payment is then deducted from it.`,
-        'You do not need to be a registered business and you do not need to send us an invoice. After each payment we send you a short payment receipt; you sign it and return it to us (a scan or photo is enough). The signed receipt is our record of the payment.',
+        'We do not require you to be a registered business, and we do not require an invoice from you. After each payment we send you a short payment receipt; you sign it and return it to us (a scan or photo is enough). The signed receipt is our record of the payment.',
         'Costs charged by your own bank, including currency conversion, are yours.',
       ],
     },

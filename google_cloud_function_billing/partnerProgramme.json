@@ -1,0 +1,10 @@
+{
+  "commissionRate": 0.3,
+  "commissionMonths": 24,
+  "firstPaymentDiscountPct": 30,
+  "payoutThresholdEur": 50,
+  "payoutByDayOfMonth": 15,
+  "videoSupportEur": 150,
+  "videoSupportMinPaidAccounts": 50,
+  "noticeDays": 30
+}
