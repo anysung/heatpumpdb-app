@@ -113,6 +113,8 @@ const EN = {
   // Member email (support@heatpumpdb.eu)
   meTitle: 'Send a message',
   meTemplate: 'Template',
+  meLang: 'Language',
+  meEnglishOnly: (l: string) => `This template exists in English only — translate it to ${l} before sending, or send it in English deliberately.`,
   meKind: 'Filed as',
   meKindHint: 'How this message is filed and searched later — set it to what the message actually is, not to whichever template you started from.',
   meSubject: 'Subject',
@@ -424,6 +426,8 @@ const KO: typeof EN = {
   // 회원 메일 (support@heatpumpdb.eu)
   meTitle: '메시지 보내기',
   meTemplate: '템플릿',
+  meLang: '언어',
+  meEnglishOnly: (l: string) => `이 템플릿은 영어만 있습니다 — 보내기 전에 ${l}로 번역하거나, 의도적으로 영어로 보내세요.`,
   meKind: '분류',
   meKindHint: '나중에 검색·조회되는 기준입니다. 시작한 템플릿이 아니라 실제 메시지 성격에 맞게 지정하세요.',
   meSubject: '제목',

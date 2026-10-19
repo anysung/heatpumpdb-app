@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { getUsers, approveUser, rejectUser, suspendUser, reactivateUser, disableUser, deleteUser } from '../../services/authService';
 import { sendMemberEmail, listMemberEmails, previewMemberEmail, MEMBER_EMAIL_KIND_OPTIONS, type SentMemberEmail, type MemberEmailKind } from '../../services/memberMailService';
-import { MEMBER_EMAIL_TEMPLATES } from '../../config/memberEmailTemplates';
+import { MEMBER_EMAIL_TEMPLATES, MEMBER_MAIL_LANGS, memberMailLangOf, type MemberMailLang } from '../../config/memberEmailTemplates';
 import { BulkMemberEmail } from './BulkMemberEmail';
 import { TRIAL_FLOW_ENABLED, adminFinalizeSignupFn } from '../../services/billingFnService';
 import { requestDeletion, updateAdminNotes, setUserCountry } from '../../services/adminService';
@@ -546,19 +546,23 @@ const MemberEmail: React.FC<{ al: AdminLang; user: User }> = ({ al, user }) => {
   const [history, setHistory] = useState<SentMemberEmail[]>([]);
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  /* Members are written to in their market's language (owner 2026-10-19). */
+  const [lang, setLang] = useState<MemberMailLang>(memberMailLangOf(user));
+  useEffect(() => { setLang(memberMailLangOf(user)); }, [user.id, user.country]);
 
   const template = MEMBER_EMAIL_TEMPLATES.find(t => t.id === templateId) ?? MEMBER_EMAIL_TEMPLATES[0];
+  const hasLang = (template.langs ?? ['en']).includes(lang);
 
-  // A new member, or a new template, means a new draft — never a half-edited
-  // message carried over to the wrong person.
+  // A new member, a new template or a new language means a new draft — never
+  // a half-edited message carried over to the wrong person.
   useEffect(() => {
-    const d = template.build(user);
+    const d = template.build(user, hasLang ? lang : 'en');
     setSubject(d.subject);
     setBody(d.body);
     setKind(template.kind);          // a starting point, overridable below
     setMsg('');
     setPreview(null);
-  }, [user.id, templateId]);
+  }, [user.id, templateId, lang]);
 
   const loadHistory = () => {
     listMemberEmails(user.id)
@@ -607,6 +611,20 @@ const MemberEmail: React.FC<{ al: AdminLang; user: User }> = ({ al, user }) => {
               {MEMBER_EMAIL_TEMPLATES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
             </select>
           </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-600 w-16">{A.meLang}</span>
+            <select value={lang} onChange={e => setLang(e.target.value as MemberMailLang)}
+              className="flex-1 px-2 py-1 border rounded text-xs bg-white" data-testid="me-lang">
+              {MEMBER_MAIL_LANGS.map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}
+            </select>
+          </div>
+
+          {!hasLang && (
+            <div className="text-[11px] text-red-700 bg-red-50 border border-red-200 rounded p-2" data-testid="me-english-only">
+              {A.meEnglishOnly(lang.toUpperCase())}
+            </div>
+          )}
 
           <div className="flex items-center gap-2">
             <span className="text-xs text-gray-600 w-16" title={A.meKindHint}>{A.meKind}</span>

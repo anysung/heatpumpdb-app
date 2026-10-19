@@ -31,7 +31,7 @@ const EN_T = {
     termsDeclined: "Registration cancelled — the terms must be accepted to create an account.",
 
     // ── Email verification (trial signup flow) ──
-    sessionRevokedLimit: "This device was signed out because your plan's limit of concurrently active devices was reached (Standard: one, Premium: two) — another active session was kept. You can sign in again at any time.",
+    sessionRevokedLimit: "This device was signed out because your plan's limit of concurrently active devices was reached (Standard: one, Premium: three) — another active session was kept. You can sign in again at any time.",
     sessionRevokedOther: "This device was signed out from another session of your account.",
     verifyTitle: "Verify your email",
     verifyBodyPre: "We sent a verification link to",
@@ -285,7 +285,7 @@ const DE_T = {
     termsDeclined: "Registrierung abgebrochen — die Bedingungen müssen akzeptiert werden.",
 
     // ── Email verification (trial signup flow) ──
-    sessionRevokedLimit: "Dieses Gerät wurde abgemeldet, weil die Zahl gleichzeitig aktiver Geräte Ihres Tarifs erreicht war (Standard: eines, Premium: zwei) — eine andere aktive Sitzung blieb bestehen. Sie können sich jederzeit wieder anmelden.",
+    sessionRevokedLimit: "Dieses Gerät wurde abgemeldet, weil die Zahl gleichzeitig aktiver Geräte Ihres Tarifs erreicht war (Standard: eines, Premium: drei) — eine andere aktive Sitzung blieb bestehen. Sie können sich jederzeit wieder anmelden.",
     sessionRevokedOther: "Dieses Gerät wurde von einer anderen Sitzung Ihres Kontos abgemeldet.",
     verifyTitle: "E-Mail-Adresse bestätigen",
     verifyBodyPre: "Wir haben einen Bestätigungslink gesendet an",
@@ -527,7 +527,7 @@ const FR_T = {
     termsAccount: "Un compte par personne. Chaque compte est strictement personnel et ne peut être utilisé que par une seule personne. En cas d’utilisation par deux personnes ou plus, le compte peut être fermé sans préavis pour rupture de contrat, sans remboursement de la période restante.",
     termsData: "Utilisation des données. La base de données produits est protégée par le droit d’auteur et le droit des bases de données ; des mesures de protection sont en place pour prévenir et identifier la collecte non autorisée et les usages abusifs. Vous pouvez librement consulter les données et les utiliser dans votre travail via les écrans et fonctionnalités du service. La collecte automatisée, la copie massive, la redistribution ou l’utilisation commerciale non autorisée des données par des moyens non fournis par le service ne sont pas permises et peuvent engager votre responsabilité au titre des Conditions d’utilisation et du droit applicable.",
 
-    sessionRevokedLimit: "Cet appareil a été déconnecté car la limite d’appareils actifs simultanément de votre offre était atteinte (Standard : un, Premium : deux) — une autre session active a été conservée. Vous pouvez vous reconnecter à tout moment.",
+    sessionRevokedLimit: "Cet appareil a été déconnecté car la limite d’appareils actifs simultanément de votre offre était atteinte (Standard : un, Premium : trois) — une autre session active a été conservée. Vous pouvez vous reconnecter à tout moment.",
     sessionRevokedOther: "Cet appareil a été déconnecté depuis une autre session de votre compte.",
     verifyTitle: "Vérifiez votre e-mail",
     verifyBodyPre: "Nous avons envoyé un lien de vérification à",
@@ -685,7 +685,7 @@ const PL_T = {
     termsAccount: "Jedno konto na osobę. Każde konto jest ściśle osobiste i może być używane wyłącznie przez jedną osobę. W przypadku stwierdzenia korzystania przez dwie lub więcej osób konto może zostać zamknięte bez uprzedzenia z tytułu naruszenia umowy — bez zwrotu opłat za pozostały okres subskrypcji.",
     termsData: "Wykorzystanie danych. Baza danych produktów jest chroniona prawem autorskim i prawem do baz danych; stosowane są środki ochrony zapobiegające nieuprawnionemu pozyskiwaniu danych i nadużyciom oraz umożliwiające ich identyfikację. Dane można swobodnie przeglądać i wykorzystywać w codziennej pracy za pośrednictwem ekranów i funkcji udostępnianych przez serwis. Zautomatyzowane pozyskiwanie, masowe kopiowanie, redystrybucja lub nieuprawnione komercyjne wykorzystanie danych w sposób nieudostępniany przez serwis są niedozwolone i mogą skutkować odpowiedzialnością prawną zgodnie z Regulaminem i obowiązującymi przepisami.",
 
-    sessionRevokedLimit: "To urządzenie zostało wylogowane, ponieważ osiągnięto limit jednocześnie aktywnych urządzeń w Twoim planie (Standard: jedno, Premium: dwa) — inna aktywna sesja została zachowana. Możesz zalogować się ponownie w dowolnym momencie.",
+    sessionRevokedLimit: "To urządzenie zostało wylogowane, ponieważ osiągnięto limit jednocześnie aktywnych urządzeń w Twoim planie (Standard: jedno, Premium: trzy) — inna aktywna sesja została zachowana. Możesz zalogować się ponownie w dowolnym momencie.",
     sessionRevokedOther: "To urządzenie zostało wylogowane z innej sesji Twojego konta.",
     verifyTitle: "Potwierdź adres e-mail",
     verifyBodyPre: "Wysłaliśmy link weryfikacyjny na adres",
@@ -843,7 +843,7 @@ const IT_T = {
     termsAccount: "Un account per persona. Ogni account è strettamente personale e può essere utilizzato da una sola persona. In caso di utilizzo da parte di due o più persone, l'account può essere chiuso senza preavviso per violazione contrattuale, senza rimborso del periodo di abbonamento residuo.",
     termsData: "Utilizzo dei dati. Il database dei prodotti è protetto dal diritto d’autore e dal diritto sulle banche dati; sono attive misure di protezione per prevenire e identificare la raccolta non autorizzata e gli usi impropri. È possibile consultare liberamente i dati e utilizzarli nel proprio lavoro tramite le schermate e le funzionalità offerte dal servizio. La raccolta automatizzata, la copia massiva, la ridistribuzione o l’uso commerciale non autorizzato dei dati con modalità non previste dal servizio non sono consentiti e possono comportare responsabilità legale ai sensi dei Termini di utilizzo e della legge applicabile.",
 
-    sessionRevokedLimit: "Questo dispositivo è stato disconnesso perché è stato raggiunto il limite di dispositivi attivi contemporaneamente del tuo piano (Standard: uno, Premium: due) — un’altra sessione attiva è stata mantenuta. Puoi accedere di nuovo in qualsiasi momento.",
+    sessionRevokedLimit: "Questo dispositivo è stato disconnesso perché è stato raggiunto il limite di dispositivi attivi contemporaneamente del tuo piano (Standard: uno, Premium: tre) — un’altra sessione attiva è stata mantenuta. Puoi accedere di nuovo in qualsiasi momento.",
     sessionRevokedOther: "Questo dispositivo è stato disconnesso da un’altra sessione del tuo account.",
     verifyTitle: "Verifica la tua email",
     verifyBodyPre: "Abbiamo inviato un link di verifica a",
