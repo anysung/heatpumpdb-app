@@ -11,7 +11,8 @@
                     ▼                                                    │
   BAFA fetch → parse → master seed ──► match BAFA↔EPREL ─► DE builder ───┤
   (--fetch)                (self-accumulating)                │          │
-                                                              ├─► FR builder (DE-derived)
+  ADEME agrément fetch → facets → ×EPREL → match canonical ──┼─► FR builder (DE-derived
+                                                              │    + agrément overlay/native)
   Ofgem PEL fetch → parse (--fetch)                           │
         └─► match canonical→PEL ──────────────────────────────┼─► GB builder
                                                               │
@@ -25,6 +26,15 @@
   the orchestrator computes this from `dependsOn`, never by hand.
 - The PL builder additionally appends spec-complete ZUM-native extension
   records (see CLAUDE.md §2 and `scripts/pl/build-app-products-pl.mjs`).
+- The FR builder attaches the ADEME agrément register (`scripts/fr/fetch-ademe.mjs`
+  → `enrich-agrement-facets` → `enrich-agrement-from-eprel` →
+  `match-canonical-to-agrement`): number, register date, and — from the raw
+  snapshot — the DECLARED ASSEMBLY SITE (`agrement_assembly_country`, ISO code)
+  and the regime (`agrement_transitory`; a site outside the EEA is only ever on
+  the register under the time-limited transitional agrément). The builder fails
+  if a confirmed record arrives without them. Shown as an assembly statement,
+  never as a country of origin. The list is amended by a ministerial order
+  every month; the register's own `importDate` is the date the app shows.
 - **Matcher failure semantics (two-layer defense, clarified 2026-07-28):**
   matcher steps are *optional* so a failed overlay never leaves the run
   half-dead and undiagnosable — the builder emits a technically valid

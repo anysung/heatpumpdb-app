@@ -11,7 +11,7 @@ import { compareRows, bestOf, cellFlagged } from '../compareRows';
 import { QaMark, qaStyle, QA_RED } from '../QaMark';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
-import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, agrementAssembly, countryName, LOCAL_LISTING_SOURCE } from '../listing';
 import { ListingChip } from '../ListingChip';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, ChevronDown, KwRangeSlider, Watermark, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
@@ -571,6 +571,31 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                             {t.products.localListingIdLabel}: {id}
                           </span>
                         )}
+                        {/* France: the register's declared assembly site + regime. A
+                            transitional agrément is time-limited and must be re-checked. */}
+                        {(() => {
+                          const asm = agrementAssembly(sel.raw);
+                          if (!asm) return null;
+                          const asOf = (sel.raw as unknown as Record<string, unknown>).agrement_import_date;
+                          return (
+                            <>
+                              {asm.country && (
+                                <span style={{ fontSize: 12.5, color: '#1d1d1f' }} data-testid="agrement-assembly">
+                                  {t.agrement.assemblyLabel}: {countryName(asm.country, t.locale)}
+                                </span>
+                              )}
+                              <span style={{ fontSize: 12.5, color: asm.transitory ? '#b25000' : '#1d1d1f' }} data-testid="agrement-regime">
+                                {t.agrement.regimeLabel}: {asm.transitory ? t.agrement.regimeTransitory : t.agrement.regimeStandard}
+                              </span>
+                              {asm.transitory && (
+                                <span style={{ fontSize: 12, lineHeight: 1.45, color: '#b25000' }}>{t.agrement.transitoryText}</span>
+                              )}
+                              {typeof asOf === 'string' && asOf && (
+                                <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>{t.agrement.registerAsOf(asOf)}</span>
+                              )}
+                            </>
+                          );
+                        })()}
                       </>
                     );
                   })()}

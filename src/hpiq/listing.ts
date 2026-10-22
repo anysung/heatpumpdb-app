@@ -53,7 +53,7 @@ export const LOCAL_LISTING_FILTER_DEFAULT_ON =
 
 /** The listing status to show, or null when this market has no national list. */
 export function localListingStatus(p: HeatPump): LocalListingStatus | null {
-  if (!LOCAL_LISTING_SOURCE) return null;             // France — nothing may be claimed
+  if (!LOCAL_LISTING_SOURCE) return null;             // a market without a national list
 
   const raw = p as unknown as Record<string, unknown>;
 
@@ -110,4 +110,27 @@ export function localListingId(p: HeatPump): string | null {
   // GSE: the Conto Termico catalogue publishes NO per-row identifier, and our
   // internal gse_entry_key must never be presented as an official id.
   return null;
+}
+
+/**
+ * France only: where the ADEME register says the agréé model's refrigerant
+ * circuit (for a split, at least one sub-assembly) gets its final assembly, and
+ * whether the agrément is the time-limited TRANSITIONAL one — the only way a
+ * site outside the EEA is on the register. Shown only on a confirmed listing,
+ * and only ever as the DECLARED ASSEMBLY SITE — never as a country of origin.
+ */
+export function agrementAssembly(p: HeatPump): { country: string | null; transitory: boolean } | null {
+  if (LOCAL_LISTING_SOURCE !== 'AGREMENT') return null;
+  const raw = p as unknown as Record<string, unknown>;
+  if (raw.agrement_match_status !== 'confirmed') return null;
+  const country = typeof raw.agrement_assembly_country === 'string' && raw.agrement_assembly_country
+    ? raw.agrement_assembly_country : null;
+  if (!country && raw.agrement_transitory !== true) return null;
+  return { country, transitory: raw.agrement_transitory === true };
+}
+
+/** A country code in the reader's language ("PL" → "Pologne" / "Poland"). */
+export function countryName(code: string, locale: string): string {
+  try { return new Intl.DisplayNames([locale], { type: 'region' }).of(code) ?? code; }
+  catch { return code; }
 }

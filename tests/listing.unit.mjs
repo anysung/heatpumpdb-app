@@ -44,8 +44,13 @@ async function resolverFor(country) {
 }
 
 for (const country of ['GB', 'DE', 'FR', 'PL', 'IT']) {
-  const { localListingStatus, localListingId, LOCAL_LISTING_SOURCE, LOCAL_LISTING_FILTER } = await resolverFor(country);
+  const { localListingStatus, localListingId, agrementAssembly, LOCAL_LISTING_SOURCE, LOCAL_LISTING_FILTER } = await resolverFor(country);
   console.log(`\n${country} — local listing overlay`);
+
+  if (country !== 'FR') {
+    is('no agrément assembly site outside France',
+      agrementAssembly({ agrement_match_status: 'confirmed', agrement_assembly_country: 'PL', agrement_transitory: false }), null);
+  }
 
   if (country === 'GB') {
     is('source is the Ofgem PEL', LOCAL_LISTING_SOURCE, 'PEL');
@@ -113,6 +118,16 @@ for (const country of ['GB', 'DE', 'FR', 'PL', 'IT']) {
       localListingStatus({ agrement_match_status: null }), 'verification_required');
     is('unmatched → no number is shown',
       localListingId({ agrement_match_status: null, agrement_number: '18-2026-000008' }), null);
+
+    // The register's assembly site travels with a confirmed listing only; a site
+    // outside the EEA is only ever there under the transitional agrément.
+    is('confirmed → declared assembly site',
+      JSON.stringify(agrementAssembly({ agrement_match_status: 'confirmed', agrement_assembly_country: 'PL', agrement_transitory: false })),
+      JSON.stringify({ country: 'PL', transitory: false }));
+    is('confirmed transitional → flagged',
+      agrementAssembly({ agrement_match_status: 'confirmed', agrement_assembly_country: 'CN', agrement_transitory: true })?.transitory, true);
+    is('unmatched → no assembly site is ever claimed',
+      agrementAssembly({ agrement_match_status: null, agrement_assembly_country: 'PL', agrement_transitory: false }), null);
 
     // Foreign registries stay foreign.
     is('a UK PEL status is ignored entirely',

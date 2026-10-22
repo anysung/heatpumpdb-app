@@ -585,6 +585,16 @@ const EN = {
     disclaimer: 'This document is generated automatically by HeatPump DB from publicly accessible sources, including the BAFA list of eligible heat pumps and EPREL-style records, and is provided for general information purposes only. It is not an official document of any manufacturer or public authority, does not constitute technical, legal, or funding advice, and does not constitute a guarantee, assurance, or agreed specification of any product characteristic. All information is provided “as is” and “as available” without representation or warranty of any kind, whether express or implied, including but not limited to warranties of accuracy, completeness, timeliness, merchantability, or fitness for a particular purpose. Product specifications are subject to change by the manufacturer without notice. The user bears sole responsibility for verifying all values shown in this document against the manufacturer’s current official documentation and the official publications of the competent authorities (in particular BAFA, KfW, and the EPREL database) before making any purchase, installation, contractual, or funding decision. To the maximum extent permitted by applicable law, HeatPump DB and its operators accept no liability for any direct, indirect, incidental, or consequential loss or damage arising out of or in connection with the use of, or reliance on, this document. Mandatory statutory liability — including liability for intent or gross negligence, for injury to life, body, or health, and under the German Product Liability Act (Produkthaftungsgesetz) — remains unaffected. All product names, logos, and trademarks are the property of their respective owners and are used for identification purposes only.',
   },
 
+  // France only (src/hpiq/listing.ts agrementAssembly) — the ADEME register's
+  // declared assembly site and agrément regime. Other markets never render it.
+  agrement: {
+    assemblyLabel: 'Declared assembly site',
+    regimeLabel: 'Agrément regime',
+    regimeStandard: 'Standard',
+    regimeTransitory: 'Transitional — time-limited',
+    transitoryText: 'Assembled outside the EEA: approved on a time-limited transitional basis (investment plan in Europe). Check its end date in the official list before the quote is signed.',
+    registerAsOf: (d: string) => `ADEME register as of ${d}`,
+  },
   bafa: {
     heroTitle: 'BAFA / KfW.',
     heroSub: 'Curated German funding updates for heat pumps. Confirmed changes, clearly separated from guidance.',
@@ -1569,6 +1579,14 @@ const DE: HpStrings = {
     disclaimer: 'Dieses Dokument wird von HeatPump DB automatisch aus öffentlich zugänglichen Quellen erstellt, insbesondere aus der BAFA-Liste der förderfähigen Wärmepumpen und Einträgen im EPREL-Stil, und dient ausschließlich der allgemeinen Information. Es ist kein offizielles Dokument eines Herstellers oder einer Behörde, stellt keine technische, rechtliche oder förderbezogene Beratung dar und begründet keine Garantie, Zusicherung oder Beschaffenheitsvereinbarung hinsichtlich irgendeiner Produkteigenschaft. Alle Informationen werden ohne Gewähr („wie besehen" und „wie verfügbar") bereitgestellt, ohne ausdrückliche oder stillschweigende Zusicherung oder Gewährleistung jeglicher Art, einschließlich, aber nicht beschränkt auf Richtigkeit, Vollständigkeit, Aktualität, Marktgängigkeit oder Eignung für einen bestimmten Zweck. Produktspezifikationen können vom Hersteller ohne Vorankündigung geändert werden. Der Nutzer trägt die alleinige Verantwortung, alle in diesem Dokument dargestellten Werte vor jeder Kauf-, Installations-, Vertrags- oder Förderentscheidung anhand der aktuellen offiziellen Herstellerdokumentation und der amtlichen Veröffentlichungen der zuständigen Stellen (insbesondere BAFA, KfW und EPREL-Datenbank) zu überprüfen. Soweit gesetzlich zulässig, übernehmen HeatPump DB und seine Betreiber keine Haftung für unmittelbare, mittelbare, zufällige oder Folgeschäden, die aus der Nutzung dieses Dokuments oder dem Vertrauen darauf entstehen. Die zwingende gesetzliche Haftung — einschließlich der Haftung für Vorsatz und grobe Fahrlässigkeit, für Verletzungen von Leben, Körper oder Gesundheit sowie nach dem Produkthaftungsgesetz — bleibt unberührt. Alle Produktnamen, Logos und Marken sind Eigentum ihrer jeweiligen Inhaber und werden nur zu Identifikationszwecken verwendet.',
   },
 
+  agrement: {
+    assemblyLabel: 'Angegebener Montagestandort',
+    regimeLabel: 'Zulassungsart',
+    regimeStandard: 'Regulär',
+    regimeTransitory: 'Übergangsweise — befristet',
+    transitoryText: 'Montage außerhalb des EWR: befristete Übergangszulassung (Investitionsplan in Europa). Enddatum vor Unterzeichnung des Angebots in der offiziellen Liste prüfen.',
+    registerAsOf: (d: string) => `ADEME-Register, Stand ${d}`,
+  },
   bafa: {
     heroTitle: 'BAFA / KfW.',
     heroSub: 'Kuratierte Förder-Updates für Wärmepumpen in Deutschland. Bestätigte Änderungen, klar getrennt von Einordnungen.',
@@ -2286,6 +2304,8 @@ const FR_EN: HpStrings = {
       bafaId: 'Registration number in the European source registry — the technical reference source of this catalogue, not a French certification.',
       bafaStatus: 'Presence of the model in the European source snapshot used by this app. A technical reference only.',
       localListingId: 'The national list\u2019s own identifier for this product.',
+      agrAssembly: 'Site of the final assembly of the refrigerant circuit (for a split: of at least one sub-assembly, indoor or outdoor unit), as declared in the ADEME agrément register. An assembly statement, not a country of origin; a model assembled on several sites is told apart by serial number.',
+      agrRegime: 'Standard: third-party certification (Heat Pump KEYMARK, NF PAC, Eurovent ECP or equivalent) plus assembly in the EEA. Transitional: assembled outside the EEA, approved for a limited period on the basis of an investment plan in Europe. The agrément is assessed on the commitment date of the operation (quote signature).',
       begRel: "Indicative relevance for MaPrimeRénov'/CEE. French aid is criteria-based (ηs thresholds, RGE installer) — not a funding decision or commitment.",
     } as Record<string, string>,
     disclaimerTitle: 'DISCLAIMER',
@@ -2300,7 +2320,7 @@ const FR_EN: HpStrings = {
     card1Text: "Since 1 Sep 2026 per-measure grants focus on heat pumps: air/water €5,000 / €4,000 / €3,000 and geothermal €11,000 / €9,000 / €6,000 (very modest / modest / intermediate incomes; higher incomes not eligible). ANAH dossier before works start, with an RGE-certified installer.",
     card2Title: 'CEE — COUP DE POUCE',
     card2Head: 'Cumulative',
-    card2Text: "Energy-saving certificates paid by energy suppliers, cumulative with MaPrimeRénov' per-measure grants. Since 1 Sep 2026 the Coup de pouce bonus requires a model holding the ADEME agrément on the day the quote is accepted. Amounts vary by supplier and income band.",
+    card2Text: "Energy-saving certificates paid by energy suppliers, cumulative with MaPrimeRénov' per-measure grants. Since 1 Sep 2026 the Coup de pouce bonus requires a model holding the ADEME agrément (certified, refrigerant circuit assembled in the EEA) on the day the quote is accepted. Amounts vary by supplier and income band.",
     card3Title: 'CATALOGUE COVERAGE',
     card3Head: (n: string) => `${n} heat pumps`,
     card3Text: 'Referenced units in this app — technical specs cross-referenced from European registry sources, refreshed with every regular data update.',
@@ -2308,6 +2328,7 @@ const FR_EN: HpStrings = {
     confirmed: 'CONFIRMED',
     guidance: 'GUIDANCE',
     timeline: [
+      { date: '1 Nov 2026', badge: 'CONFIRMED', strong: 'Assembly site and agrément regime in the catalogue', rest: ' — the agrément has two cumulative conditions: third-party certification (Heat Pump KEYMARK, NF PAC, Eurovent ECP or an equivalent EEA-accredited scheme) and final assembly of the refrigerant circuit in the EEA (for a split, at least one of the two units). Models assembled outside the EEA appear only under a time-limited transitional agrément tied to an investment plan in Europe. Each agréé model now shows the assembly site declared in the ADEME register and its regime; the list is amended by monthly orders, so check it again on the day the quote is signed. Source: ADEME (bonus-pac.ademe.fr), Decree 2026-413.' },
       { date: '1 Oct 2026', badge: 'CONFIRMED', strong: 'ADEME agrément register in the catalogue', rest: ' — the France catalogue now covers 9,060 models; 1,803 read “Agréé” with their agrément number (register import of 30 Sep 2026, 2,589 entries). Every other model reads “Vérification de l’agrément requise”: the match is not confirmed, which says nothing about the register itself. Check the official ADEME list before quoting.' },
       { date: '1 Oct 2026', badge: 'CONFIRMED', strong: 'All-in-one heat-pump offer: pre-orders open', rest: ' — six operators selected by the Government (announced 30 Sep 2026) bundle an air/water heat pump made in France or Europe with installation, maintenance, fixed-price electricity and financing, for owners of single-family houses in the modest and very modest income categories. First installations are announced for November.' },
       { date: '1 Oct 2026', badge: 'GUIDANCE', strong: 'French aid is criteria-based', rest: ' — MaPrimeRénov\' and CEE depend on performance criteria, household and dwelling conditions and an RGE-certified installer. This app is an independent reference showing technical data from European reference sources; it never guarantees eligibility and is not legal advice.' },
@@ -2840,7 +2861,7 @@ const FR_FR: HpStrings = {
     remove: 'retirer',
     cmpRows: ['Puissance 55 °C', 'COP A7/W35', 'COP A2/W35', 'SCOP', 'Puissance acoustique', 'Fluide frigorigène', 'Classe énergétique', 'Réf. européenne'],
     inspFunding: 'AIDES · FINANCEMENT',
-    inspListed: 'Inscrit au registre d’agrément ADEME (numéro ci-dessus). L’aide dépend encore des critères de performance et d’un installateur RGE — voir le guide des aides.',
+    inspListed: 'Inscrit au registre d’agrément ADEME (numéro indiqué ci-dessous). L’aide dépend encore des critères de performance et d’un installateur RGE — voir le guide des aides.',
     inspDelisted: 'Vérification de l’agrément requise — consultez le registre ADEME avant tout devis.',
     inspVerifyRequired: 'Agrément non confirmé automatiquement pour ce modèle exact — cela ne prouve PAS son absence du registre. Vérifiez la liste officielle avant tout devis.',
     inspVerify: 'Vérifiez les critères d’aide avec un installateur RGE avant tout devis.',
@@ -2958,6 +2979,8 @@ const FR_FR: HpStrings = {
       eprelReg: 'Identifiant d’enregistrement dans le registre européen des produits pour l’étiquetage énergétique (EPREL), lorsqu’une association est établie.',
       bafaStatus: 'Présence du modèle dans l’instantané source européen utilisé par cette application. Référence technique uniquement.',
       localListingId: 'Identifiant du produit dans la liste nationale.',
+      agrAssembly: 'Lieu de l\u2019assemblage final du circuit frigorifique (pour un split : d\u2019au moins un sous-ensemble, unité intérieure ou extérieure), tel que déclaré au registre ADEME des agréments. Indication d\u2019assemblage, pas d\u2019origine ; un modèle assemblé sur plusieurs sites se distingue par son numéro de série.',
+      agrRegime: 'Droit commun : certification tierce partie (Heat Pump KEYMARK, NF PAC, Eurovent ECP ou équivalent) et assemblage dans l\u2019EEE. Transitoire : modèle assemblé hors EEE, agréé pour une durée limitée sur la base d\u2019un plan d\u2019investissement en Europe. L\u2019agrément s\u2019apprécie à la date d\u2019engagement de l\u2019opération (signature du devis).',
       begRel: 'Pertinence indicative pour MaPrimeRénov’/CEE. Les aides françaises reposent sur des critères (seuils ηs, installateur RGE) — ni décision ni engagement de financement.',
       nfPac: 'Référence de certification française NF PAC (Certita) — affichée uniquement en cas de correspondance certaine.',
     } as Record<string, string>,
@@ -2965,6 +2988,14 @@ const FR_FR: HpStrings = {
     disclaimer: 'Ce document est généré automatiquement par HeatPump DB à partir de sources publiquement accessibles, notamment des sources de registres européens (utilisées comme référence technique pour du matériel également vendu en France), des fiches type EPREL et, en cas de correspondance certaine, des références de certification NF PAC. Il est fourni à titre d’information générale uniquement. Il ne constitue ni un document officiel d’un fabricant ou d’une autorité publique, ni un conseil technique, juridique ou financier, ni une garantie, assurance ou spécification convenue d’une quelconque caractéristique produit. Toutes les informations sont fournies « en l’état » et « selon disponibilité », sans déclaration ni garantie d’aucune sorte. Les spécifications produits peuvent être modifiées par le fabricant sans préavis. Les aides publiques françaises (MaPrimeRénov’, CEE) reposent sur des critères et exigent un installateur certifié RGE ; l’utilisateur est seul responsable de la vérification de toutes les valeurs et de tous les critères auprès de la documentation officielle du fabricant et des publications officielles (notamment France Rénov’, ANAH et ADEME) avant toute décision d’achat, d’installation, contractuelle ou de financement. Dans toute la mesure permise par la loi applicable, HeatPump DB et ses exploitants déclinent toute responsabilité pour tout dommage direct, indirect, accessoire ou consécutif résultant de l’utilisation de ce document ou de la confiance qui lui est accordée. Rien dans le présent avertissement n’exclut ni ne limite une responsabilité qui ne peut être exclue ou limitée par la loi applicable. Tous les noms de produits, logos et marques appartiennent à leurs propriétaires respectifs et ne sont utilisés qu’à des fins d’identification.',
   },
 
+  agrement: {
+    assemblyLabel: 'Site d’assemblage déclaré',
+    regimeLabel: 'Régime d’agrément',
+    regimeStandard: 'Droit commun',
+    regimeTransitory: 'Transitoire — durée limitée',
+    transitoryText: 'Assemblage hors EEE : agrément accordé à titre transitoire et pour une durée limitée (plan d’investissement en Europe). Vérifiez sa date de fin dans la liste officielle avant la signature du devis.',
+    registerAsOf: (d: string) => `Registre ADEME au ${d}`,
+  },
   bafa: {
     heroTitle: "MaPrimeRénov' / CEE.",
     heroSub: 'L’actualité des aides françaises aux pompes à chaleur, éditorialisée. Changements confirmés, clairement séparés des conseils.',
@@ -2973,7 +3004,7 @@ const FR_FR: HpStrings = {
     card1Text: 'Depuis le 1er septembre 2026, les forfaits par geste sont recentrés sur les pompes à chaleur : air/eau 5 000 / 4 000 / 3 000 €, géothermie 11 000 / 9 000 / 6 000 € (revenus très modestes / modestes / intermédiaires ; revenus supérieurs non éligibles). Dossier ANAH avant le début des travaux, avec un installateur RGE.',
     card2Title: 'CEE — COUP DE POUCE',
     card2Head: 'Cumulable',
-    card2Text: 'Certificats d’économies d’énergie versés par les fournisseurs d’énergie, cumulables avec MaPrimeRénov’ par geste. Depuis le 1er septembre 2026, la bonification Coup de pouce exige un modèle agréé (registre ADEME) à la date d’acceptation du devis. Montants variables selon l’offre et les revenus.',
+    card2Text: 'Certificats d’économies d’énergie versés par les fournisseurs d’énergie, cumulables avec MaPrimeRénov’ par geste. Depuis le 1er septembre 2026, la bonification Coup de pouce exige un modèle agréé (certifié, circuit frigorifique assemblé dans l’EEE — registre ADEME) à la date d’acceptation du devis. Montants variables selon l’offre et les revenus.',
     card3Title: 'COUVERTURE DU CATALOGUE',
     card3Head: (n: string) => `${n} pompes à chaleur`,
     card3Text: 'Appareils référencés dans cette application — caractéristiques issues du référentiel européen (référence technique), actualisées à chaque mise à jour.',
@@ -2981,6 +3012,7 @@ const FR_FR: HpStrings = {
     confirmed: 'CONFIRMÉ',
     guidance: 'CONSEIL',
     timeline: [
+      { date: '1 nov. 2026', badge: 'CONFIRMED', strong: 'Site d’assemblage et régime d’agrément dans le catalogue', rest: ' — l’agrément repose sur deux conditions cumulatives : une certification tierce partie (Heat Pump KEYMARK, NF PAC, Eurovent ECP ou équivalent accrédité dans l’EEE) et l’assemblage final du circuit frigorifique dans l’EEE (pour un split, d’au moins une des deux unités). Les modèles assemblés hors EEE n’y figurent qu’au titre d’un agrément transitoire, à durée limitée et adossé à un plan d’investissement en Europe. Chaque modèle agréé affiche désormais le site d’assemblage déclaré au registre ADEME et son régime ; la liste est modifiée chaque mois par arrêté — vérifiez-la de nouveau le jour de la signature du devis. Source : ADEME (bonus-pac.ademe.fr), décret n° 2026-413.' },
       { date: '1 oct. 2026', badge: 'CONFIRMED', strong: 'Registre d’agrément ADEME dans le catalogue', rest: ' — le catalogue France couvre désormais 9 060 modèles ; 1 803 affichent « Agréé » avec leur numéro d’agrément (import du registre du 30 sept. 2026, 2 589 entrées). Tous les autres affichent « Vérification de l’agrément requise » : la correspondance n’est pas confirmée, ce qui ne dit rien du registre lui-même. Consultez la liste officielle de l’ADEME avant tout devis.' },
       { date: '1 oct. 2026', badge: 'CONFIRMED', strong: 'Offre intégrée pompe à chaleur : ouverture des précommandes', rest: ' — six lauréats retenus par le Gouvernement (annonce du 30 sept. 2026) réunissent une pompe à chaleur air/eau fabriquée en France ou en Europe, l’installation, l’entretien, l’électricité à prix fixe et le financement, pour les propriétaires de maisons individuelles aux revenus modestes et très modestes. Premières installations annoncées pour novembre.' },
       { date: '1 oct. 2026', badge: 'GUIDANCE', strong: 'Les aides françaises reposent sur des critères', rest: ' — MaPrimeRénov’ et les CEE dépendent de critères de performance, de conditions liées au ménage et au logement et d’un installateur RGE. Cette application est une référence indépendante qui affiche des données techniques issues de sources de référence européennes ; elle ne garantit jamais l’éligibilité et ne constitue pas un conseil juridique.' },

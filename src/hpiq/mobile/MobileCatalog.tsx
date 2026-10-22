@@ -16,7 +16,7 @@ import { ProductActions } from '../features/ProductActions';
 import { HpVM, crossRefId } from '../model';
 import { ProductFilters, ProductSort, SORT_LABELS } from '../productService';
 import { tr } from '../i18n';
-import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, agrementAssembly, countryName, LOCAL_LISTING_SOURCE } from '../listing';
 import { ListingChip } from '../ListingChip';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, SearchIcon, sectionLabel } from '../ui';
@@ -81,6 +81,7 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
   ];
   const listingStatus = localListingStatus(v.raw);
   const listingId = localListingId(v.raw);
+  const assembly = agrementAssembly(v.raw);
 
   const body = (
     <>
@@ -127,6 +128,14 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
         </span>
         {listingId && (
           <span style={{ fontSize: 12.5 }} data-testid="local-listing-id">{t.products.localListingIdLabel}: {listingId}</span>
+        )}
+        {assembly?.country && (
+          <span style={{ fontSize: 12.5 }} data-testid="agrement-assembly">{t.agrement.assemblyLabel}: {countryName(assembly.country, t.locale)}</span>
+        )}
+        {assembly && (
+          <span style={{ fontSize: 12.5, color: assembly.transitory ? '#b25000' : undefined }} data-testid="agrement-regime">
+            {t.agrement.regimeLabel}: {assembly.transitory ? t.agrement.regimeTransitory : t.agrement.regimeStandard}
+          </span>
         )}
         <span style={{ fontSize: 11.5, color: '#7a7a7a' }}>
           {t.products.inspVerify}{' '}

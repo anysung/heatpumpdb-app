@@ -25,7 +25,7 @@ import { jsPDF } from 'jspdf';
 import { HpVM, crossRefId } from '../model';
 import { HpStrings } from '../i18n';
 import { DsSectionKey } from '../appState';
-import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, agrementAssembly, countryName, LOCAL_LISTING_SOURCE } from '../listing';
 import { FLAG_ASPECT, LOGO_ASPECT } from '../../components/brandSvg';
 import { getBrandArtwork } from './brandArtwork';
 import { registerPdfFonts, PDF_FONT_FAMILY } from './pdfFonts';
@@ -419,6 +419,11 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
       ]);
       const id = localListingId(v.raw);
       if (id) rows.push([t.ds.f.localListingId, id, n('localListingId')]);
+      const asm = agrementAssembly(v.raw);
+      if (asm) {
+        if (asm.country) rows.push([t.agrement.assemblyLabel, countryName(asm.country, t.locale), n('agrAssembly')]);
+        rows.push([t.agrement.regimeLabel, asm.transitory ? t.agrement.regimeTransitory : t.agrement.regimeStandard, n('agrRegime')]);
+      }
     }
     rows.push([t.ds.f.begRel, t.ds.f.begVerify, n('begRel')]);
     fieldGrid(rows);

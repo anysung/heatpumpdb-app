@@ -60,7 +60,8 @@ const MUST_KEEP = [
   // local listing (src/hpiq/listing.ts) + snapshot dates + NF PAC
   'bafa_listing_status', 'bafa_snapshot_fetched_at', 'pel_match_status', 'pel_snapshot_fetched_at',
   'zum_match_status', 'zum_id', 'gse_match_status', 'gse_entry_key', 'gse_match_method', 'gse_snapshot',
-  'agrement_match_status', 'agrement_number', 'nf_pac_reference',
+  'agrement_match_status', 'agrement_number', 'agrement_assembly_country', 'agrement_transitory',
+  'nf_pac_reference',
   // EPREL + provenance
   'eprel_registration_number', 'performance_source', 'source_snapshot_generated_at',
 ];

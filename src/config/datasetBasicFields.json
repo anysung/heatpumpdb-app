@@ -58,6 +58,8 @@
     "agrement_gamme",
     "agrement_commercial_ref",
     "agrement_usage",
+    "agrement_assembly_country",
+    "agrement_transitory",
     "nf_pac_reference",
     "performance_source",
     "performance_basis_note",

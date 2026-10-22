@@ -34,9 +34,9 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const EXPECTED_FIELD_COUNT = 87; // DE 78 − 4 German status/funding fields (they do not travel)
+const EXPECTED_FIELD_COUNT = 89; // DE 78 − 4 German status/funding fields (they do not travel)
                                  //        + performance_source + bafa_reference_*(3) + nf_pac_reference
-                                 //        + the 8 ADEME agrément fields, present on EVERY record.
+                                 //        + the 10 ADEME agrément fields, present on EVERY record.
                                  // The native layer must not give itself a wider shape than the rest
                                  // of the dataset: a field that exists on some records and not others
                                  // is a field consumers cannot rely on.
@@ -98,6 +98,26 @@ console.log(agrOverlay
   ? `ADEME listing overlay: ${agrByCanonicalId.size} confirmed canonical listings (snapshot ${agrSnapshot})`
   : 'ADEME listing overlay: none (run scripts/fr/match-canonical-to-agrement.mjs)');
 
+/* Assembly site + transitional flag, per agrément number, from the register
+   snapshot itself. The agrément has two conditions — third-party certification
+   AND final assembly of the refrigerant circuit in the EEA (for a split: at least
+   one sub-assembly) — and the register publishes where that assembly happens.
+   A site outside the EEA is only ever there under the time-limited TRANSITIONAL
+   agrément (investment plan), which a quote must not treat like the standard one.
+   This is the declared assembly site, never a country-of-origin claim: a split
+   needs only one EEA sub-assembly, and a multi-site model is told apart by serial
+   number, not by model. */
+const agrRawPath = agrSnapshot && resolve(ROOT, 'data_sources/ademe_agrement/raw', agrSnapshot, 'records.json');
+const assemblyByAgrement = new Map();
+for (const r of (agrRawPath && existsSync(agrRawPath) ? JSON.parse(readFileSync(agrRawPath, 'utf8')) : [])) {
+  if (!r.numeroAgrement) continue;
+  assemblyByAgrement.set(r.numeroAgrement, {
+    country: /^[a-z]{2}$/i.test(r.paysCode ?? '') ? r.paysCode.toUpperCase() : null,
+    transitory: typeof r.isTransitorySite === 'boolean' ? r.isTransitorySite : null,
+  });
+}
+console.log(`ADEME assembly sites:  ${assemblyByAgrement.size} register entries (snapshot ${agrSnapshot ?? '—'})`);
+
 const generatedAt = new Date().toISOString();
 
 /** German BAFA type strings → French display strings. Unknown values pass through. */
@@ -140,6 +160,8 @@ function toFrItem(p) {
     agrement_usage: null,
     agrement_snapshot: agr ? agrSnapshot : null,
     agrement_import_date: agr?.import_date ?? null,
+    agrement_assembly_country: agr ? assemblyByAgrement.get(agr.agrement_number)?.country ?? null : null,
+    agrement_transitory: agr ? assemblyByAgrement.get(agr.agrement_number)?.transitory ?? null : null,
     performance_basis_note: null,
   };
 }
@@ -223,6 +245,8 @@ for (const e of (agrFile?.entries ?? [])) {
     agrement_usage: e.usage ?? null,
     agrement_snapshot: agrSnapshot,
     agrement_import_date: agrFile?._meta?.register_import_date ?? null,
+    agrement_assembly_country: assemblyByAgrement.get(e.agrement)?.country ?? null,
+    agrement_transitory: assemblyByAgrement.get(e.agrement)?.transitory ?? null,
     eprel_registration_number: e.eprel_registration_number ?? null,
     eprel_model: e.eprel_model ?? null,
     eprel_match_type: e.match_method ?? null,
@@ -296,6 +320,19 @@ if (agrOverlay) {
     process.exit(1);
   }
   console.log(`ADEME listing applied:   ${applied} canonical products carry an agrément number`);
+}
+
+// Same failure mode, one field over: a confirmed agrément whose assembly site did
+// not come through would print as an ordinary listing on a transitional model.
+if (assemblyByAgrement.size) {
+  const noSite = allItems.filter(i => i.agrement_match_status === 'confirmed'
+    && (i.agrement_assembly_country == null || i.agrement_transitory == null));
+  if (noSite.length) {
+    console.error(`FAIL: ${noSite.length} confirmed agrément records without an assembly site (e.g. ${noSite[0].agrement_number})`);
+    process.exit(1);
+  }
+  const transitory = allItems.filter(i => i.agrement_transitory === true).length;
+  console.log(`ADEME assembly applied:  ${transitory} published records carry a TRANSITIONAL agrément`);
 }
 
 // NF PAC references must never be guessed — every value must come from the overlay.

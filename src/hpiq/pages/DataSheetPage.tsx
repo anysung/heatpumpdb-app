@@ -6,7 +6,7 @@ import { DataNotice, PremiumPill } from '../Premium';
 import { longDate, crossRefId } from '../model';
 import { FD, SearchIcon, Watermark, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { tr } from '../i18n';
-import { localListingStatus, localListingId, LOCAL_LISTING_SOURCE } from '../listing';
+import { localListingStatus, localListingId, agrementAssembly, countryName, LOCAL_LISTING_SOURCE } from '../listing';
 import { IS_GB, IS_PL, IS_IT, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
 import { DataSheetBrandingSection, DataSheetBrandingBand } from '../features/branding/DataSheetBranding';
@@ -313,6 +313,17 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                     {localListingId(dsp.raw) && (
                       <FieldCell label={t.ds.f.localListingId} value={localListingId(dsp.raw)!} note={n('localListingId')} />
                     )}
+                    {(() => {
+                      // France: declared assembly site + agrément regime (same rows as the PDF).
+                      const asm = agrementAssembly(dsp.raw);
+                      if (!asm) return null;
+                      return (
+                        <>
+                          {asm.country && <FieldCell label={t.agrement.assemblyLabel} value={countryName(asm.country, t.locale)} note={n('agrAssembly')} />}
+                          <FieldCell label={t.agrement.regimeLabel} value={asm.transitory ? t.agrement.regimeTransitory : t.agrement.regimeStandard} note={n('agrRegime')} />
+                        </>
+                      );
+                    })()}
                     <FieldCell label={t.ds.f.begRel} value={t.ds.f.begVerify} note={n('begRel')} />
                   </SectionGrid>
                 </div>
