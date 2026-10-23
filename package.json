@@ -61,10 +61,8 @@
     "test:zum-carry": "node tests/zum-carry-forward.unit.mjs"
   },
   "dependencies": {
-    "@google/genai": "*",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
-    "express": "^4.18.2",
     "firebase": "^10.7.1",
     "jspdf": "^4.2.1",
     "playwright": "^1.58.2",
