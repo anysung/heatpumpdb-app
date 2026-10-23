@@ -1,0 +1,447 @@
+{
+ "_readme": "Special Report edition content store. The owner writes the report (report.html, self-contained, 5 languages) and the English article pack (article-source-en.md); this file is the PUBLISHED copy, one object per UI language, and is the review point for what goes on the sites. Figures are transcribed from report-contents.md verbatim; the report itself is generated from source/ (node source/build-report.mjs) — never re-derived, never rounded. Build: scripts/build-special-report.mjs.",
+ "edition": "2026-10",
+ "published": "2026-10-23",
+ "reportFile": "report.html",
+ "reportPages": 8,
+ "reportLangs": [
+  "en",
+  "de",
+  "fr",
+  "pl",
+  "it"
+ ],
+ "downloadName": "HeatPumpDB-Europe-Special-Report-2026-10.html",
+ "copy": {
+  "en": {
+   "eyebrow": "Special Report · October 2026",
+   "title": "The Complete F-Gas Rulebook for Heat Pumps",
+   "standfirst": "EU Regulation 2024/573 in one document: every refrigerant, every size, every date to 2050 — and what changes in five markets.",
+   "lead": [
+    "On 1 January 2027 the EU’s revised F-gas Regulation reaches the heat pumps installers fit every day. From that date a new monoblock heat pump up to 50 kW, or a split air/water heat pump up to 12 kW, may only be placed on the EU market with a refrigerant whose global warming potential (GWP) is below 150. R32, today’s most common refrigerant, has a GWP of 675.",
+    "The rule governs placing new units on the market, not selling stock. Equipment placed on the EU market before the date may still be sold and installed; from one year after the date, the seller and the installer must be able to prove when it was placed. Banned equipment that arrives later is stopped at customs.",
+    "This report maps the whole Regulation onto one grid — 15 refrigerants, 7 sizes and builds, every date from 2025 to 2050 — and adds what each of five markets layers on top."
+   ],
+   "bulletsTitle": "One rulebook, five markets",
+   "bullets": [
+    {
+     "cc": "DE",
+     "label": "Germany",
+     "text": "EU dates apply. From 1 January 2028 BEG funds only heat pumps with natural refrigerants; the 5-point efficiency bonus ended on 21 July 2026."
+    },
+    {
+     "cc": "GB",
+     "label": "United Kingdom",
+     "text": "Great Britain keeps its own F-gas law and has no 2027 heat-pump ban. Northern Ireland follows the EU dates."
+    },
+    {
+     "cc": "FR",
+     "label": "France",
+     "text": "EU dates apply. The CEE heat-pump sheet sets no refrigerant criterion; the bonus depends on the ADEME agrément."
+    },
+    {
+     "cc": "PL",
+     "label": "Poland",
+     "text": "EU dates apply. Czyste Powietrze sets no refrigerant criterion; the model must be on the Lista ZUM."
+    },
+    {
+     "cc": "IT",
+     "label": "Italy",
+     "text": "EU dates apply. Conto Termico 3.0 sets no GWP condition for air/water heat pumps."
+    }
+   ],
+   "sections": [
+    {
+     "h": "2027 is the first big step, not the last",
+     "p": [
+      "The Regulation closes the market in stages. In 2027 refrigerants with GWP 150 or more leave monoblocks up to 50 kW and air/water splits up to 12 kW. In 2029 splits above 12 kW lose GWP 750 or more; in 2030 monoblocks above 50 kW lose GWP 150 or more; in 2033 splits above 12 kW lose GWP 150 or more.",
+      "Small units then leave fluorinated gases altogether: monoblocks up to 12 kW from 2032, splits up to 12 kW from 2035. From 2035 a new heat pump up to 12 kW can only use a natural refrigerant such as R290 propane or R744 CO₂, unless safety rules at the site require otherwise."
+     ]
+    },
+    {
+     "h": "What it means for R32",
+     "p": [
+      "R32 does not disappear overnight. After 2026 it stays available for new splits above 12 kW until the end of 2032 and for new monoblocks above 50 kW until the end of 2029. Units already placed on the market can be sold and installed after those dates.",
+      "In the HeatPump DB European reference catalogue, 56% of residential models use a refrigerant with GWP 150 or more, mostly R32 and R410A; 44% already use R290."
+     ]
+    },
+    {
+     "h": "Every date has a safety exemption",
+     "p": [
+      "Each prohibition allows an exception where safety requirements at the site of operation rule out the alternative; for monoblocks the limit then becomes GWP 750. Such equipment must be labelled for that use, and the operator must keep the evidence for five years.",
+      "Servicing follows its own rule: since 1 January 2026, new refrigerant with GWP 2,500 or more may not be used to service heat pumps. R410A, at 2,088, is below that line."
+     ]
+    },
+    {
+     "h": "Same EU dates, different money",
+     "p": [
+      "The bans apply directly in every EU member state. What differs is the subsidy: Germany ties BEG funding to natural refrigerants from 2028, while France, Poland and Italy set no refrigerant condition for air/water heat pumps.",
+      "Great Britain is the exception in law: it has not adopted the EU’s 2027 heat-pump ban, and R32 monoblocks stay on sale there after 2026."
+     ]
+    }
+   ],
+   "metaTitle": "The Complete F-Gas Rulebook for Heat Pumps | HeatPump DB Special Report, October 2026",
+   "metaDesc": "EU F-gas Regulation 2024/573 for heat pumps in one report: every refrigerant, size and date from 2025 to 2050, the 2027 GWP 150 ban, the rules for stock already on the market, and the national subsidy layer in Germany, the UK, France, Poland and Italy.",
+   "byline": "HeatPump DataBase Europe Editorial Team",
+   "openLabel": "Open the interactive report",
+   "downloadLabel": "Download the report",
+   "downloadNote": "Single self-contained HTML file — opens in any browser, works offline. Use the report's own “Print / Save PDF” button to keep a PDF copy.",
+   "seriesTitle": "Special Reports",
+   "seriesSub": "Monthly European market intelligence from HeatPump DataBase Europe.",
+   "backLabel": "All Special Reports",
+   "editionLabel": "October 2026 edition",
+   "langNote": "The report itself can be read in English, German, French, Polish and Italian — switch language inside the report.",
+   "ctaTitle": "Read the full interactive Special Report",
+   "ctaSub": "8 pages · 15 refrigerants · every date to 2050 · sources on every page · English, German, French, Polish and Italian.",
+   "productCta": {
+    "h": "The data behind the rules",
+    "p": "Every heat pump model with refrigerant, SCOP, sound power and local listing status — searchable, comparable, printable as a quote-ready data sheet.",
+    "b": "Join free — 30-day Premium trial included"
+   }
+  },
+  "de": {
+   "eyebrow": "Special Report · Oktober 2026",
+   "title": "Das vollständige F-Gas-Regelwerk für Wärmepumpen",
+   "standfirst": "EU-Verordnung 2024/573 in einem Dokument: jedes Kältemittel, jede Größe, jedes Datum bis 2050 — und was sich in fünf Märkten ändert.",
+   "lead": [
+    "Am 1. Januar 2027 erreicht die überarbeitete F-Gas-Verordnung der EU die Wärmepumpen, die Installateure täglich einbauen. Ab diesem Datum darf eine neue Monoblock-Wärmepumpe bis 50 kW oder eine Split-Luft/Wasser-Wärmepumpe bis 12 kW nur noch mit einem Kältemittel in der EU in Verkehr gebracht werden, dessen Treibhauspotenzial (GWP) unter 150 liegt. R32, das heute gängigste Kältemittel, hat ein GWP von 675.",
+    "Die Regel betrifft das Inverkehrbringen neuer Geräte, nicht den Abverkauf von Lagerware. Geräte, die vor dem Stichtag in der EU in Verkehr gebracht wurden, dürfen weiter verkauft und eingebaut werden; ab einem Jahr nach dem Stichtag müssen Verkäufer und Installateur nachweisen können, wann sie in Verkehr gebracht wurden. Verbotene Geräte, die später eintreffen, stoppt der Zoll.",
+    "Dieser Report bildet die gesamte Verordnung in einem Raster ab — 15 Kältemittel, 7 Größen und Bauarten, jedes Datum von 2025 bis 2050 — und ergänzt, was jeder der fünf Märkte zusätzlich regelt."
+   ],
+   "bulletsTitle": "Ein Regelwerk, fünf Märkte",
+   "bullets": [
+    {
+     "cc": "DE",
+     "label": "Deutschland",
+     "text": "Es gelten die EU-Fristen. Ab 1. Januar 2028 fördert die BEG nur noch Wärmepumpen mit natürlichen Kältemitteln; der 5-Punkte-Effizienzbonus endete am 21. Juli 2026."
+    },
+    {
+     "cc": "GB",
+     "label": "Vereinigtes Königreich",
+     "text": "Großbritannien behält ein eigenes F-Gas-Recht und kennt kein Wärmepumpen-Verbot 2027. Nordirland folgt den EU-Fristen."
+    },
+    {
+     "cc": "FR",
+     "label": "Frankreich",
+     "text": "Es gelten die EU-Fristen. Das CEE-Wärmepumpenblatt enthält kein Kältemittelkriterium; die Prämie hängt vom ADEME agrément ab."
+    },
+    {
+     "cc": "PL",
+     "label": "Polen",
+     "text": "Es gelten die EU-Fristen. Czyste Powietrze enthält kein Kältemittelkriterium; das Modell muss in der Lista ZUM eingetragen sein."
+    },
+    {
+     "cc": "IT",
+     "label": "Italien",
+     "text": "Es gelten die EU-Fristen. Conto Termico 3.0 stellt für Luft/Wasser-Wärmepumpen keine GWP-Bedingung."
+    }
+   ],
+   "sections": [
+    {
+     "h": "2027 ist der erste große Schritt, nicht der letzte",
+     "p": [
+      "Die Verordnung schließt den Markt stufenweise. 2027 entfallen Kältemittel mit GWP 150 oder mehr bei Monoblocks bis 50 kW und bei Split-Luft/Wasser-Geräten bis 12 kW. 2029 verlieren Splits über 12 kW GWP 750 oder mehr; 2030 verlieren Monoblocks über 50 kW GWP 150 oder mehr; 2033 verlieren Splits über 12 kW GWP 150 oder mehr.",
+      "Danach verlassen kleine Geräte die fluorierten Gase ganz: Monoblocks bis 12 kW ab 2032, Splits bis 12 kW ab 2035. Ab 2035 darf eine neue Wärmepumpe bis 12 kW nur noch ein natürliches Kältemittel wie R290 Propan oder R744 CO₂ nutzen, sofern Sicherheitsvorschriften am Aufstellort nichts anderes erfordern."
+     ]
+    },
+    {
+     "h": "Was das für R32 bedeutet",
+     "p": [
+      "R32 verschwindet nicht über Nacht. Nach 2026 bleibt es für neue Splits über 12 kW bis Ende 2032 und für neue Monoblocks über 50 kW bis Ende 2029 verfügbar. Bereits in Verkehr gebrachte Geräte dürfen auch nach diesen Daten verkauft und eingebaut werden.",
+      "Im europäischen Referenzkatalog von HeatPump DB nutzen 56 % der Wohngebäude-Modelle ein Kältemittel mit GWP 150 oder mehr, überwiegend R32 und R410A; 44 % nutzen bereits R290."
+     ]
+    },
+    {
+     "h": "Jede Frist hat eine Sicherheitsausnahme",
+     "p": [
+      "Jedes Verbot lässt eine Ausnahme zu, wenn Sicherheitsanforderungen am Betriebsort die Alternative ausschließen; bei Monoblocks gilt dann die Grenze GWP 750. Solche Geräte müssen für diesen Einsatz gekennzeichnet sein, und der Betreiber muss die Nachweise fünf Jahre lang aufbewahren.",
+      "Für die Wartung gilt eine eigene Regel: Seit 1. Januar 2026 darf neues Kältemittel mit GWP 2.500 oder mehr nicht mehr für die Wartung von Wärmepumpen verwendet werden. R410A liegt mit 2.088 unter dieser Grenze."
+     ]
+    },
+    {
+     "h": "Gleiche EU-Fristen, andere Förderung",
+     "p": [
+      "Die Verbote gelten unmittelbar in jedem EU-Mitgliedstaat. Unterschiedlich ist die Förderung: Deutschland knüpft die BEG-Förderung ab 2028 an natürliche Kältemittel, während Frankreich, Polen und Italien für Luft/Wasser-Wärmepumpen keine Kältemittelbedingung stellen.",
+      "Großbritannien ist die rechtliche Ausnahme: Es hat das Wärmepumpen-Verbot 2027 der EU nicht übernommen, und Monoblocks mit R32 bleiben dort auch nach 2026 im Handel."
+     ]
+    }
+   ],
+   "metaTitle": "Das vollständige F-Gas-Regelwerk für Wärmepumpen | HeatPump DB",
+   "metaDesc": "EU-F-Gas-Verordnung 2024/573 für Wärmepumpen: alle Kältemittel, Größen und Fristen bis 2050, das GWP-150-Verbot 2027, Lagerware und Förderung in fünf Märkten.",
+   "byline": "HeatPump DataBase Europe Redaktion",
+   "openLabel": "Interaktiven Report öffnen",
+   "downloadLabel": "Report herunterladen",
+   "downloadNote": "Eine einzelne, in sich geschlossene HTML-Datei — öffnet in jedem Browser, funktioniert offline. Über den Button „Drucken / PDF speichern“ im Report lässt sich eine PDF-Kopie sichern.",
+   "seriesTitle": "Special Reports",
+   "seriesSub": "Monatliche europäische Marktanalysen von HeatPump DataBase Europe.",
+   "backLabel": "Alle Special Reports",
+   "editionLabel": "Ausgabe Oktober 2026",
+   "langNote": "Der Report selbst ist auf Englisch, Deutsch, Französisch, Polnisch und Italienisch lesbar — Sprache im Report umschalten.",
+   "ctaTitle": "Den vollständigen interaktiven Special Report lesen",
+   "ctaSub": "8 Seiten · 15 Kältemittel · jedes Datum bis 2050 · Quellen auf jeder Seite · Englisch, Deutsch, Französisch, Polnisch, Italienisch.",
+   "productCta": {
+    "h": "Die Daten hinter den Regeln",
+    "p": "Jedes Wärmepumpenmodell mit Kältemittel, SCOP, Schallleistung und lokalem Listungsstatus — durchsuchbar, vergleichbar, als angebotsfertiges Datenblatt druckbar.",
+    "b": "Kostenlos registrieren — inkl. 30 Tage Premium-Test"
+   }
+  },
+  "fr": {
+   "eyebrow": "Rapport spécial · Octobre 2026",
+   "title": "Le guide de référence F-gaz des pompes à chaleur",
+   "standfirst": "Le règlement (UE) 2024/573 en un document : chaque fluide frigorigène, chaque taille, chaque date jusqu’en 2050 — et ce qui change sur cinq marchés.",
+   "lead": [
+    "Le 1er janvier 2027, le règlement F‑gaz révisé de l’UE atteint les pompes à chaleur que les installateurs posent chaque jour. À partir de cette date, une pompe à chaleur monobloc neuve jusqu’à 50 kW, ou une pompe à chaleur split air/eau jusqu’à 12 kW, ne peut être mise sur le marché de l’UE qu’avec un fluide frigorigène dont le potentiel de réchauffement planétaire (GWP) est inférieur à 150. Le R32, le fluide le plus répandu aujourd’hui, a un GWP de 675.",
+    "La règle porte sur la mise sur le marché des unités neuves, pas sur la vente du stock. Un équipement mis sur le marché de l’UE avant la date peut encore être vendu et installé ; dès un an après la date, le vendeur et l’installateur doivent pouvoir prouver quand il a été mis sur le marché. Un équipement interdit qui arrive plus tard est bloqué en douane.",
+    "Ce rapport projette l’ensemble du règlement sur une seule grille — 15 fluides frigorigènes, 7 tailles et types, chaque date de 2025 à 2050 — et ajoute ce que chacun des cinq marchés impose en plus."
+   ],
+   "bulletsTitle": "Un seul cadre, cinq marchés",
+   "bullets": [
+    {
+     "cc": "DE",
+     "label": "Allemagne",
+     "text": "Dates UE applicables. Dès le 1er janvier 2028, la BEG ne finance que les pompes à chaleur à fluide naturel ; le bonus d’efficacité de 5 points a pris fin le 21 juillet 2026."
+    },
+    {
+     "cc": "GB",
+     "label": "Royaume-Uni",
+     "text": "La Grande-Bretagne conserve sa propre législation F‑gaz et n’a pas d’interdiction visant les pompes à chaleur en 2027. L’Irlande du Nord suit les dates UE."
+    },
+    {
+     "cc": "FR",
+     "label": "France",
+     "text": "Dates UE applicables. La fiche CEE des pompes à chaleur ne fixe aucun critère de fluide ; la prime dépend de l’agrément ADEME."
+    },
+    {
+     "cc": "PL",
+     "label": "Pologne",
+     "text": "Dates UE applicables. Czyste Powietrze ne fixe aucun critère de fluide ; le modèle doit figurer sur la Lista ZUM."
+    },
+    {
+     "cc": "IT",
+     "label": "Italie",
+     "text": "Dates UE applicables. Le Conto Termico 3.0 ne fixe aucune condition de GWP pour les pompes à chaleur air/eau."
+    }
+   ],
+   "sections": [
+    {
+     "h": "2027 est la première grande étape, pas la dernière",
+     "p": [
+      "Le règlement ferme le marché par étapes. En 2027, les fluides de GWP 150 ou plus quittent les monoblocs jusqu’à 50 kW et les splits air/eau jusqu’à 12 kW. En 2029, les splits de plus de 12 kW perdent les GWP de 750 ou plus ; en 2030, les monoblocs de plus de 50 kW perdent les GWP de 150 ou plus ; en 2033, les splits de plus de 12 kW perdent les GWP de 150 ou plus.",
+      "Les petites unités abandonnent ensuite totalement les gaz fluorés : les monoblocs jusqu’à 12 kW dès 2032, les splits jusqu’à 12 kW dès 2035. À partir de 2035, une pompe à chaleur neuve jusqu’à 12 kW ne peut utiliser qu’un fluide naturel comme le R290 (propane) ou le R744 (CO₂), sauf si les règles de sécurité du site l’exigent autrement."
+     ]
+    },
+    {
+     "h": "Ce que cela signifie pour le R32",
+     "p": [
+      "Le R32 ne disparaît pas du jour au lendemain. Après 2026, il reste disponible pour les splits neufs de plus de 12 kW jusqu’à fin 2032 et pour les monoblocs neufs de plus de 50 kW jusqu’à fin 2029. Les unités déjà mises sur le marché peuvent être vendues et installées après ces dates.",
+      "Dans le catalogue de référence européen HeatPump DB, 56 % des modèles résidentiels utilisent un fluide de GWP 150 ou plus, principalement du R32 et du R410A ; 44 % utilisent déjà le R290."
+     ]
+    },
+    {
+     "h": "Chaque date prévoit une dérogation de sécurité",
+     "p": [
+      "Chaque interdiction admet une exception lorsque les exigences de sécurité du site d’exploitation excluent l’alternative ; pour les monoblocs, la limite passe alors à un GWP de 750. Ces équipements doivent être étiquetés pour cet usage, et l’exploitant doit conserver les justificatifs pendant cinq ans.",
+      "L’entretien obéit à sa propre règle : depuis le 1er janvier 2026, un fluide neuf de GWP 2 500 ou plus ne peut plus servir à l’entretien des pompes à chaleur. Le R410A, à 2 088, se situe sous ce seuil."
+     ]
+    },
+    {
+     "h": "Mêmes dates UE, aides différentes",
+     "p": [
+      "Les interdictions s’appliquent directement dans chaque État membre de l’UE. Ce qui diffère, c’est l’aide : l’Allemagne lie le financement BEG aux fluides naturels dès 2028, tandis que la France, la Pologne et l’Italie ne fixent aucune condition de fluide pour les pompes à chaleur air/eau.",
+      "La Grande-Bretagne fait exception en droit : elle n’a pas adopté l’interdiction européenne de 2027 visant les pompes à chaleur, et les monoblocs R32 y restent en vente après 2026."
+     ]
+    }
+   ],
+   "metaTitle": "Le guide de référence F-gaz des pompes à chaleur | HeatPump DB",
+   "metaDesc": "Règlement F‑gaz (UE) 2024/573 et pompes à chaleur : fluides, tailles et dates de 2025 à 2050, interdiction GWP 150 de 2027, stock existant et aides dans cinq marchés.",
+   "byline": "Rédaction HeatPump DataBase Europe",
+   "openLabel": "Ouvrir le rapport interactif",
+   "downloadLabel": "Télécharger le rapport",
+   "downloadNote": "Un seul fichier HTML autonome — s’ouvre dans tout navigateur, fonctionne hors ligne. Utilisez le bouton « Imprimer / Enregistrer en PDF » du rapport pour en garder une copie.",
+   "seriesTitle": "Rapports spéciaux",
+   "seriesSub": "L’intelligence de marché européenne mensuelle de HeatPump DataBase Europe.",
+   "backLabel": "Tous les rapports spéciaux",
+   "editionLabel": "Édition d’octobre 2026",
+   "langNote": "Le rapport est lisible en anglais, allemand, français, polonais et italien — changez de langue dans le rapport.",
+   "ctaTitle": "Lire le rapport spécial interactif complet",
+   "ctaSub": "8 pages · 15 fluides frigorigènes · chaque date jusqu’en 2050 · sources à chaque page · anglais, allemand, français, polonais et italien.",
+   "productCta": {
+    "h": "Les données derrière les règles",
+    "p": "Chaque modèle de pompe à chaleur avec fluide frigorigène, SCOP, puissance acoustique et statut de référencement local — consultable, comparable, imprimable en fiche technique prête pour le devis.",
+    "b": "Inscription gratuite — essai Premium de 30 jours inclus"
+   }
+  },
+  "pl": {
+   "eyebrow": "Raport specjalny · Październik 2026",
+   "title": "Kompletny przewodnik F-gazowy dla pomp ciepła",
+   "standfirst": "Rozporządzenie UE 2024/573 w jednym dokumencie: każdy czynnik chłodniczy, każda wielkość, każda data do 2050 r. — i co zmienia się na pięciu rynkach.",
+   "lead": [
+    "1 stycznia 2027 r. znowelizowane unijne rozporządzenie F-gazowe obejmie pompy ciepła, które instalatorzy montują na co dzień. Od tej daty nową pompę ciepła typu monoblok o mocy do 50 kW lub pompę ciepła split powietrze/woda o mocy do 12 kW można wprowadzić do obrotu w UE wyłącznie z czynnikiem chłodniczym o współczynniku ocieplenia globalnego (GWP) poniżej 150. R32, dziś najpowszechniejszy czynnik chłodniczy, ma GWP 675.",
+    "Przepis dotyczy wprowadzania nowych urządzeń do obrotu, a nie sprzedaży zapasów. Urządzenia wprowadzone do obrotu w UE przed tą datą można nadal sprzedawać i instalować; od roku po tej dacie sprzedawca i instalator muszą być w stanie wykazać, kiedy zostały wprowadzone do obrotu. Zakazane urządzenia, które trafią na rynek później, zatrzymuje urząd celny.",
+    "Raport przenosi całe rozporządzenie na jedną siatkę — 15 czynników chłodniczych, 7 wielkości i wykonań, każda data od 2025 do 2050 r. — i pokazuje, co dodaje do tego każdy z pięciu rynków."
+   ],
+   "bulletsTitle": "Jeden zbiór przepisów, pięć rynków",
+   "bullets": [
+    {
+     "cc": "DE",
+     "label": "Niemcy",
+     "text": "Obowiązują daty UE. Od 1 stycznia 2028 r. BEG dofinansowuje wyłącznie pompy ciepła z czynnikami naturalnymi; 5-punktowy bonus efektywności zakończono 21 lipca 2026 r."
+    },
+    {
+     "cc": "GB",
+     "label": "Zjednoczone Królestwo",
+     "text": "Wielka Brytania ma własne przepisy F-gazowe i nie wprowadza zakazu dla pomp ciepła w 2027 r. Irlandia Północna stosuje daty UE."
+    },
+    {
+     "cc": "FR",
+     "label": "Francja",
+     "text": "Obowiązują daty UE. Karta CEE dla pomp ciepła nie zawiera kryterium czynnika chłodniczego; premia zależy od ADEME agrément."
+    },
+    {
+     "cc": "PL",
+     "label": "Polska",
+     "text": "Obowiązują daty UE. Czyste Powietrze nie stawia kryterium czynnika chłodniczego; model musi znajdować się na Liście ZUM."
+    },
+    {
+     "cc": "IT",
+     "label": "Włochy",
+     "text": "Obowiązują daty UE. Conto Termico 3.0 nie stawia wymogu GWP dla pomp ciepła powietrze/woda."
+    }
+   ],
+   "sections": [
+    {
+     "h": "2027 to pierwszy duży krok, ale nie ostatni",
+     "p": [
+      "Rozporządzenie zamyka rynek etapami. W 2027 r. czynniki o GWP 150 lub wyższym znikają z monobloków do 50 kW i splitów powietrze/woda do 12 kW. W 2029 r. splity powyżej 12 kW tracą czynniki o GWP 750 lub wyższym; w 2030 r. monobloki powyżej 50 kW tracą czynniki o GWP 150 lub wyższym; w 2033 r. splity powyżej 12 kW tracą czynniki o GWP 150 lub wyższym.",
+      "Następnie małe urządzenia całkowicie rezygnują z gazów fluorowanych: monobloki do 12 kW od 2032 r., splity do 12 kW od 2035 r. Od 2035 r. nowa pompa ciepła do 12 kW może korzystać wyłącznie z czynnika naturalnego, takiego jak R290 (propan) lub R744 (CO₂), chyba że przepisy bezpieczeństwa w miejscu instalacji wymagają innego rozwiązania."
+     ]
+    },
+    {
+     "h": "Co to oznacza dla R32",
+     "p": [
+      "R32 nie zniknie z dnia na dzień. Po 2026 r. pozostaje dopuszczony w nowych splitach powyżej 12 kW do końca 2032 r. oraz w nowych monoblokach powyżej 50 kW do końca 2029 r. Urządzenia już wprowadzone do obrotu można sprzedawać i instalować również po tych datach.",
+      "W europejskim katalogu referencyjnym HeatPump DB 56% modeli mieszkaniowych stosuje czynnik chłodniczy o GWP 150 lub wyższym, głównie R32 i R410A; 44% już korzysta z R290."
+     ]
+    },
+    {
+     "h": "Każda data ma wyjątek ze względów bezpieczeństwa",
+     "p": [
+      "Każdy zakaz dopuszcza wyjątek, gdy wymogi bezpieczeństwa w miejscu eksploatacji wykluczają rozwiązanie alternatywne; dla monobloków granica wynosi wtedy GWP 750. Takie urządzenia muszą być oznakowane do tego zastosowania, a operator musi przechowywać dowody przez pięć lat.",
+      "Serwisowanie podlega osobnej regule: od 1 stycznia 2026 r. do serwisowania pomp ciepła nie wolno używać nowego czynnika o GWP 2500 lub wyższym. R410A, z GWP 2088, mieści się poniżej tej granicy."
+     ]
+    },
+    {
+     "h": "Te same daty UE, inne pieniądze",
+     "p": [
+      "Zakazy obowiązują bezpośrednio w każdym państwie członkowskim UE. Różnią się dotacje: Niemcy od 2028 r. uzależniają dofinansowanie BEG od czynników naturalnych, natomiast Francja, Polska i Włochy nie stawiają warunku dotyczącego czynnika dla pomp ciepła powietrze/woda.",
+      "Wielka Brytania jest wyjątkiem prawnym: nie przyjęła unijnego zakazu dla pomp ciepła z 2027 r., a monobloki z R32 pozostają tam w sprzedaży po 2026 r."
+     ]
+    }
+   ],
+   "metaTitle": "Kompletny przewodnik F-gazowy dla pomp ciepła | HeatPump DB",
+   "metaDesc": "Rozporządzenie UE 2024/573 dla pomp ciepła: każdy czynnik, wielkość i data 2025–2050, zakaz GWP 150 od 2027 r., zapasy w obrocie i dotacje na pięciu rynkach.",
+   "byline": "Zespół redakcyjny HeatPump DataBase Europe",
+   "openLabel": "Otwórz raport interaktywny",
+   "downloadLabel": "Pobierz raport",
+   "downloadNote": "Jeden samodzielny plik HTML — otwiera się w każdej przeglądarce, działa offline. Przycisk „Drukuj / Zapisz PDF” w raporcie pozwala zachować kopię PDF.",
+   "seriesTitle": "Raporty specjalne",
+   "seriesSub": "Comiesięczna europejska analiza rynku od HeatPump DataBase Europe.",
+   "backLabel": "Wszystkie raporty specjalne",
+   "editionLabel": "Wydanie październik 2026",
+   "langNote": "Sam raport można czytać po angielsku, niemiecku, francusku, polsku i włosku — język przełącza się w raporcie.",
+   "ctaTitle": "Przeczytaj pełny interaktywny raport specjalny",
+   "ctaSub": "8 stron · 15 czynników chłodniczych · każda data do 2050 r. · źródła na każdej stronie · angielski, niemiecki, francuski, polski i włoski.",
+   "productCta": {
+    "h": "Dane, które stoją za przepisami",
+    "p": "Każdy model pompy ciepła z czynnikiem chłodniczym, SCOP, mocą akustyczną i lokalnym statusem na liście — do wyszukania, porównania i wydruku jako karta danych gotowa do oferty.",
+    "b": "Dołącz bezpłatnie — z 30-dniowym okresem próbnym Premium"
+   }
+  },
+  "it": {
+   "eyebrow": "Report speciale · Ottobre 2026",
+   "title": "La guida completa F-gas per le pompe di calore",
+   "standfirst": "Il Regolamento (UE) 2024/573 in un documento: ogni refrigerante, ogni taglia, ogni data fino al 2050 — e cosa cambia in cinque mercati.",
+   "lead": [
+    "Il 1° gennaio 2027 il Regolamento F-gas riveduto dell’UE arriva alle pompe di calore che gli installatori montano ogni giorno. Da quella data una nuova pompa di calore monoblocco fino a 50 kW, o una pompa di calore split aria/acqua fino a 12 kW, potrà essere immessa sul mercato UE solo con un refrigerante il cui potenziale di riscaldamento globale (GWP) sia inferiore a 150. R32, oggi il refrigerante più diffuso, ha un GWP di 675.",
+    "La norma disciplina l’immissione sul mercato di unità nuove, non la vendita delle scorte. Gli apparecchi immessi sul mercato UE prima di quella data possono ancora essere venduti e installati; da un anno dopo la data, il venditore e l’installatore devono poter dimostrare quando sono stati immessi. Gli apparecchi vietati che arrivano dopo vengono bloccati in dogana.",
+    "Questo report riporta l’intero Regolamento su un’unica griglia — 15 refrigeranti, 7 taglie e tipologie, ogni data dal 2025 al 2050 — e aggiunge ciò che ciascuno di cinque mercati vi sovrappone."
+   ],
+   "bulletsTitle": "Una sola guida, cinque mercati",
+   "bullets": [
+    {
+     "cc": "DE",
+     "label": "Germania",
+     "text": "Si applicano le date UE. Dal 1° gennaio 2028 la BEG finanzia solo pompe di calore con refrigeranti naturali; il bonus efficienza di 5 punti è terminato il 21 luglio 2026."
+    },
+    {
+     "cc": "GB",
+     "label": "Regno Unito",
+     "text": "La Gran Bretagna mantiene una propria legge F-gas e non prevede alcun divieto 2027 per le pompe di calore. L’Irlanda del Nord segue le date UE."
+    },
+    {
+     "cc": "FR",
+     "label": "Francia",
+     "text": "Si applicano le date UE. La scheda CEE per le pompe di calore non fissa alcun criterio sul refrigerante; il bonus dipende dall’agrément ADEME."
+    },
+    {
+     "cc": "PL",
+     "label": "Polonia",
+     "text": "Si applicano le date UE. Czyste Powietrze non fissa alcun criterio sul refrigerante; il modello deve figurare nella Lista ZUM."
+    },
+    {
+     "cc": "IT",
+     "label": "Italia",
+     "text": "Si applicano le date UE. Il Conto Termico 3.0 non pone alcuna condizione sul GWP per le pompe di calore aria/acqua."
+    }
+   ],
+   "sections": [
+    {
+     "h": "Il 2027 è il primo grande passo, non l’ultimo",
+     "p": [
+      "Il Regolamento chiude il mercato per tappe. Nel 2027 i refrigeranti con GWP pari o superiore a 150 escono dai monoblocchi fino a 50 kW e dagli split aria/acqua fino a 12 kW. Nel 2029 gli split oltre 12 kW perdono i refrigeranti con GWP pari o superiore a 750; nel 2030 i monoblocchi oltre 50 kW perdono quelli con GWP pari o superiore a 150; nel 2033 gli split oltre 12 kW perdono quelli con GWP pari o superiore a 150.",
+      "Le unità piccole escono poi del tutto dai gas fluorurati: i monoblocchi fino a 12 kW dal 2032, gli split fino a 12 kW dal 2035. Dal 2035 una nuova pompa di calore fino a 12 kW potrà usare solo un refrigerante naturale come R290 propano o R744 CO₂, salvo che le norme di sicurezza del sito impongano diversamente."
+     ]
+    },
+    {
+     "h": "Cosa significa per R32",
+     "p": [
+      "R32 non scompare da un giorno all’altro. Dopo il 2026 resta disponibile per i nuovi split oltre 12 kW fino alla fine del 2032 e per i nuovi monoblocchi oltre 50 kW fino alla fine del 2029. Le unità già immesse sul mercato possono essere vendute e installate anche dopo quelle date.",
+      "Nel catalogo europeo di riferimento di HeatPump DB il 56% dei modelli residenziali usa un refrigerante con GWP 150 o superiore, per lo più R32 e R410A; il 44% usa già R290."
+     ]
+    },
+    {
+     "h": "Ogni data prevede una deroga di sicurezza",
+     "p": [
+      "Ogni divieto ammette un’eccezione quando i requisiti di sicurezza del sito di esercizio escludono l’alternativa; per i monoblocchi il limite diventa allora GWP 750. Tali apparecchi devono essere etichettati per quell’uso e l’operatore deve conservare la documentazione per cinque anni.",
+      "L’assistenza segue una regola propria: dal 1° gennaio 2026 il refrigerante nuovo con GWP pari o superiore a 2.500 non può essere usato per l’assistenza alle pompe di calore. R410A, con 2.088, è al di sotto di questa soglia."
+     ]
+    },
+    {
+     "h": "Stesse date UE, incentivi diversi",
+     "p": [
+      "I divieti si applicano direttamente in ogni Stato membro UE. Ciò che cambia è l’incentivo: la Germania lega i finanziamenti BEG ai refrigeranti naturali dal 2028, mentre Francia, Polonia e Italia non pongono alcuna condizione sul refrigerante per le pompe di calore aria/acqua.",
+      "La Gran Bretagna è l’eccezione sul piano giuridico: non ha adottato il divieto UE 2027 per le pompe di calore, e lì i monoblocchi R32 restano in vendita dopo il 2026."
+     ]
+    }
+   ],
+   "metaTitle": "La guida completa F-gas per le pompe di calore | HeatPump DB",
+   "metaDesc": "Il Regolamento (UE) 2024/573 per le pompe di calore: refrigeranti, taglie e date 2025–2050, il divieto GWP 150 del 2027, le scorte e gli incentivi in cinque mercati.",
+   "byline": "Redazione HeatPump DataBase Europe",
+   "openLabel": "Apri il report interattivo",
+   "downloadLabel": "Scarica il report",
+   "downloadNote": "Un unico file HTML autonomo — si apre in qualsiasi browser, funziona offline. Il pulsante «Stampa / Salva PDF» del report consente di conservarne una copia.",
+   "seriesTitle": "Report speciali",
+   "seriesSub": "Analisi mensile del mercato europeo a cura di HeatPump DataBase Europe.",
+   "backLabel": "Tutti i report speciali",
+   "editionLabel": "Edizione ottobre 2026",
+   "langNote": "Il report è leggibile in inglese, tedesco, francese, polacco e italiano — la lingua si cambia all’interno del report.",
+   "ctaTitle": "Leggi il report speciale interattivo completo",
+   "ctaSub": "8 pagine · 15 refrigeranti · ogni data fino al 2050 · fonti in ogni pagina · inglese, tedesco, francese, polacco e italiano.",
+   "productCta": {
+    "h": "I dati dietro le regole",
+    "p": "Ogni modello di pompa di calore con refrigerante, SCOP, potenza sonora e stato di inserimento locale — ricercabile, confrontabile, stampabile come scheda tecnica pronta per il preventivo.",
+    "b": "Iscriviti gratis — prova Premium di 30 giorni inclusa"
+   }
+  }
+ }
+}

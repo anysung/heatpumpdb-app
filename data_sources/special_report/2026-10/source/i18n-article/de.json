@@ -1,0 +1,94 @@
+{
+  "article": {
+    "eyebrow": "Special Report · Oktober 2026",
+    "title": "Das vollständige F-Gas-Regelwerk für Wärmepumpen",
+    "standfirst": "EU-Verordnung 2024/573 in einem Dokument: jedes Kältemittel, jede Größe, jedes Datum bis 2050 — und was sich in fünf Märkten ändert.",
+    "lead": [
+      "Am 1. Januar 2027 erreicht die überarbeitete F-Gas-Verordnung der EU die Wärmepumpen, die Installateure täglich einbauen. Ab diesem Datum darf eine neue Monoblock-Wärmepumpe bis 50 kW oder eine Split-Luft/Wasser-Wärmepumpe bis 12 kW nur noch mit einem Kältemittel in der EU in Verkehr gebracht werden, dessen Treibhauspotenzial (GWP) unter 150 liegt. R32, das heute gängigste Kältemittel, hat ein GWP von 675.",
+      "Die Regel betrifft das Inverkehrbringen neuer Geräte, nicht den Abverkauf von Lagerware. Geräte, die vor dem Stichtag in der EU in Verkehr gebracht wurden, dürfen weiter verkauft und eingebaut werden; ab einem Jahr nach dem Stichtag müssen Verkäufer und Installateur nachweisen können, wann sie in Verkehr gebracht wurden. Verbotene Geräte, die später eintreffen, stoppt der Zoll.",
+      "Dieser Report bildet die gesamte Verordnung in einem Raster ab — 15 Kältemittel, 7 Größen und Bauarten, jedes Datum von 2025 bis 2050 — und ergänzt, was jeder der fünf Märkte zusätzlich regelt."
+    ],
+    "bulletsTitle": "Ein Regelwerk, fünf Märkte",
+    "bullets": [
+      {
+        "cc": "DE",
+        "label": "Deutschland",
+        "text": "Es gelten die EU-Fristen. Ab 1. Januar 2028 fördert die BEG nur noch Wärmepumpen mit natürlichen Kältemitteln; der 5-Punkte-Effizienzbonus endete am 21. Juli 2026."
+      },
+      {
+        "cc": "GB",
+        "label": "Vereinigtes Königreich",
+        "text": "Großbritannien behält ein eigenes F-Gas-Recht und kennt kein Wärmepumpen-Verbot 2027. Nordirland folgt den EU-Fristen."
+      },
+      {
+        "cc": "FR",
+        "label": "Frankreich",
+        "text": "Es gelten die EU-Fristen. Das CEE-Wärmepumpenblatt enthält kein Kältemittelkriterium; die Prämie hängt vom ADEME agrément ab."
+      },
+      {
+        "cc": "PL",
+        "label": "Polen",
+        "text": "Es gelten die EU-Fristen. Czyste Powietrze enthält kein Kältemittelkriterium; das Modell muss in der Lista ZUM eingetragen sein."
+      },
+      {
+        "cc": "IT",
+        "label": "Italien",
+        "text": "Es gelten die EU-Fristen. Conto Termico 3.0 stellt für Luft/Wasser-Wärmepumpen keine GWP-Bedingung."
+      }
+    ],
+    "sections": [
+      {
+        "h": "2027 ist der erste große Schritt, nicht der letzte",
+        "p": [
+          "Die Verordnung schließt den Markt stufenweise. 2027 entfallen Kältemittel mit GWP 150 oder mehr bei Monoblocks bis 50 kW und bei Split-Luft/Wasser-Geräten bis 12 kW. 2029 verlieren Splits über 12 kW GWP 750 oder mehr; 2030 verlieren Monoblocks über 50 kW GWP 150 oder mehr; 2033 verlieren Splits über 12 kW GWP 150 oder mehr.",
+          "Danach verlassen kleine Geräte die fluorierten Gase ganz: Monoblocks bis 12 kW ab 2032, Splits bis 12 kW ab 2035. Ab 2035 darf eine neue Wärmepumpe bis 12 kW nur noch ein natürliches Kältemittel wie R290 Propan oder R744 CO₂ nutzen, sofern Sicherheitsvorschriften am Aufstellort nichts anderes erfordern."
+        ]
+      },
+      {
+        "h": "Was das für R32 bedeutet",
+        "p": [
+          "R32 verschwindet nicht über Nacht. Nach 2026 bleibt es für neue Splits über 12 kW bis Ende 2032 und für neue Monoblocks über 50 kW bis Ende 2029 verfügbar. Bereits in Verkehr gebrachte Geräte dürfen auch nach diesen Daten verkauft und eingebaut werden.",
+          "Im europäischen Referenzkatalog von HeatPump DB nutzen 56 % der Wohngebäude-Modelle ein Kältemittel mit GWP 150 oder mehr, überwiegend R32 und R410A; 44 % nutzen bereits R290."
+        ]
+      },
+      {
+        "h": "Jede Frist hat eine Sicherheitsausnahme",
+        "p": [
+          "Jedes Verbot lässt eine Ausnahme zu, wenn Sicherheitsanforderungen am Betriebsort die Alternative ausschließen; bei Monoblocks gilt dann die Grenze GWP 750. Solche Geräte müssen für diesen Einsatz gekennzeichnet sein, und der Betreiber muss die Nachweise fünf Jahre lang aufbewahren.",
+          "Für die Wartung gilt eine eigene Regel: Seit 1. Januar 2026 darf neues Kältemittel mit GWP 2.500 oder mehr nicht mehr für die Wartung von Wärmepumpen verwendet werden. R410A liegt mit 2.088 unter dieser Grenze."
+        ]
+      },
+      {
+        "h": "Gleiche EU-Fristen, andere Förderung",
+        "p": [
+          "Die Verbote gelten unmittelbar in jedem EU-Mitgliedstaat. Unterschiedlich ist die Förderung: Deutschland knüpft die BEG-Förderung ab 2028 an natürliche Kältemittel, während Frankreich, Polen und Italien für Luft/Wasser-Wärmepumpen keine Kältemittelbedingung stellen.",
+          "Großbritannien ist die rechtliche Ausnahme: Es hat das Wärmepumpen-Verbot 2027 der EU nicht übernommen, und Monoblocks mit R32 bleiben dort auch nach 2026 im Handel."
+        ]
+      }
+    ],
+    "metaTitle": "Das vollständige F-Gas-Regelwerk für Wärmepumpen | HeatPump DB",
+    "metaDesc": "EU-F-Gas-Verordnung 2024/573 für Wärmepumpen: alle Kältemittel, Größen und Fristen bis 2050, das GWP-150-Verbot 2027, Lagerware und Förderung in fünf Märkten.",
+    "byline": "HeatPump DataBase Europe Redaktion",
+    "openLabel": "Interaktiven Report öffnen",
+    "downloadLabel": "Report herunterladen",
+    "downloadNote": "Eine einzelne, in sich geschlossene HTML-Datei — öffnet in jedem Browser, funktioniert offline. Über den Button „Drucken / PDF speichern“ im Report lässt sich eine PDF-Kopie sichern.",
+    "seriesTitle": "Special Reports",
+    "seriesSub": "Monatliche europäische Marktanalysen von HeatPump DataBase Europe.",
+    "backLabel": "Alle Special Reports",
+    "editionLabel": "Ausgabe Oktober 2026",
+    "langNote": "Der Report selbst ist auf Englisch, Deutsch, Französisch, Polnisch und Italienisch lesbar — Sprache im Report umschalten.",
+    "ctaTitle": "Den vollständigen interaktiven Special Report lesen",
+    "ctaSub": "8 Seiten · 15 Kältemittel · jedes Datum bis 2050 · Quellen auf jeder Seite · Englisch, Deutsch, Französisch, Polnisch, Italienisch.",
+    "productCta": {
+      "h": "Die Daten hinter den Regeln",
+      "p": "Jedes Wärmepumpenmodell mit Kältemittel, SCOP, Schallleistung und lokalem Listungsstatus — durchsuchbar, vergleichbar, als angebotsfertiges Datenblatt druckbar.",
+      "b": "Kostenlos registrieren — inkl. 30 Tage Premium-Test"
+    }
+  },
+  "news": {
+    "title": "Das vollständige F-Gas-Regelwerk für Wärmepumpen",
+    "summary": "HeatPump DataBase Europe bildet die EU-F-Gas-Verordnung 2024/573 in einem Raster ab — 15 Kältemittel, 7 Größen und Bauarten, jedes Datum bis 2050 — und zeigt, was sich am 1. Januar 2027 und in fünf nationalen Märkten ändert.",
+    "body": "HeatPump DataBase Europe hat seinen Special Report für Oktober veröffentlicht: das vollständige F-Gas-Regelwerk für Wärmepumpen in einem Dokument.\n\nAb 1. Januar 2027 darf eine neue Monoblock-Wärmepumpe bis 50 kW oder eine Split-Luft/Wasser-Wärmepumpe bis 12 kW nur noch mit einem Kältemittel mit GWP unter 150 in der EU in Verkehr gebracht werden. R32 hat ein GWP von 675. Die Regel betrifft neue Geräte, die in den Markt kommen: Bereits in Verkehr gebrachte Lagerware darf weiter verkauft und eingebaut werden, ab einem Jahr nach dem Stichtag jedoch nur mit Nachweis, wann sie in Verkehr gebracht wurde.\n\nDer Report verfolgt jeden Schritt bis 2050. Splits über 12 kW verlieren 2029 GWP 750 oder mehr und 2033 GWP 150 oder mehr; Monoblocks über 50 kW verlieren 2030 GWP 150 oder mehr. Ab 2032 (Monoblocks) bzw. 2035 (Splits) müssen neue Wärmepumpen bis 12 kW natürliche Kältemittel wie R290 Propan nutzen.\n\nDie nationale Ebene unterscheidet sich. Deutschland fördert über die BEG ab 1. Januar 2028 nur noch natürliche Kältemittel. Großbritannien kennt überhaupt kein Wärmepumpen-Verbot 2027. Frankreich, Polen und Italien folgen den EU-Fristen und stellen für die Förderung von Luft/Wasser-Wärmepumpen keine Kältemittelbedingung.",
+    "ctaLabel": "Zum Special Report"
+  }
+}

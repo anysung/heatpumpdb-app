@@ -1,0 +1,94 @@
+{
+ "article": {
+  "eyebrow": "Rapport spécial · Octobre 2026",
+  "title": "Le guide de référence F‑gaz des pompes à chaleur",
+  "standfirst": "Le règlement (UE) 2024/573 en un document : chaque fluide frigorigène, chaque taille, chaque date jusqu’en 2050 — et ce qui change sur cinq marchés.",
+  "lead": [
+   "Le 1er janvier 2027, le règlement F‑gaz révisé de l’UE atteint les pompes à chaleur que les installateurs posent chaque jour. À partir de cette date, une pompe à chaleur monobloc neuve jusqu’à 50 kW, ou une pompe à chaleur split air/eau jusqu’à 12 kW, ne peut être mise sur le marché de l’UE qu’avec un fluide frigorigène dont le potentiel de réchauffement planétaire (GWP) est inférieur à 150. Le R32, le fluide le plus répandu aujourd’hui, a un GWP de 675.",
+   "La règle porte sur la mise sur le marché des unités neuves, pas sur la vente du stock. Un équipement mis sur le marché de l’UE avant la date peut encore être vendu et installé ; dès un an après la date, le vendeur et l’installateur doivent pouvoir prouver quand il a été mis sur le marché. Un équipement interdit qui arrive plus tard est bloqué en douane.",
+   "Ce rapport projette l’ensemble du règlement sur une seule grille — 15 fluides frigorigènes, 7 tailles et types, chaque date de 2025 à 2050 — et ajoute ce que chacun des cinq marchés impose en plus."
+  ],
+  "bulletsTitle": "Un seul cadre, cinq marchés",
+  "bullets": [
+   {
+    "cc": "DE",
+    "label": "Allemagne",
+    "text": "Dates UE applicables. Dès le 1er janvier 2028, la BEG ne finance que les pompes à chaleur à fluide naturel ; le bonus d’efficacité de 5 points a pris fin le 21 juillet 2026."
+   },
+   {
+    "cc": "GB",
+    "label": "Royaume-Uni",
+    "text": "La Grande-Bretagne conserve sa propre législation F‑gaz et n’a pas d’interdiction visant les pompes à chaleur en 2027. L’Irlande du Nord suit les dates UE."
+   },
+   {
+    "cc": "FR",
+    "label": "France",
+    "text": "Dates UE applicables. La fiche CEE des pompes à chaleur ne fixe aucun critère de fluide ; la prime dépend de l’agrément ADEME."
+   },
+   {
+    "cc": "PL",
+    "label": "Pologne",
+    "text": "Dates UE applicables. Czyste Powietrze ne fixe aucun critère de fluide ; le modèle doit figurer sur la Lista ZUM."
+   },
+   {
+    "cc": "IT",
+    "label": "Italie",
+    "text": "Dates UE applicables. Le Conto Termico 3.0 ne fixe aucune condition de GWP pour les pompes à chaleur air/eau."
+   }
+  ],
+  "sections": [
+   {
+    "h": "2027 est la première grande étape, pas la dernière",
+    "p": [
+     "Le règlement ferme le marché par étapes. En 2027, les fluides de GWP 150 ou plus quittent les monoblocs jusqu’à 50 kW et les splits air/eau jusqu’à 12 kW. En 2029, les splits de plus de 12 kW perdent les GWP de 750 ou plus ; en 2030, les monoblocs de plus de 50 kW perdent les GWP de 150 ou plus ; en 2033, les splits de plus de 12 kW perdent les GWP de 150 ou plus.",
+     "Les petites unités abandonnent ensuite totalement les gaz fluorés : les monoblocs jusqu’à 12 kW dès 2032, les splits jusqu’à 12 kW dès 2035. À partir de 2035, une pompe à chaleur neuve jusqu’à 12 kW ne peut utiliser qu’un fluide naturel comme le R290 (propane) ou le R744 (CO₂), sauf si les règles de sécurité du site l’exigent autrement."
+    ]
+   },
+   {
+    "h": "Ce que cela signifie pour le R32",
+    "p": [
+     "Le R32 ne disparaît pas du jour au lendemain. Après 2026, il reste disponible pour les splits neufs de plus de 12 kW jusqu’à fin 2032 et pour les monoblocs neufs de plus de 50 kW jusqu’à fin 2029. Les unités déjà mises sur le marché peuvent être vendues et installées après ces dates.",
+     "Dans le catalogue de référence européen HeatPump DB, 56 % des modèles résidentiels utilisent un fluide de GWP 150 ou plus, principalement du R32 et du R410A ; 44 % utilisent déjà le R290."
+    ]
+   },
+   {
+    "h": "Chaque date prévoit une dérogation de sécurité",
+    "p": [
+     "Chaque interdiction admet une exception lorsque les exigences de sécurité du site d’exploitation excluent l’alternative ; pour les monoblocs, la limite passe alors à un GWP de 750. Ces équipements doivent être étiquetés pour cet usage, et l’exploitant doit conserver les justificatifs pendant cinq ans.",
+     "L’entretien obéit à sa propre règle : depuis le 1er janvier 2026, un fluide neuf de GWP 2 500 ou plus ne peut plus servir à l’entretien des pompes à chaleur. Le R410A, à 2 088, se situe sous ce seuil."
+    ]
+   },
+   {
+    "h": "Mêmes dates UE, aides différentes",
+    "p": [
+     "Les interdictions s’appliquent directement dans chaque État membre de l’UE. Ce qui diffère, c’est l’aide : l’Allemagne lie le financement BEG aux fluides naturels dès 2028, tandis que la France, la Pologne et l’Italie ne fixent aucune condition de fluide pour les pompes à chaleur air/eau.",
+     "La Grande-Bretagne fait exception en droit : elle n’a pas adopté l’interdiction européenne de 2027 visant les pompes à chaleur, et les monoblocs R32 y restent en vente après 2026."
+    ]
+   }
+  ],
+  "metaTitle": "Le guide de référence F‑gaz des pompes à chaleur | HeatPump DB",
+  "metaDesc": "Règlement F‑gaz (UE) 2024/573 et pompes à chaleur : fluides, tailles et dates de 2025 à 2050, interdiction GWP 150 de 2027, stock existant et aides dans cinq marchés.",
+  "byline": "Rédaction HeatPump DataBase Europe",
+  "openLabel": "Ouvrir le rapport interactif",
+  "downloadLabel": "Télécharger le rapport",
+  "downloadNote": "Un seul fichier HTML autonome — s’ouvre dans tout navigateur, fonctionne hors ligne. Utilisez le bouton « Imprimer / Enregistrer en PDF » du rapport pour en garder une copie.",
+  "seriesTitle": "Rapports spéciaux",
+  "seriesSub": "L’intelligence de marché européenne mensuelle de HeatPump DataBase Europe.",
+  "backLabel": "Tous les rapports spéciaux",
+  "editionLabel": "Édition d’octobre 2026",
+  "langNote": "Le rapport est lisible en anglais, allemand, français, polonais et italien — changez de langue dans le rapport.",
+  "ctaTitle": "Lire le rapport spécial interactif complet",
+  "ctaSub": "8 pages · 15 fluides frigorigènes · chaque date jusqu’en 2050 · sources à chaque page · anglais, allemand, français, polonais et italien.",
+  "productCta": {
+   "h": "Les données derrière les règles",
+   "p": "Chaque modèle de pompe à chaleur avec fluide frigorigène, SCOP, puissance acoustique et statut de référencement local — consultable, comparable, imprimable en fiche technique prête pour le devis.",
+   "b": "Inscription gratuite — essai Premium de 30 jours inclus"
+  }
+ },
+ "news": {
+  "title": "Le guide de référence F‑gaz des pompes à chaleur",
+  "summary": "HeatPump DataBase Europe projette le règlement F‑gaz (UE) 2024/573 sur une seule grille — 15 fluides frigorigènes, 7 tailles et types, chaque date jusqu’en 2050 — et montre ce qui change le 1er janvier 2027 et sur cinq marchés nationaux.",
+  "body": "HeatPump DataBase Europe publie son rapport spécial d’octobre : le guide de référence F‑gaz complet des pompes à chaleur, en un seul document.\n\nÀ partir du 1er janvier 2027, une pompe à chaleur monobloc neuve jusqu’à 50 kW, ou une pompe à chaleur split air/eau jusqu’à 12 kW, ne peut être mise sur le marché de l’UE qu’avec un fluide frigorigène de GWP inférieur à 150. Le R32 a un GWP de 675. La règle vise les unités neuves qui entrent sur le marché : le stock déjà mis sur le marché peut encore être vendu et installé et, dès un an après la date, doit être accompagné de la preuve de sa date de mise sur le marché.\n\nLe rapport suit chaque étape jusqu’en 2050. Les splits de plus de 12 kW perdent les GWP de 750 ou plus en 2029 et de 150 ou plus en 2033 ; les monoblocs de plus de 50 kW perdent les GWP de 150 ou plus en 2030. Dès 2032 (monoblocs) et 2035 (splits), les pompes à chaleur neuves jusqu’à 12 kW doivent utiliser des fluides naturels comme le R290 (propane).\n\nLe niveau national diffère. L’Allemagne ne finance plus que les fluides naturels dans le cadre de la BEG à partir du 1er janvier 2028. La Grande-Bretagne n’a aucune interdiction visant les pompes à chaleur en 2027. La France, la Pologne et l’Italie suivent les dates UE et ne fixent aucune condition de fluide pour les aides aux pompes à chaleur air/eau.",
+  "ctaLabel": "Lire le rapport spécial"
+ }
+}

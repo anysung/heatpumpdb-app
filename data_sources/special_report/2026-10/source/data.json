@@ -1,0 +1,495 @@
+{
+  "groups": [
+    {
+      "label": "Natural",
+      "refs": [
+        {
+          "name": "R290",
+          "natural": true,
+          "gwp": 0,
+          "res": 2379,
+          "com": 340
+        },
+        {
+          "name": "R744",
+          "natural": true,
+          "gwp": 1,
+          "res": 0,
+          "com": 0
+        }
+      ]
+    },
+    {
+      "label": "GWP &lt; 150",
+      "refs": [
+        {
+          "name": "R454C",
+          "gwp": 146,
+          "res": 5,
+          "com": 2
+        }
+      ]
+    },
+    {
+      "label": "GWP 150–749",
+      "refs": [
+        {
+          "name": "R454B",
+          "gwp": 465,
+          "res": 23,
+          "com": 646
+        },
+        {
+          "name": "R513A",
+          "gwp": 630,
+          "res": 1,
+          "com": 65
+        },
+        {
+          "name": "R32",
+          "gwp": 675,
+          "res": 2233,
+          "com": 536
+        },
+        {
+          "name": "R452B",
+          "gwp": 697,
+          "res": 45,
+          "com": 0
+        }
+      ]
+    },
+    {
+      "label": "GWP ≥ 750",
+      "refs": [
+        {
+          "name": "R134a",
+          "gwp": 1430,
+          "res": 0,
+          "com": 59
+        },
+        {
+          "name": "R407C",
+          "gwp": 1774,
+          "res": 40,
+          "com": 46
+        },
+        {
+          "name": "R410A",
+          "gwp": 2088,
+          "res": 713,
+          "com": 249
+        }
+      ]
+    }
+  ],
+  "classes": [
+    {
+      "label": "GWP ≥ 750",
+      "color": "var(--ink)",
+      "refs": "R410A 2,088 · R407C 1,774 · R134a 1,430"
+    },
+    {
+      "label": "GWP 150–749",
+      "color": "var(--red)",
+      "refs": "R32 675 · R452B 697 · R513A 630 · R454B 465"
+    },
+    {
+      "label": "GWP < 150, still an F-gas",
+      "color": "var(--red-mid)",
+      "refs": "R454C 146 — only just under the line"
+    },
+    {
+      "label": "Natural",
+      "color": "var(--blue)",
+      "refs": "R290 propane · R744 CO₂ — not F-gases, no end date"
+    }
+  ],
+  "share": {
+    "res": {
+      "total": 5452,
+      "hi": 753,
+      "mid": 2302,
+      "low": 5,
+      "nat": 2379
+    },
+    "com": {
+      "total": 1964,
+      "hi": 354,
+      "mid": 1247,
+      "low": 2,
+      "nat": 340
+    }
+  },
+  "national": [
+    {
+      "cc": "DE",
+      "name": "Germany",
+      "eu": true,
+      "short": "EU dates. <b>BEG funds only natural refrigerants from 1 Jan 2028</b>; the 5-point efficiency bonus ended 21 Jul 2026.",
+      "law": "EU dates apply.",
+      "subsidy": "BEG/KfW 458: <b>natural refrigerants only from 1 Jan 2028</b> (R290, R744 …). The 5-point efficiency bonus ended on 21 Jul 2026.",
+      "installer": "R32 units remain fundable until 31 Dec 2027. A 15-point bonus for EU-made units is planned from 2027."
+    },
+    {
+      "cc": "GB",
+      "name": "United Kingdom",
+      "eu": false,
+      "short": "<b>No 2027 heat-pump ban.</b> Own F-gas rules; Northern Ireland follows the EU dates.",
+      "law": "<b>No 2027 ban.</b> Only single splits under 3 kg with GWP above 750 (since 2025); air-to-water splits exempt. Northern Ireland follows the EU.",
+      "subsidy": "Boiler Upgrade Scheme: no refrigerant condition.",
+      "installer": "R32 monoblocs stay on sale in Great Britain after 2026."
+    },
+    {
+      "cc": "FR",
+      "name": "France",
+      "eu": true,
+      "short": "EU dates. No refrigerant criterion in the CEE heat-pump sheet; HFC tax repealed in 2025.",
+      "law": "EU dates apply. Extra charge limits for flammable refrigerants in public buildings (ERP, since Sep 2025).",
+      "subsidy": "CEE (BAR-TH-171): no refrigerant criterion — the bonus hinges on the ADEME agrément.",
+      "installer": "No HFC tax since 2025. Check ERP rules before an R290 or R32 job in a public building."
+    },
+    {
+      "cc": "PL",
+      "name": "Poland",
+      "eu": true,
+      "short": "EU dates. Czyste Powietrze has no refrigerant criterion; Lista ZUM entry counts.",
+      "law": "EU dates apply. National F-gas act amended in Jan 2026 (operator register, fines).",
+      "subsidy": "Czyste Powietrze: no refrigerant criterion. The model must be on the Lista ZUM on the invoice date.",
+      "installer": "Sell F-gas equipment with a certified installer on the contract."
+    },
+    {
+      "cc": "IT",
+      "name": "Italy",
+      "eu": true,
+      "short": "EU dates. Conto Termico 3.0: no GWP rule for air/water; easier ηs threshold only for low-GWP air/air.",
+      "law": "EU dates apply. National F-gas register and sanctions decrees are being updated.",
+      "subsidy": "Conto Termico 3.0: no GWP condition for air/water. Air/air ≤ 12 kW gets a lower ηs threshold if GWP is under 150.",
+      "installer": "Model must be in the GSE catalogue; keep F-gas Banca Dati records."
+    }
+  ],
+  "callout": {
+    "big": "56 %",
+    "text": "<b>of residential models in HeatPump DB use a refrigerant with GWP 150 or more.</b> From 1 January 2027 none of them may be newly placed on the EU market as a monobloc or as a split up to 12 kW — the stock already in the channel can still be sold."
+  },
+  "foot1": "¹ Single split systems under 3 kg, GWP ≥ 750: banned since 1 Jan 2025. Every date carries a safety exemption; for monoblocs the fallback limit is GWP 750. Cooling-first chillers follow a separate rule. GWP per Regulation (EU) 2024/573 (AR4). Stock: Art. 11(1), 13(19). Models: HeatPump DB European reference catalogue, Oct 2026.",
+  "foot2": "¹ Single split systems under 3 kg, GWP ≥ 750: banned since 1 Jan 2025. Every date carries a safety exemption; for monoblocs the fallback limit is GWP 750. Cooling-first chillers follow a separate rule. GWP per Regulation (EU) 2024/573 (AR4). Stock: Art. 11(1), 13(19). Models: HeatPump DB European reference catalogue, Oct 2026.",
+  "foot3": "Sources: Regulation (EU) 2024/573; BAnz AT 27.08.2026 B1 (BEG EM); gov.uk F-gas bans (27 Aug 2026); SI 2022/565; CEE BAR-TH-171 vA82-5; Czyste Powietrze annex 2 (20 Jul 2026); DM 7 Aug 2025 (Conto Termico 3.0). Checked 23 Oct 2026 — subsidy rules change often; check on the day of the quote.",
+  "bands": {
+    "R290": {
+      "le12": 1534,
+      "b12_23": 845,
+      "b23_50": 192,
+      "gt50": 148
+    },
+    "R32": {
+      "le12": 1530,
+      "b12_23": 703,
+      "b23_50": 97,
+      "gt50": 439
+    },
+    "R410A": {
+      "le12": 513,
+      "b12_23": 200,
+      "b23_50": 70,
+      "gt50": 179
+    },
+    "R407C": {
+      "le12": 20,
+      "b12_23": 20,
+      "b23_50": 33,
+      "gt50": 13
+    },
+    "R454B": {
+      "le12": 18,
+      "b12_23": 5,
+      "b23_50": 26,
+      "gt50": 620
+    },
+    "R452B": {
+      "le12": 29,
+      "b12_23": 16,
+      "b23_50": 0,
+      "gt50": 0
+    },
+    "R513A": {
+      "le12": 1,
+      "b12_23": 0,
+      "b23_50": 0,
+      "gt50": 65
+    },
+    "R454C": {
+      "le12": 5,
+      "b12_23": 0,
+      "b23_50": 2,
+      "gt50": 0
+    },
+    "R134a": {
+      "le12": 0,
+      "b12_23": 0,
+      "b23_50": 0,
+      "gt50": 59
+    },
+    "Other / not stated": {
+      "le12": 5,
+      "b12_23": 8,
+      "b23_50": 3,
+      "gt50": 18
+    }
+  },
+  "passport": {
+    "R290": {
+      "kind": "Natural (propane)",
+      "safety": "A3",
+      "pfas": "No"
+    },
+    "R744": {
+      "kind": "Natural (CO₂)",
+      "safety": "A1",
+      "pfas": "No"
+    },
+    "R454C": {
+      "kind": "HFC/HFO blend",
+      "safety": "A2L",
+      "pfas": "Yes · R1234yf"
+    },
+    "R454B": {
+      "kind": "HFC/HFO blend",
+      "safety": "A2L",
+      "pfas": "Yes · R1234yf"
+    },
+    "R513A": {
+      "kind": "HFC/HFO blend",
+      "safety": "A1",
+      "pfas": "Yes · R134a, R1234yf"
+    },
+    "R32": {
+      "kind": "HFC",
+      "safety": "A2L",
+      "pfas": "No"
+    },
+    "R452B": {
+      "kind": "HFC/HFO blend",
+      "safety": "A2L",
+      "pfas": "Yes · R125, R1234yf"
+    },
+    "R134a": {
+      "kind": "HFC",
+      "safety": "A1",
+      "pfas": "Yes"
+    },
+    "R407C": {
+      "kind": "HFC blend",
+      "safety": "A1",
+      "pfas": "Yes · R125, R134a"
+    },
+    "R410A": {
+      "kind": "HFC blend",
+      "safety": "A1",
+      "pfas": "Yes · R125"
+    }
+  },
+  "ox": {
+    "res": [
+      [
+        "Natural",
+        [
+          [
+            "R290",
+            0,
+            true
+          ],
+          [
+            "R744",
+            1,
+            true
+          ]
+        ]
+      ],
+      [
+        "GWP < 150",
+        [
+          [
+            "R454C",
+            146,
+            false
+          ]
+        ]
+      ],
+      [
+        "GWP 150–749",
+        [
+          [
+            "R454B",
+            465,
+            false
+          ],
+          [
+            "R32",
+            675,
+            false
+          ],
+          [
+            "R452B",
+            697,
+            false
+          ]
+        ]
+      ],
+      [
+        "GWP ≥ 750",
+        [
+          [
+            "R407C",
+            1774,
+            false
+          ],
+          [
+            "R410A",
+            2088,
+            false
+          ]
+        ]
+      ]
+    ],
+    "com": [
+      [
+        "Natural",
+        [
+          [
+            "R290",
+            0,
+            true
+          ],
+          [
+            "R744",
+            1,
+            true
+          ],
+          [
+            "R717",
+            0,
+            true
+          ]
+        ]
+      ],
+      [
+        "GWP < 150",
+        [
+          [
+            "R1234ze(E)",
+            1,
+            false
+          ],
+          [
+            "R1234yf",
+            0.5,
+            false
+          ],
+          [
+            "R454C",
+            146,
+            false
+          ]
+        ]
+      ],
+      [
+        "GWP 150–749",
+        [
+          [
+            "R515B",
+            288,
+            false
+          ],
+          [
+            "R454B",
+            465,
+            false
+          ],
+          [
+            "R450A",
+            601,
+            false
+          ],
+          [
+            "R513A",
+            630,
+            false
+          ],
+          [
+            "R32",
+            675,
+            false
+          ]
+        ]
+      ],
+      [
+        "GWP ≥ 750",
+        [
+          [
+            "R134a",
+            1430,
+            false
+          ],
+          [
+            "R407C",
+            1774,
+            false
+          ],
+          [
+            "R410A",
+            2088,
+            false
+          ]
+        ]
+      ]
+    ]
+  },
+  "pills": [
+    {
+      "cc": "DE",
+      "name": "Germany",
+      "eu": true,
+      "ban": "EU dates apply. No extra national ban.",
+      "inst": "R32 stays fundable until 31 Dec 2027. Propane and CO₂ work needs the updated certificate.",
+      "subHead": "Natural refrigerants only from 2028",
+      "sub": "BEG bonus of 5 pts ended Jul 2026"
+    },
+    {
+      "cc": "GB",
+      "name": "United Kingdom",
+      "eu": false,
+      "ban": "No 2027 heat-pump ban. Northern Ireland follows the EU.",
+      "inst": "R32 monoblocs stay on sale in Great Britain after 2026.",
+      "subHead": "Boiler Upgrade Scheme: no refrigerant rule",
+      "sub": "SCOP ≥ 2.8 · MCS installation"
+    },
+    {
+      "cc": "FR",
+      "name": "France",
+      "eu": true,
+      "ban": "EU dates apply. Extra limits for flammable refrigerants in public buildings.",
+      "inst": "No HFC tax since 2025. Check ERP rules before an R290 or R32 job.",
+      "subHead": "CEE bonus: no refrigerant rule",
+      "sub": "Hinges on the ADEME agrément"
+    },
+    {
+      "cc": "PL",
+      "name": "Poland",
+      "eu": true,
+      "ban": "EU dates apply. National F-gas act amended Jan 2026.",
+      "inst": "Sell F-gas equipment with a certified installer on the contract.",
+      "subHead": "Czyste Powietrze: no refrigerant rule",
+      "sub": "Model must be on the Lista ZUM"
+    },
+    {
+      "cc": "IT",
+      "name": "Italy",
+      "eu": true,
+      "ban": "EU dates apply. National F-gas register being updated.",
+      "inst": "Keep F-gas Banca Dati records; model must be in the GSE catalogue.",
+      "subHead": "Conto Termico 3.0: no GWP rule for air/water",
+      "sub": "Low-GWP air/air: easier threshold"
+    }
+  ]
+}

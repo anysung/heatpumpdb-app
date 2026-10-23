@@ -1,0 +1,94 @@
+{
+  "article": {
+    "eyebrow": "Special Report · październik 2026",
+    "title": "Kompletny przewodnik F‑gazowy dla pomp ciepła",
+    "standfirst": "Rozporządzenie UE 2024/573 w jednym dokumencie: każdy czynnik chłodniczy, każda wielkość, każda data do 2050 r. — i co zmienia się na pięciu rynkach.",
+    "lead": [
+      "1 stycznia 2027 r. znowelizowane unijne rozporządzenie F-gazowe obejmie pompy ciepła, które instalatorzy montują na co dzień. Od tej daty nową pompę ciepła typu monoblok o mocy do 50 kW lub pompę ciepła split powietrze/woda o mocy do 12 kW można wprowadzić do obrotu w UE wyłącznie z czynnikiem chłodniczym o współczynniku ocieplenia globalnego (GWP) poniżej 150. R32, dziś najpowszechniejszy czynnik chłodniczy, ma GWP 675.",
+      "Przepis dotyczy wprowadzania nowych urządzeń do obrotu, a nie sprzedaży zapasów. Urządzenia wprowadzone do obrotu w UE przed tą datą można nadal sprzedawać i instalować; od roku po tej dacie sprzedawca i instalator muszą być w stanie wykazać, kiedy zostały wprowadzone do obrotu. Zakazane urządzenia, które trafią na rynek później, zatrzymuje urząd celny.",
+      "Raport przenosi całe rozporządzenie na jedną siatkę — 15 czynników chłodniczych, 7 wielkości i wykonań, każda data od 2025 do 2050 r. — i pokazuje, co dodaje do tego każdy z pięciu rynków."
+    ],
+    "bulletsTitle": "Jeden zbiór przepisów, pięć rynków",
+    "bullets": [
+      {
+        "cc": "DE",
+        "label": "Niemcy",
+        "text": "Obowiązują daty UE. Od 1 stycznia 2028 r. BEG dofinansowuje wyłącznie pompy ciepła z czynnikami naturalnymi; 5-punktowy bonus efektywności zakończono 21 lipca 2026 r."
+      },
+      {
+        "cc": "GB",
+        "label": "Zjednoczone Królestwo",
+        "text": "Wielka Brytania ma własne przepisy F-gazowe i nie wprowadza zakazu dla pomp ciepła w 2027 r. Irlandia Północna stosuje daty UE."
+      },
+      {
+        "cc": "FR",
+        "label": "Francja",
+        "text": "Obowiązują daty UE. Karta CEE dla pomp ciepła nie zawiera kryterium czynnika chłodniczego; premia zależy od ADEME agrément."
+      },
+      {
+        "cc": "PL",
+        "label": "Polska",
+        "text": "Obowiązują daty UE. Czyste Powietrze nie stawia kryterium czynnika chłodniczego; model musi znajdować się na Liście ZUM."
+      },
+      {
+        "cc": "IT",
+        "label": "Włochy",
+        "text": "Obowiązują daty UE. Conto Termico 3.0 nie stawia wymogu GWP dla pomp ciepła powietrze/woda."
+      }
+    ],
+    "sections": [
+      {
+        "h": "2027 to pierwszy duży krok, ale nie ostatni",
+        "p": [
+          "Rozporządzenie zamyka rynek etapami. W 2027 r. czynniki o GWP 150 lub wyższym znikają z monobloków do 50 kW i splitów powietrze/woda do 12 kW. W 2029 r. splity powyżej 12 kW tracą czynniki o GWP 750 lub wyższym; w 2030 r. monobloki powyżej 50 kW tracą czynniki o GWP 150 lub wyższym; w 2033 r. splity powyżej 12 kW tracą czynniki o GWP 150 lub wyższym.",
+          "Następnie małe urządzenia całkowicie rezygnują z gazów fluorowanych: monobloki do 12 kW od 2032 r., splity do 12 kW od 2035 r. Od 2035 r. nowa pompa ciepła do 12 kW może korzystać wyłącznie z czynnika naturalnego, takiego jak R290 (propan) lub R744 (CO₂), chyba że przepisy bezpieczeństwa w miejscu instalacji wymagają innego rozwiązania."
+        ]
+      },
+      {
+        "h": "Co to oznacza dla R32",
+        "p": [
+          "R32 nie zniknie z dnia na dzień. Po 2026 r. pozostaje dopuszczony w nowych splitach powyżej 12 kW do końca 2032 r. oraz w nowych monoblokach powyżej 50 kW do końca 2029 r. Urządzenia już wprowadzone do obrotu można sprzedawać i instalować również po tych datach.",
+          "W europejskim katalogu referencyjnym HeatPump DB 56% modeli mieszkaniowych stosuje czynnik chłodniczy o GWP 150 lub wyższym, głównie R32 i R410A; 44% już korzysta z R290."
+        ]
+      },
+      {
+        "h": "Każda data ma wyjątek ze względów bezpieczeństwa",
+        "p": [
+          "Każdy zakaz dopuszcza wyjątek, gdy wymogi bezpieczeństwa w miejscu eksploatacji wykluczają rozwiązanie alternatywne; dla monobloków granica wynosi wtedy GWP 750. Takie urządzenia muszą być oznakowane do tego zastosowania, a operator musi przechowywać dowody przez pięć lat.",
+          "Serwisowanie podlega osobnej regule: od 1 stycznia 2026 r. do serwisowania pomp ciepła nie wolno używać nowego czynnika o GWP 2500 lub wyższym. R410A, z GWP 2088, mieści się poniżej tej granicy."
+        ]
+      },
+      {
+        "h": "Te same daty UE, inne pieniądze",
+        "p": [
+          "Zakazy obowiązują bezpośrednio w każdym państwie członkowskim UE. Różnią się dotacje: Niemcy od 2028 r. uzależniają dofinansowanie BEG od czynników naturalnych, natomiast Francja, Polska i Włochy nie stawiają warunku dotyczącego czynnika dla pomp ciepła powietrze/woda.",
+          "Wielka Brytania jest wyjątkiem prawnym: nie przyjęła unijnego zakazu dla pomp ciepła z 2027 r., a monobloki z R32 pozostają tam w sprzedaży po 2026 r."
+        ]
+      }
+    ],
+    "metaTitle": "Kompletny przewodnik F‑gazowy dla pomp ciepła | HeatPump DB",
+    "metaDesc": "Rozporządzenie UE 2024/573 dla pomp ciepła: każdy czynnik, wielkość i data 2025–2050, zakaz GWP 150 od 2027 r., zapasy w obrocie i dotacje na pięciu rynkach.",
+    "byline": "Zespół redakcyjny HeatPump DataBase Europe",
+    "openLabel": "Otwórz raport interaktywny",
+    "downloadLabel": "Pobierz raport",
+    "downloadNote": "Jeden samodzielny plik HTML — otwiera się w każdej przeglądarce, działa offline. Przycisk „Drukuj / Zapisz PDF” w raporcie pozwala zachować kopię PDF.",
+    "seriesTitle": "Raporty specjalne",
+    "seriesSub": "Comiesięczna europejska analiza rynku od HeatPump DataBase Europe.",
+    "backLabel": "Wszystkie raporty specjalne",
+    "editionLabel": "Wydanie październik 2026",
+    "langNote": "Sam raport można czytać po angielsku, niemiecku, francusku, polsku i włosku — język przełącza się w raporcie.",
+    "ctaTitle": "Przeczytaj pełny interaktywny raport specjalny",
+    "ctaSub": "8 stron · 15 czynników chłodniczych · każda data do 2050 r. · źródła na każdej stronie · angielski, niemiecki, francuski, polski i włoski.",
+    "productCta": {
+      "h": "Dane, które stoją za przepisami",
+      "p": "Każdy model pompy ciepła z czynnikiem chłodniczym, SCOP, mocą akustyczną i lokalnym statusem na liście — do wyszukania, porównania i wydruku jako karta danych gotowa do oferty.",
+      "b": "Dołącz bezpłatnie — z 30-dniowym okresem próbnym Premium"
+    }
+  },
+  "news": {
+    "title": "Kompletny przewodnik F‑gazowy dla pomp ciepła",
+    "summary": "HeatPump DataBase Europe przenosi rozporządzenie F-gazowe UE 2024/573 na jedną siatkę — 15 czynników chłodniczych, 7 wielkości i wykonań, każda data do 2050 r. — i pokazuje, co zmienia się 1 stycznia 2027 r. oraz na pięciu rynkach krajowych.",
+    "body": "HeatPump DataBase Europe opublikowało październikowy raport specjalny: kompletny przewodnik F-gazowy dla pomp ciepła w jednym dokumencie.\n\nOd 1 stycznia 2027 r. nową pompę ciepła typu monoblok o mocy do 50 kW lub pompę ciepła split powietrze/woda o mocy do 12 kW można wprowadzić do obrotu w UE wyłącznie z czynnikiem chłodniczym o GWP poniżej 150. R32 ma GWP 675. Przepis dotyczy nowych urządzeń wprowadzanych do obrotu: zapasy już wprowadzone można nadal sprzedawać i instalować, a od roku po tej dacie muszą im towarzyszyć dowody daty wprowadzenia do obrotu.\n\nRaport śledzi każdy etap do 2050 r. Splity powyżej 12 kW tracą czynniki o GWP 750 lub wyższym w 2029 r., a o GWP 150 lub wyższym w 2033 r.; monobloki powyżej 50 kW tracą czynniki o GWP 150 lub wyższym w 2030 r. Od 2032 r. (monobloki) i 2035 r. (splity) nowe pompy ciepła do 12 kW muszą stosować czynniki naturalne, takie jak R290 (propan).\n\nWarstwa krajowa jest zróżnicowana. Niemcy od 1 stycznia 2028 r. dofinansowują w ramach BEG wyłącznie czynniki naturalne. Wielka Brytania w ogóle nie wprowadza zakazu dla pomp ciepła w 2027 r. Francja, Polska i Włochy stosują daty UE i nie stawiają warunku dotyczącego czynnika chłodniczego w dotacjach na pompy powietrze/woda.",
+    "ctaLabel": "Przeczytaj raport specjalny"
+  }
+}
