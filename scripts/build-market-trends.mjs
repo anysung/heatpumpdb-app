@@ -425,6 +425,32 @@ const enOf = (c) => ({
   sourceNote: c.sourceNoteEn ?? c.sourceNote ?? '',
 });
 
+/* "More from Market & Trends" under each card page. Until 2026-10 a card page
+   linked only to the index and its own language twin, so every article was a
+   leaf one hop from the index and nothing else — Search Console listed most
+   of them as "Discovered – currently not indexed" on DE/FR/PL/UK (GSC weekly
+   review 2026-10-24). Linking each card to its newest siblings (same
+   language variant) and to the market's news gives Google more paths in. */
+const MORE = {
+  DE: { h: 'Weitere Marktanalysen', news: 'Alle Wärmepumpen-News' },
+  GB: { h: 'More market analysis', news: 'All heat pump news' },
+  FR: { h: 'Autres analyses de marché', news: 'Toutes les actualités pompe à chaleur' },
+  PL: { h: 'Więcej analiz rynku', news: 'Wszystkie wiadomości o pompach ciepła' },
+  IT: { h: 'Altre analisi di mercato', news: 'Tutte le notizie sulle pompe di calore' },
+}[MARKET];
+const MORE_EN = { h: 'More market analysis', news: 'All heat pump news' };
+const MORE_COUNT = 4;
+
+function moreLinks(c, english) {
+  const ui = english ? MORE_EN : MORE;
+  const sibs = feed.filter((o) => o.slug !== c.slug).slice(0, MORE_COUNT);
+  if (!sibs.length) return '';
+  return `<nav class="more" aria-label="${esc(ui.h)}"><h2>${esc(ui.h)}</h2><ul>${sibs.map((o) => {
+    const t = english ? enOf(o).title : o.title;
+    return `<li><a href="/market-trends/${o.slug}${english ? '.en' : ''}.html">${esc(t)}</a> <span>${esc(english ? fmtDateEn(o.date) : fmtDate(o.date))}</span></li>`;
+  }).join('')}</ul><p><a href="/news/">${esc(ui.news)} ›</a></p></nav>`;
+}
+
 /* Card detail pages — the social landing targets. og:image is the card PNG
    itself, absolute URL, so a LinkedIn share previews the infographic. */
 function renderCard(c, english) {
@@ -499,6 +525,10 @@ function renderCard(c, english) {
   .deck-dots b.on{width:22px;background:#1d1d1f}
   .body p{margin:0 0 15px;font-size:16px;color:#2a2a2c}
   .src{margin-top:18px;font-size:12.5px;color:#7a7a7a;border-top:1px solid #f0f0f0;padding-top:12px}
+  .more{margin-top:28px} .more h2{margin:0 0 10px;font-size:17px}
+  .more ul{margin:0 0 10px;padding:0;list-style:none} .more li{padding:7px 0;border-top:1px solid #f0f0f0;font-size:14.5px}
+  .more a{color:#0066cc;text-decoration:none} .more span{color:#7a7a7a;font-size:12.5px;white-space:nowrap}
+  .more p{margin:0;font-size:14px}
   .cta{margin-top:30px;background:#f5f5f7;border-radius:18px;padding:24px 28px}
   .cta h2{margin:0 0 6px;font-size:18px} .cta p{margin:0 0 13px;color:#555;font-size:14px}
   .btn{display:inline-block;background:#0066cc;color:#fff;border-radius:999px;padding:10px 24px;font-size:14px;text-decoration:none;font-weight:600}
@@ -516,6 +546,7 @@ function renderCard(c, english) {
   </div>` : `<img class="card-img" src="/market-trends/img/${c.image}" alt="${esc(v.title)}">`}
   <div class="body">${v.body.map((p) => `<p>${esc(p)}</p>`).join('')}</div>
   ${v.sourceNote ? `<p class="src">${esc(v.sourceNote)}</p>` : ''}
+  ${moreLinks(c, english)}
   <div class="cta"><h2>${esc(ui.cta.h)}</h2><p>${esc(ui.cta.p)}</p>
     <a class="btn" href="/?ref=trends">${esc(ui.cta.b)} ›</a></div>
 </div>${(c.images?.length ?? 0) > 1 ? `

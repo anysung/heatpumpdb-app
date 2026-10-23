@@ -107,6 +107,13 @@ if (!items.length) { console.log(`public news (${MARKET}): snapshot empty — sk
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const slug = (id) => String(id).replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
 
+/* Gemini grounding redirects (vertexaisearch.cloud.google.com/grounding-api-redirect/…)
+   are short-lived tokens, not source URLs: they 404 within days, so every one
+   left in a sources list is a dead outbound link on a page we want indexed
+   (GSC weekly review 2026-10-24: 92 such links across the five snapshots). Drop them
+   at render time; the real-URL sources beside them stay. */
+const liveSources = (a) => (a.sources ?? []).filter((s) => !/^https?:\/\/vertexaisearch\.cloud\.google\.com\//.test(String(s.url ?? '')));
+
 /* Special Report link in the public footer, labelled from the report's own
    content store — news and the monthly report are siblings, and a reader who
    lands on one should be able to reach the other. */
@@ -341,10 +348,10 @@ for (const a of items) {
     ${paras.map((p) => `<p>${esc(p)}</p>`).join('\n    ')}
   </div>
   ${a.ctaUrl && a.ctaLabel ? `<p class="artcta"><a class="btn" href="${esc(a.ctaUrl)}">${esc(a.ctaLabel)} →</a></p>` : ''}
-  ${a.sources.length ? `<div class="srcs">
+  ${liveSources(a).length ? `<div class="srcs">
     <h3>${esc(M.sourcesLabel)}</h3>
     <ul>
-      ${a.sources.map((s) => `<li><a href="${esc(s.url)}" rel="nofollow noopener" target="_blank">${esc(s.title || s.url)}</a></li>`).join('\n      ')}
+      ${liveSources(a).map((s) => `<li><a href="${esc(s.url)}" rel="nofollow noopener" target="_blank">${esc(s.title || s.url)}</a></li>`).join('\n      ')}
     </ul>
   </div>` : ''}
   <div class="cta">
