@@ -269,7 +269,7 @@ function renderEdition(ed, lang) {
   <p class="stand">${esc(t.standfirst)}</p>
   <p class="meta">${esc(t.byline)} · ${esc(fmtDate(ed.meta.published, lang))}</p>
 
-  <a href="${premium ? '/' : `${base}${ed.meta.reportFile}`}"><img class="hero" src="/special-report/img/${cover}" alt="${esc(t.title)}"></a>
+  <a href="${premium ? '/?open=report' : `${base}${ed.meta.reportFile}`}"><img class="hero" src="/special-report/img/${cover}" alt="${esc(t.title)}"></a>
   <p class="herocap">${esc(t.ctaSub)}</p>
 
   <div class="body">
@@ -287,7 +287,7 @@ function renderEdition(ed, lang) {
     <h2>${esc(pc.h)}</h2>
     <p>${esc(pc.p)}</p>
     <div class="acts">
-      <a class="btn p" href="/">${esc(pc.b)}</a>
+      <a class="btn p" href="/?open=report">${esc(pc.b)}</a>
     </div>
   </div>` : `<div class="cta">
     <h2>${esc(t.ctaTitle)}</h2>

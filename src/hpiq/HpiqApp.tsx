@@ -111,8 +111,9 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
     const q = new URLSearchParams(window.location.search);
     if (q.has('article')) return 'news';
     // Deep links from member mails (2026-09-29): ?open=watchlist | projects | upgrade
+    // …and the monthly Special Report mail + the public report page (2026-10-23): ?open=report
     const open = q.get('open');
-    if (open === 'watchlist' || open === 'projects' || open === 'upgrade' || open === 'noise' || open === 'cost') return open;
+    if (open === 'watchlist' || open === 'projects' || open === 'upgrade' || open === 'noise' || open === 'cost' || open === 'report') return open;
     return 'find';
   });
   const [query, setQuery] = useState('');
