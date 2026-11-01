@@ -1,0 +1,57 @@
+{
+ "country": "PL",
+ "countryLabel": "Polska",
+ "month": "LISTOPAD 2026",
+ "motif": "coins",
+ "title": [
+  "Czyste Powietrze",
+  "Reforma 2026"
+ ],
+ "sub": "Zmiany w programie od 20 lipca 2026 ułatwiają dostęp do dotacji na pompy ciepła.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "10%",
+     "label": "Wzrost dotacji na termomodernizację"
+    },
+    {
+     "value": "83 000 PLN",
+     "label": "Maks. dotacja na kompleksową termomod."
+    },
+    {
+     "value": "65 000 PLN",
+     "label": "Maks. dotacja na gruntowe PC"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Kluczowe zmiany w programie",
+   "rows": [
+    {
+     "label": "Wymagany okres własności nieruchomości skrócony do 1 roku"
+    },
+    {
+     "label": "Wsparcie do 65 000 PLN na gruntowe pompy ciepła"
+    },
+    {
+     "label": "Obowiązkowy audyt energetyczny (zwrot do 1200 PLN)"
+    },
+    {
+     "label": "Pompy ciepła muszą być na oficjalnej „Liście ZUM”"
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Dla rynku pomp ciepła",
+   "lines": [
+    "Reformy zwiększają atrakcyjność inwestycji w PC",
+    "Rozszerzają grono potencjalnych beneficjentów"
+   ]
+  }
+ ]
+}

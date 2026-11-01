@@ -1,0 +1,2729 @@
+{
+ "market": "IT",
+ "counts": {
+  "previous": 11145,
+  "candidate": 11320,
+  "listing": 0,
+  "added": 178,
+  "removed": 3,
+  "specs": 86
+ },
+ "listing": [],
+ "added": [
+  {
+   "id": "16020694",
+   "mfr": "Aermec",
+   "model": "NRG2600XHL°°K°00"
+  },
+  {
+   "id": "16020303",
+   "mfr": "autocell GmbH",
+   "model": "autocell MMHP 12F3"
+  },
+  {
+   "id": "16020322",
+   "mfr": "autocell GmbH",
+   "model": "autocell MMHP 18F3"
+  },
+  {
+   "id": "16020565",
+   "mfr": "Brötje",
+   "model": "BLW Mono-P 12.1"
+  },
+  {
+   "id": "16020461",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP09P1V1R290M"
+  },
+  {
+   "id": "16020469",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP12P3V1R290M"
+  },
+  {
+   "id": "16020470",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP15P3V1R290M"
+  },
+  {
+   "id": "16020471",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP18P3V1R290M"
+  },
+  {
+   "id": "16020476",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP25P3V1R290M"
+  },
+  {
+   "id": "16020477",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP30P3V1R290M"
+  },
+  {
+   "id": "16020659",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 43.2 EXC EN"
+  },
+  {
+   "id": "16020660",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 43.2 EXC SC"
+  },
+  {
+   "id": "16020661",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 EXC EN"
+  },
+  {
+   "id": "16020664",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 EXC SC"
+  },
+  {
+   "id": "16020662",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 PRM EN"
+  },
+  {
+   "id": "16020665",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 PRM SC"
+  },
+  {
+   "id": "16020666",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 50.2 PRM EN"
+  },
+  {
+   "id": "16020667",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 50.2 PRM SC"
+  },
+  {
+   "id": "16020668",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 55.2 PRM EN"
+  },
+  {
+   "id": "16020670",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 55.2 PRM SC"
+  },
+  {
+   "id": "16020570",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-12 + CBHA-IG1V04-12"
+  },
+  {
+   "id": "16020575",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-12 Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020566",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-8 + CBHA-IG1V04-8"
+  },
+  {
+   "id": "16020574",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-8 Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020578",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-12S Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020572",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-15 + CBHA-IG4V04-15"
+  },
+  {
+   "id": "16020581",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-15S Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020582",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-20S Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16011974",
+   "mfr": "Ecoluxe GmbH",
+   "model": "Basic Flow 6"
+  },
+  {
+   "id": "16020610",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 05.3 CORE 230V"
+  },
+  {
+   "id": "16020609",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 05.3 WH 230V"
+  },
+  {
+   "id": "16020614",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 CORE"
+  },
+  {
+   "id": "16020612",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 CORE 230V"
+  },
+  {
+   "id": "16020613",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 WH"
+  },
+  {
+   "id": "16020611",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 WH 230V"
+  },
+  {
+   "id": "16020616",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 10.3 CORE"
+  },
+  {
+   "id": "16020615",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 10.3 WH"
+  },
+  {
+   "id": "16020618",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 12.3 CORE"
+  },
+  {
+   "id": "16020617",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 12.3 WH"
+  },
+  {
+   "id": "16020725",
+   "mfr": "ELCO",
+   "model": "AEROTOP SPX 07 WH-B"
+  },
+  {
+   "id": "16020726",
+   "mfr": "ELCO",
+   "model": "AEROTOP SPX 10 WH-B"
+  },
+  {
+   "id": "16020481",
+   "mfr": "EQ-Therm",
+   "model": "EQ Novara Pro 12"
+  },
+  {
+   "id": "16020480",
+   "mfr": "EQ-Therm",
+   "model": "EQ Novara Pro 18"
+  },
+  {
+   "id": "16020482",
+   "mfr": "EQ-Therm",
+   "model": "EQ Novara pro 8"
+  },
+  {
+   "id": "16020739",
+   "mfr": "GD New Energy",
+   "model": "NE-F1000HCR5TINVM-USV"
+  },
+  {
+   "id": "16020783",
+   "mfr": "GD New Energy",
+   "model": "NE-F500HCR5TINVM-USV"
+  },
+  {
+   "id": "16011893",
+   "mfr": "Gondzik Home Technologies GmbH",
+   "model": "Zulu 13 R290"
+  },
+  {
+   "id": "16011894",
+   "mfr": "Gondzik Home Technologies GmbH",
+   "model": "Zulu 23 R290"
+  },
+  {
+   "id": "16020690",
+   "mfr": "Görrissen",
+   "model": "EvoNova C30"
+  },
+  {
+   "id": "16020691",
+   "mfr": "Görrissen",
+   "model": "EvoNova C40"
+  },
+  {
+   "id": "16015072",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 160- TRI"
+  },
+  {
+   "id": "16020544",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 160-TRI-1"
+  },
+  {
+   "id": "16015067",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 60"
+  },
+  {
+   "id": "16020496",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 60-1"
+  },
+  {
+   "id": "16015068",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 90"
+  },
+  {
+   "id": "16020542",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 90-1"
+  },
+  {
+   "id": "16020468",
+   "mfr": "Hisense",
+   "model": "HFRWVE-75DPP/EH"
+  },
+  {
+   "id": "16020538",
+   "mfr": "Hoval",
+   "model": "Belaria pro comfort (6)"
+  },
+  {
+   "id": "16017396",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-006HXSP1"
+  },
+  {
+   "id": "16015245",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-008HXSP1"
+  },
+  {
+   "id": "16015246",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-012HXSP1"
+  },
+  {
+   "id": "16015247",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-015HXSP1"
+  },
+  {
+   "id": "16015248",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-015HXSP3"
+  },
+  {
+   "id": "16015249",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-022HXSP3"
+  },
+  {
+   "id": "16018227",
+   "mfr": "Interdomo",
+   "model": "DomoConnect GP16"
+  },
+  {
+   "id": "16020683",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020684",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020685",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020682",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + PHCS1]"
+  },
+  {
+   "id": "16020686",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020687",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020688",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020689",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020696",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020697",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020695",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020698",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41+ HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020699",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020700",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020701",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020702",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020704",
+   "mfr": "LG",
+   "model": "THERMA V [HM093HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020705",
+   "mfr": "LG",
+   "model": "THERMA V [HM093HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020703",
+   "mfr": "LG",
+   "model": "THERMA V [HM093HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020707",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020708",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020709",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020710",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020711",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020712",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020713",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020714",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020716",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020717",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020718",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020715",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020706",
+   "mfr": "LG",
+   "model": "THERMA V [HN093HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020675",
+   "mfr": "LG",
+   "model": "THERMA V HM071HFS.UA41"
+  },
+  {
+   "id": "16020676",
+   "mfr": "LG",
+   "model": "THERMA V HM073HFS.UA41"
+  },
+  {
+   "id": "16020677",
+   "mfr": "LG",
+   "model": "THERMA V HM091HFS.UA41"
+  },
+  {
+   "id": "16020678",
+   "mfr": "LG",
+   "model": "THERMA V HM093HFS.UA41"
+  },
+  {
+   "id": "16020679",
+   "mfr": "LG",
+   "model": "THERMA V HM123HFS.UB41"
+  },
+  {
+   "id": "16020680",
+   "mfr": "LG",
+   "model": "THERMA V HM143HFS.UB41"
+  },
+  {
+   "id": "16020681",
+   "mfr": "LG",
+   "model": "THERMA V HM163HFS.UB41"
+  },
+  {
+   "id": "16020633",
+   "mfr": "Midea",
+   "model": "HSR50N7-H1"
+  },
+  {
+   "id": "16020564",
+   "mfr": "NMT",
+   "model": "AiroSAX8"
+  },
+  {
+   "id": "16020752",
+   "mfr": "Ochsner",
+   "model": "OCHSNER AIR EAGLE 2545 C12A CM1"
+  },
+  {
+   "id": "16020556",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-MDC07J3E5-1]"
+  },
+  {
+   "id": "16018640",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0912K9E8AN3 + WH-UQZ09KE8]"
+  },
+  {
+   "id": "16018644",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0912K9E8AN3 + WH-UQZ12KE8]"
+  },
+  {
+   "id": "16020557",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-MDC09J3E5-1]"
+  },
+  {
+   "id": "16020730",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG16ME8 + WH-ADC0316M9E8AN2]"
+  },
+  {
+   "id": "16020651",
+   "mfr": "Redge",
+   "model": "GHS250DP1M"
+  },
+  {
+   "id": "16020693",
+   "mfr": "Rhoss",
+   "model": "THAETU 4450 FIEC"
+  },
+  {
+   "id": "16020537",
+   "mfr": "Rhoss",
+   "model": "THAITP 140"
+  },
+  {
+   "id": "16020539",
+   "mfr": "S-Klima",
+   "model": "SAL1110RS2B"
+  },
+  {
+   "id": "16020540",
+   "mfr": "S-Klima",
+   "model": "SAL1210RS2B"
+  },
+  {
+   "id": "16020541",
+   "mfr": "S-Klima",
+   "model": "SAL1280RS2B"
+  },
+  {
+   "id": "16014833",
+   "mfr": "S-Klima",
+   "model": "SAS120RN3A"
+  },
+  {
+   "id": "16014836",
+   "mfr": "S-Klima",
+   "model": "SAS120RS3A"
+  },
+  {
+   "id": "16020546",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_11"
+  },
+  {
+   "id": "16020549",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_18"
+  },
+  {
+   "id": "16020548",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_22"
+  },
+  {
+   "id": "16020545",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_8"
+  },
+  {
+   "id": "16019663",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-Z-100"
+  },
+  {
+   "id": "16019662",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-Z-50"
+  },
+  {
+   "id": "16020522",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.06/1"
+  },
+  {
+   "id": "16020523",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.08/1"
+  },
+  {
+   "id": "16020524",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.08/3"
+  },
+  {
+   "id": "16020525",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.10/1"
+  },
+  {
+   "id": "16020529",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.10/3"
+  },
+  {
+   "id": "16020530",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.12/3"
+  },
+  {
+   "id": "16020531",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.14/1"
+  },
+  {
+   "id": "16020532",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.14/3"
+  },
+  {
+   "id": "16020533",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.16/1"
+  },
+  {
+   "id": "16020534",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.16/3"
+  },
+  {
+   "id": "16020535",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.20/3"
+  },
+  {
+   "id": "16020536",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.30/3"
+  },
+  {
+   "id": "16020555",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSLD 10"
+  },
+  {
+   "id": "16020552",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSLD 7"
+  },
+  {
+   "id": "16020506",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-10K"
+  },
+  {
+   "id": "16020510",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-12K"
+  },
+  {
+   "id": "16020513",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-14K"
+  },
+  {
+   "id": "16020519",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-16K"
+  },
+  {
+   "id": "16020483",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-8K"
+  },
+  {
+   "id": "16020507",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-10K"
+  },
+  {
+   "id": "16020511",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-12K"
+  },
+  {
+   "id": "16020517",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-14K"
+  },
+  {
+   "id": "16020521",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-16K"
+  },
+  {
+   "id": "16020484",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-8K"
+  },
+  {
+   "id": "16020505",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-10K"
+  },
+  {
+   "id": "16020508",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-12K"
+  },
+  {
+   "id": "16020515",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-14K"
+  },
+  {
+   "id": "16020518",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-16K"
+  },
+  {
+   "id": "16020485",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-8K"
+  },
+  {
+   "id": "16020731",
+   "mfr": "SolarEast",
+   "model": "BLN-007TH1"
+  },
+  {
+   "id": "16020732",
+   "mfr": "SolarEast",
+   "model": "BLN-008TH1"
+  },
+  {
+   "id": "16020733",
+   "mfr": "SolarEast",
+   "model": "BLN-008TH3"
+  },
+  {
+   "id": "16020738",
+   "mfr": "SolarEast",
+   "model": "BLN-009TH1"
+  },
+  {
+   "id": "16020737",
+   "mfr": "SolarEast",
+   "model": "BLN-009TH3"
+  },
+  {
+   "id": "16020644",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 14"
+  },
+  {
+   "id": "16020645",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 18"
+  },
+  {
+   "id": "16020646",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 24"
+  },
+  {
+   "id": "16020647",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 30"
+  },
+  {
+   "id": "16020648",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 36"
+  },
+  {
+   "id": "16020649",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 45"
+  },
+  {
+   "id": "16019458",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 40.2 SN"
+  },
+  {
+   "id": "16019459",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 40.2 STD"
+  },
+  {
+   "id": "16019468",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 50.2 SN"
+  },
+  {
+   "id": "16019469",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 50.2 STD"
+  },
+  {
+   "id": "16019471",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 55.2 SN"
+  },
+  {
+   "id": "16019472",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 70.2 SN"
+  },
+  {
+   "id": "16019478",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 95.2 SN"
+  },
+  {
+   "id": "16020643",
+   "mfr": "Trane",
+   "model": "ASHP038 LN"
+  },
+  {
+   "id": "16020654",
+   "mfr": "Trane",
+   "model": "ASHP038 SN"
+  },
+  {
+   "id": "16020642",
+   "mfr": "Vaillant",
+   "model": "aroTHERM perform VWL 155/8.1 A S2 Q"
+  },
+  {
+   "id": "16020576",
+   "mfr": "Wolf",
+   "model": "CHA-3-07-400V-M"
+  },
+  {
+   "id": "16020577",
+   "mfr": "Wolf",
+   "model": "CHA-3-10-230V400V-M"
+  }
+ ],
+ "removed": [
+  {
+   "id": "IT-IIIA-0a21e541aba6",
+   "mfr": "Panasonic",
+   "model": "Serie J - Alta Performance"
+  },
+  {
+   "id": "IT-IIIA-87b78491250b",
+   "mfr": "Panasonic",
+   "model": "Serie J - Alta Performance"
+  },
+  {
+   "id": "IT-IIIA-50ddeb696dd4",
+   "mfr": "Panasonic",
+   "model": "Serie M - T-CAP"
+  }
+ ],
+ "specs": [
+  {
+   "id": "16012797",
+   "mfr": "Advantix",
+   "model": "i-290 0118",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.76
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.92,
+     "b": 4.76
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 2.88,
+     "b": 2.86
+    }
+   ]
+  },
+  {
+   "id": "16012799",
+   "mfr": "Advantix",
+   "model": "i-290 0123",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.72
+    }
+   ]
+  },
+  {
+   "id": "16012800",
+   "mfr": "Advantix",
+   "model": "i-290 0125",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.49
+    }
+   ]
+  },
+  {
+   "id": "16012801",
+   "mfr": "Advantix",
+   "model": "i-290 0127",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.46
+    }
+   ]
+  },
+  {
+   "id": "16015137",
+   "mfr": "Advantix",
+   "model": "i-290 0250-PSI",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 3.89,
+     "b": 4.2
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 132,
+     "b": 131
+    }
+   ]
+  },
+  {
+   "id": "16005403",
+   "mfr": "Daikin",
+   "model": "EWYT600B-XRA2",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4
+    }
+   ]
+  },
+  {
+   "id": "16015878",
+   "mfr": "Ecoforest",
+   "model": "ecoAIR 6-24 PRO",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.58,
+     "b": 4.55
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 180,
+     "b": 179
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 136,
+     "b": 130
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.01
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.13,
+     "b": 4.66
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 63,
+     "b": 67
+    }
+   ]
+  },
+  {
+   "id": "16016433",
+   "mfr": "Ecoforest",
+   "model": "ecoAIR 6-24 PRO HTR",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.58,
+     "b": 4.55
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 180,
+     "b": 179
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 136,
+     "b": 130
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.01
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.13,
+     "b": 4.66
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 63,
+     "b": 67
+    }
+   ]
+  },
+  {
+   "id": "16006562",
+   "mfr": "Effidur",
+   "model": "HPM-16A3",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.62
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.5
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.41
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.72
+    }
+   ]
+  },
+  {
+   "id": "16006560",
+   "mfr": "Effidur",
+   "model": "HPM-8A1",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.21
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 5.15
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 5.09
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.35
+    }
+   ]
+  },
+  {
+   "id": "16005772",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 05.2M-RXL / -CRX 1Z / -CRX 2Z / -RX",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.66
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 5
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.75
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.9
+    }
+   ]
+  },
+  {
+   "id": "16010266",
+   "mfr": "Galmet",
+   "model": "Airmax³ 12GT",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6.83,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 7.22,
+     "b": 7
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 61,
+     "b": 50
+    }
+   ]
+  },
+  {
+   "id": "16006203",
+   "mfr": "Galmet",
+   "model": "Airmax³ 5GT",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 4.09,
+     "b": 4
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 4.25,
+     "b": 4
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 59,
+     "b": 48.4
+    }
+   ]
+  },
+  {
+   "id": "16009728",
+   "mfr": "Galmet",
+   "model": "Airmax³ 7GT",
+   "changes": [
+    {
+     "f": "noise_outdoor_dB",
+     "a": 60,
+     "b": 48.4
+    }
+   ]
+  },
+  {
+   "id": "16015251",
+   "mfr": "Haier",
+   "model": "HPM10-Nd2(GN)",
+   "changes": [
+    {
+     "f": "noise_outdoor_dB",
+     "a": 65,
+     "b": 53
+    }
+   ]
+  },
+  {
+   "id": "16013093",
+   "mfr": "Heliotherm",
+   "model": "SNT15L-M-R-CC",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 181.8,
+     "b": 166
+    }
+   ]
+  },
+  {
+   "id": "16007688",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0312-K3 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.08
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.1,
+     "b": 8
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 42,
+     "b": 51
+    }
+   ]
+  },
+  {
+   "id": "16007689",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0312-K3 HT / HK 3F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.79
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 42,
+     "b": 51
+    }
+   ]
+  },
+  {
+   "id": "16007690",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0416-K3 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 46,
+     "b": 56
+    }
+   ]
+  },
+  {
+   "id": "16007691",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0416-K3 HT / HK 3F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.1
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 46,
+     "b": 56
+    }
+   ]
+  },
+  {
+   "id": "16007692",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0724-K3 HT / HK 3F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.95
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 52,
+     "b": 61
+    }
+   ]
+  },
+  {
+   "id": "16015721",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10035 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.39
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 49,
+     "b": 50
+    }
+   ]
+  },
+  {
+   "id": "16015722",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10070 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.38
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 52,
+     "b": 53
+    }
+   ]
+  },
+  {
+   "id": "16015723",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10105 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.37
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 54,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "16015713",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10140 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.37
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 55,
+     "b": 56
+    }
+   ]
+  },
+  {
+   "id": "16007693",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "VERSI-I 0209-K1 HT / HK UF E",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.74
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 186.4
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 141,
+     "b": 140.9
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.8
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.52
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.84
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 45,
+     "b": 58
+    }
+   ]
+  },
+  {
+   "id": "16007695",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "VERSI-O 0209-K1 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.86
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 5.01
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.72
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.91
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 43,
+     "b": 43.9
+    }
+   ]
+  },
+  {
+   "id": "16007694",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "VERSI-X 0209-K1 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.74
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 186.4
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 141,
+     "b": 140.9
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.8
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.52
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.84
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 45,
+     "b": 58
+    }
+   ]
+  },
+  {
+   "id": "16016966",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE06K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.38,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016972",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE08K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.81,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016973",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE10K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.5,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016974",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE12K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.6,
+     "b": 4.9
+    }
+   ]
+  },
+  {
+   "id": "16016975",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE14K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.4,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016976",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE16K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.73,
+     "b": 4.7
+    }
+   ]
+  },
+  {
+   "id": "16016967",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE08K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.81,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016968",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE10K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.5,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016969",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE12K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.6,
+     "b": 4.9
+    }
+   ]
+  },
+  {
+   "id": "16016970",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE14K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.4,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016971",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE16K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.73,
+     "b": 4.7
+    }
+   ]
+  },
+  {
+   "id": "16001028",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ09HE8 + WH-ADC0916H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.59
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.08,
+     "b": 4.84
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 4.57
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.32,
+     "b": 2.75
+    }
+   ]
+  },
+  {
+   "id": "16001020",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ09HE8 + WH-SQC09H3E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.59
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.08,
+     "b": 4.84
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 4.57
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.32,
+     "b": 2.75
+    }
+   ]
+  },
+  {
+   "id": "16001029",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ12HE8 + WH-ADC0916H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.32
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.05,
+     "b": 4.74
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 3.96
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.33,
+     "b": 2.84
+    }
+   ]
+  },
+  {
+   "id": "16001021",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ12HE8 + WH-SQC12H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.32
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.05,
+     "b": 4.74
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 3.96
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.33,
+     "b": 2.84
+    }
+   ]
+  },
+  {
+   "id": "16001030",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ16HE8 + WH-ADC0916H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.08
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.73,
+     "b": 4.28
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4,
+     "b": 3.65
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3,
+     "b": 2.7
+    }
+   ]
+  },
+  {
+   "id": "16001016",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ16HE8 + WH-SQC16H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.08
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.73,
+     "b": 4.28
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4,
+     "b": 3.65
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3,
+     "b": 2.7
+    }
+   ]
+  },
+  {
+   "id": "16015310",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG09ME8 + WH-ADC0316M9E82]",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 137,
+     "b": 140
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.15,
+     "b": 5.23
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 7.84,
+     "b": 4.84
+    }
+   ]
+  },
+  {
+   "id": "16015311",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG12ME8 + WH-ADC0316M9E82]",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.25,
+     "b": 5.06
+    }
+   ]
+  },
+  {
+   "id": "16014878",
+   "mfr": "Pollmann",
+   "model": "Airflex Top Mini",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 3.7,
+     "b": 3.83
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 3.21,
+     "b": 3.19
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 145,
+     "b": 150.2
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.19,
+     "b": 4.1
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.51,
+     "b": 3.75
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 2.45,
+     "b": 2.34
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 42,
+     "b": 42.4
+    }
+   ]
+  },
+  {
+   "id": "16001797",
+   "mfr": "S-Klima",
+   "model": "SAS124RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 13.8,
+     "b": 12.08
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14.5,
+     "b": 13.73
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.68,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16010356",
+   "mfr": "S-Klima",
+   "model": "SAS124RS2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 13.8,
+     "b": 12.08
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14.5,
+     "b": 13.73
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.68,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16010110",
+   "mfr": "S-Klima",
+   "model": "SAS140RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 16,
+     "b": 13.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 15.9,
+     "b": 15.21
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.56,
+     "b": 4.5
+    }
+   ]
+  },
+  {
+   "id": "16014834",
+   "mfr": "S-Klima",
+   "model": "SAS140RN3A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.64,
+     "b": 4.63
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13.7
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.1,
+     "b": 4.5
+    }
+   ]
+  },
+  {
+   "id": "16001799",
+   "mfr": "S-Klima",
+   "model": "SAS140RS2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 16,
+     "b": 13.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 15.9,
+     "b": 15.21
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.65,
+     "b": 4.5
+    }
+   ]
+  },
+  {
+   "id": "16014837",
+   "mfr": "S-Klima",
+   "model": "SAS140RS3A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.64,
+     "b": 4.63
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13.7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 182.4,
+     "b": 182
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 141.9,
+     "b": 141
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.1,
+     "b": 4.5
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 68,
+     "b": 65
+    }
+   ]
+  },
+  {
+   "id": "16010355",
+   "mfr": "S-Klima",
+   "model": "SAS47RN2",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 4.2,
+     "b": 5.52
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 5.1
+    }
+   ]
+  },
+  {
+   "id": "16014830",
+   "mfr": "S-Klima",
+   "model": "SAS64RN3A",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6.2,
+     "b": 5.9
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 6.2,
+     "b": 6.4
+    }
+   ]
+  },
+  {
+   "id": "16010013",
+   "mfr": "S-Klima",
+   "model": "SAS70RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6,
+     "b": 5.7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 6.35,
+     "b": 6.82
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.63,
+     "b": 4.95
+    }
+   ]
+  },
+  {
+   "id": "16001795",
+   "mfr": "S-Klima",
+   "model": "SAS75RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 7.5,
+     "b": 6.6
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.12
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.82,
+     "b": 5.15
+    }
+   ]
+  },
+  {
+   "id": "16001796",
+   "mfr": "S-Klima",
+   "model": "SAS82RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9.5,
+     "b": 7.67
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 9.17
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 7.08,
+     "b": 4.95
+    }
+   ]
+  },
+  {
+   "id": "16014831",
+   "mfr": "S-Klima",
+   "model": "SAS82RN3A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 5.2,
+     "b": 5.19
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.12,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016534",
+   "mfr": "S-Klima",
+   "model": "SAX385RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 42.9,
+     "b": 30.07
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 46.8,
+     "b": 33.69
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.23,
+     "b": 3.71
+    }
+   ]
+  },
+  {
+   "id": "16016535",
+   "mfr": "S-Klima",
+   "model": "SAX500RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 47.4,
+     "b": 35.83
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 50.4,
+     "b": 39.23
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.09,
+     "b": 3.81
+    }
+   ]
+  },
+  {
+   "id": "16016536",
+   "mfr": "S-Klima",
+   "model": "SAX540RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 51.2,
+     "b": 39.9
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 55.8,
+     "b": 43.86
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.09,
+     "b": 3.78
+    }
+   ]
+  },
+  {
+   "id": "16016537",
+   "mfr": "S-Klima",
+   "model": "SAX580RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 55.7,
+     "b": 43.75
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 61,
+     "b": 48.16
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.09,
+     "b": 3.73
+    }
+   ]
+  },
+  {
+   "id": "16016538",
+   "mfr": "S-Klima",
+   "model": "SAX680RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 65.9,
+     "b": 49.63
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 70.2,
+     "b": 52.45
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.68,
+     "b": 3.91
+    }
+   ]
+  },
+  {
+   "id": "16016070",
+   "mfr": "Trane",
+   "model": "CMAF 190 HE XLN",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 571,
+     "b": 660.26
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 156,
+     "b": 157
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 93,
+     "b": 92
+    }
+   ]
+  },
+  {
+   "id": "16016124",
+   "mfr": "Trane",
+   "model": "CXAF 080 HEat LN AC R454B",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 4.93,
+     "b": 4.4
+    }
+   ]
+  },
+  {
+   "id": "16016184",
+   "mfr": "Trane",
+   "model": "CXAF 100 SHE XLN EC R454B",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 3.9,
+     "b": 3.88
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 153,
+     "b": 152.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.74,
+     "b": 4.27
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 89,
+     "b": 90
+    }
+   ]
+  },
+  {
+   "id": "16016228",
+   "mfr": "Trane",
+   "model": "CXAF 130 HEat LN EC R454B",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.04,
+     "b": 3.97
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 360,
+     "b": 355.9
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 159,
+     "b": 155.9
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.19,
+     "b": 4.25
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 92,
+     "b": 94
+    }
+   ]
+  },
+  {
+   "id": "16016152",
+   "mfr": "Trane",
+   "model": "CXAF 190 HEat XLN EC R454B",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4,
+     "b": 3.91
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 519,
+     "b": 553.8
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 157,
+     "b": 153.6
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.97,
+     "b": 4.18
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 92,
+     "b": 94
+    }
+   ]
+  },
+  {
+   "id": "16017142",
+   "mfr": "Trane",
+   "model": "LEAF 010 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.4
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.4
+    }
+   ]
+  },
+  {
+   "id": "16017143",
+   "mfr": "Trane",
+   "model": "LEAF 010 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.4
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.4
+    }
+   ]
+  },
+  {
+   "id": "16017144",
+   "mfr": "Trane",
+   "model": "LEAF 012",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.37
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.29
+    }
+   ]
+  },
+  {
+   "id": "16017145",
+   "mfr": "Trane",
+   "model": "LEAF 012 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.09
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.09
+    }
+   ]
+  },
+  {
+   "id": "16017146",
+   "mfr": "Trane",
+   "model": "LEAF 012 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.29
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.29
+    }
+   ]
+  },
+  {
+   "id": "16017147",
+   "mfr": "Trane",
+   "model": "LEAF 014",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.39
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.39
+    }
+   ]
+  },
+  {
+   "id": "16017148",
+   "mfr": "Trane",
+   "model": "LEAF 014 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.33
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.33
+    }
+   ]
+  },
+  {
+   "id": "16017149",
+   "mfr": "Trane",
+   "model": "LEAF 014 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.33
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.33
+    }
+   ]
+  },
+  {
+   "id": "16017150",
+   "mfr": "Trane",
+   "model": "LEAF 016",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.25
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.25
+    }
+   ]
+  },
+  {
+   "id": "16017151",
+   "mfr": "Trane",
+   "model": "LEAF 016 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.25
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.25
+    }
+   ]
+  },
+  {
+   "id": "16017152",
+   "mfr": "Trane",
+   "model": "LEAF 016 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.25
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.25
+    }
+   ]
+  },
+  {
+   "id": "16017153",
+   "mfr": "Trane",
+   "model": "LEAF 019",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.44
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.44
+    }
+   ]
+  },
+  {
+   "id": "16017155",
+   "mfr": "Trane",
+   "model": "LEAF 019 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.87
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.87
+    }
+   ]
+  },
+  {
+   "id": "16002325",
+   "mfr": "Viessmann",
+   "model": "Vitocal 200-A AWCI-AC 201.A10",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.14
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 10,
+     "b": 10.8
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 11,
+     "b": 11.6
+    }
+   ]
+  },
+  {
+   "id": "16013163",
+   "mfr": "Waterkotte",
+   "model": "EcoTouch Ai1 Air 5015.5 (3x 400V) (ETAs 35°C: 202,0 %)",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.12
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 13,
+     "b": 12.6
+    }
+   ]
+  },
+  {
+   "id": "16014156",
+   "mfr": "wepit",
+   "model": "AWlife5009",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.91
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 7.22,
+     "b": 7.25
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 7.73,
+     "b": 7.8
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 188.2,
+     "b": 193
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4,
+     "b": 4.56
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 62,
+     "b": 59.9
+    }
+   ]
+  }
+ ],
+ "month": "2026-11",
+ "generatedAt": "2026-11-01T00:17:58.221Z",
+ "suspect": false,
+ "truncated": null
+}

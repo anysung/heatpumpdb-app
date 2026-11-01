@@ -1,0 +1,58 @@
+{
+ "country": "FR",
+ "countryLabel": "France",
+ "month": "NOVEMBRE 2026",
+ "motif": "coins",
+ "title": [
+  "Aides PAC France 2026",
+  "Offre & Coup de Pouce"
+ ],
+ "sub": "La France introduit une Offre intégrée et révise le Coup de pouce Chauffage.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "55 000",
+     "label": "PAC air/eau Offre intégrée"
+    },
+    {
+     "value": "9 800 €",
+     "label": "Aide moyenne Offre intégrée"
+    },
+    {
+     "value": "trois ans",
+     "label": "Rentabilité visée ou durée contrat"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Points Clés des Aides 2026",
+   "rows": [
+    {
+     "label": "Offre intégrée pilote dès le 1er octobre 2026 pour ménages modestes."
+    },
+    {
+     "label": "Coup de pouce: modèles agréés et fabrication européenne dès le 1er sept 2026."
+    },
+    {
+     "label": "Calcul Coup de pouce personnalisé, fin des montants minimaux début 2026."
+    },
+    {
+     "label": "Offre intégrée non cumulable avec MaPrimeRénov'.",
+     "no": true
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Impact sur le marché PAC",
+   "lines": [
+    "Simplification et ciblage des aides pour l'électrification.",
+    "Incentive pour la production européenne et la qualité produit."
+   ]
+  }
+ ]
+}

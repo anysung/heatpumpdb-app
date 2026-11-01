@@ -1,167 +1,167 @@
 {
-  "runId": "snap-20261001-104858",
-  "publishedAt": "2026-10-01T10:50:31.579Z",
-  "preUpdateSnapshot": "snapshots/snap-20261001-104858/",
+  "runId": "snap-20261101-001818",
+  "publishedAt": "2026-11-01T00:19:20.806Z",
+  "preUpdateSnapshot": "snapshots/snap-20261101-001818/",
   "objects": [
     {
       "path": "datasets/DE/products.basic.json",
       "country": "DE",
       "segment": "residential",
       "tier": "basic",
-      "items": 5397,
-      "md5": "ehJyYhDJTmQH8blIzcJDXQ=="
+      "items": 5536,
+      "md5": "yPx3BJm4j1JqpYyAqdKkcg=="
     },
     {
       "path": "datasets/DE/products.json",
       "country": "DE",
       "segment": "residential",
       "tier": "full",
-      "items": 5397,
-      "md5": "dqCf/TpXumbKfutmY5olTw=="
+      "items": 5536,
+      "md5": "adt69o3r0xAYhLNIjmFudg=="
     },
     {
       "path": "datasets/DE/products-commercial.basic.json",
       "country": "DE",
       "segment": "commercial",
       "tier": "basic",
-      "items": 2021,
-      "md5": "58N4m3WvXWP2enTb0+JOlg=="
+      "items": 2060,
+      "md5": "x9sAaVrGUb7VWGIhypG8ng=="
     },
     {
       "path": "datasets/DE/products-commercial.json",
       "country": "DE",
       "segment": "commercial",
       "tier": "full",
-      "items": 2021,
-      "md5": "bboGt1A2E8lbcYRnIXCVxQ=="
+      "items": 2060,
+      "md5": "EbbbjE4NkVQgTuRY9Xa3RA=="
     },
     {
       "path": "datasets/GB/products-gb.basic.json",
       "country": "GB",
       "segment": "residential",
       "tier": "basic",
-      "items": 5397,
-      "md5": "PCAJjPSPF5rudzHlpltbwA=="
+      "items": 5536,
+      "md5": "VGNaQ5Ffbat1M6J/EWpDag=="
     },
     {
       "path": "datasets/GB/products-gb.json",
       "country": "GB",
       "segment": "residential",
       "tier": "full",
-      "items": 5397,
-      "md5": "FZNwzz94vD2RFa8p/+5vfg=="
+      "items": 5536,
+      "md5": "UXmgrMoLqXtPEVIBgQJ3PQ=="
     },
     {
       "path": "datasets/GB/products-commercial-gb.basic.json",
       "country": "GB",
       "segment": "commercial",
       "tier": "basic",
-      "items": 2021,
-      "md5": "GEKizcaboJJ2MPFk96TE7A=="
+      "items": 2060,
+      "md5": "AZJQ0rFJXWBSrxUeC/6i7Q=="
     },
     {
       "path": "datasets/GB/products-commercial-gb.json",
       "country": "GB",
       "segment": "commercial",
       "tier": "full",
-      "items": 2021,
-      "md5": "25x4XM0Y0BhxQMeiOxK3dg=="
+      "items": 2060,
+      "md5": "DI1Rq4HA3ozEmIr5xSFDtA=="
     },
     {
       "path": "datasets/FR/products-fr.basic.json",
       "country": "FR",
       "segment": "residential",
       "tier": "basic",
-      "items": 6960,
-      "md5": "dSjFx5KNEQk1fY/Lu7flJQ=="
+      "items": 7162,
+      "md5": "ZsYqIJc6x+2tgBXjxD2x9A=="
     },
     {
       "path": "datasets/FR/products-fr.json",
       "country": "FR",
       "segment": "residential",
       "tier": "full",
-      "items": 6960,
-      "md5": "1Af0e7yZCtBpYXnTxZrlqg=="
+      "items": 7162,
+      "md5": "vBvQzQqQ+ZLoXn9Jhi9ZMQ=="
     },
     {
       "path": "datasets/FR/products-commercial-fr.basic.json",
       "country": "FR",
       "segment": "commercial",
       "tier": "basic",
-      "items": 2102,
-      "md5": "xXfkv+zOUZgzpl76VgxhNw=="
+      "items": 2136,
+      "md5": "gwH+6hKbK7NRzXQpIV5otA=="
     },
     {
       "path": "datasets/FR/products-commercial-fr.json",
       "country": "FR",
       "segment": "commercial",
       "tier": "full",
-      "items": 2102,
-      "md5": "vvFF+knzDKGQIK+BPbiyjg=="
+      "items": 2136,
+      "md5": "oexlvrDTjDt1Ca0AhYmhqg=="
     },
     {
       "path": "datasets/PL/products-pl.basic.json",
       "country": "PL",
       "segment": "residential",
       "tier": "basic",
-      "items": 7442,
-      "md5": "W1gdWVAnpE9ebknmeCuLtQ=="
+      "items": 7588,
+      "md5": "EbZyoK/MoqlOCp/ZvFa6Ow=="
     },
     {
       "path": "datasets/PL/products-pl.json",
       "country": "PL",
       "segment": "residential",
       "tier": "full",
-      "items": 7442,
-      "md5": "gRwlA90RN7GAEEFa8uqArw=="
+      "items": 7588,
+      "md5": "s4upna/oKk1l5QjiziyglQ=="
     },
     {
       "path": "datasets/PL/products-commercial-pl.basic.json",
       "country": "PL",
       "segment": "commercial",
       "tier": "basic",
-      "items": 2064,
-      "md5": "cJRqtQPAVAQVWsYMJCD44Q=="
+      "items": 2103,
+      "md5": "HCbz8d6gUSKW5OdFA7T1mw=="
     },
     {
       "path": "datasets/PL/products-commercial-pl.json",
       "country": "PL",
       "segment": "commercial",
       "tier": "full",
-      "items": 2064,
-      "md5": "Zka5PhUTHY3ZlLmAgjzLVQ=="
+      "items": 2103,
+      "md5": "VENFH0cdb6tJJN6xh+JAHQ=="
     },
     {
       "path": "datasets/IT/products-it.basic.json",
       "country": "IT",
       "segment": "residential",
       "tier": "basic",
-      "items": 8738,
-      "md5": "Gu/J9Yb69N+O4mQPKTyA1w=="
+      "items": 8874,
+      "md5": "oCfVBMfLQ98+DKRt92Crwg=="
     },
     {
       "path": "datasets/IT/products-it.json",
       "country": "IT",
       "segment": "residential",
       "tier": "full",
-      "items": 8738,
-      "md5": "6T6C5q2eHaw55YUlXS7Xkw=="
+      "items": 8874,
+      "md5": "6XknNXmnbH3UkO4YPNRr8Q=="
     },
     {
       "path": "datasets/IT/products-commercial-it.basic.json",
       "country": "IT",
       "segment": "commercial",
       "tier": "basic",
-      "items": 2409,
-      "md5": "YtWthHFp/LHGDcbBo1dGYQ=="
+      "items": 2448,
+      "md5": "BhALko1ua1NwrgqCmLi6uw=="
     },
     {
       "path": "datasets/IT/products-commercial-it.json",
       "country": "IT",
       "segment": "commercial",
       "tier": "full",
-      "items": 2409,
-      "md5": "6cyF2V/xUi+2CKKRGMMClw=="
+      "items": 2448,
+      "md5": "TY+JlRIP3V0XXe2KMX/Bhw=="
     }
   ]
 }

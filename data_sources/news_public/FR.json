@@ -1,34 +1,136 @@
 {
   "market": "FR",
-  "generatedAt": "2026-10-01T01:31:32.293Z",
+  "generatedAt": "2026-11-01T00:49:28.701Z",
   "items": [
     {
-      "id": "news-20260908-fr-sr1",
-      "date": "2026-09-08T00:00:00Z",
-      "category": "MARKET",
-      "title": "Même pompe à chaleur. Pourquoi payez-vous plus ?",
-      "summary": "HeatPump DataBase Europe suit une pompe à chaleur Daikin 8 kW dans cinq marchés : pompe à chaleur identique, de 11 829 € à 34 053 € installée — et montre d’où vient réellement l’écart de 2,9×.",
-      "body": "HeatPump DataBase Europe publie son rapport spécial de septembre, qui suit une pompe à chaleur — Daikin Altherma 3 R F, 8 kW avec ballon de 230 litres — en Allemagne, au Royaume-Uni, en France, en Pologne et en Italie, du rayon à l’installation terminée.\n\nLa pompe à chaleur est identique dans les cinq registres nationaux : 8,3 kW, SCOP 4,95, R32, 56 dB(A). Son prix net, relevé chez deux fournisseurs par marché, va de 6 352 € à 8 630 € — une dispersion de ±18 %. L’installation va de 4 250 € en Grande-Bretagne à 21 000 € en Allemagne. La facture du ménage, de 11 829 € à 34 053 € : 2,9 fois.\n\nSur les 22 224 € d’écart entre un ménage britannique et un ménage allemand, la pompe à chaleur compte pour 37 €. L’installation pour 16 750 € ; la TVA pour 5 437 €.\n\nLe rapport se conclut par une proposition par marché — et par un constat qui nous est propre : dans le registre allemand, les fabricants asiatiques comptent deux fois plus de modèles que les marques premium européennes dans cette classe de puissance. La pompe à chaleur moins chère ne manque pas en Allemagne. Elle est inscrite, listée et éligible. Elle n’est simplement pas celle qu’on pose.",
-      "titleEn": "Same Heatpump. Why you pay more?",
-      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
-      "imageUrl": "/special-report/img/special-report-2026-09-fr.webp",
+      "id": "news-20261023-fr-sr1",
+      "date": "2026-10-23T00:00:00Z",
+      "category": "POLICY",
+      "title": "Le guide de référence F-gaz des pompes à chaleur",
+      "summary": "HeatPump DataBase Europe projette le règlement F‑gaz (UE) 2024/573 sur une seule grille — 15 fluides frigorigènes, 7 tailles et types, chaque date jusqu’en 2050 — et montre ce qui change le 1er janvier 2027 et sur cinq marchés nationaux.",
+      "body": "HeatPump DataBase Europe publie son rapport spécial d’octobre : le guide de référence F‑gaz complet des pompes à chaleur, en un seul document.\n\nÀ partir du 1er janvier 2027, une pompe à chaleur monobloc neuve jusqu’à 50 kW, ou une pompe à chaleur split air/eau jusqu’à 12 kW, ne peut être mise sur le marché de l’UE qu’avec un fluide frigorigène de GWP inférieur à 150. Le R32 a un GWP de 675. La règle vise les unités neuves qui entrent sur le marché : le stock déjà mis sur le marché peut encore être vendu et installé et, dès un an après la date, doit être accompagné de la preuve de sa date de mise sur le marché.\n\nLe rapport suit chaque étape jusqu’en 2050. Les splits de plus de 12 kW perdent les GWP de 750 ou plus en 2029 et de 150 ou plus en 2033 ; les monoblocs de plus de 50 kW perdent les GWP de 150 ou plus en 2030. Dès 2032 (monoblocs) et 2035 (splits), les pompes à chaleur neuves jusqu’à 12 kW doivent utiliser des fluides naturels comme le R290 (propane).\n\nLe niveau national diffère. L’Allemagne ne finance plus que les fluides naturels dans le cadre de la BEG à partir du 1er janvier 2028. La Grande-Bretagne n’a aucune interdiction visant les pompes à chaleur en 2027. La France, la Pologne et l’Italie suivent les dates UE et ne fixent aucune condition de fluide pour les aides aux pompes à chaleur air/eau.",
+      "titleEn": "The Complete F-Gas Rulebook for Heat Pumps",
+      "summaryEn": "HeatPump DataBase Europe maps EU F-gas Regulation 2024/573 onto one grid — 15 refrigerants, 7 sizes and builds, every date to 2050 — and shows what changes on 1 January 2027 and in five national markets.",
+      "imageUrl": "/special-report/img/special-report-2026-10-fr.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
       "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.fr/special-report/2026-09/",
+      "ctaUrl": "https://www.heatpumpdb.fr/special-report/2026-10/",
       "ctaLabel": "Lire le rapport spécial",
       "sources": [
         {
-          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
-          "url": "https://heatpumpswatch.org/"
+          "title": "Regulation (EU) 2024/573 on fluorinated greenhouse gases",
+          "url": "http://data.europa.eu/eli/reg/2024/573/oj"
         },
         {
-          "title": "ADEME — Données marché et coûts des pompes à chaleur en France",
-          "url": "https://www.ademe.fr/"
+          "title": "EHPA — The new F-gas Regulation: detailed guidelines (Nov 2024)",
+          "url": "https://www.ehpa.org/wp-content/uploads/2024/11/F-Gas-regulation-guidelines_European-Heat-Pump-Association_November-2024.pdf"
         },
         {
-          "title": "Renforcement des aides PAC au 1er septembre 2026 (HeatPump DB)",
-          "url": "https://www.heatpumpdb.fr/news/news-20260901-fr-001.html"
+          "title": "Coup de pouce Chauffage — ministère de la Transition écologique",
+          "url": "https://www.ecologie.gouv.fr/politiques-publiques/coup-pouce-chauffage"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-fr-001",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "La France refond ses aides aux pompes à chaleur avec une nouvelle Offre Intégrée et des règles 'Coup de Pouce' plus strictes",
+      "summary": "Le gouvernement français a profondément réformé le paysage des subventions aux pompes à chaleur fin 2026, notamment en introduisant une nouvelle \"Offre intégrée\" pour les ménages modestes et en resserrant les conditions d'éligibilité du dispositif \"Coup de pouce Chauffage\" pour privilégier les équipements de qualité, fabriqués en Europe. Ces changements visent à simplifier l'accès, renforcer la résilience industrielle et accélérer la sortie des énergies fossiles.",
+      "body": "Le marché français des pompes à chaleur traverse une période de transformation avec l'introduction d'une nouvelle \"Offre intégrée\" et des révisions substantielles du dispositif \"Coup de pouce Chauffage\", effectives fin 2026. Ces initiatives stratégiques du gouvernement français, annoncées en soutien à son plan d'électrification, sont conçues pour simplifier l'adoption des pompes à chaleur, en particulier pour les ménages à faibles revenus, et pour encourager une base manufacturière nationale et européenne robuste. \n\nUn changement politique majeur est entré en vigueur le 1er septembre 2026, exigeant que seules les pompes à chaleur figurant sur une liste officielle de modèles \"agréés\" soient éligibles à la prime \"Coup de pouce Chauffage\". Ce nouveau critère, établi par un arrêté du 2 juillet 2026, met l'accent sur la qualité des produits et la \"résilience industrielle\", favorisant de fait les pompes à chaleur dont la fabrication ou l'assemblage en Europe est vérifié. Les fabricants s'engageant à investir dans la production européenne peuvent obtenir un agrément transitoire de l'ADEME, à condition de démontrer des progrès annuels. Cela représente une étape concrète vers le renforcement de la chaîne d'approvisionnement européenne des pompes à chaleur. \n\nAvant le 1er janvier 2026, le \"Coup de pouce Chauffage\" offrait des montants minimaux garantis, notamment pour le remplacement des chaudières fossiles. Cependant, depuis le début de 2026, ces montants minimaux ont été supprimés, et le calcul de l'aide est désormais effectué au cas par cas, en tenant compte de facteurs tels que la zone climatique, la surface chauffée et la performance de l'équipement. Bien que le soutien global au remplacement des chaudières fossiles par des pompes à chaleur reste fort, en particulier pour les PAC air/eau et eau/eau, le calcul personnalisé vise une assistance plus ciblée. \n\nEn complément de ces changements, le gouvernement français a lancé une \"Offre intégrée\" pilote pour les pompes à chaleur le 1er octobre 2026, avec l'ouverture des précommandes le même jour. Cette solution complète et \"clé en main\" est spécifiquement conçue pour les propriétaires de maisons individuelles appartenant aux catégories de revenus modestes et très modestes, telles que définies par l'Agence Nationale de l'Habitat (ANAH). L'initiative prévoit l'installation de 55 000 pompes à chaleur air/eau et vise à rentabiliser l'investissement pour les ménages en trois ans. \n\nL'\"Offre intégrée\" rationalise l'ensemble du processus de transition vers un système de pompe à chaleur. Elle comprend la fourniture et l'installation d'une pompe à chaleur air/eau, qui doit être fabriquée en France ou en Europe et dimensionnée de manière appropriée pour le logement. L'offre inclut également un contrat de fourniture d'électricité à prix fixe de trois ans, optionnel, pour assurer une visibilité des coûts, ainsi qu'un contrat de maintenance obligatoire de trois ans couvrant l'entretien régulier et les interventions en cas de panne. Cette approche intégrée n'est pas cumulable avec les financements MaPrimeRénov'. \n\nAvec une aide moyenne de 9 800 € par ménage, ce programme intégré vise à réduire considérablement le reste à charge pour les propriétaires éligibles, rendant l'adoption de la pompe à chaleur plus accessible. L'initiative reflète une impulsion gouvernementale plus large vers l'électrification du chauffage, visant à accélérer le remplacement des systèmes de chauffage à énergies fossiles très consommateurs. Des territoires d'électrification sélectionnés, couvrant des milliers de communes, ont été identifiés pour localiser et accélérer cette transition. \n\nPour les propriétaires envisageant l'installation d'une pompe à chaleur, en particulier dans le cadre de ces dispositifs évolutifs, faire appel à un professionnel certifié \"Reconnu Garant de l'Environnement\" (RGE) reste primordial pour accéder à toute aide de l'État. De plus, il est crucial de déposer les demandes de subvention, telles que MaPrimeRénov', *avant* de signer tout devis d'installation. Le nouvel accent mis sur les modèles agréés pour le \"Coup de pouce\" exige également de consulter la liste approuvée avant de choisir un équipement. \n\nAlors que ces mesures consolident le soutien aux pompes à chaleur en 2026, les discussions autour du projet de loi de finances 2027 suggèrent d'autres changements potentiels, avec des propositions visant à financer les pompes à chaleur uniquement via les CEE, ce qui indique un paysage politique dynamique et évolutif pour la rénovation énergétique en France.",
+      "titleEn": "France Overhauls Heat Pump Subsidies with New Integrated Offer and Stricter 'Coup de Pouce' Rules",
+      "summaryEn": "The French government has significantly reformed its heat pump subsidy landscape as of late 2026, notably by introducing a new \"Offre intégrée\" for modest households and tightening eligibility for the \"Coup de pouce Chauffage\" scheme to prioritize high-quality, European-made equipment. These changes aim to simplify access, enhance industrial resilience, and accelerate the shift away from fossil fuels.",
+      "imageUrl": "/news-images/fr-policy-01.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Aides pompe à chaleur 2026 : montants, conditions et cumul - Viessmann",
+          "url": "https://www.viessmann.fr/fr/blog-expert/economiser-energie/augmentation-aides-pac.html"
+        },
+        {
+          "title": "Lancement d'une offre intégrée pour s'équiper d'une pompe à chaleur | economie.gouv.fr",
+          "url": "https://www.economie.gouv.fr/actualites/lancement-dune-offre-integree-pour-sequiper-dune-pompe-chaleur"
+        },
+        {
+          "title": "Coup de pouce Chauffage : Conditions et Montant en 2026 | La Prime Énergie",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEPoiyPirtyI8s3C__x9eagu-Y896eA8NJQtmaZ0xtTghKVBJNu1hLre0jRQWTVAAB_Wb5jJldUooAElpBFKxHk1Xk5yUVuMZsr6KPRy1sUlG7HgW4r62K1CHc-eOf8S-sJQb35ODgUuNMo1yjfyFqBw"
+        },
+        {
+          "title": "Aides pompe à chaleur : ce qui change en 2026 et 2027 - Climat Juste",
+          "url": "https://www.climatjuste.fr/guides/aides-pompe-a-chaleur-2026-2027-ce-qui-change.html"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-fr-002",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Le marché français des pompes à chaleur connaît un fort rebond au premier semestre 2026",
+      "summary": "Après deux années difficiles, le marché français des pompes à chaleur a enregistré une reprise significative au premier semestre 2026, avec une augmentation de 14,7 % des ventes de pompes à chaleur air-eau et une envolée de plus de 36 % pour les modèles air-air. Cette résurgence, confirmée par les données d'Uniclima, est portée par les politiques gouvernementales d'électrification, des dispositifs d'aide attractifs et une demande croissante de solutions de rafraîchissement estival.",
+      "body": "Le marché français des pompes à chaleur connaît un rebond robuste au premier semestre 2026, marquant un redressement significatif après deux années consécutives de déclin, selon les données publiées par Uniclima, le syndicat des industries thermiques, aérauliques et frigorifiques françaises. Ce dynamisme renouvelé est caractérisé par une croissance à deux chiffres dans les segments des pompes à chaleur air-eau et air-air, signalant un tournant majeur dans le paysage du chauffage national. \n\nLes ventes de pompes à chaleur air-eau ont enregistré une augmentation de 14,7 % au cours des six premiers mois de 2026, avec plus de 101 330 unités vendues aux distributeurs et installateurs. Cette tendance positive s'est encore accélérée, atteignant une hausse de 20,3 % fin août par rapport à la même période en 2025, suggérant un élan soutenu pour la fin de l'été. Cette reprise est particulièrement notable, car elle fait suite à deux années de contraction du marché pour ce segment. \n\nLa croissance la plus spectaculaire a été observée dans la catégorie des pompes à chaleur air-air (inférieures à 17,5 kW), qui a enregistré une augmentation remarquable de 36,2 % des ventes au cours du premier semestre, dépassant les 600 000 unités. Fin août, cette poussée s'est intensifiée pour atteindre plus de 44 %. Uniclima attribue cette demande accélérée non seulement à leurs capacités de chauffage, mais aussi à leur attrait en tant que systèmes réversibles, offrant un rafraîchissement indispensable lors des vagues de chaleur de plus en plus fréquentes. \n\nCette résurgence du marché est étroitement liée aux politiques gouvernementales proactives, notamment la relance des aides MaPrimeRénov' et des dispositifs de Certificats d'Économies d'Énergie (CEE), qui soutiennent activement l'électrification du chauffage. Parallèlement, les ventes de chaudières à énergies fossiles traditionnelles (gaz et fioul) ont poursuivi leur forte baisse, chutant de 23,4 % au premier semestre 2026. Ce contraste frappant met en évidence une volonté gouvernementale claire de s'éloigner des solutions de chauffage à forte intensité carbone. \n\nMalgré les bonnes performances des pompes à chaleur, le marché global des générateurs de chauffage en France continue de faire face à des défis. La construction de logements neufs reste modérée, avec moins de 300 000 mises en chantier prévues en 2026, et le marché de la rénovation, bien qu'actif, ne compense pas entièrement ce déficit. Stanislas Lacroix, président d'Uniclima, a souligné à Interclima 2026 que la priorité est désormais de \"sécuriser durablement le développement\" des pompes à chaleur, insistant sur la nécessité de mécanismes de soutien pérennes au-delà des bonifications CEE actuelles qui expirent fin 2026. \n\nLa France s'est de nouveau établie comme le premier marché européen des pompes à chaleur résidentielles, avec 300 000 unités vendues au premier trimestre 2026, soit une augmentation de 21 %, selon l'Association Européenne des Pompes à Chaleur (EHPA). Cela place la France à l'avant-garde d'une tendance européenne plus large vers l'adoption des pompes à chaleur, portée par le contexte géopolitique et l'impératif d'indépendance énergétique.",
+      "titleEn": "French Heat Pump Market Experiences Strong Rebound in First Half of 2026",
+      "summaryEn": "After two challenging years, the French heat pump market has shown significant recovery in the first half of 2026, with air-water heat pump sales increasing by 14.7% and air-air models soaring by over 36%. This resurgence, confirmed by Uniclima data, is driven by government electrification policies, attractive aid schemes, and a growing demand for summer cooling solutions.",
+      "imageUrl": "/news-images/common-market-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Pompes à chaleur : les ventes repartent, +14,7 % en air-eau au premier semestre 2026",
+          "url": "https://wattneuf.fr/article/pompes-a-chaleur-les-ventes-repartent-14-7-pourcent-en-air-eau-au-premier-semestre-2026"
+        },
+        {
+          "title": "Uniclima : bilan mitigé pour le génie climatique au S1 2026 - Batiweb",
+          "url": "https://www.batiweb.com/actualites/genie-climatique/uniclima-marche-genie-climatique-pac-ventilation-2026-49357"
+        },
+        {
+          "title": "Pompes à chaleur : l'envolée ne compense pas la chute des chaudières - Infodiag",
+          "url": "https://infodiag.fr/ventes-pompes-a-chaleur-2026/"
+        },
+        {
+          "title": "Pompe à chaleur en 2026 : tout ce qui vient de changer - info-energie-habitat",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHfGa4WUMSl_1lGaiep6HULrz8gsY8Gqqpdd_BQFNuLynNJC39o6Z_vyvr-iRx0yUbqKC17PXYf6LTa4Qs2Hlbiw9y3BQ9g2QjQHzeKG-l_b3rHhsMntjpGObaHb8oqFObXfPwdaFWNEI1v2nqIxSwgbUBgYgfbHfuTYlg5YznOmU1kjbsb-e7F0GMBUZzSJGeDxhTehoP7dbiuuzc80DOhCoSIDIz0JKumoaW6EsfToQZ6kWxWlgpBvV7c6DisT6UU="
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-fr-003",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "Le fluide frigorigène R290 (propane) gagne du terrain dans la technologie des pompes à chaleur françaises",
+      "summary": "Le marché français des pompes à chaleur assiste à une adoption rapide du R290 (propane) comme fluide frigorigène naturel, sous l'impulsion des réglementations européennes F-Gaz strictes ciblant les gaz à fort Potentiel de Réchauffement Global (PRG). Ce virage technologique, soulignant les avantages écologiques et les performances supérieures du R290, ouvre de nouvelles opportunités et défis pour les installateurs et les fabricants, avec des productions déjà établies en France.",
+      "body": "Le secteur français des pompes à chaleur s'oriente de plus en plus vers le R290 (propane) comme fluide frigorigène de choix, une réponse stratégique aux réglementations européennes F-Gaz en évolution et à une demande croissante de solutions de chauffage écologiquement durables et performantes. Ce fluide frigorigène naturel, affichant un Potentiel de Réchauffement Global (PRG) extrêmement faible, devient rapidement une norme dans les nouveaux modèles de pompes à chaleur, signalant une avancée technologique significative. \n\nLa révision du règlement européen F-Gaz, en particulier la version 2024, est un catalyseur principal de cette transition. Elle impose une réduction drastique des gaz fluorés (HFC) et interdit leur utilisation dans les nouveaux systèmes de moins de 12 kW d'ici 2035, avec une interdiction totale de commercialisation des HFC d'ici 2050. Cette pression réglementaire pousse efficacement les fabricants vers des fluides frigorigènes à très faible PRG, comme le R290, qui a un PRG d'environ 3, comparé au R32 (PRG 675) ou au R410A (beaucoup plus élevé). \n\nAu-delà de ses avantages environnementaux, le R290 offre des performances convaincantes pour les applications de pompes à chaleur. Les systèmes utilisant le propane comme fluide frigorigène sont capables d'atteindre des températures de départ d'eau plus élevées, ce qui les rend très adaptés à la rénovation de logements anciens équipés de systèmes de radiateurs existants. De plus, les pompes à chaleur au R290 peuvent maintenir plus efficacement leur capacité de chauffage même par températures extérieures froides, améliorant ainsi leur fiabilité et leur efficacité dans diverses conditions climatiques. \n\nLe passage au R290 stimule également la fabrication locale. Par exemple, PERGE AXEN CO a établi une usine de pompes à chaleur au R290 à Portes-lès-Valence, dans la Drôme, ce qui témoigne d'un engagement envers la production \"Made in France\" de cette technologie avancée. Bien que le R290 (propane) soit un fluide frigorigène très efficace, sa classification comme gaz inflammable A3 exige des normes de sécurité rigoureuses pour la conception, l'installation et la maintenance. Les installateurs nécessitent une formation et une expertise spécifiques pour manipuler ces systèmes en toute sécurité, garantissant la conformité avec toutes les réglementations pertinentes. \n\nPour les installateurs, l'adaptation à la technologie R290 signifie investir dans des formations et des équipements mis à jour pour garantir des installations sûres et conformes. La disponibilité croissante des modèles R290, dont beaucoup ont été lancés entre 2024 et 2026, représente une tendance claire du marché. Dans le cadre plus large de la RE2020, qui vise à réduire les émissions de carbone dans les nouvelles constructions, les pompes à chaleur au R290 s'alignent parfaitement avec l'objectif de décarboner le chauffage, offrant une solution pérenne qui contribue à respecter les exigences strictes de performance environnementale pour les nouveaux bâtiments. \n\nL'adoption croissante du R290 positionne la technologie française des pompes à chaleur à l'avant-garde de la transition mondiale vers les fluides frigorigènes naturels. Avec une innovation continue et un environnement réglementaire favorable, les pompes à chaleur au R290 sont appelées à jouer un rôle crucial dans la transition énergétique de la France, offrant à la fois des avantages écologiques et des performances opérationnelles améliorées pour les propriétaires et les entreprises.",
+      "titleEn": "R290 (Propane) Refrigerant Gains Traction in French Heat Pump Technology",
+      "summaryEn": "The French heat pump market is seeing a rapid embrace of R290 (propane) as a natural refrigerant, driven by stringent European F-Gas regulations targeting high Global Warming Potential (GWP) gases. This technological shift, highlighting R290's eco-friendliness and superior performance, presents new opportunities and challenges for installers and manufacturers alike, with some production already establishing in France.",
+      "imageUrl": "/news-images/common-tech-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Pompe a chaleur r290 : fonctionnement, avantages et tarifs - Prime énergie rénovation",
+          "url": "https://prime-energie-renovation.com/pompe-a-chaleur-r290/"
+        },
+        {
+          "title": "PERGE AXEN CO: an R290 heat pump factory in France | Studio Interclima 2026 - YouTube",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEUf8SWwINk4QDKJ0Cdzzesmc8lYWQ2BQL5k4mcDJfGVV6ZxzIGXvJKdcILC_AEtF3q5ytOAMsWcrSenH9i8cm68lrWtEXeB9vIBUVihDZBUZd-mp-hTONvX2vk5SU6mrEwnkTnago="
+        },
+        {
+          "title": "Il n'y a pas d'alternative au R290 pour les pompes à chaleur domestiques - Batirama.com",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHqNQCYGlzJVxLjhyn39aX8KBzWziU-phHRiiIhEjqv97GDB1Ew2ztl_YItME_SV7cyvGelAqwZf7SmMqMHZdRJv-q96FjiZE_-zKfgqtM4n8YPuPmd9pOzt98PTTSO54kAqS2ybckNf4xxNdU9AMzCbpxO1SgrXyUpFIKJxwLVp0SUeQ2UeCpChZlmVLcZvIpkA8r_u42kdsd9MjARraade1n44NJi2bWr4WiPabV"
+        },
+        {
+          "title": "Pompe à chaleur air/eau : la nouvelle réglementation européenne sur les fluides frigorigènes (R32, R290…) - Carrefour Energies",
+          "url": "https://installation.energies.carrefour.fr/conseils/chauffage/pompe-a-chaleur-air-eau-reglementation-fluides-frigorigenes"
         }
       ]
     },
@@ -131,6 +233,36 @@
         {
           "title": "MaPrimeRénov' 2026 : conditions et critères d'éligibilité ANAH - Carrefour Energies",
           "url": "https://installation.energies.carrefour.fr/conseils/chauffage/maprimerenov-anah-2026-conditions-eligibilite"
+        }
+      ]
+    },
+    {
+      "id": "news-20260908-fr-sr1",
+      "date": "2026-09-08T00:00:00Z",
+      "category": "MARKET",
+      "title": "Même pompe à chaleur. Pourquoi payez-vous plus ?",
+      "summary": "HeatPump DataBase Europe suit une pompe à chaleur Daikin 8 kW dans cinq marchés : pompe à chaleur identique, de 11 829 € à 34 053 € installée — et montre d’où vient réellement l’écart de 2,9×.",
+      "body": "HeatPump DataBase Europe publie son rapport spécial de septembre, qui suit une pompe à chaleur — Daikin Altherma 3 R F, 8 kW avec ballon de 230 litres — en Allemagne, au Royaume-Uni, en France, en Pologne et en Italie, du rayon à l’installation terminée.\n\nLa pompe à chaleur est identique dans les cinq registres nationaux : 8,3 kW, SCOP 4,95, R32, 56 dB(A). Son prix net, relevé chez deux fournisseurs par marché, va de 6 352 € à 8 630 € — une dispersion de ±18 %. L’installation va de 4 250 € en Grande-Bretagne à 21 000 € en Allemagne. La facture du ménage, de 11 829 € à 34 053 € : 2,9 fois.\n\nSur les 22 224 € d’écart entre un ménage britannique et un ménage allemand, la pompe à chaleur compte pour 37 €. L’installation pour 16 750 € ; la TVA pour 5 437 €.\n\nLe rapport se conclut par une proposition par marché — et par un constat qui nous est propre : dans le registre allemand, les fabricants asiatiques comptent deux fois plus de modèles que les marques premium européennes dans cette classe de puissance. La pompe à chaleur moins chère ne manque pas en Allemagne. Elle est inscrite, listée et éligible. Elle n’est simplement pas celle qu’on pose.",
+      "titleEn": "Same Heatpump. Why you pay more?",
+      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
+      "imageUrl": "/special-report/img/special-report-2026-09-fr.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.fr/special-report/2026-09/",
+      "ctaLabel": "Lire le rapport spécial",
+      "sources": [
+        {
+          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
+          "url": "https://heatpumpswatch.org/"
+        },
+        {
+          "title": "ADEME — Données marché et coûts des pompes à chaleur en France",
+          "url": "https://www.ademe.fr/"
+        },
+        {
+          "title": "Renforcement des aides PAC au 1er septembre 2026 (HeatPump DB)",
+          "url": "https://www.heatpumpdb.fr/news/news-20260901-fr-001.html"
         }
       ]
     },

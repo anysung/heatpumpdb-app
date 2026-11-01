@@ -1,38 +1,170 @@
 {
   "market": "GB",
-  "generatedAt": "2026-10-01T01:31:32.203Z",
+  "generatedAt": "2026-11-01T00:49:28.585Z",
   "items": [
     {
-      "id": "news-20260908-gb-sr1",
-      "date": "2026-09-08T00:00:00Z",
-      "category": "MARKET",
-      "title": "Same Heatpump. Why you pay more?",
-      "summary": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
-      "body": "HeatPump DataBase Europe has published its September Special Report, following one heat pump — a Daikin Altherma 3 R F, 8 kW with a 230-litre cylinder — through Germany, the United Kingdom, France, Poland and Italy, from the shelf to the finished installation.\n\nThe heat pump is identical in all five national registers: 8.3 kW, SCOP 4.95, R32, 56 dB(A). Its net equipment price, read from two suppliers in each market, runs from €6,352 to €8,630 — a spread of ±18%. What it costs to fit runs from €4,250 in Britain to €21,000 in Germany. The household's bill runs from €11,829 to €34,053: 2.9 times.\n\nOf the €22,224 gap between a British and a German household, the heat pump accounts for €37. Installation accounts for €16,750; VAT for €5,437.\n\nThe report closes with a proposal for each market — and with one finding of our own: in Germany's register, Asian manufacturers outnumber European premium brands two to one in this capacity class. The cheaper heat pump is not missing from Germany. It is registered, listed and eligible. It is simply not the one that gets fitted.",
-      "titleEn": "Same Heatpump. Why you pay more?",
-      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
-      "imageUrl": "/special-report/img/special-report-2026-09-en.webp",
+      "id": "news-20261023-gb-sr1",
+      "date": "2026-10-23T00:00:00Z",
+      "category": "POLICY",
+      "title": "The Complete F-Gas Rulebook for Heat Pumps",
+      "summary": "HeatPump DataBase Europe maps EU F-gas Regulation 2024/573 onto one grid — 15 refrigerants, 7 sizes and builds, every date to 2050 — and shows what changes on 1 January 2027 and in five national markets.",
+      "body": "HeatPump DataBase Europe has published its October Special Report: the complete F-gas rulebook for heat pumps, in one document.\n\nFrom 1 January 2027, a new monoblock heat pump up to 50 kW, or a split air/water heat pump up to 12 kW, may only be placed on the EU market with a refrigerant of GWP below 150. R32 has a GWP of 675. The rule governs new units entering the market: stock already placed may still be sold and installed, and from one year after the date it must come with proof of when it was placed.\n\nThe report follows every step to 2050. Splits above 12 kW lose GWP 750 or more in 2029 and GWP 150 or more in 2033; monoblocks above 50 kW lose GWP 150 or more in 2030. From 2032 (monoblocks) and 2035 (splits), new heat pumps up to 12 kW must use natural refrigerants such as R290 propane.\n\nThe national layer differs. Germany funds only natural refrigerants under BEG from 1 January 2028. Great Britain has no 2027 heat-pump ban at all. France, Poland and Italy follow the EU dates and set no refrigerant condition for air/water subsidies.",
+      "titleEn": "The Complete F-Gas Rulebook for Heat Pumps",
+      "summaryEn": "HeatPump DataBase Europe maps EU F-gas Regulation 2024/573 onto one grid — 15 refrigerants, 7 sizes and builds, every date to 2050 — and shows what changes on 1 January 2027 and in five national markets.",
+      "imageUrl": "/special-report/img/special-report-2026-10-en.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
       "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.uk/special-report/2026-09/",
+      "ctaUrl": "https://www.heatpumpdb.uk/special-report/2026-10/",
       "ctaLabel": "Read the Special Report",
       "sources": [
         {
-          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
-          "url": "https://heatpumpswatch.org/"
+          "title": "GOV.UK — Bans on F gas in new products and equipment",
+          "url": "https://www.gov.uk/guidance/bans-on-f-gas-in-new-products-and-equipment-current-and-future"
         },
         {
-          "title": "RWTH Aachen / Octopus Energy — DE–UK end-customer price analysis (RWTH-EBC 2025-001)",
-          "url": "https://doi.org/10.18154/RWTH-2025-05335"
+          "title": "The Boiler Upgrade Scheme (England and Wales) Regulations 2022",
+          "url": "https://www.legislation.gov.uk/uksi/2022/565"
         },
         {
-          "title": "Microgeneration Certification Scheme — UK heat pump installation data",
-          "url": "https://mcscertified.com/"
+          "title": "Regulation (EU) 2024/573 on fluorinated greenhouse gases",
+          "url": "http://data.europa.eu/eli/reg/2024/573/oj"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-gb-001",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Government Launches Warm Homes Loan Scheme to Boost Low-Carbon Heating Uptake",
+      "summary": "The UK government has unveiled the Warm Homes Loan Scheme, providing homeowners with access to low- or no-interest loans for installing heat pumps, solar panels, and battery storage. Launched on October 27, 2026, the initiative aims to make the upfront costs of green home upgrades more accessible across England, Scotland, Wales, and Northern Ireland.",
+      "body": "The UK government officially launched its Warm Homes Loan Scheme on October 27, 2026, a significant step in making low-carbon home heating solutions more affordable for households nationwide. This new program offers government-supported low- or no-interest financing for key energy efficiency improvements, including the installation of heat pumps, solar panels, and battery storage systems.\n\nUnder the scheme, homeowners can access loans of up to £20,000 for air-to-water heat pumps and up to £35,000 for ground source heat pumps. Loans for solar panels and battery storage are capped at £15,000 each. The government has indicated that interest rates on these loans could be reduced by up to 5% compared to standard commercial loans, with repayment periods potentially extending up to 30 years.\n\nAdministered through participating lenders, including financial institutions and energy suppliers, the scheme allows homeowners to apply for finance directly, through installers, or via mortgage providers. This approach aims to simplify access to funding and alleviate the significant upfront capital required for such installations, which has historically been a barrier to wider adoption.\n\nThe Warm Homes Loan Scheme is a central component of the broader Warm Homes Plan, initially published in January 2026, which outlines the government's strategy for the largest public investment in home upgrades in British history. The plan prioritises the electrification of home heating, with heat pumps at its core, to reduce bills, tackle fuel poverty, and contribute to net-zero targets.\n\nCrucially for applicants, the loans can be combined with existing grants, such as those available through the Boiler Upgrade Scheme (BUS), potentially further reducing the out-of-pocket expenses for consumers. Initial participating lenders were named on the launch date, offering a range of loan products, with eligibility dependent on individual lender criteria and geographic coverage.",
+      "titleEn": "Government Launches Warm Homes Loan Scheme to Boost Low-Carbon Heating Uptake",
+      "summaryEn": "The UK government has unveiled the Warm Homes Loan Scheme, providing homeowners with access to low- or no-interest loans for installing heat pumps, solar panels, and battery storage. Launched on October 27, 2026, the initiative aims to make the upfront costs of green home upgrades more accessible across England, Scotland, Wales, and Northern Ireland.",
+      "imageUrl": "/news-images/uk-policy-02.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Can't afford solar or a heat pump? New UK Government scheme offers interest-free or cheap ... - TechRadar",
+          "url": "https://www.boxt.co.uk/boilers/guides/what-is-the-clean-heat-market-mechanism"
         },
         {
-          "title": "Boiler Upgrade Scheme — £9,000 for off-gas-grid homes from 21 July 2026 (HeatPump DB)",
-          "url": "https://www.heatpumpdb.uk/news/news-20260901-gb-001.html"
+          "title": "Heat pump grant survives, new loans for solar and battery storage in UK Budget",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH33CuPHJzTppUElGUR4EVNkXNfdGYBnnX8B-RRZT3peJHEV2zvtLnwdbcor-jb06B7QGzMCBH83A6oQ4XmKdZHAfG-r-a1qdpQaszzbjW6SdmgmLf1bmfUCTmwVq-Yec3ZEuCRSsM73ZKJJnF7flLdHgqJ1c1g24qLKXhp8dTYqS6k8ki6qp2MGPpi3fAcf7yLy3aBSPm39R8yKRD48k7pnHubBgfH8fMUZOu-CI1iNA=="
+        },
+        {
+          "title": "Warm Homes Loan Scheme 2026: Heat Pump Finance, Grants and How to Apply",
+          "url": "https://heatpumpguideuk.co.uk/insights/warm-homes-loan-scheme-heat-pumps-2026/"
+        },
+        {
+          "title": "Warm Homes Loan Scheme 2026: Eligibility, Rates, and How To Apply - Upvolt Energy",
+          "url": "https://upvolt-energy.com/upvolt-blog/warm-homes-loan-scheme-2026-guide/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-gb-002",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Boiler Upgrade Scheme Sees Grant Uplift for Off-Gas Homes Amid Steady Demand",
+      "summary": "The UK's Boiler Upgrade Scheme (BUS) has increased its grant offering for off-gas grid properties replacing oil or LPG heating to £9,000, effective from July 21, 2026, until March 31, 2027. This enhancement comes as Ofgem reports continued growth in applications, with over 151,000 vouchers applied for by the end of August 2026.",
+      "body": "The Boiler Upgrade Scheme (BUS) has introduced a significant uplift in grant values for homeowners in England and Wales. From July 21, 2026, until March 31, 2027, eligible properties not connected to the mains gas grid and replacing oil or LPG heating systems can receive £9,000 towards an air or ground source heat pump. This represents a 20% increase from the standard £7,500 grant, which remains available for most other heat pump installations.\n\nOfgem, the scheme's administrator, has reported a sustained increase in demand. By July 31, 2026, 143,650 BUS voucher applications had been received, with 90,115 vouchers redeemed and £635.4 million in grants paid. The positive trend continued through August 2026, reaching 151,136 applications and 93,364 paid redemptions since the scheme's inception in May 2022.\n\nDespite recent budget re-allocations that saw the overall BUS budget slightly reduced by approximately £700 million, the government has committed to maintaining the grant at current funding levels of £400 million for the 2027-28 financial year, with future increases broadly in line with inflation. This commitment aims to provide continued support and certainty for the low-carbon heating transition.\n\nOfgem oversees the entire BUS process, from processing applications and verifying eligibility to making grant payments directly to MCS-certified installers on behalf of property owners. Crucially, as of April 28, 2026, a valid Energy Performance Certificate (EPC) with no outstanding recommendations for loft or cavity wall insulation is no longer a mandatory requirement for standard BUS grant applications, simplifying the application process for many households.\n\nThe requirement for all installations to be carried out by MCS-certified installers using MCS-certified products remains paramount for grant eligibility, ensuring quality and adherence to recognized standards. Air source heat pumps continue to dominate the scheme, accounting for 97.6% of all BUS grants paid up to March 31, 2026.",
+      "titleEn": "Boiler Upgrade Scheme Sees Grant Uplift for Off-Gas Homes Amid Steady Demand",
+      "summaryEn": "The UK's Boiler Upgrade Scheme (BUS) has increased its grant offering for off-gas grid properties replacing oil or LPG heating to £9,000, effective from July 21, 2026, until March 31, 2027. This enhancement comes as Ofgem reports continued growth in applications, with over 151,000 vouchers applied for by the end of August 2026.",
+      "imageUrl": "/news-images/uk-policy-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Boiler Upgrade Scheme figures and demand: July 2026 | Clearwise",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGOUK6LKOwDQ-tsVipgtmUbllROjh6hKyBg1VN1QSHUsewyoaI4sGlj7TqD-cT1ElEc5x-4ej9oKaZK5P03bGsqGDMgtQk1u0ZPXTKuiWpoaVavtpQOMZh2MsGgolqNS-RtPqP_tTdJv3RDLRccu_NNwFgJDJXbLbKkKIw="
+        },
+        {
+          "title": "Boiler Upgrade Scheme Annual Report April 2025 to March 2026 | Ofgem",
+          "url": "https://www.ofgem.gov.uk/transparency-document/boiler-upgrade-scheme-annual-report-april-2025-march-2026"
+        },
+        {
+          "title": "Boiler Upgrade Scheme: Guidance for Property Owners - Ofgem",
+          "url": "https://www.ofgem.gov.uk/guidance/boiler-upgrade-scheme-guidance-property-owners"
+        },
+        {
+          "title": "Heat pump grant survives, new loans for solar and battery storage in UK Budget",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH33CuPHJzTppUElGUR4EVNkXNfdGYBnnX8B-RRZT3peJHEV2zvtLnwdbcor-jb06B7QGzMCBH83A6oQ4XmKdZHAfG-r-a1qdpQaszzbjW6SdmgmLf1bmfUCTmwVq-Yec3ZEuCRSsM73ZKJJnF7flLdHgqJ1c1g24qLKXhp8dTYqS6k8ki6qp2MGPpi3fAcf7yLy3aBSPm39R8yKRD48k7pnHubBgfH8fMUZOu-CI1iNA=="
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-gb-003",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "UK Heat Pump Market Continues Robust Growth Towards 2030 Targets",
+      "summary": "The UK heat pump market demonstrated significant expansion in 2025, with over 125,000 units sold, marking a 27% increase year-on-year, according to the Heat Pump Association. With projections for 300,000-350,000 installations in 2026, the sector is progressing towards the government's ambitious target of 450,000 annual installations by 2030, despite ongoing challenges with installer capacity.",
+      "body": "The UK's heat pump market is experiencing a period of robust growth, with the Heat Pump Association (HPA) reporting sales of over 125,000 units in 2025, a substantial 27% increase compared to the previous year. This expansion reflects a growing interest in low-carbon heating solutions and continued policy support across the UK.\n\nMarket analysis from Mordor Intelligence indicates the UK heat pump market was valued at USD 5.03 billion in 2025 and is projected to reach USD 5.60 billion in 2026, with further expansion to USD 13.31 billion by 2034. Industry experts anticipate between 300,000 and 350,000 heat pump installations in 2026 as installer capacity develops and the Clean Heat Market Mechanism takes further effect.\n\nThe government's ambitious target of 450,000 annual heat pump installations by 2030, outlined in the Warm Homes Plan, provides a clear long-term direction for the industry. While growth is strong, the HPA highlights that even greater momentum, requiring a sustained annual compound growth of approximately 33%, is needed to meet this target.\n\nGrant schemes, particularly the Boiler Upgrade Scheme (BUS), play a pivotal role in stimulating market activity, accounting for approximately 70% of current heat pump installations. The median cost for an air source heat pump installation in Q2 2026 was reported at £12,908 before the grant, with average costs declining as the market matures and installer productivity improves.\n\nDespite the positive sales figures and falling costs, a key challenge remains the limited installer capacity, with many areas reporting wait times of two to six months. This constraint could hinder the rapid uptake required to meet government targets. Nevertheless, consumer satisfaction remains high, with over 80% of heat pump owners expressing contentment with their systems, a promising indicator for future adoption.",
+      "titleEn": "UK Heat Pump Market Continues Robust Growth Towards 2030 Targets",
+      "summaryEn": "The UK heat pump market demonstrated significant expansion in 2025, with over 125,000 units sold, marking a 27% increase year-on-year, according to the Heat Pump Association. With projections for 300,000-350,000 installations in 2026, the sector is progressing towards the government's ambitious target of 450,000 annual installations by 2030, despite ongoing challenges with installer capacity.",
+      "imageUrl": "/news-images/common-market-05.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "The State of Heat Pumps in the UK: 2026 Report",
+          "url": "https://homeheatpumpguide.co.uk/blog/state-of-heat-pumps-uk-2026-report"
+        },
+        {
+          "title": "Clean Heat Market Mechanism - GOV.UK",
+          "url": "https://assets.publishing.service.gov.uk/media/6ad247a4dfa45fcb6753cb45/CHMM_Year_3_consultation_document_V4_-_8th_Nov__16_October_update_.pdf"
+        },
+        {
+          "title": "Boiler Upgrade Scheme Statistics: August 2026 Figures - Heat Pump Installation Grants",
+          "url": "https://heatpumpinstallationgrants.co.uk/boiler-upgrade-scheme-statistics/"
+        },
+        {
+          "title": "UK heat pump sales reach new record (+27%) as the sector's economic potential grows",
+          "url": "https://iifiir.org/en/news/uk-heat-pump-sales-reach-new-record-27-as-the-sector-s-economic-potential-grows"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-gb-004",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "Natural Refrigerant Heat Pumps and Streamlined Planning Rules Advance UK Installations",
+      "summary": "The UK heat pump market is seeing a surge in natural refrigerant (R290) models from major manufacturers, offering higher temperatures and lower environmental impact. Concurrently, updated Permitted Development Rights and refined noise assessment guidance are simplifying the installation process for homeowners, making low-carbon heating more accessible.",
+      "body": "The UK heat pump sector is undergoing a notable technological shift towards natural refrigerants, particularly R290 (propane), which boasts a significantly lower Global Warming Potential (GWP) compared to traditional HFC refrigerants. Leading manufacturers such as Mitsubishi Electric, Vaillant, Grant, Worcester Bosch, NIBE, and Viessmann have all introduced or updated R290 models in 2026, many offering high-temperature capabilities suitable for retrofitting into existing radiator systems, with some delivering water temperatures up to 75°C.\n\nComplementing these technological advancements are crucial updates to Permitted Development Rights (PDRs) for air source heat pumps. Effective from May 29, 2025, in England and June 1, 2026, in Wales, these changes aim to simplify the installation process. Key reforms include the removal of the one-metre boundary rule, an increase in the maximum allowable size of outdoor compressor units from 0.6m³ to 1.5m³, and permission for detached homes to install up to two heat pumps without a full planning application.\n\nFor installations to qualify under PDRs, strict adherence to the Microgeneration Certification Scheme (MCS) 020a Planning Standards is mandatory. From May 28, 2026, MCS 020a became the sole permitted certification scheme for these planning standards, underscoring the government's commitment to quality and safety.\n\nNoise considerations, a common concern for heat pump installations, are also being addressed with updated guidance. While the UK legal limit for air source heat pump noise remains 42 dB measured one metre from a neighbour's habitable room window, new professional advice from the Institute of Acoustics (IOA) and the Chartered Institute of Environmental Health (CIEH) in 2026 offers more proportionate assessment routes. This guidance introduces a 37 dB(A) criterion for specific cases outside permitted development, aiming to streamline assessments and prevent unnecessary complexity.\n\nThese combined developments in technology and regulation are set to significantly ease the path for homeowners transitioning to low-carbon heating, promoting wider adoption and supporting the UK's ambitious decarbonisation targets.",
+      "titleEn": "Natural Refrigerant Heat Pumps and Streamlined Planning Rules Advance UK Installations",
+      "summaryEn": "The UK heat pump market is seeing a surge in natural refrigerant (R290) models from major manufacturers, offering higher temperatures and lower environmental impact. Concurrently, updated Permitted Development Rights and refined noise assessment guidance are simplifying the installation process for homeowners, making low-carbon heating more accessible.",
+      "imageUrl": "/news-images/common-energy-04.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Planning permission: domestic heat pumps | GOV.WALES",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHjuuN7TMou9xW2j6Asy7A-FHKG6FrxM2k494XT9diHlSS6aKfqSJ7h_7-ubZc-o2AUU6sTQUQqr7J0EqW9AwqO8azh8eiNM1mWgdm1ijuGlVNRRoWS_CSTJ9-6DCX8UP9EuzHQADm67lptt_VYnVo="
+        },
+        {
+          "title": "Class G: Air source heat pumps on domestic premises - Planning Geek",
+          "url": "https://www.planninggeek.co.uk/gpdo/renewable-energy/class-g/"
+        },
+        {
+          "title": "UPDATED: Heat Pump Planning Permission Rules 2026 - iHeat",
+          "url": "https://iheat.co.uk/heat-pump-help/heat-pump-planning-permission"
+        },
+        {
+          "title": "New UK Noise Rules for Air Source Heat Pumps 2026 Guide - Eco Energy Services",
+          "url": "https://ecoenergyservices.co.uk/blog/uk-noise-rules-air-source-heat-pumps-guide/"
         }
       ]
     },
@@ -169,6 +301,40 @@
         {
           "title": "Clean Heat Market Mechanism: revisions ahead of Scheme Year 2 (2026 to 2027): government response (accessible webpage) - GOV.UK",
           "url": "https://www.gov.uk/government/consultations/clean-heat-market-mechanism-revisions-ahead-of-scheme-year-2-2026-to-2027-government-response"
+        }
+      ]
+    },
+    {
+      "id": "news-20260908-gb-sr1",
+      "date": "2026-09-08T00:00:00Z",
+      "category": "MARKET",
+      "title": "Same Heatpump. Why you pay more?",
+      "summary": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
+      "body": "HeatPump DataBase Europe has published its September Special Report, following one heat pump — a Daikin Altherma 3 R F, 8 kW with a 230-litre cylinder — through Germany, the United Kingdom, France, Poland and Italy, from the shelf to the finished installation.\n\nThe heat pump is identical in all five national registers: 8.3 kW, SCOP 4.95, R32, 56 dB(A). Its net equipment price, read from two suppliers in each market, runs from €6,352 to €8,630 — a spread of ±18%. What it costs to fit runs from €4,250 in Britain to €21,000 in Germany. The household's bill runs from €11,829 to €34,053: 2.9 times.\n\nOf the €22,224 gap between a British and a German household, the heat pump accounts for €37. Installation accounts for €16,750; VAT for €5,437.\n\nThe report closes with a proposal for each market — and with one finding of our own: in Germany's register, Asian manufacturers outnumber European premium brands two to one in this capacity class. The cheaper heat pump is not missing from Germany. It is registered, listed and eligible. It is simply not the one that gets fitted.",
+      "titleEn": "Same Heatpump. Why you pay more?",
+      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
+      "imageUrl": "/special-report/img/special-report-2026-09-en.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.uk/special-report/2026-09/",
+      "ctaLabel": "Read the Special Report",
+      "sources": [
+        {
+          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
+          "url": "https://heatpumpswatch.org/"
+        },
+        {
+          "title": "RWTH Aachen / Octopus Energy — DE–UK end-customer price analysis (RWTH-EBC 2025-001)",
+          "url": "https://doi.org/10.18154/RWTH-2025-05335"
+        },
+        {
+          "title": "Microgeneration Certification Scheme — UK heat pump installation data",
+          "url": "https://mcscertified.com/"
+        },
+        {
+          "title": "Boiler Upgrade Scheme — £9,000 for off-gas-grid homes from 21 July 2026 (HeatPump DB)",
+          "url": "https://www.heatpumpdb.uk/news/news-20260901-gb-001.html"
         }
       ]
     },

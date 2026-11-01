@@ -1,5 +1,28 @@
 [
  {
+  "slug": "2026-11-kfw-458-reform",
+  "date": "2026-11-01",
+  "image": "de-2026-11-kfw-458-reform.webp",
+  "title": "Umfassende Reform der deutschen Wärmepumpenförderung: KfW 458 Programm mit deutlichen Anpassungen",
+  "excerpt": "Die überarbeiteten Förderbedingungen des KfW 458 Programms gelten ab dem 21. Juli 2026. Sie zielen darauf ab, die Energiewende zu beschleunigen und einen sozial gestaffelten Ansatz bei Subventionen einzuführen.",
+  "body": [
+   "Seit dem 21. Juli 2026 unterliegen Hausbesitzer in Deutschland, die Wärmepumpen installieren möchten, neuen staatlichen Förderbedingungen im Rahmen des KfW 458 Programms. Der überarbeitete Rahmen zielt darauf ab, die Energiewende zu beschleunigen und gleichzeitig einen sozial gestaffelten Ansatz bei den Subventionen für die Heizungsmodernisierung einzuführen.",
+   "Die Basisförderung für Wärmepumpeninstallationen beträgt weiterhin 30 Prozent der förderfähigen Kosten. Der Klima-Geschwindigkeitsbonus liegt bei 16 Prozentpunkten und wird ab dem 1. Februar 2027 halbjährlich um 4 Prozentpunkte gesenkt. Eine wesentliche Neuerung ist der gestaffelte Einkommensbonus, der bis zu 40 Prozent für Haushalte mit einem zu versteuernden Jahreseinkommen von bis zu 30.000 Euro bietet.",
+   "Obwohl die mögliche Gesamtförderung bis zu 70 Prozent der förderfähigen Kosten betragen kann, wurden die maximal anerkannten förderfähigen Kosten für die erste Wohneinheit von 30.000 Euro auf 28.000 Euro reduziert. Dieser Höchstbetrag wird ab dem 1. Februar 2027 halbjährlich um 750 Euro weiter sinken. Der Ergänzungskredit 358/359 bietet zudem bis zu 120.000 Euro pro Wohneinheit mit vergünstigten Zinsen.",
+   "Diese Reformen sind Teil einer umfassenderen Gesetzesänderung, einschließlich der Umbenennung des Gebäudeenergiegesetzes (GEG) in das Gebäudemodernisierungsgesetz (GModG). Die aktualisierten Förderbedingungen incentivieren die Einführung klimafreundlicher Technologien wie Wärmepumpen stark."
+  ],
+  "sourceNote": "Quelle: HeatPump DB Deutschland News, Aktuell, KfW",
+  "titleEn": "Comprehensive Reform of German Heat Pump Funding: KfW 458 Program with Significant Adjustments",
+  "excerptEn": "The revised funding conditions of the KfW 458 program apply from July 21, 2026. They aim to accelerate the energy transition and introduce a socially staggered approach to heating modernization subsidies.",
+  "bodyEn": [
+   "Since July 21, 2026, homeowners in Germany wishing to install heat pumps are subject to new state funding conditions under the KfW 458 program. The revised framework aims to accelerate the energy transition while introducing a socially staggered approach to heating modernization subsidies.",
+   "The basic subsidy for heat pump installations remains 30 percent of the eligible costs. The climate speed bonus is 16 percentage points and will be reduced by 4 percentage points semi-annually starting February 1, 2027. A significant innovation is the tiered income bonus, offering up to 40 percent for households with an annual taxable income of up to 30,000 Euros.",
+   "Although the potential total funding can amount to up to 70 percent of the eligible costs, the maximum recognized eligible costs for the first residential unit have been reduced from 30,000 Euros to 28,000 Euros. This maximum amount will further decrease by 750 Euros semi-annually starting February 1, 2027. The supplementary loan 358/359 also offers up to 120,000 Euros per residential unit with subsidized interest rates.",
+   "These reforms are part of a broader legislative change, including the recent renaming of the Building Energy Act (GEG) to the Building Modernization Act (GModG). The updated funding conditions strongly incentivize the introduction of climate-friendly technologies such as heat pumps."
+  ],
+  "sourceNoteEn": "Source: HeatPump DB Deutschland News, Current, KfW"
+ },
+ {
   "slug": "2026-10-beg-kfw-reform",
   "date": "2026-10-01",
   "image": "de-2026-10-beg-kfw-reform.webp",

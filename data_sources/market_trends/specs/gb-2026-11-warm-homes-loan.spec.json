@@ -1,0 +1,57 @@
+{
+ "country": "GB",
+ "countryLabel": "United Kingdom",
+ "month": "NOVEMBER 2026",
+ "motif": "coins",
+ "title": [
+  "Warm Homes Loan Scheme",
+  "Boosts Low-Carbon Heat"
+ ],
+ "sub": "UK government launches new financing to make low-carbon home heating more affordable.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "£20,000",
+     "label": "Max loan for air-to-water HP"
+    },
+    {
+     "value": "£35,000",
+     "label": "Max loan for ground source HP"
+    },
+    {
+     "value": "30 years",
+     "label": "Potential maximum repayment period"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Scheme Overview",
+   "rows": [
+    {
+     "label": "Government-supported low- or no-interest financing"
+    },
+    {
+     "label": "Covers heat pumps, solar panels, and battery storage"
+    },
+    {
+     "label": "Loans can be combined with existing grants like BUS"
+    },
+    {
+     "label": "Eligibility dependent on individual lender criteria"
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Impact & Access",
+   "lines": [
+    "Simplifies access to funding for green home upgrades.",
+    "Reduces upfront costs, supporting net-zero targets."
+   ]
+  }
+ ]
+}

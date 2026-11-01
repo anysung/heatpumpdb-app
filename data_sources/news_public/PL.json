@@ -1,34 +1,170 @@
 {
   "market": "PL",
-  "generatedAt": "2026-10-01T01:31:32.417Z",
+  "generatedAt": "2026-11-01T00:49:28.773Z",
   "items": [
     {
-      "id": "news-20260908-pl-sr1",
-      "date": "2026-09-08T00:00:00Z",
-      "category": "MARKET",
-      "title": "Ta sama pompa ciepła. Dlaczego płacisz więcej?",
-      "summary": "HeatPump DataBase Europe śledzi jedną pompę ciepła Daikin 8 kW na pięciu rynkach: identyczna pompa ciepła, od 11 829 € do 34 053 € z montażem — i pokazuje, skąd naprawdę bierze się 2,9-krotna różnica.",
-      "body": "HeatPump DataBase Europe opublikowało wrześniowy raport specjalny, który śledzi jedną pompę ciepła — Daikin Altherma 3 R F, 8 kW z zasobnikiem 230 l — w Niemczech, Wielkiej Brytanii, Francji, Polsce i we Włoszech, od półki po gotową instalację.\n\nPompa ciepła jest identyczna we wszystkich pięciu rejestrach krajowych: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Jej cena netto, odczytana u dwóch dostawców na każdym rynku, wynosi od 6 352 € do 8 630 € — rozrzut ±18%. Montaż kosztuje od 4 250 € w Wielkiej Brytanii do 21 000 € w Niemczech. Rachunek gospodarstwa: od 11 829 € do 34 053 €, czyli 2,9 razy.\n\nZ 22 224 € różnicy między brytyjskim a niemieckim gospodarstwem pompa ciepła odpowiada za 37 €. Montaż za 16 750 €; VAT za 5 437 €.\n\nRaport kończy propozycja dla każdego rynku — i jedno nasze ustalenie: w niemieckim rejestrze producenci azjatyccy mają w tej klasie mocy dwa razy więcej modeli niż europejskie marki premium. Tańsza pompa ciepła nie brakuje w Niemczech. Jest zarejestrowana, na liście i kwalifikowalna. Po prostu nie jest tą, którą się montuje.",
-      "titleEn": "Same Heatpump. Why you pay more?",
-      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
-      "imageUrl": "/special-report/img/special-report-2026-09-pl.webp",
+      "id": "news-20261023-pl-sr1",
+      "date": "2026-10-23T00:00:00Z",
+      "category": "POLICY",
+      "title": "Kompletny przewodnik F-gazowy dla pomp ciepła",
+      "summary": "HeatPump DataBase Europe przenosi rozporządzenie F-gazowe UE 2024/573 na jedną siatkę — 15 czynników chłodniczych, 7 wielkości i wykonań, każda data do 2050 r. — i pokazuje, co zmienia się 1 stycznia 2027 r. oraz na pięciu rynkach krajowych.",
+      "body": "HeatPump DataBase Europe opublikowało październikowy raport specjalny: kompletny przewodnik F-gazowy dla pomp ciepła w jednym dokumencie.\n\nOd 1 stycznia 2027 r. nową pompę ciepła typu monoblok o mocy do 50 kW lub pompę ciepła split powietrze/woda o mocy do 12 kW można wprowadzić do obrotu w UE wyłącznie z czynnikiem chłodniczym o GWP poniżej 150. R32 ma GWP 675. Przepis dotyczy nowych urządzeń wprowadzanych do obrotu: zapasy już wprowadzone można nadal sprzedawać i instalować, a od roku po tej dacie muszą im towarzyszyć dowody daty wprowadzenia do obrotu.\n\nRaport śledzi każdy etap do 2050 r. Splity powyżej 12 kW tracą czynniki o GWP 750 lub wyższym w 2029 r., a o GWP 150 lub wyższym w 2033 r.; monobloki powyżej 50 kW tracą czynniki o GWP 150 lub wyższym w 2030 r. Od 2032 r. (monobloki) i 2035 r. (splity) nowe pompy ciepła do 12 kW muszą stosować czynniki naturalne, takie jak R290 (propan).\n\nWarstwa krajowa jest zróżnicowana. Niemcy od 1 stycznia 2028 r. dofinansowują w ramach BEG wyłącznie czynniki naturalne. Wielka Brytania w ogóle nie wprowadza zakazu dla pomp ciepła w 2027 r. Francja, Polska i Włochy stosują daty UE i nie stawiają warunku dotyczącego czynnika chłodniczego w dotacjach na pompy powietrze/woda.",
+      "titleEn": "The Complete F-Gas Rulebook for Heat Pumps",
+      "summaryEn": "HeatPump DataBase Europe maps EU F-gas Regulation 2024/573 onto one grid — 15 refrigerants, 7 sizes and builds, every date to 2050 — and shows what changes on 1 January 2027 and in five national markets.",
+      "imageUrl": "/special-report/img/special-report-2026-10-pl.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
       "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.pl/special-report/2026-09/",
+      "ctaUrl": "https://www.heatpumpdb.pl/special-report/2026-10/",
       "ctaLabel": "Przeczytaj raport specjalny",
       "sources": [
         {
-          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
-          "url": "https://heatpumpswatch.org/"
+          "title": "Regulation (EU) 2024/573 on fluorinated greenhouse gases",
+          "url": "http://data.europa.eu/eli/reg/2024/573/oj"
         },
         {
-          "title": "NFOŚiGW — Czyste Powietrze, zmiany od 20 lipca 2026 (HeatPump DB)",
-          "url": "https://www.heatpumpdb.pl/news/news-20260901-pl-001.html"
+          "title": "EHPA — The new F-gas Regulation: detailed guidelines (Nov 2024)",
+          "url": "https://www.ehpa.org/wp-content/uploads/2024/11/F-Gas-regulation-guidelines_European-Heat-Pump-Association_November-2024.pdf"
         },
         {
-          "title": "Stawka VAT 8% / 23% dla montażu pompy ciepła — art. 41 ust. 12 ustawy o VAT",
-          "url": "https://www.podatki.gov.pl/"
+          "title": "Program Czyste Powietrze",
+          "url": "https://czystepowietrze.gov.pl/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-pl-001",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Reforma programu Czyste Powietrze zwiększa dofinansowanie i ułatwia dostęp do pomp ciepła",
+      "summary": "Program „Czyste Powietrze” w Polsce, z dniem 20 lipca 2026 roku, wprowadził istotne zmiany, upraszczając zasady dostępu do dotacji i zwiększając wsparcie finansowe na termomodernizację. Celem reform jest przyspieszenie wymiany starych źródeł ciepła na efektywne energetycznie rozwiązania, takie jak pompy ciepła, co ma szczególne znaczenie dla właścicieli domów jednorodzinnych podejmujących kompleksowe remonty.",
+      "body": "Warszawa, Polska – Wiodący polski program „Czyste Powietrze” przeszedł znaczące modyfikacje, obowiązujące od 20 lipca 2026 roku. Wprowadzone zmiany tworzą korzystniejsze warunki dla właścicieli domów inwestujących w efektywność energetyczną, w tym w instalacje pomp ciepła. Reformy mają na celu usprawnienie procesu aplikacyjnego i podniesienie atrakcyjności finansowej przedsięwzięć termomodernizacyjnych w całej Polsce.\n\nJedną z kluczowych zmian jest skrócenie wymaganego okresu własności nieruchomości z trzech lat do jednego roku przed złożeniem wniosku o dotację. Ta regulacja, obejmująca wyjątki dla nieruchomości nabytych w drodze dziedziczenia lub posiadania udziałów od bliskich krewnych, ma na celu poszerzenie grona beneficjentów, zwłaszcza wśród osób, które niedawno zakupiły dom.\n\nWysokość dotacji na wybrane prace termomodernizacyjne, takie jak ocieplenie, wymiana okien i drzwi zewnętrznych, wzrosła o 10%. Chociaż maksymalna łączna kwota dotacji na kompleksową termomodernizację pozostaje na poziomie 83 000 PLN, podniesienie indywidualnych limitów ma zapewnić bardziej ukierunkowane wsparcie dla kluczowych działań energooszczędnych.\n\nW przypadku instalacji pomp ciepła program nadal oferuje znaczące wsparcie. Właściciele domów mogą otrzymać do 14 080 PLN na powietrzne pompy ciepła o podwyższonej efektywności w podstawowym poziomie dofinansowania, a w najwyższym – do 35 200 PLN. Gruntowe pompy ciepła, cenione za wysoką efektywność, mogą liczyć na dotacje w wysokości do 65 000 PLN. Wysokość wsparcia jest uzależniona od dochodów gospodarstwa domowego i oferowana jest na trzech poziomach, pokrywających 40%, 70% lub 100% kosztów kwalifikowanych.\n\nObowiązkowe warunki uzyskania dotacji obejmują przeprowadzenie audytu energetycznego przed złożeniem wniosku, z możliwością zwrotu do 1200 PLN kosztów audytu, oraz trwałe usunięcie starego, nieefektywnego źródła ciepła. Co istotne, wszystkie pompy ciepła muszą być wpisane na oficjalną „Listę ZUM” (Lista Zielonych Urządzeń i Materiałów), aby kwalifikować się do wsparcia. Ponadto termin realizacji projektów z prefinansowaniem został wydłużony ze 120 do 180 dni, co zapewnia beneficjentom większą elastyczność.",
+      "titleEn": "Czyste Powietrze Program Reforms Boost Heat Pump Adoption with Enhanced Grants",
+      "summaryEn": "The 'Czyste Powietrze' (Clean Air) program in Poland has implemented significant reforms as of July 20, 2026, simplifying access to grants and increasing financial support for thermal modernization projects. These changes aim to accelerate the replacement of old heating sources with energy-efficient solutions like heat pumps, particularly benefiting homeowners undertaking comprehensive renovations.",
+      "imageUrl": "/news-images/pl-policy-02.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Heat pump grant in Poland 2026: amounts, rules, tax relief - Licznik PV",
+          "url": "https://licznikpv.pl/en/heat-pump-grant-poland/"
+        },
+        {
+          "title": "Higher funding and simpler rules - changes to the Clean Air Programme have come into force - Ministry of Climate and Environment - Gov.pl",
+          "url": "https://www.gov.pl/web/climate/higher-funding-and-simpler-rules--changes-to-the-clean-air-programme-have-come-into-force"
+        },
+        {
+          "title": "Clean Air Grant Poland 2026 – Can Foreigners Apply? - SprawdzCo",
+          "url": "https://sprawdzco.pl/en/clean-air-grant/"
+        },
+        {
+          "title": "Home Renovation Grants & Energy in Poland 2026 - SprawdzCo",
+          "url": "https://sprawdzco.pl/en/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-pl-002",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Polski rynek pomp ciepła odzyskuje dynamikę, mierząc się z wyzwaniami sieciowymi i kadrowymi",
+      "summary": "Polski rynek pomp ciepła prognozuje silny długoterminowy wzrost, osiągając wartość 9,9 mld USD do 2035 roku ze wzrostem CAGR na poziomie 24,3%, pomimo niedawnej zmienności. Sektor wychodzi z fazy spadkowej, na którą wpływ miały reformy dotacyjne i problemy z łańcuchem dostaw, a popyt jest napędzany przez mandaty dekarbonizacyjne i rosnące koszty tradycyjnych źródeł energii.",
+      "body": "Warszawa, Polska – Polski rynek pomp ciepła znajduje się na ścieżce znaczącej ekspansji, z prognozą osiągnięcia wartości 9,9 mld USD do 2035 roku, notując imponujący wzrost Compound Annual Growth Rate (CAGR) na poziomie 24,3% w latach 2026-2035, według analiz rynkowych. Perspektywa ta pojawia się po okresie znacznych wahań, kiedy rynek przeszedł od rekordowego dwucyfrowego wzrostu do spadku między 2022 a 2025 rokiem, w dużej mierze z powodu wrażliwości na ciągłość programów dotacyjnych.\n\nDane z Europejskiego Stowarzyszenia Pomp Ciepła (EHPA) wskazują na trudny rok 2025, w którym Polska doświadczyła spadku sprzedaży, podczas gdy ogólny rynek europejski odnotował 13% wzrost do 2,88 miliona sztuk, sygnalizując ożywienie na kontynencie, ale jeszcze bez osiągnięcia poprzednich rekordów. Wcześniejsze dane PORT PC podkreślały jednak znaczący 120% wzrost na polskim rynku w 2022 roku w porównaniu do 2021 roku, z pompami ciepła typu powietrze-woda jako najpopularniejszymi, odnotowującymi wzrost o 137%.\n\nOstatnie lata przyniosły znaczne inwestycje ze strony producentów, co wzmacnia potencjał rynku. Daikin, na przykład, otworzył w maju 2026 roku nową fabrykę pomp ciepła w regionie łódzkim w Polsce, inwestując 150 mln EUR w zwiększenie europejskich mocy produkcyjnych, w tym dla jednostek wysokotemperaturowych przeznaczonych do zastosowań przemysłowych. Panasonic wprowadził swoją modułową generację Aquarea L, wykorzystującą czynnik chłodniczy R290, w styczniu 2026 roku, celując w modernizacje komercyjne.\n\nPomimo optymistycznych prognoz długoterminowych, rynek mierzy się z utrzymującymi się wyzwaniami. Słabe sieci niskiego napięcia i długie kolejki przyłączeniowe nadal zwiększają koszty projektów i opóźniają instalacje, wpływając na tempo adaptacji. Dodatkowo, niedobór wykwalifikowanych instalatorów i ciągła potrzeba jaśniejszych przepisów regulacyjnych przyczyniają się do zmienności cen, jak zauważają obserwatorzy branży.\n\nNiemniej jednak, podstawowe czynniki strukturalne napędzające wzrost pozostają silne. Mandaty dekarbonizacyjne, utrzymująca się presja taryfowa na gaz ziemny oraz dynamiczny rozwój instalacji fotowoltaicznych na dachach nadal wspierają popyt na technologię pomp ciepła. Integracja pomp ciepła z systemami fotowoltaicznymi i magazynami energii staje się coraz bardziej kluczowa dla maksymalizacji autokonsumpcji i optymalizacji ekonomiki operacyjnej.",
+      "titleEn": "Polish Heat Pump Market Navigates Recovery Amidst Grid and Installer Challenges",
+      "summaryEn": "Poland's heat pump market is projected for robust long-term growth, aiming for a USD 9.9 billion valuation by 2035 with a 24.3% CAGR, despite recent volatility. The sector is recovering from a contraction influenced by subsidy reforms and supply chain issues, with continued demand driven by decarbonization mandates and rising traditional energy costs.",
+      "imageUrl": "/news-images/common-energy-04.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Poland Heat Pump Market Size, Share & 2031 Growth Trends Report - Mordor Intelligence",
+          "url": "https://www.mordorintelligence.com/industry-reports/poland-heat-pump-market"
+        },
+        {
+          "title": "Poland Air Source Heat Pump Market Size, Growth & Analysis 2032",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEpaEz6O-gcvLzbVVCzgA2UdZTZW-2zVOeumiMIN0SgUjxQR4x_1aNzDIugylLB05IuQIu3SWft3qehC0OB_8p1pSRI129-vTOh7tC_cOl6_zMb_sRRdGMwyTzbcRoBZd5nRDHl_HT3jn_8dfo_NWfOtl8WqtPHu5P8jMBAt3L2q6M="
+        },
+        {
+          "title": "Poland HVAC Market, Share, and Trends Analysis Report – Industry Overview and Forecast to 2033",
+          "url": "https://www.databridgemarketresearch.com/reports/poland-hvac-market"
+        },
+        {
+          "title": "Heat Pump Sales Rises in Poland",
+          "url": "https://sprsunheatpump.com/heat-pump-sales-rises-in-poland.html"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-pl-003",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "Unijne rozporządzenie F-gazowe zmienia branżę pomp ciepła w kierunku naturalnych czynników chłodniczych od 2027 roku",
+      "summary": "Rozporządzenie F-gazowe Unii Europejskiej (UE) 2024/573 znacząco wpłynie na sektor pomp ciepła, wprowadzając zakazy dotyczące niektórych czynników chłodniczych o wysokim potencjale globalnego ocieplenia (GWP) od 1 stycznia 2027 roku. Ta zmiana regulacyjna zmusi producentów i instalatorów do przejścia na naturalne czynniki chłodnicze, takie jak R290 (propan), w nowych jednostkach, zwłaszcza w zastosowaniach mieszkaniowych.",
+      "body": "Bruksela, Belgia – Kluczowa transformacja jest w toku w europejskiej branży pomp ciepła, gdyż nowe przepisy unijnego rozporządzenia F-gazowego (UE) 2024/573, obowiązujące od 11 marca 2024 roku, przygotowują się do wprowadzenia znaczących ograniczeń dotyczących czynników chłodniczych od 1 stycznia 2027 roku. Środki te w szczególności dotyczą nowych monoblokowych pomp ciepła i klimatyzatorów o mocy do 50 kW, a także systemów split powietrze-woda o mocy do 12 kW, zakazując stosowania czynników chłodniczych o potencjale globalnego ocieplenia (GWP) wynoszącym 150 lub więcej.\n\nNadchodzący zakaz skutecznie wycofuje z użycia w tych kategoriach urządzeń powszechnie stosowane syntetyczne czynniki chłodnicze, takie jak R32 (GWP 675) i R410A (GWP 2088), kierując branżę ku bardziej przyjaznym dla środowiska alternatywom. Naturalne czynniki chłodnicze, przede wszystkim R290 (propan) o GWP bliskim zeru, stają się preferowanym rozwiązaniem, zmuszając producentów do innowacji i wprowadzania nowych linii produktów.\n\nTa zmiana regulacyjna wymaga znacznej adaptacji ze strony instalatorów, którzy będą potrzebować zaktualizowanych certyfikatów do bezpiecznego i skutecznego obchodzenia się z łatwopalnymi naturalnymi czynnikami chłodniczymi. Rozporządzenie F-gazowe przewiduje również znaczne ograniczenie kwot dostaw HFC na lata 2027–2029, co sprawi, że czynniki chłodnicze o wysokim GWP staną się rzadsze i droższe w całej UE.\n\nSerwisowanie istniejących urządzeń również ulegnie zmianie; nieprzetworzone czynniki chłodnicze o GWP 2500 lub więcej są zakazane w serwisowaniu urządzeń klimatyzacyjnych i pomp ciepła od 1 stycznia 2026 roku. Chociaż odzyskane i poddane recyklingowi czynniki chłodnicze są dozwolone do 1 stycznia 2032 roku, długoterminowy trend jest jasny: gazy serwisowe o wysokim GWP będą coraz trudniejsze do legalnego pozyskania.\n\nW związku z tym Komisja Europejska usunęła błędy w kilku wersjach językowych rozporządzenia dotyczącego certyfikatów F-gazowych. Rozporządzenie wykonawcze (UE) 2026/2214, przyjęte 5 października 2026 roku, skorygowało nieścisłości w węgierskiej, litewskiej i polskiej wersji rozporządzenia 2024/2215, które ustanawia minimalne wymogi dotyczące certyfikacji dla specjalistów pracujących z fluorowanymi gazami cieplarnianymi lub ich alternatywami. Zapewnia to jasność i spójność w standardach kwalifikacji w państwach członkowskich w miarę przechodzenia branży na nowe rozwiązania.",
+      "titleEn": "EU F-Gas Regulation Shifts Heat Pump Industry Towards Natural Refrigerants from 2027",
+      "summaryEn": "The European Union's F-Gas Regulation (EU) 2024/573 is set to profoundly impact the heat pump sector, with bans on certain high Global Warming Potential (GWP) refrigerants taking effect from January 1, 2027. This regulatory shift will compel manufacturers and installers to transition towards natural refrigerants like R290 (propane) for new units, particularly in residential applications.",
+      "imageUrl": "/news-images/common-tech-01.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "EU F-Gas Regulation: the 2027 Refrigerant Bans and the R290 Shift - Solimpeks",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEA8jtemcV5WeADDSKmDnk5LXzQWvq16phPqGwh18KMpohsG3zBwFt-G7gLvTuFMt4k5HDcnnhAzuErZay2B1SLjI1LCic4aVfqUW3dgRaKHvUYOrSbltDEXcL7UCLfCRrzBxzos2BJnHYafLYm_TPcBtH_kCCI7QSKr86MLisHxIXM"
+        },
+        {
+          "title": "EU corrects Hungarian, Lithuanian and Polish versions of F-gas certificate rules - Lovguiden",
+          "url": "https://www.lovguiden.dk/en/det-offentlige/eur-lex-eu-tidende/2026-10-06-eu-retter-ungarsk-litauisk-og-polsk-version-af-f-gas-certificering"
+        },
+        {
+          "title": "EU to restrict sales of heat pumps with synthetic refrigerants. Master Therm has the solution.",
+          "url": "https://www.mastertherm.eu/eu-to-restrict-sales-of-heat-pumps-with-synthetic-refrigerants"
+        },
+        {
+          "title": "Air-to-Water Heat Pump — Complete 2026 Guide - LeoKlima",
+          "url": "https://leoklima.pl/en/blog/air-to-water-heat-pump-guide-2026"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-pl-004",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Program Moje Ciepło przedłuża nabór wniosków, kontynuując wsparcie dla nowych energooszczędnych domów",
+      "summary": "Program „Moje Ciepło” w Polsce, zarządzany przez Narodowy Fundusz Ochrony Środowiska i Gospodarki Wodnej (NFOŚiGW), przedłużył termin składania wniosków do 26 lutego 2027 roku. Ta inicjatywa nadal oferuje znaczące dotacje na instalacje pomp ciepła w nowo budowanych, energooszczędnych domach jednorodzinnych, umacniając krajowe zobowiązanie do nowoczesnych, ekologicznych rozwiązań grzewczych.",
+      "body": "Warszawa, Polska – Właściciele nowo budowanych, energooszczędnych domów jednorodzinnych w Polsce zyskali dodatkowy czas na zapewnienie sobie wsparcia finansowego, ponieważ Narodowy Fundusz Ochrony Środowiska i Gospodarki Wodnej (NFOŚiGW) przedłużył okres składania wniosków w programie „Moje Ciepło”. Nowy termin składania wniosków to 26 lutego 2027 roku lub do wyczerpania alokowanych środków, co stanowi kluczowe okno dla uprawnionych beneficjentów.\n\nProgram „Moje Ciepło” różni się od „Czystego Powietrza”, ponieważ jest skierowany konkretnie do pierwszych właścicieli nowo wybudowanych domów, które spełniają podwyższone standardy efektywności energetycznej. Aby się kwalifikować, nowy budynek musi osiągnąć wskaźnik zapotrzebowania na nieodnawialną energię pierwotną (EP) nie większy niż 55 kWh/(m²·rok), co gwarantuje, że środki publiczne wspierają wyłącznie konstrukcje o wysokiej efektywności. Dodatkowo, w domu nie może znajdować się źródło ciepła na paliwo stałe, z wyjątkiem kominka rekreacyjnego spełniającego określone warunki.\n\nW ramach programu właściciele domów mogą otrzymać znaczące dotacje na zakup i montaż pomp ciepła. Powietrzne pompy ciepła (powietrze-woda i powietrze-powietrze w systemie centralnym) kwalifikują się do wsparcia w wysokości do 7 000 PLN, natomiast gruntowe lub wodne pompy ciepła mogą otrzymać do 21 000 PLN. Dotacje te pokrywają do 30% kosztów kwalifikowanych, z możliwością zwiększenia do 45% dla posiadaczy Karty Dużej Rodziny.\n\nPrzypomina się wnioskodawcom, że wybrana pompa ciepła musi znajdować się na oficjalnej „Liście ZUM” lub posiadać równoważne certyfikaty, takie jak HP Keymark czy EHPA-Q, potwierdzające jej wysoką efektywność i kwalifikowalność do wsparcia państwowego. Chociaż dotacji z programu „Moje Ciepło” nie można łączyć z innymi publicznymi dotacjami na to samo urządzenie, beneficjenci mogą skorzystać z „ulgi termomodernizacyjnej” na wszelkie koszty nieobjęte dotacją.\n\nPrzedłużenie terminu podkreśla zaangażowanie NFOŚiGW w promowanie zrównoważonej infrastruktury grzewczej w nowych inwestycjach mieszkaniowych. Właściciele domów oddanych do użytkowania po 1 stycznia 2021 roku, którzy są ich pierwszymi użytkownikami, są zachęcani do szybkiego sprawdzenia kwalifikacji i złożenia wniosków, biorąc pod uwagę ograniczenia budżetowe programu.",
+      "titleEn": "Moje Ciepło Program Extends Application Deadline, Continues Support for New Energy-Efficient Homes",
+      "summaryEn": "Poland's 'Moje Ciepło' program, managed by the National Fund for Environmental Protection and Water Management (NFOŚiGW), has extended its application deadline until February 26, 2027. This initiative continues to offer significant grants for heat pump installations in newly constructed, energy-efficient single-family homes, reinforcing the nation's commitment to modern, ecological heating solutions.",
+      "imageUrl": "/news-images/pl-policy-03.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Heat Pump Regulations in Poland for New Homes - GOODHEAT",
+          "url": "https://www.goodheatglobal.com/Heat-Pump-Regulations-in-Poland-for-New-Homes-id40820455.html"
+        },
+        {
+          "title": "Moje Ciepło 2026: Program priorytetowy Moje Ciepło: nabory, budżet, jak aplikować | Atlas Dotacji",
+          "url": "https://atlasdotacji.pl/programy/moje-cieplo"
+        },
+        {
+          "title": "Moje Ciepło 2026 – do 21 tys. zł na pompę ciepła | Wentotech",
+          "url": "https://wentotech.pl/moje-cieplo-2026"
+        },
+        {
+          "title": "Moje Ciepło: dotacje na nowoczesne ogrzewanie domu dostępne dłużej - Narodowy Fundusz Ochrony Środowiska i Gospodarki Wodnej - Gov.pl",
+          "url": "https://www.gov.pl/web/nfosigw/moje-cieplo-dotacje-na-nowoczesne-ogrzewanie-domu-dostepne-dluzej"
         }
       ]
     },
@@ -165,6 +301,36 @@
         {
           "title": "REHVA Journal On the Process of EPBD Implementation in Poland",
           "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFOJ_kLFB_B97hQo41TCFwlLtx0mH_dBXU0xsX5hOf95yE7vfaCamzqpihOCI09LzvhO69Egrgz_6ffK64AWDxokwmpzzOsoqAXpjT49Yv3Ow5YxySo_TDsvCU7TSWm1mwasgJJh1YaD3asyhH_8HeJXA9ZBp3hUbVqscsF0UchV2ZfrOWcAraQD8fNGIrGGr4PVG1S4w=="
+        }
+      ]
+    },
+    {
+      "id": "news-20260908-pl-sr1",
+      "date": "2026-09-08T00:00:00Z",
+      "category": "MARKET",
+      "title": "Ta sama pompa ciepła. Dlaczego płacisz więcej?",
+      "summary": "HeatPump DataBase Europe śledzi jedną pompę ciepła Daikin 8 kW na pięciu rynkach: identyczna pompa ciepła, od 11 829 € do 34 053 € z montażem — i pokazuje, skąd naprawdę bierze się 2,9-krotna różnica.",
+      "body": "HeatPump DataBase Europe opublikowało wrześniowy raport specjalny, który śledzi jedną pompę ciepła — Daikin Altherma 3 R F, 8 kW z zasobnikiem 230 l — w Niemczech, Wielkiej Brytanii, Francji, Polsce i we Włoszech, od półki po gotową instalację.\n\nPompa ciepła jest identyczna we wszystkich pięciu rejestrach krajowych: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Jej cena netto, odczytana u dwóch dostawców na każdym rynku, wynosi od 6 352 € do 8 630 € — rozrzut ±18%. Montaż kosztuje od 4 250 € w Wielkiej Brytanii do 21 000 € w Niemczech. Rachunek gospodarstwa: od 11 829 € do 34 053 €, czyli 2,9 razy.\n\nZ 22 224 € różnicy między brytyjskim a niemieckim gospodarstwem pompa ciepła odpowiada za 37 €. Montaż za 16 750 €; VAT za 5 437 €.\n\nRaport kończy propozycja dla każdego rynku — i jedno nasze ustalenie: w niemieckim rejestrze producenci azjatyccy mają w tej klasie mocy dwa razy więcej modeli niż europejskie marki premium. Tańsza pompa ciepła nie brakuje w Niemczech. Jest zarejestrowana, na liście i kwalifikowalna. Po prostu nie jest tą, którą się montuje.",
+      "titleEn": "Same Heatpump. Why you pay more?",
+      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
+      "imageUrl": "/special-report/img/special-report-2026-09-pl.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.pl/special-report/2026-09/",
+      "ctaLabel": "Przeczytaj raport specjalny",
+      "sources": [
+        {
+          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
+          "url": "https://heatpumpswatch.org/"
+        },
+        {
+          "title": "NFOŚiGW — Czyste Powietrze, zmiany od 20 lipca 2026 (HeatPump DB)",
+          "url": "https://www.heatpumpdb.pl/news/news-20260901-pl-001.html"
+        },
+        {
+          "title": "Stawka VAT 8% / 23% dla montażu pompy ciepła — art. 41 ust. 12 ustawy o VAT",
+          "url": "https://www.podatki.gov.pl/"
         }
       ]
     },

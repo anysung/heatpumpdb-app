@@ -87,3 +87,7 @@ Note: foerderungAb/foerderungBis null in this snapshot (API does not return thes
 - 2026-10-01T00:04:16.753Z fetch complete: snapshot=2026-10 records=3714 total_available=3714 time=19s size=5682.9KB
 - 2026-10-01T00:04:17.057Z parse start: snapshot=2026-10 format=raw_api raw_items=3714
 - 2026-10-01T00:04:17.135Z parse complete: snapshot=2026-10 records=3714 malformed=0 duplicates=0 missing_hash=0 manufacturers=193
+- 2026-10-31T23:27:13.542Z fetch start: snapshot=2026-11 filter="foerderungAb=le="2026-10-31";foerderungBis=ge="2026-10-31";e..." total=3943 pages=40
+- 2026-10-31T23:27:33.100Z fetch complete: snapshot=2026-11 records=3943 total_available=3943 time=20s size=6033.2KB
+- 2026-10-31T23:27:33.212Z parse start: snapshot=2026-11 format=raw_api raw_items=3943
+- 2026-10-31T23:27:33.281Z parse complete: snapshot=2026-11 records=3943 malformed=0 duplicates=0 missing_hash=0 manufacturers=207

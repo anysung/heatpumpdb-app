@@ -1,0 +1,58 @@
+{
+ "country": "DE",
+ "countryLabel": "Deutschland",
+ "month": "NOVEMBER 2026",
+ "motif": "coins",
+ "title": [
+  "KfW 458: Förder-",
+  "Reform 2026/27"
+ ],
+ "sub": "Neue Bedingungen für Wärmepumpen-Förderung ab 21. Juli 2026 mit sozial gestaffeltem Ansatz.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "30 Prozent",
+     "label": "Basisförderung"
+    },
+    {
+     "value": "40 Prozent",
+     "label": "Max. Einkommensbonus"
+    },
+    {
+     "value": "28.000 Euro",
+     "label": "Max. förderfähige Kosten"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Wichtigste Änderungen",
+   "rows": [
+    {
+     "label": "Basisförderung bleibt bei 30 Prozent der förderfähigen Kosten."
+    },
+    {
+     "label": "Klima-Geschwindigkeitsbonus: 16 Prozentpunkte, sinkt ab 1. Februar 2027."
+    },
+    {
+     "label": "Neuer Einkommensbonus: bis zu 40 Prozent für Haushalte bis 30.000 Euro."
+    },
+    {
+     "label": "Max. förderfähige Kosten auf 28.000 Euro reduziert, sinken weiter.",
+     "no": true
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Fazit für Hauseigentümer",
+   "lines": [
+    "Frühes Handeln wird durch sinkende Boni belohnt.",
+    "Sozial gestaffelte Förderung unterstützt breitere Schichten."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,58 @@
+{
+ "country": "IT",
+ "countryLabel": "Italia",
+ "month": "NOVEMBRE 2026",
+ "motif": "coins",
+ "title": [
+  "Nuovi Incentivi",
+  "Pompe di Calore 2026"
+ ],
+ "sub": "Conto Termico 3.0 ed Ecobonus guidano il supporto per le pompe di calore in Italia.",
+ "sections": [
+  {
+   "type": "stats",
+   "items": [
+    {
+     "value": "900 milioni di euro",
+     "label": "Fondo Conto Termico 3.0"
+    },
+    {
+     "value": "65%",
+     "label": "Max rimborso/detrazione privati"
+    },
+    {
+     "value": "96.000 euro",
+     "label": "Tetto spesa Ecobonus/Bonus Casa"
+    }
+   ]
+  },
+  {
+   "type": "checks",
+   "icon": "coins",
+   "title": "Dettagli Chiave Incentivi",
+   "rows": [
+    {
+     "label": "Conto Termico 3.0: Rimborso diretto GSE, fino al 65% per privati."
+    },
+    {
+     "label": "Ecobonus: Detrazione fiscale 65% in 10 anni, con capienza IRPEF."
+    },
+    {
+     "label": "Ammissibilità: Solo pompe di calore ad alta efficienza e ibridi."
+    },
+    {
+     "label": "Sconto in fattura e cessione credito non più disponibili 2026.",
+     "no": true
+    }
+   ]
+  },
+  {
+   "type": "fazit",
+   "title": "Prospettive Future",
+   "lines": [
+    "Impegno governativo per le pompe di calore.",
+    "Discussa reintroduzione detrazione 65% nel 2027."
+   ]
+  }
+ ]
+}

@@ -1,38 +1,136 @@
 {
   "market": "DE",
-  "generatedAt": "2026-10-01T01:31:32.090Z",
+  "generatedAt": "2026-11-01T00:49:28.458Z",
   "items": [
     {
-      "id": "news-20260908-de-sr1",
-      "date": "2026-09-08T00:00:00Z",
-      "category": "MARKET",
-      "title": "Gleiche Wärmepumpe. Warum zahlen Sie mehr?",
-      "summary": "HeatPump DataBase Europe verfolgt eine Daikin-Wärmepumpe mit 8 kW durch fünf Märkte: identische Wärmepumpe, 11.829 € bis 34.053 € installiert — und zeigt, woher die 2,9-fache Lücke wirklich kommt.",
-      "body": "HeatPump DataBase Europe hat seinen Special Report für September veröffentlicht. Er verfolgt eine Wärmepumpe — Daikin Altherma 3 R F, 8 kW mit 230-Liter-Speicher — durch Deutschland, Großbritannien, Frankreich, Polen und Italien, vom Regal bis zur fertigen Installation.\n\nDie Wärmepumpe ist in allen fünf nationalen Registern identisch: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Ihr Nettogerätepreis, bei je zwei Händlern pro Markt abgelesen, reicht von 6.352 € bis 8.630 € — eine Streuung von ±18 %. Die Installation reicht von 4.250 € in Großbritannien bis 21.000 € in Deutschland. Die Rechnung des Haushalts von 11.829 € bis 34.053 €: das 2,9-Fache.\n\nVon den 22.224 € Unterschied zwischen einem britischen und einem deutschen Haushalt entfallen 37 € auf die Wärmepumpe. 16.750 € auf die Installation, 5.437 € auf die Mehrwertsteuer.\n\nDer Report schließt mit einem Vorschlag je Markt — und einem eigenen Befund: Im deutschen Register stehen asiatischen Herstellern in dieser Leistungsklasse doppelt so viele Modelle zu wie europäischen Premiummarken. Die günstigere Wärmepumpe fehlt in Deutschland nicht. Sie ist registriert, gelistet und förderfähig. Sie wird nur nicht eingebaut.",
-      "titleEn": "Same Heatpump. Why you pay more?",
-      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
-      "imageUrl": "/special-report/img/special-report-2026-09-de.webp",
+      "id": "news-20261023-de-sr1",
+      "date": "2026-10-23T00:00:00Z",
+      "category": "POLICY",
+      "title": "Das vollständige F-Gas-Regelwerk für Wärmepumpen",
+      "summary": "HeatPump DataBase Europe bildet die EU-F-Gas-Verordnung 2024/573 in einem Raster ab — 15 Kältemittel, 7 Größen und Bauarten, jedes Datum bis 2050 — und zeigt, was sich am 1. Januar 2027 und in fünf nationalen Märkten ändert.",
+      "body": "HeatPump DataBase Europe hat seinen Special Report für Oktober veröffentlicht: das vollständige F-Gas-Regelwerk für Wärmepumpen in einem Dokument.\n\nAb 1. Januar 2027 darf eine neue Monoblock-Wärmepumpe bis 50 kW oder eine Split-Luft/Wasser-Wärmepumpe bis 12 kW nur noch mit einem Kältemittel mit GWP unter 150 in der EU in Verkehr gebracht werden. R32 hat ein GWP von 675. Die Regel betrifft neue Geräte, die in den Markt kommen: Bereits in Verkehr gebrachte Lagerware darf weiter verkauft und eingebaut werden, ab einem Jahr nach dem Stichtag jedoch nur mit Nachweis, wann sie in Verkehr gebracht wurde.\n\nDer Report verfolgt jeden Schritt bis 2050. Splits über 12 kW verlieren 2029 GWP 750 oder mehr und 2033 GWP 150 oder mehr; Monoblocks über 50 kW verlieren 2030 GWP 150 oder mehr. Ab 2032 (Monoblocks) bzw. 2035 (Splits) müssen neue Wärmepumpen bis 12 kW natürliche Kältemittel wie R290 Propan nutzen.\n\nDie nationale Ebene unterscheidet sich. Deutschland fördert über die BEG ab 1. Januar 2028 nur noch natürliche Kältemittel. Großbritannien kennt überhaupt kein Wärmepumpen-Verbot 2027. Frankreich, Polen und Italien folgen den EU-Fristen und stellen für die Förderung von Luft/Wasser-Wärmepumpen keine Kältemittelbedingung.",
+      "titleEn": "The Complete F-Gas Rulebook for Heat Pumps",
+      "summaryEn": "HeatPump DataBase Europe maps EU F-gas Regulation 2024/573 onto one grid — 15 refrigerants, 7 sizes and builds, every date to 2050 — and shows what changes on 1 January 2027 and in five national markets.",
+      "imageUrl": "/special-report/img/special-report-2026-10-de.webp",
       "images": [],
       "author": "HeatPump DataBase (Europe)",
       "pinned": true,
-      "ctaUrl": "https://www.heatpumpdb.de/special-report/2026-09/",
-      "ctaLabel": "Special Report lesen",
+      "ctaUrl": "https://www.heatpumpdb.de/special-report/2026-10/",
+      "ctaLabel": "Zum Special Report",
       "sources": [
         {
-          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
-          "url": "https://heatpumpswatch.org/"
+          "title": "Regulation (EU) 2024/573 on fluorinated greenhouse gases",
+          "url": "http://data.europa.eu/eli/reg/2024/573/oj"
         },
         {
-          "title": "RWTH Aachen / Octopus Energy — Analyse der Endkundenpreise DE–UK (RWTH-EBC 2025-001)",
-          "url": "https://doi.org/10.18154/RWTH-2025-05335"
+          "title": "EHPA — The new F-gas Regulation: detailed guidelines (Nov 2024)",
+          "url": "https://www.ehpa.org/wp-content/uploads/2024/11/F-Gas-regulation-guidelines_European-Heat-Pump-Association_November-2024.pdf"
         },
         {
-          "title": "Verbraucherzentrale Rheinland-Pfalz — Auswertung von 160 Wärmepumpen-Angeboten (2025)",
-          "url": "https://www.verbraucherzentrale-rlp.de/"
+          "title": "BEG Einzelmaßnahmen — Richtlinie vom 17. August 2026 (BAnz AT 27.08.2026 B1)",
+          "url": "https://bundesanzeiger.de/pub/publication/jLXvW09kHTQoDINAdoC"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-de-001",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Umfassende Reform der deutschen Wärmepumpenförderung: KfW 458 Programm mit deutlichen Anpassungen",
+      "summary": "Deutschland hat seine Bundesförderung für effiziente Gebäude (BEG) im Bereich der Wärmepumpeninstallationen grundlegend geändert. Seit dem 21. Juli 2026 gelten im KfW 458 Zuschussprogramm angepasste Bonusstrukturen und reduzierte maximale förderfähige Kosten, was eine Neuausrichtung der staatlichen Unterstützung für die Heizungsmodernisierung signalisiert.",
+      "body": "Hausbesitzer in Deutschland, die Wärmepumpen installieren möchten, unterliegen seit dem 21. Juli 2026 neuen staatlichen Förderbedingungen im Rahmen des KfW 458 Programms. Der überarbeitete Rahmen zielt darauf ab, die Energiewende zu beschleunigen und gleichzeitig einen sozial gestaffelten Ansatz bei den Subventionen für die Heizungsmodernisierung einzuführen. Diese Änderungen erfordern von vielen potenziellen Antragstellern eine Neubewertung ihrer finanziellen Planung.\n\nDie Basisförderung für Wärmepumpeninstallationen beträgt weiterhin 30 Prozent der förderfähigen Kosten. Der beliebte Klima-Geschwindigkeitsbonus, der den schnellen Austausch alter, fossiler Heizsysteme (Öl-, Kohle-, Nachtspeicher- oder mindestens 20 Jahre alte Gasheizungen) anregen soll, liegt nun bei 16 Prozentpunkten. Dieser Bonus wird ab dem 1. Februar 2027 halbjährlich um 4 Prozentpunkte gesenkt und läuft im August 2028 vollständig aus.\n\nEine wesentliche Neuerung ist der gestaffelte Einkommensbonus, der sich an selbstnutzende Hauseigentümer richtet. Haushalte mit einem zu versteuernden Jahreseinkommen von bis zu 30.000 Euro können zusätzlich 40 Prozent erhalten. Dieser Bonus sinkt auf 30 Prozent für Einkommen bis zu 40.000 Euro und auf 10 Prozent für Einkommen bis zu 50.000 Euro. Ein Familienzuschlag reduziert das maßgebliche Haushaltseinkommen pauschal um 10.000 Euro pro minderjährigem Kind, was die Anspruchsberechtigung für den Einkommensbonus erweitert.\n\nObwohl die mögliche Gesamtförderung bis zu 70 Prozent der förderfähigen Kosten und für Haushalte mit niedrigem Einkommen sogar bis zu 80 Prozent betragen kann, wurden die maximal anerkannten förderfähigen Kosten für die erste Wohneinheit von 30.000 Euro auf 28.000 Euro reduziert. Darüber hinaus wird dieser Höchstbetrag ab dem 1. Februar 2027 halbjährlich um 750 Euro weiter sinken. Diese Anpassung unterstreicht den politischen Druck für frühzeitiges Handeln.\n\nDer Antragsprozess erfordert von den Hauseigentümern zunächst eine Bestätigung zum Antrag (BzA) von einem zertifizierten Fachunternehmen, bevor der Antrag über das Online-Kundenportal 'Meine KfW' eingereicht wird. Die KfW bietet zudem den Ergänzungskredit 358/359 an, der bis zu 120.000 Euro pro Wohneinheit mit vergünstigten Zinsen für Hauseigentümer mit einem Jahreseinkommen von bis zu 90.000 Euro bereitstellt, vorausgesetzt, der KfW 458 Zuschuss wurde zuvor bewilligt.\n\nDiese Reformen sind Teil einer umfassenderen Gesetzesänderung, einschließlich der kürzlich erfolgten Umbenennung und Änderung des Gebäudeenergiegesetzes (GEG) in das Gebäudemodernisierungsgesetz (GModG). Während das GModG die bisherige 65%-Regel für erneuerbare Energien bei neuen Heizungsinstallationen aufhebt, incentivieren die aktualisierten Förderbedingungen die Einführung klimafreundlicher Technologien wie Wärmepumpen stark.",
+      "titleEn": "Major Overhaul in German Heat Pump Funding: KfW 458 Program Sees Significant Changes",
+      "summaryEn": "Germany has implemented substantial changes to its federal funding for efficient buildings (BEG) concerning heat pump installations. Effective July 21, 2026, the KfW 458 grant program introduces adjusted bonus structures and reduced maximum eligible costs, signaling a shift in government support for heating system modernization.",
+      "imageUrl": "/news-images/de-policy-01.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Luft-Wasser-Wärmepumpe: Funktion, Kosten, Stromverbrauch - ADAC",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFb7cRPSn3aBFoTOyaH8G1c2WBkUFoZSS3VekNimQm6acH9e8CM7z8dUJfn1w_xcc9PelqiIgJ79-sgYL5By8y9fVylpm-iPEFf8e56b8SYXwIVLr1hKj_3hjr-uySMgnpr8e4kBVZPwotyU_gkn1OcsjnsHU_UAxgSOtGkcqOIOH_TewhIaq3K"
         },
         {
-          "title": "KfW 458 — neue Konditionen ab 21.07.2026 (HeatPump DB)",
-          "url": "https://www.heatpumpdb.de/news/news-20260901-de-001.html"
+          "title": "Wärmepumpen-Förderung 2026: Welche Zuschüsse sind möglich? - SBK-Projekt",
+          "url": "https://sbk-projekt.de/de/waermepumpen-foerderung-2026-welche-zuschuesse-sind-moeglich/"
+        },
+        {
+          "title": "Wärmepumpe-Förderung 2026: Zuschüsse, Kredite und Steuerbonus - ADAC",
+          "url": "https://www.adac.de/rund-ums-haus/energie/versorgung/waermepumpe-foerderung/"
+        },
+        {
+          "title": "Heizungsförderung für Privatpersonen (458) - KfW",
+          "url": "https://www.kfw.de/inlandsfoerderung/Privatpersonen/Bestehende-Immobilie/F%C3%B6rderprodukte/Heizungsf%C3%B6rderung-f%C3%BCr-Privatpersonen-Wohngeb%C3%A4ude-(458)/"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-de-002",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "MARKET",
+      "title": "Deutscher Wärmepumpenmarkt wächst im 1. Halbjahr 2026 robust, BWP erhöht Jahresprognose",
+      "summary": "Der deutsche Wärmepumpenmarkt verzeichnete im ersten Halbjahr 2026 ein signifikantes Wachstum mit einem Anstieg der Auslieferungen um 40 Prozent im Vergleich zum Vorjahr. Der Bundesverband Wärmepumpe (BWP) hat daraufhin seine Jahresprognose angehoben und unterstreicht die zunehmende Bedeutung der Technologie als primäre Heizlösung des Landes.",
+      "body": "Der deutsche Wärmepumpensektor zeigte in den ersten sechs Monaten des Jahres 2026 eine robuste Leistung und verzeichnete einen deutlichen Anstieg der Auslieferungen um 40 Prozent. Laut den Daten des Bundesverbandes Wärmepumpe (BWP) und des Bundesverbandes der Deutschen Heizungsindustrie (BDH) wurden in diesem Zeitraum rund 195.000 Wärmepumpen an Großhändler und Fachhandwerker geliefert.\n\nDieser positive Trend folgt auf eine Erholung im Jahr 2025, in der die monatlichen Verkaufszahlen konstant bei rund 25.000 Einheiten lagen und im Herbst Spitzenwerte von über 30.000 erreichten. Das gesamte Absatzvolumen bis Oktober 2025 erreichte rund 255.000 Einheiten, was einem Anstieg von 57 Prozent gegenüber dem Vorjahr entspricht.\n\nAufgrund dieser starken Marktentwicklung hat der BWP seine Absatzprognose für 2026 erheblich nach oben korrigiert. Im sogenannten 'Business as Usual'-Szenario rechnet der Verband nun mit 410.000 verkauften Wärmepumpen, eine deutliche Steigerung gegenüber der zuvor geschätzten 350.000 Einheiten. Ein ambitioniertes Szenario deutet sogar auf über 530.000 installierte Geräte hin, vorausgesetzt, stabile Rahmenbedingungen, insbesondere ein günstigeres Strom-Gas-Preisverhältnis durch Maßnahmen wie eine reduzierte Stromsteuer, umgesetzt werden.\n\nWärmepumpen haben ihre Position auf dem deutschen Heizungsmarkt gefestigt und machten 2025 48 Prozent aller verkauften Heizsysteme aus, was sie zur meistverkauften Heizlösung macht. BWP-Geschäftsführer Dr. Martin Sabel führt dieses Wachstum auf ein erhöhtes Verbraucherbewusstsein für die Risiken fossiler Heizenergien und den Erfolg der Bundesförderprogramme (BEG) zurück.\n\nTrotz der positiven Aussichten hat der BWP Bedenken geäußert, dass jüngste Gesetzesänderungen, insbesondere das neue Gebäudemodernisierungsgesetz (GModG), das die Option für neue Öl- und Gasheizungsinstallationen wieder einführt, das Marktwachstum dämpfen könnten. Der Verband warnt, dass erhebliche Änderungen in der Förderpolitik oder regulatorische Unsicherheiten zu einem Rückgang der Wärmepumpenverkäufe um 40 Prozent führen könnten. Die Erreichung des ehrgeizigen Regierungsziels, jährlich 600.000 Wärmepumpen zu installieren, erfordert nachhaltige und stabile politische Unterstützung.",
+      "titleEn": "German Heat Pump Market Shows Robust Growth in H1 2026, BWP Raises Annual Forecast",
+      "summaryEn": "Germany's heat pump market experienced significant growth in the first half of 2026, with a 40 percent increase in deliveries compared to the previous year. The Bundesverband Wärmepumpe (BWP) has consequently raised its forecast for annual sales, highlighting the technology's strengthening position as the country's primary heating solution.",
+      "imageUrl": "/news-images/common-market-06.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Erwartungen übertroffen: neue Prognose für den Wärmepumpenmarkt 2026",
+          "url": "https://www.elektrowirtschaft.de/erwartungen-uebertroffen-neue-prognose-fuer-den-waermepumpenmarkt-2026/"
+        },
+        {
+          "title": "BWP-Branchenstudie 2026: Erwartungen an Wärmepumpen-Markt gedämpft - Solarserver",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG89O9g9Hf0Vqkw4RpvvTsqgh8P-4Ketto9TrzBk0X8Bmor5O1o3t6_3R1W48UYV-8lrsEDub-8ro5iBlBv_jyoVqOJyAViADUS1mCoAImo_fEUa9tGvRAJ4Y-nsoXtVwbr8UxpX2FcmZ51osPCN_OfgmLaQWu9jP680Ys5jccQUircUSCoHRFzKSLqd7lvOh7qnnCz1hzRvWBZXJtW2M9FyCx0w9E=="
+        },
+        {
+          "title": "Infografik: Wie entwickelt sich der Absatz von Wärmepumpen? - Statista",
+          "url": "https://de.statista.com/infografik/31632/absatz-von-heizungswaermepumpen-in-deutschland/"
+        },
+        {
+          "title": "Wärmepumpen-Absatz wächst um 40 Prozent - Gebäude-Energieberater",
+          "url": "https://www.geb-info.de/heizungstechnik/waermepumpen-absatz-waechst-um-40-prozent"
+        }
+      ]
+    },
+    {
+      "id": "news-20261101-de-003",
+      "date": "2026-11-01T00:00:00Z",
+      "category": "TECHNOLOGY",
+      "title": "Deutschland führt strengere Lärmgrenzwerte für geförderte Wärmepumpen ein, natürliche Kältemittel ab 2028 Pflicht",
+      "summary": "Deutschland hat die technischen Anforderungen für Wärmepumpen verschärft: Strengere Lärmemissionsgrenzwerte für alle geförderten Geräte gelten ab dem 1. Januar 2026. Zukünftig sind ab dem 1. Januar 2028 nur noch Wärmepumpen mit natürlichen Kältemitteln für die Bundesförderung zugelassen, was den starken Fokus der Regierung auf leisere und umweltfreundlichere Heizlösungen unterstreicht.",
+      "body": "Seit dem 1. Januar 2026 müssen Luft-Wasser-Wärmepumpen in Deutschland strengere Lärmemissionsstandards erfüllen, um eine Bundesförderung im Rahmen der Bundesförderung für effiziente Gebäude (BEG) zu erhalten. Die neue Regelung schreibt vor, dass der Schallleistungspegel von Außengeräten mindestens 10 Dezibel (dB) unter den Grenzwerten der EU-Ökodesign-Verordnung (EU) Nr. 813/2013 liegen muss, eine deutliche Verschärfung gegenüber der vorherigen Anforderung von 5 dB Reduktion.\n\nDiese Änderung ist ein rein förderbezogenes Kriterium und hat keine Auswirkungen auf die allgemeine Zulässigkeit von Wärmepumpen, die diesen erhöhten Lärmstandard nicht erfüllen. Für Hauseigentümer, die finanzielle Unterstützung suchen, wird jedoch die Auswahl von Modellen mit nachweislich geringen Lärmemissionen noch wichtiger. Die Liste der förderfähigen Wärmepumpen des Bundesamtes für Wirtschaft und Ausfuhrkontrolle (BAFA) berücksichtigt diese aktualisierten Lärmkriterien bereits.\n\nÜber die Geräuschentwicklung hinaus weist Deutschland auch einen klaren Weg für die Zukunft der Kältemittel in der Wärmepumpentechnologie. Ab dem 1. Januar 2028 werden nur noch Wärmepumpen, die mit natürlichen, halogenfreien Kältemitteln betrieben werden, für Bundesförderungen zugelassen sein. Dieser proaktive Schritt steht im Einklang mit umfassenderen Umweltzielen und zielt darauf ab, das Treibhauspotenzial synthetischer Kältemittel zu reduzieren.\n\nDie Hersteller reagieren bereits auf diese Entwicklung, indem eine wachsende Zahl neuer Wärmepumpenmodelle mit natürlichen Kältemitteln wie R290 (Propan) auf den Markt kommt. Zu diesen Innovationen gehören innen aufgestellte Luft-Wasser-Wärmepumpen und Sole-Wasser-Wärmepumpen, die oft für ihr sehr geringes Global Warming Potential (GWP) und ihren leisen Betrieb hervorgehoben werden.\n\nDer Fokus auf natürliche Kältemittel wird durch das Umweltzeichen „Blauer Engel“ weiter verstärkt, das seine Kriterien im Juli 2023 aktualisiert hat, um Wärmepumpen zu zertifizieren, die diese umweltfreundlichen Substanzen verwenden. Geräte mit diesem Siegel müssen zudem die gesetzlichen Energieeffizienzanforderungen übertreffen und geringere Geräuschemissionen aufweisen, was einen ganzheitlichen Ansatz für nachhaltiges Heizen verdeutlicht.",
+      "titleEn": "Germany Introduces Stricter Noise Limits for Funded Heat Pumps, Natural Refrigerants Mandated by 2028",
+      "summaryEn": "Germany has tightened technical requirements for heat pumps, with stricter noise emission limits for all subsidized units taking effect on January 1, 2026. Looking ahead, only heat pumps utilizing natural refrigerants will be eligible for federal funding from January 1, 2028, reflecting a strong governmental push towards quieter and more environmentally friendly heating solutions.",
+      "imageUrl": "/news-images/common-tech-06.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "Leisere Wärmepumpen ab 2026: Was Deutschlands neue Lärmgrenzen wirklich für Hausbesitzer bedeuten | LumenHaus",
+          "url": "https://www.lumenhaus.de/mediencenter/detail/leisere-waermepumpen-ab-2026-was-deutschlands-neue-laermgrenzen-wirklich-fuer-hausbesitzer-bedeuten.html"
+        },
+        {
+          "title": "Förderung von Wärmepumpen: Überblick zu Programmen und Hinweise zur Beantragung",
+          "url": "https://www.gebaeudeforum.de/realisieren/heizungstechnik/waermepumpen/foerderung/"
+        },
+        {
+          "title": "Stadtwerke Backnang - Ab 2026 strengere Schallvorgaben für Wärmepumpen",
+          "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGD7EpfmpProTPdMp2SJuWqJo8ssa9hq-SFJrk_LfUoJQYeXTj3lECtTdcxHdSjHt9WYMLwot0gmxeQjXW3yPcpgYHNo6biuPyOcytBIRMIWe-JK8NAAaUyJYBtd77z1kg7QAZ1Y_pKPX0jkGgVsAlb0KmsiiH7M0hf44__micjHWHgc_upIyYrKR11k8TSg7JB-YQmkcXXK-0lm-dJ3qjuuEaZc2lqCye-POtgIsrI-b85"
+        },
+        {
+          "title": "Wärmepumpen - Umweltbundesamt",
+          "url": "https://www.umweltbundesamt.de/themen/klima-energie/fluorierte-treibhausgase-fckw/natuerliche-kaeltemittel-in-stationaeren-anlagen/anwendungen/waermepumpen"
         }
       ]
     },
@@ -169,6 +267,40 @@
         {
           "title": "Bundestag beschließt Heizungsgesetz-Novelle",
           "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw28-de-heizungsgesetz-1194534"
+        }
+      ]
+    },
+    {
+      "id": "news-20260908-de-sr1",
+      "date": "2026-09-08T00:00:00Z",
+      "category": "MARKET",
+      "title": "Gleiche Wärmepumpe. Warum zahlen Sie mehr?",
+      "summary": "HeatPump DataBase Europe verfolgt eine Daikin-Wärmepumpe mit 8 kW durch fünf Märkte: identische Wärmepumpe, 11.829 € bis 34.053 € installiert — und zeigt, woher die 2,9-fache Lücke wirklich kommt.",
+      "body": "HeatPump DataBase Europe hat seinen Special Report für September veröffentlicht. Er verfolgt eine Wärmepumpe — Daikin Altherma 3 R F, 8 kW mit 230-Liter-Speicher — durch Deutschland, Großbritannien, Frankreich, Polen und Italien, vom Regal bis zur fertigen Installation.\n\nDie Wärmepumpe ist in allen fünf nationalen Registern identisch: 8,3 kW, SCOP 4,95, R32, 56 dB(A). Ihr Nettogerätepreis, bei je zwei Händlern pro Markt abgelesen, reicht von 6.352 € bis 8.630 € — eine Streuung von ±18 %. Die Installation reicht von 4.250 € in Großbritannien bis 21.000 € in Deutschland. Die Rechnung des Haushalts von 11.829 € bis 34.053 €: das 2,9-Fache.\n\nVon den 22.224 € Unterschied zwischen einem britischen und einem deutschen Haushalt entfallen 37 € auf die Wärmepumpe. 16.750 € auf die Installation, 5.437 € auf die Mehrwertsteuer.\n\nDer Report schließt mit einem Vorschlag je Markt — und einem eigenen Befund: Im deutschen Register stehen asiatischen Herstellern in dieser Leistungsklasse doppelt so viele Modelle zu wie europäischen Premiummarken. Die günstigere Wärmepumpe fehlt in Deutschland nicht. Sie ist registriert, gelistet und förderfähig. Sie wird nur nicht eingebaut.",
+      "titleEn": "Same Heatpump. Why you pay more?",
+      "summaryEn": "HeatPump DataBase Europe follows one Daikin 8 kW heat pump through five markets: identical heat pump, €11,829 to €34,053 installed — and shows where the 2.9× gap actually comes from.",
+      "imageUrl": "/special-report/img/special-report-2026-09-de.webp",
+      "images": [],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "https://www.heatpumpdb.de/special-report/2026-09/",
+      "ctaLabel": "Special Report lesen",
+      "sources": [
+        {
+          "title": "Miara (2026) — Heat Pump Installation Costs: Germany vs. Europe, heatpumpswatch.org",
+          "url": "https://heatpumpswatch.org/"
+        },
+        {
+          "title": "RWTH Aachen / Octopus Energy — Analyse der Endkundenpreise DE–UK (RWTH-EBC 2025-001)",
+          "url": "https://doi.org/10.18154/RWTH-2025-05335"
+        },
+        {
+          "title": "Verbraucherzentrale Rheinland-Pfalz — Auswertung von 160 Wärmepumpen-Angeboten (2025)",
+          "url": "https://www.verbraucherzentrale-rlp.de/"
+        },
+        {
+          "title": "KfW 458 — neue Konditionen ab 21.07.2026 (HeatPump DB)",
+          "url": "https://www.heatpumpdb.de/news/news-20260901-de-001.html"
         }
       ]
     },

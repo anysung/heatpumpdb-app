@@ -1,7 +1,7 @@
 {
   "note": "BAFA manufacturers with no entry in scraper/pricing/manufacturer-short-names.json (key = exact BAFA spelling). Add them there to give them a display short name.",
-  "snapshot": "2026-10",
-  "records": 499,
+  "snapshot": "2026-11",
+  "records": 539,
   "manufacturers": {
     "GD TCL Intelligent Heating & Ventilating Equipment Co., Ltd.": 114,
     "GENERAL HVAC Solutions Euro GmbH": 33,
@@ -14,13 +14,17 @@
     "Airwende Umwelttechnik GmbH": 15,
     "ALARKO CARRIER SANAYI VE TICARET A.S.": 15,
     "Foshan Guangteng New Energy Co., Ltd": 15,
+    "Solar Solutions AG": 15,
     "WUXI TONGFANG ARTIFICIAL ENVIRONMENT CO.,LTD": 15,
     "Environ Energie- und Umwelttechnik Gmbh & Co. KG": 13,
     "Tongfang Germany GmbH": 12,
     "Eco Green Energie BGC": 9,
+    "Guangzhou Green Power Technology Co., Ltd": 8,
     "Hogan Heatpumps": 8,
     "CLEANL": 7,
+    "Clima-Air GmbH": 6,
     "Eco Green Energy BGC UG (haftungsbeschränkt)": 6,
+    "INTERCOOL HELLAS SA": 6,
     "Eco Engineering 2050 GmbH": 5,
     "GUANGDONG EXINDA TECHNOLOGY CO., LTD": 5,
     "HEWALEX Sp. z o.o. Sp.k.": 5,
@@ -38,13 +42,17 @@
     "Hybridio": 3,
     "Mareli Systems": 3,
     "AIRWELL Deutschland GmbH": 2,
+    "autocell GmbH": 2,
     "Deutsche Wärmepumpen Werk GmbH": 2,
     "EcoFlow Inc.": 2,
     "Fairland iGarden Co.,Ltd": 2,
     "FoxAir Sp. z. o. o.": 2,
-    "Guangzhou Green Power Technology Co., Ltd": 2,
+    "Gondzik Home Technologies GmbH": 2,
     "KW Energie GmbH und Co&KG": 2,
     "UNIVENTA s.r.o.": 2,
-    "Biddle GmbH": 1
+    "Biddle GmbH": 1,
+    "Ecoluxe GmbH": 1,
+    "Redge": 1,
+    "WARMHOUSE": 1
   }
 }

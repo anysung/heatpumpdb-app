@@ -1,0 +1,7412 @@
+{
+ "market": "FR",
+ "counts": {
+  "previous": 9060,
+  "candidate": 9296,
+  "listing": 112,
+  "added": 510,
+  "removed": 274,
+  "specs": 113
+ },
+ "listing": [
+  {
+   "id": "16020102",
+   "mfr": "Advantix",
+   "model": "i-290 0118 SL",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16020102",
+   "mfr": "Advantix",
+   "model": "i-290 0118 SL",
+   "field": "agrement_number",
+   "from": "143-2026-000034",
+   "to": null
+  },
+  {
+   "id": "16012800",
+   "mfr": "Advantix",
+   "model": "i-290 0125",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16012800",
+   "mfr": "Advantix",
+   "model": "i-290 0125",
+   "field": "agrement_number",
+   "from": null,
+   "to": "143-2026-000008"
+  },
+  {
+   "id": "16012801",
+   "mfr": "Advantix",
+   "model": "i-290 0127",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16012801",
+   "mfr": "Advantix",
+   "model": "i-290 0127",
+   "field": "agrement_number",
+   "from": null,
+   "to": "143-2026-000009"
+  },
+  {
+   "id": "16015138",
+   "mfr": "Advantix",
+   "model": "i-290 0250 PSEC",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16015138",
+   "mfr": "Advantix",
+   "model": "i-290 0250 PSEC",
+   "field": "agrement_number",
+   "from": "143-2026-000070",
+   "to": null
+  },
+  {
+   "id": "16016888",
+   "mfr": "Carrier",
+   "model": "ITEV-130P",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16016888",
+   "mfr": "Carrier",
+   "model": "ITEV-130P",
+   "field": "agrement_number",
+   "from": "142-2026-000002",
+   "to": null
+  },
+  {
+   "id": "16017304",
+   "mfr": "Carrier",
+   "model": "ITEV-160P",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16017304",
+   "mfr": "Carrier",
+   "model": "ITEV-160P",
+   "field": "agrement_number",
+   "from": "142-2026-000003",
+   "to": null
+  },
+  {
+   "id": "16020264",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH006S1B-NG",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16020264",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH006S1B-NG",
+   "field": "agrement_number",
+   "from": null,
+   "to": "32-2026-000001"
+  },
+  {
+   "id": "16020265",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH008S1B-NG",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16020265",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH008S1B-NG",
+   "field": "agrement_number",
+   "from": null,
+   "to": "32-2026-000002"
+  },
+  {
+   "id": "16020270",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH010S1B-NG",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16020270",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH010S1B-NG",
+   "field": "agrement_number",
+   "from": null,
+   "to": "32-2026-000003"
+  },
+  {
+   "id": "16020271",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH012S1B-NG",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16020271",
+   "mfr": "Carrier",
+   "model": "Main Unit 30AWH012S1B-NG",
+   "field": "agrement_number",
+   "from": null,
+   "to": "32-2026-000004"
+  },
+  {
+   "id": "16019897",
+   "mfr": "Eco Engineering 2050 GmbH",
+   "model": "Easypell EPA12T",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16019897",
+   "mfr": "Eco Engineering 2050 GmbH",
+   "model": "Easypell EPA12T",
+   "field": "agrement_number",
+   "from": null,
+   "to": "151-2026-000004"
+  },
+  {
+   "id": "16018385",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (2.5HP) RAS-2.5WHVRP2E+RWM-2.5R3E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16018385",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (2.5HP) RAS-2.5WHVRP2E+RWM-2.5R3E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000051"
+  },
+  {
+   "id": "16017740",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (5HP) RAS-5WHRP2E+RWM-5.0R3E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16017740",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S (5HP) RAS-5WHRP2E+RWM-5.0R3E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000058"
+  },
+  {
+   "id": "16018386",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (2.5HP) RAS-2.5WHVRP2E+RWD-2.5RW3E-220S",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16018386",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (2.5HP) RAS-2.5WHVRP2E+RWD-2.5RW3E-220S",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000063"
+  },
+  {
+   "id": "16017747",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHRP2E+RWD-3.5RW3E-220S",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16017747",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHRP2E+RWD-3.5RW3E-220S",
+   "field": "agrement_number",
+   "from": "54-2026-000066",
+   "to": null
+  },
+  {
+   "id": "16017743",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHVRP2E+RWD-3.5RW3E-220S",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16017743",
+   "mfr": "Hitachi",
+   "model": "airH2O 600 S Combi (3.5HP) RAS-3.5WHVRP2E+RWD-3.5RW3E-220S",
+   "field": "agrement_number",
+   "from": "54-2026-000065",
+   "to": null
+  },
+  {
+   "id": "16016422",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (2HP) RASM-2VR2E",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16016422",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (2HP) RASM-2VR2E",
+   "field": "agrement_number",
+   "from": "54-2026-000075",
+   "to": null
+  },
+  {
+   "id": "16016423",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (3HP) RASM-3VR2E",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16016423",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (3HP) RASM-3VR2E",
+   "field": "agrement_number",
+   "from": "54-2026-000076",
+   "to": null
+  },
+  {
+   "id": "16006727",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (6HP) RASM-6R1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16006727",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (6HP) RASM-6R1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000082"
+  },
+  {
+   "id": "16006726",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (6HP) RASM-6VR1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16006726",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (6HP) RASM-6VR1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000079"
+  },
+  {
+   "id": "16006731",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (7HP) RASM-7R1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16006731",
+   "mfr": "Hitachi",
+   "model": "Yutaki M (7HP) RASM-7R1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000083"
+  },
+  {
+   "id": "16016414",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (1.5HP) RAS-1.5WHVRP2E+RWM-1.5R2E",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16016414",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (1.5HP) RAS-1.5WHVRP2E+RWM-1.5R2E",
+   "field": "agrement_number",
+   "from": "54-2026-000022",
+   "to": null
+  },
+  {
+   "id": "16007734",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (2.5HP) RAS-2.5WHVRP1+RWM-2.5R1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16007734",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (2.5HP) RAS-2.5WHVRP1+RWM-2.5R1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000026"
+  },
+  {
+   "id": "16006715",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (2HP) RAS-2WHVRP1+RWM-2.0R1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16006715",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (2HP) RAS-2WHVRP1+RWM-2.0R1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000024"
+  },
+  {
+   "id": "16007735",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (3HP) RAS-3WHVRP1+RWM-3.0R1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16007735",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (3HP) RAS-3WHVRP1+RWM-3.0R1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000027"
+  },
+  {
+   "id": "16016417",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (3HP) RAS-3WHVRP2E+RWM-3.0R2E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16016417",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (3HP) RAS-3WHVRP2E+RWM-3.0R2E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000028"
+  },
+  {
+   "id": "16006646",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (5HP) RAS-5WHNPE+RWM-5.0N1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16006646",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (5HP) RAS-5WHNPE+RWM-5.0N1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000033"
+  },
+  {
+   "id": "16007737",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (5HP) RAS-5WHVNPE+RWM-5.0N1E",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16007737",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S (5HP) RAS-5WHVNPE+RWM-5.0N1E",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000030"
+  },
+  {
+   "id": "16016421",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S Combi (3HP) RAS-3WHVRP2E+RWD-3.0RW2E-220S(-K)",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16016421",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S Combi (3HP) RAS-3WHVRP2E+RWD-3.0RW2E-220S(-K)",
+   "field": "agrement_number",
+   "from": null,
+   "to": "54-2026-000014"
+  },
+  {
+   "id": "16010914",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S80 (6HP) RAS-6WHNPE + RWH-6.0NFE",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010914",
+   "mfr": "Hitachi",
+   "model": "YUTAKI S80 (6HP) RAS-6WHNPE + RWH-6.0NFE",
+   "field": "agrement_number",
+   "from": "54-2026-000008",
+   "to": null
+  },
+  {
+   "id": "16019580",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 2 L / HK 3F",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16019580",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 2 L / HK 3F",
+   "field": "agrement_number",
+   "from": "166-2026-000003",
+   "to": null
+  },
+  {
+   "id": "16019581",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 2 M / HK 3F",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16019581",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 2 M / HK 3F",
+   "field": "agrement_number",
+   "from": "166-2026-000002",
+   "to": null
+  },
+  {
+   "id": "16019999",
+   "mfr": "LG",
+   "model": "THERMA V HM051HFS.UA41",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16019999",
+   "mfr": "LG",
+   "model": "THERMA V HM051HFS.UA41",
+   "field": "agrement_number",
+   "from": "57-2026-000001",
+   "to": null
+  },
+  {
+   "id": "16010864",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ03KE5]",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16010864",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ03KE5]",
+   "field": "agrement_number",
+   "from": null,
+   "to": "64-2026-000099"
+  },
+  {
+   "id": "16010865",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ05KE5]",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16010865",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ05KE5]",
+   "field": "agrement_number",
+   "from": null,
+   "to": "64-2026-000045"
+  },
+  {
+   "id": "16010866",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ07KE5]",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16010866",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K3E5 / WH-UDZ07KE5]",
+   "field": "agrement_number",
+   "from": null,
+   "to": "64-2026-000048"
+  },
+  {
+   "id": "16010873",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K6E5 / WH-UDZ05KE5]",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16010873",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0309K6E5 / WH-UDZ05KE5]",
+   "field": "agrement_number",
+   "from": null,
+   "to": "64-2026-000047"
+  },
+  {
+   "id": "16011239",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG05LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16011239",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG05LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000030",
+   "to": null
+  },
+  {
+   "id": "16010896",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG07LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010896",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG07LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000035",
+   "to": null
+  },
+  {
+   "id": "16010897",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG09LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010897",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L3E5 / WH-WDG09LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000040",
+   "to": null
+  },
+  {
+   "id": "16010902",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L6E5 / WH-WDG07LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010902",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L6E5 / WH-WDG07LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000037",
+   "to": null
+  },
+  {
+   "id": "16010903",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L6E5 / WH-WDG09LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010903",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0509L6E5 / WH-WDG09LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000042",
+   "to": null
+  },
+  {
+   "id": "16011185",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0912K6E5 / WH-UXZ12KE5]",
+   "field": "agrement_match_status",
+   "from": "verification_required",
+   "to": "listed",
+   "rawFrom": null,
+   "rawTo": "confirmed"
+  },
+  {
+   "id": "16011185",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0912K6E5 / WH-UXZ12KE5]",
+   "field": "agrement_number",
+   "from": null,
+   "to": "64-2026-000064"
+  },
+  {
+   "id": "16010911",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ03KE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010911",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ03KE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000102",
+   "to": null
+  },
+  {
+   "id": "16010912",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ05KE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010912",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ05KE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000054",
+   "to": null
+  },
+  {
+   "id": "16010913",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ07KE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010913",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K3E5 / WH-UDZ07KE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000056",
+   "to": null
+  },
+  {
+   "id": "16010919",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ03KE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010919",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ03KE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000103",
+   "to": null
+  },
+  {
+   "id": "16010921",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ09KE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010921",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0309K6E5 / WH-UDZ09KE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000059",
+   "to": null
+  },
+  {
+   "id": "16010922",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L3E5 / WH-WDG05LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010922",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L3E5 / WH-WDG05LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000033",
+   "to": null
+  },
+  {
+   "id": "16010925",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG05LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010925",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG05LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000034",
+   "to": null
+  },
+  {
+   "id": "16010926",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG07LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010926",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG07LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000039",
+   "to": null
+  },
+  {
+   "id": "16010927",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG09LE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010927",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC0509L6E5 / WH-WDG09LE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000044",
+   "to": null
+  },
+  {
+   "id": "16018518",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC16K9E8 / WH-UDZ16KE8]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16018518",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SDC16K9E8 / WH-UDZ16KE8]",
+   "field": "agrement_number",
+   "from": "64-2026-000108",
+   "to": null
+  },
+  {
+   "id": "16010928",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SXC09K3E5 / WH-UXZ09KE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16010928",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SXC09K3E5 / WH-UXZ09KE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000067",
+   "to": null
+  },
+  {
+   "id": "16011187",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SXC09K6E5 / WH-UXZ09KE5]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16011187",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-SXC09K6E5 / WH-UXZ09KE5]",
+   "field": "agrement_number",
+   "from": "64-2026-000068",
+   "to": null
+  },
+  {
+   "id": "16016480",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG20ME8 + WH-CME8L]",
+   "field": "agrement_match_status",
+   "from": "listed",
+   "to": "verification_required",
+   "rawFrom": "confirmed",
+   "rawTo": null
+  },
+  {
+   "id": "16016480",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG20ME8 + WH-CME8L]",
+   "field": "agrement_number",
+   "from": "64-2026-000024",
+   "to": null
+  }
+ ],
+ "added": [
+  {
+   "id": "16020694",
+   "mfr": "Aermec",
+   "model": "NRG2600XHL°°K°00"
+  },
+  {
+   "id": "FR-1-2026-000005",
+   "mfr": "Airwell",
+   "model": "BDHW-060R-04M25"
+  },
+  {
+   "id": "FR-1-2026-000013",
+   "mfr": "Airwell",
+   "model": "BDHW-080R-04M25"
+  },
+  {
+   "id": "FR-1-2026-000007",
+   "mfr": "Airwell",
+   "model": "BDHW-120R-04M25"
+  },
+  {
+   "id": "FR-1-2026-000010",
+   "mfr": "Airwell",
+   "model": "BDHW-140R-04T35"
+  },
+  {
+   "id": "FR-165-2026-000005",
+   "mfr": "ARGO",
+   "model": "ANGHP12T"
+  },
+  {
+   "id": "FR-6-2026-000073",
+   "mfr": "Ariston",
+   "model": "NIMBUS 5 PLUS 30 M R290"
+  },
+  {
+   "id": "FR-6-2026-000074",
+   "mfr": "Ariston",
+   "model": "NIMBUS 5 PLUS 50 M R290"
+  },
+  {
+   "id": "FR-6-2026-000085",
+   "mfr": "Ariston",
+   "model": "NIMBUS 5 POCKET 120 M R290"
+  },
+  {
+   "id": "FR-10-2026-000017",
+   "mfr": "Arkteos",
+   "model": "1323080400"
+  },
+  {
+   "id": "FR-10-2026-000018",
+   "mfr": "Arkteos",
+   "model": "1323080405"
+  },
+  {
+   "id": "FR-10-2026-000024",
+   "mfr": "Arkteos",
+   "model": "1323080410"
+  },
+  {
+   "id": "FR-10-2026-000025",
+   "mfr": "Arkteos",
+   "model": "1323080415"
+  },
+  {
+   "id": "FR-10-2026-000019",
+   "mfr": "Arkteos",
+   "model": "1323100400"
+  },
+  {
+   "id": "FR-10-2026-000020",
+   "mfr": "Arkteos",
+   "model": "1323100405"
+  },
+  {
+   "id": "FR-10-2026-000026",
+   "mfr": "Arkteos",
+   "model": "1323100410"
+  },
+  {
+   "id": "FR-10-2026-000027",
+   "mfr": "Arkteos",
+   "model": "1323100415"
+  },
+  {
+   "id": "FR-10-2026-000021",
+   "mfr": "Arkteos",
+   "model": "1323120400"
+  },
+  {
+   "id": "FR-10-2026-000022",
+   "mfr": "Arkteos",
+   "model": "1323120405"
+  },
+  {
+   "id": "FR-10-2026-000028",
+   "mfr": "Arkteos",
+   "model": "1323120410"
+  },
+  {
+   "id": "FR-10-2026-000029",
+   "mfr": "Arkteos",
+   "model": "1323120415"
+  },
+  {
+   "id": "FR-10-2026-000023",
+   "mfr": "Arkteos",
+   "model": "1323140400"
+  },
+  {
+   "id": "FR-10-2026-000044",
+   "mfr": "Arkteos",
+   "model": "1323140405"
+  },
+  {
+   "id": "FR-10-2026-000030",
+   "mfr": "Arkteos",
+   "model": "1323140410"
+  },
+  {
+   "id": "FR-10-2026-000031",
+   "mfr": "Arkteos",
+   "model": "1323140415"
+  },
+  {
+   "id": "FR-10-2026-000032",
+   "mfr": "Arkteos",
+   "model": "1327080400"
+  },
+  {
+   "id": "FR-10-2026-000033",
+   "mfr": "Arkteos",
+   "model": "1327080405"
+  },
+  {
+   "id": "FR-10-2026-000038",
+   "mfr": "Arkteos",
+   "model": "1327080410"
+  },
+  {
+   "id": "FR-10-2026-000039",
+   "mfr": "Arkteos",
+   "model": "1327080415"
+  },
+  {
+   "id": "FR-10-2026-000034",
+   "mfr": "Arkteos",
+   "model": "1327100400"
+  },
+  {
+   "id": "FR-10-2026-000035",
+   "mfr": "Arkteos",
+   "model": "1327100405"
+  },
+  {
+   "id": "FR-10-2026-000040",
+   "mfr": "Arkteos",
+   "model": "1327100410"
+  },
+  {
+   "id": "FR-10-2026-000041",
+   "mfr": "Arkteos",
+   "model": "1327100415"
+  },
+  {
+   "id": "FR-10-2026-000036",
+   "mfr": "Arkteos",
+   "model": "1327120400"
+  },
+  {
+   "id": "FR-10-2026-000037",
+   "mfr": "Arkteos",
+   "model": "1327120405"
+  },
+  {
+   "id": "FR-10-2026-000042",
+   "mfr": "Arkteos",
+   "model": "1327120410"
+  },
+  {
+   "id": "FR-10-2026-000043",
+   "mfr": "Arkteos",
+   "model": "1327120415"
+  },
+  {
+   "id": "FR-10-2026-000009",
+   "mfr": "Arkteos",
+   "model": "MCIR060VR6"
+  },
+  {
+   "id": "FR-10-2026-000005",
+   "mfr": "Arkteos",
+   "model": "MCIS120WR6"
+  },
+  {
+   "id": "FR-11-2026-000070",
+   "mfr": "Atlantic",
+   "model": "Alfea Excellia Duo A.I. Tri 16 2024"
+  },
+  {
+   "id": "FR-11-2026-000080",
+   "mfr": "Atlantic",
+   "model": "Alfea Extensa Duo A.I. 10 R32"
+  },
+  {
+   "id": "FR-11-2026-000078",
+   "mfr": "Atlantic",
+   "model": "Alfea Extensa Duo A.I. 6 R32"
+  },
+  {
+   "id": "FR-11-2026-000079",
+   "mfr": "Atlantic",
+   "model": "Alfea Extensa Duo A.I. 8 R32"
+  },
+  {
+   "id": "FR-11-2026-000050",
+   "mfr": "Atlantic",
+   "model": "Alfea Extensa S Duo 8"
+  },
+  {
+   "id": "FR-11-2026-000027",
+   "mfr": "Atlantic",
+   "model": "Alfea M Compact 10"
+  },
+  {
+   "id": "FR-11-2026-000029",
+   "mfr": "Atlantic",
+   "model": "Alfea M Compact 6 Tri"
+  },
+  {
+   "id": "FR-11-2026-000037",
+   "mfr": "Atlantic",
+   "model": "Alfea M Duo 6 Tri"
+  },
+  {
+   "id": "FR-11-2026-000046",
+   "mfr": "Atlantic",
+   "model": "Synea Duo 8"
+  },
+  {
+   "id": "16020303",
+   "mfr": "autocell GmbH",
+   "model": "autocell MMHP 12F3"
+  },
+  {
+   "id": "16020322",
+   "mfr": "autocell GmbH",
+   "model": "autocell MMHP 18F3"
+  },
+  {
+   "id": "FR-40-2026-000035",
+   "mfr": "Bosch",
+   "model": "CS3800iAW 10 OE-T"
+  },
+  {
+   "id": "FR-40-2026-000010",
+   "mfr": "Bosch",
+   "model": "CS5800iAW 12 ORMB-T"
+  },
+  {
+   "id": "FR-40-2026-000001",
+   "mfr": "Bosch",
+   "model": "CS5800iAW 4 ORE-S"
+  },
+  {
+   "id": "FR-40-2026-000003",
+   "mfr": "Bosch",
+   "model": "CS5800iAW 7 ORE-S"
+  },
+  {
+   "id": "FR-40-2026-000029",
+   "mfr": "Bosch",
+   "model": "CS6000 EHP 17 LW-T"
+  },
+  {
+   "id": "16020565",
+   "mfr": "Brötje",
+   "model": "BLW Mono-P 12.1"
+  },
+  {
+   "id": "FR-141-2026-000014",
+   "mfr": "Carrier",
+   "model": "30WG 025A"
+  },
+  {
+   "id": "FR-141-2026-000018",
+   "mfr": "Carrier",
+   "model": "30WG 045A"
+  },
+  {
+   "id": "FR-24-2025-000005",
+   "mfr": "Chappée",
+   "model": "ERIA-S PLUS R32 12 MR/EM"
+  },
+  {
+   "id": "FR-24-2025-000006",
+   "mfr": "Chappée",
+   "model": "ERIA-S PLUS R32 12 TR/ET"
+  },
+  {
+   "id": "FR-24-2025-000002",
+   "mfr": "Chappée",
+   "model": "ERIA-S PLUS R32 6 MR/EM"
+  },
+  {
+   "id": "16020461",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP09P1V1R290M"
+  },
+  {
+   "id": "16020469",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP12P3V1R290M"
+  },
+  {
+   "id": "16020470",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP15P3V1R290M"
+  },
+  {
+   "id": "16020471",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP18P3V1R290M"
+  },
+  {
+   "id": "16020476",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP25P3V1R290M"
+  },
+  {
+   "id": "16020477",
+   "mfr": "Clima-Air GmbH",
+   "model": "BLP30P3V1R290M"
+  },
+  {
+   "id": "FR-134-2026-000015",
+   "mfr": "Clivet",
+   "model": "SQKN-YEE 1 BC A + MiSAN-YEE 1 S 2.1"
+  },
+  {
+   "id": "FR-134-2026-000019",
+   "mfr": "Clivet",
+   "model": "SQKN-YEE 1 BC B + MiSAN-YEE 1 S 6.1"
+  },
+  {
+   "id": "FR-134-2026-000026",
+   "mfr": "Clivet",
+   "model": "SQKN-YEE 1 BC B E-XT + MiSAN-YEE 1 S 6.1"
+  },
+  {
+   "id": "FR-134-2026-000045",
+   "mfr": "Clivet",
+   "model": "SQKN-YEE 1 TC A 190 E-XT + MiSAN-YEE 1 S 2.1"
+  },
+  {
+   "id": "FR-134-2026-000048",
+   "mfr": "Clivet",
+   "model": "SQKN-YEE 1 TC A 190 E-XT + MiSAN-YEE 1 S 5.1"
+  },
+  {
+   "id": "FR-134-2026-000051",
+   "mfr": "Clivet",
+   "model": "SQKN-YEE 1 TC A 250 E-XT + MiSAN-YEE 1 S 4.1"
+  },
+  {
+   "id": "16020659",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 43.2 EXC EN"
+  },
+  {
+   "id": "16020660",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 43.2 EXC SC"
+  },
+  {
+   "id": "16020661",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 EXC EN"
+  },
+  {
+   "id": "16020664",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 EXC SC"
+  },
+  {
+   "id": "16020662",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 PRM EN"
+  },
+  {
+   "id": "16020665",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 45.2 PRM SC"
+  },
+  {
+   "id": "16020666",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 50.2 PRM EN"
+  },
+  {
+   "id": "16020667",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 50.2 PRM SC"
+  },
+  {
+   "id": "16020668",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 55.2 PRM EN"
+  },
+  {
+   "id": "16020670",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 55.2 PRM SC"
+  },
+  {
+   "id": "FR-134-2026-000041",
+   "mfr": "Clivet",
+   "model": "WiSAN-YSE1 EXC-EN 18.2"
+  },
+  {
+   "id": "FR-36-2026-000001",
+   "mfr": "Daikin",
+   "model": "EBLA09DA3V3"
+  },
+  {
+   "id": "FR-36-2026-000053",
+   "mfr": "Daikin",
+   "model": "EBVH16S18DJ6V / ERLA14D2V3"
+  },
+  {
+   "id": "FR-36-2026-000063",
+   "mfr": "Daikin",
+   "model": "EBVH16S23DJ9W / ERLA14D2W1"
+  },
+  {
+   "id": "FR-36-2026-000096",
+   "mfr": "Daikin",
+   "model": "EHBH04EA6V / ERGA04EAV3"
+  },
+  {
+   "id": "FR-36-2026-000247",
+   "mfr": "Daikin",
+   "model": "EHVZ08S23EJ6V / ERGA08EAV3H7"
+  },
+  {
+   "id": "FR-36-2026-000176",
+   "mfr": "Daikin",
+   "model": "EHY2KOMB28AA / EJHA04AAV3"
+  },
+  {
+   "id": "FR-36-2026-000177",
+   "mfr": "Daikin",
+   "model": "EHY2KOMB32AA / EJHA04AAV3"
+  },
+  {
+   "id": "FR-36-2026-000359",
+   "mfr": "Daikin",
+   "model": "ELBH12EF6V / ERRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000341",
+   "mfr": "Daikin",
+   "model": "ELBH12EF6V / ERRA08EAV37"
+  },
+  {
+   "id": "FR-36-2026-000360",
+   "mfr": "Daikin",
+   "model": "ELBH12EF6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000342",
+   "mfr": "Daikin",
+   "model": "ELBH12EF6V / ERRA10EAV37"
+  },
+  {
+   "id": "FR-36-2026-000361",
+   "mfr": "Daikin",
+   "model": "ELBH12EF6V / ERRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000343",
+   "mfr": "Daikin",
+   "model": "ELBH12EF6V / ERRA12EAV37"
+  },
+  {
+   "id": "FR-36-2026-000362",
+   "mfr": "Daikin",
+   "model": "ELBH12EF9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000344",
+   "mfr": "Daikin",
+   "model": "ELBH12EF9W / ERRA08EAW17"
+  },
+  {
+   "id": "FR-36-2026-000363",
+   "mfr": "Daikin",
+   "model": "ELBH12EF9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000345",
+   "mfr": "Daikin",
+   "model": "ELBH12EF9W / ERRA10EAW17"
+  },
+  {
+   "id": "FR-36-2026-000364",
+   "mfr": "Daikin",
+   "model": "ELBH12EF9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000346",
+   "mfr": "Daikin",
+   "model": "ELBH12EF9W / ERRA12EAW17"
+  },
+  {
+   "id": "FR-36-2026-000324",
+   "mfr": "Daikin",
+   "model": "ELBX12EF6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000326",
+   "mfr": "Daikin",
+   "model": "ELBX12EF9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000327",
+   "mfr": "Daikin",
+   "model": "ELBX12EF9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000328",
+   "mfr": "Daikin",
+   "model": "ELBX12EF9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000365",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ6V / ERRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000347",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ6V / ERRA08EAV37"
+  },
+  {
+   "id": "FR-36-2026-000367",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000349",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ6V / ERRA10EAV37"
+  },
+  {
+   "id": "FR-36-2026-000371",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000353",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ9W / ERRA08EAW17"
+  },
+  {
+   "id": "FR-36-2026-000373",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000355",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ9W / ERRA10EAW17"
+  },
+  {
+   "id": "FR-36-2026-000375",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000357",
+   "mfr": "Daikin",
+   "model": "ELVH12S18EJ9W / ERRA12EAW17"
+  },
+  {
+   "id": "FR-36-2026-000366",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ6V / ERRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000348",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ6V / ERRA08EAV37"
+  },
+  {
+   "id": "FR-36-2026-000368",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000350",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ6V / ERRA10EAV37"
+  },
+  {
+   "id": "FR-36-2026-000370",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ6V / ERRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000352",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ6V / ERRA12EAV37"
+  },
+  {
+   "id": "FR-36-2026-000372",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000354",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ9W / ERRA08EAW17"
+  },
+  {
+   "id": "FR-36-2026-000374",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000356",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ9W / ERRA10EAW17"
+  },
+  {
+   "id": "FR-36-2026-000376",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000358",
+   "mfr": "Daikin",
+   "model": "ELVH12S23EJ9W / ERRA12EAW17"
+  },
+  {
+   "id": "FR-36-2026-000329",
+   "mfr": "Daikin",
+   "model": "ELVX12S18EJ6V / ERRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000331",
+   "mfr": "Daikin",
+   "model": "ELVX12S18EJ6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000333",
+   "mfr": "Daikin",
+   "model": "ELVX12S18EJ6V / ERRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000335",
+   "mfr": "Daikin",
+   "model": "ELVX12S18EJ9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000337",
+   "mfr": "Daikin",
+   "model": "ELVX12S18EJ9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000339",
+   "mfr": "Daikin",
+   "model": "ELVX12S18EJ9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000330",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ6V / ERRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000332",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000334",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ6V / ERRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000336",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000338",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000340",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000377",
+   "mfr": "Daikin",
+   "model": "ELVZ12S18EJ6V / ERRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000379",
+   "mfr": "Daikin",
+   "model": "ELVZ12S18EJ6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000381",
+   "mfr": "Daikin",
+   "model": "ELVZ12S18EJ6V / ERRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000383",
+   "mfr": "Daikin",
+   "model": "ELVZ12S18EJ9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000385",
+   "mfr": "Daikin",
+   "model": "ELVZ12S18EJ9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000387",
+   "mfr": "Daikin",
+   "model": "ELVZ12S18EJ9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000378",
+   "mfr": "Daikin",
+   "model": "ELVZ12S23EJ6V / ERRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000380",
+   "mfr": "Daikin",
+   "model": "ELVZ12S23EJ6V / ERRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000382",
+   "mfr": "Daikin",
+   "model": "ELVZ12S23EJ6V / ERRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000384",
+   "mfr": "Daikin",
+   "model": "ELVZ12S23EJ9W / ERRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000386",
+   "mfr": "Daikin",
+   "model": "ELVZ12S23EJ9W / ERRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000388",
+   "mfr": "Daikin",
+   "model": "ELVZ12S23EJ9W / ERRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000290",
+   "mfr": "Daikin",
+   "model": "EPBX07AF4V / EPSKS04ARV3"
+  },
+  {
+   "id": "FR-36-2026-000273",
+   "mfr": "Daikin",
+   "model": "EPVX10S18AJ4V / EPSK08ARV3"
+  },
+  {
+   "id": "FR-36-2026-000271",
+   "mfr": "Daikin",
+   "model": "EPVX10S18AJ4V / EPSK10ARV3"
+  },
+  {
+   "id": "FR-36-2026-000274",
+   "mfr": "Daikin",
+   "model": "EPVX14S23AJ9W / EPSK14ARW1"
+  },
+  {
+   "id": "FR-36-2026-000198",
+   "mfr": "Daikin",
+   "model": "ETVH12S18EA6V / EPRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000202",
+   "mfr": "Daikin",
+   "model": "ETVH12S18EA9W / EPRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000206",
+   "mfr": "Daikin",
+   "model": "ETVH12S18EA9W / EPRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000210",
+   "mfr": "Daikin",
+   "model": "ETVH12S18EA9W / EPRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000196",
+   "mfr": "Daikin",
+   "model": "ETVH12S23EA6V / EPRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000200",
+   "mfr": "Daikin",
+   "model": "ETVH12S23EA6V / EPRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000204",
+   "mfr": "Daikin",
+   "model": "ETVH12S23EA9W / EPRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000208",
+   "mfr": "Daikin",
+   "model": "ETVH12S23EA9W / EPRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000212",
+   "mfr": "Daikin",
+   "model": "ETVH12S23EA9W / EPRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000193",
+   "mfr": "Daikin",
+   "model": "ETVH12S23EJ6V / EPRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000160",
+   "mfr": "Daikin",
+   "model": "ETVH16S18EA9W7 / EPRA16DAW17"
+  },
+  {
+   "id": "FR-36-2026-000162",
+   "mfr": "Daikin",
+   "model": "ETVH16S18EA9W7 / EPRA16DBW17"
+  },
+  {
+   "id": "FR-36-2026-000169",
+   "mfr": "Daikin",
+   "model": "ETVH16S18EJ9W7 / EPRA18DAW17"
+  },
+  {
+   "id": "FR-36-2026-000171",
+   "mfr": "Daikin",
+   "model": "ETVH16S18EJ9W7 / EPRA18DBW17"
+  },
+  {
+   "id": "FR-36-2026-000151",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ6V7 / EPRA18DAV37"
+  },
+  {
+   "id": "FR-36-2026-000187",
+   "mfr": "Daikin",
+   "model": "ETVZ12S18EJ6V / EPRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000223",
+   "mfr": "Daikin",
+   "model": "ETVZ12S18EJ9W / EPRA12EAW1"
+  },
+  {
+   "id": "FR-36-2026-000217",
+   "mfr": "Daikin",
+   "model": "ETVZ12S23EJ9W / EPRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000122",
+   "mfr": "Daikin",
+   "model": "ETVZ16S18EA9W7 / EPRA14DBW17"
+  },
+  {
+   "id": "FR-36-2026-000129",
+   "mfr": "Daikin",
+   "model": "ETVZ16S18EJ9W7 / EPRA16DAW17"
+  },
+  {
+   "id": "FR-36-2026-000131",
+   "mfr": "Daikin",
+   "model": "ETVZ16S18EJ9W7 / EPRA16DBW17"
+  },
+  {
+   "id": "FR-36-2026-000118",
+   "mfr": "Daikin",
+   "model": "ETVZ16S23EA9W7 / EPRA14DBW17"
+  },
+  {
+   "id": "FR-36-2026-000126",
+   "mfr": "Daikin",
+   "model": "ETVZ16S23EA9W7 / EPRA16DBW17"
+  },
+  {
+   "id": "FR-36-2026-000127",
+   "mfr": "Daikin",
+   "model": "ETVZ16S23EJ9W7 / EPRA16DBW17"
+  },
+  {
+   "id": "FR-25-2026-000099",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 12 ME EU"
+  },
+  {
+   "id": "FR-25-2026-000100",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 12 MH EU"
+  },
+  {
+   "id": "FR-25-2026-000101",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 12 TE EU"
+  },
+  {
+   "id": "FR-25-2026-000110",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 16 ME EU"
+  },
+  {
+   "id": "FR-25-2026-000112",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 16 TE EU"
+  },
+  {
+   "id": "FR-25-2026-000080",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 4 ME EU"
+  },
+  {
+   "id": "FR-25-2026-000081",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 4 MH EU"
+  },
+  {
+   "id": "FR-25-2026-000085",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 6 ME EU"
+  },
+  {
+   "id": "FR-25-2026-000090",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 8 ME EU"
+  },
+  {
+   "id": "FR-25-2026-000091",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M 3R 8 MH EU"
+  },
+  {
+   "id": "FR-25-2026-000073",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M COMPACT 3R 16 ME EU"
+  },
+  {
+   "id": "FR-25-2026-000093",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M CONTROL 3R 12 M EU"
+  },
+  {
+   "id": "FR-25-2026-000104",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M CONTROL 3R 16 M EU"
+  },
+  {
+   "id": "FR-25-2026-000098",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 12 TH EU"
+  },
+  {
+   "id": "FR-25-2026-000107",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 16 MH EU"
+  },
+  {
+   "id": "FR-25-2026-000108",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 16 TE EU"
+  },
+  {
+   "id": "FR-25-2026-000079",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 4 MH EU"
+  },
+  {
+   "id": "FR-25-2026-000084",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 6 MH EU"
+  },
+  {
+   "id": "FR-25-2026-000088",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 8 ME EU"
+  },
+  {
+   "id": "FR-25-2026-000089",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 8 MH EU"
+  },
+  {
+   "id": "FR-25-2025-000050",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S 11 MR/H"
+  },
+  {
+   "id": "FR-25-2025-000053",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S 11 TR/ET"
+  },
+  {
+   "id": "FR-25-2025-000055",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S 16 MR/EM"
+  },
+  {
+   "id": "FR-25-2025-000067",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S 16 TR/ET V200"
+  },
+  {
+   "id": "FR-25-2025-000013",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 12 MR/E"
+  },
+  {
+   "id": "FR-25-2025-000016",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 16 TR/E"
+  },
+  {
+   "id": "FR-25-2025-000020",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 16 TR/H"
+  },
+  {
+   "id": "FR-25-2025-000007",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 4 MR/EM"
+  },
+  {
+   "id": "FR-25-2025-000012",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 8 MR/H"
+  },
+  {
+   "id": "FR-25-2025-000032",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S V200 R32 16 MR/H"
+  },
+  {
+   "id": "FR-25-2025-000039",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 11 MR/EM"
+  },
+  {
+   "id": "FR-25-2026-000068",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 11 TR/ET"
+  },
+  {
+   "id": "FR-25-2025-000040",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 16 MR/H"
+  },
+  {
+   "id": "FR-25-2025-000043",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 16 TR/ET"
+  },
+  {
+   "id": "FR-25-2025-000042",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 16 TR/H"
+  },
+  {
+   "id": "FR-25-2025-000047",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 27 TR/ET"
+  },
+  {
+   "id": "FR-38-2026-000003",
+   "mfr": "Domusa Teknik",
+   "model": "DUAL CLIMA 12 HT PRO"
+  },
+  {
+   "id": "FR-38-2026-000004",
+   "mfr": "Domusa Teknik",
+   "model": "DUAL CLIMA 12 HTT PRO"
+  },
+  {
+   "id": "FR-151-2026-000002",
+   "mfr": "Easypell",
+   "model": "EPA09"
+  },
+  {
+   "id": "16020570",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-12 + CBHA-IG1V04-12"
+  },
+  {
+   "id": "16020575",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-12 Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020566",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-8 + CBHA-IG1V04-8"
+  },
+  {
+   "id": "16020574",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG1V03-8 Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020578",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-12S Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020572",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-15 + CBHA-IG4V04-15"
+  },
+  {
+   "id": "16020581",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-15S Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "16020582",
+   "mfr": "Ecochi",
+   "model": "CBHA-OG4V03-20S Pro + CBHA-IG4V04-Pro"
+  },
+  {
+   "id": "FR-39-2026-000217",
+   "mfr": "Ecoforest",
+   "model": "ecoAIR+ 230 6-24 PRO"
+  },
+  {
+   "id": "FR-39-2026-000218",
+   "mfr": "Ecoforest",
+   "model": "ecoAIR+ 230 6-24 PRO HTR"
+  },
+  {
+   "id": "FR-39-2026-000032",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B1 230 2-10 PRO EH"
+  },
+  {
+   "id": "FR-39-2026-000073",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 400 4-16 PRO"
+  },
+  {
+   "id": "FR-39-2026-000041",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 230 2-10 PRO HTR"
+  },
+  {
+   "id": "FR-39-2026-000103",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ C1 400 4-16 PRO EH"
+  },
+  {
+   "id": "16011974",
+   "mfr": "Ecoluxe GmbH",
+   "model": "Basic Flow 6"
+  },
+  {
+   "id": "16020610",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 05.3 CORE 230V"
+  },
+  {
+   "id": "16020609",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 05.3 WH 230V"
+  },
+  {
+   "id": "16020614",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 CORE"
+  },
+  {
+   "id": "16020612",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 CORE 230V"
+  },
+  {
+   "id": "16020613",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 WH"
+  },
+  {
+   "id": "16020611",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 07.3 WH 230V"
+  },
+  {
+   "id": "16020616",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 10.3 CORE"
+  },
+  {
+   "id": "16020615",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 10.3 WH"
+  },
+  {
+   "id": "16020618",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 12.3 CORE"
+  },
+  {
+   "id": "16020617",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 12.3 WH"
+  },
+  {
+   "id": "16020725",
+   "mfr": "ELCO",
+   "model": "AEROTOP SPX 07 WH-B"
+  },
+  {
+   "id": "16020726",
+   "mfr": "ELCO",
+   "model": "AEROTOP SPX 10 WH-B"
+  },
+  {
+   "id": "FR-161-2026-000002",
+   "mfr": "Energie",
+   "model": "AQUAPURA 8 HT (Inverter P 3-10)"
+  },
+  {
+   "id": "FR-161-2026-000001",
+   "mfr": "Energie",
+   "model": "Intelligent Inverter Heat Pump-R290- AQUAPURA 12HT"
+  },
+  {
+   "id": "FR-161-2026-000006",
+   "mfr": "Energie",
+   "model": "Intelligent Inverter Heat Pump-R290-AQUAPURA X30 HT"
+  },
+  {
+   "id": "FR-161-2026-000007",
+   "mfr": "Energie",
+   "model": "Intelligent Inverter Heat Pump-R290-AQUAPURA X60 HT"
+  },
+  {
+   "id": "16020481",
+   "mfr": "EQ-Therm",
+   "model": "EQ Novara Pro 12"
+  },
+  {
+   "id": "16020480",
+   "mfr": "EQ-Therm",
+   "model": "EQ Novara Pro 18"
+  },
+  {
+   "id": "16020482",
+   "mfr": "EQ-Therm",
+   "model": "EQ Novara pro 8"
+  },
+  {
+   "id": "FR-42-2026-000012",
+   "mfr": "Frisquet",
+   "model": "TEAMAO 4 SWELL 12 kW"
+  },
+  {
+   "id": "FR-42-2026-000013",
+   "mfr": "Frisquet",
+   "model": "TEAMAO 4 SWELL 14 kW"
+  },
+  {
+   "id": "FR-42-2026-000014",
+   "mfr": "Frisquet",
+   "model": "TEAMAO 4 SWELL 14 kW TRI"
+  },
+  {
+   "id": "16020739",
+   "mfr": "GD New Energy",
+   "model": "NE-F1000HCR5TINVM-USV"
+  },
+  {
+   "id": "16020783",
+   "mfr": "GD New Energy",
+   "model": "NE-F500HCR5TINVM-USV"
+  },
+  {
+   "id": "FR-45-2026-000010",
+   "mfr": "Géo-Fluth",
+   "model": "K12H 230V"
+  },
+  {
+   "id": "FR-45-2026-000027",
+   "mfr": "Géo-Fluth",
+   "model": "K15F 400V"
+  },
+  {
+   "id": "FR-45-2026-000013",
+   "mfr": "Géo-Fluth",
+   "model": "K19H 400V"
+  },
+  {
+   "id": "FR-45-2026-000029",
+   "mfr": "Géo-Fluth",
+   "model": "K24F 400V"
+  },
+  {
+   "id": "FR-45-2026-000002",
+   "mfr": "Géo-Fluth",
+   "model": "K5H 230V"
+  },
+  {
+   "id": "FR-45-2026-000007",
+   "mfr": "Géo-Fluth",
+   "model": "K9H 400V"
+  },
+  {
+   "id": "16011893",
+   "mfr": "Gondzik Home Technologies GmbH",
+   "model": "Zulu 13 R290"
+  },
+  {
+   "id": "16011894",
+   "mfr": "Gondzik Home Technologies GmbH",
+   "model": "Zulu 23 R290"
+  },
+  {
+   "id": "16020690",
+   "mfr": "Görrissen",
+   "model": "EvoNova C30"
+  },
+  {
+   "id": "16020691",
+   "mfr": "Görrissen",
+   "model": "EvoNova C40"
+  },
+  {
+   "id": "16015072",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 160- TRI"
+  },
+  {
+   "id": "16020544",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 160-TRI-1"
+  },
+  {
+   "id": "16015067",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 60"
+  },
+  {
+   "id": "16020496",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 60-1"
+  },
+  {
+   "id": "16015068",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 90"
+  },
+  {
+   "id": "16020542",
+   "mfr": "Guangzhou Green Power Technology Co., Ltd",
+   "model": "Master plus 90-1"
+  },
+  {
+   "id": "FR-145-2026-000012",
+   "mfr": "Heiwa",
+   "model": "HHEC-120-V1 / HHIC-160-V1"
+  },
+  {
+   "id": "FR-145-2026-000008",
+   "mfr": "Heiwa",
+   "model": "HHEC-120-V1 / HHIECSC-160/240-V1"
+  },
+  {
+   "id": "FR-145-2026-000011",
+   "mfr": "Heiwa",
+   "model": "HHEC-120TRI-V1 / HHIECSC-160/240-V1"
+  },
+  {
+   "id": "FR-145-2026-000013",
+   "mfr": "Heiwa",
+   "model": "HHEC-140-V1 / HHIC-160-V1"
+  },
+  {
+   "id": "FR-145-2026-000009",
+   "mfr": "Heiwa",
+   "model": "HHEC-140-V1 / HHIECSC-160/240-V1"
+  },
+  {
+   "id": "FR-145-2026-000015",
+   "mfr": "Heiwa",
+   "model": "HHEC-140TRI-V1 / HHIC-160-V1"
+  },
+  {
+   "id": "FR-145-2026-000010",
+   "mfr": "Heiwa",
+   "model": "HHEC-140TRI-V1 / HHIECSC-160/240-V1"
+  },
+  {
+   "id": "16020468",
+   "mfr": "Hisense",
+   "model": "HFRWVE-75DPP/EH"
+  },
+  {
+   "id": "FR-54-2026-000077",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI M 11kW Mono R32"
+  },
+  {
+   "id": "FR-54-2026-000080",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI M 11kW Tri R32"
+  },
+  {
+   "id": "FR-54-2026-000036",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S 2.0 24.0kW Tri R410A"
+  },
+  {
+   "id": "16020538",
+   "mfr": "Hoval",
+   "model": "Belaria pro comfort (6)"
+  },
+  {
+   "id": "16017396",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-006HXSP1"
+  },
+  {
+   "id": "16015245",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-008HXSP1"
+  },
+  {
+   "id": "16015246",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-012HXSP1"
+  },
+  {
+   "id": "16015247",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-015HXSP1"
+  },
+  {
+   "id": "16015248",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-015HXSP3"
+  },
+  {
+   "id": "16015249",
+   "mfr": "INTERCOOL HELLAS SA",
+   "model": "SHP-022HXSP3"
+  },
+  {
+   "id": "16018227",
+   "mfr": "Interdomo",
+   "model": "DomoConnect GP16"
+  },
+  {
+   "id": "FR-53-2026-000053",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 12kW mono"
+  },
+  {
+   "id": "FR-53-2026-000055",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 12kW mono DS170D"
+  },
+  {
+   "id": "FR-53-2026-000060",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 12kW tri"
+  },
+  {
+   "id": "FR-53-2026-000063",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 12kW tri DS170D"
+  },
+  {
+   "id": "FR-53-2026-000061",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 12kW tri PREMIUM+"
+  },
+  {
+   "id": "FR-53-2026-000058",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 18kW tri Z1 cascade"
+  },
+  {
+   "id": "FR-53-2026-000056",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 9kW tri"
+  },
+  {
+   "id": "FR-53-2026-000059",
+   "mfr": "Intuis",
+   "model": "HMP⁷⁰ 9kW tri DS170D"
+  },
+  {
+   "id": "FR-53-2026-000009",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 20kW /3 tri Z1"
+  },
+  {
+   "id": "FR-53-2026-000042",
+   "mfr": "Intuis",
+   "model": "HTi⁷⁰ 11kW tri PREMIUM+"
+  },
+  {
+   "id": "FR-53-2026-000037",
+   "mfr": "Intuis",
+   "model": "HTi⁷⁰ 8kW tri"
+  },
+  {
+   "id": "FR-53-2026-000040",
+   "mfr": "Intuis",
+   "model": "HTi⁷⁰ 8kW tri DS170D"
+  },
+  {
+   "id": "FR-56-2026-000006",
+   "mfr": "Lemasson",
+   "model": "INDUS T118 E"
+  },
+  {
+   "id": "FR-56-2026-000011",
+   "mfr": "Lemasson",
+   "model": "INDUS T118 G"
+  },
+  {
+   "id": "FR-56-2026-000005",
+   "mfr": "Lemasson",
+   "model": "INDUS T98 E"
+  },
+  {
+   "id": "16020683",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020684",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020685",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020682",
+   "mfr": "LG",
+   "model": "THERMA V [HM051HFD.UA41 + PHCS1]"
+  },
+  {
+   "id": "16020686",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020687",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020688",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020689",
+   "mfr": "LG",
+   "model": "THERMA V [HM071HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020696",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020697",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020695",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020698",
+   "mfr": "LG",
+   "model": "THERMA V [HM073HFD.UA41+ HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020699",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020700",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020701",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020702",
+   "mfr": "LG",
+   "model": "THERMA V [HM091HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020704",
+   "mfr": "LG",
+   "model": "THERMA V [HM093HFD.UA41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020705",
+   "mfr": "LG",
+   "model": "THERMA V [HM093HFD.UA41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020703",
+   "mfr": "LG",
+   "model": "THERMA V [HM093HFD.UA41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020707",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020708",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020709",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020710",
+   "mfr": "LG",
+   "model": "THERMA V [HM123HFD.UB41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020711",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020712",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020713",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020714",
+   "mfr": "LG",
+   "model": "THERMA V [HM143HFD.UB41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020716",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + HN16XAHC.NK1]"
+  },
+  {
+   "id": "16020717",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020718",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + HN20XAHY.NK1]"
+  },
+  {
+   "id": "16020715",
+   "mfr": "LG",
+   "model": "THERMA V [HM163HFD.UB41 + PHCS1.EEWXLEU]"
+  },
+  {
+   "id": "16020706",
+   "mfr": "LG",
+   "model": "THERMA V [HN093HFD.UA41 + HN20XAHB.NK1]"
+  },
+  {
+   "id": "16020675",
+   "mfr": "LG",
+   "model": "THERMA V HM071HFS.UA41"
+  },
+  {
+   "id": "16020676",
+   "mfr": "LG",
+   "model": "THERMA V HM073HFS.UA41"
+  },
+  {
+   "id": "16020677",
+   "mfr": "LG",
+   "model": "THERMA V HM091HFS.UA41"
+  },
+  {
+   "id": "16020678",
+   "mfr": "LG",
+   "model": "THERMA V HM093HFS.UA41"
+  },
+  {
+   "id": "16020679",
+   "mfr": "LG",
+   "model": "THERMA V HM123HFS.UB41"
+  },
+  {
+   "id": "16020680",
+   "mfr": "LG",
+   "model": "THERMA V HM143HFS.UB41"
+  },
+  {
+   "id": "16020681",
+   "mfr": "LG",
+   "model": "THERMA V HM163HFS.UB41"
+  },
+  {
+   "id": "FR-57-2026-000006",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 12kW - Monophasé"
+  },
+  {
+   "id": "16020633",
+   "mfr": "Midea",
+   "model": "HSR50N7-H1"
+  },
+  {
+   "id": "FR-60-2026-000107",
+   "mfr": "Mitsubishi Electric",
+   "model": "PUHZ-SW160YKA + ERSE-*M*ED"
+  },
+  {
+   "id": "FR-60-2026-000102",
+   "mfr": "Mitsubishi Electric",
+   "model": "PUZ-SWM120VAA + ERSF-*M*E"
+  },
+  {
+   "id": "FR-60-2026-000106",
+   "mfr": "Mitsubishi Electric",
+   "model": "PUZ-SWM80VAA + ERSF-*M*E"
+  },
+  {
+   "id": "FR-62-2026-000022",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1156-8 PC"
+  },
+  {
+   "id": "FR-62-2026-000047",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1156-8 PC"
+  },
+  {
+   "id": "FR-62-2026-000069",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S2061-10 3x400V"
+  },
+  {
+   "id": "FR-62-2026-000070",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S2061-12 1x230V"
+  },
+  {
+   "id": "FR-62-2026-000072",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S2061-16 1x230V"
+  },
+  {
+   "id": "FR-62-2026-000073",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S2061-16 3x400V"
+  },
+  {
+   "id": "FR-62-2026-000067",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S2061-5 1x230V"
+  },
+  {
+   "id": "FR-62-2026-000007",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S2125-20 1X230V"
+  },
+  {
+   "id": "FR-62-2026-000032",
+   "mfr": "Nibe Ab",
+   "model": "S1256-18 Cu/R/E"
+  },
+  {
+   "id": "FR-62-2026-000057",
+   "mfr": "Nibe Ab",
+   "model": "S1256-18 Cu/R/E"
+  },
+  {
+   "id": "FR-62-2026-000001",
+   "mfr": "Nibe Ab",
+   "model": "S2125-8 1X230V"
+  },
+  {
+   "id": "16020564",
+   "mfr": "NMT",
+   "model": "AiroSAX8"
+  },
+  {
+   "id": "16020752",
+   "mfr": "Ochsner",
+   "model": "OCHSNER AIR EAGLE 2545 C12A CM1"
+  },
+  {
+   "id": "16020556",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-MDC07J3E5-1]"
+  },
+  {
+   "id": "16018640",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0912K9E8AN3 + WH-UQZ09KE8]"
+  },
+  {
+   "id": "16018644",
+   "mfr": "Panasonic",
+   "model": "Aquarea [WH-ADC0912K9E8AN3 + WH-UQZ12KE8]"
+  },
+  {
+   "id": "16020557",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-MDC09J3E5-1]"
+  },
+  {
+   "id": "16020730",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG16ME8 + WH-ADC0316M9E8AN2]"
+  },
+  {
+   "id": "FR-64-2026-000088",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance All in One 185 L Série K 12 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000100",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance All in One 185 L Série K 3 kW"
+  },
+  {
+   "id": "FR-64-2026-000084",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance All in One 185 L Série K 9 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000109",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance All in One 260 L Série K 16 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000046",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance All in One Série K 5 kW"
+  },
+  {
+   "id": "FR-64-2026-000011",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP All in One 185 L Série M 12 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000014",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP All in One 185 L Série M 9 kW monophasé"
+  },
+  {
+   "id": "FR-64-2026-000106",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP All in One Série K 16 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000008",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP bi-bloc Série M 9 kW triphasé"
+  },
+  {
+   "id": "FR-176-2026-000004",
+   "mfr": "Perge Axen",
+   "model": "OptiPac MR290 12 Mono"
+  },
+  {
+   "id": "FR-176-2026-000007",
+   "mfr": "Perge Axen",
+   "model": "OptiPac MR290 16 Tri"
+  },
+  {
+   "id": "FR-176-2026-000001",
+   "mfr": "Perge Axen",
+   "model": "OptiPac MR290 4 Mono"
+  },
+  {
+   "id": "FR-176-2026-000002",
+   "mfr": "Perge Axen",
+   "model": "OptiPac MR290 7 Mono"
+  },
+  {
+   "id": "FR-176-2026-000003",
+   "mfr": "Perge Axen",
+   "model": "OptiPac MR290 9 Mono"
+  },
+  {
+   "id": "FR-156-2026-000001",
+   "mfr": "QVANTUM",
+   "model": "QE 4"
+  },
+  {
+   "id": "FR-156-2026-000004",
+   "mfr": "QVANTUM",
+   "model": "QG 14"
+  },
+  {
+   "id": "FR-156-2026-000003",
+   "mfr": "QVANTUM",
+   "model": "QG 7"
+  },
+  {
+   "id": "16020651",
+   "mfr": "Redge",
+   "model": "GHS250DP1M"
+  },
+  {
+   "id": "16020693",
+   "mfr": "Rhoss",
+   "model": "THAETU 4450 FIEC"
+  },
+  {
+   "id": "16020537",
+   "mfr": "Rhoss",
+   "model": "THAITP 140"
+  },
+  {
+   "id": "16020539",
+   "mfr": "S-Klima",
+   "model": "SAL1110RS2B"
+  },
+  {
+   "id": "16020540",
+   "mfr": "S-Klima",
+   "model": "SAL1210RS2B"
+  },
+  {
+   "id": "16020541",
+   "mfr": "S-Klima",
+   "model": "SAL1280RS2B"
+  },
+  {
+   "id": "16014833",
+   "mfr": "S-Klima",
+   "model": "SAS120RN3A"
+  },
+  {
+   "id": "16014836",
+   "mfr": "S-Klima",
+   "model": "SAS120RS3A"
+  },
+  {
+   "id": "FR-67-2026-000055",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Classic 5 - 230V + module hydraulique"
+  },
+  {
+   "id": "FR-67-2026-000018",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Max 12 - 230 V + Module hydraulique mural"
+  },
+  {
+   "id": "FR-67-2026-000099",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Max 12 - 230V + interface"
+  },
+  {
+   "id": "FR-67-2026-000017",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Max 8 - 230 V + Module hydraulique mural"
+  },
+  {
+   "id": "16020546",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_11"
+  },
+  {
+   "id": "16020549",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_18"
+  },
+  {
+   "id": "16020548",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_22"
+  },
+  {
+   "id": "16020545",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-V_8"
+  },
+  {
+   "id": "16019663",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-Z-100"
+  },
+  {
+   "id": "16019662",
+   "mfr": "Schönknecht",
+   "model": "SB-WP-290-Z-50"
+  },
+  {
+   "id": "16020522",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.06/1"
+  },
+  {
+   "id": "16020523",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.08/1"
+  },
+  {
+   "id": "16020524",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.08/3"
+  },
+  {
+   "id": "16020525",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.10/1"
+  },
+  {
+   "id": "16020529",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.10/3"
+  },
+  {
+   "id": "16020530",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.12/3"
+  },
+  {
+   "id": "16020531",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.14/1"
+  },
+  {
+   "id": "16020532",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.14/3"
+  },
+  {
+   "id": "16020533",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.16/1"
+  },
+  {
+   "id": "16020534",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.16/3"
+  },
+  {
+   "id": "16020535",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.20/3"
+  },
+  {
+   "id": "16020536",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSL-FG2.30/3"
+  },
+  {
+   "id": "16020555",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSLD 10"
+  },
+  {
+   "id": "16020552",
+   "mfr": "Schwäbische Energiesysteme",
+   "model": "Thermoschwob TSLD 7"
+  },
+  {
+   "id": "16020506",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-10K"
+  },
+  {
+   "id": "16020510",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-12K"
+  },
+  {
+   "id": "16020513",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-14K"
+  },
+  {
+   "id": "16020519",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-16K"
+  },
+  {
+   "id": "16020483",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I1-C01 and outdoor unit AS-RHP07-O3-8K"
+  },
+  {
+   "id": "16020507",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-10K"
+  },
+  {
+   "id": "16020511",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-12K"
+  },
+  {
+   "id": "16020517",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-14K"
+  },
+  {
+   "id": "16020521",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-16K"
+  },
+  {
+   "id": "16020484",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-H01 and outdoor unit AS-RHP07-O3-8K"
+  },
+  {
+   "id": "16020505",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-10K"
+  },
+  {
+   "id": "16020508",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-12K"
+  },
+  {
+   "id": "16020515",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-14K"
+  },
+  {
+   "id": "16020518",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-16K"
+  },
+  {
+   "id": "16020485",
+   "mfr": "Solar Solutions AG",
+   "model": "Indoor unit AS-RHP07-I3-T01 and outdoor unit AS-RHP07-O3-8K"
+  },
+  {
+   "id": "16020731",
+   "mfr": "SolarEast",
+   "model": "BLN-007TH1"
+  },
+  {
+   "id": "16020732",
+   "mfr": "SolarEast",
+   "model": "BLN-008TH1"
+  },
+  {
+   "id": "16020733",
+   "mfr": "SolarEast",
+   "model": "BLN-008TH3"
+  },
+  {
+   "id": "16020738",
+   "mfr": "SolarEast",
+   "model": "BLN-009TH1"
+  },
+  {
+   "id": "16020737",
+   "mfr": "SolarEast",
+   "model": "BLN-009TH3"
+  },
+  {
+   "id": "FR-149-2026-000017",
+   "mfr": "Stiebel Eltron",
+   "model": "HPG-I 04 CS Premium"
+  },
+  {
+   "id": "FR-149-2026-000030",
+   "mfr": "Stiebel Eltron",
+   "model": "WPE-I 12.1 Plus H 400"
+  },
+  {
+   "id": "FR-149-2026-000057",
+   "mfr": "Stiebel Eltron",
+   "model": "WPL 23 E"
+  },
+  {
+   "id": "16020644",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 14"
+  },
+  {
+   "id": "16020645",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 18"
+  },
+  {
+   "id": "16020646",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 24"
+  },
+  {
+   "id": "16020647",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 30"
+  },
+  {
+   "id": "16020648",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 36"
+  },
+  {
+   "id": "16020649",
+   "mfr": "Swegon",
+   "model": "EPSILON Zero Hi HP 45"
+  },
+  {
+   "id": "16019458",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 40.2 SN"
+  },
+  {
+   "id": "16019459",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 40.2 STD"
+  },
+  {
+   "id": "16019468",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 50.2 SN"
+  },
+  {
+   "id": "16019469",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 50.2 STD"
+  },
+  {
+   "id": "16019471",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 55.2 SN"
+  },
+  {
+   "id": "16019472",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 70.2 SN"
+  },
+  {
+   "id": "16019478",
+   "mfr": "Systemair",
+   "model": "POLARIX GEN HP 95.2 SN"
+  },
+  {
+   "id": "FR-157-2026-000002",
+   "mfr": "Thaleos",
+   "model": "THAHP06M"
+  },
+  {
+   "id": "FR-157-2026-000009",
+   "mfr": "Thaleos",
+   "model": "THAHP10T"
+  },
+  {
+   "id": "FR-18-2026-000002",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 2 6"
+  },
+  {
+   "id": "FR-18-2026-000010",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 2 Duo  5"
+  },
+  {
+   "id": "FR-18-2026-000011",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 2 Duo 6"
+  },
+  {
+   "id": "FR-18-2026-000064",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 2 Duo 3 2026"
+  },
+  {
+   "id": "FR-18-2026-000065",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 2 Duo 4 2026"
+  },
+  {
+   "id": "FR-18-2026-000056",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 2 M 4 2026"
+  },
+  {
+   "id": "FR-18-2026-000058",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 2 M7"
+  },
+  {
+   "id": "FR-18-2026-000037",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 6 2026"
+  },
+  {
+   "id": "FR-18-2026-000054",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea Compact 2 - 12 Tri"
+  },
+  {
+   "id": "FR-18-2026-000048",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea Compact 2 - 5"
+  },
+  {
+   "id": "FR-18-2026-000053",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea Compact 2 - 9 Tri"
+  },
+  {
+   "id": "FR-158-2026-000003",
+   "mfr": "Thomson",
+   "model": "AW-MBT01-H080M-A443GZ1"
+  },
+  {
+   "id": "FR-158-2026-000005",
+   "mfr": "Thomson",
+   "model": "AW-MBT01-H120M-A443GZ1"
+  },
+  {
+   "id": "FR-158-2026-000006",
+   "mfr": "Thomson",
+   "model": "AW-MBT01-H120T-A449GZ1"
+  },
+  {
+   "id": "FR-158-2026-000010",
+   "mfr": "Thomson",
+   "model": "AW-MBT01-H160T-A449GZ1"
+  },
+  {
+   "id": "FR-70-2026-000168",
+   "mfr": "Toshiba",
+   "model": "BI-BLOC R290 HWP-40-XWHT8-H"
+  },
+  {
+   "id": "FR-70-2026-000188",
+   "mfr": "Toshiba",
+   "model": "HWT-1101HRW-E / HWT-1101XWHM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000313",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8RW-E / HWT-1402S21MT6W-E"
+  },
+  {
+   "id": "FR-70-2026-000311",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8W-E / HWT-1402S21MT6W-E"
+  },
+  {
+   "id": "FR-70-2026-000312",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8W-E / HWT-1402S21MT9W-E"
+  },
+  {
+   "id": "FR-70-2026-000315",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8W-E / HWT-1402S21SM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000314",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8W-E / HWT-1402S21ST6W-E"
+  },
+  {
+   "id": "FR-70-2026-000262",
+   "mfr": "Toshiba",
+   "model": "HWT-1401HRW-E / HWT-1402S21SM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000261",
+   "mfr": "Toshiba",
+   "model": "HWT-1401HRW-E / HWT-1402S21ST6W-E"
+  },
+  {
+   "id": "FR-70-2026-000263",
+   "mfr": "Toshiba",
+   "model": "HWT-1401HW-E / HWT-1402S21SM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000264",
+   "mfr": "Toshiba",
+   "model": "HWT-1401HW-E / HWT-1402S21ST9W-E"
+  },
+  {
+   "id": "FR-70-2026-000225",
+   "mfr": "Toshiba",
+   "model": "HWT-401HW-E / HWT-602S21MM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000227",
+   "mfr": "Toshiba",
+   "model": "HWT-401HW-E / HWT-602S21MT6W-E"
+  },
+  {
+   "id": "FR-70-2026-000226",
+   "mfr": "Toshiba",
+   "model": "HWT-601HW-E / HWT-602S21MM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000224",
+   "mfr": "Toshiba",
+   "model": "HWT-601HW-E / HWT-602S21MT6W-E"
+  },
+  {
+   "id": "FR-70-2026-000289",
+   "mfr": "Toshiba",
+   "model": "HWT-801H8W-E / HWT-1102S21MT6W-E"
+  },
+  {
+   "id": "FR-70-2026-000290",
+   "mfr": "Toshiba",
+   "model": "HWT-801H8W-E / HWT-1102S21MT9W-E"
+  },
+  {
+   "id": "16020643",
+   "mfr": "Trane",
+   "model": "ASHP038 LN"
+  },
+  {
+   "id": "16020654",
+   "mfr": "Trane",
+   "model": "ASHP038 SN"
+  },
+  {
+   "id": "16020642",
+   "mfr": "Vaillant",
+   "model": "aroTHERM perform VWL 155/8.1 A S2 Q"
+  },
+  {
+   "id": "FR-68-2026-000018",
+   "mfr": "Vaillant",
+   "model": "VWL 125/6 A 230V + Module hydraulique"
+  },
+  {
+   "id": "FR-152-2026-000029",
+   "mfr": "Viessmann",
+   "model": "IDU-A Compact AWMIT.A1.19-V053 / ODU 150-A AWMOF-151.A1.08-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000006",
+   "mfr": "Viessmann",
+   "model": "IDU-A Compact AWMIT.A1.19-V053 / ODU 150-A AWMOF-151.A1.13-400-V001"
+  },
+  {
+   "id": "FR-152-2026-000028",
+   "mfr": "Viessmann",
+   "model": "IDU-A Hybrid HWMIW.A1.19-V054 / ODU 150-A AWMOF-151.A1.06-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000003",
+   "mfr": "Viessmann",
+   "model": "IDU-A Hybrid HWMIW.A1.19-V054 / ODU 150-A AWMOF-151.A1.10-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000007",
+   "mfr": "Viessmann",
+   "model": "IDU-A Hybrid HWMIW.A1.19-V054 / ODU 150-A AWMOF-151.A1.13-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000008",
+   "mfr": "Viessmann",
+   "model": "IDU-A Hybrid HWMIW.A1.19-V054 / ODU 150-A AWMOF-151.A1.13-400-V001"
+  },
+  {
+   "id": "FR-152-2026-000011",
+   "mfr": "Viessmann",
+   "model": "IDU-A Hybrid HWMIW.A1.19-V054 / ODU 150-A AWMOF-151.A1.16-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000012",
+   "mfr": "Viessmann",
+   "model": "IDU-A Hybrid HWMIW.A1.19-V054 / ODU 150-A AWMOF-151.A1.16-400-V001"
+  },
+  {
+   "id": "FR-152-2026-000042",
+   "mfr": "Viessmann",
+   "model": "IDU-A Modular AWMIW.A1.19-V051 / ODU 150-A AWMOF-151.A1.10-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000114",
+   "mfr": "Viessmann",
+   "model": "Vitocal 100-S AWB-M-E-AC 101.B08 F"
+  },
+  {
+   "id": "FR-152-2026-000094",
+   "mfr": "Viessmann",
+   "model": "Vitocal 222-S AWBT-M-E-AC 221.E06 2C SP"
+  },
+  {
+   "id": "FR-152-2026-000095",
+   "mfr": "Viessmann",
+   "model": "Vitocal 222-S AWBT-M-E-AC 221.E06 SP"
+  },
+  {
+   "id": "FR-152-2026-000096",
+   "mfr": "Viessmann",
+   "model": "Vitocal 222-S AWBT-M-E-AC-AF 221.E06 2C SP"
+  },
+  {
+   "id": "FR-152-2026-000097",
+   "mfr": "Viessmann",
+   "model": "Vitocal 222-S AWBT-M-E-AC-AF 221.E06 SP"
+  },
+  {
+   "id": "16020576",
+   "mfr": "Wolf",
+   "model": "CHA-3-07-400V-M"
+  },
+  {
+   "id": "16020577",
+   "mfr": "Wolf",
+   "model": "CHA-3-10-230V400V-M"
+  }
+ ],
+ "removed": [
+  {
+   "id": "FR-130-2026-000003",
+   "mfr": "Airmat",
+   "model": "GALICE 3.0 - 11 kW MONO"
+  },
+  {
+   "id": "FR-130-2026-000006",
+   "mfr": "Airmat",
+   "model": "GALICE 3.0 - 13 kW TRI"
+  },
+  {
+   "id": "FR-1-2026-000045",
+   "mfr": "Airwell",
+   "model": "AW-YHPSA16-H91 + ODMA-160T-09M22-25"
+  },
+  {
+   "id": "FR-165-2026-000007",
+   "mfr": "ARGO",
+   "model": "ANGHP16T"
+  },
+  {
+   "id": "FR-6-2026-000078",
+   "mfr": "Ariston",
+   "model": "NIMBUS 5 PLUS 120 M-T R290"
+  },
+  {
+   "id": "FR-6-2026-000046",
+   "mfr": "Ariston",
+   "model": "NIMBUS PLUS 120 M NET R32"
+  },
+  {
+   "id": "FR-6-2026-000002",
+   "mfr": "Ariston",
+   "model": "NIMBUS PLUS 120 S NET R32"
+  },
+  {
+   "id": "FR-6-2026-000041",
+   "mfr": "Ariston",
+   "model": "NIMBUS PLUS 150 S-T NET R32"
+  },
+  {
+   "id": "FR-6-2026-000042",
+   "mfr": "Ariston",
+   "model": "NIMBUS PLUS 35 M NET R32"
+  },
+  {
+   "id": "FR-6-2026-000037",
+   "mfr": "Ariston",
+   "model": "NIMBUS PLUS 35 S NET R32"
+  },
+  {
+   "id": "FR-6-2026-000044",
+   "mfr": "Ariston",
+   "model": "NIMBUS PLUS 80 M NET R32"
+  },
+  {
+   "id": "FR-6-2026-000039",
+   "mfr": "Ariston",
+   "model": "NIMBUS PLUS 80 S-T NET R32"
+  },
+  {
+   "id": "FR-6-2026-000050",
+   "mfr": "Ariston",
+   "model": "NIMBUS POCKET 35 M NET R32"
+  },
+  {
+   "id": "FR-10-2026-000010",
+   "mfr": "Arkteos",
+   "model": "MCIR090VR6"
+  },
+  {
+   "id": "FR-10-2026-000011",
+   "mfr": "Arkteos",
+   "model": "MCIR090WR6"
+  },
+  {
+   "id": "FR-10-2026-000014",
+   "mfr": "Arkteos",
+   "model": "MCIR160VR6"
+  },
+  {
+   "id": "FR-10-2026-000016",
+   "mfr": "Arkteos",
+   "model": "MCIR200WR6"
+  },
+  {
+   "id": "FR-10-2026-000004",
+   "mfr": "Arkteos",
+   "model": "MCIS120VR6"
+  },
+  {
+   "id": "FR-11-2026-000064",
+   "mfr": "Atlantic",
+   "model": "Alfea Excellia Duo A.I. 14 2024"
+  },
+  {
+   "id": "FR-11-2026-000068",
+   "mfr": "Atlantic",
+   "model": "Alfea Excellia Duo A.I. Tri 14 2024"
+  },
+  {
+   "id": "FR-11-2026-000056",
+   "mfr": "Atlantic",
+   "model": "Alfea Excellia HP A.I. Tri 15"
+  },
+  {
+   "id": "FR-11-2026-000057",
+   "mfr": "Atlantic",
+   "model": "Alfea Excellia HP A.I. Tri 17"
+  },
+  {
+   "id": "FR-11-2026-000093",
+   "mfr": "Atlantic",
+   "model": "Alfea Excellia S Duo 12 Tri 2026"
+  },
+  {
+   "id": "FR-11-2026-000092",
+   "mfr": "Atlantic",
+   "model": "Alfea Excellia S Duo 14 2026"
+  },
+  {
+   "id": "FR-11-2026-000084",
+   "mfr": "Atlantic",
+   "model": "Alfea Extensa A.I. 10 R32"
+  },
+  {
+   "id": "FR-11-2026-000032",
+   "mfr": "Atlantic",
+   "model": "Alfea M Compact 12 Tri"
+  },
+  {
+   "id": "FR-11-2026-000025",
+   "mfr": "Atlantic",
+   "model": "Alfea M Compact 6"
+  },
+  {
+   "id": "FR-11-2026-000030",
+   "mfr": "Atlantic",
+   "model": "Alfea M Compact 8 Tri"
+  },
+  {
+   "id": "FR-11-2026-000034",
+   "mfr": "Atlantic",
+   "model": "Alfea M Duo 8"
+  },
+  {
+   "id": "FR-11-2026-000112",
+   "mfr": "Atlantic",
+   "model": "Isilia M 10"
+  },
+  {
+   "id": "FR-11-2026-000118",
+   "mfr": "Atlantic",
+   "model": "Isilia M 16 Mono"
+  },
+  {
+   "id": "FR-11-2026-000120",
+   "mfr": "Atlantic",
+   "model": "Isilia M 18 Mono"
+  },
+  {
+   "id": "FR-11-2026-000121",
+   "mfr": "Atlantic",
+   "model": "Isilia M 18 Tri"
+  },
+  {
+   "id": "FR-11-2026-000045",
+   "mfr": "Atlantic",
+   "model": "Synea Duo 6"
+  },
+  {
+   "id": "FR-40-2026-000049",
+   "mfr": "Bosch",
+   "model": "CS3800iAW 10 OMH-T"
+  },
+  {
+   "id": "FR-40-2026-000031",
+   "mfr": "Bosch",
+   "model": "CS3800iAW 6 OE-S"
+  },
+  {
+   "id": "FR-141-2026-000008",
+   "mfr": "Carrier",
+   "model": "61WG 025A"
+  },
+  {
+   "id": "FR-141-2026-000011",
+   "mfr": "Carrier",
+   "model": "61WG 040A"
+  },
+  {
+   "id": "FR-24-2025-000007",
+   "mfr": "Chappée",
+   "model": "ERIA-S PLUS R32 16 MR/EM"
+  },
+  {
+   "id": "FR-24-2025-000001",
+   "mfr": "Chappée",
+   "model": "ERIA-S PLUS R32 4 MR/EM"
+  },
+  {
+   "id": "FR-142-2026-000007",
+   "mfr": "Ciat",
+   "model": "LG 090A"
+  },
+  {
+   "id": "FR-142-2026-000008",
+   "mfr": "Ciat",
+   "model": "LG 100A"
+  },
+  {
+   "id": "FR-142-2026-000009",
+   "mfr": "Ciat",
+   "model": "LG 120A"
+  },
+  {
+   "id": "FR-36-2026-000003",
+   "mfr": "Daikin",
+   "model": "EBLA09DAV3"
+  },
+  {
+   "id": "FR-36-2026-000064",
+   "mfr": "Daikin",
+   "model": "EBVH16S18DJ6V / ERLA16DAV37"
+  },
+  {
+   "id": "FR-36-2026-000018",
+   "mfr": "Daikin",
+   "model": "EDLA06E23V3"
+  },
+  {
+   "id": "FR-36-2026-000102",
+   "mfr": "Daikin",
+   "model": "EHFH03S18DJ3V / ERLA03DAV3"
+  },
+  {
+   "id": "FR-36-2026-000232",
+   "mfr": "Daikin",
+   "model": "EHVH08S23EA6V / ERGA06EAV3H"
+  },
+  {
+   "id": "FR-36-2026-000239",
+   "mfr": "Daikin",
+   "model": "EHVZ04S18EJ6V / ERGA04EAV3"
+  },
+  {
+   "id": "FR-36-2026-000240",
+   "mfr": "Daikin",
+   "model": "EHVZ08S18EA6V / ERGA06EAV3H"
+  },
+  {
+   "id": "FR-36-2026-000245",
+   "mfr": "Daikin",
+   "model": "EHVZ08S18EJ6V / ERGA08EAV3H7"
+  },
+  {
+   "id": "FR-36-2026-000243",
+   "mfr": "Daikin",
+   "model": "EHVZ08S23EJ6V / ERGA06EAV3H"
+  },
+  {
+   "id": "FR-36-2026-000287",
+   "mfr": "Daikin",
+   "model": "EPVX07S23AJ4V / EPSKS06ARV3"
+  },
+  {
+   "id": "FR-36-2026-000270",
+   "mfr": "Daikin",
+   "model": "EPVX10S23AJ4V / EPSK10ARV3"
+  },
+  {
+   "id": "FR-36-2026-000277",
+   "mfr": "Daikin",
+   "model": "EPVX14S18AJ9W / EPSK12ARW1"
+  },
+  {
+   "id": "FR-36-2026-000199",
+   "mfr": "Daikin",
+   "model": "ETVH12S18EJ6V / EPRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000197",
+   "mfr": "Daikin",
+   "model": "ETVH12S23EJ6V / EPRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000148",
+   "mfr": "Daikin",
+   "model": "ETVH16S18EA6V7 / EPRA18DAV37"
+  },
+  {
+   "id": "FR-36-2026-000145",
+   "mfr": "Daikin",
+   "model": "ETVH16S18EJ6V7 / EPRA16DAV37"
+  },
+  {
+   "id": "FR-36-2026-000149",
+   "mfr": "Daikin",
+   "model": "ETVH16S18EJ6V7 / EPRA18DAV37"
+  },
+  {
+   "id": "FR-36-2026-000158",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EA9W7 / EPRA14DBW17"
+  },
+  {
+   "id": "FR-36-2026-000166",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EA9W7 / EPRA16DBW17"
+  },
+  {
+   "id": "FR-36-2026-000172",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EA9W7 / EPRA18DAW17"
+  },
+  {
+   "id": "FR-36-2026-000174",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EA9W7 / EPRA18DBW17"
+  },
+  {
+   "id": "FR-36-2026-000143",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ6V7 / EPRA14DAV37"
+  },
+  {
+   "id": "FR-36-2026-000147",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ6V7 / EPRA16DAV37"
+  },
+  {
+   "id": "FR-36-2026-000159",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ9W7 / EPRA14DBW17"
+  },
+  {
+   "id": "FR-36-2026-000165",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ9W7 / EPRA16DAW17"
+  },
+  {
+   "id": "FR-36-2026-000167",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ9W7 / EPRA16DBW17"
+  },
+  {
+   "id": "FR-36-2026-000173",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ9W7 / EPRA18DAW17"
+  },
+  {
+   "id": "FR-36-2026-000175",
+   "mfr": "Daikin",
+   "model": "ETVH16S23EJ9W7 / EPRA18DBW17"
+  },
+  {
+   "id": "FR-36-2026-000178",
+   "mfr": "Daikin",
+   "model": "ETVZ12S18EA6V / EPRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000218",
+   "mfr": "Daikin",
+   "model": "ETVZ12S18EA9W / EPRA10EAW1"
+  },
+  {
+   "id": "FR-36-2026-000183",
+   "mfr": "Daikin",
+   "model": "ETVZ12S18EJ6V / EPRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000215",
+   "mfr": "Daikin",
+   "model": "ETVZ12S18EJ9W / EPRA08EAW1"
+  },
+  {
+   "id": "FR-36-2026-000181",
+   "mfr": "Daikin",
+   "model": "ETVZ12S23EJ6V / EPRA08EAV3"
+  },
+  {
+   "id": "FR-36-2026-000185",
+   "mfr": "Daikin",
+   "model": "ETVZ12S23EJ6V / EPRA10EAV3"
+  },
+  {
+   "id": "FR-36-2026-000189",
+   "mfr": "Daikin",
+   "model": "ETVZ12S23EJ6V / EPRA12EAV3"
+  },
+  {
+   "id": "FR-36-2026-000106",
+   "mfr": "Daikin",
+   "model": "ETVZ16S18EA6V7 / EPRA18DAV37"
+  },
+  {
+   "id": "FR-36-2026-000139",
+   "mfr": "Daikin",
+   "model": "ETVZ16S18EJ9W7 / EPRA18DBW17"
+  },
+  {
+   "id": "FR-36-2026-000104",
+   "mfr": "Daikin",
+   "model": "ETVZ16S23EA6V7 / EPRA18DAV37"
+  },
+  {
+   "id": "FR-36-2026-000105",
+   "mfr": "Daikin",
+   "model": "ETVZ16S23EJ6V7 / EPRA18DAV37"
+  },
+  {
+   "id": "FR-36-2026-000119",
+   "mfr": "Daikin",
+   "model": "ETVZ16S23EJ9W7 / EPRA14DBW17"
+  },
+  {
+   "id": "FR-25-2026-000097",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 12 TE EU"
+  },
+  {
+   "id": "FR-25-2026-000078",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO M MAX 3R 4 ME EU"
+  },
+  {
+   "id": "FR-25-2025-000066",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S 16 TR/H V200"
+  },
+  {
+   "id": "FR-25-2025-000049",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S 8 MR/EM"
+  },
+  {
+   "id": "FR-25-2026-000122",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S COMPACT R32 10 /E"
+  },
+  {
+   "id": "FR-25-2025-000017",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 12 MR/H"
+  },
+  {
+   "id": "FR-25-2025-000008",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 6 MR/EM"
+  },
+  {
+   "id": "FR-25-2025-000011",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S R32 6 MR/H"
+  },
+  {
+   "id": "FR-25-2025-000038",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 11 TR/H"
+  },
+  {
+   "id": "FR-25-2025-000044",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 22 TR/H"
+  },
+  {
+   "id": "FR-25-2026-000117",
+   "mfr": "De Dietrich",
+   "model": "MMTC R32 26"
+  },
+  {
+   "id": "FR-25-2025-000004",
+   "mfr": "De Dietrich",
+   "model": "STRATEO 4 MR/E 2C R32"
+  },
+  {
+   "id": "FR-38-2026-000007",
+   "mfr": "Domusa Teknik",
+   "model": "DUAL CLIMA 19 HT PRO"
+  },
+  {
+   "id": "FR-38-2026-000001",
+   "mfr": "Domusa Teknik",
+   "model": "DUAL CLIMA 6 HT PRO"
+  },
+  {
+   "id": "FR-38-2026-000020",
+   "mfr": "Domusa Teknik",
+   "model": "NANOCLIMA 4 HDX 135"
+  },
+  {
+   "id": "FR-39-2026-000169",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B1 T 5-22"
+  },
+  {
+   "id": "FR-39-2026-000113",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 1-9"
+  },
+  {
+   "id": "FR-39-2026-000035",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 230 2-10 PRO"
+  },
+  {
+   "id": "FR-39-2026-000037",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 230 2-10 PRO HTR"
+  },
+  {
+   "id": "FR-39-2026-000063",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 230 4-16 PRO HTR"
+  },
+  {
+   "id": "FR-39-2026-000052",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B3 400 2-10 PRO HTR"
+  },
+  {
+   "id": "FR-39-2026-000053",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B3 400 2-10 PRO HTR EH"
+  },
+  {
+   "id": "FR-39-2026-000043",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 230 2-10 PRO HTR EH"
+  },
+  {
+   "id": "FR-39-2026-000022",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ LITE3 230 1-6 PRO"
+  },
+  {
+   "id": "FR-161-2026-000004",
+   "mfr": "Energie",
+   "model": "Intelligent Inverter Heat Pump-R290- AQUAPURA 14HT-T"
+  },
+  {
+   "id": "FR-161-2026-000005",
+   "mfr": "Energie",
+   "model": "Intelligent Inverter Heat Pump-R290-AQUAPURA 22HT-T"
+  },
+  {
+   "id": "FR-42-2026-000001",
+   "mfr": "Frisquet",
+   "model": "TEAMAO 4 06 kW"
+  },
+  {
+   "id": "FR-42-2026-000008",
+   "mfr": "Frisquet",
+   "model": "TEAMAO 4 SWELL 06 kW"
+  },
+  {
+   "id": "FR-45-2026-000023",
+   "mfr": "Géo-Fluth",
+   "model": "K10F 230V"
+  },
+  {
+   "id": "FR-45-2026-000024",
+   "mfr": "Géo-Fluth",
+   "model": "K10F 400V"
+  },
+  {
+   "id": "FR-45-2026-000012",
+   "mfr": "Géo-Fluth",
+   "model": "K15H 400V"
+  },
+  {
+   "id": "FR-145-2026-000006",
+   "mfr": "Heiwa",
+   "model": "HHMS-120TRI-V1"
+  },
+  {
+   "id": "FR-145-2026-000007",
+   "mfr": "Heiwa",
+   "model": "HHMS-160TRI-V1"
+  },
+  {
+   "id": "FR-163-2026-000009",
+   "mfr": "Heliotherm",
+   "model": "SNTM-S-3-10"
+  },
+  {
+   "id": "FR-54-2026-000074",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S 2.0 24.0kW Tri R410A"
+  },
+  {
+   "id": "FR-54-2026-000003",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S80 11.0kW Mono  R410A"
+  },
+  {
+   "id": "FR-54-2026-000039",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S80 COMBI 11kW 200L Tri R410A/R134A"
+  },
+  {
+   "id": "FR-54-2026-000040",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S80 COMBI 11kW 260L Tri R410A/R134A"
+  },
+  {
+   "id": "FR-54-2026-000043",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S80 COMBI 14kW 200L Tri R410A/R134A"
+  },
+  {
+   "id": "FR-54-2026-000044",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S80 COMBI 14kW 260L Tri R410A/R134A"
+  },
+  {
+   "id": "FR-54-2026-000047",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S80 COMBI 16kW 200L Tri R410A/R134A"
+  },
+  {
+   "id": "FR-54-2026-000048",
+   "mfr": "Hitachi Climat",
+   "model": "YUTAKI S80 COMBI 16kW 260L Tri R410A/R134A"
+  },
+  {
+   "id": "FR-53-2026-000008",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 20kW /3 tri Premium+"
+  },
+  {
+   "id": "FR-53-2026-000011",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 25kW /3 tri Premium+"
+  },
+  {
+   "id": "FR-53-2026-000013",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 32kW /3 tri"
+  },
+  {
+   "id": "FR-53-2026-000014",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 32kW /3 tri Z1"
+  },
+  {
+   "id": "FR-53-2026-000016",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 40kW tri V Z1"
+  },
+  {
+   "id": "FR-53-2026-000047",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 40kW tri Z1 Cascade"
+  },
+  {
+   "id": "FR-53-2026-000048",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 50kW tri Z1 Cascade"
+  },
+  {
+   "id": "FR-53-2026-000049",
+   "mfr": "Intuis",
+   "model": "HRC⁷⁰ 64kW tri Z1 Cascade"
+  },
+  {
+   "id": "FR-53-2026-000018",
+   "mfr": "Intuis",
+   "model": "HTi⁷⁰ 6kW mono /2 Orium"
+  },
+  {
+   "id": "FR-56-2026-000021",
+   "mfr": "Lemasson",
+   "model": "ENDUR'EAU+ HTT65 E"
+  },
+  {
+   "id": "FR-56-2026-000003",
+   "mfr": "Lemasson",
+   "model": "INDUS T73 E"
+  },
+  {
+   "id": "FR-56-2026-000009",
+   "mfr": "Lemasson",
+   "model": "INDUS T78 G"
+  },
+  {
+   "id": "FR-57-2026-000007",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 12kW - Triphasé"
+  },
+  {
+   "id": "FR-57-2026-000009",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 14kW - Triphasé"
+  },
+  {
+   "id": "FR-57-2026-000011",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 16kW - Triphasé"
+  },
+  {
+   "id": "FR-57-2026-000002",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 7kW - Monophasé"
+  },
+  {
+   "id": "FR-57-2026-000003",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 7kW - Triphasé"
+  },
+  {
+   "id": "FR-57-2026-000004",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 9kW - Monophasé"
+  },
+  {
+   "id": "FR-57-2026-000005",
+   "mfr": "Lg Electronics",
+   "model": "Therma V R290 - Monobloc S  - 9kW - Triphasé"
+  },
+  {
+   "id": "FR-143-2026-000030",
+   "mfr": "Maxa Heating & Cooling",
+   "model": "0115 KA"
+  },
+  {
+   "id": "FR-143-2026-000033",
+   "mfr": "Maxa Heating & Cooling",
+   "model": "0118 KA"
+  },
+  {
+   "id": "FR-143-2026-000039",
+   "mfr": "Maxa Heating & Cooling",
+   "model": "0121 SSL"
+  },
+  {
+   "id": "FR-143-2026-000046",
+   "mfr": "Maxa Heating & Cooling",
+   "model": "0123 KA"
+  },
+  {
+   "id": "FR-143-2026-000044",
+   "mfr": "Maxa Heating & Cooling",
+   "model": "0123 SSL"
+  },
+  {
+   "id": "FR-143-2026-000055",
+   "mfr": "Maxa Heating & Cooling",
+   "model": "0127 KA SSL"
+  },
+  {
+   "id": "FR-143-2026-000053",
+   "mfr": "Maxa Heating & Cooling",
+   "model": "0127 KA3"
+  },
+  {
+   "id": "FR-60-2026-000004",
+   "mfr": "Mitsubishi Electric",
+   "model": "MEHP-iB-G07 /15V"
+  },
+  {
+   "id": "FR-60-2026-000008",
+   "mfr": "Mitsubishi Electric",
+   "model": "MEHP-iB-G07 /27Y"
+  },
+  {
+   "id": "FR-60-2026-000144",
+   "mfr": "Mitsubishi Electric",
+   "model": "PUZ-SHWM100YAA + ERSF-*M*E"
+  },
+  {
+   "id": "FR-60-2026-000104",
+   "mfr": "Mitsubishi Electric",
+   "model": "PUZ-SWM120YAA + ERSF-*M*E"
+  },
+  {
+   "id": "FR-61-2026-000007",
+   "mfr": "Nextherm",
+   "model": "OPTIPACK 4 EAU/EAU 10 MONO"
+  },
+  {
+   "id": "FR-61-2026-000008",
+   "mfr": "Nextherm",
+   "model": "OPTIPACK 4 EAU/EAU 10 TRI"
+  },
+  {
+   "id": "FR-61-2026-000002",
+   "mfr": "Nextherm",
+   "model": "OPTIPACK 4 EAU/EAU 3 MONO"
+  },
+  {
+   "id": "FR-61-2026-000003",
+   "mfr": "Nextherm",
+   "model": "OPTIPACK 4 EAU/EAU 5 MONO"
+  },
+  {
+   "id": "FR-61-2026-000004",
+   "mfr": "Nextherm",
+   "model": "OPTIPACK 4 EAU/EAU 5 TRI"
+  },
+  {
+   "id": "FR-61-2026-000022",
+   "mfr": "Nextherm",
+   "model": "OPTIPACK DUO 4 EAU/EAU 5 TRI"
+  },
+  {
+   "id": "FR-61-2026-000015",
+   "mfr": "Nextherm",
+   "model": "SMARTPACK 4 EAU/EAU 10 TRI"
+  },
+  {
+   "id": "FR-61-2026-000019",
+   "mfr": "Nextherm",
+   "model": "SMARTPACK 4 EAU/EAU 18 TRI"
+  },
+  {
+   "id": "FR-61-2026-000009",
+   "mfr": "Nextherm",
+   "model": "SMARTPACK 4 EAU/EAU 3 MONO"
+  },
+  {
+   "id": "FR-61-2026-000010",
+   "mfr": "Nextherm",
+   "model": "SMARTPACK 4 EAU/EAU 5 MONO"
+  },
+  {
+   "id": "FR-61-2026-000012",
+   "mfr": "Nextherm",
+   "model": "SMARTPACK 4 EAU/EAU 7 MONO"
+  },
+  {
+   "id": "FR-62-2026-000034",
+   "mfr": "Nibe Ab",
+   "model": "F1153-4"
+  },
+  {
+   "id": "FR-62-2026-000061",
+   "mfr": "Nibe Ab",
+   "model": "F1153-4"
+  },
+  {
+   "id": "FR-62-2026-000036",
+   "mfr": "Nibe Ab",
+   "model": "F1153-6"
+  },
+  {
+   "id": "FR-62-2026-000063",
+   "mfr": "Nibe Ab",
+   "model": "F1153-6"
+  },
+  {
+   "id": "FR-62-2026-000020",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1156-8"
+  },
+  {
+   "id": "FR-62-2026-000045",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1156-8"
+  },
+  {
+   "id": "FR-62-2026-000024",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1256-8 Cu/R/E"
+  },
+  {
+   "id": "FR-62-2026-000049",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1256-8 Cu/R/E"
+  },
+  {
+   "id": "FR-62-2026-000023",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1256-8 R 1x230V"
+  },
+  {
+   "id": "FR-62-2026-000048",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1256-8 R 1x230V"
+  },
+  {
+   "id": "FR-62-2026-000026",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1256-8 R/E PC"
+  },
+  {
+   "id": "FR-62-2026-000051",
+   "mfr": "Nibe Ab",
+   "model": "NIBE S1256-8 R/E PC"
+  },
+  {
+   "id": "FR-62-2026-000028",
+   "mfr": "Nibe Ab",
+   "model": "S1156-13"
+  },
+  {
+   "id": "FR-62-2026-000053",
+   "mfr": "Nibe Ab",
+   "model": "S1156-13"
+  },
+  {
+   "id": "FR-62-2026-000029",
+   "mfr": "Nibe Ab",
+   "model": "S1256-13 R 1x230V"
+  },
+  {
+   "id": "FR-62-2026-000054",
+   "mfr": "Nibe Ab",
+   "model": "S1256-13 R 1x230V"
+  },
+  {
+   "id": "FR-64-2026-000031",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance All in One Série L 5 kW"
+  },
+  {
+   "id": "FR-64-2026-000036",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance All in One Série L 7 kW"
+  },
+  {
+   "id": "FR-64-2026-000091",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance bi-bloc Série K 12 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000086",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance bi-bloc Série K 9 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000087",
+   "mfr": "Panasonic",
+   "model": "Aquarea Haute Performance bi-bloc Série K 9 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000078",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP All in One 185 L Série K 9 kW monophasé"
+  },
+  {
+   "id": "FR-64-2026-000013",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP All in One 185 L Série M 9 kW monophasé"
+  },
+  {
+   "id": "FR-64-2026-000083",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP All in One 260 L Série K 12 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000105",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP bi-bloc Série K 16 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000012",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP bi-bloc Série M 12 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000074",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP bi-bloc SQ Série K 9 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000020",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP monobloc Série M 16 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000005",
+   "mfr": "Panasonic",
+   "model": "Aquarea T-CAP monobloc Série M 9 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000025",
+   "mfr": "Panasonic",
+   "model": "Big Aquarea T-CAP Série M 20 kW triphasé"
+  },
+  {
+   "id": "FR-64-2026-000029",
+   "mfr": "Panasonic",
+   "model": "Big Aquarea T-CAP Série M 30 kW triphasé"
+  },
+  {
+   "id": "FR-176-2026-000006",
+   "mfr": "Perge Axen",
+   "model": "OptiPac MR290 12 Tri"
+  },
+  {
+   "id": "FR-67-2026-000047",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Split 10 - 230 V + Module hydraulique"
+  },
+  {
+   "id": "FR-67-2026-000050",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Split 12 - 400 V + Module hydraulique"
+  },
+  {
+   "id": "FR-67-2026-000027",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Tek 6 - 230 V + GeniaSet Tek - 2 circuits"
+  },
+  {
+   "id": "FR-67-2026-000024",
+   "mfr": "Saunier Duval",
+   "model": "GeniaAir Tek 8 - 230 V + GeniaSet Tek - 1 circuit"
+  },
+  {
+   "id": "FR-149-2026-000040",
+   "mfr": "Stiebel Eltron",
+   "model": "HPA-O 05.1 CS Premium"
+  },
+  {
+   "id": "FR-149-2026-000041",
+   "mfr": "Stiebel Eltron",
+   "model": "HPA-O 07.1 CS Premium"
+  },
+  {
+   "id": "FR-149-2026-000012",
+   "mfr": "Stiebel Eltron",
+   "model": "HPA-O 10.2 Plus HC 400"
+  },
+  {
+   "id": "FR-149-2026-000037",
+   "mfr": "Stiebel Eltron",
+   "model": "HPA-O 4 CS Plus"
+  },
+  {
+   "id": "FR-149-2026-000018",
+   "mfr": "Stiebel Eltron",
+   "model": "HPG-I 04 DCS Premium"
+  },
+  {
+   "id": "FR-149-2026-000025",
+   "mfr": "Stiebel Eltron",
+   "model": "WPE-I 07.1 Plus H 230"
+  },
+  {
+   "id": "FR-18-2026-000021",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 11 2024"
+  },
+  {
+   "id": "FR-18-2026-000004",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 2 10"
+  },
+  {
+   "id": "FR-18-2026-000006",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 2 12 2026"
+  },
+  {
+   "id": "FR-18-2026-000008",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 2 14 2026"
+  },
+  {
+   "id": "FR-18-2026-000005",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia 2 9 2026"
+  },
+  {
+   "id": "FR-18-2026-000032",
+   "mfr": "Thermor",
+   "model": "Thermor Aerolia Duo 14 2024"
+  },
+  {
+   "id": "FR-18-2026-000063",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 2 M 12 Tri 2026"
+  },
+  {
+   "id": "FR-18-2026-000059",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 2 M 9 2026"
+  },
+  {
+   "id": "FR-18-2026-000038",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea 8 2026"
+  },
+  {
+   "id": "FR-18-2026-000051",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea Compact 2 - 12"
+  },
+  {
+   "id": "FR-18-2026-000050",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea Compact 2 - 9"
+  },
+  {
+   "id": "FR-18-2026-000042",
+   "mfr": "Thermor",
+   "model": "Thermor Aurea Duo 11"
+  },
+  {
+   "id": "FR-158-2026-000012",
+   "mfr": "Thomson",
+   "model": "AW-MBT02-H100M-T553GZ1"
+  },
+  {
+   "id": "FR-158-2026-000013",
+   "mfr": "Thomson",
+   "model": "AW-MBT02-H120M-T553GZ1"
+  },
+  {
+   "id": "FR-158-2026-000014",
+   "mfr": "Thomson",
+   "model": "AW-MBT02-H120T-T559GZ1"
+  },
+  {
+   "id": "FR-70-2026-000172",
+   "mfr": "Toshiba",
+   "model": "BI-BLOC R290 HWP-100-FST8-H8"
+  },
+  {
+   "id": "FR-70-2026-000173",
+   "mfr": "Toshiba",
+   "model": "BI-BLOC R290 HWP-160-FST8-H8"
+  },
+  {
+   "id": "FR-70-2026-000164",
+   "mfr": "Toshiba",
+   "model": "BI-BLOC R290 HWP-40-FST8-H"
+  },
+  {
+   "id": "FR-70-2026-000170",
+   "mfr": "Toshiba",
+   "model": "BI-BLOC R290 HWP-60-FST8-H"
+  },
+  {
+   "id": "FR-70-2026-000165",
+   "mfr": "Toshiba",
+   "model": "BI-BLOC R290 HWP-80-FST8-H"
+  },
+  {
+   "id": "FR-70-2026-000213",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8RW-E / HWT-1101XWHM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000214",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8RW-E / HWT-1101XWHT6W-E"
+  },
+  {
+   "id": "FR-70-2026-000303",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8RW-E / HWT-1102S21MM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000302",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8RW-E / HWT-1102S21MT6W-E"
+  },
+  {
+   "id": "FR-70-2026-000215",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8W-E / HWT-1101XWHT9W-E"
+  },
+  {
+   "id": "FR-70-2026-000300",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8W-E / HWT-1102S21MM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000301",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8W-E / HWT-1102S21ST6W-E"
+  },
+  {
+   "id": "FR-70-2026-000288",
+   "mfr": "Toshiba",
+   "model": "HWT-1101H8W-E / HWT-1102S21ST9W-E"
+  },
+  {
+   "id": "FR-70-2026-000186",
+   "mfr": "Toshiba",
+   "model": "HWT-1101HW-E / HWT-1101XWHM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000187",
+   "mfr": "Toshiba",
+   "model": "HWT-1101HW-E / HWT-1101XWHT9W-E"
+  },
+  {
+   "id": "FR-70-2026-000237",
+   "mfr": "Toshiba",
+   "model": "HWT-1101HW-E / HWT-1102S21MM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000236",
+   "mfr": "Toshiba",
+   "model": "HWT-1101HW-E / HWT-1102S21ST6W-E"
+  },
+  {
+   "id": "FR-70-2026-000222",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8W-E / HWT-1401XWHM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000223",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8W-E / HWT-1401XWHM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000319",
+   "mfr": "Toshiba",
+   "model": "HWT-1401H8W-E / HWT-1402S21ST9W-E"
+  },
+  {
+   "id": "FR-70-2026-000269",
+   "mfr": "Toshiba",
+   "model": "HWT-1401HRW-E / HWT-1402S21MM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000271",
+   "mfr": "Toshiba",
+   "model": "HWT-1401HRW-E / HWT-1402S21MT9W-E"
+  },
+  {
+   "id": "FR-70-2026-000270",
+   "mfr": "Toshiba",
+   "model": "HWT-1401HW-E / HWT-1402S21MT9W-E"
+  },
+  {
+   "id": "FR-70-2026-000184",
+   "mfr": "Toshiba",
+   "model": "HWT-401HW-E / HWT-601XWHM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000229",
+   "mfr": "Toshiba",
+   "model": "HWT-401HW-E / HWT-602S21SM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000234",
+   "mfr": "Toshiba",
+   "model": "HWT-401HW-E / HWT-602S21ST6W-E"
+  },
+  {
+   "id": "FR-70-2026-000183",
+   "mfr": "Toshiba",
+   "model": "HWT-601HW-E / HWT-601XWHM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000228",
+   "mfr": "Toshiba",
+   "model": "HWT-601HW-E / HWT-602S21SM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000185",
+   "mfr": "Toshiba",
+   "model": "HWT-801HRW-E / HWT-1101XWHM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000189",
+   "mfr": "Toshiba",
+   "model": "HWT-801HRW-E / HWT-1101XWHM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000190",
+   "mfr": "Toshiba",
+   "model": "HWT-801HRW-E / HWT-1101XWHT9W-E"
+  },
+  {
+   "id": "FR-70-2026-000235",
+   "mfr": "Toshiba",
+   "model": "HWT-801HRW-E / HWT-1102S21MM3W-E"
+  },
+  {
+   "id": "FR-70-2026-000252",
+   "mfr": "Toshiba",
+   "model": "HWT-801HRW-E / HWT-1102S21MM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000255",
+   "mfr": "Toshiba",
+   "model": "HWT-801HRW-E / HWT-1102S21ST9W-E"
+  },
+  {
+   "id": "FR-70-2026-000254",
+   "mfr": "Toshiba",
+   "model": "HWT-801HW-E / HWT-1102S21MM6W-E"
+  },
+  {
+   "id": "FR-70-2026-000253",
+   "mfr": "Toshiba",
+   "model": "HWT-801HW-E / HWT-1102S21SM6W-E"
+  },
+  {
+   "id": "FR-68-2026-000031",
+   "mfr": "Vaillant",
+   "model": "VWL 125/5 AS + uniTOWER Split"
+  },
+  {
+   "id": "FR-68-2026-000115",
+   "mfr": "Vaillant",
+   "model": "VWL 125/7.1 A 230V + Module hydraulique"
+  },
+  {
+   "id": "FR-68-2026-000013",
+   "mfr": "Vaillant",
+   "model": "VWL 155/6 A 230V + Interface"
+  },
+  {
+   "id": "FR-68-2026-000006",
+   "mfr": "Vaillant",
+   "model": "VWL 155/6 A 230V + uniTOWER plus"
+  },
+  {
+   "id": "FR-68-2026-000009",
+   "mfr": "Vaillant",
+   "model": "VWL 55/6 A 230V + Interface"
+  },
+  {
+   "id": "FR-68-2026-000002",
+   "mfr": "Vaillant",
+   "model": "VWL 55/6 A 230V + uniTOWER plus"
+  },
+  {
+   "id": "FR-152-2026-000080",
+   "mfr": "Viessmann",
+   "model": "IDU 250-SH HAWB-M-AC 252.B06 / ODU 2XX-S 230V E06 AF"
+  },
+  {
+   "id": "FR-152-2026-000066",
+   "mfr": "Viessmann",
+   "model": "IDU-A AWMIW.A1.19-V052 / ODU 150-A AWMOF-151.A1.06-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000048",
+   "mfr": "Viessmann",
+   "model": "IDU-A AWMIW.A1.19-V052 / ODU 150-A AWMOF-151.A1.16-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000069",
+   "mfr": "Viessmann",
+   "model": "IDU-A Modular AWMIW.A1.19-V051 / ODU 150-A AWMOF-151.A1.08-230-V001"
+  },
+  {
+   "id": "FR-152-2026-000051",
+   "mfr": "Viessmann",
+   "model": "IDU-A Modular AWMIW.A1.19-V051 / ODU 150-A AWMOF-151.A1.16-400-V001"
+  },
+  {
+   "id": "FR-152-2026-000106",
+   "mfr": "Viessmann",
+   "model": "Vitocal 200-S AWB-M-E-AC 201.D10 F"
+  },
+  {
+   "id": "FR-152-2026-000089",
+   "mfr": "Viessmann",
+   "model": "Vitocal 222-S AWBT-E-AC 221.C13 F"
+  },
+  {
+   "id": "FR-129-2026-000005",
+   "mfr": "Waterkotte Gmbh",
+   "model": "Industrial Line 8060.7"
+  },
+  {
+   "id": "FR-129-2026-000006",
+   "mfr": "Waterkotte Gmbh",
+   "model": "Industrial Line 8060.7"
+  }
+ ],
+ "specs": [
+  {
+   "id": "16012797",
+   "mfr": "Advantix",
+   "model": "i-290 0118",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.76
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.92,
+     "b": 4.76
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 2.88,
+     "b": 2.86
+    }
+   ]
+  },
+  {
+   "id": "16012799",
+   "mfr": "Advantix",
+   "model": "i-290 0123",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.72
+    }
+   ]
+  },
+  {
+   "id": "16012800",
+   "mfr": "Advantix",
+   "model": "i-290 0125",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.49
+    }
+   ]
+  },
+  {
+   "id": "16012801",
+   "mfr": "Advantix",
+   "model": "i-290 0127",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.46
+    }
+   ]
+  },
+  {
+   "id": "16015137",
+   "mfr": "Advantix",
+   "model": "i-290 0250-PSI",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 3.89,
+     "b": 4.2
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 132,
+     "b": 131
+    }
+   ]
+  },
+  {
+   "id": "FR-141-2026-000013",
+   "mfr": "Carrier",
+   "model": "30WG 020A",
+   "changes": [
+    {
+     "f": "efficiency_35C_percent",
+     "a": 217,
+     "b": 221
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 169,
+     "b": 171
+    }
+   ]
+  },
+  {
+   "id": "FR-36-2026-000299",
+   "mfr": "Daikin",
+   "model": "ELVX12S18EJ6V / ERRA08EAV37",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 132,
+     "b": 140
+    }
+   ]
+  },
+  {
+   "id": "FR-36-2026-000300",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ6V / ERRA08EAV37",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 132,
+     "b": 140
+    }
+   ]
+  },
+  {
+   "id": "FR-36-2026-000304",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ6V / ERRA12EAV37",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 136
+    }
+   ]
+  },
+  {
+   "id": "FR-36-2026-000306",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ9W / ERRA08EAW17",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 136
+    }
+   ]
+  },
+  {
+   "id": "FR-36-2026-000308",
+   "mfr": "Daikin",
+   "model": "ELVX12S23EJ9W / ERRA10EAW17",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 136
+    }
+   ]
+  },
+  {
+   "id": "16005403",
+   "mfr": "Daikin",
+   "model": "EWYT600B-XRA2",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4
+    }
+   ]
+  },
+  {
+   "id": "FR-25-2025-000056",
+   "mfr": "De Dietrich",
+   "model": "ALEZIO S 16 TR/H",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 12,
+     "b": 9
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 16,
+     "b": 9
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 176,
+     "b": 175
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 128,
+     "b": 121
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 60,
+     "b": 69
+    }
+   ]
+  },
+  {
+   "id": "FR-25-2025-000036",
+   "mfr": "De Dietrich",
+   "model": "HPI-S 8 MR/EM",
+   "changes": [
+    {
+     "f": "efficiency_35C_percent",
+     "a": 178,
+     "b": 171
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 129,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 65,
+     "b": 63
+    }
+   ]
+  },
+  {
+   "id": "16015878",
+   "mfr": "Ecoforest",
+   "model": "ecoAIR 6-24 PRO",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.58,
+     "b": 4.55
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 180,
+     "b": 179
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 136,
+     "b": 130
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.01
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.13,
+     "b": 4.66
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 63,
+     "b": 67
+    }
+   ]
+  },
+  {
+   "id": "16016433",
+   "mfr": "Ecoforest",
+   "model": "ecoAIR 6-24 PRO HTR",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.58,
+     "b": 4.55
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 180,
+     "b": 179
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 136,
+     "b": 130
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.01
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.13,
+     "b": 4.66
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 63,
+     "b": 67
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000109",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B1 1-9",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 134,
+     "b": 140
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000036",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 230 2-10 PRO EH",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 183,
+     "b": 166
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000061",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 230 4-16 PRO EH",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 11
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 16,
+     "b": 11
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 167
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 146,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000048",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 400 2-10 PRO",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 183,
+     "b": 166
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000049",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 400 2-10 PRO EH",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 183,
+     "b": 166
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000050",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 400 2-10 PRO HTR",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 183,
+     "b": 166
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000051",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B2 400 2-10 PRO HTR EH",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 183,
+     "b": 166
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000067",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 230 4-16 PRO HTR",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 11
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 16,
+     "b": 11
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 167
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 146,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000068",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 230 4-16 PRO HTR EH",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 11
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 16,
+     "b": 11
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 167
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 146,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000054",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 400 2-10 PRO HTR",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 183,
+     "b": 166
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000055",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 400 2-10 PRO HTR EH",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 183,
+     "b": 166
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 140,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000079",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 400 4-16 PRO HTR",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 11
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 16,
+     "b": 11
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 167
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 146,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "FR-39-2026-000080",
+   "mfr": "Ecoforest",
+   "model": "ecoGEO+ B4 400 4-16 PRO HTR EH",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 11
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 16,
+     "b": 11
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 167
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 146,
+     "b": 131
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": null,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "16006562",
+   "mfr": "Effidur",
+   "model": "HPM-16A3",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.62
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.5
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.41
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.72
+    }
+   ]
+  },
+  {
+   "id": "16006560",
+   "mfr": "Effidur",
+   "model": "HPM-8A1",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.21
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 5.15
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 5.09
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.35
+    }
+   ]
+  },
+  {
+   "id": "16005772",
+   "mfr": "ELCO",
+   "model": "AEROTOP MONO 05.2M-RXL / -CRX 1Z / -CRX 2Z / -RX",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.66
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 5
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.75
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.9
+    }
+   ]
+  },
+  {
+   "id": "16010266",
+   "mfr": "Galmet",
+   "model": "Airmax³ 12GT",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6.83,
+     "b": 7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 7.22,
+     "b": 7
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 61,
+     "b": 50
+    }
+   ]
+  },
+  {
+   "id": "16006203",
+   "mfr": "Galmet",
+   "model": "Airmax³ 5GT",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 4.09,
+     "b": 4
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 4.25,
+     "b": 4
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 59,
+     "b": 48.4
+    }
+   ]
+  },
+  {
+   "id": "16009728",
+   "mfr": "Galmet",
+   "model": "Airmax³ 7GT",
+   "changes": [
+    {
+     "f": "noise_outdoor_dB",
+     "a": 60,
+     "b": 48.4
+    }
+   ]
+  },
+  {
+   "id": "16015251",
+   "mfr": "Haier",
+   "model": "HPM10-Nd2(GN)",
+   "changes": [
+    {
+     "f": "noise_outdoor_dB",
+     "a": 65,
+     "b": 53
+    }
+   ]
+  },
+  {
+   "id": "16013093",
+   "mfr": "Heliotherm",
+   "model": "SNT15L-M-R-CC",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 181.8,
+     "b": 166
+    }
+   ]
+  },
+  {
+   "id": "16007688",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0312-K3 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.08
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.1,
+     "b": 8
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 42,
+     "b": 51
+    }
+   ]
+  },
+  {
+   "id": "16007689",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0312-K3 HT / HK 3F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.79
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 42,
+     "b": 51
+    }
+   ]
+  },
+  {
+   "id": "16007690",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0416-K3 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 46,
+     "b": 56
+    }
+   ]
+  },
+  {
+   "id": "16007691",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0416-K3 HT / HK 3F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.1
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 46,
+     "b": 56
+    }
+   ]
+  },
+  {
+   "id": "16007692",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT 0724-K3 HT / HK 3F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.95
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 52,
+     "b": 61
+    }
+   ]
+  },
+  {
+   "id": "16015721",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10035 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.39
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 49,
+     "b": 50
+    }
+   ]
+  },
+  {
+   "id": "16015722",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10070 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.38
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 52,
+     "b": 53
+    }
+   ]
+  },
+  {
+   "id": "16015723",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10105 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.37
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 54,
+     "b": 55
+    }
+   ]
+  },
+  {
+   "id": "16015713",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "ADAPT MAX 10140 HT / HK 3F",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.37
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.88
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 55,
+     "b": 56
+    }
+   ]
+  },
+  {
+   "id": "16007693",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "VERSI-I 0209-K1 HT / HK UF E",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.74
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 186.4
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 141,
+     "b": 140.9
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.8
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.52
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.84
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 45,
+     "b": 58
+    }
+   ]
+  },
+  {
+   "id": "16007695",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "VERSI-O 0209-K1 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.86
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 5.01
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.72
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.91
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 43,
+     "b": 43.9
+    }
+   ]
+  },
+  {
+   "id": "16007694",
+   "mfr": "KRONOTERM d.o.o.",
+   "model": "VERSI-X 0209-K1 HT / HK 1F",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.74
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 186,
+     "b": 186.4
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 141,
+     "b": 140.9
+    },
+    {
+     "f": "cop_A7W35",
+     "a": null,
+     "b": 4.8
+    },
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.52
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 2.84
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 45,
+     "b": 58
+    }
+   ]
+  },
+  {
+   "id": "16016966",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE06K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.38,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016972",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE08K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.81,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016973",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE10K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.5,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016974",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE12K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.6,
+     "b": 4.9
+    }
+   ]
+  },
+  {
+   "id": "16016975",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE14K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.4,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016976",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-SE16K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.73,
+     "b": 4.7
+    }
+   ]
+  },
+  {
+   "id": "16016967",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE08K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.81,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016968",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE10K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.5,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016969",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE12K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.6,
+     "b": 4.9
+    }
+   ]
+  },
+  {
+   "id": "16016970",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE14K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.4,
+     "b": 4.8
+    }
+   ]
+  },
+  {
+   "id": "16016971",
+   "mfr": "LumenHaus",
+   "model": "LH-HHP-TE16K01CE",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.73,
+     "b": 4.7
+    }
+   ]
+  },
+  {
+   "id": "FR-62-2026-000041",
+   "mfr": "Nibe Ab",
+   "model": "NIBE F1345-60",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 67,
+     "b": 70
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 67,
+     "b": 70
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 175,
+     "b": 207
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 137,
+     "b": 162
+    }
+   ]
+  },
+  {
+   "id": "FR-62-2026-000031",
+   "mfr": "Nibe Ab",
+   "model": "S1156-18",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 15,
+     "b": 20
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 15,
+     "b": 20
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 230,
+     "b": 329
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 169,
+     "b": 228
+    }
+   ]
+  },
+  {
+   "id": "FR-62-2026-000056",
+   "mfr": "Nibe Ab",
+   "model": "S1156-18",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 15,
+     "b": 20
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 15,
+     "b": 20
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 230,
+     "b": 329
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 169,
+     "b": 228
+    }
+   ]
+  },
+  {
+   "id": "16001028",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ09HE8 + WH-ADC0916H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.59
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.08,
+     "b": 4.84
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 4.57
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.32,
+     "b": 2.75
+    }
+   ]
+  },
+  {
+   "id": "16001020",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ09HE8 + WH-SQC09H3E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.59
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.08,
+     "b": 4.84
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 4.57
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.32,
+     "b": 2.75
+    }
+   ]
+  },
+  {
+   "id": "16001029",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ12HE8 + WH-ADC0916H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.32
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.05,
+     "b": 4.74
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 3.96
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.33,
+     "b": 2.84
+    }
+   ]
+  },
+  {
+   "id": "16001021",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ12HE8 + WH-SQC12H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.32
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.05,
+     "b": 4.74
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4.39,
+     "b": 3.96
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3.33,
+     "b": 2.84
+    }
+   ]
+  },
+  {
+   "id": "16001030",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ16HE8 + WH-ADC0916H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.08
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.73,
+     "b": 4.28
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4,
+     "b": 3.65
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3,
+     "b": 2.7
+    }
+   ]
+  },
+  {
+   "id": "16001016",
+   "mfr": "Panasonic",
+   "model": "AQUAREA  [WH-UQ16HE8 + WH-SQC16H9E8]",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.08
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.73,
+     "b": 4.28
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 4,
+     "b": 3.65
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 3,
+     "b": 2.7
+    }
+   ]
+  },
+  {
+   "id": "16015310",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG09ME8 + WH-ADC0316M9E82]",
+   "changes": [
+    {
+     "f": "efficiency_55C_percent",
+     "a": 137,
+     "b": 140
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.15,
+     "b": 5.23
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 7.84,
+     "b": 4.84
+    }
+   ]
+  },
+  {
+   "id": "16015311",
+   "mfr": "Panasonic",
+   "model": "AQUAREA [WH-WXG12ME8 + WH-ADC0316M9E82]",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 6.25,
+     "b": 5.06
+    }
+   ]
+  },
+  {
+   "id": "16014878",
+   "mfr": "Pollmann",
+   "model": "Airflex Top Mini",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 3.7,
+     "b": 3.83
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 3.21,
+     "b": 3.19
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 145,
+     "b": 150.2
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.19,
+     "b": 4.1
+    },
+    {
+     "f": "cop_A2W35",
+     "a": 3.51,
+     "b": 3.75
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": 2.45,
+     "b": 2.34
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 42,
+     "b": 42.4
+    }
+   ]
+  },
+  {
+   "id": "16001797",
+   "mfr": "S-Klima",
+   "model": "SAS124RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 13.8,
+     "b": 12.08
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14.5,
+     "b": 13.73
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.68,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16010356",
+   "mfr": "S-Klima",
+   "model": "SAS124RS2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 13.8,
+     "b": 12.08
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14.5,
+     "b": 13.73
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.68,
+     "b": 4.6
+    }
+   ]
+  },
+  {
+   "id": "16010110",
+   "mfr": "S-Klima",
+   "model": "SAS140RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 16,
+     "b": 13.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 15.9,
+     "b": 15.21
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.56,
+     "b": 4.5
+    }
+   ]
+  },
+  {
+   "id": "16014834",
+   "mfr": "S-Klima",
+   "model": "SAS140RN3A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.64,
+     "b": 4.63
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13.7
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.1,
+     "b": 4.5
+    }
+   ]
+  },
+  {
+   "id": "16001799",
+   "mfr": "S-Klima",
+   "model": "SAS140RS2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 16,
+     "b": 13.02
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 15.9,
+     "b": 15.21
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.65,
+     "b": 4.5
+    }
+   ]
+  },
+  {
+   "id": "16014837",
+   "mfr": "S-Klima",
+   "model": "SAS140RS3A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.64,
+     "b": 4.63
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 14,
+     "b": 13
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 14,
+     "b": 13.7
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 182.4,
+     "b": 182
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 141.9,
+     "b": 141
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.1,
+     "b": 4.5
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 68,
+     "b": 65
+    }
+   ]
+  },
+  {
+   "id": "16010355",
+   "mfr": "S-Klima",
+   "model": "SAS47RN2",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 4.2,
+     "b": 5.52
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.13,
+     "b": 5.1
+    }
+   ]
+  },
+  {
+   "id": "16014830",
+   "mfr": "S-Klima",
+   "model": "SAS64RN3A",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6.2,
+     "b": 5.9
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 6.2,
+     "b": 6.4
+    }
+   ]
+  },
+  {
+   "id": "16010013",
+   "mfr": "S-Klima",
+   "model": "SAS70RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 6,
+     "b": 5.7
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 6.35,
+     "b": 6.82
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.63,
+     "b": 4.95
+    }
+   ]
+  },
+  {
+   "id": "16001795",
+   "mfr": "S-Klima",
+   "model": "SAS75RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 7.5,
+     "b": 6.6
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8.12
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.82,
+     "b": 5.15
+    }
+   ]
+  },
+  {
+   "id": "16001796",
+   "mfr": "S-Klima",
+   "model": "SAS82RN2",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 9.5,
+     "b": 7.67
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 10,
+     "b": 9.17
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 7.08,
+     "b": 4.95
+    }
+   ]
+  },
+  {
+   "id": "16014831",
+   "mfr": "S-Klima",
+   "model": "SAS82RN3A",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 5.2,
+     "b": 5.19
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 8.4,
+     "b": 8
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.12,
+     "b": 5
+    }
+   ]
+  },
+  {
+   "id": "16016534",
+   "mfr": "S-Klima",
+   "model": "SAX385RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 42.9,
+     "b": 30.07
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 46.8,
+     "b": 33.69
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.23,
+     "b": 3.71
+    }
+   ]
+  },
+  {
+   "id": "16016535",
+   "mfr": "S-Klima",
+   "model": "SAX500RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 47.4,
+     "b": 35.83
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 50.4,
+     "b": 39.23
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.09,
+     "b": 3.81
+    }
+   ]
+  },
+  {
+   "id": "16016536",
+   "mfr": "S-Klima",
+   "model": "SAX540RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 51.2,
+     "b": 39.9
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 55.8,
+     "b": 43.86
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.09,
+     "b": 3.78
+    }
+   ]
+  },
+  {
+   "id": "16016537",
+   "mfr": "S-Klima",
+   "model": "SAX580RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 55.7,
+     "b": 43.75
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 61,
+     "b": 48.16
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.09,
+     "b": 3.73
+    }
+   ]
+  },
+  {
+   "id": "16016538",
+   "mfr": "S-Klima",
+   "model": "SAX680RS3",
+   "changes": [
+    {
+     "f": "power_55C_kw",
+     "a": 65.9,
+     "b": 49.63
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 70.2,
+     "b": 52.45
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 6.68,
+     "b": 3.91
+    }
+   ]
+  },
+  {
+   "id": "16016070",
+   "mfr": "Trane",
+   "model": "CMAF 190 HE XLN",
+   "changes": [
+    {
+     "f": "power_35C_kw",
+     "a": 571,
+     "b": 660.26
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 156,
+     "b": 157
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 93,
+     "b": 92
+    }
+   ]
+  },
+  {
+   "id": "16016124",
+   "mfr": "Trane",
+   "model": "CXAF 080 HEat LN AC R454B",
+   "changes": [
+    {
+     "f": "cop_A7W35",
+     "a": 4.93,
+     "b": 4.4
+    }
+   ]
+  },
+  {
+   "id": "16016184",
+   "mfr": "Trane",
+   "model": "CXAF 100 SHE XLN EC R454B",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 3.9,
+     "b": 3.88
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 153,
+     "b": 152.1
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.74,
+     "b": 4.27
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 89,
+     "b": 90
+    }
+   ]
+  },
+  {
+   "id": "16016228",
+   "mfr": "Trane",
+   "model": "CXAF 130 HEat LN EC R454B",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4.04,
+     "b": 3.97
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 360,
+     "b": 355.9
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 159,
+     "b": 155.9
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 5.19,
+     "b": 4.25
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 92,
+     "b": 94
+    }
+   ]
+  },
+  {
+   "id": "16016152",
+   "mfr": "Trane",
+   "model": "CXAF 190 HEat XLN EC R454B",
+   "changes": [
+    {
+     "f": "scop",
+     "a": 4,
+     "b": 3.91
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 519,
+     "b": 553.8
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 157,
+     "b": 153.6
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4.97,
+     "b": 4.18
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 92,
+     "b": 94
+    }
+   ]
+  },
+  {
+   "id": "16017142",
+   "mfr": "Trane",
+   "model": "LEAF 010 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.4
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.4
+    }
+   ]
+  },
+  {
+   "id": "16017143",
+   "mfr": "Trane",
+   "model": "LEAF 010 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.4
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.4
+    }
+   ]
+  },
+  {
+   "id": "16017144",
+   "mfr": "Trane",
+   "model": "LEAF 012",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.37
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.29
+    }
+   ]
+  },
+  {
+   "id": "16017145",
+   "mfr": "Trane",
+   "model": "LEAF 012 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.09
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.09
+    }
+   ]
+  },
+  {
+   "id": "16017146",
+   "mfr": "Trane",
+   "model": "LEAF 012 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.29
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.29
+    }
+   ]
+  },
+  {
+   "id": "16017147",
+   "mfr": "Trane",
+   "model": "LEAF 014",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.39
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.39
+    }
+   ]
+  },
+  {
+   "id": "16017148",
+   "mfr": "Trane",
+   "model": "LEAF 014 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.33
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.33
+    }
+   ]
+  },
+  {
+   "id": "16017149",
+   "mfr": "Trane",
+   "model": "LEAF 014 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.33
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.33
+    }
+   ]
+  },
+  {
+   "id": "16017150",
+   "mfr": "Trane",
+   "model": "LEAF 016",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.25
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.25
+    }
+   ]
+  },
+  {
+   "id": "16017151",
+   "mfr": "Trane",
+   "model": "LEAF 016 LN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.25
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.25
+    }
+   ]
+  },
+  {
+   "id": "16017152",
+   "mfr": "Trane",
+   "model": "LEAF 016 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 4.25
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 4.25
+    }
+   ]
+  },
+  {
+   "id": "16017153",
+   "mfr": "Trane",
+   "model": "LEAF 019",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.44
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.44
+    }
+   ]
+  },
+  {
+   "id": "16017155",
+   "mfr": "Trane",
+   "model": "LEAF 019 XLN",
+   "changes": [
+    {
+     "f": "cop_A2W35",
+     "a": null,
+     "b": 3.87
+    },
+    {
+     "f": "cop_AMinus7W35",
+     "a": null,
+     "b": 3.87
+    }
+   ]
+  },
+  {
+   "id": "FR-68-2026-000073",
+   "mfr": "Vaillant",
+   "model": "VWL 55/7.1 A 230V + Module hydraulique",
+   "changes": [
+    {
+     "f": "efficiency_35C_percent",
+     "a": 187,
+     "b": 198
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 143,
+     "b": 145
+    }
+   ]
+  },
+  {
+   "id": "16002325",
+   "mfr": "Viessmann",
+   "model": "Vitocal 200-A AWCI-AC 201.A10",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.14
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 10,
+     "b": 10.8
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 11,
+     "b": 11.6
+    }
+   ]
+  },
+  {
+   "id": "FR-152-2026-000139",
+   "mfr": "Viessmann",
+   "model": "Vitocal 222-G BWT-M 221.B08",
+   "changes": [
+    {
+     "f": "efficiency_35C_percent",
+     "a": 180,
+     "b": 187
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 128,
+     "b": 134
+    }
+   ]
+  },
+  {
+   "id": "FR-152-2026-000140",
+   "mfr": "Viessmann",
+   "model": "Vitocal 222-G BWT-M 221.B10",
+   "changes": [
+    {
+     "f": "efficiency_35C_percent",
+     "a": 188,
+     "b": 200
+    },
+    {
+     "f": "efficiency_55C_percent",
+     "a": 138,
+     "b": 150
+    }
+   ]
+  },
+  {
+   "id": "16013163",
+   "mfr": "Waterkotte",
+   "model": "EcoTouch Ai1 Air 5015.5 (3x 400V) (ETAs 35°C: 202,0 %)",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 5.12
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 8,
+     "b": 8.1
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 13,
+     "b": 12.6
+    }
+   ]
+  },
+  {
+   "id": "16014156",
+   "mfr": "wepit",
+   "model": "AWlife5009",
+   "changes": [
+    {
+     "f": "scop",
+     "a": null,
+     "b": 4.91
+    },
+    {
+     "f": "power_55C_kw",
+     "a": 7.22,
+     "b": 7.25
+    },
+    {
+     "f": "power_35C_kw",
+     "a": 7.73,
+     "b": 7.8
+    },
+    {
+     "f": "efficiency_35C_percent",
+     "a": 188.2,
+     "b": 193
+    },
+    {
+     "f": "cop_A7W35",
+     "a": 4,
+     "b": 4.56
+    },
+    {
+     "f": "noise_outdoor_dB",
+     "a": 62,
+     "b": 59.9
+    }
+   ]
+  }
+ ],
+ "month": "2026-11",
+ "generatedAt": "2026-11-01T00:17:54.135Z",
+ "suspect": false,
+ "truncated": null
+}
