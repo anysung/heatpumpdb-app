@@ -19,6 +19,7 @@
  *   NEWS_FN_KEY=… node scripts/news/trigger-monthly-news.mjs [--countries DE,FR]
  */
 import https from 'node:https';
+import { execSync } from 'node:child_process';
 
 const FN = process.env.NEWS_FN_URL
   ?? 'https://us-central1-gen-lang-client-0324244302.cloudfunctions.net/autoUpdateDatabase';
@@ -53,16 +54,59 @@ function post(url, payload, headers) {
       r.on('end', () => resolve({ status: r.statusCode ?? 0, text: data }));
     });
     req.setTimeout(TIMEOUT_MIN * 60_000, () => req.destroy(new Error(`no answer within ${TIMEOUT_MIN} min`)));
+    // The function sends nothing until it is done; an idle connection is what a
+    // home router's NAT drops. Keepalive probes keep it alive.
+    req.on('socket', (s) => s.setKeepAlive(true, 30_000));
     req.on('error', reject);
     req.end(payload);
   });
 }
 
+// 2026-11-01: the function finished all five markets in 6 min and answered 200,
+// but the answer never reached us — the connection had been dropped while idle
+// — and the window sat out the full 30 min. So we do not rely on the answer
+// alone: the function stamps countries/{cc}.lastUpdated after each market's
+// news AND policies are stored, and every market stamped after our call
+// started means the run is complete. Best effort: no gcloud → answer only.
+const FS = 'https://firestore.googleapis.com/v1/projects/gen-lang-client-0324244302/databases/(default)/documents';
+async function marketsStampedSince(startedMs, markets) {
+  let token;
+  try { token = execSync('gcloud auth print-access-token', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); }
+  catch { return null; }
+  const pending = [];
+  for (const cc of markets) {
+    const r = await fetch(`${FS}/countries/${cc}?mask.fieldPaths=lastUpdated`, { headers: { Authorization: `Bearer ${token}` } }).catch(() => null);
+    const at = r?.ok ? Date.parse((await r.json()).fields?.lastUpdated?.stringValue ?? '') : NaN;
+    if (!(at >= startedMs)) pending.push(cc);
+  }
+  return pending;
+}
+function completionWatch(startedMs, markets) {
+  let timer;
+  const promise = new Promise((resolve) => {
+    timer = setInterval(async () => {
+      const pending = await marketsStampedSince(startedMs, markets).catch(() => null);
+      if (pending && !pending.length) resolve('firestore');
+    }, 60_000);
+  });
+  return { promise, stop: () => clearInterval(timer) };
+}
+
 const started = Date.now();
 let res;
+const watch = completionWatch(started, countries ?? ['DE', 'GB', 'FR', 'PL', 'IT']);
 try {
-  res = await post(FN, JSON.stringify(body), { 'Content-Type': 'application/json', 'x-api-key': KEY });
+  res = await Promise.race([
+    post(FN, JSON.stringify(body), { 'Content-Type': 'application/json', 'x-api-key': KEY }),
+    watch.promise,
+  ]);
+  watch.stop();
+  if (res === 'firestore') {
+    console.log(`news: every market stamped complete in Firestore after ${Math.round((Date.now() - started) / 1000)}s — not waiting for the HTTP answer`);
+    process.exit(0);
+  }
 } catch (e) {
+  watch.stop();
   console.error(`news: request failed after ${Math.round((Date.now() - started) / 1000)}s — ${e.message}`);
   console.error('The function may still be running server-side; check countries/<cc>/news before re-triggering.');
   process.exit(1);
