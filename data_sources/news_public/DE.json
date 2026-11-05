@@ -1,6 +1,6 @@
 {
   "market": "DE",
-  "generatedAt": "2026-11-01T00:49:28.458Z",
+  "generatedAt": "2026-11-05T23:10:30.120Z",
   "items": [
     {
       "id": "news-20261023-de-sr1",
@@ -29,6 +29,51 @@
         {
           "title": "BEG Einzelmaßnahmen — Richtlinie vom 17. August 2026 (BAnz AT 27.08.2026 B1)",
           "url": "https://bundesanzeiger.de/pub/publication/jLXvW09kHTQoDINAdoC"
+        }
+      ]
+    },
+    {
+      "id": "news-20261105-de-001",
+      "date": "2026-11-05T00:00:00Z",
+      "category": "FUNDING",
+      "title": "Heizungsförderung 2026: 334.554 Zusagen bis September, 92 Prozent für Wärmepumpen",
+      "summary": "Die KfW hat von Januar bis September 334.554 Heizungsförderungen zugesagt, rund 92 Prozent davon für Wärmepumpen. Trotz eines Rückgangs im September zeigt der Jahresverlauf nach oben. Gezählt werden allerdings Zusagen, keine eingebauten Anlagen.",
+      "body": "Von Januar bis September 2026 hat die KfW in der BEG-Heizungsförderung 334.554 Zusagen erteilt. Davon entfallen 307.843 auf Wärmepumpen, rechnerisch rund 92 Prozent. Die Zahlen stammen aus der im Oktober veröffentlichten Statistik, die im Auftrag des Bundesministeriums für Wirtschaft und Energie erstellt wird, und geben den Stand zum 30. September wieder.\n\nFür die Einordnung ist ein Unterschied entscheidend: Eine Zusage ist kein Einbau. Gezählt werden bewilligte Förderanträge. Der Antrag muss vor Beginn des Vorhabens gestellt werden; danach haben Antragstellende bis zu 36 Monate Zeit für den Abschluss, und erst nach dem Nachweis zahlt die KfW den Zuschuss aus. Eine Zusage aus dem September kann also erst deutlich später zu einer eingebauten Anlage führen und muss auch nicht zwingend umgesetzt werden. Für Hersteller und Installateure sind die Zahlen damit eher ein Frühindikator für die Nachfrage als eine Zählung neuer Anlagen.\n\nAm Aufwärtstrend des Jahres 2026 ändert das nichts. Im ersten Quartal lagen die Zusagen im Schnitt bei 29.633 pro Monat, im zweiten bei 38.021 und im dritten bei 43.863; das Jahreshoch wurde im Juli mit 47.340 erreicht. Das erste Halbjahr lag mit 202.964 Zusagen rund 35 Prozent über den rund 150.000, die für das erste Halbjahr 2025 berichtet wurden.\n\nDer September fiel schwächer aus: 38.314 Zusagen, 16,6 Prozent weniger als im August. Einschließlich der Zusatzanträge von Wohneigentümergemeinschaften und aus Mehrfamilienhäusern betrug der Rückgang nur 2,6 Prozent, von 55.167 auf 53.720. Gründe nennt die Statistik nicht, und ein einzelner Monat ist noch kein Trendbruch. Die Monatswerte können sich in späteren Veröffentlichungen zudem noch ändern.\n\nDer Anteil der Wärmepumpe an den Zusagen stieg von 90,5 Prozent im Januar auf 94,2 Prozent im September; für das erste Halbjahr 2025 wurden 82 Prozent berichtet. Im geförderten Heizungstausch ist die Richtung damit weitgehend entschieden. Mit dem Gesamtmarkt ist das aber nicht gleichzusetzen: Konventionelle Gas- und Ölheizungen werden im Programm nicht gefördert und können in diesen Zahlen gar nicht auftauchen. Nach Angaben des Branchenverbands BDH wurden von Januar bis Juni 2026 insgesamt 352.000 Wärmeerzeuger abgesetzt, davon 194.500 Wärmepumpen (rund 55 Prozent, plus 40 Prozent) und 134.000 gasbasierte Geräte (rund 38 Prozent, plus 1 Prozent). Absatz und Zusagen sind nicht direkt vergleichbar, weisen aber in dieselbe Richtung: Die Wärmepumpe ist inzwischen die stärkste Technologie, Gas bleibt jedoch relevant.\n\nNach Bundesländern liegt Nordrhein-Westfalen mit 87.940 Zusagen für Wohngebäude vorn, vor Baden-Württemberg (63.709) und Bayern (63.496), nur 213 dahinter. Zusammen stehen die drei für 215.145 von 402.146 Zusagen, also 53,5 Prozent. Sie sind zugleich die bevölkerungsreichsten Länder; die Rangfolge sagt daher nichts über die Verbreitung pro Kopf aus.\n\nDie Reform vom 21. Juli ist in den Daten deutlich sichtbar. Effizienzbonus und Emissionsminderungszuschlag sind entfallen: Beim Effizienzbonus sanken die Zusagen von 18.767 im Juli auf null im September, beim Zuschlag von 921 auf null. Der Einkommensbonus, nun gestaffelt bis zu einem Haushaltseinkommen von 50.000 Euro, stieg von 5.858 Zusagen im Januar auf 15.944 im September, von rund 21 auf rund 30 Prozent der Zusagen einschließlich Zusatzanträgen.\n\nWeitere Änderungen stehen bereits fest. Ab dem 1. Februar 2027 sinkt der Klima-Geschwindigkeitsbonus halbjährlich um 4 Prozentpunkte, im selben Rhythmus der Förderhöchstbetrag für die erste Wohneinheit um 750 Euro. Für das erste Quartal 2027 ist ein Wertschöpfungsbonus geplant: Die Grundförderung läge dann bei 15 Prozent für alle Wärmepumpen, zuzüglich 15 Prozent für in der EU hergestellte Geräte. Ob das Vorhaben vorzieht, werden erst die kommenden Monatszahlen zeigen.\n\nDie Grafiken zu diesem Artikel liegen in deutscher und englischer Fassung bei.",
+      "titleEn": "German Heating Subsidy 2026: 334,554 Approvals to September, 92 Percent for Heat Pumps",
+      "summaryEn": "KfW issued 334,554 heating-subsidy approvals from January to September, around 92 percent of them for heat pumps. Despite a dip in September, the year's trend points upward. The figures count approvals, however, not installed systems.",
+      "imageUrl": "/news-images/de-beg-zusagen-2026-09-monate.webp",
+      "images": [
+        "/news-images/de-beg-zusagen-2026-09-monate.webp",
+        "/news-images/de-beg-zusagen-2026-09-laender.webp",
+        "/news-images/de-beg-zusagen-2026-09-einordnung.webp",
+        "/news-images/de-beg-zusagen-2026-09-monate-en.webp",
+        "/news-images/de-beg-zusagen-2026-09-laender-en.webp",
+        "/news-images/de-beg-zusagen-2026-09-einordnung-en.webp"
+      ],
+      "author": "HeatPump DataBase (Europe)",
+      "pinned": false,
+      "ctaUrl": "",
+      "ctaLabel": "",
+      "sources": [
+        {
+          "title": "BEG Heizungsförderung: Zusagen 01.01.–30.09.2026 (im Auftrag des BMWE)",
+          "url": "https://www.energiewechsel.de/KAENEF/Redaktion/DE/PDF-Anlagen/BEG/beg-antragszahlen-2026.pdf?__blob=publicationFile&v=6"
+        },
+        {
+          "title": "KfW: Anpassungen in den KfW-Produkten der BEG (08.07.2026)",
+          "url": "https://www.kfw.de/%C3%9Cber-die-KfW/Newsroom/Aktuelles/Pressemitteilungen-Details_900928.html"
+        },
+        {
+          "title": "KfW: Heizungsförderung für Privatpersonen – Wohngebäude (458)",
+          "url": "https://www.kfw.de/inlandsfoerderung/Privatpersonen/Bestehende-Immobilie/F%C3%B6rderprodukte/Heizungsf%C3%B6rderung-f%C3%BCr-Privatpersonen-Wohngeb%C3%A4ude-(458)/"
+        },
+        {
+          "title": "BDH: Heizungsmarkt legt zu (11.08.2026)",
+          "url": "https://www.bdh-industrie.de/presse/pressemeldungen/artikel/heizungsmarkt-legt-zu-waermepumpen-setzen-positive-impulse"
+        },
+        {
+          "title": "Solarserver: Starker Anstieg im ersten Halbjahr 2025 (04.08.2025)",
+          "url": "https://www.solarserver.de/2025/08/04/beg-heizungsfoerderung-der-kfw-starker-anstieg-im-ersten-halbjahr-2025/"
         }
       ]
     },
