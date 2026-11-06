@@ -13,7 +13,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSy
 import { join, resolve } from 'node:path';
 import {
   canonicalBase, climateValues, displayFunding, energyClass35, energyClass55, eprelBase, excludedFromMarket,
-  brandNamer, failsPlausibility, fundingState, groupSeries, noiseStarsFromDb, normBrand, normModel, publishable, sameBrand, scopFromEta,
+  brandNamer, failsPlausibility, incredibleScop, fundingState, groupSeries, noiseStarsFromDb, normBrand, normModel, publishable, sameBrand, scopFromEta,
 } from './consumer-rules.mjs';
 
 const ROOT = resolve(new URL('../..', import.meta.url).pathname);
@@ -89,7 +89,7 @@ for (const cc of wanted) {
   const mk = CONFIG.markets[cc];
   const rows = read(mk.file);
   const refName = cc === 'de' ? 'BAFA list' : 'European reference data';
-  const dropped = { plausibility: 0, notPublishable: 0, notAirWater: 0, marketExclusion: 0 };
+  const dropped = { plausibility: 0, notPublishable: 0, notAirWater: 0, marketExclusion: 0, incredibleScop: 0 };
   const candidates = [];
   const usedRegs = new Set();
   const canonicalNames = new Map();
@@ -114,6 +114,8 @@ for (const cc of wanted) {
     const state = fundingState({ list: mk.fundingList, status: mk.statusField ? p[mk.statusField] : null, listedDe: p.bafa_listing_status });
     if (state === 'listed' && (values.eta35 != null || values.eta55 != null)) listedRows.push(p);
     if (!publishable({ manufacturer: brand, model: p.model, values })) { dropped.notPublishable++; continue; }
+    // Judged on the average climate. A warm climate raises SCOP for every model, so the warm column would remove sound models.
+    if (incredibleScop(climateValues(canonicalBase(p), eprel, 'average'))) { dropped.incredibleScop++; continue; }
     candidates.push({ brand, model: p.model, values, noiseDb: p.noise_outdoor_dB, refrigerant: refrigerantOf(p), state, url: https(p.website) ?? https(eprel?.organisation?.website),
       source: native ? (p.performance_source === 'EPREL' || p.performance_source === 'ZUM_EPREL' ? 'eprel' : 'registry') : 'reference',
       sourceName: native ? (p.performance_source.includes('EPREL') ? 'EPREL (European Commission)' : cc === 'it' ? 'GSE catalogue' : 'Lista ZUM') : refName,
@@ -128,6 +130,7 @@ for (const cc of wanted) {
       if (excludedFromMarket(x, mk.eprelCode)) { dropped.marketExclusion++; continue; }
       const values = climateValues(eprelBase(x), x, mk.climate);
       if (!publishable({ manufacturer: x.supplierOrTrademark, model: x.modelIdentifier, values })) { dropped.notPublishable++; continue; }
+      if (incredibleScop(climateValues(eprelBase(x), x, 'average'))) { dropped.incredibleScop++; continue; }
       candidates.push({ brand: x.supplierOrTrademark, model: x.modelIdentifier, values, noiseDb: x.outdoorNoise, refrigerant: null,
         state: fundingState({ list: mk.fundingList, status: null, listedDe: null }), url: https(x.organisation?.website), source: 'eprel', sourceName: 'EPREL (European Commission)', sourceSnapshotDate: eprelDate });
     }

@@ -132,6 +132,10 @@ export function publishable({ manufacturer, model, values }) {
   return kw != null && kw <= 23;
 }
 
+/** Owner decision 2026-11-06: a SCOP this high is not credible for an air-to-water unit. The source value is not corrected; the model is left out. */
+export const MAX_CREDIBLE_SCOP = 6.5;
+export const incredibleScop = ({ eta35, eta55 }) => [eta35, eta55].some((eta) => eta != null && scopFromEta(eta) >= MAX_CREDIBLE_SCOP);
+
 export function failsPlausibility(p) {
   return impossibleFields(p).some((f) => f.startsWith('cop_')) || inconsistentFields(p).length > 0;
 }

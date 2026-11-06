@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   brandId, brandNamer, climateValues, displayFunding, energyClass35, energyClass55, excludedFromMarket, fundingState,
-  groupSeries, noiseStarsFromDb, publishable, scopFromEta, stripCompanyForm,
+  groupSeries, incredibleScop, noiseStarsFromDb, publishable, scopFromEta, stripCompanyForm,
 } from '../scripts/finder/consumer-rules.mjs';
 
 // A failed match is never "not listed". Only the market owning its list can say so.
@@ -81,5 +81,11 @@ assert.equal(nameOf('Acond'), 'ACOND');
 assert.equal(nameOf('ACOND a.s.'), 'ACOND');
 assert.equal(nameOf('STIEBEL'), 'Stiebel Eltron');
 assert.equal(nameOf('Atlantic'), 'ATLANTIC');
+
+// A SCOP of 6.5 or more leaves the model out, whichever flow temperature it is at. The rule reads the same rounded value the card shows.
+assert.equal(incredibleScop({ eta35: 256, eta55: 150 }), true);  // SCOP 6.5 at 35 °C
+assert.equal(incredibleScop({ eta35: 150, eta55: 256 }), true);
+assert.equal(incredibleScop({ eta35: 251, eta55: 150 }), false); // SCOP 6.4
+assert.equal(incredibleScop({ eta35: null, eta55: null }), false);
 
 console.log('finder-export: ok');
