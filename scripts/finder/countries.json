@@ -5,7 +5,7 @@
     "de": { "country": "DE", "file": "products", "climate": "average", "eprelCode": "DE", "fundingList": "owned", "fundingRanking": true },
     "it": { "country": "IT", "file": "products-it", "climate": "average", "eprelCode": "IT", "fundingList": "overlay", "statusField": "gse_match_status", "fundingRanking": true },
     "pl": { "country": "PL", "file": "products-pl", "climate": "average", "eprelCode": "PL", "fundingList": "overlay", "statusField": "zum_match_status", "fundingRanking": true },
-    "gb": { "country": "GB", "file": "products-gb", "climate": "average", "eprelCode": null, "fundingList": "overlay", "statusField": "pel_match_status", "fundingRanking": false },
+    "gb": { "country": "GB", "file": "products-gb", "climate": "average", "eprelCode": null, "eprelSignal": "pelBrand", "fundingList": "overlay", "statusField": "pel_match_status", "fundingRanking": false },
     "fr": { "country": "FR", "file": "products-fr", "climate": "average", "eprelCode": "FR", "fundingList": null, "fundingRanking": false },
     "at": { "country": "AT", "file": "products", "climate": "average", "eprelCode": "AT", "fundingList": null, "fundingRanking": false },
     "be": { "country": "BE", "file": "products", "climate": "average", "eprelCode": "BE", "fundingList": null, "fundingRanking": false },

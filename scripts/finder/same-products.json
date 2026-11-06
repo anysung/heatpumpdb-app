@@ -1,0 +1,15 @@
+{
+  "_readme": "Models sold under different brands that the owner's rule treats as one product: documents agree and the outdoor unit has the same shape (finish and colour do not count, owner decision 2026-11-06). In the first three places of a result only the highest scoring member appears. All members stay in the catalogue. This says nothing public about who makes what, and none of it reaches the browser. Add a group only after checking documents and shape. Evidence: the 'same product' verification report of 2026-11-06.",
+  "groups": [
+    { "id": "lambda-eu10l", "members": [["Lambda", "EU10L"], ["Ritter Energie", "WP Aero Calima 10"]] },
+    { "id": "lambda-eu13l", "members": [["Lambda", "EU13L"], ["Ritter Energie", "WP Aero Calima 13"]] },
+    { "id": "lambda-eu15l", "members": [["Lambda", "EU15L"], ["Ritter Energie", "WP Aero Calima 15"]] },
+    { "id": "lambda-eu20l", "members": [["Lambda", "EU20L"], ["Ritter Energie", "WP Aero Calima 20"]] },
+    { "id": "kronoterm-adapt2-m-3f", "members": [["KRONOTERM", "ADAPT 2 M / HK 3F"], ["Ritter Energie", "WP Hypernova 13 Nero N"]] },
+    { "id": "kronoterm-adapt2-l-3f", "members": [["KRONOTERM", "ADAPT 2 L / HK 3F"], ["Ritter Energie", "WP Hypernova 18 Nero N"]] },
+    { "id": "acond-grandis-n", "members": [["Acond", "Grandis N"], ["IZZIFAST", "izzifast Grandis N"], ["Ritter Energie", "WP Aero Vento 5"]] },
+    { "id": "stiebel-wpl-a-05", "members": [["Stiebel Eltron", "WPL-A 05.2 Plus HK 230"], ["Tecalor", "TTL 5.1 ACS comfort"]] },
+    { "id": "stiebel-wpl-a-17", "members": [["Stiebel Eltron", "WPL-A 17.2 Trend HK 400"], ["Tecalor", "TTL 17.1 AC eco"]] },
+    { "id": "midea-arctic-4", "members": [["Midea", "MHC-V4WD2N7-E30"], ["Ferroli", "Omnia LIFE M 4 HI3"]] }
+  ]
+}

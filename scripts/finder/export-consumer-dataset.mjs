@@ -13,7 +13,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSy
 import { join, resolve } from 'node:path';
 import {
   canonicalBase, climateValues, displayFunding, energyClass35, energyClass55, eprelBase, excludedFromMarket,
-  brandNamer, failsPlausibility, incredibleScop, fundingState, groupSeries, noiseStarsFromDb, normBrand, normModel, publishable, sameBrand, scopFromEta,
+  brandNamer, brandStarsFor, displayBrand, numberOnlyModel, sameProductGroup, modelNameForms, looksGroundSource, modelWithoutBrand, failsPlausibility, incredibleScop, fundingState, groupSeries, noiseStarsFromDb, normBrand, normModel, publishable, sameBrand, scopFromEta,
 } from './consumer-rules.mjs';
 
 const ROOT = resolve(new URL('../..', import.meta.url).pathname);
@@ -83,13 +83,29 @@ function assertAllowed(ds) {
   if (ds.market !== 'de' && /BAFA/.test(text)) throw new Error(`"BAFA" outside the German market (${ds.market})`);
 }
 
+/**
+ * The UK left EPREL's country list, so it has no availability signal of its own. The Ofgem list names who sells heat pumps
+ * there, and EPREL supplies the specification. It is never the other way round: the list provides no performance value.
+ */
+function pelSignal() {
+  const base = join(ROOT, 'data_sources/ofgem_pel/parsed');
+  const snap = readdirSync(base).filter((d) => /^\d{4}-\d{2}$/.test(d)).sort().at(-1);
+  const d = J(join(base, snap, 'pel-normalized.json'));
+  const rows = Array.isArray(d) ? d : d.items ?? d.records ?? d.products ?? d.rows;
+  const air = rows.filter((r) => r.technology_type === 'ASHP');
+  const brands = [...new Set(air.map((r) => r.brand))];
+  const memo = new Map();
+  const brandListed = (name) => { if (!name) return false; if (!memo.has(name)) memo.set(name, brands.some((b) => sameBrand(b, name))); return memo.get(name); };
+  return { snap, brandListed, airModels: new Set(air.map((r) => normModel(r.model)).filter((m) => m.length >= 5)), groundModels: new Set(rows.filter((r) => r.technology_type === 'WSHP').map((r) => normModel(r.model)).filter((m) => m.length >= 5)) };
+}
+
 mkdirSync(OUT, { recursive: true });
 const report = {};
 for (const cc of wanted) {
   const mk = CONFIG.markets[cc];
   const rows = read(mk.file);
   const refName = cc === 'de' ? 'BAFA list' : 'European reference data';
-  const dropped = { plausibility: 0, notPublishable: 0, notAirWater: 0, marketExclusion: 0, incredibleScop: 0 };
+  const dropped = { plausibility: 0, notPublishable: 0, notAirWater: 0, marketExclusion: 0, incredibleScop: 0, groundSource: 0, numberOnly: 0 };
   const candidates = [];
   const usedRegs = new Set();
   const canonicalNames = new Map();
@@ -114,6 +130,8 @@ for (const cc of wanted) {
     const state = fundingState({ list: mk.fundingList, status: mk.statusField ? p[mk.statusField] : null, listedDe: p.bafa_listing_status });
     if (state === 'listed' && (values.eta35 != null || values.eta55 != null)) listedRows.push(p);
     if (!publishable({ manufacturer: brand, model: p.model, values })) { dropped.notPublishable++; continue; }
+    if (looksGroundSource(p.model)) { dropped.groundSource++; continue; }
+    if (numberOnlyModel(p.model)) { dropped.numberOnly++; continue; }
     // Judged on the average climate. A warm climate raises SCOP for every model, so the warm column would remove sound models.
     if (incredibleScop(climateValues(canonicalBase(p), eprel, 'average'))) { dropped.incredibleScop++; continue; }
     candidates.push({ brand, model: p.model, values, noiseDb: p.noise_outdoor_dB, refrigerant: refrigerantOf(p), state, url: https(p.website) ?? https(eprel?.organisation?.website),
@@ -122,17 +140,27 @@ for (const cc of wanted) {
       sourceSnapshotDate: String(p.source_snapshot_generated_at ?? p.bafa_snapshot_fetched_at ?? p.zum_snapshot_fetched_at ?? p.gse_snapshot_fetched_at ?? eprelDate).slice(0, 10) });
   }
 
-  // EPREL adds models the catalogue lacks. Without any market signal (GB) it adds nothing.
-  if (mk.eprelCode) {
+  // EPREL adds models the catalogue lacks, where the market gives a signal: its EPREL country code, or a brand on the UK list.
+  const pel = mk.eprelSignal === 'pelBrand' ? pelSignal() : null;
+  if (mk.eprelCode || pel) {
     for (const [reg, x] of eprelAll) {
       if (usedRegs.has(reg) || x.blocked || !(num0(x.outdoorNoise) > 0)) continue;
-      if ((canonicalNames.get(normModel(x.modelIdentifier)) ?? []).some((b) => sameBrand(b, x.supplierOrTrademark))) continue;
-      if (excludedFromMarket(x, mk.eprelCode)) { dropped.marketExclusion++; continue; }
+      const onPelModel = pel ? modelNameForms(x.modelIdentifier).some((m) => pel.airModels.has(m)) : false;
+      if (pel) {
+        if (pel.groundModels.has(normModel(x.modelIdentifier))) { dropped.groundSource++; continue; }
+        if (!pel.brandListed(x.supplierOrTrademark) && !pel.brandListed(x.organisation?.organisationName)) continue;
+        // A supplier limiting a model to named EU countries is not selling it in the UK, unless the UK list names that model.
+        if (!onPelModel && x.availabilityInEUEEACountries !== 'ALL') { dropped.marketExclusion++; continue; }
+      }
+      if ((canonicalNames.get(normModel(x.modelIdentifier)) ?? canonicalNames.get(modelWithoutBrand(x.modelIdentifier, x.supplierOrTrademark)) ?? []).some((b) => sameBrand(b, x.supplierOrTrademark))) continue;
+      if (mk.eprelCode && excludedFromMarket(x, mk.eprelCode)) { dropped.marketExclusion++; continue; }
       const values = climateValues(eprelBase(x), x, mk.climate);
       if (!publishable({ manufacturer: x.supplierOrTrademark, model: x.modelIdentifier, values })) { dropped.notPublishable++; continue; }
+      if (looksGroundSource(x.modelIdentifier)) { dropped.groundSource++; continue; }
+      if (numberOnlyModel(x.modelIdentifier)) { dropped.numberOnly++; continue; }
       if (incredibleScop(climateValues(eprelBase(x), x, 'average'))) { dropped.incredibleScop++; continue; }
       candidates.push({ brand: x.supplierOrTrademark, model: x.modelIdentifier, values, noiseDb: x.outdoorNoise, refrigerant: null,
-        state: fundingState({ list: mk.fundingList, status: null, listedDe: null }), url: https(x.organisation?.website), source: 'eprel', sourceName: 'EPREL (European Commission)', sourceSnapshotDate: eprelDate });
+        state: fundingState({ list: mk.fundingList, status: onPelModel ? 'confirmed' : null, listedDe: null }), url: https(x.organisation?.website), source: 'eprel', sourceName: 'EPREL (European Commission)', sourceSnapshotDate: eprelDate });
     }
   }
 
@@ -143,7 +171,7 @@ for (const cc of wanted) {
   const coverage = mk.fundingList ? registryCoverage(cc, rows, listedRows) : null;
   const inRanking = mk.fundingRanking === true && coverage != null && coverage >= CONFIG.minFundingCoverage;
   const models = groupSeries(candidates.map((c) => ({
-    id: idOf(c.brand, c.model), market: cc, manufacturer: c.brand, model: c.model, type: 'air-water',
+    id: idOf(c.brand, c.model), market: cc, manufacturer: displayBrand(cc.toUpperCase(), c.brand), brandStars: brandStarsFor(cc.toUpperCase(), c.brand), model: c.model, type: 'air-water',
     ratedKw35: c.values.kw35, ratedKw55: c.values.kw55 ?? null,
     scop35: scopFromEta(c.values.eta35), scop55: scopFromEta(c.values.eta55),
     energyClass35: energyClass35(c.values.eta35), energyClass55: energyClass55(c.values.eta55),
@@ -151,6 +179,7 @@ for (const cc of wanted) {
     climateBasis: c.values.basis, source: c.source, sourceName: c.sourceName, sourceSnapshotDate: c.sourceSnapshotDate,
     ...(c.url ? { manufacturerUrl: c.url } : {}),
   })));
+  for (const m of models) { const g = sameProductGroup(m); if (g) m.sameProduct = g; }
   const ds = { fixture: false, market: cc, fundingInRanking: inRanking, fundingCoverage: coverage == null ? null : Math.round(coverage * 1000) / 10, climate: mk.climate,
     generatedAt: new Date().toISOString(), attribution: 'Energy label data: EPREL, European Commission. Supplier-declared values.', models };
   assertAllowed(ds);

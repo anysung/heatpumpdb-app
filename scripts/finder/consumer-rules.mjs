@@ -4,6 +4,8 @@
  */
 import { impossibleFields, inconsistentFields } from '../../src/shared/plausibility.mjs';
 import ALIASES from './brand-aliases.json' with { type: 'json' };
+import RECOGNITION from './brand-recognition.json' with { type: 'json' };
+import SAME_PRODUCTS from './same-products.json' with { type: 'json' };
 
 export const num = (v) => {
   if (v == null || v === '') return null;
@@ -31,6 +33,13 @@ export function noiseStarsFromDb(db) {
 }
 
 export const normModel = (s) => String(s ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+/** A supplier sometimes repeats its brand in the model name ("KWB EasyAir Plus 24"). The record is still the same model. */
+export const modelWithoutBrand = (model, brand) => {
+  const m = normModel(model), b = normBrand(stripForBrand(brand)).toUpperCase();
+  return b.length >= 3 && m.startsWith(b) && m.length > b.length ? m.slice(b.length) : m;
+};
+const stripForBrand = (s) => String(s ?? '').trim().split(/\s+/)[0];
+
 const LEGAL = /\b(gmbh|co|kg|ag|se|spa|s\.p\.a|ltd|limited|sas|bv|srl|sa|inc|llc|corporation|corp|group|brand|climate|solutions|werke|deutschland|france|europe|heating|hvac|products|electronics|electric)\b/g;
 export const normBrand = (s) => String(s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(LEGAL, ' ').replace(/[^a-z0-9]/g, '');
 
@@ -76,10 +85,40 @@ export function brandNamer(entries) {
   return (brand) => names.get(brandId(brand)) ?? stripCompanyForm(brand);
 }
 
+/** The name people know in this country, where it differs from the catalogue's. */
+export const displayBrand = (cc, brand) => ALIASES.displayNames?.[cc]?.[brand] ?? brand;
+
+/** Stars 1-5 for how well a brand is known in this country. Null where no map exists, so the brand mix stays neutral there. */
+export function brandStarsFor(cc, brand) {
+  const m = RECOGNITION.markets[cc];
+  if (!m) return null;
+  const known = RECOGNITION.alsoKnownAs?.[cc]?.[brand] ?? brand;
+  const id = brandId(known);
+  for (const [tier, stars] of [['A', 5], ['B', 4], ['C', 3], ['D', 2]]) if (m[tier].some((b) => brandId(b.brand) === id)) return stars;
+  return 1;
+}
+
+// EPREL has no heat-source field and ground-source units also declare outdoor noise, so model names are the only signal.
+const GROUND_SOURCE = /SOL\s*\/\s*EAU|EAU\s*\/\s*EAU|\bGEO\b|GEO[ -]|BRINE|\bWW\b|\bW\/W\b|\bS\/W\b|WASSER\/WASSER|TERRA SW|GLYCOL|\bWPF\b|N\dWP|N\dGP|GEOTHERM/i;
+export const looksGroundSource = (model) => GROUND_SOURCE.test(String(model ?? ''));
+
+/** A bare article number tells a household nothing, and an installer cannot be asked about it. */
+export const numberOnlyModel = (model) => /^[\d\s.\-]+$/.test(String(model ?? '').trim());
+
+/** The group a card belongs to, read from its name or any model it folds in. Null when it has none. */
+export function sameProductGroup(card) {
+  const id = brandId(card.manufacturer);
+  const names = new Set([card.model, ...(card.variantModels ?? [])].map(normModel));
+  return SAME_PRODUCTS.groups.find((g) => g.members.some(([b, m]) => brandId(b) === id && names.has(normModel(m))))?.id ?? null;
+}
+
+/** Suppliers often append an article number ("Cosy 6 / 0101200004060"). Either form names the model. */
+export const modelNameForms = (model) => [normModel(model), normModel(String(model ?? '').split(' / ')[0])].filter((m) => m.length >= 5);
+
 export const sameBrand = (a, b) => {
   const x = normBrand(a), y = normBrand(b);
   if (!x || !y) return false;
-  return x === y || (x.length >= 4 && y.includes(x)) || (y.length >= 4 && x.includes(y));
+  return x === y || brandId(a) === brandId(b) || (x.length >= 4 && y.includes(x)) || (y.length >= 4 && x.includes(y));
 };
 
 /** Only an explicit exclusion removes a model. No signal keeps it: 93% of EPREL says "all countries", which proves little. */

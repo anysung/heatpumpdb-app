@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {
-  brandId, brandNamer, climateValues, displayFunding, energyClass35, energyClass55, excludedFromMarket, fundingState,
+  brandStarsFor, displayBrand, looksGroundSource, numberOnlyModel, sameProductGroup, modelNameForms, sameBrand, brandId, brandNamer, modelWithoutBrand, climateValues, displayFunding, energyClass35, energyClass55, excludedFromMarket, fundingState,
   groupSeries, incredibleScop, noiseStarsFromDb, publishable, scopFromEta, stripCompanyForm,
 } from '../scripts/finder/consumer-rules.mjs';
 
@@ -87,5 +87,39 @@ assert.equal(incredibleScop({ eta35: 256, eta55: 150 }), true);  // SCOP 6.5 at 
 assert.equal(incredibleScop({ eta35: 150, eta55: 256 }), true);
 assert.equal(incredibleScop({ eta35: 251, eta55: 150 }), false); // SCOP 6.4
 assert.equal(incredibleScop({ eta35: null, eta55: null }), false);
+
+// Recognition is per country, and anything unlisted gets one star.
+assert.equal(brandId('Robert'), brandId('Bosch'));
+assert.equal(brandId('iDM-Energiesysteme'), brandId('iDM'));
+assert.equal(brandStarsFor("DE", "Vaillant"), 5);
+assert.equal(brandStarsFor('DE', 'A brand nobody has heard of'), 1);
+assert.equal(brandStarsFor('FR', 'ATLANTIC'), 5);
+assert.equal(brandStarsFor('DE', 'Ritter Energie'), brandStarsFor('DE', 'Paradigma'));
+assert.equal(brandStarsFor('NL', 'Vaillant'), null);
+// Ground-source units do not belong in an air-to-water list. Air units with similar words stay.
+for (const m of ['SMARTPACK 2 SOL/EAU 13 MONO', 'N1WP-09M', 'N3GP-20T', 'WW 14 EVI', 'EcoTouch Geo Cube 7019.7', 'TERRA SW 13 Complete', 'SMARTPACK 2 EAU GLYCOLEE EAU 8 Tri', 'WPF 20']) assert.equal(looksGroundSource(m), true, m);
+for (const m of ['EU13L', 'TERRA AL 17 Twin (P)', 'Compress CS3800iAW 4 OE-S', 'Grandis N']) assert.equal(looksGroundSource(m), false, m);
+
+assert.equal(modelWithoutBrand('KWB EasyAir Plus 24 Comfort', 'KWB Energiesysteme GmbH'), 'EASYAIRPLUS24COMFORT');
+assert.equal(modelWithoutBrand('EasyAir Plus 24 Comfort', 'KWB'), 'EASYAIRPLUS24COMFORT');
+assert.equal(modelWithoutBrand('NIBE', 'NIBE'), 'NIBE');
+assert.equal(sameBrand('KWB', 'KWB Energiesysteme GmbH'), true);
+
+assert.deepEqual(modelNameForms('Cosy 6 / 0101200004060'), ['COSY60101200004060', 'COSY6'].filter((m) => m.length >= 5));
+
+assert.equal(displayBrand('GB', 'Bosch'), 'Worcester Bosch');
+assert.equal(displayBrand('DE', 'Bosch'), 'Bosch');
+assert.equal(brandStarsFor('GB', 'Bosch'), 5);
+assert.equal(brandStarsFor('GB', 'Octopus Energy'), 5);
+assert.equal(brandStarsFor('GB', 'Buderus'), 1);
+
+for (const m of ['7738602872', '03-1050', '8755000539']) assert.equal(numberOnlyModel(m), true, m);
+for (const m of ['EU13L', 'Compress CS3800iAW 4', 'Cosy 6 / 0101200004060', 'P20']) assert.equal(numberOnlyModel(m), false, m);
+assert.equal(sameProductGroup({ manufacturer: 'Lambda', model: 'EU13L' }), 'lambda-eu13l');
+assert.equal(sameProductGroup({ manufacturer: 'Ritter Energie', model: 'WP Aero Calima 13' }), 'lambda-eu13l');
+assert.equal(sameProductGroup({ manufacturer: 'KRONOTERM', model: 'ADAPT 2 M / HK 1F', variantModels: ['ADAPT 2 M / HK 1F'] }), null);
+// A different grille is a different product, so Zewotherm stays out even with equal values.
+assert.equal(sameProductGroup({ manufacturer: 'Zewotherm', model: 'ZewoLambda EU13L - Luft-Monoblock Außeneinheit' }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Bosch', model: 'EU13L' }), null);
 
 console.log('finder-export: ok');

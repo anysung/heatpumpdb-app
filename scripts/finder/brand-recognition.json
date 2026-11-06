@@ -1,0 +1,3257 @@
+{
+ "_readme": "Brand recognition per country for Heatpump Finder, owner decision 2026-11-06. A=5 stars, B=4, C=3, D=2, anything else 1. Recognition only, not quality, and regardless of who manufactures. Most placements are judgement from weak signals: evidence says how far each can be trusted. Review yearly, or when search-volume data becomes available. Used for ordering only and never sent to the browser.",
+ "markets": {
+  "DE": {
+   "A": [
+    {
+     "brand": "Vaillant",
+     "evidence": "strong",
+     "basis": "Named with Viessmann as by far the best-known heat pump brand in EUPD unaided awareness among 351 German installers (2023), and it received the Top Brand seal.",
+     "urls": [
+      "https://ee-news.ch/a/eupd-research-zeichnet-in-deutschland-marken-mit-dem-siegel-top-brand-warmepumpe-aus",
+      "https://leospardo.de/ratgeber/waermepumpe-anbieter-vergleich/"
+     ]
+    },
+    {
+     "brand": "Viessmann",
+     "evidence": "strong",
+     "basis": "Second in EUPD unaided installer awareness and Warentest winner 10/2025, although installers also named it most often as a brand they avoid after the Carrier sale.",
+     "urls": [
+      "https://ee-news.ch/a/eupd-research-zeichnet-in-deutschland-marken-mit-dem-siegel-top-brand-warmepumpe-aus",
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger",
+      "https://cdn.daa.net/p/260528_PM_DCMN_x_TTH_d011bbb76d.pdf"
+     ]
+    },
+    {
+     "brand": "Buderus",
+     "evidence": "strong",
+     "basis": "Third in EUPD unaided installer awareness (2023), Top Brand seal, and joint Warentest winner 8/2024.",
+     "urls": [
+      "https://ee-news.ch/a/eupd-research-zeichnet-in-deutschland-marken-mit-dem-siegel-top-brand-warmepumpe-aus",
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "medium",
+     "basis": "Named in a homeowner study as a preferred traditional German brand and listed as a German market leader, but no measured heat pump awareness figure was found.",
+     "urls": [
+      "https://cdn.daa.net/p/260528_PM_DCMN_x_TTH_d011bbb76d.pdf",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller",
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "medium",
+     "basis": "Listed among German market leaders, tested in Warentest 10/2025, and ran primetime national TV spots from July 2026, with no measured awareness figure.",
+     "urls": [
+      "https://www.pv-magazine.de/unternehmensmeldungen/stiebel-eltron-startet-breite-marketingkampagne-inklusive-tv-spots/",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller",
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger"
+     ]
+    },
+    {
+     "brand": "Wolf",
+     "evidence": "medium",
+     "basis": "Named in a homeowner study as a preferred German brand and among the EUPD brands with an installer Net Promoter Score above 70.",
+     "urls": [
+      "https://cdn.daa.net/p/260528_PM_DCMN_x_TTH_d011bbb76d.pdf",
+      "https://ee-news.ch/a/eupd-research-zeichnet-in-deutschland-marken-mit-dem-siegel-top-brand-warmepumpe-aus",
+      "https://www.homeandsmart.de/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Weishaupt",
+     "evidence": "medium",
+     "basis": "EUPD installer Net Promoter Score above 70, joint Warentest winner 8/2024, and described as well known with strong sales partners.",
+     "urls": [
+      "https://ee-news.ch/a/eupd-research-zeichnet-in-deutschland-marken-mit-dem-siegel-top-brand-warmepumpe-aus",
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger",
+      "https://www.waermepumpen-einfach.de/beste-waermepumpen-in-deutschland-beliebte"
+     ]
+    },
+    {
+     "brand": "Daikin",
+     "evidence": "medium",
+     "basis": "Listed in nearly every German overview and in Warentest, though Horizont reports it was still running a campaign to become better known in Germany.",
+     "urls": [
+      "https://www.horizont.net/agenturen/nachrichten/energiewende-daikin-will-mit-hilfe-von-leagas-delaney-bekannter-werden-218924",
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller",
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "medium",
+     "basis": "Mitsubishi Electric ran a national consumer campaign in autumn 2025 and appears in Warentest and in overviews, with no measured awareness figure; judgement placement in the top tier.",
+     "urls": [
+      "https://de.mitsubishielectric.com/de/pr/local/2025/pdf/250930-local-de-de.pdf",
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger",
+      "https://leospardo.de/ratgeber/waermepumpe-anbieter-vergleich/"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "weak",
+     "basis": "Judgement placement from a Warentest \"gut\" in 2024, a household brand name and repeated listing, despite a smaller German service network; NIBE was a close alternative.",
+     "urls": [
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger",
+      "https://www.waermepumpen-einfach.de/beste-waermepumpen-in-deutschland-beliebte",
+      "https://reduco.ai/blog/heizung/waermepumpe-hersteller-vergleich-2026"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "NIBE",
+     "evidence": "medium",
+     "basis": "Named in leading German overviews as a brand shaping the market, but as a specialist with lower consumer awareness than the top tier.",
+     "urls": [
+      "https://42watt.de/magazin/warmepumpen-hersteller-im-uberblick",
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller",
+      "https://www.enter.de/blog/waermepumpen-hersteller-vergleich"
+     ]
+    },
+    {
+     "brand": "ALPHA INNOTEC",
+     "evidence": "medium",
+     "basis": "Warentest 10/2025 grade 2.2 and listed as a German-market heat pump specialist within NIBE.",
+     "urls": [
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger",
+      "https://leospardo.de/ratgeber/waermepumpe-anbieter-vergleich/",
+      "https://www.homeandsmart.de/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "LG",
+     "evidence": "weak",
+     "basis": "Listed among the top international brands and in Warentest 2023, but described as having a thin German service network.",
+     "urls": [
+      "https://www.homeandsmart.de/waermepumpen-hersteller",
+      "https://www.waermepumpen-preise.de/waermepumpe/testsieger",
+      "https://reduco.ai/blog/heizung/waermepumpe-hersteller-vergleich-2026"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "weak",
+     "basis": "Listed in German overviews and strong as a consumer name, but described as a newcomer sold through an exclusive distributor.",
+     "urls": [
+      "https://leospardo.de/ratgeber/waermepumpe-anbieter-vergleich/",
+      "https://reduco.ai/blog/heizung/waermepumpe-hersteller-vergleich-2026"
+     ]
+    },
+    {
+     "brand": "Lambda",
+     "evidence": "medium",
+     "basis": "Young Tyrol maker reporting about 9,000 units in 2025 and reported first in a Warentest round of 11/2026, sold in Germany via specialist partners.",
+     "urls": [
+      "https://42watt.de/magazin/lambda-waermepumpe",
+      "https://hlk.co.at/heizung/welche-waermepumpe-platz-1-erreichte-und-welche-als-preistipp-gilt",
+      "https://42watt.de/magazin/warmepumpen-hersteller-im-uberblick"
+     ]
+    },
+    {
+     "brand": "iDM",
+     "evidence": "medium",
+     "basis": "EUPD installer Net Promoter Score above 70, and a brand-building push in Germany, but Heatly calls it less known in Germany.",
+     "urls": [
+      "https://ee-news.ch/a/eupd-research-zeichnet-in-deutschland-marken-mit-dem-siegel-top-brand-warmepumpe-aus",
+      "https://www.horizont.net/marketing/nachrichten/idm-waermepumpen-eintracht-trainer-adi-huetter-wird-markenbotschafter-186201",
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller"
+     ]
+    },
+    {
+     "brand": "Dimplex",
+     "evidence": "weak",
+     "basis": "Long-established Kulmbach heat pump name in several overviews, though Heatly calls it less known in Germany.",
+     "urls": [
+      "https://www.homeandsmart.de/waermepumpen-hersteller",
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Brötje",
+     "evidence": "weak",
+     "basis": "Century-old German heating brand that added heat pumps recently, listed in overviews without any measured data.",
+     "urls": [
+      "https://www.heidelberg24.de/politik-und-wirtschaft/waermepumpen-marken-kennen-sie-noch-nicht-uebersicht-diese-zr-93561459.html",
+      "https://www.homeandsmart.de/waermepumpen-hersteller",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Waterkotte",
+     "evidence": "weak",
+     "basis": "Heat pump specialist since 1969 listed repeatedly in German overviews without any measured data.",
+     "urls": [
+      "https://www.homeandsmart.de/waermepumpen-hersteller",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller",
+      "https://www.enter.de/blog/waermepumpen-hersteller-vergleich"
+     ]
+    },
+    {
+     "brand": "Ochsner",
+     "evidence": "weak",
+     "basis": "Austrian specialist that appears in the Heatly top 10 and several German overviews without any measured data.",
+     "urls": [
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller",
+      "https://www.homeandsmart.de/waermepumpen-hersteller",
+      "https://www.enpal.de/waermepumpe/anbieter"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "Junkers",
+     "evidence": "weak",
+     "basis": "Judgement placement: an old heating name now part of Bosch, whose heat pump identity runs under Bosch.",
+     "urls": [
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller",
+      "https://www.homeandsmart.de/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "NOVELAN",
+     "evidence": "weak",
+     "basis": "Listed in German overviews as a NIBE-group sister brand of Alpha Innotec without measured data.",
+     "urls": [
+      "https://42watt.de/magazin/warmepumpen-hersteller-im-uberblick",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Tecalor",
+     "evidence": "weak",
+     "basis": "Stiebel Eltron group brand named in overviews as a brand owners have not heard much about.",
+     "urls": [
+      "https://www.heidelberg24.de/politik-und-wirtschaft/waermepumpen-marken-kennen-sie-noch-nicht-uebersicht-diese-zr-93561459.html",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Kermi",
+     "evidence": "weak",
+     "basis": "German heating brand listed in overviews and described by Enpal as a smaller provider.",
+     "urls": [
+      "https://www.enpal.de/waermepumpe/anbieter",
+      "https://www.homeandsmart.de/waermepumpen-hersteller",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "REMKO",
+     "evidence": "weak",
+     "basis": "German climate and heat pump firm listed in overviews and described by Enpal as a smaller provider.",
+     "urls": [
+      "https://www.enpal.de/waermepumpe/anbieter",
+      "https://www.homeandsmart.de/waermepumpen-hersteller",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Roth",
+     "evidence": "weak",
+     "basis": "German building-technology firm listed in overviews and described by Enpal as a smaller provider.",
+     "urls": [
+      "https://www.enpal.de/waermepumpe/anbieter",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Solvis",
+     "evidence": "weak",
+     "basis": "Appears in the Heatly top 10 but rarely elsewhere in what was read, so this is a judgement placement.",
+     "urls": [
+      "https://www.heatly.de/w%C3%A4rmepumpenhersteller"
+     ]
+    },
+    {
+     "brand": "Enpal",
+     "evidence": "weak",
+     "basis": "Known to consumers as a seller rather than a maker (its own page shows a Bosch unit) and rated in a 2024 installer-provider comparison.",
+     "urls": [
+      "https://www.enpal.de/waermepumpe/anbieter",
+      "https://utopia.de/ratgeber/stiftung-warentest-vier-waermepumpen-im-test-sind-gut_582430"
+     ]
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "weak",
+     "basis": "Mentioned in German overviews mainly through the Bosch takeover of the Johnson Controls-Hitachi business, a judgement placement.",
+     "urls": [
+      "https://42watt.de/magazin/warmepumpen-hersteller-im-uberblick"
+     ]
+    },
+    {
+     "brand": "Zewotherm",
+     "evidence": "weak",
+     "basis": "Named in a consumer overview and sold through wholesale, including an OEM Lambda variant.",
+     "urls": [
+      "https://www.heidelberg24.de/politik-und-wirtschaft/waermepumpen-marken-kennen-sie-noch-nicht-uebersicht-diese-zr-93561459.html",
+      "https://42watt.de/magazin/lambda-waermepumpe"
+     ]
+    }
+   ],
+   "D": [
+    {
+     "brand": "Aira",
+     "evidence": "weak",
+     "basis": "New Swedish-founded entrant named as little known in Germany and rated in a 2024 provider comparison.",
+     "urls": [
+      "https://www.heidelberg24.de/politik-und-wirtschaft/waermepumpen-marken-kennen-sie-noch-nicht-uebersicht-diese-zr-93561459.html",
+      "https://utopia.de/ratgeber/stiftung-warentest-vier-waermepumpen-im-test-sind-gut_582430"
+     ]
+    },
+    {
+     "brand": "Octopus Energy",
+     "evidence": "weak",
+     "basis": "Energy retailer rated as a heat pump provider in a 2024 comparison, with no evidence of brand recognition as a heat pump.",
+     "urls": [
+      "https://utopia.de/ratgeber/stiftung-warentest-vier-waermepumpen-im-test-sind-gut_582430"
+     ]
+    },
+    {
+     "brand": "Heliotherm",
+     "evidence": "weak",
+     "basis": "Austrian specialist listed in German overviews without any evidence of wider recognition.",
+     "urls": [
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller",
+      "https://www.enter.de/blog/waermepumpen-hersteller-vergleich"
+     ]
+    },
+    {
+     "brand": "Hoval",
+     "evidence": "weak",
+     "basis": "Swiss brand listed in a German overview without any evidence of wider recognition.",
+     "urls": [
+      "https://www.enter.de/blog/waermepumpen-hersteller-vergleich"
+     ]
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "weak",
+     "basis": "Listed once in a German overview; judgement placement from general name recognition.",
+     "urls": [
+      "https://www.enter.de/blog/waermepumpen-hersteller-vergleich"
+     ]
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "Listed in German overviews as a Chinese air-conditioning leader, no evidence of heat pump recognition in Germany.",
+     "urls": [
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller",
+      "https://www.enpal.de/waermepumpe/anbieter"
+     ]
+    },
+    {
+     "brand": "Michl",
+     "evidence": "weak",
+     "basis": "Listed in German overviews without any evidence of wider recognition.",
+     "urls": [
+      "https://42watt.de/magazin/warmepumpen-hersteller-im-uberblick",
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Paradigma",
+     "evidence": "weak",
+     "basis": "No direct evidence found in what was read; judgement placement from the owner rule and my own background knowledge of it as a German heating brand.",
+     "urls": []
+    },
+    {
+     "brand": "Ovum",
+     "evidence": "weak",
+     "basis": "Austrian propane specialist listed in one German overview, with little German evidence.",
+     "urls": [
+      "https://www.taptaphome.com/de/ratgeber/waermepumpe/waermepumpen-hersteller"
+     ]
+    },
+    {
+     "brand": "Thermia",
+     "evidence": "weak",
+     "basis": "Swedish brand listed once in a German overview without any evidence of wider recognition.",
+     "urls": [
+      "https://www.enter.de/blog/waermepumpen-hersteller-vergleich"
+     ]
+    }
+   ],
+   "notes": "No published per-brand market share exists for Germany: 42watt states BWP and BDH do not publish it. Only one measured source was found, the EUPD WaermepumpenMonitor 2023 (351 installers, read through ee-news), which gives awareness ranks only for Vaillant, Viessmann and Buderus. The full top-10 list sits in an image that was not read. Many overview pages are commercial sites selling heat pumps. iDM and iDM-Energiesysteme are separate catalogue names for one company, as are ALPHA INNOTEC and AIT, and Mitsubishi and ORCA_MITSUBISHI_ELECTRIC appear to overlap. Lambda has only 4 catalogue cards. The Warentest 11/2026 result comes from one trade report, hlk.co.at, not from test.de."
+  },
+  "AT": {
+   "A": [
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "Own Austrian sales company since 1976 with about 180 staff and over 100 factory service staff, member of Waermepumpe Austria and named most widespread by an installer guide.",
+     "urls": [
+      "https://www.jobs.at/a/viessmann",
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter"
+     ]
+    },
+    {
+     "brand": "iDM",
+     "evidence": "medium",
+     "basis": "Described by trend as the largest heat pump maker in Austria, with about 24,000 units a year (2023 data, about 80 percent exported).",
+     "urls": [
+      "https://www.trend.at/unternehmen/der-etwas-andere-hotspot",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Ochsner",
+     "evidence": "medium",
+     "basis": "Established Upper Austrian maker, member of Waermepumpe Austria and named among the three large domestic producers and most widespread brands.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Daikin",
+     "evidence": "medium",
+     "basis": "Vienna site since 1999 with 120 staff and a consumer flagship store, and it claims a top 3 heat pump position in Austria (its own claim).",
+     "urls": [
+      "https://www.daikin.at/content/dam/DACE-AT/document-library/press-releases/2025/Presseinformation%20Daikin%20Seit%2026%20Jahren%20stark%20verwurzelt%20in%20Österreich,%20Mission%20Dekarbonisierung%20im%20Fokus.pdf",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "medium",
+     "basis": "Austrian site with installer search, named among the most widespread brands, and top of an old VKI ground-source test seen only in a search result.",
+     "urls": [
+      "https://www.vaillant.at/",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "medium",
+     "basis": "Austrian company in Schoerfling, member of Waermepumpe Austria, and named among the most widespread brands by an installer guide.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Lambda",
+     "evidence": "medium",
+     "basis": "Tyrol maker named among the three large domestic producers and reported first in a Warentest round of 11/2026, though the guide naming it sells Lambda.",
+     "urls": [
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://hlk.co.at/heizung/welche-waermepumpe-platz-1-erreichte-und-welche-als-preistipp-gilt",
+      "https://42watt.de/magazin/lambda-waermepumpe"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "medium",
+     "basis": "Austrian company in Hoersching, member of Waermepumpe Austria, and included in the trade market overview.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "weak",
+     "basis": "Judgement placement: listed in the trade overview and as a large international brand with a dense Austrian service network, no measured data.",
+     "urls": [
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter"
+     ]
+    },
+    {
+     "brand": "Buderus",
+     "evidence": "weak",
+     "basis": "Judgement placement: called an established name in Germany and Austria and listed in the trade overview, no measured data.",
+     "urls": [
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "Heliotherm",
+     "evidence": "medium",
+     "basis": "Tyrol specialist named as a domestic producer by Energiemagazin, with no market data.",
+     "urls": [
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Wolf",
+     "evidence": "medium",
+     "basis": "Austrian company in Linz, member of Waermepumpe Austria, and included in the trade market overview.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    },
+    {
+     "brand": "Hoval",
+     "evidence": "medium",
+     "basis": "Austrian company in Marchtrenk, member of Waermepumpe Austria, and included in the trade market overview.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "weak",
+     "basis": "Named in the guides and in the trade market overview, but without any stated Austrian market position.",
+     "urls": [
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://heizma.at/ratgeber/waermepumpen-hersteller-anbieter",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Windhager",
+     "evidence": "medium",
+     "basis": "Austrian heating brand founded in 1921, once the oil and solid-fuel boiler leader, now building heat pumps and listed in the trade overview.",
+     "urls": [
+      "https://www.profil.at/wirtschaft/aufgeheizte-waermepumpen-geschaefte/402554483",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://www.tips.at/nachrichten/gmunden/wirtschaft-politik/556696-windhager-und-m-tec-gehen-in-der-produktion-von-waermepumpen-gemeinsame-wege"
+     ]
+    },
+    {
+     "brand": "M-TEC",
+     "evidence": "medium",
+     "basis": "Upper Austrian maker, member of Waermepumpe Austria, with strong reported growth up to 2021.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://www.tips.at/nachrichten/gmunden/wirtschaft-politik/556696-windhager-und-m-tec-gehen-in-der-produktion-von-waermepumpen-gemeinsame-wege"
+     ]
+    },
+    {
+     "brand": "ALPHA INNOTEC",
+     "evidence": "weak",
+     "basis": "Named with Novelan under ait-austria in the trade overview and Energiemagazin, so this is a judgement placement.",
+     "urls": [
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "LG",
+     "evidence": "weak",
+     "basis": "Included in the Austrian trade market overview, with no Austrian presence evidence beyond that.",
+     "urls": [
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    },
+    {
+     "brand": "Austria Email",
+     "evidence": "weak",
+     "basis": "Austrian name included in the trade overview, though a 2023 forum thread seen only in a search result noted little was written about its heat pumps.",
+     "urls": [
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    },
+    {
+     "brand": "Herz",
+     "evidence": "weak",
+     "basis": "Austrian heating brand included in the trade overview; the placement relies on that listing and general name recognition.",
+     "urls": [
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "Ovum",
+     "evidence": "medium",
+     "basis": "Tyrol propane specialist founded in 2013, included in the trade overview and second in the cited Swiss SCOP comparison.",
+     "urls": [
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    },
+    {
+     "brand": "NOVELAN",
+     "evidence": "weak",
+     "basis": "Sister brand under ait-austria, listed in the trade overview.",
+     "urls": [
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/",
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Hargassner",
+     "evidence": "medium",
+     "basis": "Austrian biomass heating brand, member of Waermepumpe Austria and in the trade overview with a heat pump.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis",
+      "https://www.handwerkundbau.at/markt/waermepumpen-marktuebersicht-2025/"
+     ]
+    },
+    {
+     "brand": "Solarfocus",
+     "evidence": "medium",
+     "basis": "Upper Austrian firm listed as a member of Waermepumpe Austria.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis"
+     ]
+    },
+    {
+     "brand": "Harreither",
+     "evidence": "medium",
+     "basis": "Lower Austrian firm listed as a member of Waermepumpe Austria.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis"
+     ]
+    },
+    {
+     "brand": "Waterkotte",
+     "evidence": "weak",
+     "basis": "Has an Austrian seat within an international group per Energiemagazin, with little other evidence.",
+     "urls": [
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement from its German presence and name recognition.",
+     "urls": []
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement from consumer name recognition.",
+     "urls": []
+    },
+    {
+     "brand": "Weishaupt",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement carried over from its German strength.",
+     "urls": []
+    },
+    {
+     "brand": "Dimplex",
+     "evidence": "weak",
+     "basis": "No current Austrian evidence opened; judgement placement.",
+     "urls": []
+    }
+   ],
+   "D": [
+    {
+     "brand": "Gree",
+     "evidence": "weak",
+     "basis": "Its Austrian general importer is a member of Waermepumpe Austria per profil, with no evidence of consumer awareness.",
+     "urls": [
+      "https://www.profil.at/wirtschaft/aufgeheizte-waermepumpen-geschaefte/402554483"
+     ]
+    },
+    {
+     "brand": "Weider",
+     "evidence": "weak",
+     "basis": "Named as an Austrian-seated heat pump firm within an international group.",
+     "urls": [
+      "https://www.energiemagazin.at/waermepumpen-hersteller-im-vergleich/"
+     ]
+    },
+    {
+     "brand": "Kermi",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement.",
+     "urls": []
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement.",
+     "urls": []
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement.",
+     "urls": []
+    },
+    {
+     "brand": "Thermia",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement.",
+     "urls": []
+    },
+    {
+     "brand": "KRONOTERM",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement from neighbouring Slovenia.",
+     "urls": []
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement.",
+     "urls": []
+    },
+    {
+     "brand": "Junkers",
+     "evidence": "weak",
+     "basis": "No Austrian evidence opened; judgement placement as a Bosch group legacy name.",
+     "urls": []
+    },
+    {
+     "brand": "Qvantum",
+     "evidence": "weak",
+     "basis": "Austrian company in Wallern listed as a member of Waermepumpe Austria, with no evidence of consumer awareness.",
+     "urls": [
+      "https://www.waermepumpe-austria.at/unser-verband/mitgliederverzeichnis"
+     ]
+    }
+   ],
+   "notes": "No Austrian per-brand share, installer survey or current consumer test was found. Konsument has no current air/water test in what was found, and a reader comment there complains of that gap. The national statistics report (read only as a search result) does not give brand shares. Note the Waermepumpe Austria directory page returned only 15 manufacturer or importer members in the fetched view, against 64 in a 2024 presentation seen as a search result, so absence from it proves nothing; Vaillant, Daikin and iDM are not in the fetched list. The heizma guide is written by an installer selling Viessmann and Lambda. iDM export share is high, so its production size overstates domestic reach. Bosch and Buderus in tier A are the weakest A placements; Heliotherm and Wolf are close alternatives. Bösch is in the trade overview but not in the catalogue, so it is not placed."
+  },
+  "LU": {
+   "A": [
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "Own subsidiary in Steinsel, and named by two of the Luxembourg installer sites read.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/",
+      "https://www.editus.lu/fr/resultats/chauffage/pompe-a-chaleur-251p?p=2",
+      "https://weberetfils.lu/fr/chauffage/pompe-a-chaleur",
+      "https://services.reckinger-alfred.lu/pompe-a-chaleur"
+     ]
+    },
+    {
+     "brand": "Daikin",
+     "evidence": "medium",
+     "basis": "Office in Windhof, and named by the most Luxembourg installer sites read (five).",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/",
+      "https://weberetfils.lu/fr/chauffage/pompe-a-chaleur",
+      "https://services.reckinger-alfred.lu/pompe-a-chaleur",
+      "https://fh-energie.lu/",
+      "https://mbm-installation.lu/",
+      "https://www.homepac.eu/"
+     ]
+    },
+    {
+     "brand": "Buderus",
+     "evidence": "medium",
+     "basis": "Local presence through Ferroknepper Buderus in Esch-sur-Alzette, and named by two Luxembourg installers.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/",
+      "https://www.editus.lu/fr/resultats/chauffage/pompe-a-chaleur-251p",
+      "https://weberetfils.lu/fr/chauffage/pompe-a-chaleur",
+      "https://services.reckinger-alfred.lu/pompe-a-chaleur"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "weak",
+     "basis": "Named by two Luxembourg installers despite having no Luxembourg subsidiary or website per renov.lu; recognition is partly from German media spillover by judgement.",
+     "urls": [
+      "https://weberetfils.lu/fr/chauffage/pompe-a-chaleur",
+      "https://services.reckinger-alfred.lu/pompe-a-chaleur",
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/"
+     ]
+    },
+    {
+     "brand": "Wolf",
+     "evidence": "medium",
+     "basis": "Partner in Schouweiler with a Luxembourg warranty, and named by a Luxembourg installer.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/",
+      "https://www.homepac.eu/"
+     ]
+    },
+    {
+     "brand": "Weishaupt",
+     "evidence": "medium",
+     "basis": "Own subsidiary in Bertrange that lists heat pumps among its activities.",
+     "urls": [
+      "https://www.editus.lu/fr/1899461",
+      "https://www.editus.lu/fr/resultats/chauffage/pompe-a-chaleur-251p?p=2"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "weak",
+     "basis": "Reached through Ferroknepper Buderus, with no installer site read naming it as a Luxembourg brand.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/"
+     ]
+    },
+    {
+     "brand": "De Dietrich",
+     "evidence": "weak",
+     "basis": "Named by two Luxembourg installers, with French origin.",
+     "urls": [
+      "https://weberetfils.lu/fr/chauffage/pompe-a-chaleur",
+      "https://services.reckinger-alfred.lu/pompe-a-chaleur"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "weak",
+     "basis": "Served from a Belgian subsidiary, and named by one Luxembourg installer.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/",
+      "https://mbm-installation.lu/"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "weak",
+     "basis": "Belgian subsidiary, sold through Luxembourg wholesalers per renov.lu, with no installer site read naming it.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "LG",
+     "evidence": "weak",
+     "basis": "Served from LG Benelux in Belgium, and named by one Luxembourg installer.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/",
+      "https://fh-energie.lu/"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "weak",
+     "basis": "Belgian website and no subsidiary identified per renov.lu.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "weak",
+     "basis": "Served through a Belgium-Luxembourg distributor.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "weak",
+     "basis": "Served by Nibe Benelux in Belgium.",
+     "urls": [
+      "https://renov.lu/en/heating/heat-pump/brand-comparison/"
+     ]
+    },
+    {
+     "brand": "ATLANTIC",
+     "evidence": "weak",
+     "basis": "Named by one Luxembourg installer, and by a Belgian Luxembourg-province portal, which is not the Grand Duchy.",
+     "urls": [
+      "https://fh-energie.lu/"
+     ]
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "weak",
+     "basis": "Named by one Luxembourg installer.",
+     "urls": [
+      "https://mbm-installation.lu/"
+     ]
+    },
+    {
+     "brand": "Dimplex",
+     "evidence": "weak",
+     "basis": "Named by one Luxembourg installer.",
+     "urls": [
+      "https://fh-energie.lu/"
+     ]
+    },
+    {
+     "brand": "Remeha",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from its Belgian and Dutch presence.",
+     "urls": []
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "weak",
+     "basis": "Logo on one Luxembourg installer site, not tied to heat pumps there, so this is a judgement placement.",
+     "urls": [
+      "https://fh-energie.lu/"
+     ]
+    },
+    {
+     "brand": "ALPHA INNOTEC",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from its German presence.",
+     "urls": []
+    }
+   ],
+   "C": [
+    {
+     "brand": "Junkers",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from German media spillover.",
+     "urls": []
+    },
+    {
+     "brand": "ROTEX",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement as a Daikin group legacy name.",
+     "urls": []
+    },
+    {
+     "brand": "Hoval",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement.",
+     "urls": []
+    },
+    {
+     "brand": "Saunier Duval",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from French presence.",
+     "urls": []
+    },
+    {
+     "brand": "Bulex",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from Belgian presence.",
+     "urls": []
+    },
+    {
+     "brand": "Brötje",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from German presence.",
+     "urls": []
+    },
+    {
+     "brand": "THERMOR",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from French presence.",
+     "urls": []
+    },
+    {
+     "brand": "iDM",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from German and Austrian presence.",
+     "urls": []
+    },
+    {
+     "brand": "Ochsner",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from German and Austrian presence.",
+     "urls": []
+    },
+    {
+     "brand": "Waterkotte",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from German presence.",
+     "urls": []
+    }
+   ],
+   "D": [
+    {
+     "brand": "KAYSUN",
+     "evidence": "weak",
+     "basis": "A Luxembourg directory listing naming an official distributor was seen only in a search result and not opened.",
+     "urls": []
+    },
+    {
+     "brand": "Kermi",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from German presence.",
+     "urls": []
+    },
+    {
+     "brand": "Lambda",
+     "evidence": "weak",
+     "basis": "No Luxembourg source opened; judgement placement from German media spillover.",
+     "urls": []
+    }
+   ],
+   "notes": "Luxembourg does not credibly reach 40 brands: only about 17 have any direct Luxembourg source, so D is deliberately short (3). Everything below the first 17 entries is judgement from DE, BE or FR presence, and per the owner rule most brands fall to E. No market share, survey or national consumer test was found. Evidence is thin: renov.lu (a quote-comparison site, and it explicitly says not a ranking) plus six installer sites, one of which (Bauer Energie) named no brand. Bobex \"Luxembourg\" is the Belgian province, so it does not count. Installer counts come from a handful of sites read and are not a sample. Vaillant is A despite no local subsidiary; German press and TV reach is a judgement, not a measurement."
+  },
+  "GB": {
+   "A": [
+    {
+     "brand": "Mitsubishi",
+     "evidence": "medium",
+     "basis": "Most trusted and most widely installed air source brand among 300 UK installers (Alchemy Research, reported in PHAM with Mitsubishi as the source of the framing), second at 18% in Euromonitor's 2025 UK shares, first in the open homeowner poll, and maker of the Ecodan in Livingston.",
+     "urls": [
+      "https://phamnews.co.uk/the-top-air-source-heat-pump-brand-for-installers/",
+      "https://www.euromonitor.com/heat-pumps-in-the-united-kingdom/report",
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://renewableheatinghub.co.uk/popular-heat-pumps-uk/",
+      "https://www.acrjournal.uk/heat-pumps/mitsubishi-electric-celebrates-30th-anniversary-of-livingston-factory"
+     ]
+    },
+    {
+     "brand": "Daikin",
+     "evidence": "medium",
+     "basis": "First at 20% in Euromonitor's 2025 UK shares, the second most common brand on HeatpumpMonitor (126 of 859 systems), and sold through EDF and Scottish Power per Which?, with a March 2026 Hive tie-up.",
+     "urls": [
+      "https://www.euromonitor.com/heat-pumps-in-the-united-kingdom/report",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/air-source-heat-pumps-explained-al5MC4f773Zq",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.coolingpost.com/uk-news/daikin-uk-expands-hive-partnership"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "medium",
+     "basis": "By far the most common brand on HeatpumpMonitor (about 340 of 859 systems, a self-selected sample), Heat Geek's most-installed unit, offered through E.ON Next and Scottish Power per Which?, and a long-standing UK boiler name with heat pump production in Belper.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.heatgeek.com/heating-product-guide",
+      "https://coolingpost.com/uk-news/vaillant-partners-with-heat-geek",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/air-source-heat-pumps-explained-al5MC4f773Zq",
+      "https://coolingpost.com/uk-news/vaillant-begins-uk-heat-pump-production",
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "medium",
+     "basis": "Reads as Worcester Bosch in the UK: asked by Which? for its comparison, offered through E.ON Next, tenth in the open poll and training gas installers through its 2026 Skill Up programme, but only 5 of 859 HeatpumpMonitor systems, so the placement rests partly on my judgement of its boiler name.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/air-source-heat-pumps-explained-al5MC4f773Zq",
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://www.hvnplus.co.uk/news/worcester-bosch-launches-new-skill-up-training-programme-06-08-2026/",
+      "https://www.homebuilding.co.uk/heating/heat-pump/buying-british-uk-made-heat-pumps-now-make-up-a-third-of-uk-total-sales",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "medium",
+     "basis": "Named in Which?'s comparison (125 installers, company-supplied), eighth in the open poll, 35 HeatpumpMonitor systems, ranked by the Eco Experts and an installer's judgement list, and a household consumer name.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.theecoexperts.co.uk/heat-pumps/best-air-source-heat-pumps",
+      "https://mittensheatpumps.co.uk/advice/best-heat-pump-brands-in-the-uk-2025-ranked-by-installers/"
+     ]
+    },
+    {
+     "brand": "Octopus Energy",
+     "evidence": "medium",
+     "basis": "A national energy supplier selling its own Cosy heat pump, in Which?'s comparison and second in the Eco Experts list; it calls itself the largest installer on the Boiler Upgrade Scheme (its own claim, not checked against Ofgem) and says it has built 10,000 Cosy units.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/air-source-heat-pumps-explained-al5MC4f773Zq",
+      "https://www.theecoexperts.co.uk/heat-pumps/best-air-source-heat-pumps",
+      "https://octopus.energy/press/more-news-press-releases/pump-it-up-octopus-energy-celebrates-10-000th-cosy-heat-pump-made-in-northern-ireland/",
+      "https://octopus.energy/cosy-accredited-installer/"
+     ]
+    },
+    {
+     "brand": "Grant Engineering",
+     "evidence": "medium",
+     "basis": "Third in the open poll, about 60 HeatpumpMonitor systems, 5,000 accredited installers in Which?'s table (company-supplied), fourth in the Eco Experts list, with a funded installer scheme.",
+     "urls": [
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.theecoexperts.co.uk/heat-pumps/best-air-source-heat-pumps",
+      "https://mittensheatpumps.co.uk/advice/best-heat-pump-brands-in-the-uk-2025-ranked-by-installers/",
+      "https://www.grantuk.com/professional/support/start-with-grant/"
+     ]
+    },
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "About 81 HeatpumpMonitor systems (third), seventh in the open poll, in Which?'s comparison (165 installers, company-supplied) and one of only two heat pump makers in Heat Geek's product guide.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.heatgeek.com/heating-product-guide",
+      "https://www.viessmann.co.uk/"
+     ]
+    },
+    {
+     "brand": "Ideal Heating",
+     "evidence": "medium",
+     "basis": "UK boiler maker in Which?'s comparison and sold through both EDF and E.ON Next per Which?, named as a leading UK heat pump maker by Homebuilding, though only twelfth in the poll and 10 HeatpumpMonitor systems, so its boiler name carries part of this.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/air-source-heat-pumps-explained-al5MC4f773Zq",
+      "https://www.homebuilding.co.uk/heating/heat-pump/buying-british-uk-made-heat-pumps-now-make-up-a-third-of-uk-total-sales",
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://idealheating.com/"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "medium",
+     "basis": "Second in the open poll, 25 HeatpumpMonitor systems and fourth in an installer's judgement list, stronger with installers than consumers, and the closest call in this tier against Panasonic, which has very similar numbers.",
+     "urls": [
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://mittensheatpumps.co.uk/advice/best-heat-pump-brands-in-the-uk-2025-ranked-by-installers/",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.nibe.eu/en-gb"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "Panasonic",
+     "evidence": "medium",
+     "basis": "Sixth in the open poll and 23 HeatpumpMonitor systems, asked by Which? but did not respond, and a household consumer name; narrowly behind NIBE by judgement.",
+     "urls": [
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4"
+     ]
+    },
+    {
+     "brand": "Baxi",
+     "evidence": "medium",
+     "basis": "Major UK boiler name, eleventh in the open poll and asked by Which?, but with no system among 859 on HeatpumpMonitor, so heat pump recognition is below its boiler recognition.",
+     "urls": [
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.baxi.co.uk/"
+     ]
+    },
+    {
+     "brand": "LG",
+     "evidence": "medium",
+     "basis": "Ninth in the open poll, fifth in the Eco Experts list, in Which?'s comparison (250-300 installers, company-supplied), but only 8 HeatpumpMonitor systems.",
+     "urls": [
+      "https://renewableheatinghub.co.uk/best-heat-pump-brand-2025/",
+      "https://www.theecoexperts.co.uk/heat-pumps/best-air-source-heat-pumps",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Aira",
+     "evidence": "medium",
+     "basis": "Direct-to-consumer brand ranked first by the Eco Experts, in Which?'s comparison (100 installers) and a Which? Trusted Trader, but new and with no share data.",
+     "urls": [
+      "https://www.theecoexperts.co.uk/heat-pumps/best-air-source-heat-pumps",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://trustedtraders.which.co.uk/businesses/aira/",
+      "https://www.theecoexperts.co.uk/heat-pumps/aira-review-best-heat-pump-installer"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "medium",
+     "basis": "In Which?'s comparison, 13 HeatpumpMonitor systems and winner of the 2026 National ACR and Heat Pump Awards domestic air-to-water product category, with an active UK site.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.acrjournal.uk/national-acr-heat-pump-awards/winners-of-the-2026-national-acr-heat-pump-awards/",
+      "https://www.stiebel-eltron.co.uk/"
+     ]
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "weak",
+     "basis": "Asked by Which? and named in Renewable Heating Hub's survey and community estimate, plus a household name, but no system on HeatpumpMonitor and its UK site could not be read, so this is judgement.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://renewableheatinghub.co.uk/the-big-heat-pump-survey-2025-real-uk-homeowner-feedback-insights/",
+      "https://renewableheatinghub.co.uk/popular-heat-pumps-uk/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "Asked by Which?, sold through Good Energy per Which?, in the single digits of Renewable Heating Hub's community estimate and 5 HeatpumpMonitor systems; judgement.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/air-source-heat-pumps-explained-al5MC4f773Zq",
+      "https://renewableheatinghub.co.uk/popular-heat-pumps-uk/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Dimplex",
+     "evidence": "weak",
+     "basis": "Asked by Which? and a long-established UK electric heating name with a full UK heat pump range, but no HeatpumpMonitor systems; judgement.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.dimplex.co.uk/products/heat-pumps",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Master Therm",
+     "evidence": "weak",
+     "basis": "In both the Which? comparison (40 installers) and the Eco Experts top ten, sold in the UK through Thermal Earth, but only 2 HeatpumpMonitor systems; consumer recognition is my judgement.",
+     "urls": [
+      "https://www.which.co.uk/reviews/ground-and-air-source-heat-pumps/article/how-to-buy-a-heat-pump-aPlrd8J12MM4",
+      "https://www.theecoexperts.co.uk/heat-pumps/best-air-source-heat-pumps",
+      "https://www.mastertherm.co.uk/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Glow Worm",
+     "evidence": "weak",
+     "basis": "Vaillant Group's UK boiler brand with its own GeniaAir range on a UK trade site; its name is well known from boilers, it has no HeatpumpMonitor systems and its 3 PEL rows sit under Vaillant Group UK Ltd, so this is judgement.",
+     "urls": [
+      "https://www.glow-worm.co.uk/trade/products/heat-pumps/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "Toshiba",
+     "evidence": "weak",
+     "basis": "Estia range with 51 PEL listings and a UK air conditioning site with some heat pump content, and a household name, but no HeatpumpMonitor systems; judgement.",
+     "urls": [
+      "https://www.toshiba-aircon.co.uk/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Riello",
+     "evidence": "weak",
+     "basis": "Nine HeatpumpMonitor systems, more than several better-known brands; I opened no UK consumer evidence, so this is judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "ARISTON",
+     "evidence": "weak",
+     "basis": "Listed as a niche air source brand by one guide and 3 HeatpumpMonitor systems; judgement.",
+     "urls": [
+      "https://homeheatpumpguide.co.uk/blog/heat-pump-manufacturers-uk",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Haier",
+     "evidence": "weak",
+     "basis": "UK appliance brand with many PEL listings but little heat pump content on its UK site and 1 HeatpumpMonitor system; judgement.",
+     "urls": [
+      "https://www.haier-europe.com/en_GB/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "RINNAI",
+     "evidence": "weak",
+     "basis": "UK company site with heat pump content and 24 PEL listings, no HeatpumpMonitor systems; judgement.",
+     "urls": [
+      "https://www.rinnai-uk.co.uk/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Warmflow",
+     "evidence": "weak",
+     "basis": "Oil boiler maker for Northern Ireland, GB and Ireland with a renewables range, so known mainly to off-gas installers; judgement.",
+     "urls": [
+      "https://www.warmflow.co.uk/"
+     ]
+    },
+    {
+     "brand": "Firebird Heating Solutions",
+     "evidence": "weak",
+     "basis": "Irish oil boiler maker with a heat pump range and 9 PEL listings, known mainly in off-gas areas; I opened only its Irish site, so this is judgement.",
+     "urls": [
+      "https://www.firebird.ie/"
+     ]
+    },
+    {
+     "brand": "Fujitsu",
+     "evidence": "weak",
+     "basis": "Air conditioning name with an air-to-water range on its UK General site, but only 4 PEL listings and 1 HeatpumpMonitor system; judgement.",
+     "urls": [
+      "https://www.generalww.com/uk/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Hisense",
+     "evidence": "weak",
+     "basis": "Household electronics name whose UK heat pump presence is small, as its first UK distributor deal shows; judgement.",
+     "urls": [
+      "https://www.coolingpost.com/uk-news/hisense-signs-first-distributor-in-uk/"
+     ]
+    },
+    {
+     "brand": "CTC",
+     "evidence": "weak",
+     "basis": "Swedish specialist with a UK section on its site and 4 HeatpumpMonitor systems; judgement.",
+     "urls": [
+      "https://ctc-heating.com/",
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    }
+   ],
+   "D": [
+    {
+     "brand": "Ecoforest",
+     "evidence": "weak",
+     "basis": "Specialist with 5 HeatpumpMonitor systems and 28 PEL listings, little consumer visibility; judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://ecoforest.com/en/"
+     ]
+    },
+    {
+     "brand": "KRONOTERM",
+     "evidence": "weak",
+     "basis": "Slovenian maker with 6 HeatpumpMonitor systems, more than its UK profile suggests; judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://kronoterm.eu/"
+     ]
+    },
+    {
+     "brand": "Clivet",
+     "evidence": "weak",
+     "basis": "Italian maker, many PEL listings but mostly a specifier name, 3 HeatpumpMonitor systems; judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json",
+      "https://www.clivet.com/en/"
+     ]
+    },
+    {
+     "brand": "MITSUBISHI HEAVY INDUSTRIES",
+     "evidence": "weak",
+     "basis": "Separate from Mitsubishi Electric and much less visible for homes, with 7 PEL listings; judgement with no direct evidence.",
+     "urls": []
+    },
+    {
+     "brand": "Remeha",
+     "evidence": "weak",
+     "basis": "UK site sold as Remeha by Baxi, with no heat pump content found on its home page and no PEL rows; judgement.",
+     "urls": [
+      "https://www.remeha.co.uk/"
+     ]
+    },
+    {
+     "brand": "Gree",
+     "evidence": "weak",
+     "basis": "Large air conditioning maker with many PEL listings but 1 HeatpumpMonitor system; judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "TCL",
+     "evidence": "weak",
+     "basis": "Consumer electronics name with many PEL listings as a heat pump manufacturer, no HeatpumpMonitor systems or UK evidence; judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Intergas Verwarming",
+     "evidence": "weak",
+     "basis": "Boiler maker with a UK company on the PEL; I could not open its UK site, so this is judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Adlar Castra",
+     "evidence": "weak",
+     "basis": "3 HeatpumpMonitor systems and a UK company on the PEL; judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    },
+    {
+     "brand": "Carrier",
+     "evidence": "weak",
+     "basis": "Global HVAC name, mostly commercial, 2 HeatpumpMonitor systems and no PEL rows under its name; judgement.",
+     "urls": [
+      "https://heatpumpmonitor.org/system/list/public.json"
+     ]
+    }
+   ],
+   "notes": "No official brand data: I found no MCS, DESNZ, Ofgem or Nesta figures by manufacturer. The MCS dashboard would not load in my fetch and a third-party guide (poweringhomes.co.uk/statistics/mcs-data-dashboard/) lists its filters without manufacturer; the MCS Installations Database can be filtered by manufacturer but I could not get counts from it. I found no Which? brand ranking or owner survey, so its use here is the list of 19 companies it asked in July 2026 (Aira, Daikin, Grant, Ideal, LG, MasterTherm, Octopus, Samsung, Stiebel Eltron, Viessmann supplied data; Dimplex, Midea, NIBE, Panasonic, Vaillant did not respond; Baxi, Hitachi, Mitsubishi, Worcester Bosch could not answer). All 19 are in A or B. Which? installer counts are company-supplied, and Ideal shows 0. Euromonitor shows only its top two shares without a paid report. The Alchemy survey is published through Mitsubishi with no rival figures, so it is weak-to-medium. The Renewable Heating Hub poll (5,700 votes, Oct-Dec 2024) is an open vote that says it does not measure share. HeatpumpMonitor (859 public systems, downloaded Nov 2026, counted on hp_manufacturer, mostly air source) is an enthusiast sample tilted towards installers who publish data, and Heat Geek fits Vaillant; it is a signal of who is known and installed, not of share. Referral and brand-comparison sites were treated as weak, and I did not use their share tables. One I opened, hetapro.com, was not used: as read, it wrongly places Worcester Bosch under Vaillant. heatable.co.uk and glowgreenltd.com refused my fetch and are not cited. No tier is rated strong because none rests on official data. A is judgement at the edges: Mitsubishi, Daikin and Vaillant are the best supported, while NIBE, Panasonic, LG, Aira and Baxi are within judgement of each other. Below B almost all placement is judgement, and C and D are close to interchangeable. pelListings counts ASHP (air-to-water) rows in the 2026-11 PEL, summed across a brand's legal names; it counts listings, not sales. Examples of summing: Mitsubishi 40 (Mitsubishi plus Mitsubishi Electric Air Conditioning Systems Europe, excludes Heavy Industries), Samsung 227, Hitachi 248 and Hisense 25 both include 19 Qingdao Hisense Hitachi rows, Grant 25 (UK plus Ireland), Viessmann 146. Glow Worm's 3 are GeniaAir rows filed under Vaillant Group UK Ltd, so they are also inside Vaillant's 34. Catalogue traps: ALPHA INNOTEC (58 cards, ait-deutschland) is not the UK's Alpha Innovation; Buderus (162), Saunier Duval (97; saunierduval.co.uk is a domain for sale) and ROTEX have many cards but no UK presence that I found, so they stay E; ORCA_MITSUBISHI_ELECTRIC (28 cards) is a data-label variant of Mitsubishi and should be merged or it will score E; catalogue Mitsubishi model names do not contain Ecodan and Bosch ones do not contain Worcester, so a UK reader may not recognise them. Grant, Ideal and Aira are now present but thin (5, 6 and 4 cards). Missing from the catalogue: Octopus Energy (Cosy), tiered A with inCatalogue false, is the only missing brand I consider truly well known. Not tiered because they are not well known enough to take a slot, but worth adding: Trianco (14 PEL rows under TR Engineering, sold through EDF per Which?, would be C), Alpha Innovation (5 PEL rows, UK boiler brand with heat pumps at alpha-innovation.co.uk, would be C or D), Ebac (2 PEL rows, UK-made, ebac.com/heatpumps, would be D), Global Energy Systems (12 PEL rows, 2 HeatpumpMonitor systems, named in Renewable Heating Hub's community list, would be D). Kensa (kensa.co.uk) is ground source only, with 34 PEL rows all WSHP and none ASHP, and is well known for that, so it is out of an air-to-water list. Heatrae Sadia (heatraesadia.com, Baxi group) makes cylinders and hot water products: no heat pump content on its home page, no PEL rows and no catalogue cards, so it is not tiered. British Gas, EDF, E.ON and Scottish Power install other makers' units and are not product brands. I found nothing on national advertising, sponsorship or UK revenue by brand, so those signals did not move any placement. Placement of LG and every other brand used the same evidence; no placement used the owner's employer in either direction."
+  },
+  "IE": {
+   "A": [
+    {
+     "brand": "Daikin",
+     "evidence": "medium",
+     "basis": "Described by Irish comparison sites as the market leader, most widely installed and the default for most SEAI-registered installers, though with no published figures and from a site earning referral income; Irish site exists.",
+     "urls": [
+      "https://www.solarinfo.ie/heat-pumps",
+      "https://www.solarinfo.ie/best-heat-pumps-ireland",
+      "https://www.daikin.ie/en_gb/customers.html"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "medium",
+     "basis": "Named second most installed by Irish guides, sold as Electric Ireland's and SSE Airtricity's heat pump, which gives it mass consumer exposure; its claim to be Ireland's leading brand is sponsored content.",
+     "urls": [
+      "https://www.solarinfo.ie/heat-pumps",
+      "https://www.solarinfo.ie/best-heat-pumps-ireland",
+      "https://www.electricireland.ie/heatpumps",
+      "https://www.theecoexperts.co.uk/heat-pumps/best-installers-ireland",
+      "https://www.irishexaminer.com/sponsored/arid-41337460.html",
+      "https://les.mitsubishielectric.ie/"
+     ]
+    },
+    {
+     "brand": "Grant Engineering",
+     "evidence": "medium",
+     "basis": "Irish-based brand named third most installed, strong in rural retrofit through its oil boiler dealer network, with one directory citing 600+ installers.",
+     "urls": [
+      "https://www.solarinfo.ie/heat-pumps",
+      "https://www.solarinfo.ie/best-heat-pumps-ireland",
+      "https://deenergyhub.ie/heat-pump-directory-ireland.html",
+      "https://grant.ie/"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "medium",
+     "basis": "Named among seven dominant brands and common in new builds, distributed by Unipipe, which markets itself as Ireland's No.1 heat pump supplier (its own claim).",
+     "urls": [
+      "https://www.solarinfo.ie/heat-pumps",
+      "https://www.solarinfo.ie/best-heat-pumps-ireland",
+      "https://unipipe.ie/"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "medium",
+     "basis": "Named among the seven dominant brands and increasingly popular for Irish retrofit, although with a smaller aftercare network.",
+     "urls": [
+      "https://www.solarinfo.ie/heat-pumps",
+      "https://www.solarinfo.ie/best-heat-pumps-ireland"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "medium",
+     "basis": "Named among the seven dominant brands and popular in new builds; the vaillant.ie check failed, so no Irish site was confirmed.",
+     "urls": [
+      "https://www.solarinfo.ie/heat-pumps",
+      "https://www.solarinfo.ie/best-heat-pumps-ireland"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "medium",
+     "basis": "Listed in the Irish directory, and Hevac, an Irish distributor, sells and supports the brand.",
+     "urls": [
+      "https://deenergyhub.ie/heat-pump-directory-ireland.html",
+      "https://hevac.ie/"
+     ]
+    },
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "Named among the seven dominant brands, with a smaller installer base than Daikin or Mitsubishi per the same sites.",
+     "urls": [
+      "https://www.solarinfo.ie/heat-pumps",
+      "https://www.solarinfo.ie/best-heat-pumps-ireland"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "medium",
+     "basis": "Worcester Bosch has an Irish site and one directory cites 1,000+ Irish service engineers; heat pump share unknown and consumers know it as Worcester.",
+     "urls": [
+      "https://deenergyhub.ie/heat-pump-directory-ireland.html",
+      "https://www.worcester-bosch.ie/"
+     ]
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "weak",
+     "basis": "Listed in one Irish directory plus household name; fills the tenth slot by judgement and is a close call against LG.",
+     "urls": [
+      "https://deenergyhub.ie/heat-pump-directory-ireland.html"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "LG",
+     "evidence": "weak",
+     "basis": "Close call with Hitachi for the tenth A slot: a search result named an exclusive Irish distributor, but I could not open it, and lg.com/ie returned 404, so nothing opened supports a higher tier.",
+     "urls": []
+    },
+    {
+     "brand": "Firebird Heating Solutions",
+     "evidence": "weak",
+     "basis": "Irish boiler brand with an Irish site that carries heat pump content; recognition is inferred from the boiler business.",
+     "urls": [
+      "https://www.firebird.ie/"
+     ]
+    },
+    {
+     "brand": "Warmflow",
+     "evidence": "weak",
+     "basis": "Oil boiler brand for Northern Ireland, GB and ROI with renewable heating content; recognition is inferred.",
+     "urls": [
+      "https://www.warmflow.co.uk/"
+     ]
+    },
+    {
+     "brand": "Baxi",
+     "evidence": "weak",
+     "basis": "Irish site with extensive heat pump content; no share evidence.",
+     "urls": [
+      "https://www.baxi.ie/"
+     ]
+    },
+    {
+     "brand": "Ideal Heating",
+     "evidence": "weak",
+     "basis": "Known boiler name; I opened no Irish heat pump evidence, and ideal.ie has no relevant content, so this is judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Dimplex",
+     "evidence": "weak",
+     "basis": "Brand of Irish-founded Glen Dimplex with a UK heat pump offer; dimplex.ie check failed, so this is judgement.",
+     "urls": [
+      "https://www.dimplex.co.uk/"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "weak",
+     "basis": "Listed in the Irish directory; stiebel-eltron.ie redirects to the international site.",
+     "urls": [
+      "https://deenergyhub.ie/heat-pump-directory-ireland.html"
+     ]
+    },
+    {
+     "brand": "Ecoforest",
+     "evidence": "weak",
+     "basis": "Named as the brand installed by Efficient Renewables in the Eco Experts Irish installer guide; no share data.",
+     "urls": [
+      "https://www.theecoexperts.co.uk/heat-pumps/best-installers-ireland"
+     ]
+    },
+    {
+     "brand": "Thermia",
+     "evidence": "weak",
+     "basis": "Heat Pumps Ireland markets itself as the exclusive supplier, per a search summary, and has an active Irish site; no share data.",
+     "urls": [
+      "https://heatpumpsireland.ie/"
+     ]
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "Listed in the Irish directory; no other Irish evidence opened.",
+     "urls": [
+      "https://deenergyhub.ie/heat-pump-directory-ireland.html"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "Master Therm",
+     "evidence": "weak",
+     "basis": "Installed by East Coast Energy per the Eco Experts Irish guide; a single-installer signal.",
+     "urls": [
+      "https://www.theecoexperts.co.uk/heat-pumps/best-installers-ireland"
+     ]
+    },
+    {
+     "brand": "Joule, Samsung Gen 6 Kodiak",
+     "evidence": "weak",
+     "basis": "Joule has an Irish site describing itself as a European heating manufacturer; this catalogue name combines Joule and Samsung.",
+     "urls": [
+      "https://joule.ie/"
+     ]
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "weak",
+     "basis": "UK and Ireland air conditioning name; the Irish site check failed, so judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Fujitsu",
+     "evidence": "weak",
+     "basis": "Air conditioning name; no Irish evidence opened, so judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Hisense",
+     "evidence": "weak",
+     "basis": "Consumer electronics name; no Irish heat pump evidence opened, so judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Haier",
+     "evidence": "weak",
+     "basis": "Appliance name; no Irish heat pump evidence opened, so judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Remeha",
+     "evidence": "weak",
+     "basis": "Sold in the UK and Ireland region by the Baxi group; remeha.ie check failed, so judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Glow Worm",
+     "evidence": "weak",
+     "basis": "UK boiler brand with some Irish recognition assumed; judgement with no Irish evidence.",
+     "urls": []
+    },
+    {
+     "brand": "CTC",
+     "evidence": "weak",
+     "basis": "A search summary placed it in an Irish supplier directory, but the page opened showed no brand names, so judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Carrier",
+     "evidence": "weak",
+     "basis": "Global HVAC name; no Irish residential evidence, so judgement.",
+     "urls": []
+    }
+   ],
+   "D": [
+    {
+     "brand": "RINNAI",
+     "evidence": "weak",
+     "basis": "UK site with heat pump content; no Irish evidence, so judgement.",
+     "urls": [
+      "https://www.rinnai-uk.co.uk/"
+     ]
+    },
+    {
+     "brand": "Hoval",
+     "evidence": "weak",
+     "basis": "UK office site; no Irish evidence, so judgement.",
+     "urls": [
+      "https://www.hoval.co.uk/en_GB/"
+     ]
+    },
+    {
+     "brand": "ARISTON",
+     "evidence": "weak",
+     "basis": "Global water heating name; no Irish heat pump evidence, so judgement.",
+     "urls": []
+    },
+    {
+     "brand": "Gree",
+     "evidence": "weak",
+     "basis": "Large global maker; no Irish evidence, so judgement.",
+     "urls": []
+    }
+   ],
+   "notes": "No SEAI or trade press data by brand was found. The HARP database returned no brand-level results in my searches. The upper tier rests heavily on solarinfo.ie, which earns installer sponsorship and referral income, and one directory. An SEAI blog named Mitsubishi, Daikin and Panasonic as vying for top position, but I saw that only in a search snippet (the page returned 403 and is undated), so it is not cited. Electric Ireland and SSE Airtricity both selling Mitsubishi is the most concrete mass-market signal found. Waterford Stanley aims to be a heat pump brand per a 2021 Passive House Plus item; the catalogue name Stanley has 2 IE cards but may be a different company, so I did not place it. Octopus Energy has 3 IE cards, but octopusenergy.ie is a placeholder, so it stays E. Ireland has no 40 credible brands: D is left at 4, and B and below are nearly all judgement."
+  },
+  "BE": {
+   "A": [
+    {
+     "brand": "Daikin",
+     "evidence": "medium",
+     "basis": "Called Belgian market leader by Belgian review sites and given the largest Belgian installer base in a sample of RESCert listings, with Daikin Europe based in Ostend; no sales data found.",
+     "urls": [
+      "https://warmtepompkiezen.be/",
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.premie-warmtepomp.be/gidsen/beste-merken-warmtepomp-belgie/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "medium",
+     "basis": "Top-rated with one of the densest Flemish certified installer networks in an editorial review based on a RESCert sample, and valued by installers per one site, with a Belgian site.",
+     "urls": [
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/",
+      "https://warmtepompenprijs.be/warmtepomp-merken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.vaillant.be/nl/"
+     ]
+    },
+    {
+     "brand": "Bulex",
+     "evidence": "medium",
+     "basis": "Belgian-rooted Vaillant Group brand with 80+ years in Belgian heating and described as a leading name in Belgium by a lead-generation site, with an active Belgian site; heat pump share unknown.",
+     "urls": [
+      "https://www.bobex.be/nl-be/warmtepomp/merken/bulex/",
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.bulex.be/particulier/"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "medium",
+     "basis": "In nearly every Belgian brand list, mid-table on certified installer coverage, and listed by the Belgian heat pump association platform.",
+     "urls": [
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://warmtepompenprijs.be/warmtepomp-merken/",
+      "https://www.warmtepomp-gids.be/merken-vergelijken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/"
+     ]
+    },
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "In nearly every Belgian list and has a Belgian site, though its Flemish network is described as less dense than Vaillant.",
+     "urls": [
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://warmtepompenprijs.be/warmtepomp-merken/",
+      "https://www.warmtepomp-gids.be/merken-vergelijken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.viessmann.be/"
+     ]
+    },
+    {
+     "brand": "Remeha",
+     "evidence": "medium",
+     "basis": "Described as having considerable name recognition in Belgium, popular with Flemish installers, and has a Belgian site with extensive heat pump content.",
+     "urls": [
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.remeha.be/"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "medium",
+     "basis": "In Belgian top lists, though its installer network is smaller than Vaillant or Daikin; has a Belgian site.",
+     "urls": [
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://www.warmtepomp-gids.be/merken-vergelijken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.nibe.eu/nl-be"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "medium",
+     "basis": "In most Belgian lists and fair certified installer coverage in one sample.",
+     "urls": [
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://warmtepompenprijs.be/warmtepomp-merken/",
+      "https://www.bobex.be/fr-be/pompe-a-chaleur/installateur/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "medium",
+     "basis": "In Belgian lists with a Belgian site, though its Flemish network is described as still limited.",
+     "urls": [
+      "https://energiehulp.be/warmtepomp/beste/",
+      "https://www.premie-warmtepomp.be/gidsen/beste-merken-warmtepomp-belgie/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.bosch-homecomfort.com/be/nl/residentieel/home/"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "medium",
+     "basis": "Featured in one Belgian top eight and named popular on another; close call against LG, decided on that one featured list.",
+     "urls": [
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://www.premie-warmtepomp.be/gidsen/beste-merken-warmtepomp-belgie/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "LG",
+     "evidence": "medium",
+     "basis": "Named popular on one Belgian site, listed by the association and has heat pump content on its Belgian site; close call with Samsung for the tenth A slot.",
+     "urls": [
+      "https://www.premie-warmtepomp.be/gidsen/beste-merken-warmtepomp-belgie/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.lg.com/be/"
+     ]
+    },
+    {
+     "brand": "ATLANTIC",
+     "evidence": "medium",
+     "basis": "Named popular and reliable by Belgian sites and listed by the association.",
+     "urls": [
+      "https://www.premie-warmtepomp.be/gidsen/beste-merken-warmtepomp-belgie/",
+      "https://www.bobex.be/fr-be/pompe-a-chaleur/installateur/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/"
+     ]
+    },
+    {
+     "brand": "Buderus",
+     "evidence": "medium",
+     "basis": "Belgian site with extensive heat pump content, and listed by the association and a Belgian review.",
+     "urls": [
+      "https://www.warmtepomp-gids.be/merken-vergelijken/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.buderus.com/be/nl/"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "medium",
+     "basis": "Named popular on one Belgian site, listed by the association, and has a dedicated Belgian site.",
+     "urls": [
+      "https://www.premie-warmtepomp.be/gidsen/beste-merken-warmtepomp-belgie/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.stiebel-eltron.be/nl/duurzaam-verwarmen.html"
+     ]
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "weak",
+     "basis": "Named by one Belgian lead-generation site and in a longer brand list; no installer data.",
+     "urls": [
+      "https://www.bobex.be/fr-be/pompe-a-chaleur/installateur/",
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "De Dietrich",
+     "evidence": "weak",
+     "basis": "Named by Bobex, listed by the association and has a Belgian site.",
+     "urls": [
+      "https://www.bobex.be/fr-be/pompe-a-chaleur/installateur/",
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.dedietrich.be/nl/home/"
+     ]
+    },
+    {
+     "brand": "ATAG",
+     "evidence": "weak",
+     "basis": "Belgian site with heat pump content and listed by the association; a known boiler name.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.atagverwarming.be/?lang=nl-be"
+     ]
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "weak",
+     "basis": "Listed by the association and mentioned in one Belgian article; judgement.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.warmtepomp-gids.be/merken-vergelijken/"
+     ]
+    },
+    {
+     "brand": "Fujitsu",
+     "evidence": "weak",
+     "basis": "Listed by the association and mentioned in Belgian lists; known mainly for air conditioning.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.warmtepomp-gids.be/merken-vergelijken/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "Listed by the association, with an exclusive Benelux distributor that promotes itself as an official partner of cyclocross events.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/",
+      "https://climacon.be/nl/"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "Thercon",
+     "evidence": "weak",
+     "basis": "Belgian company with a Belgian site with extensive heat pump content, and it distributes General in the Benelux.",
+     "urls": [
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/",
+      "https://www.thercon.be/nl/particulieren"
+     ]
+    },
+    {
+     "brand": "GENERAL",
+     "evidence": "weak",
+     "basis": "Distributed in the Benelux by Thercon and listed by the association.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.thercon.be/nl/particulieren"
+     ]
+    },
+    {
+     "brand": "Weishaupt",
+     "evidence": "weak",
+     "basis": "Belgian site and association listing; known mainly for burners and boilers.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.weishaupt.be/"
+     ]
+    },
+    {
+     "brand": "THERMOR",
+     "evidence": "weak",
+     "basis": "Listed by the association, with a Belgian distributor page.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://thermocomfort.be/nl-be/info-thermor"
+     ]
+    },
+    {
+     "brand": "Thermia",
+     "evidence": "weak",
+     "basis": "Listed by the association and in a Belgian brand navigation list.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "CTC",
+     "evidence": "weak",
+     "basis": "Listed by the association and in Belgian brand lists.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.bobex.be/nl-be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "Wolf",
+     "evidence": "weak",
+     "basis": "Listed by the association; no Belgian site confirmed.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "ARISTON",
+     "evidence": "weak",
+     "basis": "Listed by the association and has a Belgian site, though the homepage shows little heat pump content.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.ariston.com/fr-be/"
+     ]
+    },
+    {
+     "brand": "Dimplex",
+     "evidence": "weak",
+     "basis": "Listed by the association; no Belgian site confirmed.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "Carrier",
+     "evidence": "weak",
+     "basis": "Belgian consumer site for air conditioning and heat pumps.",
+     "urls": [
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/",
+      "https://www.carrier.be/"
+     ]
+    }
+   ],
+   "D": [
+    {
+     "brand": "Riello",
+     "evidence": "weak",
+     "basis": "Listed by the association and has a Belgian site, with little heat pump content on the homepage.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://riello.be/en-gb"
+     ]
+    },
+    {
+     "brand": "Clivet",
+     "evidence": "weak",
+     "basis": "Listed by the association and offered by Thercon.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.thercon.be/nl/particulieren"
+     ]
+    },
+    {
+     "brand": "CLIMAVENETA",
+     "evidence": "weak",
+     "basis": "Listed by the association; mostly commercial.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "KAYSUN",
+     "evidence": "weak",
+     "basis": "Listed by the association; low consumer visibility.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/"
+     ]
+    },
+    {
+     "brand": "Roth",
+     "evidence": "weak",
+     "basis": "Listed by the association; low consumer visibility.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/"
+     ]
+    },
+    {
+     "brand": "ELCO",
+     "evidence": "weak",
+     "basis": "Named in one Belgian brand list.",
+     "urls": [
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "ALPHA INNOTEC",
+     "evidence": "weak",
+     "basis": "Named in one Belgian brand list.",
+     "urls": [
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "Ochsner",
+     "evidence": "weak",
+     "basis": "Named in one Belgian brand list.",
+     "urls": [
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/"
+     ]
+    },
+    {
+     "brand": "Junkers",
+     "evidence": "weak",
+     "basis": "Old Belgian boiler name; junkers.be now redirects to Bosch.",
+     "urls": [
+      "https://www.zen-zonne-energie.be/warmtepomp/merken/",
+      "https://www.bosch-homecomfort.com/be/nl/residentieel/info-advies/nieuws/the-best-of-both-worlds/"
+     ]
+    },
+    {
+     "brand": "Ferroli",
+     "evidence": "weak",
+     "basis": "Belgian site run through a local partner, with little heat pump content.",
+     "urls": [
+      "https://www.ferroli-vdht.be/nl/"
+     ]
+    }
+   ],
+   "notes": "No published Belgian sales ranking, Test-Achats/Test-Aankoop brand test or Bouwkroniek survey was found; the Test-Achats dossier I opened names no brands. Belgian evidence is commercial comparison and lead-generation sites plus the Belgian heat pump association platform (InfoWarmtePomp), whose 39-name list only shows presence, not size. Hence medium at best. Bulex is the main Belgium-specific result: it is barely visible in other markets but sits in A here. I found no Flanders vs Wallonia split in the data; Bulex, Atlantic, De Dietrich and Thermor probably read stronger in Wallonia, but that is my inference. Air-air is the most installed type per Test-Achats, which may lift air conditioning names in consumer awareness.",
+   "notInCatalogue": [
+    {
+     "brand": "Itho Daalderop",
+     "inCatalogue": false,
+     "wouldBeTier": "C",
+     "evidence": "weak",
+     "basis": "Would be C: Belgian site with heat pump content and an association listing; no BE cards.",
+     "urls": [
+      "https://www.infowarmtepomp.be/nl/op-zoek-naar-een-fabrikant-of-installateur/",
+      "https://www.ithodaalderop.be/"
+     ]
+    },
+    {
+     "brand": "Quatt",
+     "inCatalogue": false,
+     "wouldBeTier": "C",
+     "evidence": "weak",
+     "basis": "Would be C: named as a hybrid option on one Belgian site; no BE cards, and its Belgian presence is unconfirmed.",
+     "urls": [
+      "https://www.warmtepomp-gids.be/merken-vergelijken/"
+     ]
+    }
+   ]
+  },
+  "FR": {
+   "A": [
+    {
+     "brand": "ATLANTIC",
+     "evidence": "strong",
+     "basis": "Selectra calls it the most installed brand in France and its 337-vote Facebook poll puts it joint third at 12%, and Que Choisir tests it, though no audited share exists.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://selectra.info/energie/renovation-energetique/avis-marque-pompe-a-chaleur",
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://www.effy.fr/travaux-energetique/chauffage/pompe-a-chaleur/pac-air-air/quelle-marque-choisir",
+      "https://www.atlantic.fr/"
+     ]
+    },
+    {
+     "brand": "Daikin",
+     "evidence": "strong",
+     "basis": "Joint first at 23% in the Selectra poll, ranked first by Selectra, in the Que Choisir test, on French national TV in 2020 and cited with over 2,000 certified installers.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur/mitsubishi",
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://fpa.fr/wp-content/uploads/2020/10/CP-Daikin_campagne-pub_oct-2020.pdf",
+      "https://www.daikin.fr/"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "strong",
+     "basis": "An Ipsos BVA survey of 582 trade respondents (February 2025, published by the brand itself) names it installers' favourite, and it is joint first at 23% in the Selectra poll.",
+     "urls": [
+      "https://confort.mitsubishielectric.fr/documents/link/25353/stream/1762504327-DCR352_Doc_Foire_ATW.pdf",
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://www.effy.fr/travaux-energetique/chauffage/pompe-a-chaleur/pac-air-air/quelle-marque-choisir"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "medium",
+     "basis": "Joint third at 12% in the Selectra poll, in the Que Choisir test and in Hello Watt's 2026 top five, with no share figure.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant"
+     ]
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "medium",
+     "basis": "Fifth in the Selectra poll at 7% of votes, which is the main evidence, and listed by Hello Watt among other manufacturers.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant"
+     ]
+    },
+    {
+     "brand": "THERMOR",
+     "evidence": "medium",
+     "basis": "A French Atlantic-group brand with a large consumer and heat pump site, ranked eighth by Selectra and named by Hello Watt; placement is partly judgement.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant",
+      "https://www.thermor.fr/"
+     ]
+    },
+    {
+     "brand": "Saunier Duval",
+     "evidence": "medium",
+     "basis": "Long-established boiler name with a Nantes factory of 1,100 staff described as France's largest outdoor-unit plant, and repeatedly listed as a main manufacturer, but with no share data.",
+     "urls": [
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise",
+      "https://www.guide-piscine.fr/pro/marche-de-la-piscine/etudes-de-marche-piscine-et-bain/les-acteurs-de-la-pompe-a-chaleur-5138_A",
+      "https://www.saunierduval.fr/particulier/"
+     ]
+    },
+    {
+     "brand": "De Dietrich",
+     "evidence": "medium",
+     "basis": "Effy lists it among four major French-market manufacturers and it is named across French guides, with an Alsace factory and a large national site.",
+     "urls": [
+      "https://www.effy.fr/travaux-energetique/chauffage/pompe-a-chaleur/pac-air-air/quelle-marque-choisir",
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php",
+      "https://www.izi-by-edf-renov.fr/blog/les-marques-de-pompes-a-chaleur",
+      "https://www.dedietrich-thermique.fr/"
+     ]
+    },
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "Hello Watt's 2026 top five and Selectra's sixth place, described as well-regarded high-end German, though not in the Que Choisir test.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant",
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://selectra.info/energie/renovation-energetique/avis-marque-pompe-a-chaleur",
+      "https://www.viessmann.fr/"
+     ]
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "medium",
+     "basis": "Ranked third by Selectra from installer feedback and in the Que Choisir test; the weakest A placement against Bosch.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://selectra.info/energie/renovation-energetique/avis-marque-pompe-a-chaleur",
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://www.guide-piscine.fr/pro/marche-de-la-piscine/etudes-de-marche-piscine-et-bain/les-acteurs-de-la-pompe-a-chaleur-5138_A"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "Bosch",
+     "evidence": "medium",
+     "basis": "Tenth in Selectra and in the Que Choisir test, with a full French heat pump site and a universally known company name, though Selectra reports slow service.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://www.bosch-homecomfort.com/fr/fr/residentiel/accueil/"
+     ]
+    },
+    {
+     "brand": "LG",
+     "evidence": "medium",
+     "basis": "In the Que Choisir test and named by Selectra and Hello Watt, with no French share or ranking position found.",
+     "urls": [
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "medium",
+     "basis": "In the Que Choisir test and known as a consumer brand, yet Selectra's installers list it among the air-water brands they recommend least, which shows awareness rather than esteem.",
+     "urls": [
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur"
+     ]
+    },
+    {
+     "brand": "ARISTON",
+     "evidence": "medium",
+     "basis": "In the Que Choisir test, ranked thirteenth by Selectra and has a French site with heat pump content.",
+     "urls": [
+      "https://www.quechoisir.org/comparatif-pompes-a-chaleur-air-eau-n111134/top/",
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.ariston.com/fr-fr/home"
+     ]
+    },
+    {
+     "brand": "Frisquet",
+     "evidence": "medium",
+     "basis": "Very well-known French boiler maker since 1936, but its heat pump standing is smaller; the placement leans on general brand fame.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise",
+      "https://www.izi-by-edf-renov.fr/blog/les-marques-de-pompes-a-chaleur",
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php",
+      "https://www.frisquet.com/"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "medium",
+     "basis": "Named by Selectra and Hello Watt with a large French heat pump site, though less visible in France than its sister brand Saunier Duval.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant",
+      "https://www.vaillant.fr/"
+     ]
+    },
+    {
+     "brand": "Airwell",
+     "evidence": "medium",
+     "basis": "Ranked eleventh by Selectra and assembled in France, but installers there rate it poorly, so this reflects awareness only.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://selectra.info/energie/renovation-energetique/avis-marque-pompe-a-chaleur",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise",
+      "https://www.airwell.com/fr/"
+     ]
+    },
+    {
+     "brand": "intuis",
+     "evidence": "medium",
+     "basis": "The former Auer, a French maker with an Origine France Garantie claim and a large heat pump site, listed among French leaders by Hello Watt.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise",
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php",
+      "https://intuis.fr/"
+     ]
+    },
+    {
+     "brand": "Chaffoteaux",
+     "evidence": "weak",
+     "basis": "Ranked twelfth by Selectra; there is little else, and its own French site did not load, so this is a judgement on an old French heating name.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "weak",
+     "basis": "Has a heat-pump-focused French site and is named by Hello Watt, with no direct recognition evidence.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant",
+      "https://www.stiebel-eltron.fr/fr/page-d-accueil.html"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "HEIWA",
+     "evidence": "medium",
+     "basis": "Selectra ranks this French-founded (2018) budget brand fourth and calls it a newcomer that undercuts on price, though heiwa.fr itself is a for-sale domain and was not counted as presence.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://selectra.info/energie/renovation-energetique/avis-marque-pompe-a-chaleur",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "weak",
+     "basis": "A major Swedish group that owns Technibel in France, but its own French page returned 404 and no French ranking was found.",
+     "urls": [
+      "https://www.izi-by-edf-renov.fr/blog/les-marques-de-pompes-a-chaleur"
+     ]
+    },
+    {
+     "brand": "e.l.m Leblanc",
+     "evidence": "weak",
+     "basis": "Bosch's French heating brand with a live French site; heat pump content there is slight and no recognition data was found.",
+     "urls": [
+      "https://www.elmleblanc.fr/accueil/"
+     ]
+    },
+    {
+     "brand": "Chappee",
+     "evidence": "weak",
+     "basis": "Named among French brands by Selectra and Hello Watt and has a French site with heat pump content, with no ranking data.",
+     "urls": [
+      "https://selectra.info/energie/renovation-energetique/marque-pompe-a-chaleur",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise",
+      "https://www.chappee.com/"
+     ]
+    },
+    {
+     "brand": "Fujitsu",
+     "evidence": "weak",
+     "basis": "Named by Hello Watt and is Atlantic's long-time partner, while the French site now trades as GENERAL; no recognition data.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant",
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php",
+      "https://www.generalww.com/fr/"
+     ]
+    },
+    {
+     "brand": "CIAT",
+     "evidence": "weak",
+     "basis": "French-made and listed by Hello Watt, but more a professional name than a consumer one.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise",
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php"
+     ]
+    },
+    {
+     "brand": "NEXTHERM",
+     "evidence": "weak",
+     "basis": "A French geothermal specialist with its own site, named by Hello Watt; a niche name in a segment under 5% of the market.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise",
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php",
+      "https://www.nextherm.fr/"
+     ]
+    },
+    {
+     "brand": "Gree",
+     "evidence": "weak",
+     "basis": "Named by Hello Watt and reported as Airwell's parts supplier, with no direct French consumer evidence; its assumed French domain did not load.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant",
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/marque-francaise"
+     ]
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "Has a French site but almost no heat pump content on it, so this is a judgement based on company size.",
+     "urls": [
+      "https://www.midea.com/fr"
+     ]
+    },
+    {
+     "brand": "Hoval",
+     "evidence": "weak",
+     "basis": "Has a French site with heat pump content and no other evidence was found.",
+     "urls": [
+      "https://www.hoval.fr/fr_FR/"
+     ]
+    }
+   ],
+   "D": [
+    {
+     "brand": "Ochsner",
+     "evidence": "weak",
+     "basis": "Dedicated French-language heat pump site, with no other French evidence.",
+     "urls": [
+      "https://www.ochsner.com/fr-fr/"
+     ]
+    },
+    {
+     "brand": "Weishaupt",
+     "evidence": "weak",
+     "basis": "French site for a burner and boiler maker that lists heat pumps, with no recognition evidence.",
+     "urls": [
+      "https://www.weishaupt.fr/"
+     ]
+    },
+    {
+     "brand": "GENERAL",
+     "evidence": "weak",
+     "basis": "French site of the renamed Fujitsu General brand, with almost no independent mention.",
+     "urls": [
+      "https://www.generalww.com/fr/"
+     ]
+    },
+    {
+     "brand": "Clivet",
+     "evidence": "weak",
+     "basis": "An Italian maker reported opening a French branch in 2022, with no evidence of French consumer awareness.",
+     "urls": [
+      "https://www.ladige.it/territori/dolomiti/boom-delle-pompe-di-calore-a-feltre-la-clivet-si-espande-in-vista-fino-a-300-assunzioni-cmmdqz3s"
+     ]
+    },
+    {
+     "brand": "Carrier",
+     "evidence": "weak",
+     "basis": "Known through ownership of CIAT and Viessmann rather than as a residential heat pump brand in France.",
+     "urls": [
+      "https://www.etude-bet.fr/news/2026/marques-pompes-a-chaleur-fabrication-france.php"
+     ]
+    },
+    {
+     "brand": "Haier",
+     "evidence": "weak",
+     "basis": "Has a French consumer site with very little heat pump content, so this is a judgement on appliance-brand familiarity.",
+     "urls": [
+      "https://www.haier-europe.com/fr_FR/"
+     ]
+    },
+    {
+     "brand": "Thermia",
+     "evidence": "weak",
+     "basis": "Keeps a France contact page but no real French offer was seen.",
+     "urls": [
+      "https://thermia.com/france-thank-you-for-your-interest/"
+     ]
+    },
+    {
+     "brand": "Buderus",
+     "evidence": "weak",
+     "basis": "Named once by Hello Watt, and its site landed on a generic English page, so French presence looks thin.",
+     "urls": [
+      "https://www.hellowatt.fr/pompe-a-chaleur/installation-pompe-chaleur/fabricant"
+     ]
+    }
+   ],
+   "notes": "No audited per-brand share for France was found; AFPAC and Uniclima publish totals only, and the Que Choisir ranking is paywalled. The Selectra poll is a 337-vote Facebook poll, so it is indicative. The Mitsubishi Ipsos BVA result is the brand's own publication. D is left two short because no further catalogue brand had French evidence; Aermec, Remeha, Baxi and Hisense were not placed (baxi.fr is parked, the hisense.fr homepage showed TV and appliance content only, and the others gave nothing usable). Known in France but absent from the catalogue (inCatalogue:false): Technibel and Aldes (would be about B/C), Sofath and Amzair (about C/D). Mitsubishi is the Mitsubishi Electric card; MITSUBISHI HEAVY INDUSTRIES and ORCA_MITSUBISHI_ELECTRIC were not placed. Sites that did not load are inconclusive, not absence."
+  },
+  "IT": {
+   "A": [
+    {
+     "brand": "DAIKIN",
+     "evidence": "strong",
+     "basis": "Daikin Italy's own 2023 presentation claims market leadership with a 28% heat pump share, the only share figure found for Italy, and every Italian guide read lists it first or second.",
+     "urls": [
+      "https://www.kyotoclub.org/wp-content/uploads/20230329_KyotoClub_V00.pdf",
+      "https://www.ilgiornaleedile.it/articoli/top-5-pompe-di-calore.html",
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore",
+      "https://www.archieinteriors.com/migliori-marche-pompe-calore/"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "medium",
+     "basis": "Named first or second in nearly all Italian guides and in GreenMe's selection, with no share figure.",
+     "urls": [
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://www.ilgiornaleedile.it/articoli/top-5-pompe-di-calore.html",
+      "https://www.greenme.it/?p=1285547",
+      "https://studiomadera.it/news/174-pompa-di-calore"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "medium",
+     "basis": "Won Altroconsumo's January 2025 air-water test with 79 points and appears in GreenMe's selection and Italian guides.",
+     "urls": [
+      "https://www.altroconsumo.it/casa-energia/riscaldamento-pompa-calore/comparatore/ariston-nimbus-compact-50-m-net-r32/111831_106437",
+      "https://casacondominio.net/le-migliori-pompe-di-calore-secondo-altroconsumo/",
+      "https://www.greenme.it/?p=1285547",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore"
+     ]
+    },
+    {
+     "brand": "ARISTON",
+     "evidence": "medium",
+     "basis": "Italian listed group, Altroconsumo Best Buy (78) in January 2025 and on RAI, Mediaset and Sky with a TV campaign in 2021 that cited its heat pumps.",
+     "urls": [
+      "https://www.altroconsumo.it/casa-energia/riscaldamento-pompa-calore/comparatore/ariston-nimbus-compact-50-m-net-r32/111831_106437",
+      "https://www.ogilvy.com/it/ideas/ariston-group-comunica-europa-con-ogilvy-italia",
+      "https://www.archieinteriors.com/migliori-marche-pompe-calore/",
+      "https://www.ariston.com/it-it/home"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "medium",
+     "basis": "Scored 72 in Altroconsumo's test, third in Il Giornale dell'Edile, called among the most widespread German brands in Italy, with service centres reported in all regions.",
+     "urls": [
+      "https://www.altroconsumo.it/casa-energia/riscaldamento-pompa-calore/comparatore/vaillant-arothermplus-vwl-85-con-interfaccia-0010038584-myvaillant-connect-vr-940f/111831_111748",
+      "https://www.ilgiornaleedile.it/articoli/top-5-pompe-di-calore.html",
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.greenme.it/?p=1285547"
+     ]
+    },
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "Fourth in Il Giornale dell'Edile, in GreenMe's selection and in most Italian guides, with a growing service network.",
+     "urls": [
+      "https://www.ilgiornaleedile.it/articoli/top-5-pompe-di-calore.html",
+      "https://www.greenme.it/?p=1285547",
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://www.infobuildenergia.it/categorie_merceologiche/pompe-di-calore-aria-acqua-reversibili-solo-caldo-media-ed-alta-temperatura/?t=aziende"
+     ]
+    },
+    {
+     "brand": "IMMERGAS",
+     "evidence": "weak",
+     "basis": "A judgement placement: an Italian maker since 1964 claiming 600 service centres, but independent heat pump evidence is missing from the guides read.",
+     "urls": [
+      "https://www.immergas.com/",
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "medium",
+     "basis": "Scored 74 in Altroconsumo's test, ranked third in one lead-generation guide and called the best value in another, plus broad consumer familiarity.",
+     "urls": [
+      "https://www.altroconsumo.it/casa-energia/riscaldamento-pompa-calore/comparatore/samsung-ehs-mono-ht-quiet-ae080bxydeg-eu-mim-e03en-mwr-ww10n-mim-h04en-wifi-circolatore/111831_111753",
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://studiomadera.it/news/174-pompa-di-calore"
+     ]
+    },
+    {
+     "brand": "LG",
+     "evidence": "medium",
+     "basis": "Scored 73 in Altroconsumo's test, fifth in Il Giornale dell'Edile and in GreenMe's selection, though that report flags a thinner heating service network.",
+     "urls": [
+      "https://www.altroconsumo.it/casa-energia/riscaldamento-pompa-calore/comparatore/ferroli-omnia-st-3-2-8-0xht8swa/111831_106440",
+      "https://www.ilgiornaleedile.it/articoli/top-5-pompe-di-calore.html",
+      "https://www.greenme.it/?p=1285547"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "medium",
+     "basis": "Fourth in one guide, named across Italian guides and described as a main German brand, with an Italian heat pump site.",
+     "urls": [
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-pompe-di-calore",
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.bosch-homecomfort.com/it/it/residenziale/home/"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "Baxi",
+     "evidence": "weak",
+     "basis": "A judgement on a well-known boiler name with a large Italian heat pump site; independent heat pump guides rarely list it.",
+     "urls": [
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.baxi.it/"
+     ]
+    },
+    {
+     "brand": "RIELLO",
+     "evidence": "weak",
+     "basis": "A historic Italian heating name since 1922, reported as part of the Ariston group from 1 July 2026, with no direct heat pump recognition data.",
+     "urls": [
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.riello.it/"
+     ]
+    },
+    {
+     "brand": "BERETTA",
+     "evidence": "weak",
+     "basis": "An established Italian boiler brand in the Riello group with an Italian site showing heat pumps, with no heat pump ranking found.",
+     "urls": [
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.berettaclima.it/"
+     ]
+    },
+    {
+     "brand": "FERROLI",
+     "evidence": "medium",
+     "basis": "An Italian maker since 1955 whose Omnia scored 74 in Altroconsumo's test, with a substantial Italian heat pump site.",
+     "urls": [
+      "https://www.altroconsumo.it/casa-energia/riscaldamento-pompa-calore/comparatore/ferroli-omnia-st-3-2-8-0xht8swa/111831_106440",
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.ferroli.com/it"
+     ]
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "medium",
+     "basis": "Scored 68 in Altroconsumo's test and named in Italian guides, but with little else.",
+     "urls": [
+      "https://www.altroconsumo.it/casa-energia/riscaldamento-pompa-calore/comparatore/toshiba-estia-r32-hwt-601hw-e-hwt-601xwhm3w-e-hws-iwf0010up-e/111831_111751",
+      "https://studiomadera.it/news/174-pompa-di-calore",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore"
+     ]
+    },
+    {
+     "brand": "Hitachi",
+     "evidence": "weak",
+     "basis": "Named in Italian guides without commentary, with no Italian ranking.",
+     "urls": [
+      "https://studiomadera.it/news/174-pompa-di-calore",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-pompe-di-calore"
+     ]
+    },
+    {
+     "brand": "Fujitsu",
+     "evidence": "medium",
+     "basis": "Named across Italian guides, including one that calls it a good compromise with its General models.",
+     "urls": [
+      "https://studiomadera.it/news/174-pompa-di-calore",
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://www.archieinteriors.com/migliori-marche-pompe-calore/"
+     ]
+    },
+    {
+     "brand": "Clivet",
+     "evidence": "medium",
+     "basis": "Large Feltre maker with about 670 staff in 2022 and a plant dedicated to residential heat pumps, though installers likely know it better than consumers.",
+     "urls": [
+      "https://www.ladige.it/territori/dolomiti/boom-delle-pompe-di-calore-a-feltre-la-clivet-si-espande-in-vista-fino-a-300-assunzioni-cmmdqz3s",
+      "https://www.infobuildenergia.it/categorie_merceologiche/pompe-di-calore-aria-acqua-reversibili-solo-caldo-media-ed-alta-temperatura/?t=aziende",
+      "https://www.clivet.com/it/"
+     ]
+    },
+    {
+     "brand": "Rossato",
+     "evidence": "weak",
+     "basis": "Italian heat pump specialist listed in Italian guides, which came from a lead-selling publisher, so it may be over-represented.",
+     "urls": [
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore",
+      "https://www.rossatogroup.com/"
+     ]
+    },
+    {
+     "brand": "Saunier Duval",
+     "evidence": "weak",
+     "basis": "Sold in Italy as Hermann Saunier Duval, a name in Italy since 1970 by one account and part of Vaillant, with a limited heat pump profile found.",
+     "urls": [
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.hermann-saunierduval.it/home/"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "AERMEC",
+     "evidence": "weak",
+     "basis": "A known Italian HVAC maker listed in the Italian heat pump directory, with more of a professional than a consumer profile.",
+     "urls": [
+      "https://www.infobuildenergia.it/categorie_merceologiche/pompe-di-calore-aria-acqua-reversibili-solo-caldo-media-ed-alta-temperatura/?t=aziende"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "weak",
+     "basis": "Named in Italian guides but its Italian page returned 404.",
+     "urls": [
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-pompe-di-calore"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "weak",
+     "basis": "Named in Italian guides with an Italian site.",
+     "urls": [
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-pompe-di-calore",
+      "https://www.stiebel-eltron.it/it/home.html"
+     ]
+    },
+    {
+     "brand": "Haier",
+     "evidence": "weak",
+     "basis": "Listed in Italian guides and known as an appliance brand.",
+     "urls": [
+      "https://studiomadera.it/news/174-pompa-di-calore",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore"
+     ]
+    },
+    {
+     "brand": "SIME",
+     "evidence": "weak",
+     "basis": "Italian boiler maker per one guide with an Italian site showing heat pumps, and no ranking.",
+     "urls": [
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.sime.it/it"
+     ]
+    },
+    {
+     "brand": "Unical",
+     "evidence": "weak",
+     "basis": "Italian boiler maker per one guide with an Italian site showing heat pumps, and no ranking.",
+     "urls": [
+      "https://luce-gas.it/guida/caldaia/condensazione/migliore",
+      "https://www.unicalag.it/"
+     ]
+    },
+    {
+     "brand": "Olimpia Splendid",
+     "evidence": "weak",
+     "basis": "An Italian consumer air-conditioning name with a site showing some heat pumps; recognition is mainly from air conditioning.",
+     "urls": [
+      "https://www.olimpiasplendid.it/"
+     ]
+    },
+    {
+     "brand": "Aira",
+     "evidence": "weak",
+     "basis": "A recent entrant that one guide says arrived forcefully, listed in the Italian directory; awareness is probably still building.",
+     "urls": [
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-marche-pompe-calore",
+      "https://www.infobuildenergia.it/categorie_merceologiche/pompe-di-calore-aria-acqua-reversibili-solo-caldo-media-ed-alta-temperatura/?t=aziende"
+     ]
+    },
+    {
+     "brand": "Lamborghini Caloreclima",
+     "evidence": "weak",
+     "basis": "Italian heating brand with its own site showing heat pumps, and no other evidence.",
+     "urls": [
+      "https://www.lamborghinicalor.it/"
+     ]
+    },
+    {
+     "brand": "EMMETI",
+     "evidence": "weak",
+     "basis": "Italian plumbing and heating supplier with heat pumps on its site, named only by guide readers.",
+     "urls": [
+      "https://www.abbassalebollette.it/impianti-di-riscaldamento/5-migliori-marche-pompedicalore/",
+      "https://emmeti.com/it"
+     ]
+    }
+   ],
+   "D": [
+    {
+     "brand": "Rhoss",
+     "evidence": "weak",
+     "basis": "Italian HVAC maker with a professional-facing site and no consumer evidence.",
+     "urls": [
+      "https://www.rhoss.it/"
+     ]
+    },
+    {
+     "brand": "Galletti",
+     "evidence": "weak",
+     "basis": "Italian fan-coil and chiller maker that also sells heat pumps, with no consumer evidence.",
+     "urls": [
+      "https://www.galletti.com/it"
+     ]
+    },
+    {
+     "brand": "Templari",
+     "evidence": "weak",
+     "basis": "Italian heat pump specialist with a dedicated site and no recognition evidence.",
+     "urls": [
+      "https://templari.com/"
+     ]
+    },
+    {
+     "brand": "Hoval",
+     "evidence": "weak",
+     "basis": "Has an Italian site and directory listing, with a brief guide mention.",
+     "urls": [
+      "https://www.infobuildenergia.it/categorie_merceologiche/pompe-di-calore-aria-acqua-reversibili-solo-caldo-media-ed-alta-temperatura/?t=aziende",
+      "https://www.deentra.io/blog-fotovoltaico/migliori-pompe-di-calore",
+      "https://www.hoval.it/it_IT/"
+     ]
+    },
+    {
+     "brand": "Wolf",
+     "evidence": "weak",
+     "basis": "Has an Italian site and directory listing, with no recognition evidence.",
+     "urls": [
+      "https://www.infobuildenergia.it/categorie_merceologiche/pompe-di-calore-aria-acqua-reversibili-solo-caldo-media-ed-alta-temperatura/?t=aziende",
+      "https://www.wolf.eu/it-it"
+     ]
+    },
+    {
+     "brand": "Paradigma",
+     "evidence": "weak",
+     "basis": "Solar and heating specialist with an Italian site and directory listing, and no recognition evidence.",
+     "urls": [
+      "https://www.infobuildenergia.it/categorie_merceologiche/pompe-di-calore-aria-acqua-reversibili-solo-caldo-media-ed-alta-temperatura/?t=aziende",
+      "https://www.paradigmaitalia.it/"
+     ]
+    },
+    {
+     "brand": "Radiant",
+     "evidence": "weak",
+     "basis": "Italian boiler maker with a site showing heat pumps, and no recognition evidence.",
+     "urls": [
+      "https://www.radiant.it/"
+     ]
+    },
+    {
+     "brand": "Gree",
+     "evidence": "weak",
+     "basis": "Has an Italian site with little heat pump content, so this is a judgement.",
+     "urls": [
+      "https://www.greeitalia.it/"
+     ]
+    },
+    {
+     "brand": "INNOVA",
+     "evidence": "weak",
+     "basis": "Italian company with a site showing heat pumps, and no recognition evidence.",
+     "urls": [
+      "https://www.innova.it/"
+     ]
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "Italian corporate site without heat pump content on the page checked, so this is a judgement on company size.",
+     "urls": [
+      "https://www.midea.com/it"
+     ]
+    }
+   ],
+   "notes": "No independent per-brand share for Italy was found; the Daikin 28% is the company's own 2023 claim. Altroconsumo's January 2025 test is the best independent signal, but a test measures quality and only hints at recognition. Italian boiler brands (Immergas, Baxi, Riello, Beretta, Ariston) barely appear in the air-water guides, which come mainly from lead-selling or editorial sites and favour Japanese and German names, so their placement rests on judgement about installer familiarity. Herz and Climaveneta were mentioned only by readers or in passing and were not placed. Sites that did not load are inconclusive."
+  },
+  "PL": {
+   "A": [
+    {
+     "brand": "Daikin",
+     "evidence": "medium",
+     "basis": "Named first among key manufacturers by KB.pl, third in CenaUslug and a PORT PC member whose Polish president is prominent in the ZUM dispute; no current share figure exists.",
+     "urls": [
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://xyz.pl/pompy-ciepla-rozgrzaly-branze/",
+      "https://muratordom.pl/instalacje/pompy-ciepla/lista-zum-bez-pomp-ciepla-najwiekszych-producentow-aa-YK7J-SpeF-j4fk.html",
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "Panasonic",
+     "evidence": "medium",
+     "basis": "Named among market leaders by KB.pl, among brands customers prefer by Oferteo, fourth in CenaUslug and a PORT PC member.",
+     "urls": [
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "Viessmann",
+     "evidence": "medium",
+     "basis": "Top recognition in Poland's only brand survey found (81%, end of 2008, old), first in CenaUslug and reported to have a large Polish factory.",
+     "urls": [
+      "https://budujemydom.pl/files/bjw/bd5_09_170_179.pdf",
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://xyz.pl/pompy-ciepla-rozgrzaly-branze/"
+     ]
+    },
+    {
+     "brand": "Vaillant",
+     "evidence": "medium",
+     "basis": "Third in the 2008 recognition survey (58.7%), called a leading product by KB.pl and active in current Polish market reports.",
+     "urls": [
+      "https://budujemydom.pl/files/bjw/bd5_09_170_179.pdf",
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://ktozrobi.pl/media/raport-z-rynku-pomp-ciepla/",
+      "https://www.vaillant.pl/"
+     ]
+    },
+    {
+     "brand": "Mitsubishi",
+     "evidence": "medium",
+     "basis": "Named among market leaders by KB.pl, among brands customers often prefer by Oferteo, fifth in CenaUslug and a PORT PC member.",
+     "urls": [
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "Bosch",
+     "evidence": "medium",
+     "basis": "Top 2007 share via IVT (19.3%, old), a Polish factory project, an industry voice in the ZUM dispute and a very strong general name.",
+     "urls": [
+      "https://budujemydom.pl/files/bjw/bd5_09_170_179.pdf",
+      "https://xyz.pl/pompy-ciepla-rozgrzaly-branze/",
+      "https://muratordom.pl/instalacje/pompy-ciepla/lista-zum-bez-pomp-ciepla-najwiekszych-producentow-aa-YK7J-SpeF-j4fk.html",
+      "https://ktozrobi.pl/media/raport-z-rynku-pomp-ciepla/"
+     ]
+    },
+    {
+     "brand": "NIBE",
+     "evidence": "medium",
+     "basis": "Market leader in BRG Consult's 2010 data (about 10%, old), still named by KB.pl and second in CenaUslug, with Polish production through Biawar.",
+     "urls": [
+      "https://www.gramwzielone.pl/?p=295",
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://xyz.pl/pompy-ciepla-rozgrzaly-branze/"
+     ]
+    },
+    {
+     "brand": "Samsung",
+     "evidence": "weak",
+     "basis": "Oferteo says its units are among those most often chosen for Polish homes, without figures; the rest is enerad listing, PORT PC membership and consumer-brand fame.",
+     "urls": [
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://enerad.pl/producenci/pompy-ciepla/",
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "LG",
+     "evidence": "weak",
+     "basis": "Sixth in an unscored CenaUslug list, listed by Oferteo and enerad and a PORT PC member, plus consumer-brand fame; no sales data.",
+     "urls": [
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://enerad.pl/producenci/pompy-ciepla/",
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "Galmet",
+     "evidence": "weak",
+     "basis": "A close judgement call over Hewalex: a Polish maker with an extensive heat pump site, listed by KB.pl, Oferteo and enerad, but Polish makers' share may be small.",
+     "urls": [
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://enerad.pl/producenci/pompy-ciepla/",
+      "https://galmet.com.pl/",
+      "https://xyz.pl/pompy-ciepla-rozgrzaly-branze/"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "brand": "HEWALEX",
+     "evidence": "medium",
+     "basis": "Second in BRG Consult's 2010 share data at 8.8%, with popular models noted by KB.pl and a large Polish renewables site; old but direct evidence.",
+     "urls": [
+      "https://www.gramwzielone.pl/?p=295",
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://www.hewalex.pl/"
+     ]
+    },
+    {
+     "brand": "Buderus",
+     "evidence": "medium",
+     "basis": "KB.pl describes popular models and a popular manufacturer, Oferteo lists it and it runs a substantial Polish site.",
+     "urls": [
+      "https://kb.pl/ogrzewanie/producenci-pomp-ciepla/",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://www.buderus.com/pl/pl/"
+     ]
+    },
+    {
+     "brand": "Toshiba",
+     "evidence": "medium",
+     "basis": "Named in the KtoZrobi market report among brands strengthening their position, listed by enerad and a PORT PC member.",
+     "urls": [
+      "https://ktozrobi.pl/media/raport-z-rynku-pomp-ciepla/",
+      "https://enerad.pl/producenci/pompy-ciepla/",
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "De Dietrich",
+     "evidence": "weak",
+     "basis": "Listed by Oferteo and enerad, a PORT PC member and with a Polish site.",
+     "urls": [
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://enerad.pl/producenci/pompy-ciepla/",
+      "https://portpc.pl/czlonkowie/",
+      "https://dedietrich.pl/"
+     ]
+    },
+    {
+     "brand": "Immergas",
+     "evidence": "weak",
+     "basis": "PORT PC member known for boilers in Poland; its assumed Polish domain did not load, so evidence is thin.",
+     "urls": [
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "Stiebel Eltron",
+     "evidence": "medium",
+     "basis": "Sixth in BRG's 2010 data (5.3%), 21.9% recognition in 2008, both old, and has a Polish heat pump site.",
+     "urls": [
+      "https://www.gramwzielone.pl/?p=295",
+      "https://budujemydom.pl/files/bjw/bd5_09_170_179.pdf",
+      "https://www.stiebel-eltron.pl/pl/home.html"
+     ]
+    },
+    {
+     "brand": "ALPHA INNOTEC",
+     "evidence": "medium",
+     "basis": "Third in BRG's 2010 data (8.1%), listed by Oferteo and a PORT PC member; older share evidence, and less visible in current guides.",
+     "urls": [
+      "https://www.gramwzielone.pl/?p=295",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://portpc.pl/czlonkowie/"
+     ]
+    },
+    {
+     "brand": "Saunier Duval",
+     "evidence": "weak",
+     "basis": "Ninth in CenaUslug, a PORT PC member and with a Polish site.",
+     "urls": [
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://portpc.pl/czlonkowie/",
+      "https://www.saunierduval.pl/dla-uzytkownikow/"
+     ]
+    },
+    {
+     "brand": "Gree",
+     "evidence": "weak",
+     "basis": "Seventh in CenaUslug, listed by enerad and with a Polish site showing heat pumps.",
+     "urls": [
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://enerad.pl/producenci/pompy-ciepla/",
+      "https://gree.pl/"
+     ]
+    },
+    {
+     "brand": "Haier",
+     "evidence": "weak",
+     "basis": "Eighth in CenaUslug, described by Oferteo as well rated by users without a source, and with a heat-pump-heavy Polish site.",
+     "urls": [
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://haier-ac.pl/"
+     ]
+    }
+   ],
+   "C": [
+    {
+     "brand": "Junkers",
+     "evidence": "weak",
+     "basis": "Second in the 2008 recognition survey (61%), so the name is still remembered, but its Polish site now redirects to Bosch.",
+     "urls": [
+      "https://budujemydom.pl/files/bjw/bd5_09_170_179.pdf",
+      "https://www.bosch-homecomfort.com/pl/pl/budynki-mieszkalne/home/"
+     ]
+    },
+    {
+     "brand": "KOSPEL",
+     "evidence": "weak",
+     "basis": "A Polish electric-heating and water-heater name with a site showing heat pumps and PORT PC membership.",
+     "urls": [
+      "https://portpc.pl/czlonkowie/",
+      "https://kospel.pl/"
+     ]
+    },
+    {
+     "brand": "KAISAI",
+     "evidence": "weak",
+     "basis": "Twelfth in CenaUslug, listed by Oferteo and with a Polish site focused on heat pumps; no sales data found.",
+     "urls": [
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://kaisai.com/pl/"
+     ]
+    },
+    {
+     "brand": "Rotenso",
+     "evidence": "weak",
+     "basis": "Thirteenth in CenaUslug and a Polish company per enerad, known for price-to-quality, with no sales data.",
+     "urls": [
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://enerad.pl/producent/pompa-ciepla-rotenso-prezentacja-oferta-kontakt/",
+      "https://rotenso.com/pl/"
+     ]
+    },
+    {
+     "brand": "Midea",
+     "evidence": "weak",
+     "basis": "Listed by Oferteo and fifteenth in CenaUslug, with a Polish corporate site.",
+     "urls": [
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://www.midea.com/pl"
+     ]
+    },
+    {
+     "brand": "ATLANTIC",
+     "evidence": "weak",
+     "basis": "Fourteenth in CenaUslug, a PORT PC member and with a Polish site.",
+     "urls": [
+      "https://cenauslug.pl/poradniki/ranking-pomp-ciepla-top-15-najlepszych-modeli-z-cenami-i-montazem",
+      "https://portpc.pl/czlonkowie/",
+      "https://groupe-atlantic.pl/"
+     ]
+    },
+    {
+     "brand": "Ochsner",
+     "evidence": "weak",
+     "basis": "Fifth in BRG's 2010 data (6.4%, old), a PORT PC member with a Polish site.",
+     "urls": [
+      "https://www.gramwzielone.pl/?p=295",
+      "https://portpc.pl/czlonkowie/",
+      "https://www.ochsner.com/pl-pl/"
+     ]
+    },
+    {
+     "brand": "Wolf",
+     "evidence": "weak",
+     "basis": "PORT PC member with a Polish site showing heat pumps.",
+     "urls": [
+      "https://portpc.pl/czlonkowie/",
+      "https://www.wolf.eu/pl-pl"
+     ]
+    },
+    {
+     "brand": "Ariston",
+     "evidence": "weak",
+     "basis": "Has a Polish site that calls it a heat pump maker, but no independent evidence was found.",
+     "urls": [
+      "https://www.ariston.com/pl-pl/home"
+     ]
+    },
+    {
+     "brand": "Blaupunkt",
+     "evidence": "weak",
+     "basis": "Listed first on enerad's page (order is not a ranking) and by Oferteo, and carries a famous consumer name; its assumed site did not load.",
+     "urls": [
+      "https://enerad.pl/producenci/pompy-ciepla/",
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla"
+     ]
+    }
+   ],
+   "D": [
+    {
+     "brand": "Baxi",
+     "evidence": "weak",
+     "basis": "PORT PC member with a Polish site but little heat pump content on it.",
+     "urls": [
+      "https://portpc.pl/czlonkowie/",
+      "https://baxi.com.pl/"
+     ]
+    },
+    {
+     "brand": "BERETTA",
+     "evidence": "weak",
+     "basis": "PORT PC member with a Polish site showing heat pumps.",
+     "urls": [
+      "https://portpc.pl/czlonkowie/",
+      "https://beretta.pl/"
+     ]
+    },
+    {
+     "brand": "Ferroli",
+     "evidence": "weak",
+     "basis": "Has a Polish-language site showing heat pumps, with no other evidence.",
+     "urls": [
+      "https://www.ferroli.com/pl"
+     ]
+    },
+    {
+     "brand": "Brötje",
+     "evidence": "weak",
+     "basis": "PORT PC member with a Polish site showing many heat pump mentions.",
+     "urls": [
+      "https://portpc.pl/czlonkowie/",
+      "https://www.broetje.pl/"
+     ]
+    },
+    {
+     "brand": "Termet",
+     "evidence": "weak",
+     "basis": "A Polish boiler name with a heat pump site, and no recognition data.",
+     "urls": [
+      "https://www.termet.com.pl/"
+     ]
+    },
+    {
+     "brand": "Defro",
+     "evidence": "weak",
+     "basis": "Polish heating maker listed by Oferteo, with a site showing heat pumps.",
+     "urls": [
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://www.defro.pl/"
+     ]
+    },
+    {
+     "brand": "SEVRA",
+     "evidence": "weak",
+     "basis": "Polish air-conditioning and heat pump site, with no other evidence.",
+     "urls": [
+      "https://sevra.pl/"
+     ]
+    },
+    {
+     "brand": "HT Heiztechnik",
+     "evidence": "weak",
+     "basis": "Polish heating maker listed by Oferteo, with a site showing heat pumps.",
+     "urls": [
+      "https://www.oferteo.pl/artykuly/producenci-pomp-ciepla",
+      "https://heiztechnik.pl/"
+     ]
+    },
+    {
+     "brand": "Aira",
+     "evidence": "weak",
+     "basis": "Reported to have invested in a Polish factory, but consumer awareness was not evidenced and its assumed Polish page returned 404.",
+     "urls": [
+      "https://xyz.pl/pompy-ciepla-rozgrzaly-branze/"
+     ]
+    },
+    {
+     "brand": "Dimplex",
+     "evidence": "weak",
+     "basis": "PORT PC member, with 4.8% share in 2007 data (old).",
+     "urls": [
+      "https://portpc.pl/czlonkowie/",
+      "https://budujemydom.pl/files/bjw/bd5_09_170_179.pdf"
+     ]
+    }
+   ],
+   "notes": "Poland has the weakest current evidence of the three: the only brand recognition survey found dates from end 2008 and the only share tables from 2007 and 2010, before the air-water boom. PORT PC and SPIUG publish no per-brand shares. No A placement is strong; the current mix comes from guides that are commercial and unscored. Daikin's president claimed in 2024 that Polish IGU OZE members hold 2% of the market, a competitor's unsourced assertion, which is one reason local makers sit low despite good awareness. Kospel, Kaisai, Rotenso and Galmet may deserve different tiers if distributor data appears. rotex.pl is an unrelated plastics firm, so ROTEX was not placed despite PORT PC listing a Rotex logo. Hitachi was not placed because no Polish evidence loaded. SilesiaTERM and Kołton (Oferteo) just missed D. Sites that did not load are inconclusive."
+  }
+ },
+ "alsoKnownAs": {
+  "DE": {
+   "Ritter Energie": "Paradigma"
+  }
+ }
+}
