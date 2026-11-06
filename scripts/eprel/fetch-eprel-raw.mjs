@@ -39,6 +39,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
 import { createInterface } from 'node:readline';
 import { snapshotMonth } from '../lib/snapshot-month.mjs';
+import { STABLE_SORT, isSnapshotComplete } from '../lib/eprel-snapshot.mjs';
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -183,6 +184,7 @@ async function apiGet(url) {
 function listUrl(base, cat, page, limit) {
   const params = new URLSearchParams({
     ...cat.query,
+    ...STABLE_SORT,
     _page: String(page),
     _limit: String(limit),
   });
@@ -230,6 +232,11 @@ async function fetchCategory(base, cat, { maxPages, outDir, snapshot = null, wri
   let total = null;
   let saved = 0;
   let skipped = 0;
+  let lastPageReached = false;
+  const productIds = new Set();
+  const countProducts = (hits) => {
+    for (const hit of hits ?? []) productIds.add(hit.eprelRegistrationNumber);
+  };
 
   for (;;) {
     const file = resolve(dir, `page-${String(page).padStart(4, '0')}.json`);
@@ -242,9 +249,10 @@ async function fetchCategory(base, cat, { maxPages, outDir, snapshot = null, wri
         if (Array.isArray(cached.hits) && cached.hits.length > 0) {
           if (total === null) total = cached.size ?? null;
           saved += cached.hits.length;
+          countProducts(cached.hits);
           skipped++;
           const lastPage = total !== null ? Math.ceil(total / PAGE_SIZE) : page;
-          if (page >= lastPage) break;
+          if (page >= lastPage) { lastPageReached = true; break; }
           if (maxPages && page >= maxPages) break;
           page += 1;
           continue;
@@ -262,10 +270,14 @@ async function fetchCategory(base, cat, { maxPages, outDir, snapshot = null, wri
     }
     await writeFile(assertInsideOutRoot(file), text);
     saved += parsed.hits?.length ?? 0;
+    countProducts(parsed.hits);
     await log(`${cat.group}: saved page ${page} (${parsed.hits?.length ?? 0} records)`);
 
     const lastPage = total !== null ? Math.ceil(total / PAGE_SIZE) : page;
-    if (page >= lastPage || (parsed.hits?.length ?? 0) === 0) break;
+    if (page >= lastPage || (parsed.hits?.length ?? 0) === 0) {
+      lastPageReached = page >= lastPage;
+      break;
+    }
     if (maxPages && page >= maxPages) {
       await log(`${cat.group}: stopping at maxPages=${maxPages} (test mode)`);
       break;
@@ -283,7 +295,7 @@ async function fetchCategory(base, cat, { maxPages, outDir, snapshot = null, wri
   if (writeMeta && snapshot) {
     const completedAt = new Date().toISOString();
     const totalPagesExpected = total !== null ? Math.ceil(total / PAGE_SIZE) : page;
-    const complete = total !== null && page >= totalPagesExpected;
+    const complete = isSnapshotComplete({ total, uniqueRecords: productIds.size, lastPageReached });
     const meta = {
       snapshot,
       group: cat.group,
@@ -297,19 +309,22 @@ async function fetchCategory(base, cat, { maxPages, outDir, snapshot = null, wri
       pagesSaved: page,
       pagesSkippedThisRun: skipped,
       recordsSaved: saved,
+      uniqueRecords: productIds.size,
       startedAt,
       completedAt,
       complete,
     };
     const metaPath = assertInsideOutRoot(resolve(dir, '_meta.json'));
     await writeFile(metaPath, JSON.stringify(meta, null, 2));
-    await log(`${cat.group}: wrote _meta.json (complete=${complete}, records=${saved}/${total ?? '?'})`);
+    await log(`${cat.group}: wrote _meta.json (complete=${complete}, unique=${productIds.size}/${total ?? '?'}, rows=${saved})`);
   }
 
   return {
     group: cat.group,
     totalReported: total,
     recordsSaved: saved,
+    uniqueRecords: productIds.size,
+    complete: isSnapshotComplete({ total, uniqueRecords: productIds.size, lastPageReached }),
     pagesSaved: page,
     pagesSkipped: skipped,
   };
@@ -413,3 +428,8 @@ for (const cat of CATEGORIES) {
 await log(`run complete (${MODE}): ${JSON.stringify(results)}`);
 console.log('\nDone. Update data_sources/eprel_raw/manifest.json with these results:');
 console.table(results);
+
+if (MODE === 'full' && results.some((r) => !r.complete)) {
+  console.error('INCOMPLETE snapshot: distinct products do not match the registry total. See _meta.json.');
+  process.exit(1);
+}
