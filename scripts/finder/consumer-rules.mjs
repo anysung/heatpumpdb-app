@@ -106,11 +106,27 @@ export const looksGroundSource = (model) => GROUND_SOURCE.test(String(model ?? '
 export const numberOnlyModel = (model) => /^[\d\s.\-]+$/.test(String(model ?? '').trim());
 
 /** The group a card belongs to, read from its name or any model it folds in. Null when it has none. */
+const SERIES = (SAME_PRODUCTS.series ?? []).map((s) => ({ id: s.id, members: s.members.map(([b, re]) => [brandId(b), new RegExp(re, 'i')]) }));
+
 export function sameProductGroup(card) {
   const id = brandId(card.manufacturer);
-  const names = [card.model, ...(card.variantModels ?? [])].map(normModel);
-  const matches = (m, how) => names.some((n) => (how === 'outdoor' ? n.includes(normModel(m)) : n === normModel(m)));
-  return SAME_PRODUCTS.groups.find((g) => g.members.some(([b, m, how]) => brandId(b) === id && matches(m, how)))?.id ?? null;
+  const kw = Math.round(Math.max(card.ratedKw35 ?? 0, card.ratedKw55 ?? 0));
+  const inGroup = (names) => {
+    const norm = names.map(normModel);
+    const matches = (m, how) => norm.some((n) => (how === 'outdoor' ? n.includes(normModel(m)) : n === normModel(m)));
+    return SAME_PRODUCTS.groups.find((g) => g.members.some(([b, m, how]) => brandId(b) === id && matches(m, how)))?.id ?? null;
+  };
+  const inSeries = (names) => {
+    if (!kw) return null;
+    const s = SERIES.find((x) => x.members.some(([b, re]) => b === id && names.some((n) => re.test(n))));
+    return s ? `${s.id}-${kw}` : null;
+  };
+  // A card's own name decides first: its variants can carry another generation of the same specification.
+  for (const names of [[card.model], card.variantModels ?? []]) {
+    const g = inGroup(names) ?? inSeries(names);
+    if (g) return g;
+  }
+  return null;
 }
 
 /** Suppliers often append an article number ("Cosy 6 / 0101200004060"). Either form names the model. */

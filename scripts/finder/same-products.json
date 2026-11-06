@@ -1,5 +1,5 @@
 {
-  "_readme": "Models sold under different brands that the owner's rule treats as one product: documents agree and the outdoor unit has the same shape (finish and colour do not count, owner decision 2026-11-06). In the first three places of a result only the highest scoring member appears. All members stay in the catalogue. This says nothing public about who makes what, and none of it reaches the browser. Add a group only after checking documents and shape. Evidence: the 'same product' verification report of 2026-11-06. A member's third value 'outdoor' matches any name containing the model, because one outdoor unit is sold in many indoor combinations. Owner confirmed by eye 2026-11-06: Brötje/Remeha, Ferroli/Lamborghini, Riello/Beretta, Vaillant/Saunier Duval, Bosch/Buderus/Dimplex. Owner ruled Midea/Rossato different. Weishaupt stays out because of its grille.",
+  "_readme": "Models sold under different brands that the owner's rule treats as one product. Same specification means same product: a different grille, colour or finish does not separate them (owner decision 2026-11-06). In the first three places of a result only the highest scoring member appears. All members stay in the catalogue. This says nothing public about who makes what, and none of it reaches the browser. Add a group only after checking documents. Evidence: the 'same product' verification report and the series report of 2026-11-06.\n'groups' lists single products. A member's third value 'outdoor' matches any name containing the model, because one outdoor unit is sold in many indoor combinations.\n'series' lists whole product lines whose brands share outdoor units. A member is a brand and a regular expression tested on the raw model name. Within a series, models of the same rounded capacity are one product, because the size numbers in the names do not line up across brands (VWL 155 is HA 15, VWL 175 is HA 15 N).\nOwner ruled different: Midea/Rossato, and Vaillant aroTHERM /3 against Genia Air.",
   "groups": [
     {
       "id": "lambda-eu10l",
@@ -143,21 +143,6 @@
       ]
     },
     {
-      "id": "bdr-monobloc-4",
-      "members": [
-        [
-          "Brötje",
-          "BLW Eco-KP 4.2",
-          "outdoor"
-        ],
-        [
-          "Remeha",
-          "Confida MB 400-4",
-          "outdoor"
-        ]
-      ]
-    },
-    {
       "id": "riello-nxhp-004",
       "members": [
         [
@@ -168,21 +153,6 @@
         [
           "BERETTA",
           "HYDRO UNIT P 004",
-          "outdoor"
-        ]
-      ]
-    },
-    {
-      "id": "vaillant-split-3",
-      "members": [
-        [
-          "Vaillant",
-          "VWL 45/8.2 AS",
-          "outdoor"
-        ],
-        [
-          "Saunier Duval",
-          "HA 3-8.2 OS",
           "outdoor"
         ]
       ]
@@ -204,6 +174,183 @@
           "Dimplex",
           "LA 2030CP",
           "outdoor"
+        ],
+        [
+          "Weishaupt",
+          "WWP LA 20/30-A R",
+          "outdoor"
+        ]
+      ]
+    }
+  ],
+  "series": [
+    {
+      "id": "vaillant-8-2",
+      "members": [
+        [
+          "Vaillant",
+          "/8\\.2\\b"
+        ],
+        [
+          "Saunier Duval",
+          "-8\\.2\\b"
+        ],
+        [
+          "Bulex",
+          "-8\\.2\\b"
+        ]
+      ]
+    },
+    {
+      "id": "vaillant-7-2",
+      "members": [
+        [
+          "Vaillant",
+          "/7\\.2\\b"
+        ],
+        [
+          "Saunier Duval",
+          "-7\\.2\\b"
+        ]
+      ]
+    },
+    {
+      "id": "vaillant-5",
+      "members": [
+        [
+          "Vaillant",
+          "\\d/5 (AS|\\()"
+        ],
+        [
+          "Saunier Duval",
+          "\\d-5 OS"
+        ],
+        [
+          "Bulex",
+          "\\d-5 OS"
+        ]
+      ]
+    },
+    {
+      "id": "vaillant-8-1",
+      "members": [
+        [
+          "Vaillant",
+          "/8\\.1 A"
+        ],
+        [
+          "Saunier Duval",
+          "-8\\.1 O"
+        ],
+        [
+          "Bulex",
+          "-8\\.1 O"
+        ]
+      ]
+    },
+    {
+      "id": "vaillant-7-1",
+      "members": [
+        [
+          "Vaillant",
+          "/7\\.1 A"
+        ],
+        [
+          "Saunier Duval",
+          "-7\\.1 O"
+        ],
+        [
+          "Bulex",
+          "-7\\.1 O"
+        ]
+      ]
+    },
+    {
+      "id": "vaillant-6",
+      "members": [
+        [
+          "Vaillant",
+          "\\d/6 A"
+        ],
+        [
+          "Saunier Duval",
+          "\\d-6 O"
+        ],
+        [
+          "Bulex",
+          "\\d-6 O"
+        ]
+      ]
+    },
+    {
+      "id": "bdr-r290-mono",
+      "members": [
+        [
+          "Brötje",
+          "BLW Eco-(KP|P|R|W) \\d+\\.2"
+        ],
+        [
+          "Remeha",
+          "Confida MB 400"
+        ],
+        [
+          "De Dietrich",
+          "ALEZIO M\\b.*(R290|\\b3R\\b)|AWHP3R"
+        ]
+      ]
+    },
+    {
+      "id": "bdr-r32-mono",
+      "members": [
+        [
+          "Brötje",
+          "BLW Eco(-\\w+)? \\d+\\.1"
+        ],
+        [
+          "Remeha",
+          "Tensio C|Mercuria Ace [EH] Monoblock"
+        ],
+        [
+          "De Dietrich",
+          "ALEZIO M\\b.*R32|AWHP2R"
+        ]
+      ]
+    },
+    {
+      "id": "bdr-r290-pro",
+      "members": [
+        [
+          "Brötje",
+          "BLW Pro"
+        ],
+        [
+          "Remeha",
+          "Effenca HT"
+        ],
+        [
+          "De Dietrich",
+          "MHTC R290"
+        ]
+      ]
+    },
+    {
+      "id": "bdr-r32-split",
+      "members": [
+        [
+          "Brötje",
+          "BLW Split(-\\w+)? [468](\\.5)? D"
+        ],
+        [
+          "Remeha",
+          "(Eria Tower Ace( S)?|Mercuria Ace) R32"
+        ],
+        [
+          "De Dietrich",
+          "(?=.*R32)(ALEZIO S|STRATEO).*\\b[468](\\.5)? ?MR"
+        ],
+        [
+          "Baxi",
+          "Platinum BC (V200|Smart) iR32"
         ]
       ]
     }

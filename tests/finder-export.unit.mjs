@@ -123,16 +123,33 @@ assert.equal(sameProductGroup({ manufacturer: 'Zewotherm', model: 'ZewoLambda EU
 assert.equal(sameProductGroup({ manufacturer: 'Bosch', model: 'EU13L' }), null);
 
 // Confirmed by the owner's eye, including indoor combinations of one outdoor unit.
-assert.equal(sameProductGroup({ manufacturer: 'Remeha', model: 'Confida MB 400-4 + Confida 40E' }), 'bdr-monobloc-4');
-assert.equal(sameProductGroup({ manufacturer: 'Brötje', model: 'BLW Eco-KP 4.2' }), 'bdr-monobloc-4');
+assert.equal(sameProductGroup({ manufacturer: 'Remeha', model: 'Confida MB 400-4 + Confida 40E', ratedKw35: 5, ratedKw55: 5 }), 'bdr-r290-mono-5');
+assert.equal(sameProductGroup({ manufacturer: 'Brötje', model: 'BLW Eco-KP 4.2', ratedKw35: 5.3, ratedKw55: 4.9 }), 'bdr-r290-mono-5');
+assert.equal(sameProductGroup({ manufacturer: 'De Dietrich', model: '7882427 - ALEZIO M COMPACT R290 4 MR/E', ratedKw35: 5, ratedKw55: 5 }), 'bdr-r290-mono-5');
 assert.equal(sameProductGroup({ manufacturer: 'Lamborghini Caloreclima', model: 'IDOLA IDU FT 200 HI3 - IDOLA LIFE M 4' }), 'midea-arctic-4');
 assert.equal(sameProductGroup({ manufacturer: 'Ferroli', model: 'OMNIA LIFE M 4' }), 'midea-arctic-4');
-assert.equal(sameProductGroup({ manufacturer: 'Saunier Duval', model: 'HA 3-8.2 OS 230V  + HA 5-8.2 STB' }), 'vaillant-split-3');
-assert.equal(sameProductGroup({ manufacturer: 'Vaillant', model: 'VWL 45/8.2 AS 230V S3 + VWL 68/8.2 IS' }), 'vaillant-split-3');
+assert.equal(sameProductGroup({ manufacturer: 'Saunier Duval', model: 'HA 3-8.2 OS 230V  + HA 5-8.2 STB', ratedKw35: 3, ratedKw55: 4 }), 'vaillant-8-2-4');
+assert.equal(sameProductGroup({ manufacturer: 'Vaillant', model: 'VWL 45/8.2 AS 230V S3 + VWL 68/8.2 IS', ratedKw35: 3, ratedKw55: 4 }), 'vaillant-8-2-4');
+// Size numbers differ across brands, so the capacity decides inside a series.
+assert.equal(sameProductGroup({ manufacturer: 'Vaillant', model: 'VWL 175/8.1 A S3 Q', ratedKw35: 16, ratedKw55: 16 }), 'vaillant-8-1-16');
+assert.equal(sameProductGroup({ manufacturer: 'Saunier Duval', model: 'HA 15-8.1 O N', ratedKw35: 16, ratedKw55: 16 }), 'vaillant-8-1-16');
+assert.equal(sameProductGroup({ manufacturer: 'Bulex', model: 'HA 15-8.1 O B2 N', ratedKw35: 16, ratedKw55: 16 }), 'vaillant-8-1-16');
+assert.notEqual(sameProductGroup({ manufacturer: 'Saunier Duval', model: 'HA 15-8.1 O 400V B3', ratedKw35: 12, ratedKw55: 12 }), 'vaillant-8-1-16');
+// A series needs a capacity; the owner ruled the old generation apart; a variant does not outrank the card's own name.
+assert.equal(sameProductGroup({ manufacturer: 'Vaillant', model: 'VWL 45/8.2 AS' }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Vaillant', model: 'VWL 55/3 A 230V', ratedKw35: 6, ratedKw55: 4 }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Saunier Duval', model: 'Genia Air 5/2 + GeniaSet', ratedKw35: 6, ratedKw55: 4 }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Saunier Duval', model: 'HA 8-6 O 230V B3', variantModels: ['HA 8-8.2 OS 230V B3'], ratedKw35: 7, ratedKw55: 6 }), 'vaillant-6-7');
+// An R410A split and the newer R32 box are not the shared R32 unit.
+assert.equal(sameProductGroup({ manufacturer: 'De Dietrich', model: '7692991 - Alezio S 6 MR/H V200', ratedKw35: 3, ratedKw55: 4 }), null);
+assert.equal(sameProductGroup({ manufacturer: 'De Dietrich', model: '7926170 - ALEZIO S R32 6 /H', ratedKw35: 7, ratedKw55: 6 }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Remeha', model: '7791053+7736362 - Eria Tower Ace S R32 6MR/E', ratedKw35: 6, ratedKw55: 6 }), 'bdr-r32-split-6');
+assert.equal(sameProductGroup({ manufacturer: 'De Dietrich', model: '7792410 - ALEZIO S 6 MR/EM R32', ratedKw35: 6, ratedKw55: 6 }), 'bdr-r32-split-6');
+assert.equal(sameProductGroup({ manufacturer: 'Baxi', model: '7794010 - Platinum BC Mural iR32 4.5', ratedKw35: 5, ratedKw55: 5 }), null);
 assert.equal(sameProductGroup({ manufacturer: 'Worcester Bosch', model: 'Compress CS5001AW 22' }), 'bosch-cs5001-22');
 assert.equal(sameProductGroup({ manufacturer: 'Dimplex', model: 'LA 2030CP' }), 'bosch-cs5001-22');
 // Ruled different by the owner, or different grille.
 assert.equal(sameProductGroup({ manufacturer: 'Rossato', model: 'Air Inverter R290 05M' }), null);
-assert.equal(sameProductGroup({ manufacturer: 'Weishaupt', model: 'WWP LA 20/30-A R' }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Weishaupt', model: 'WWP LA 20/30-A R' }), 'bosch-cs5001-22');
 
 console.log('finder-export: ok');
