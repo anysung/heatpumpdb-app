@@ -122,4 +122,17 @@ assert.equal(sameProductGroup({ manufacturer: 'KRONOTERM', model: 'ADAPT 2 M / H
 assert.equal(sameProductGroup({ manufacturer: 'Zewotherm', model: 'ZewoLambda EU13L - Luft-Monoblock Außeneinheit' }), null);
 assert.equal(sameProductGroup({ manufacturer: 'Bosch', model: 'EU13L' }), null);
 
+// Confirmed by the owner's eye, including indoor combinations of one outdoor unit.
+assert.equal(sameProductGroup({ manufacturer: 'Remeha', model: 'Confida MB 400-4 + Confida 40E' }), 'bdr-monobloc-4');
+assert.equal(sameProductGroup({ manufacturer: 'Brötje', model: 'BLW Eco-KP 4.2' }), 'bdr-monobloc-4');
+assert.equal(sameProductGroup({ manufacturer: 'Lamborghini Caloreclima', model: 'IDOLA IDU FT 200 HI3 - IDOLA LIFE M 4' }), 'midea-arctic-4');
+assert.equal(sameProductGroup({ manufacturer: 'Ferroli', model: 'OMNIA LIFE M 4' }), 'midea-arctic-4');
+assert.equal(sameProductGroup({ manufacturer: 'Saunier Duval', model: 'HA 3-8.2 OS 230V  + HA 5-8.2 STB' }), 'vaillant-split-3');
+assert.equal(sameProductGroup({ manufacturer: 'Vaillant', model: 'VWL 45/8.2 AS 230V S3 + VWL 68/8.2 IS' }), 'vaillant-split-3');
+assert.equal(sameProductGroup({ manufacturer: 'Worcester Bosch', model: 'Compress CS5001AW 22' }), 'bosch-cs5001-22');
+assert.equal(sameProductGroup({ manufacturer: 'Dimplex', model: 'LA 2030CP' }), 'bosch-cs5001-22');
+// Ruled different by the owner, or different grille.
+assert.equal(sameProductGroup({ manufacturer: 'Rossato', model: 'Air Inverter R290 05M' }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Weishaupt', model: 'WWP LA 20/30-A R' }), null);
+
 console.log('finder-export: ok');

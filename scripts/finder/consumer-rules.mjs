@@ -108,8 +108,9 @@ export const numberOnlyModel = (model) => /^[\d\s.\-]+$/.test(String(model ?? ''
 /** The group a card belongs to, read from its name or any model it folds in. Null when it has none. */
 export function sameProductGroup(card) {
   const id = brandId(card.manufacturer);
-  const names = new Set([card.model, ...(card.variantModels ?? [])].map(normModel));
-  return SAME_PRODUCTS.groups.find((g) => g.members.some(([b, m]) => brandId(b) === id && names.has(normModel(m))))?.id ?? null;
+  const names = [card.model, ...(card.variantModels ?? [])].map(normModel);
+  const matches = (m, how) => names.some((n) => (how === 'outdoor' ? n.includes(normModel(m)) : n === normModel(m)));
+  return SAME_PRODUCTS.groups.find((g) => g.members.some(([b, m, how]) => brandId(b) === id && matches(m, how)))?.id ?? null;
 }
 
 /** Suppliers often append an article number ("Cosy 6 / 0101200004060"). Either form names the model. */
