@@ -32,6 +32,7 @@ import {
 } from './accountParts';
 import { previewOrg } from '../devPreview';
 import { MARKETING_EMAIL } from '../../config/legal';
+import { DataCorrectionNote } from '../features/unitImage/UnitVisual';
 
 /* ── Subscription program ─────────────────────────────────────────────────── */
 
@@ -1018,6 +1019,7 @@ export const AccountPage: React.FC<{ app: HpApp }> = ({ app }) => {
       <div style={{ border: '1px solid #e0e0e0', background: '#f7f7f9', borderRadius: 14, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', color: '#7a7a7a', textTransform: 'uppercase' }}>{t.account.legalNoticeTitle}</span>
         <p style={{ fontSize: 11, color: '#9a9aa0', lineHeight: 1.65, textAlign: 'justify', margin: 0 }}>{t.account.legalNotice}</p>
+        <DataCorrectionNote lang={app.lang} style={{ lineHeight: 1.65 }} />
         <span style={{ fontSize: 11, color: '#9a9aa0' }}>{t.footer.copyright(new Date().getFullYear())}</span>
       </div>
     </>,

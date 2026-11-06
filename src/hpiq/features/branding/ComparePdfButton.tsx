@@ -4,11 +4,14 @@
  * landscape PDF (pdf/comparisonPdf.ts). The build is synchronous so the iOS
  * share sheet is still reached inside the click gesture.
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HpApp } from '../../appState';
 import { HpVM } from '../../model';
 import { tr } from '../../i18n';
 import { buildComparisonPdf, comparisonFileName } from '../../pdf/comparisonPdf';
+import { preloadUnitRaster, unitRaster } from '../unitImage/unitRaster';
+import { visualOf } from '../unitImage/UnitVisual';
+import { unitImageStrings } from '../unitImage/strings';
 import { downloadPdf, printPdfViaShareSheet } from '../../pdf/deliverPdf';
 import { isIos } from '../../pwaInstall';
 import { PremiumPill } from '../../Premium';
@@ -28,12 +31,18 @@ export const ComparePdfButton: React.FC<{ app: HpApp; ids: string[] }> = ({ app,
   const items = ids
     .map(id => app.store?.byId.get(id) ?? app.allStore?.byId.get(id))
     .filter(Boolean) as HpVM[];
+  const idsKey = items.map(c => c.id).join('|');
+  // Pictures must be ready before the click: the PDF builder stays synchronous.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { items.forEach(preloadUnitRaster); }, [idsKey]);
   if (items.length === 0) return null;
 
   const create = () => {
     try {
       const doc = buildComparisonPdf({
         items, t, s,
+        unitImages: items.map(unitRaster),
+        unitCaption: items.some(c => visualOf(c)?.kind === 'photo') ? unitImageStrings(app.lang).caption : null,
         branding: pdfBrandingFor(app.user, app.premium, app.lang, opts),
         dataStatusDate: app.dataStatusDate,
       });

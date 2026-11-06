@@ -9,6 +9,7 @@ import { tr } from '../i18n';
 import { localListingStatus, localListingId, agrementAssembly, countryName, LOCAL_LISTING_SOURCE } from '../listing';
 import { IS_GB, IS_PL, IS_IT, SOURCE_ID_ABBR } from '../market';
 import { BrandLogo, WavingFlag } from '../../components/BrandLogo';
+import { UnitVisual, UnitCaption } from '../features/unitImage/UnitVisual';
 import { DataSheetBrandingSection, DataSheetBrandingBand } from '../features/branding/DataSheetBranding';
 
 const PICKER_LIMIT = 60;
@@ -146,10 +147,14 @@ export const DataSheetDoc: React.FC<{ app: HpApp }> = ({ app }) => {
                 <span data-testid="qa-note" style={{ fontSize: 12, color: QA_RED, lineHeight: 1.5 }}>(!) {qaTip(app.lang)}</span>
               )}
               {/* title card + key stats */}
-              <div className="ds-title-card" style={{ background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
+                <div className="ds-title-card" style={{ flex: 1, minWidth: 0, background: '#1d1d1f', color: '#fff', borderRadius: 10, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <span className="ds-title-model" style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, letterSpacing: '-0.24px' }}>{dsp.model}<QaMark v={dsp} lang={app.lang} size={17} /></span>
                 <span style={{ fontSize: 13.5, color: '#ccc' }}>{dsp.mfr} · {IS_GB || IS_PL || IS_IT ? (dsp.raw.type ?? '—').toLowerCase() : t.ds.airWater}{dsp.installType !== '—' ? ` · ${dsp.installType.toLowerCase()}` : ''}</span>
               </div>
+                <UnitVisual v={dsp} size={118} style={{ background: '#f5f5f7', borderRadius: 10 }} />
+              </div>
+              <UnitCaption items={[dsp]} lang={app.lang} style={{ display: 'block', textAlign: 'right', marginTop: 4 }} />
               <div className="ds-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
                 {([
                   [dsp.kw, t.ds.stat.kw],

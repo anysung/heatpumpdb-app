@@ -8,6 +8,7 @@ import { WatchStar, useWatchStars } from '../features/watch/WatchStar';
 import { LOCAL_LISTING_SOURCE } from '../listing';
 import { ListingChip } from '../ListingChip';
 import { FD, C, SearchIcon, Check } from '../ui';
+import { UnitVisual, UnitCaption } from '../features/unitImage/UnitVisual';
 
 export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
   const t = tr(app.lang);
@@ -81,7 +82,8 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
               return (
                 <div key={p.id} style={{ border: '1px solid #e0e0e0', borderRadius: 18, padding: 24, display: 'flex', flexDirection: 'column', gap: 13, background: '#fff' }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    <UnitVisual v={p} size={84} style={{ marginTop: -6 }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0 }}>
                       <span style={{ fontSize: 12.5, color: '#7a7a7a' }}>{p.mfr}</span>
                       <span style={{ fontFamily: FD, fontSize: 19, fontWeight: 600, letterSpacing: '-0.2px', lineHeight: 1.22 }}>{p.model}<QaMark v={p} lang={app.lang} size={15} /></span>
                       <span style={{ fontSize: 12, color: '#7a7a7a' }}>{t.find.outdoorUnit} {p.odu}</span>
@@ -132,6 +134,7 @@ export const FindPage: React.FC<{ app: HpApp }> = ({ app }) => {
               );
             })}
           </div>
+          <UnitCaption items={matches} lang={app.lang} style={{ display: 'block', padding: '0 48px 32px', marginTop: -24 }} />
           <DataNotice app={app} style={{ padding: '0 48px 32px' }} />
         </>
       )}

@@ -19,6 +19,9 @@ import { accessInfo, tsToMillis } from '../config/entitlement';
 import { buildDataSheetPdf, pdfFileName } from './pdf/dataSheetPdf';
 import { pdfBrandingFor } from './features/branding/brandingState';
 import { preloadBrandArtwork } from './pdf/brandArtwork';
+import { DataCorrectionNote, visualOf } from './features/unitImage/UnitVisual';
+import { preloadUnitRaster, unitRaster } from './features/unitImage/unitRaster';
+import { unitImageStrings } from './features/unitImage/strings';
 import { preloadPdfFonts } from './pdf/pdfFonts';
 import { downloadPdf, printPdfViaShareSheet } from './pdf/deliverPdf';
 import { isIos } from './pwaInstall';
@@ -296,6 +299,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
   // so buildDataSheetPdf() can stay synchronous (iOS needs navigator.share to be
   // reached inside the click gesture — an await in between loses it).
   useEffect(() => { void preloadBrandArtwork(ACTIVE_COUNTRY.code); void preloadPdfFonts(); }, []);
+  useEffect(() => { preloadUnitRaster((dsId && store ? store.byId.get(dsId) : null) ?? store?.all[0]); }, [dsId, store]);
 
   // First-party usage analytics (privacy-policy contract, 2026-08-01): hashed
   // identity once per session; six events wired below. Fire-and-forget only.
@@ -365,6 +369,8 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         isGb: IS_GB,
         useRawType: IS_GB || IS_PL || IS_IT,
         branding: pdfBrandingFor(user, premium, language),
+        unitImage: unitRaster(v),
+        unitCaption: visualOf(v)?.kind === 'photo' ? unitImageStrings(language).caption : null,
       }),
       filename: pdfFileName(v),
     };
@@ -787,6 +793,7 @@ export const HpiqApp: React.FC<Props> = ({ user: userProp, onLogout, onAdminAcce
         <span>{t.footer.copyright(new Date().getFullYear())}</span>
         <span style={{ marginLeft: 'auto' }}>{t.footer.note}</span>
         <DataNotice app={app} style={{ flexBasis: '100%', fontSize: 11 }} />
+        <DataCorrectionNote lang={app.lang} style={{ flexBasis: '100%' }} />
       </div>
     </div>
   );

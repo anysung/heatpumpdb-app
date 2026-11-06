@@ -308,6 +308,7 @@ assumption that gitignored means disposable — keep at least the newest seed.
   → shown RED, never BEST or ranked, model carries the red "!" "manufacturer check
   needed" mark (`qa_flags`); C · unusually high but possible → used as is. Source
   values are never corrected or guessed.
+- **Outdoor-unit images (owner 2026-11-06):** residential air/water models show their brand's image, a brand without one shows the line graphic (outline and fan grille, `UNIT_GRAPHIC_SVG`), never a generic product image; commercial, unclassified and ground/water source models show nothing. ONE rule: `src/shared/outdoorUnit.mjs`, brand matching `src/shared/brandId.mjs` (shared with the Finder export). Images are built from the Finder set by `scripts/images/build-outdoor-unit-images.py` (same visible area, one floor line); bump the version folder when they change, `/assets` is immutable. The caption says "representative image of the brand"; do not add AI or legal wording, owner decision. Corrections go to the support email (`DataCorrectionNote`, footer + Account).
 - **External document serials (owner 2026-10-18, binding):** every number on a
   document that leaves the company (agreements, statements, receipts with a
   sequence, …) is `<PREFIX>-YYYYMM-NNN` with NNN starting at **010** each month

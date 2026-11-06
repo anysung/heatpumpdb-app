@@ -1,0 +1,216 @@
+{
+  "version": "v08",
+  "widths": [
+    400,
+    800
+  ],
+  "units": [
+    {
+      "id": "elco",
+      "brand": "ELCO"
+    },
+    {
+      "id": "viessmann",
+      "brand": "Viessmann"
+    },
+    {
+      "id": "de-dietrich",
+      "brand": "De Dietrich"
+    },
+    {
+      "id": "panasonic",
+      "brand": "Panasonic"
+    },
+    {
+      "id": "clivet",
+      "brand": "Clivet"
+    },
+    {
+      "id": "bosch",
+      "brand": "Bosch"
+    },
+    {
+      "id": "haier",
+      "brand": "Haier"
+    },
+    {
+      "id": "vaillant",
+      "brand": "Vaillant"
+    },
+    {
+      "id": "wolf",
+      "brand": "Wolf"
+    },
+    {
+      "id": "solax",
+      "brand": "SolaX"
+    },
+    {
+      "id": "galmet",
+      "brand": "Galmet"
+    },
+    {
+      "id": "tcl",
+      "brand": "TCL",
+      "names": [
+        "GD TCL Intelligent Heating & Ventilating Equipment Co., Ltd."
+      ]
+    },
+    {
+      "id": "buderus",
+      "brand": "Buderus"
+    },
+    {
+      "id": "stiebel-eltron",
+      "brand": "Stiebel Eltron"
+    },
+    {
+      "id": "nibe",
+      "brand": "NIBE"
+    },
+    {
+      "id": "alpha-innotec",
+      "brand": "alpha innotec"
+    },
+    {
+      "id": "lg",
+      "brand": "LG"
+    },
+    {
+      "id": "daikin",
+      "brand": "Daikin"
+    },
+    {
+      "id": "midea",
+      "brand": "Midea"
+    },
+    {
+      "id": "saunier-duval",
+      "brand": "Saunier Duval"
+    },
+    {
+      "id": "windhager",
+      "brand": "Windhager"
+    },
+    {
+      "id": "kolton",
+      "brand": "Kołton"
+    },
+    {
+      "id": "ovum",
+      "brand": "Ovum"
+    },
+    {
+      "id": "kronoterm",
+      "brand": "Kronoterm"
+    },
+    {
+      "id": "cta",
+      "brand": "CTA"
+    },
+    {
+      "id": "acond",
+      "brand": "Acond"
+    },
+    {
+      "id": "hoval",
+      "brand": "Hoval"
+    },
+    {
+      "id": "heliotherm",
+      "brand": "Heliotherm"
+    },
+    {
+      "id": "idm",
+      "brand": "iDM"
+    },
+    {
+      "id": "hargassner",
+      "brand": "Hargassner"
+    },
+    {
+      "id": "m-tec",
+      "brand": "M-TEC"
+    },
+    {
+      "id": "ctc",
+      "brand": "CTC"
+    },
+    {
+      "id": "defro",
+      "brand": "Defro"
+    },
+    {
+      "id": "kermi",
+      "brand": "Kermi"
+    },
+    {
+      "id": "solarfocus",
+      "brand": "Solarfocus"
+    },
+    {
+      "id": "dimplex",
+      "brand": "Dimplex"
+    },
+    {
+      "id": "samsung",
+      "brand": "Samsung"
+    },
+    {
+      "id": "hitachi",
+      "brand": "Hitachi",
+      "names": [
+        "Johnson Controls",
+        "Johnson Controls Hitachi Air Conditioning Europe SAS"
+      ]
+    },
+    {
+      "id": "ariston",
+      "brand": "Ariston"
+    },
+    {
+      "id": "ferroli",
+      "brand": "Ferroli"
+    },
+    {
+      "id": "broetje",
+      "brand": "Brötje"
+    },
+    {
+      "id": "weishaupt",
+      "brand": "Weishaupt"
+    },
+    {
+      "id": "carrier",
+      "brand": "Carrier"
+    },
+    {
+      "id": "hisense",
+      "brand": "Hisense"
+    },
+    {
+      "id": "mitsubishi-electric",
+      "brand": "Mitsubishi Electric"
+    },
+    {
+      "id": "atlantic",
+      "brand": "Atlantic"
+    },
+    {
+      "id": "thermor",
+      "brand": "Thermor"
+    },
+    {
+      "id": "toshiba",
+      "brand": "Toshiba"
+    },
+    {
+      "id": "remeha",
+      "brand": "Remeha"
+    },
+    {
+      "id": "immergas",
+      "brand": "Immergas"
+    }
+  ]
+}

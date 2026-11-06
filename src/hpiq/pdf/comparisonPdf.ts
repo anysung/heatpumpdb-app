@@ -50,9 +50,13 @@ export interface ComparisonPdfInput {
   branding: PdfBranding | null;
   /** App "data status" date (already formatted for the locale). */
   dataStatusDate: string;
+  /** JPEG data URLs, one per item, null where a model has no picture. */
+  unitImages?: (string | null)[];
+  /** Printed under the table when a brand image is shown. */
+  unitCaption?: string | null;
 }
 
-export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: ComparisonPdfInput): jsPDF {
+export function buildComparisonPdf({ items, t, s, branding, dataStatusDate, unitImages, unitCaption }: ComparisonPdfInput): jsPDF {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'landscape', compress: true });
   const font = registerPdfFonts(doc);
   const latinExt = font === PDF_FONT_FAMILY;
@@ -136,6 +140,8 @@ export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: Co
     });
   }
 
+  const UNIT_MM = 22;
+  const unitH = unitImages?.some(Boolean) ? UNIT_MM + 2 : 0;
   const headH = (() => {
     let max = 0;
     items.forEach(c => {
@@ -143,7 +149,7 @@ export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: Co
       const ml = (doc.splitTextToSize(ascii(c.model), colW - 8) as string[]).slice(0, 3).length;
       max = Math.max(max, ml);
     });
-    return 6 + max * 4.4 + 5;
+    return unitH + 6 + max * 4.4 + 5;
   })();
 
   const drawHeadRow = () => {
@@ -151,16 +157,19 @@ export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: Co
     doc.rect(M_X, y, CW, headH, 'F');
     items.forEach((c, i) => {
       const x = colX(i) + 4;
+      const unit = unitImages?.[i];
+      if (unit) doc.addImage(unit, 'JPEG', x, y + 1, UNIT_MM, UNIT_MM, undefined, 'FAST');
+      const ty = y + unitH + 6;
       set(10, true, INK);
       const ml = (doc.splitTextToSize(ascii(c.model), colW - 8) as string[]).slice(0, 3);
-      ml.forEach((ln, li) => doc.text(ln, x, y + 6 + li * 4.4));
+      ml.forEach((ln, li) => doc.text(ln, x, ty + li * 4.4));
       set(7.5, false, MUTED);
       const mfrLine = (doc.splitTextToSize(ascii(c.mfr), colW - 8) as string[])[0] ?? '';
-      doc.text(mfrLine, x, y + 6 + ml.length * 4.4 + 0.6);
+      doc.text(mfrLine, x, ty + ml.length * 4.4 + 0.6);
       if (c.qaCheck) {   // plausibility mark: red "(!)" after the manufacturer
         const mx = x + doc.getTextWidth(mfrLine) + 1.8;
         set(7.5, true, QA_RGB);
-        doc.text('(!)', mx, y + 6 + ml.length * 4.4 + 0.6);
+        doc.text('(!)', mx, ty + ml.length * 4.4 + 0.6);
       }
     });
     doc.setDrawColor(LINE[0], LINE[1], LINE[2]);
@@ -241,6 +250,11 @@ export function buildComparisonPdf({ items, t, s, branding, dataStatusDate }: Co
   });
   frame(y);
   y += 6;
+  if (unitCaption) {
+    set(6.5, false, FAINT);
+    doc.text(ascii(unitCaption), M_X, y - 2.6);
+    y += 1.4;
+  }
 
   /* ── Source + disclaimer (kept together) ─────────────────────────────── */
   set(7, false, MUTED);

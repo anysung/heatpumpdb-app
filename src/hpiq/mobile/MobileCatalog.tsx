@@ -21,6 +21,7 @@ import { ListingChip } from '../ListingChip';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, SearchIcon, sectionLabel } from '../ui';
 import type { Viewport } from '../useViewport';
+import { UnitVisual, UnitCaption } from '../features/unitImage/UnitVisual';
 
 const PAGE_SIZE = 40;
 
@@ -92,6 +93,9 @@ export const MobileDetail: React.FC<{ app: HpApp; v: HpVM; viewport: Viewport; o
         </div>
         <span onClick={onClose} style={{ flex: 'none', width: 30, height: 30, borderRadius: '50%', background: '#f0f0f2', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: '#555', cursor: 'pointer' }}>✕</span>
       </div>
+
+      <UnitVisual v={v} size={150} style={{ alignSelf: 'center' }} />
+      <UnitCaption items={[v]} lang={app.lang} style={{ textAlign: 'center' }} />
 
       <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
         <ListedChips v={v} t={t} />

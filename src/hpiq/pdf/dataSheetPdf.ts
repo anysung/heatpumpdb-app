@@ -84,9 +84,13 @@ export interface DataSheetPdfInput {
   /** Premium branded documents (2026-09-29): "Prepared by … for …" band.
    *  Null/absent = the unbranded sheet, byte-for-byte as before. */
   branding?: PdfBranding | null;
+  /** JPEG data URL of the brand image or line graphic (features/unitImage/unitRaster.ts). */
+  unitImage?: string | null;
+  /** Printed under a brand image. */
+  unitCaption?: string | null;
 }
 
-export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb, useRawType, branding }: DataSheetPdfInput): jsPDF {
+export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isGb, useRawType, branding, unitImage, unitCaption }: DataSheetPdfInput): jsPDF {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   // Embedded Noto Sans (Latin-Extended) when preloaded; Helvetica fallback keeps
   // exports working offline. LATIN_EXT_OK widens ascii()'s keep-set to match.
@@ -192,11 +196,14 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
 
   /* ── Title card (dark) ────────────────────────────────────────────────── */
   setFont(13.5, true, [255, 255, 255]);   // measure at the size it is drawn in
-  const titleLines = doc.splitTextToSize(ascii(v.model), CW - 12) as string[];
-  const cardH = 9 + titleLines.length * 6;
+  const UNIT_MM = 26;
+  const unitW = unitImage ? UNIT_MM + 3 : 0;
+  const titleLines = doc.splitTextToSize(ascii(v.model), CW - 12 - unitW) as string[];
+  const cardH = Math.max(9 + titleLines.length * 6, unitImage ? UNIT_MM : 0);
   need(cardH + 2);
+  if (unitImage) doc.addImage(unitImage, 'JPEG', M_X + CW - UNIT_MM, y, UNIT_MM, UNIT_MM, undefined, 'FAST');
   doc.setFillColor(INK[0], INK[1], INK[2]);
-  doc.roundedRect(M_X, y, CW, cardH, 2, 2, 'F');
+  doc.roundedRect(M_X, y, CW - unitW, cardH, 2, 2, 'F');
   setFont(13.5, true, [255, 255, 255]);
   titleLines.forEach((ln, i) => doc.text(ln, M_X + 6, y + 7.6 + i * 6));
   // Plausibility mark (src/shared/plausibility.mjs): a red "(!)" after the
@@ -214,6 +221,11 @@ export function buildDataSheetPdf({ v, t, sections, isLabelMode, sourceAbbr, isG
     M_X + 6, y + cardH - 3.4,
   );
   y += cardH + 4;
+  if (unitCaption) {
+    setFont(6.5, false, [150, 150, 150]);
+    doc.text(ascii(unitCaption), M_X + CW, y - 2.2, { align: 'right' });
+    y += 1.6;
+  }
   if (v.qaCheck) {
     setFont(7.5, false, QA_RGB);
     const qaLines = doc.splitTextToSize(ascii('(!) ' + qaTip(t.locale.slice(0, 2))), CW) as string[];

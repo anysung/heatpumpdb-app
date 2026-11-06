@@ -16,6 +16,7 @@ import { ListingChip } from '../ListingChip';
 import { SOURCE_ID_ABBR, REGISTRY_VERIFY_URL } from '../market';
 import { FD, CheckBox, ChevronDown, KwRangeSlider, Watermark, frosted, pillPrimary, pillSecondary, sectionLabel } from '../ui';
 import { ManufacturerFacet } from '../MfrFacet';
+import { UnitVisual, UnitCaption } from '../features/unitImage/UnitVisual';
 
 // Every row is its OWN grid (rows stream in), so tracks must resolve
 // identically regardless of row content: bare `fr` means minmax(auto, fr) and
@@ -533,6 +534,8 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                   <span onClick={() => app.setSelectedId(null)} style={{ fontSize: 13, color: '#7a7a7a', cursor: 'pointer' }}>×</span>
                 </div>
                 <span style={{ fontFamily: FD, fontSize: 21, fontWeight: 600, letterSpacing: '-0.28px', lineHeight: 1.18 }}>{sel.model}<QaMark v={sel} lang={app.lang} size={17} /></span>
+                <UnitVisual v={sel} size={180} style={{ alignSelf: 'center', marginTop: 6 }} />
+                <UnitCaption items={[sel]} lang={app.lang} style={{ textAlign: 'center' }} />
               </div>
               <div style={{ padding: '18px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <div style={{ background: '#fff', border: '1px solid #e0e0e0', borderRadius: 18, padding: '18px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px 12px' }}>
@@ -670,11 +673,13 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                 // Rows + BEST rule shared with the comparison PDF (compareRows.ts).
                 const rows = compareRows(t);
                 return (
+                  <>
                   <div style={{ display: 'grid', gridTemplateColumns: `190px repeat(${compareCount}, minmax(0, 1fr))`, border: '1px solid #e0e0e0', borderRadius: 18, overflow: 'hidden', fontSize: 15.5 }}>
                     {/* header row — product identity */}
                     <div style={{ background: '#f5f5f7', borderBottom: '2px solid #e0e0e0' }} />
                     {compareItems.map(c => (
                       <div key={`h-${c.id}`} style={{ background: '#f5f5f7', borderBottom: '2px solid #e0e0e0', borderLeft: '1px solid #e0e0e0', padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+                        <UnitVisual v={c} size={110} />
                         <span style={{ fontWeight: 650, fontSize: 17, lineHeight: 1.32, overflowWrap: 'anywhere' }}>{c.model}<QaMark v={c} lang={app.lang} size={15} /></span>
                         <span style={{ fontSize: 12.5, color: '#7a7a7a', overflowWrap: 'anywhere' }}>
                           {c.mfr} · <span onClick={() => app.toggleCompare(c.id)} style={{ color: '#0066cc', cursor: 'pointer', whiteSpace: 'nowrap' }}>{t.products.remove}</span>
@@ -712,6 +717,8 @@ export const ProductsPage: React.FC<{ app: HpApp }> = ({ app }) => {
                       );
                     })}
                   </div>
+                  <UnitCaption items={compareItems} lang={app.lang} style={{ display: 'block', marginTop: 8 }} />
+                  </>
                 );
               })()}
             </div>
