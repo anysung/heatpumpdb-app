@@ -118,8 +118,13 @@ for (const m of ['EU13L', 'Compress CS3800iAW 4', 'Cosy 6 / 0101200004060', 'P20
 assert.equal(sameProductGroup({ manufacturer: 'Lambda', model: 'EU13L' }), 'lambda-eu13l');
 assert.equal(sameProductGroup({ manufacturer: 'Ritter Energie', model: 'WP Aero Calima 13' }), 'lambda-eu13l');
 assert.equal(sameProductGroup({ manufacturer: 'KRONOTERM', model: 'ADAPT 2 M / HK 1F', variantModels: ['ADAPT 2 M / HK 1F'] }), null);
-// A different grille is a different product, so Zewotherm stays out even with equal values.
-assert.equal(sameProductGroup({ manufacturer: 'Zewotherm', model: 'ZewoLambda EU13L - Luft-Monoblock Außeneinheit' }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Zewotherm', model: 'ZewoLambda EU13L - Luft-Monoblock Außeneinheit' }), 'lambda-eu13l');
+// The owner ruled Alpha G apart: equal values, but a different casing size.
+assert.equal(sameProductGroup({ manufacturer: 'Zewotherm', model: 'Zewo WP Alpha G 7 kW' }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Zewotherm', model: 'Zewo Wärmepumpe Alpha G 16' }), null);
+assert.equal(sameProductGroup({ manufacturer: 'Ritter Energie', model: 'WP Aero Vento 5' }), 'acond-grandis-n');
+assert.equal(sameProductGroup({ manufacturer: 'Weishaupt', model: 'WEB 7/10-A-RME-A' }), 'stiebel-wpl-a-07');
+assert.equal(sameProductGroup({ manufacturer: 'Stiebel Eltron', model: 'WPL-A 07.2 Plus HK 230' }), 'stiebel-wpl-a-07');
 assert.equal(sameProductGroup({ manufacturer: 'Bosch', model: 'EU13L' }), null);
 
 // Confirmed by the owner's eye, including indoor combinations of one outdoor unit.

@@ -1,5 +1,5 @@
 {
-  "_readme": "Models sold under different brands that the owner's rule treats as one product. Same specification means same product: a different grille, colour or finish does not separate them (owner decision 2026-11-06). In the first three places of a result only the highest scoring member appears. All members stay in the catalogue. This says nothing public about who makes what, and none of it reaches the browser. Add a group only after checking documents. Evidence: the 'same product' verification report and the series report of 2026-11-06.\n'groups' lists single products. A member's third value 'outdoor' matches any name containing the model, because one outdoor unit is sold in many indoor combinations.\n'series' lists whole product lines whose brands share outdoor units. A member is a brand and a regular expression tested on the raw model name. Within a series, models of the same rounded capacity are one product, because the size numbers in the names do not line up across brands (VWL 155 is HA 15, VWL 175 is HA 15 N).\nOwner ruled different: Midea/Rossato, and Vaillant aroTHERM /3 against Genia Air.",
+  "_readme": "Models sold under different brands that the owner's rule treats as one product. Same specification means same product: a different grille, colour or finish does not separate them (owner decision 2026-11-06). In the first three places of a result only the highest scoring member appears. All members stay in the catalogue. This says nothing public about who makes what, and none of it reaches the browser. Add a group only after checking documents. Evidence: the 'same product' verification report and the series report of 2026-11-06.\n'groups' lists single products. A member's third value 'outdoor' matches any name containing the model, because one outdoor unit is sold in many indoor combinations.\n'series' lists whole product lines whose brands share outdoor units. A member is a brand and a regular expression tested on the raw model name. Within a series, models of the same rounded capacity are one product, because the size numbers in the names do not line up across brands (VWL 155 is HA 15, VWL 175 is HA 15 N).\nOwner confirmed by eye after a document and photo check (2026-11-06): Zewotherm ZewoLambda with Lambda, and Weishaupt WEB with Stiebel Eltron. Owner ruled different: Zewotherm Alpha G against Acond Grandis (height and depth differ), Midea/Rossato, and Vaillant aroTHERM /3 against Genia Air.",
   "groups": [
     {
       "id": "lambda-eu10l",
@@ -11,6 +11,11 @@
         [
           "Ritter Energie",
           "WP Aero Calima 10"
+        ],
+        [
+          "Zewotherm",
+          "ZewoLambda EU10L",
+          "outdoor"
         ]
       ]
     },
@@ -24,6 +29,11 @@
         [
           "Ritter Energie",
           "WP Aero Calima 13"
+        ],
+        [
+          "Zewotherm",
+          "ZewoLambda EU13L",
+          "outdoor"
         ]
       ]
     },
@@ -37,6 +47,11 @@
         [
           "Ritter Energie",
           "WP Aero Calima 15"
+        ],
+        [
+          "Zewotherm",
+          "ZewoLambda EU15L",
+          "outdoor"
         ]
       ]
     },
@@ -50,6 +65,11 @@
         [
           "Ritter Energie",
           "WP Aero Calima 20"
+        ],
+        [
+          "Zewotherm",
+          "ZewoLambda EU20L",
+          "outdoor"
         ]
       ]
     },
@@ -179,6 +199,58 @@
           "Weishaupt",
           "WWP LA 20/30-A R",
           "outdoor"
+        ]
+      ]
+    },
+    {
+      "id": "stiebel-wpl-a-07",
+      "members": [
+        [
+          "Stiebel Eltron",
+          "WPL-A 07.2 Plus HK 230"
+        ],
+        [
+          "Weishaupt",
+          "WEB 7/10-A-RME-A"
+        ]
+      ]
+    },
+    {
+      "id": "stiebel-wpl-a-10",
+      "members": [
+        [
+          "Stiebel Eltron",
+          "WPL-A 10.2 Plus HK 400"
+        ],
+        [
+          "Weishaupt",
+          "WEB 10/15-A-RMD-A"
+        ]
+      ]
+    },
+    {
+      "id": "stiebel-wpl-a-10-trend",
+      "members": [
+        [
+          "Stiebel Eltron",
+          "WPL-A 10.2 Trend HK 230"
+        ],
+        [
+          "Weishaupt",
+          "WEB 9/14-A-RME-A"
+        ]
+      ]
+    },
+    {
+      "id": "stiebel-wpl-a-13",
+      "members": [
+        [
+          "Stiebel Eltron",
+          "WPL-A 13.2 Plus HK 400"
+        ],
+        [
+          "Weishaupt",
+          "WEB 13/20-A-RMD-A"
         ]
       ]
     }
