@@ -1,0 +1,23 @@
+{
+  "_readme": "Finder markets. climate selects which EU label column applies (Reg. 811/2013: cold = Helsinki, average = Strasbourg, warm = Athens) and is PROVISIONAL until the owner approves the table. fundingList: 'owned' = the catalogue comes from the list itself; 'overlay' = matched against the local list; null = no model-level list in use. fundingRanking is the owner's decision of 2026-11-06, and the 70% coverage gate can still switch it off.",
+  "minFundingCoverage": 0.7,
+  "markets": {
+    "de": { "country": "DE", "file": "products", "climate": "average", "eprelCode": "DE", "fundingList": "owned", "fundingRanking": true },
+    "it": { "country": "IT", "file": "products-it", "climate": "average", "eprelCode": "IT", "fundingList": "overlay", "statusField": "gse_match_status", "fundingRanking": true },
+    "pl": { "country": "PL", "file": "products-pl", "climate": "average", "eprelCode": "PL", "fundingList": "overlay", "statusField": "zum_match_status", "fundingRanking": true },
+    "gb": { "country": "GB", "file": "products-gb", "climate": "average", "eprelCode": null, "fundingList": "overlay", "statusField": "pel_match_status", "fundingRanking": false },
+    "fr": { "country": "FR", "file": "products-fr", "climate": "average", "eprelCode": "FR", "fundingList": null, "fundingRanking": false },
+    "at": { "country": "AT", "file": "products", "climate": "average", "eprelCode": "AT", "fundingList": null, "fundingRanking": false },
+    "be": { "country": "BE", "file": "products", "climate": "average", "eprelCode": "BE", "fundingList": null, "fundingRanking": false },
+    "lu": { "country": "LU", "file": "products", "climate": "average", "eprelCode": "LU", "fundingList": null, "fundingRanking": false },
+    "ie": { "country": "IE", "file": "products", "climate": "average", "eprelCode": "IE", "fundingList": null, "fundingRanking": false },
+    "nl": { "country": "NL", "file": "products", "climate": "average", "eprelCode": "NL", "fundingList": null, "fundingRanking": false },
+    "es": { "country": "ES", "file": "products", "climate": "warm", "eprelCode": "ES", "fundingList": null, "fundingRanking": false },
+    "pt": { "country": "PT", "file": "products", "climate": "warm", "eprelCode": "PT", "fundingList": null, "fundingRanking": false },
+    "cz": { "country": "CZ", "file": "products", "climate": "average", "eprelCode": "CZ", "fundingList": null, "fundingRanking": false },
+    "dk": { "country": "DK", "file": "products", "climate": "average", "eprelCode": "DK", "fundingList": null, "fundingRanking": false },
+    "se": { "country": "SE", "file": "products", "climate": "cold", "eprelCode": "SE", "fundingList": null, "fundingRanking": false },
+    "fi": { "country": "FI", "file": "products", "climate": "cold", "eprelCode": "FI", "fundingList": null, "fundingRanking": false },
+    "no": { "country": "NO", "file": "products", "climate": "cold", "eprelCode": "NO", "fundingList": null, "fundingRanking": false }
+  }
+}

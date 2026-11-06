@@ -113,3 +113,6 @@ demo_video/
 # Unattended maintenance window — run state and logs are machine-local.
 .maintenance/
 data_sources/lista_zum/raw_archive/*.tar.zst
+
+# Finder consumer export: generated, kept out of git like public/data
+data_sources/finder_export/

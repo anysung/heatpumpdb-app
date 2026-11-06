@@ -1,0 +1,5 @@
+{
+  "_readme": "Every field the public Heatpump Finder may receive. The exporter refuses to write any other field. No ids from a registry, no eta values, no COP test points, no dB values (owner decisions 2026-11-06).",
+  "model": ["id", "market", "manufacturer", "model", "type", "ratedKw35", "ratedKw55", "scop35", "scop55", "energyClass35", "energyClass55", "refrigerant", "noiseStars", "funding", "climateBasis", "source", "sourceName", "sourceSnapshotDate", "manufacturerUrl", "variantCount", "variantModels"],
+  "dataset": ["fixture", "market", "fundingInRanking", "fundingCoverage", "climate", "generatedAt", "attribution", "models"]
+}
