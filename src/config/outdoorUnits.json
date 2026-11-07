@@ -260,12 +260,12 @@
     {
       "id": "vaillant-split-85",
       "brand": "Vaillant",
-      "match": "VWL\\s*85/8\\.2"
+      "match": "VWL\\s*(75|85)/8\\.2"
     },
     {
-      "id": "vaillant-split-45",
+      "id": "vaillant-split-small",
       "brand": "Vaillant",
-      "match": "VWL\\s*(45|65)/8\\.2"
+      "match": "VWL\\s*(35|45|55|65)/8\\.2"
     },
     {
       "id": "vaillant-perform",
@@ -291,6 +291,11 @@
       "id": "bosch-5001-22",
       "brand": "Bosch",
       "match": "CS5001AW\\s*22"
+    },
+    {
+      "id": "saunier-duval-split",
+      "brand": "Saunier Duval",
+      "match": "HA\\s*[35]-8\\.2"
     },
     {
       "id": "saunier-duval-tall",
@@ -319,6 +324,31 @@
       "id": "grant-aerona-290",
       "brand": "Grant Engineering",
       "match": "HPR290|AERONA\\s*290"
+    },
+    {
+      "id": "mitsubishi-suz-swm",
+      "brand": "Mitsubishi Electric",
+      "match": "SUZ-SWM"
+    },
+    {
+      "id": "panasonic-aquarea-j",
+      "brand": "Panasonic",
+      "match": "WH-UD0[35]JE5"
+    },
+    {
+      "id": "baxi-alya-small",
+      "brand": "Baxi",
+      "match": "ALYA\\s*[46](?!\\d)|AWHP2R\\s*[46](?!\\d)"
+    },
+    {
+      "id": "protherm-split",
+      "brand": "Protherm",
+      "match": "HA\\s*[35]-8\\.2"
+    },
+    {
+      "id": "bulex-split",
+      "brand": "Bulex",
+      "match": "HA\\s*[35]-8\\.2"
     }
   ]
 }
