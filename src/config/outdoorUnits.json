@@ -211,6 +211,114 @@
     {
       "id": "immergas",
       "brand": "Immergas"
+    },
+    {
+      "id": "daikin-epsks",
+      "brand": "Daikin",
+      "match": "EPSKS|\\b4-6-7\\b"
+    },
+    {
+      "id": "daikin-epsk",
+      "brand": "Daikin",
+      "match": "ALTHERMA\\s*4|EPSK"
+    },
+    {
+      "id": "stiebel-eltron-white",
+      "brand": "Stiebel Eltron",
+      "match": "(WPL-A|HPA-O)\\s*\\d+\\.2\\s+W\\b"
+    },
+    {
+      "id": "stiebel-eltron-r290",
+      "brand": "Stiebel Eltron",
+      "match": "(WPL-A|HPA-O)\\s*\\d+\\.2\\b"
+    },
+    {
+      "id": "nibe-s2060",
+      "brand": "NIBE",
+      "match": "S206[01]"
+    },
+    {
+      "id": "clivet-edge-pro",
+      "brand": "Clivet",
+      "match": "EDGE\\s*PRO"
+    },
+    {
+      "id": "immergas-magis-top",
+      "brand": "Immergas",
+      "match": "MAGIS\\s*M.*\\bTOP\\b"
+    },
+    {
+      "id": "remeha-confida",
+      "brand": "Remeha",
+      "match": "CONFIDA\\s*MB"
+    },
+    {
+      "id": "ariston-nimbus5",
+      "brand": "Ariston",
+      "match": "NIMBUS\\s*5"
+    },
+    {
+      "id": "vaillant-split-85",
+      "brand": "Vaillant",
+      "match": "VWL\\s*85/8\\.2"
+    },
+    {
+      "id": "vaillant-split-45",
+      "brand": "Vaillant",
+      "match": "VWL\\s*(45|65)/8\\.2"
+    },
+    {
+      "id": "vaillant-perform",
+      "brand": "Vaillant",
+      "match": "VWL\\s*(155|175|205|215)/8\\.1|AROTHERM\\s*PERFORM"
+    },
+    {
+      "id": "vaillant-plus-75",
+      "brand": "Vaillant",
+      "match": "VWL\\s*(75|105|125)/8\\.1"
+    },
+    {
+      "id": "vaillant-plus-small",
+      "brand": "Vaillant",
+      "match": "VWL\\s*(35|45|55)/8\\.1"
+    },
+    {
+      "id": "bosch-8800",
+      "brand": "Bosch",
+      "match": "CS8800|8800i"
+    },
+    {
+      "id": "bosch-5001-22",
+      "brand": "Bosch",
+      "match": "CS5001AW\\s*22"
+    },
+    {
+      "id": "saunier-duval-tall",
+      "brand": "Saunier Duval",
+      "match": "HA\\s*(12|15|20)-8\\.1|GENIA(AIR|SET)\\s*MAX\\s*(12|15)"
+    },
+    {
+      "id": "idm-alm-6-15",
+      "brand": "iDM",
+      "match": "ALM\\s*6-15"
+    },
+    {
+      "id": "idm-alm-10-24",
+      "brand": "iDM",
+      "match": "ALM\\s*10-24"
+    },
+    {
+      "id": "lambda-eureka",
+      "brand": "Lambda",
+      "match": "EU\\d+L",
+      "names": [
+        "LAMBDA Wärmepumpen GmbH"
+      ]
+    },
+    {
+      "id": "grant-aerona-290",
+      "brand": "Grant Engineering",
+      "match": "HPR290|AERONA\\s*290"
     }
   ]
 }

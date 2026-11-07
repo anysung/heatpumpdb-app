@@ -1,5 +1,5 @@
 /**
- * The picture beside a model: the brand's image, or the plain line graphic for a brand without one.
+ * The picture beside a model: its own image, the brand's image, or the plain line graphic for a brand without one.
  * Which of the two, or none, is decided by src/shared/outdoorUnit.mjs.
  */
 import React from 'react';
@@ -13,7 +13,7 @@ export const UNIT_GRAPHIC_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox
 export const UNIT_GRAPHIC_URL = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(UNIT_GRAPHIC_SVG)}`;
 
 export const visualOf = (v: HpVM): OutdoorVisual =>
-  outdoorVisual(v.mfr, v.raw.type, classifyProductSegment(v.ratedKwNum));
+  outdoorVisual(v.mfr, v.raw.type, classifyProductSegment(v.ratedKwNum), v.model);
 
 export const UnitVisual: React.FC<{ v: HpVM; size: number; style?: React.CSSProperties }> = ({ v, size, style }) => {
   const visual = visualOf(v);
