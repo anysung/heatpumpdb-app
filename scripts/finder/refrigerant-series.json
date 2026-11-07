@@ -1,0 +1,15 @@
+{
+  "_readme": "Refrigerant for models whose source record has none. EPREL publishes no refrigerant, so a series whose other models or manufacturer documents show one refrigerant is filled in here. Only add a series known to use one refrigerant throughout. Pattern is a regular expression on the raw model name. Used only outside the UK.",
+  "series": [
+    ["Vaillant", "/8\\.1 A|/7\\.1 A|\\d/6 A", "R290"],
+    ["Saunier Duval", "-8\\.1 O|-7\\.1 O|\\d-6 O", "R290"],
+    ["Bulex", "-8\\.1 O|-7\\.1 O|\\d-6 O", "R290"],
+    ["Viessmann", "AWMOF-? ?2[05]1\\.", "R290"],
+    ["NIBE", "S20[26]\\d-\\d", "R290"],
+    ["Remeha", "Confida MB 400", "R290"],
+    ["Daikin", "EPBX\\w* ?/ ?EPSK|EPSX\\w* ?/ ?EPSK|ALTHERMA 4 H", "R290"],
+    ["DOMUSA TEKNIK", "NANOCLIMA", "R290"],
+    ["LG", "HM\\d{3}HF[ .]UB[46]0", "R290"],
+    ["Windhager", "NXT", "R290"]
+  ]
+}

@@ -13,7 +13,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSy
 import { join, resolve } from 'node:path';
 import {
   canonicalBase, climateValues, displayFunding, energyClass35, energyClass55, eprelBase, excludedFromMarket,
-  brandNamer, brandStarsFor, displayBrand, numberOnlyModel, sameProductGroup, modelNameForms, looksGroundSource, modelWithoutBrand, failsPlausibility, incredibleScop, fundingState, groupSeries, noiseStarsFromDb, normBrand, normModel, publishable, sameBrand, scopFromEta,
+  fgasAllowed, refrigerantFromName, relativeNoiseStars, brandNamer, brandId, brandStarsFor, displayBrand, numberOnlyModel, sameProductGroup, modelNameForms, looksGroundSource, modelWithoutBrand, failsPlausibility, incredibleScop, fundingState, groupSeries, noiseStarsFromDb, normBrand, normModel, publishable, sameBrand, scopFromEta,
 } from './consumer-rules.mjs';
 
 const ROOT = resolve(new URL('../..', import.meta.url).pathname);
@@ -99,13 +99,20 @@ function pelSignal() {
   return { snap, brandListed, airModels: new Set(air.map((r) => normModel(r.model)).filter((m) => m.length >= 5)), groundModels: new Set(rows.filter((r) => r.technology_type === 'WSHP').map((r) => normModel(r.model)).filter((m) => m.length >= 5)) };
 }
 
+// Any market's catalogue may know a model's refrigerant that another market's record lacks.
+const refrigerantLookup = new Map();
+for (const m of new Set(Object.values(CONFIG.markets).map((x) => x.file))) for (const p of read(m)) {
+  const r = refrigerantOf(p);
+  if (r) refrigerantLookup.set(`${brandId(p.manufacturer_short || p.manufacturer)}|${normModel(p.model)}`, r);
+}
+
 mkdirSync(OUT, { recursive: true });
 const report = {};
 for (const cc of wanted) {
   const mk = CONFIG.markets[cc];
   const rows = read(mk.file);
   const refName = cc === 'de' ? 'BAFA list' : 'European reference data';
-  const dropped = { plausibility: 0, notPublishable: 0, notAirWater: 0, marketExclusion: 0, incredibleScop: 0, groundSource: 0, numberOnly: 0 };
+  const dropped = { plausibility: 0, notPublishable: 0, notAirWater: 0, marketExclusion: 0, incredibleScop: 0, groundSource: 0, numberOnly: 0, fgasRefrigerant: 0, noRefrigerant: 0 };
   const candidates = [];
   const usedRegs = new Set();
   const canonicalNames = new Map();
@@ -134,7 +141,7 @@ for (const cc of wanted) {
     if (numberOnlyModel(p.model)) { dropped.numberOnly++; continue; }
     // Judged on the average climate. A warm climate raises SCOP for every model, so the warm column would remove sound models.
     if (incredibleScop(climateValues(canonicalBase(p), eprel, 'average'))) { dropped.incredibleScop++; continue; }
-    candidates.push({ brand, model: p.model, values, noiseDb: p.noise_outdoor_dB, refrigerant: refrigerantOf(p), state, url: https(p.website) ?? https(eprel?.organisation?.website),
+    candidates.push({ brand, model: p.model, values, noiseDb: p.noise_outdoor_dB, refrigerant: refrigerantOf(p), split: /split/i.test(p.installation_type ?? ''), state, url: https(p.website) ?? https(eprel?.organisation?.website),
       source: native ? (p.performance_source === 'EPREL' || p.performance_source === 'ZUM_EPREL' ? 'eprel' : 'registry') : 'reference',
       sourceName: native ? (p.performance_source.includes('EPREL') ? 'EPREL (European Commission)' : cc === 'it' ? 'GSE catalogue' : 'Lista ZUM') : refName,
       sourceSnapshotDate: String(p.source_snapshot_generated_at ?? p.bafa_snapshot_fetched_at ?? p.zum_snapshot_fetched_at ?? p.gse_snapshot_fetched_at ?? eprelDate).slice(0, 10) });
@@ -168,6 +175,20 @@ for (const cc of wanted) {
   const nameOf = brandNamer(candidates.map((c) => ({ brand: c.brand, catalogue: c.source !== 'eprel' })));
   for (const c of candidates) c.brand = nameOf(c.brand);
 
+  // Owner decision 2026-11-07: outside the UK, recommend only refrigerants a new unit may still use under the EU F-gas rules, and only where the refrigerant is known.
+  if (mk.fgasRule !== false) {
+    const kept = [];
+    for (const c of candidates) {
+      c.refrigerant = c.refrigerant ?? refrigerantLookup.get(`${brandId(c.brand)}|${normModel(c.model)}`) ?? refrigerantFromName(c.brand, c.model);
+      if (!c.refrigerant) { dropped.noRefrigerant++; (report._noRefrigerant ??= {})[c.brand] = (report._noRefrigerant[c.brand] ?? 0) + 1; continue; }
+      const kw = Math.max(c.values.kw35 ?? 0, c.values.kw55 ?? 0);
+      if (!fgasAllowed({ refrigerant: c.refrigerant, kw, split: c.split })) { dropped.fgasRefrigerant++; continue; }
+      kept.push(c);
+    }
+    candidates.length = 0;
+    candidates.push(...kept);
+  }
+
   const coverage = mk.fundingList ? registryCoverage(cc, rows, listedRows) : null;
   const inRanking = mk.fundingRanking === true && coverage != null && coverage >= CONFIG.minFundingCoverage;
   const models = groupSeries(candidates.map((c) => ({
@@ -175,11 +196,13 @@ for (const cc of wanted) {
     ratedKw35: c.values.kw35, ratedKw55: c.values.kw55 ?? null,
     scop35: scopFromEta(c.values.eta35), scop55: scopFromEta(c.values.eta55),
     energyClass35: energyClass35(c.values.eta35), energyClass55: energyClass55(c.values.eta55),
-    refrigerant: c.refrigerant, noiseStars: noiseStarsFromDb(c.noiseDb), funding: displayFunding(c.state, inRanking),
+    refrigerant: c.refrigerant, noiseStars: noiseStarsFromDb(c.noiseDb), noiseDb: c.noiseDb, funding: displayFunding(c.state, inRanking),
     climateBasis: c.values.basis, source: c.source, sourceName: c.sourceName, sourceSnapshotDate: c.sourceSnapshotDate,
     ...(c.url ? { manufacturerUrl: c.url } : {}),
   })));
   for (const m of models) { const g = sameProductGroup(m); if (g) m.sameProduct = g; }
+  // The grade is all the file carries: the dB value stays here.
+  relativeNoiseStars(models).forEach((stars, i) => { models[i].noiseStars = stars; delete models[i].noiseDb; });
   const ds = { fixture: false, market: cc, fundingInRanking: inRanking, fundingCoverage: coverage == null ? null : Math.round(coverage * 1000) / 10, climate: mk.climate,
     generatedAt: new Date().toISOString(), attribution: 'Energy label data: EPREL, European Commission. Supplier-declared values.', models };
   assertAllowed(ds);

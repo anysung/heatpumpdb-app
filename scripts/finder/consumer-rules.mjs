@@ -7,6 +7,7 @@ import ALIASES from './brand-aliases.json' with { type: 'json' };
 import { aliasTo, brandId, normBrand, stripCompanyForm } from '../../src/shared/brandId.mjs';
 import RECOGNITION from './brand-recognition.json' with { type: 'json' };
 import SAME_PRODUCTS from './same-products.json' with { type: 'json' };
+import REFRIGERANT_SERIES from './refrigerant-series.json' with { type: 'json' };
 
 export { brandId, normBrand, stripCompanyForm };
 
@@ -33,6 +34,26 @@ export function noiseStarsFromDb(db) {
   if (v == null || v < 30) return null;
   const i = NOISE_CEILINGS.findIndex((c) => v <= c);
   return i === -1 ? 1 : 5 - i;
+}
+
+// Owner decision 2026-11-07: grade noise against comparable models. Same numbers as Heatpump Finder src/engine/config.ts.
+const RELATIVE_STAR_SHARES = [0.05, 0.15, 0.35, 0.65];
+const SIZE_GROUP_LIMITS_KW = [6, 10, 16];
+const MIN_GROUP_FOR_RELATIVE = 20;
+/** A model's share of quieter models in its size group sets the stars. The fixed dB scale caps them, and a small group keeps that scale alone. */
+export function relativeNoiseStars(cards) {
+  const groupOf = (c) => { const kw = Math.max(c.ratedKw35 ?? 0, c.ratedKw55 ?? 0); const i = SIZE_GROUP_LIMITS_KW.findIndex((limit) => kw <= limit); return i === -1 ? SIZE_GROUP_LIMITS_KW.length : i; };
+  const groups = new Map();
+  for (const c of cards) if (c.noiseStars != null) (groups.get(groupOf(c)) ?? groups.set(groupOf(c), []).get(groupOf(c))).push(c.noiseDb);
+  for (const list of groups.values()) list.sort((a, b) => a - b);
+  return cards.map((c) => {
+    if (c.noiseStars == null) return null;
+    const list = groups.get(groupOf(c));
+    if (list.length < MIN_GROUP_FOR_RELATIVE) return c.noiseStars;
+    const share = list.filter((db) => db < c.noiseDb).length / list.length;
+    const i = RELATIVE_STAR_SHARES.findIndex((limit) => share < limit);
+    return Math.min(c.noiseStars, i === -1 ? 1 : 5 - i);
+  });
 }
 
 export const normModel = (s) => String(s ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -81,7 +102,41 @@ export function brandStarsFor(cc, brand) {
 }
 
 // EPREL has no heat-source field and ground-source units also declare outdoor noise, so model names are the only signal.
-const GROUND_SOURCE = /SOL\s*\/\s*EAU|EAU\s*\/\s*EAU|\bGEO\b|GEO[ -]|BRINE|\bWW\b|\bW\/W\b|\bS\/W\b|WASSER\/WASSER|TERRA SW|GLYCOL|\bWPF\b|N\dWP|N\dGP|GEOTHERM/i;
+const GROUND_SOURCE = /SOL\s*\/\s*EAU|EAU\s*\/\s*EAU|\bGEO\b|GEO[ -]|BRINE|\bWW\b|\bW\/W\b|\bS\/W\b|WASSER\/WASSER|TERRA SW|GLYCOL|\bWPF\b|N\dWP|N\dGP|GEOTHERM|GEOBLOCK|^VWS\b|ULTRASOURCE.? B\b/i;
+// GWP per Regulation (EU) 2024/573 Annexes I and II. A refrigerant not listed here counts as not allowed.
+const FGAS_GWP = { R290: 3, R600A: 3, R1270: 2, R717: 0, R744: 1, R1234YF: 1, R1234ZE: 7, R454C: 148, R455A: 148, R454B: 466, R32: 675, R452B: 698, R449A: 1397, R407C: 1774, R410A: 2088, R513A: 631 };
+const NATURAL = new Set(['R290', 'R600A', 'R1270', 'R717', 'R744']);
+export const refrigerantKey = (r) => (String(r ?? '').toUpperCase().match(/R\s?-?(\d+[A-Z]*)/)?.[1] ?? '').replace(/^/, 'R');
+const FIRST_FGAS_RULE = '2027-01-01';
+
+/**
+ * May a NEW unit with this refrigerant be placed on the EU market? Annex IV points 8 and 9 of Regulation (EU) 2024/573.
+ * The ban starting 2027-01-01 already applies today, so the list does not recommend a model about to stop being supplied.
+ * An unknown build counts as self-contained, the stricter case: only a known split above 12 kW has later dates.
+ */
+export function fgasAllowed({ refrigerant, kw, split = false, date = new Date().toISOString().slice(0, 10) }) {
+  const key = refrigerantKey(refrigerant);
+  const gwp = FGAS_GWP[key];
+  if (gwp === undefined) return false;
+  if (NATURAL.has(key)) return true;
+  const on = date < FIRST_FGAS_RULE ? FIRST_FGAS_RULE : date;
+  // GWP 750 and above is treated as out now: point 9(a) already bans it in single splits under 3 kg, and the charge is not always known.
+  if (split && kw > 12) return on >= '2033-01-01' ? gwp < 150 : gwp < 750;
+  if (kw > 12) return gwp < 150;
+  if (on >= (split ? '2035-01-01' : '2032-01-01')) return false;
+  return gwp < 150;
+}
+
+const SERIES_REFRIGERANT = REFRIGERANT_SERIES.series.map(([brand, pattern, refrigerant]) => [brandId(brand), new RegExp(pattern, 'i'), refrigerant]);
+/** A refrigerant named in the model itself, or the one a known series uses throughout. Null when neither says. */
+export function refrigerantFromName(brand, model) {
+  const name = String(model ?? '');
+  const inName = name.match(/\b(?:HP)?R ?(290|32)\b|\bHP(290)\b|R(290)(?=[a-z]?\d)/i);
+  if (inName) return `R${inName[1] ?? inName[2] ?? inName[3]}`;
+  const id = brandId(brand);
+  return SERIES_REFRIGERANT.find(([b, re]) => b === id && re.test(name))?.[2] ?? null;
+}
+
 export const looksGroundSource = (model) => GROUND_SOURCE.test(String(model ?? ''));
 
 /** A bare article number tells a household nothing, and an installer cannot be asked about it. */

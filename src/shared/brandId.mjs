@@ -5,7 +5,8 @@
 import ALIASES from '../../scripts/finder/brand-aliases.json' with { type: 'json' };
 
 const LEGAL = /\b(gmbh|co|kg|ag|se|spa|s\.p\.a|ltd|limited|sas|bv|srl|sa|inc|llc|corporation|corp|group|brand|climate|solutions|werke|deutschland|france|europe|heating|hvac|products|electronics|electric)\b/g;
-export const normBrand = (s) => String(s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(LEGAL, ' ').replace(/[^a-z0-9]/g, '');
+// Umlauts become their German spelling first: Bösch is not Bosch, and Brötje is Broetje.
+export const normBrand = (s) => String(s ?? '').toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(LEGAL, ' ').replace(/[^a-z0-9]/g, '');
 
 // Legal forms say nothing about the brand and never belong on a consumer screen.
 const COMPANY_FORM = /[\s,.]*\b(gmbh(\s*&\s*co\.?\s*kg)?|ug|kg|d\.o\.o\.?|s\.r\.o\.?|a\.s\.?|sp\.?\s*z\s*o\.?\s*o\.?(\s*sp\.?\s*k\.?)?|s\.?p\.?a\.?|s\.?a\.?s?|ab|a\/s|b\.?v\.?|s\.?r\.?l\.?|ltd\.?|limited|inc\.?|llc|co\.?,?\s*ltd\.?|corp\.?|corporation)\b\.?[\s,.]*$/i;
