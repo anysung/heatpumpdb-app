@@ -218,9 +218,9 @@
       "match": "EPSKS|\\b4-6-7\\b"
     },
     {
-      "id": "daikin-epsk",
+      "id": "daikin-epsk-b",
       "brand": "Daikin",
-      "match": "ALTHERMA\\s*4|EPSK"
+      "match": "."
     },
     {
       "id": "stiebel-eltron-white",
