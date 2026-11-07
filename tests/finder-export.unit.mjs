@@ -148,7 +148,7 @@ assert.equal(refrigerantFromName('Grant Engineering', 'Aerona HPR290i40'), 'R290
 assert.equal(refrigerantFromName('Ideal Heating', 'HP290 Monobloc Heat Pump 4.5kW'), 'R290');
 assert.equal(refrigerantFromName('Ariston', 'NIMBUS 5 COMPACT 30 M R290'), 'R290');
 assert.equal(refrigerantFromName('Vaillant', 'VWL 155/8.1 A S2 Q'), 'R290');
-assert.equal(refrigerantFromName('Vaillant', 'VWL 85/8.2 AS 230V S3'), null);
+assert.equal(refrigerantFromName('Vaillant', 'VWL 85/8.2 AS 230V S3'), 'R32');
 assert.equal(refrigerantFromName('Bosch', 'VWL 155/8.1 A S2 Q'), null);
 
 // An umlaut can make a different company: Walter Bösch of Austria is not Bosch.
