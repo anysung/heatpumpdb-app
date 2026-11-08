@@ -1858,7 +1858,9 @@ function letterhead(bodyText, to, cta, opts) {
     ${opts && opts.partner
       ? `This message was sent to ${esc(to)} about your HeatPump DB Creator Partner agreement. Replies reach our partner team.`
       : opts && opts.marketing
-      ? `You receive this because you opted in to product news when you created your HeatPump DB account. Reply &ldquo;unsubscribe&rdquo; and we will stop sending it.`
+      ? `You receive this because you opted in to product news when you created your HeatPump DB account. ${opts.unsubUrl
+        ? `<a href="${esc(opts.unsubUrl)}" style="color:${FAINT};text-decoration:underline;">Unsubscribe</a> or reply &ldquo;unsubscribe&rdquo; and we will stop sending it.`
+        : `Reply &ldquo;unsubscribe&rdquo; and we will stop sending it.`}`
       : `This message was sent to ${esc(to)} about that HeatPump DB account. Replies reach our support team.`}
   </td></tr>
 </table>
@@ -1976,9 +1978,83 @@ const BULK_KINDS = ['announcement', 'notice', 'trial'];
 const BULK_AUDIENCES = ['marketing', 'active', 'trialing', 'expired', 'pending'];
 const BULK_MAX = 1000;   // beyond this a mailing needs a real campaign tool, not this console
 const BULK_CHUNK = 20;   // per call: the function's own timeout is the ceiling
-const UNSUB_TEXT = `
+const unsubText = (url) => `
 
-You receive this because you opted in to product news. Reply "unsubscribe" and we will stop sending it.`;
+You receive this because you opted in to product news. Unsubscribe: ${url}
+(or reply "unsubscribe" and we will stop sending it).`;
+
+/* ── One-click unsubscribe (RFC 8058) ─────────────────────────────────────────
+   Gmail, Yahoo and Outlook expect a marketing mail to carry an HTTPS
+   List-Unsubscribe target plus `List-Unsubscribe-Post: List-Unsubscribe=One-Click`;
+   a mailto-only header is one of the signals that sends a mailing to Junk.
+
+   The link is uid + a random per-account token (`marketingUnsubToken`, written
+   server-side the first time an announcement goes to that account, never by a
+   client — the user rules are diff-based, so the extra field changes nothing
+   there). No signing secret to rotate, and an old mail's link keeps working.
+
+   ONLY A POST UNSUBSCRIBES. A GET (a person clicking the footer link, or a
+   mail scanner pre-fetching every URL) shows a confirm button; the mailbox
+   provider's one-click request is a POST and takes effect at once. Either way
+   it only ever clears marketingConsent — never the account, never a service
+   notice. */
+const PUBLIC_FN_URL = process.env.PUBLIC_FN_URL
+  || 'https://europe-west1-gen-lang-client-0324244302.cloudfunctions.net/accountBilling';
+const unsubUrlFor = (uid, token) =>
+  `${PUBLIC_FN_URL}/unsubscribe?u=${encodeURIComponent(uid)}&t=${encodeURIComponent(token)}`;
+
+async function ensureUnsubToken(uid, existing) {
+  if (existing) return existing;
+  const token = crypto.randomBytes(24).toString('base64url');
+  await db.collection('users').doc(uid).set({ marketingUnsubToken: token }, { merge: true });
+  return token;
+}
+
+function unsubPage(res, status, title, message, form) {
+  res.status(status).set('Content-Type', 'text/html; charset=utf-8').set('Cache-Control', 'no-store').send(`<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>${esc(title)} · HeatPump DB</title></head>
+<body style="margin:0;background:#f5f5f7;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#1d1d1f;">
+<div style="max-width:480px;margin:64px auto;background:#fff;border-radius:14px;padding:32px;">
+<div style="font-weight:600;font-size:15px;color:#6e6e73;margin-bottom:18px;">HeatPump DB</div>
+<h1 style="font-size:22px;margin:0 0 12px;">${esc(title)}</h1>
+<p style="font-size:15px;line-height:1.55;margin:0 0 20px;">${esc(message)}</p>
+${form || ''}
+<p style="font-size:12.5px;color:#9a9aa0;margin:24px 0 0;">Questions: <a href="mailto:${SUPPORT_FROM}" style="color:#0066cc;">${SUPPORT_FROM}</a></p>
+</div></body></html>`);
+}
+
+async function unsubscribe(req, res) {
+  const uid = String((req.query && req.query.u) || '');
+  const token = String((req.query && req.query.t) || '');
+  const bad = () => unsubPage(res, 400, 'Link not valid',
+    'This unsubscribe link is incomplete or no longer valid. Reply "unsubscribe" to any of our mails and we will remove you by hand.');
+  if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid) || !/^[A-Za-z0-9_-]{16,64}$/.test(token)) return bad();
+  const ref = db.collection('users').doc(uid);
+  const snap = await ref.get();
+  const stored = snap.exists ? String(snap.data().marketingUnsubToken || '') : '';
+  const a = Buffer.from(stored), b = Buffer.from(token);
+  if (!stored || a.length !== b.length || !crypto.timingSafeEqual(a, b)) return bad();
+
+  if (req.method === 'GET') {
+    if (snap.data().marketingConsent !== true) {
+      return unsubPage(res, 200, 'You are unsubscribed', 'You no longer receive HeatPump DB product news. Messages about your own account still reach you.');
+    }
+    return unsubPage(res, 200, 'Unsubscribe from product news?',
+      'You will stop receiving HeatPump DB product news. Messages about your own account (security, billing) are not affected.',
+      `<form method="post" action="${esc(unsubUrlFor(uid, token))}"><input type="hidden" name="via" value="page">
+<button type="submit" style="background:#1d1d1f;color:#fff;border:0;border-radius:10px;padding:12px 20px;font-size:15px;cursor:pointer;">Unsubscribe</button></form>`);
+  }
+  if (req.method !== 'POST') return sendErr(res, 405, 'method-not-allowed');
+
+  const body = req.body || {};
+  const via = body['List-Unsubscribe'] === 'One-Click' ? 'one-click' : 'page';
+  if (snap.data().marketingConsent === true) {
+    await ref.set({ marketingConsent: false, marketingOptOutAt: nowIso(), marketingOptOutVia: via }, { merge: true });
+    await db.collection('opsAuditLog').add({ action: 'marketingUnsubscribe', uid, via, at: nowIso() });
+  }
+  return unsubPage(res, 200, 'You are unsubscribed', 'You no longer receive HeatPump DB product news. Messages about your own account still reach you.');
+}
 
 const bulkMs = (v) => {
   if (v == null) return null;
@@ -2027,6 +2103,7 @@ async function bulkRecipients(audience, country) {
       uid: doc.id, email,
       firstName: String(u.firstName || '').trim(),
       lastName: String(u.lastName || '').trim(),
+      unsubToken: u.marketingUnsubToken || null,
     });
   });
   list.sort((a, b) => (a.uid < b.uid ? -1 : a.uid > b.uid ? 1 : 0));
@@ -2105,13 +2182,17 @@ async function bulkMemberEmail(req, res) {
       at: nowIso(), batchId: String(batchId),
     };
     try {
+      const unsubUrl = marketing ? unsubUrlFor(r.uid, await ensureUnsubToken(r.uid, r.unsubToken)) : null;
       const info = await tx.sendMail({
         from: `HeatPump DB Support <${SUPPORT_FROM}>`,
         to: r.email, replyTo: SUPPORT_FROM, subject: subj,
-        text: personal + TEXT_SIGNATURE + (marketing ? UNSUB_TEXT : ''),
-        html: letterhead(personal, r.email, undefined, { marketing }),
+        text: personal + TEXT_SIGNATURE + (marketing ? unsubText(unsubUrl) : ''),
+        html: letterhead(personal, r.email, undefined, { marketing, unsubUrl }),
         attachments: mailAttachments(),
-        ...(marketing ? { headers: { 'List-Unsubscribe': `<mailto:${SUPPORT_FROM}?subject=unsubscribe>` } } : {}),
+        ...(marketing ? { headers: {
+          'List-Unsubscribe': `<${unsubUrl}>, <mailto:${SUPPORT_FROM}?subject=unsubscribe>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        } } : {}),
       });
       await db.collection('memberEmails').add({ ...record, ok: true, messageId: info.messageId || null });
       done[r.uid] = true; sent++;
@@ -3070,6 +3151,7 @@ functions.http('accountBilling', async (req, res) => {
     if (path.endsWith('/health') || (path === '/' && req.method === 'GET')) {
       return res.status(200).json({ ok: true, service: 'accountBilling' });
     }
+    if (path.endsWith('/unsubscribe')) return await unsubscribe(req, res);   // GET page + POST one-click
     if (req.method !== 'POST') return sendErr(res, 405, 'method-not-allowed');
     if (path.endsWith('/sendVerificationEmail')) return await sendVerificationEmail(req, res);
     if (path.endsWith('/finalizeSignup')) return await finalizeSignup(req, res);
