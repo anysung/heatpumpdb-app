@@ -349,6 +349,91 @@
       "id": "bulex-split",
       "brand": "Bulex",
       "match": "HA\\s*[35]-8\\.2"
+    },
+    {
+      "id": "ritter-calima-8-13-15",
+      "brand": "Ritter Energie",
+      "match": "^(?:WP Aero Calima 8|WP Aero Calima 13|WP Aero Calima 15|WP Aero Calima 10)$(?![\\s\\S])"
+    },
+    {
+      "id": "ritter-vento-5",
+      "brand": "Ritter Energie",
+      "match": "^(?:WP Aero Vento 5)$(?![\\s\\S])"
+    },
+    {
+      "id": "zewotherm-lambda-eu08",
+      "brand": "Zewotherm",
+      "match": "^(?:ZewoLambda EU08L - Luft-Monoblock Außen)$(?![\\s\\S])"
+    },
+    {
+      "id": "zewotherm-lambda-eu10-15-current",
+      "brand": "Zewotherm",
+      "match": "^(?:ZewoLambda EU10L - Luft-Monoblock Außen|ZewoLambda EU13L - Luft-Monoblock Außen|ZewoLambda EU15L - Luft-Monoblock Außen)$(?![\\s\\S])"
+    },
+    {
+      "id": "zewotherm-lambda-eu20",
+      "brand": "Zewotherm",
+      "match": "^(?:ZewoLambda EU20L - Luft-Monoblock Außen)$(?![\\s\\S])"
+    },
+    {
+      "id": "zewotherm-alpha-g7",
+      "brand": "Zewotherm",
+      "match": "^(?:Zewo WP Alpha G 7 kW)$(?![\\s\\S])"
+    },
+    {
+      "id": "zewotherm-alpha-g16-18",
+      "brand": "Zewotherm",
+      "match": "^(?:Zewo Wärmepumpe Alpha G 16|Zewo Wärmepumpe Alpha G 18)$(?![\\s\\S])"
+    },
+    {
+      "id": "tecalor-ttl-comfort",
+      "brand": "Tecalor",
+      "match": "^(?:TTL 5\\.1 ACS comfort|TTL 7\\.1 ACS comfort)$(?![\\s\\S])"
+    },
+    {
+      "id": "tecalor-ttl-eco",
+      "brand": "Tecalor",
+      "match": "^(?:TTL 5\\.1 ACS eco|TTL 7\\.1 ACS eco)$(?![\\s\\S])"
+    },
+    {
+      "id": "bulex-geniaair-max-3-5",
+      "brand": "Bulex",
+      "match": "^(?:HA 3-8\\.1 O 230V B2|HA 5-8\\.1 O 230V B2|HA 3-8\\.1 O 230V B2 \\+ FEW 200-7 18L|HA 5-8\\.1 O 230V B2 \\+ FEW 200-7 18L)$(?![\\s\\S])"
+    },
+    {
+      "id": "bulex-geniaair-mono-3-6",
+      "brand": "Bulex",
+      "match": "^(?:HA 3-6 O 230V B2|HA 3-6 O 230V B2 \\+ HE 9-6 WB \\+ FEW 300/3 MR)$(?![\\s\\S])"
+    },
+    {
+      "id": "solvis-lea-7-pro",
+      "brand": "Solvis",
+      "match": "^(?:SolvisLea 7 Pro)$(?![\\s\\S])"
+    },
+    {
+      "id": "weston-top-5",
+      "brand": "WESTONCLIMATE",
+      "match": "^(?:WESTON-JN-MN-TOP-R290-5KW-1F)$(?![\\s\\S])"
+    },
+    {
+      "id": "rossato-air-inverter-05-07",
+      "brand": "Rossato",
+      "match": "^(?:Air Inverter R290 05M|Air Inverter R290 07M)$(?![\\s\\S])"
+    },
+    {
+      "id": "rossato-air-inverter-09",
+      "brand": "Rossato",
+      "match": "^(?:Air Inverter R290 09M)$(?![\\s\\S])"
+    },
+    {
+      "id": "izzifast-grandis-n",
+      "brand": "IZZIFAST",
+      "match": "^(?:izzifast Grandis N)$(?![\\s\\S])"
+    },
+    {
+      "id": "izzifast-grandis-r",
+      "brand": "IZZIFAST",
+      "match": "^(?:izzifast Grandis R)$(?![\\s\\S])"
     }
   ]
 }

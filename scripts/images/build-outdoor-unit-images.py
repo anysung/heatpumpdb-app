@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Builds the HeatPump DB brand images from the Heatpump Finder set.
 
-Usage: python3 -I scripts/images/build-outdoor-unit-images.py <heatpumpfinder repository>
+Usage: python3 -I scripts/images/build-outdoor-unit-images.py <heatpumpfinder repository> [<extra set folder> ...]
+
+Extra set folders are design-folder releases the Finder has not taken yet (e.g. .../manufacturer-outdoor-units/v10):
+their SITE-ASSETS-<rev>.json gives brand, model rule (`match`) and the 1920 standard frame of each image. Both
+sources are only read.
 
 Every unit is scaled to the same visible area on one floor line, so the brands look
 alike in size. Writes public/assets/outdoor-units/v08/ and src/config/outdoorUnits.json.
@@ -27,6 +31,11 @@ out = repo / 'public/assets/outdoor-units' / VERSION
 out.mkdir(parents=True, exist_ok=True)
 units = json.loads((source / 'src/data/outdoorUnits.gen.json').read_text())
 model_units = json.loads((source / 'src/data/outdoorUnitModels.gen.json').read_text())
+for extra in map(Path, sys.argv[2:]):
+    for a in json.loads(next(extra.glob('SITE-ASSETS-*.json')).read_text())['assets']:
+        frame_png = Image.open(a['absoluteStandardFrame']).convert('RGBA')
+        model_units.append({'id': a['id'], 'brand': a['brand'], 'match': a['match'], 'widths': [FRAME], 'png': frame_png,
+                            'bounds': list(frame_png.getchannel('A').point(lambda v: 255 if v > 16 else 0).getbbox())})
 area = lambda u: (u['bounds'][2] - u['bounds'][0]) * (u['bounds'][3] - u['bounds'][1])
 target = statistics.median(area(u) for u in units)
 
@@ -34,7 +43,7 @@ config = []
 for u in units + model_units:
     width = u['widths'][-1]
     rev = u.get('rev', 'v07')
-    im = Image.open(source / f"public/assets/outdoor-units/{rev}/{u['id']}/{u['id']}__framed__w{width}__{rev}.webp").convert('RGBA')
+    im = u.get('png') or Image.open(source / f"public/assets/outdoor-units/{rev}/{u['id']}/{u['id']}__framed__w{width}__{rev}.webp").convert('RGBA')
     k = width / FRAME
     x0, y0, x1, y1 = u['bounds']
     box_w, box_h = x1 - x0, y1 - y0

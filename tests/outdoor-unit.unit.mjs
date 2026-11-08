@@ -36,6 +36,13 @@ own('Panasonic', 'AQUAREA [WH-UD03JE5 + WH-SDC0305J3E5]', 'panasonic-aquarea-j')
 own('BAXI', 'ALYA 4 FS Slim', 'baxi-alya-small');
 own('BAXI', 'ALYA 8 FS Slim', null);
 own('Saunier', 'HA 3-8.2 OS 230V + HA 5-8.2 STB C2', 'saunier-duval-split');
+// v10 set (design folder), exact model names.
+own('Ritter Energie', 'WP Aero Calima 13', 'ritter-calima-8-13-15');
+own('Ritter Energie', 'WP Aero Calima 20', null);
+own('Zewotherm', 'ZewoLambda EU13L - Luft-Monoblock Außen', 'zewotherm-lambda-eu10-15-current');
+own('Tecalor', 'TTL 5.1 ACS eco', 'tecalor-ttl-eco');
+own('Rossato', 'Air Inverter R290 09M', 'rossato-air-inverter-09');
+own('IZZIFAST', 'izzifast Grandis N', 'izzifast-grandis-n');
 own('Vaillant', 'VWL 125/6 A 230V S3', 'vaillant');
 own('Grant Engineering', 'Aerona HPR290i40', 'grant-aerona-290');
 own('Grant Engineering', 'Aerona3 HPID10R32', null);
@@ -55,5 +62,5 @@ for (const type of ['Sole / Wasser', 'Eau glycolée / Eau', 'Eau / Eau', 'Sol / 
 // Every configured image exists in each width.
 for (const u of CONFIG.units) for (const w of CONFIG.widths) assert.ok(existsSync(new URL(`../public${unitFile(u.id, w)}`, import.meta.url)), `${u.id} ${w}`);
 assert.equal(CONFIG.units.filter((u) => !u.match).length, 50);
-assert.equal(CONFIG.units.filter((u) => u.match).length, 27);
+assert.equal(CONFIG.units.filter((u) => u.match).length, 44);
 console.log('outdoor-unit: ok');
