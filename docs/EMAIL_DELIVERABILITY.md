@@ -25,6 +25,7 @@ No other domain (heatpumpdb.uk/.fr/.de/.pl/.it) sends mail.
 | Date | Change |
 |---|---|
 | 2026-11-08 | heatpumpdb.uk (Cloudflare) locked: `v=spf1 -all`, Null MX `0 .`, `*._domainkey` empty key, DMARC `p=reject; sp=reject; adkim=s; aspf=s` |
+| 2026-11-08 | heatpumpdb.fr/.de (Namecheap), .pl (OVH), .it (Aruba): `v=spf1 -all` + DMARC `p=reject; sp=reject; adkim=s; aspf=s` (owner, verified on the authoritative NS). No Null MX added. heatpumpdb.eu: `*._report._dmarc` = `v=DMARC1` (external report authorization) |
 | 2026-11-08 | Marketing (announcement) mail: HTTPS `List-Unsubscribe` + `List-Unsubscribe-Post: List-Unsubscribe=One-Click` (RFC 8058), footer link in text + HTML; endpoint `/unsubscribe` on the billing function (GET = confirm page, never writes; POST = clears `marketingConsent`, audited). Test: `tests/unsubscribe.unit.mjs` |
 
 ## Owner checklist (no API access from the repo)
@@ -33,7 +34,7 @@ No other domain (heatpumpdb.uk/.fr/.de/.pl/.it) sends mail.
 %APP_NAME% therefore renders as "HeatPump DB"; nothing to do. Only the link
 host (firebaseapp.com) remains — see "Later".
 
-### 2. heatpumpdb.eu — Namecheap → Advanced DNS
+### 2. heatpumpdb.eu — Namecheap → Advanced DNS (DONE 2026-11-08)
 Keep DMARC at `p=none` for now (2–4 weeks of reports first).
 
 | Type | Host | Value |
@@ -46,7 +47,7 @@ If Namecheap refuses the wildcard, add one record per domain instead:
 `heatpumpdb.it._report._dmarc` — each `v=DMARC1`. Without it, receivers drop
 the DMARC reports of the other five domains (they point at support@heatpumpdb.eu).
 
-### 3. Lock the non-sending domains — same four records each
+### 3. Lock the non-sending domains (DONE 2026-11-08 — SPF + DMARC; Null MX/DKIM optional, not added)
 heatpumpdb.fr, heatpumpdb.de (Namecheap), heatpumpdb.pl (OVH), heatpumpdb.it (Aruba):
 
 | Type | Host | Value |
