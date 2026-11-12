@@ -1,5 +1,5 @@
 {
-  "_readme": "Finder markets. climate selects which EU label column applies (Reg. 811/2013: cold = Helsinki, average = Strasbourg, warm = Athens) and is PROVISIONAL until the owner approves the table. fundingList: 'owned' = the catalogue comes from the list itself; 'overlay' = matched against the local list; null = no model-level list in use. fundingRanking is the owner's decision of 2026-11-06, and the 70% coverage gate can still switch it off.",
+  "_readme": "Finder markets. climate selects which EU label column applies (Reg. 811/2013: cold = Helsinki, average = Strasbourg, warm = Athens) and is PROVISIONAL until the owner approves the table. fundingList: 'owned' = the catalogue comes from the list itself; 'overlay' = matched against the local list; null = no model-level list in use. fundingRanking is the owner's decision of 2026-11-06, and the 70% coverage gate can still switch it off. Markets ch to li were added 2026-11-12 for the Europe launch; CH has no EPREL country, so it uses the common catalogue without a market filter (owner decision).",
   "minFundingCoverage": 0.7,
   "markets": {
     "de": { "country": "DE", "file": "products", "climate": "average", "eprelCode": "DE", "fundingList": "owned", "fundingRanking": true },
@@ -18,6 +18,21 @@
     "dk": { "country": "DK", "file": "products", "climate": "average", "eprelCode": "DK", "fundingList": null, "fundingRanking": false },
     "se": { "country": "SE", "file": "products", "climate": "cold", "eprelCode": "SE", "fundingList": null, "fundingRanking": false },
     "fi": { "country": "FI", "file": "products", "climate": "cold", "eprelCode": "FI", "fundingList": null, "fundingRanking": false },
-    "no": { "country": "NO", "file": "products", "climate": "cold", "eprelCode": "NO", "fundingList": null, "fundingRanking": false }
+    "no": { "country": "NO", "file": "products", "climate": "cold", "eprelCode": "NO", "fundingList": null, "fundingRanking": false },
+    "ch": { "country": "CH", "file": "products", "climate": "average", "eprelCode": null, "fundingList": null, "fundingRanking": false },
+    "hu": { "country": "HU", "file": "products", "climate": "average", "eprelCode": "HU", "fundingList": null, "fundingRanking": false },
+    "gr": { "country": "GR", "file": "products", "climate": "warm", "eprelCode": "GR", "fundingList": null, "fundingRanking": false },
+    "cy": { "country": "CY", "file": "products", "climate": "warm", "eprelCode": "CY", "fundingList": null, "fundingRanking": false },
+    "mt": { "country": "MT", "file": "products", "climate": "warm", "eprelCode": "MT", "fundingList": null, "fundingRanking": false },
+    "bg": { "country": "BG", "file": "products", "climate": "average", "eprelCode": "BG", "fundingList": null, "fundingRanking": false },
+    "sk": { "country": "SK", "file": "products", "climate": "average", "eprelCode": "SK", "fundingList": null, "fundingRanking": false },
+    "ro": { "country": "RO", "file": "products", "climate": "average", "eprelCode": "RO", "fundingList": null, "fundingRanking": false },
+    "hr": { "country": "HR", "file": "products", "climate": "average", "eprelCode": "HR", "fundingList": null, "fundingRanking": false },
+    "si": { "country": "SI", "file": "products", "climate": "average", "eprelCode": "SI", "fundingList": null, "fundingRanking": false },
+    "lt": { "country": "LT", "file": "products", "climate": "cold", "eprelCode": "LT", "fundingList": null, "fundingRanking": false },
+    "lv": { "country": "LV", "file": "products", "climate": "cold", "eprelCode": "LV", "fundingList": null, "fundingRanking": false },
+    "ee": { "country": "EE", "file": "products", "climate": "cold", "eprelCode": "EE", "fundingList": null, "fundingRanking": false },
+    "is": { "country": "IS", "file": "products", "climate": "cold", "eprelCode": "IS", "fundingList": null, "fundingRanking": false },
+    "li": { "country": "LI", "file": "products", "climate": "average", "eprelCode": "LI", "fundingList": null, "fundingRanking": false }
   }
 }
